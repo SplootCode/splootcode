@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+.editor {
+  padding-left: 0px;
+  padding-top: 10px;
+  background-color: var(--editor-bg-color);
+  font-family: 'Source Sans Pro', 'monospace';
+}
+
+text {
+  fill: var(--editor-text-color);
+  font-family: 'Source Sans Pro', 'monospace';
+  font-size: 11pt;
+  pointer-events: none;
+}
+
+:root {
+  --editor-bg-color: #13171b;
+  --editor-text-color: #FFFFFF;
+  --editor-node-block-fill: #2d343e;
+  --editor-node-block-edge: #13171b;
+  --editor-connector-stroke: #8c99ab;
+  --editor-indented-block-stroke: #888F99;
+  --editor-anchor-dot: #8c99ab;
+
+  --editor-autcompleted-bg-color: #134777;
+  --editor-autcompleted-edge-color: #3191ea;
+  --editor-autcompleted-text-color: #3191ea;
+  --editor-autcompleted-highlight-color: #3191ea;
+
+  --editor-selected-node-block-fill: #134777;
+  --editor-selected-node-block-edge: #3191ea;
+  --editor-selected-node-block-input: #166ab7;
+  --editor-selected-connector-stroke: #3191ea;
+  --editor-selected-indented-block-stroke: #3191ea;
+  --editor-selected-anchor-dot: #3191ea;
+
+  --editor-cursor-color: #57aeff;
+  --editor-cursor-blink-color: #166ab7;
+}

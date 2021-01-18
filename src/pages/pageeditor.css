@@ -1,0 +1,49 @@
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.page-editor-container {
+    display: grid;
+    grid-template-columns: 140px auto 500px;
+    grid-column-gap: 0px;
+    height: 100vh;
+}
+
+.page-editor-preview-panel {
+    grid-column-start: 3;
+}
+
+.left-panel {
+    grid-column-start: 1;
+    display: inline-block;
+    border-right: 1px solid rgb(209, 209, 209);
+}
+
+.page-editor-column {
+    grid-column-start: 2;
+    border-right: 1px solid rgb(209, 209, 209);
+}
+
+.file-nav-list {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+
+.file-nav-list li {
+    padding: 10px 6px;  
+}
+
+.file-nav-list li.selected {
+    background-color: #343b44;
+    color: white;
+}
+
+.editor-panel {
+    display: none;
+}
+
+.editor-panel.selected {
+    display: block;
+}

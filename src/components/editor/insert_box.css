@@ -1,0 +1,99 @@
+.input-box {
+  background-color: var(--editor-selected-node-block-fill);
+  border: 1px solid var(--editor-selected-node-block-edge);
+  display: inline-block;
+  padding: 4px 6px 2px 6px;
+  border-radius: 3px;
+}
+
+.input-box input[type=text] {
+  background-color: var(--editor-selected-node-block-input);
+  font-family: inherit;
+  border-style: none;
+  color:white;
+  height: 20px;
+  padding: 0px 2px;
+}
+
+.input-box input[type=text]:focus {
+  outline: none;
+}
+
+.hidden-input-box {
+  display: inline-block;
+  padding: 0px;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.hidden-input-box input[type=text] {
+  background-color: transparent;
+  font-family: inherit;
+  border-style: none;
+  color: transparent;
+  height: 20px;
+  padding: 0px 0px;
+  caret-color: transparent;
+  width: 0px;
+}
+
+.hidden-input-box input[type=text]:focus {
+  outline: none;
+}
+
+.autocomplete-inilne-svg {
+  display: inline-block;
+}
+
+.autocomplete-no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+
+.autocomplete-suggestions {
+  position: absolute;
+  border: 1px solid var(--editor-autcompleted-edge-color);
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: max-content;
+  z-index: 100;
+  background-color: var(--editor-autcompleted-bg-color);
+  color: var(--editor-autcompleted-text-color);
+}
+
+.autocomplete-description {
+  display: inline-block;
+  padding: 9px 6px 4px;
+  vertical-align: top;
+}
+
+.autocomplete-suggestions li {
+  padding: 3px 4px 0px 4px;
+}
+
+.autocomplete-suggestions li:hover {
+  background-color: var(--editor-autcompleted-highlight-color);
+  color: white;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion-active, li.suggestion-active:hover {
+  background-color: var(--editor-autcompleted-highlight-color);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.autocomplete-suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid var(--editor-selected-node-block-edge);
+}

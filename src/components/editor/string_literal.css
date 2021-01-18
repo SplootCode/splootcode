@@ -1,0 +1,24 @@
+
+.string-literal {
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  margin: 2px;
+}
+
+.editing.string-literal {
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+.string-literal > input {
+  font-family: inherit;
+  border: none;
+}
+
+.string-literal > input:focus {
+  outline: none;
+}
+

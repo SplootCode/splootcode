@@ -1,0 +1,64 @@
+import React from 'react'
+import { NodeBlock } from '../../layout/rendered_node';
+
+import "./editor.css";
+import { NodeSelection, NodeSelectionState, SelectionState } from '../../context/selection';
+import { observer } from 'mobx-react';
+import { ExpandedListBlockView } from './list_block';
+import { InsertBox } from './insert_box';
+import { JAVASCRIPT_FILE } from '../../language/types/file';
+import { HTML_DOCUMENT } from '../../language/types/html_document';
+import { ActiveCursor } from './cursor';
+
+
+interface EditorProps {
+  block: NodeBlock;
+  width: number;
+  selection: NodeSelection;
+}
+
+@observer
+export class Editor extends React.Component<EditorProps> {
+  render() {
+    let {block, selection} = this.props;
+    let fileBody = null;
+    if (block.node.type === JAVASCRIPT_FILE || block.node.type === HTML_DOCUMENT) {
+      fileBody = block.renderedChildSets['body'];
+    }
+    let height = block.rowHeight + block.indentedBlockHeight;
+    let insertBox = null;
+    if (selection.isCursor() && selection.insertBox !== null) {
+      // Whelp, this is ugly, but hey it works. :shrug:
+      let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.id;
+      insertBox = <InsertBox key={insertKey} editorX={140} editorY={40} selection={selection} insertBoxData={selection.insertBox} />
+    }
+    return <div className="editor">
+      <svg xmlns="http://www.w3.org/2000/svg" height={height} width={800}>
+        <ExpandedListBlockView
+            block={fileBody}
+            selection={this.props.selection}
+            isSelected={false} />
+        <ActiveCursor selection={selection}/>
+      </svg>
+      { insertBox }
+    </div>;
+  }
+
+  keyHandler = (event: KeyboardEvent) => {
+    if (event.isComposing) {
+      // IME composition
+      return;
+    }
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      this.props.selection.deleteSelectedNode();
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.keyHandler);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keyHandler);
+  }
+}

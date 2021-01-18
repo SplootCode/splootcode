@@ -1,0 +1,31 @@
+.anchor-dot {
+    display: inline-block;
+    background-color: white;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    margin: 0 2px;
+}
+
+.tree-anchor {
+    display: inline-block;
+}
+
+.tree-children {
+    position: absolute;
+}
+
+.tree-child {
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+
+.svg-anchor-dot {
+    fill: white;
+}
+
+.tree-connector {
+    stroke: #D4D4D4;
+    stroke-width: 2px;
+}

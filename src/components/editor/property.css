@@ -1,0 +1,24 @@
+
+.inline-component-property {
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  margin: 2px;
+}
+
+
+.editing.inline-component-property {
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+.inline-component-property > input {
+  font-family: inherit;
+  border: none;
+}
+
+.inline-component-property > input:focus {
+  outline: none;
+}

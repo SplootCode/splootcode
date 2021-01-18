@@ -1,0 +1,58 @@
+.inline-cursor-hover {
+  fill: transparent;  
+}
+
+.inline-cursor-group:hover line.inline-cursor {
+  stroke:white;
+}
+
+.inline-cursor-group:hover line.inline-cursor-lite {
+  stroke:white;
+}
+
+.inline-cursor-group:hover circle.inline-cursor-circle {
+  fill: white;
+}
+
+.inline-cursor-circle {
+  fill: transparent;
+}
+
+.inline-cursor {
+  stroke: transparent; 
+  stroke-width: 2;
+}
+
+.inline-cursor-lite {
+  stroke: transparent; 
+  stroke-width: 1;
+}
+
+.inline-cursor.selected {
+  stroke: white; 
+}
+
+.inline-cursor-lite.selected {
+  stroke: white; 
+  stroke-width: 1;
+}
+
+.active-inline-cursor {
+  stroke: var(--editor-cursor-color);
+  stroke-width: 2;
+  animation-name: color;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes color {
+  0% {
+    stroke: var(--editor-cursor-color);
+  }
+  50% {
+    stroke: var(--editor-cursor-blink-color);
+  }
+  100% {
+    stroke: var(--editor-cursor-color);
+  }
+}

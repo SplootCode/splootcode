@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+}
+
+pre {
+    margin: 0;
+    font-family: Monaco, 'Courier New', monospace;
+}
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    background-color: #13171b;
+    color: gray;
+}
+

@@ -1,0 +1,50 @@
+.panel {
+  border-bottom: 1px solid rgb(209, 209, 209);
+}
+
+.panel-hide-button {
+  position: absolute;
+  right: 0;
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  user-select: none;
+  color: black;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 900px) {
+  .panel-hide-button {
+      padding: 6px 10px;
+  }
+}
+
+.panel-hide-button:hover {
+  border-color: rgb(238, 238, 238);
+  color: rgb(0, 0, 0);
+  background: rgb(238, 238, 238);
+  box-shadow: none;
+}
+
+.panel-hide-button:active {
+  border-color: #b6b6b6;
+  color: #000000;
+  background: #b6b6b6;
+  box-shadow: none;
+}
+
+.panel-hide-button:disabled {
+  color: rgb(170, 170, 170);
+  background-color: transparent;
+  border-color: transparent;
+}

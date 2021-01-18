@@ -1,0 +1,21 @@
+.svg-anchor-dot {
+    fill: var(--editor-anchor-dot);
+}
+
+.svg-anchor-dot.selected {
+    fill: var(--editor-selected-anchor-dot);
+}
+
+.tree-connector {
+    stroke: var(--editor-connector-stroke);
+    stroke-width: 2px;
+}
+
+.tree-connector.selected {
+    stroke: var(--editor-selected-connector-stroke);
+}
+
+.tree-label {
+    font-size: 8pt;
+    fill: var(--editor-connector-stroke);
+}

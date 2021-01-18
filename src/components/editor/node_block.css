@@ -1,0 +1,29 @@
+
+.inline-component {
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  margin: 2px;
+}
+
+.svgsplootnode {
+  stroke: var(--editor-node-block-edge);
+  fill: var(--editor-node-block-fill);
+}
+
+.svgsplootnode.selected {
+  stroke: var(--editor-selected-node-block-edge);
+  fill: var(--editor-selected-node-block-fill);
+}
+
+.indented-rule {
+  stroke: var(--editor-indented-block-stroke);
+  stroke-width: 1px;
+}
+
+.indented-rule.selected {
+  stroke: var(--editor-selected-indented-block-stroke);
+  stroke-width: 1px;
+}

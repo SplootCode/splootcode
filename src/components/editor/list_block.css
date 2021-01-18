@@ -1,0 +1,44 @@
+
+.indented-list {
+  padding-left: 16px;
+  margin-left: 5px;
+  border-left: 1px solid rgb(209, 209, 209);
+  padding-top: 8px;
+}
+
+.indented-list.selected {
+  border-left: 2px solid rgb(180, 200, 255);
+  padding-left: 15px;
+}
+
+.indented-list-item {
+  margin-bottom: 8px;
+}
+
+.indented-list-insert-icon {
+  position: relative;
+  left: -11px;
+  top: 3px;
+  height: 0;
+  width: 15px;
+  color: rgba(206, 100, 100, 0.05);
+  background-color: blue;
+}
+
+.indented-list-insert-icon:hover {
+  color: black;
+}
+
+.indented-list-horizontal-cursor {
+  color: rgba(206, 100, 100, 0.05);
+  position: relative;
+  left: -11px;
+  top: -6px;
+  height: 6px;
+  width: 20px;
+}
+
+.indented-list-horizontal-cursor:hover {
+  color: black;
+}
+
