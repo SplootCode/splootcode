@@ -1,7 +1,7 @@
 # SplootCode Editor
 An experimental coding interface that's tree-based.
 
-<img src="screenshot1.png" alt="Screenshot of SplootCode example" width="160">
+<img src="screenshot1.png" alt="Screenshot of SplootCode example" width="400">
 
 With a regular text-based programming language, the first step to process it is to parse it into an abstract-syntax-tree.
 One stray quote mark can often break the parse tree for the whole document, making it difficult for IDEs to keep up with edits.
