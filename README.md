@@ -10,10 +10,10 @@ In the SplootCode editor, the user edits the tree directly and the tree can incl
 That being said, building a tree-editing interface that's fast, compact and intuitive is no easy feat. This is very much a work in progress.
 
 ## Goals
+ * An unrestricted implementation of JavaScript editing
  * Help developers avoid syntax errors and other common programming error
  * Avoid busywork like escaping, style rules and whitespace
  * Let beginners focus on the logic of their code rather than the syntax
- * Unrestricted development, no need to switch to text code at any time
  * Fast and easy to edit using a keyboard and autocomplete
 
 ## Development
@@ -24,16 +24,20 @@ You'll need to have [nodejs](https://nodejs.org/) and [yarn](https://yarnpkg.com
 Local dev is set up using webpack-dev-server which includes hot reloading.
 
 Install dependencies:
+
 ```$ yarn install```
 
 Generate type information for built-in Javascript variables and functions.
+
 ```$ yarn generate-types```
 
 The editor includes an iframe which executes the code as a preview.
 You will need to run the webpack devserver for both the main app and the frame.
+
 ```$ yarn start```
 
 And in a separate terminal:
+
 ```$ yarn start-frame```
 
 ## License
