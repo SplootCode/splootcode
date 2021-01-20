@@ -98,7 +98,7 @@ export class IfStatement extends SplootNode {
     };
     ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'if'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION, 'condition'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'trueblock'),
     ]);
   

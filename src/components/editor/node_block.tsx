@@ -170,7 +170,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       return null;
     }
     let childSetBlock = block.renderedChildSets[block.rightAttachedChildSet];
-    if (childSetBlock.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION) {
+    if (childSetBlock.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       return <AttachedChildRightExpressionView block={childSetBlock} isSelected={isSelected} selection={selection}></AttachedChildRightExpressionView>
     }
     return null;

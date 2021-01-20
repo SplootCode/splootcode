@@ -66,7 +66,7 @@ export class SplootHtmlAttribute extends SplootNode {
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ATTRIBUTE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'name'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION, 'value'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
     ]);
   
     registerType(typeRegistration);

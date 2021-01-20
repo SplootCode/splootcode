@@ -97,13 +97,13 @@ export class NodeBlock implements NodeObserver {
           || component.type === LayoutComponentType.CHILD_SET_TREE
           || component.type === LayoutComponentType.CHILD_SET_INLINE
           || component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST
-          || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION
+          || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT
           || component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         let childSet = node.getChildSet(component.identifier)
         let childSetParentRef = new RenderedParentRef(this, component.identifier);
         let renderedChildSet = new RenderedChildSetBlock(childSetParentRef, selection, childSet, component, isLastInlineComponent);
         this.renderedChildSets[component.identifier] = renderedChildSet;
-        if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION) {
+        if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
             this.rightAttachedChildSet = component.identifier;
         }
         if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
@@ -185,7 +185,7 @@ export class NodeBlock implements NodeObserver {
         this.marginLeft += childSetBlock.width;
         leftPos += childSetBlock.width;
       }
-      else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION) {
+      else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         let childSetBlock = this.renderedChildSets[component.identifier];
         childSetBlock.calculateDimensions(leftPos + 2, y, selection);
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);

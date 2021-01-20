@@ -7,6 +7,7 @@ import { EditorNodeBlock } from './node_block';
 import "./tree_list_block.css";
 import { NodeAttachmentLocation } from '../../language/type_registry';
 import { RenderedChildSetBlock } from '../../layout/rendered_childset_block';
+import { InlineCursor } from './cursor';
 
 interface AttachedChildViewProps {
     block: RenderedChildSetBlock;
@@ -17,13 +18,10 @@ interface AttachedChildViewProps {
 @observer
 export class AttachedChildRightExpressionView extends React.Component<AttachedChildViewProps> {
   render() {
-    let {isSelected, block} = this.props;
+    let {isSelected, block, selection} = this.props;
     let leftPos = block.x;
     let topPos = block.y;
-    let isLastInlineComponent = block.isLastInlineComponent;
-    let className = isSelected ? 'selected' : '';
 
-    let nodeCount = block.nodes.length;
     let allowInsert = block.allowInsert();
 
     // Can only be one child (or zero) for attached childsets
@@ -35,13 +33,23 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
     */
     let childWidth = (child === null) ? 0 : child.rowWidth;
     let connectorClass = "tree-connector " + (isSelected ? "selected" : "");
+    if (allowInsert) {
+      return (
+        <React.Fragment>
+          <line className={connectorClass} x1={leftPos + 1} y1={topPos + 16} x2={leftPos + 6} y2={topPos + 16} />
+          <path className={connectorClass} d={"M " + (leftPos + 9) + " " + topPos + " a 40 40 45 0 0 0 30" } fill="transparent"></path>
+          <InlineCursor index={0} listBlock={block} leftPos={leftPos + 16} topPos={topPos} selection={selection}/>
+          <path className={connectorClass} d={"M " + (leftPos + childWidth + 18) + " " + topPos + " a 40 40 45 0 1 0 30" } fill="transparent"></path>
+        </React.Fragment>
+      )
+    }
     return (
       <React.Fragment>        
         <line className={connectorClass} x1={leftPos + 1} y1={topPos + 16} x2={leftPos + 6} y2={topPos + 16} />
         <path className={connectorClass} d={"M " + (leftPos + 9) + " " + topPos + " a 40 40 45 0 0 0 30" } fill="transparent"></path>
         <EditorNodeBlock block={child} selection={this.props.selection} selectionState={selectionState} onClickHandler={this.onClickByIndex(0)}/>
         <path className={connectorClass} d={"M " + (leftPos + childWidth + 18) + " " + topPos + " a 40 40 45 0 1 0 30" } fill="transparent"></path>
-      </React.Fragment>              
+      </React.Fragment>
     );
   }
 

@@ -50,7 +50,7 @@ export class AwaitExpression extends SplootNode {
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'await'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION, 'expression'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'expression'),
     ]);
   
     registerType(typeRegistration);

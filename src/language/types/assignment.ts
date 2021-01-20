@@ -70,7 +70,7 @@ export class Assignment extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION, 'right'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right'),
     ]);
   
     registerType(typeRegistration);

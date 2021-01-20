@@ -6,7 +6,6 @@ import { ChildSetMutation, ChildSetMutationType } from "../language/mutations/ch
 import { observable, action } from "mobx";
 import { NodeSelectionState, NodeSelection, SelectionState } from "../context/selection";
 import { NODE_BLOCK_HEIGHT, NodeBlock, RenderedParentRef } from "./rendered_node";
-import { isFunctionTypeNode } from "typescript";
 
 const EXPRESSION_TOKEN_SPACING = 6;
 const ROW_SPACING = 6;
@@ -200,7 +199,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.width += boxWidth;
         leftPos += boxWidth;
       }
-    } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT_EXPRESSION) {
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       let leftPos = x + 16;
       this.nodes.forEach((childNodeBlock: NodeBlock) => {
         childNodeBlock.calculateDimensions(leftPos, y, selection);
@@ -267,6 +266,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (this.nodes.length === insertIndex) {
         return [this.x + indent, topPos];
       }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
+      // Only ever one child, so this one is easier to calculate.
+      return [this.x + 14, this.y];
     }
     console.warn('Insert position not implemented for LayoutComponentType', this.componentType)
     return [100, 100];
