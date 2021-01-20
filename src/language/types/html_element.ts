@@ -1,5 +1,6 @@
 import { HighlightColorCategory } from "../../layout/colors";
 import { ChildSetType } from "../childset";
+import { getValidElements } from "../html/tags";
 import { ParentReference, SplootNode } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
@@ -10,6 +11,9 @@ export const HTML_ElEMENT = 'HTML_ELEMENT';
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
+    if (parent.node.type === HTML_ElEMENT) {
+      return getValidElements(parent.node as SplootHtmlElement, [])
+    }
     return [];
   };
 

@@ -20,7 +20,12 @@ import { ViewPage } from '../components/preview/frame_view';
 
 
 const StartingDocuments = [
-{
+  {
+    filename: 'blank.html',
+    contents: `
+    `
+  },  
+  {
   filename: 'index.html',
   contents: `
 <!DOCTYPE html>
@@ -61,6 +66,18 @@ const StartingDocuments = [
 <body>
   <canvas id="canvas"></canvas>
   <script>
+
+
+  function draw(timestamp) {
+    updatePosition();
+    c.clearRect(0, 0, tx, ty);
+    window.requestAnimationFrame(draw);
+    c.beginPath();
+    c.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
+    c.fillStyle = 'rgb(0, 0, 200)';
+    c.fill();
+  }
+
   let c = null;
   let tx = null;
   let ty = null;
@@ -72,16 +89,6 @@ const StartingDocuments = [
   let ballDY = 0;
 
   let grav = 1;
-
-  function draw(timestamp) {
-    updatePosition();
-    c.clearRect(0, 0, tx, ty);
-    window.requestAnimationFrame(draw);
-    c.beginPath();
-    c.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
-    c.fillStyle = 'rgb(0, 0, 200)';
-    c.fill();
-  }
 
   function updatePosition() {
     ballY = ballY + ballDY;
@@ -179,7 +186,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
 
       this.state = {
         ready: false,
-        selectedFile: 'app.js',
+        selectedFile: 'blank.html',
         editors: {},
         editorOrder: editorOrder,
       };
@@ -200,7 +207,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
       })
       this.setState({
         ready: true,
-        selectedFile: 'app.js',
+        selectedFile: 'blank.html',
         editorOrder: editorOrder,
         editors: editors,
       })
