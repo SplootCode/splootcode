@@ -9,7 +9,7 @@ import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 
 import * as recast from "recast";
 import { HighlightColorCategory } from "../../layout/colors";
-import { ElementType, generateAncestorInfo, getSuggestedElement, HtmlElement, isTagValidWithParent, SCRIPT_ELEMENT } from "../html/tags";
+import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT';
@@ -19,7 +19,7 @@ class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
     if (parent.node.type === HTML_ElEMENT) {
       if (isTagValidWithParent("script", (parent.node as SplootHtmlElement).getTag())) {
-        return [new SuggestedNode(new SplootHtmlScriptElement(null), "element script", "script javascript", true, "Embedded script")];
+        return [new SuggestedNode(new SplootHtmlScriptElement(null), "element script", "script javascript", true, "The script element allows authors to include dynamic script and data blocks in their documents.")];
       }
     }
     return [];

@@ -1,9 +1,11 @@
 import { HighlightColorCategory } from "../../layout/colors";
 import { ChildSetType } from "../childset";
+import { getValidAttributes } from "../html/tags";
 import { ParentReference, SplootNode } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
+import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 
 export const HTML_ATTRIBUTE = 'HTML_ATTRIBUTE';
 
@@ -23,19 +25,14 @@ function sanitizeIdentifier(textInput: string) : string {
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    // TODO: Suggest attributes per element
+    if (parent.node.type === HTML_ElEMENT) {
+      return getValidAttributes(parent.node as SplootHtmlElement);
+    }
     return [];
   };
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
-    let varName = sanitizeIdentifier(textInput);
-    if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
-      varName = '-' + varName;
-    }
-
-    let newVar = new SplootHtmlAttribute(null, varName);
-    let suggestedNode = new SuggestedNode(newVar, `attribute ${varName}`, '', true, 'custom attribute');
-    return [suggestedNode];
+    return [];
   };
 }
 

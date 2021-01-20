@@ -30,6 +30,7 @@
     "tslib": "^1.10.0",
     "typescript": "^3.7.5",
     "uuid": "^3.3.3",
+    "vscode-web-custom-data": "^0.3.2",
     "webpack-merge": "^4.2.2"
   },
   "devDependencies": {
