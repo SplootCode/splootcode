@@ -319,12 +319,19 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getNextInsertCursorInOrAfterNode(index: number) : NodeCursor {
-    let nextChildCursor = this.nodes[index].getNextChildInsertCursor();
+    let nextChildCursor = null;
+    if (index < this.nodes.length) {
+      nextChildCursor = this.nodes[index].getNextChildInsertCursor();
+    }
     if (nextChildCursor) {
       return nextChildCursor;
-    } else if (this.allowInsert()) {
+    } else if (this.allowInsert() && index < this.nodes.length) {
       return new NodeCursor(this, index + 1);
     } else {
+      nextChildCursor = this.parentRef.node.getNextInsertAfterChildSet(this.parentRef.childSetId);
+      if (nextChildCursor) {
+        return new NodeCursor(nextChildCursor.listBlock, nextChildCursor.index);
+      }
       nextChildCursor = this.parentRef.node.getNextInsertAfterThisNode()
       if (nextChildCursor) {
         return new NodeCursor(nextChildCursor.listBlock, nextChildCursor.index);

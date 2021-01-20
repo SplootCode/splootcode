@@ -135,6 +135,18 @@ export class NodeSelection {
   }
 
   @action
+  moveCursorToNextInsert() {
+    if (this.cursor) {
+      let newCursor = this.cursor.listBlock.getNextInsertCursorInOrAfterNode(this.cursor.index);
+      if (newCursor) {
+        this.placeCursor(newCursor.listBlock, newCursor.index);
+      }
+    } else {
+      // Use root node instead
+    }
+  }
+
+  @action
   startInsertNode(listBlock: RenderedChildSetBlock, index: number) {
     this.exitEdit();
     if (this.cursor) {

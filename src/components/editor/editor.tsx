@@ -29,6 +29,7 @@ export class Editor extends React.Component<EditorProps> {
     let insertBox = null;
     if (selection.isCursor() && selection.insertBox !== null) {
       // Whelp, this is ugly, but hey it works. :shrug:
+      // This forces the insertbox to be regenerated and refocused when the insert changes position.
       let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.id;
       insertBox = <InsertBox key={insertKey} editorX={140} editorY={40} selection={selection} insertBoxData={selection.insertBox} />
     }
@@ -51,6 +52,11 @@ export class Editor extends React.Component<EditorProps> {
     }
     if (event.key === 'Backspace' || event.key === 'Delete') {
       this.props.selection.deleteSelectedNode();
+    }
+    if (event.key === ';' || event.key === 'Tab') {
+      this.props.selection.moveCursorToNextInsert();
+      event.preventDefault();
+      event.cancelBubble = true;
     }
   }
 

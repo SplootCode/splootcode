@@ -220,17 +220,17 @@ export class NodeBlock implements NodeObserver {
     if (this.parentChildSet === null) {
       return null;
     }
-    if (this.parentChildSet.allowInsert()) {
+    if (this.parentChildSet.allowInsert() && this.index < this.parentChildSet.nodes.length) {
       return new NodeCursor(this.parentChildSet, this.index + 1);
     }
-    return this.parentChildSet.parentRef.node.getNextInsertAfterChildSet(this.parentChildSet.parentRef.childSetId);
+    return this.parentChildSet.getNextInsertCursorInOrAfterNode(this.index + 1);
   }
 
   getNextInsertAfterChildSet(childSetId: string) : NodeCursor {
     let index = this.node.childSetOrder.indexOf(childSetId);
     index += 1;
     while (index < this.node.childSetOrder.length) {
-      let nextChildSetId = this.node.childSetOrder[index + 1];
+      let nextChildSetId = this.node.childSetOrder[index];
       let nextChildSet = this.renderedChildSets[nextChildSetId]
       let nextInsert = nextChildSet.getNextChildInsert();
       if (nextInsert) {
@@ -238,8 +238,8 @@ export class NodeBlock implements NodeObserver {
       }
       index += 1;
     }
-    // This is the last childset, go up a node.
-    return this.parentChildSet.parentRef.node.getNextInsertAfterThisNode();
+    // This is the last childset, go up a step.
+    return this.getNextInsertAfterThisNode();
   }
 
   getNextChildInsertCursor() : NodeCursor {

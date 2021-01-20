@@ -23,7 +23,6 @@ class Generator implements SuggestionGenerator {
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
     return [];
   };
-
 }
 
 export class IfStatement extends SplootNode {
@@ -32,7 +31,7 @@ export class IfStatement extends SplootNode {
     this.addChildSet('condition', ChildSetType.Single, NodeCategory.Expression);
     this.getChildSet('condition').addChild(new SplootExpression(null));
     this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.Statement);
-    this.addChildSet('elseblock', ChildSetType.Many, NodeCategory.Statement);
+    // this.addChildSet('elseblock', ChildSetType.Many, NodeCategory.Statement);
   }
 
   getCondition() {
@@ -43,9 +42,9 @@ export class IfStatement extends SplootNode {
     return this.getChildSet('trueblock');
   }
 
-  getElseBlock() {
-    return this.getChildSet('elseblock');
-  }
+  // getElseBlock() {
+  //   return this.getChildSet('elseblock');
+  // }
 
   clean() {
     this.getTrueBlock().children.forEach((child: SplootNode, index: number) => {
@@ -55,13 +54,13 @@ export class IfStatement extends SplootNode {
         }
       }
     });
-    this.getElseBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === SPLOOT_EXPRESSION) {
-        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
-          this.getElseBlock().removeChild(index);
-        }
-      }
-    });
+    // this.getElseBlock().children.forEach((child: SplootNode, index: number) => {
+    //   if (child.type === SPLOOT_EXPRESSION) {
+    //     if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+    //       this.getElseBlock().removeChild(index);
+    //     }
+    //   }
+    // });
   }
 
   generateJsAst() : ASTNode {
@@ -83,7 +82,7 @@ export class IfStatement extends SplootNode {
     node.getCondition().removeChild(0);
     node.deserializeChildSet('condition', serializedNode);
     node.deserializeChildSet('trueblock', serializedNode);
-    node.deserializeChildSet('elseblock', serializedNode);
+    //node.deserializeChildSet('elseblock', serializedNode);
     return node;
   }
 
@@ -94,7 +93,7 @@ export class IfStatement extends SplootNode {
     ifType.childSets = {
       'condition': NodeCategory.Expression,
       'trueblock': NodeCategory.Statement,
-      'elseblock': NodeCategory.Statement
+    //  'elseblock': NodeCategory.Statement
     };
     ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'if'),

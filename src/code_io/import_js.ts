@@ -187,7 +187,6 @@ function createNodeFromAst(parentRef: ParentReference, astNode : ASTNode) : Splo
       node = new IfStatement(parentRef);
       let conditionExpression = node.getCondition().getChild(0);
       populateExpressionNodeFromAst(conditionExpression, ifNode.test);
-      (node as IfStatement).getCondition().addChild(conditionExpression);
       let cons = ifNode.consequent as BlockStatementKind;
       populateChildSetFromAst(node.getTrueBlock(), cons.body);
       if (ifNode.alternate) {
