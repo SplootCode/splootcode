@@ -156,7 +156,7 @@ async function loadDocument(filename: string, contents: string): Promise<EditorS
   await generateScope(rootNode);
   let editorState = new EditorState();
   // Each node needs a ref to the selection and the selection needs access to the nodes.
-  let newRootNode = new NodeBlock(rootNode, editorState.selection, 0, false);
+  let newRootNode = new NodeBlock(null, rootNode, editorState.selection, 0, false);
   editorState.selection.setRootNode(newRootNode);
   editorState.setRootNode(newRootNode);
 

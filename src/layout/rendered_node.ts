@@ -3,7 +3,7 @@ import { NodeLayout, LayoutComponent, LayoutComponentType } from "../language/ty
 import { NodeObserver } from "../language/observers";
 import { NodeMutation } from "../language/mutations/node_mutations";
 import { observable } from "mobx";
-import { NodeSelection } from "../context/selection";
+import { NodeCursor, NodeSelection } from "../context/selection";
 import { SPLOOT_EXPRESSION } from "../language/types/expression";
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
 import { getColour } from "./colors";
@@ -37,6 +37,8 @@ export class NodeBlock implements NodeObserver {
   node: SplootNode;
   selection: NodeSelection;
   index: number;
+  parentChildSet: RenderedChildSetBlock;
+
   @observable
   layout: NodeLayout;
   textColor: string;
@@ -67,7 +69,8 @@ export class NodeBlock implements NodeObserver {
   @observable
   marginLeft: number;
 
-  constructor(node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
+  constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
+    this.parentChildSet = parentListBlock;
     this.selection = selection;
     this.index = index;
     this.renderedChildSets = {};
@@ -211,5 +214,42 @@ export class NodeBlock implements NodeObserver {
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
     console.log('Mutation recieved');
+  }
+
+  getNextInsertAfterThisNode() : NodeCursor {
+    if (this.parentChildSet === null) {
+      return null;
+    }
+    if (this.parentChildSet.allowInsert()) {
+      return new NodeCursor(this.parentChildSet, this.index + 1);
+    }
+    return this.parentChildSet.parentRef.node.getNextInsertAfterChildSet(this.parentChildSet.parentRef.childSetId);
+  }
+
+  getNextInsertAfterChildSet(childSetId: string) : NodeCursor {
+    let index = this.node.childSetOrder.indexOf(childSetId);
+    index += 1;
+    while (index < this.node.childSetOrder.length) {
+      let nextChildSetId = this.node.childSetOrder[index + 1];
+      let nextChildSet = this.renderedChildSets[nextChildSetId]
+      let nextInsert = nextChildSet.getNextChildInsert();
+      if (nextInsert) {
+        return nextInsert;
+      }
+      index += 1;
+    }
+    // This is the last childset, go up a node.
+    return this.parentChildSet.parentRef.node.getNextInsertAfterThisNode();
+  }
+
+  getNextChildInsertCursor() : NodeCursor {
+    for (let childSetId of this.node.childSetOrder) {
+      let childSetListBlock = this.renderedChildSets[childSetId];
+      let nextCursor = childSetListBlock.getNextChildInsert()
+      if (nextCursor) {
+        return nextCursor;
+      }
+    }
+    return null;
   }
 }

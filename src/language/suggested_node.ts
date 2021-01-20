@@ -21,7 +21,7 @@ export class SuggestedNode {
   }
 
   generateRenderedNode() {
-    let nodeBlock = new NodeBlock(this.node, null, 0, false);
+    let nodeBlock = new NodeBlock(null, this.node, null, 0, false);
     nodeBlock.calculateDimensions(0, 0, null);
     return nodeBlock;
   }

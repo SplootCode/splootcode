@@ -150,12 +150,8 @@ export class NodeSelection {
 
   @action
   insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
+    // Insert node will also update the render positions.
     listBlock.childSet.insertNode(node, index);
-    // By this stage the childset block should be updated with the new rendered node.
-    // TODO: Find next cursor position.
-    // Temporary: just select the thing we just inserted.
-    this.selectNodeByIndex(listBlock, index);
-    this.updateRenderPositions();
   }
 
   @action
@@ -170,8 +166,6 @@ export class NodeSelection {
     }
     // insert node at index.
     listBlock.childSet.insertNode(node, index);
-    this.selectNodeByIndex(listBlock, index);
-    this.updateRenderPositions();
   }
 
   @action
