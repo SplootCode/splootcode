@@ -54,11 +54,17 @@ export class Scope {
 
   getVariableMembers(name: string) : VariableDefinition[] {
     let definition = this.getVariableDefintionByName(name);
+    if (!definition) {
+      return [];
+    }
     return resolvePropertiesFromTypeExpression(definition.type);
   }
 
   getMethods(name: string) : FunctionDefinition[] {
     let definition = this.getVariableDefintionByName(name);
+    if (!definition) {
+      return [];
+    }
     return resolveMethodsFromTypeExpression(definition.type);
   }
 

@@ -8,7 +8,7 @@ import { SuggestedNode } from "../suggested_node";
 import { VariableReference, VariableReferenceGenerator, VARIABLE_REFERENCE } from "./variable_reference";
 import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { MEMBER_EXPRESSION } from "./member_expression";
 import { STRING_LITERAL } from "./literals";
@@ -89,6 +89,16 @@ export class CallMember extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments'),
     ]);
     return layout;
+  }
+
+  clean() {
+    this.getArguments().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getArguments().removeChild(index);
+        }
+      }
+    });
   }
 
   generateJsAst() : CallExpressionKind {

@@ -8,7 +8,7 @@ import { SuggestedNode } from "../suggested_node";
 import { sanitizeIdentifier } from "./variable_reference";
 import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 import { FunctionDefinition } from "../lib/loader";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 
 export const CALL_VARIABLE = 'CALL_VARIABLE';
@@ -69,6 +69,16 @@ export class CallVariable extends SplootNode {
     })
     let call = recast.types.builders.callExpression(identifier, args);
     return call;
+  }
+
+  clean() {
+    this.getArguments().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getArguments().removeChild(index);
+        }
+      }
+    });
   }
 
   getArgumentNames() : string[] {
