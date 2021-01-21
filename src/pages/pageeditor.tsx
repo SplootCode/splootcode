@@ -66,52 +66,41 @@ const StartingDocuments = [
 <body>
   <canvas id="canvas"></canvas>
   <script>
+  let context = null;
+  let ballX = 50;
+  let ballY = 70;
+  let ballVelocityX = -5;
+  let ballVelocityY = 0;
 
+  function updatePosition() {
+    ballY = ballY + ballVelocityY;
+    ballX = ballX + ballVelocityX;
+    if (ballY + 10 >= window.innerHeight) {
+      ballVelocityY = -1 * ballVelocityY;
+    }
+    if (ballY + 20 < window.innerHeight) {
+      ballVelocityY = ballVelocityY + 1;
+    }
+    if(ballX + 20 > window.innerWidth || ballX - 20 < 0){
+      ballVelocityX = -1 * ballVelocityX;
+    }
+  }
 
   function draw(timestamp) {
     updatePosition();
-    c.clearRect(0, 0, tx, ty);
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
     window.requestAnimationFrame(draw);
-    c.beginPath();
-    c.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
-    c.fillStyle = 'rgb(0, 0, 200)';
-    c.fill();
-  }
-
-  let c = null;
-  let tx = null;
-  let ty = null;
-  let ballX = 50;
-  let ballY = 70;
-  let ballRadius = 20;
-
-  let ballDX = -5;
-  let ballDY = 0;
-
-  let grav = 1;
-
-  function updatePosition() {
-    ballY = ballY + ballDY;
-    ballX = ballX + ballDX;
-    if (ballY + ballRadius >= ty) {
-      ballDY = -1 * ballDY;
-    }
-    if (ballY + ballRadius < ty) {
-      ballDY = ballDY + grav;
-    }
-    if(ballX + ballRadius > tx || ballX - ballRadius < 0){
-        ballDX = -1 * ballDX;
-    }
+    context.beginPath();
+    context.arc(ballX, ballY, 20, 0, 2 * Math.PI);
+    context.fillStyle = 'rgb(0, 0, 200)';
+    context.fill();
   }
 
   function load() {
     let canvas = document.getElementById('canvas');
-    c = canvas.getContext("2d");
-    tx = window.innerWidth;
-    ty = window.innerHeight;
-    canvas.width = tx;
-    canvas.height = ty;
-
+    context = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     window.requestAnimationFrame(draw);
   }
   window.onload = load;

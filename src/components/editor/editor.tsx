@@ -53,7 +53,7 @@ export class Editor extends React.Component<EditorProps> {
     if (event.key === 'Backspace' || event.key === 'Delete') {
       this.props.selection.deleteSelectedNode();
     }
-    if (event.key === ';' || event.key === 'Tab') {
+    if (event.key === 'Tab') {
       this.props.selection.moveCursorToNextInsert();
       event.preventDefault();
       event.cancelBubble = true;
