@@ -74,7 +74,7 @@ export class Assignment extends SplootNode {
     ]);
   
     registerType(typeRegistration);
-    registerNodeCateogry(ASSIGNMENT, NodeCategory.Statement, new Generator());
+    registerNodeCateogry(ASSIGNMENT, NodeCategory.ExpressionToken, new Generator());
   }
 }
 
