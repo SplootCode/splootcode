@@ -9,6 +9,8 @@ import { VariableReference, VariableReferenceGenerator, VARIABLE_REFERENCE } fro
 import { ExpressionKind, MemberExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
+import { CALL_MEMBER } from "./call_member";
+import { STRING_LITERAL } from "./literals";
 
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION';
@@ -23,7 +25,6 @@ class Generator implements SuggestionGenerator {
   }
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    // TODO: Fill in-scope declared variables (ones who have members) here.
     if (index === 0) {
       return [];
     }
@@ -43,8 +44,18 @@ class Generator implements SuggestionGenerator {
   };
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
+    // need dynamic suggestions for when we can't infer the type.
+    if (textInput.startsWith('.')) {
+      let leftChild = parent.getChildSet().getChild(index - 1);
+      if ([VARIABLE_REFERENCE, MEMBER_EXPRESSION, CALL_MEMBER, STRING_LITERAL].indexOf(leftChild.type) !== -1) {
+        let name = textInput.substring(1); // Cut the '.' off
+        let node = new MemberExpression(null);
+        node.setMember(name);
+        return [new SuggestedNode(node, `member ${name}`, name, true, 'Property of the object to the left', 'object')];
+      }
+    }
     return [];
-  };
+  }
 }
 
 export class MemberExpression extends SplootNode {
@@ -76,6 +87,14 @@ export class MemberExpression extends SplootNode {
     let object = tempExpr.generateJsAst() as ExpressionKind;
     let memberExpression = recast.types.builders.memberExpression(object, member);
     return memberExpression;
+  }
+
+  getNodeLayout() : NodeLayout {
+    let layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, `.${this.getMember()}`),
+    ]);
+    return layout;
   }
 
   static deserializer(serializedNode: SerializedNode) : MemberExpression {

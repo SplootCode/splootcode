@@ -7,9 +7,9 @@ import { SuggestedNode } from '../suggested_node';
 import { HighlightColorCategory } from '../../layout/colors';
 
 
-const STRING_LITERAL = 'STRING_LITERAL';
-const NUMERIC_LITERAL = 'NUMERIC_LITERAL';
-const NULL_LITERAL = 'NULL_LITERAL';
+export const STRING_LITERAL = 'STRING_LITERAL';
+export const NUMERIC_LITERAL = 'NUMERIC_LITERAL';
+export const NULL_LITERAL = 'NULL_LITERAL';
 
 class StringGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {

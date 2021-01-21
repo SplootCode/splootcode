@@ -10,6 +10,8 @@ import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 
 import { SplootExpression } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
+import { MEMBER_EXPRESSION } from "./member_expression";
+import { STRING_LITERAL } from "./literals";
 
 
 export const CALL_MEMBER = 'CALL_MEMBER';
@@ -23,7 +25,6 @@ class Generator implements SuggestionGenerator {
   }
 
   staticSuggestions(parent: ParentReference, index: number) {
-    // TODO: Fill in-scope declared variables (ones who have members) here.
     if (index === 0) {
       return [];
     }
@@ -43,6 +44,16 @@ class Generator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+    // need dynamic suggestions for when we can't infer the type.
+    if (textInput.startsWith('.')) {
+      let leftChild = parent.getChildSet().getChild(index - 1);
+      if ([VARIABLE_REFERENCE, MEMBER_EXPRESSION, CALL_MEMBER, STRING_LITERAL].indexOf(leftChild.type) !== -1) {
+        let name = textInput.substring(1); // Cut the '.' off
+        let node = new CallMember(null);
+        node.setMember(name);
+        return [new SuggestedNode(node, `callmember ${name}`, name, true, 'Call method on object to the left', 'object')];
+      }
+    }
     return [];
   }
 }
@@ -59,12 +70,25 @@ export class CallMember extends SplootNode {
     return this.getChildSet('object');
   }
 
+  getMember() : string {
+    return this.getProperty('member');
+  }
+
   setMember(identifier: string) {
     this.setProperty('member', identifier);
   }
 
   getArguments() {
     return this.getChildSet('arguments');
+  }
+
+  getNodeLayout() : NodeLayout {
+    let layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, `.${this.getMember()}`),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments'),
+    ]);
+    return layout;
   }
 
   generateJsAst() : CallExpressionKind {
