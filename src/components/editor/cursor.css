@@ -39,6 +39,7 @@
 
 .active-inline-cursor {
   stroke: var(--editor-cursor-color);
+  fill: var(--editor-cursor-color);
   stroke-width: 2;
   animation-name: color;
   animation-duration: 3s;
@@ -48,11 +49,14 @@
 @keyframes color {
   0% {
     stroke: var(--editor-cursor-color);
+    fill: var(--editor-cursor-color);
   }
   50% {
     stroke: var(--editor-cursor-blink-color);
+    fill: var(--editor-cursor-blink-color);
   }
   100% {
     stroke: var(--editor-cursor-color);
+    fill: var(--editor-cursor-color);
   }
 }
