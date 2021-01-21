@@ -1,10 +1,11 @@
+import * as recast from "recast";
+
 import { SplootNode, ParentReference } from "../node";
-import { ChildSet, ChildSetType } from "../childset";
+import { ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator, getAutocompleteFunctionsForCategory } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
 import { ASTNode } from "ast-types";
-import * as recast from "recast";
 import { BinaryOperator, BINARY_OPERATOR } from "./binary_operator";
 import { ExpressionKind, UnaryExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";

@@ -1,7 +1,7 @@
 import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
-import { ChildSet, ChildSetType } from "../childset";
+import { ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";

@@ -1,3 +1,5 @@
+import * as recast from "recast";
+
 import { ASTNode } from "ast-types";
 import { ChildSetType } from "../childset";
 import { ParentReference, SplootNode } from "../node";
@@ -6,8 +8,6 @@ import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
-
-import * as recast from "recast";
 import { HighlightColorCategory } from "../../layout/colors";
 import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";

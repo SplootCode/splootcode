@@ -12,7 +12,6 @@ import { StringLiteral, NumericLiteral, NullLiteral } from "../language/types/li
 import { IfStatement } from "../language/types/if";
 import { VariableReference } from "../language/types/variable_reference";
 import { BinaryOperator } from "../language/types/binary_operator";
-import { CallExpression } from "../language/types/call_expression";
 import { MemberExpression } from "../language/types/member_expression";
 import { DeclaredIdentifier } from "../language/types/declared_identifier";
 import { CallMember } from "../language/types/call_member";
@@ -110,10 +109,7 @@ function populateExpressionNodeFromAst(expressionNode: SplootExpression, astNode
         populateChildSetFromAst(newIdCallnode.getArguments(), callNode.arguments, true);
         expressionNode.getTokenSet().addChild(newIdCallnode);
       } else {
-        let miscCallnode = new CallExpression(parentRef);
-        populateChildSetFromAst(miscCallnode.getCallee(), [callNode.callee]);
-        populateChildSetFromAst(miscCallnode.getArguments(), callNode.arguments, true);
-        expressionNode.getTokenSet().addChild(miscCallnode);
+        // TODO: Support calling the result of an expression that's not a member expression.
       }
       break;
     case 'AssignmentExpression':

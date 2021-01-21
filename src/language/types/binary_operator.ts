@@ -1,9 +1,7 @@
 import { SplootNode, ParentReference } from "../node";
-import { ChildSet, ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
-import { type } from "os";
 import { HighlightColorCategory } from "../../layout/colors";
 
 export const BINARY_OPERATOR = 'BINARY_OPERATOR';

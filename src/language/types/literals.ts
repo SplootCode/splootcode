@@ -1,9 +1,9 @@
+import * as recast from "recast";
+
 import { TypeRegistration, LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode } from '../type_registry';
 import { SplootNode, ParentReference } from '../node';
 import { registerNodeCateogry, NodeCategory, EmptySuggestionGenerator, SuggestionGenerator } from '../node_category_registry';
 import { SuggestedNode } from '../suggested_node';
-
-import * as recast from "recast";
 import { HighlightColorCategory } from '../../layout/colors';
 
 

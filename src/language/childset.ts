@@ -1,4 +1,4 @@
-import { computed, observable, action } from 'mobx';
+import { observable, action } from 'mobx';
 import { ParentReference, SplootNode } from "./node";
 import { NodeCategory } from './node_category_registry';
 import { ChildSetMutation, ChildSetMutationType } from './mutations/child_set_mutations';
