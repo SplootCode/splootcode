@@ -121,9 +121,10 @@ export class NodeSelection {
       if (this.cursor) {
         this.cursor.listBlock.selectionState = SelectionState.Empty;
       }
-      this.cursor.listBlock.childSet.removeChild(this.cursor.index);
+      let listBlock = this.cursor.listBlock;
+      listBlock.childSet.removeChild(this.cursor.index);
       // Trigger a clean from the parent upward.
-      this.cursor.listBlock.parentRef.node.node.clean();
+      listBlock.parentRef.node.node.clean();
       this.updateRenderPositions();
     }
   }

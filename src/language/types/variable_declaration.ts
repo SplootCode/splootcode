@@ -1,3 +1,5 @@
+import * as recast from "recast";
+
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
@@ -6,8 +8,6 @@ import { SuggestedNode } from "../suggested_node";
 import { SplootExpression } from "./expression";
 import { ASTNode } from "ast-types";
 import { ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
-
-import * as recast from "recast";
 import { VariableDefinition } from "../lib/loader";
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "./declared_identifier";
 import { HighlightColorCategory } from "../../layout/colors";

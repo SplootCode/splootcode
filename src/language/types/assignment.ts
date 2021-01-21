@@ -1,3 +1,4 @@
+import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
@@ -6,8 +7,6 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { SuggestedNode } from "../suggested_node";
 import { SplootExpression } from "./expression";
 import { ExpressionKind, IdentifierKind, MemberExpressionKind } from "ast-types/gen/kinds";
-
-import * as recast from "recast";
 import { HighlightColorCategory } from "../../layout/colors";
 
 

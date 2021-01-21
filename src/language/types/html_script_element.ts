@@ -4,7 +4,7 @@ import { ParentReference, SplootNode } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
-import { SPLOOT_EXPRESSION } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 
 import * as recast from "recast";
@@ -62,6 +62,16 @@ export class SplootHtmlScriptElement extends SplootNode {
       }
     });
     return recast.types.builders.program(statements);    
+  }
+
+  clean() {
+    this.getContent().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getContent().removeChild(index);
+        }
+      }
+    });
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlScriptElement {

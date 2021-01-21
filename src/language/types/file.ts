@@ -5,7 +5,7 @@ import { ChildSet, ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType } from "../type_registry";
 import { ASTNode } from "ast-types";
-import { SPLOOT_EXPRESSION } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 
@@ -38,6 +38,16 @@ export class SplootFile extends SplootNode {
       }
     });
     return recast.types.builders.program(statements);
+  }
+
+  clean() {
+    this.getBody().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getBody().removeChild(index);
+        }
+      }
+    });
   }
 }
 
