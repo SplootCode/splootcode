@@ -158,12 +158,12 @@ function createNodeFromAst(parentRef: ParentReference, astNode : ASTNode) : Splo
       let funcNode = astNode as FunctionDeclarationKind;
       if (funcNode.async) {
         node = new AsyncFunctionDeclaration(parentRef);
-        node.setName(funcNode.id.name);
+        populateChildSetFromAst(node.getIdentifier(), [funcNode.id])
         populateChildSetFromAst(node.getParams(), funcNode.params)
         populateChildSetFromAst(node.getBody(), funcNode.body.body)
       } else {
         node = new FunctionDeclaration(parentRef);
-        node.setName(funcNode.id.name);
+        populateChildSetFromAst(node.getIdentifier(), [funcNode.id])
         populateChildSetFromAst(node.getParams(), funcNode.params)
         populateChildSetFromAst(node.getBody(), funcNode.body.body)
       }

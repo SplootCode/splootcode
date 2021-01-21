@@ -2,29 +2,39 @@ import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType } from "../type_registry";
-import { ExpressionKind, FunctionDeclarationKind } from "ast-types/gen/kinds";
+import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
+import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { FunctionDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
+import { DeclaredIdentifier } from "./declared_identifier";
+import { SuggestedNode } from "../suggested_node";
 
 export const ASYNC_FUNCTION_DECLARATION = 'ASYNC_FUNCTION_DECLARATION';
+
+class Generator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
+    let sampleNode = new AsyncFunctionDeclaration(null);
+    let suggestedNode = new SuggestedNode(sampleNode, 'async function', 'async function', true, 'A new asynchronous function block.');
+    return [suggestedNode];
+  };
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
+    return [];
+  };
+}
 
 export class AsyncFunctionDeclaration extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, ASYNC_FUNCTION_DECLARATION);
-    this.setProperty('identifier', '');
+    this.addChildSet('identifier', ChildSetType.Single, NodeCategory.DeclaredIdentifier);
     this.addChildSet('params', ChildSetType.Many, NodeCategory.DeclaredIdentifier);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);
   }
 
-  setName(name: string) {
-    this.setProperty('identifier', name);
-  }
-
-  getName() {
-    return this.getProperty('identifier');
+  getIdentifier() {
+    return this.getChildSet('identifier');
   }
 
   getParams() {
@@ -36,7 +46,12 @@ export class AsyncFunctionDeclaration extends SplootNode {
   }
 
   addSelfToScope() {
-    let identifier = this.getName();
+    if (this.getIdentifier().getCount() === 0) {
+      // No identifier, we can't be added to the scope.
+      return;
+    }
+    let identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName();
+
     this.getScope(true).addFunction({
       name: identifier,
       deprecated: false,
@@ -58,6 +73,14 @@ export class AsyncFunctionDeclaration extends SplootNode {
     });
   }
 
+  static deserializer(serializedNode: SerializedNode) : AsyncFunctionDeclaration {
+    let node = new AsyncFunctionDeclaration(null);
+    node.deserializeChildSet('identifier', serializedNode);
+    node.deserializeChildSet('params', serializedNode);
+    node.deserializeChildSet('body', serializedNode);
+    return node;
+  }
+
   generateJsAst() : FunctionDeclarationKind {
     let statements = [];
     this.getBody().children.forEach((node: SplootNode) => {
@@ -70,7 +93,7 @@ export class AsyncFunctionDeclaration extends SplootNode {
       }
     });
     let block = recast.types.builders.blockStatement(statements);
-    let identifier = recast.types.builders.identifier(this.getName());
+    let identifier = this.getIdentifier().getChild(0).generateJsAst() as IdentifierKind;
     let result = recast.types.builders.functionDeclaration(identifier, [], block);
     result.async = true;
     return result;
@@ -79,17 +102,18 @@ export class AsyncFunctionDeclaration extends SplootNode {
   static register() {
     let functionType = new TypeRegistration();
     functionType.typeName = ASYNC_FUNCTION_DECLARATION;
+    functionType.deserializer = AsyncFunctionDeclaration.deserializer;
     functionType.hasScope = true;
     functionType.properties = ['identifier'];
     functionType.childSets = {'params': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.Statement};
     functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'async function'),
-      new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
   
     registerType(functionType);
-    registerNodeCateogry(ASYNC_FUNCTION_DECLARATION, NodeCategory.Statement, new EmptySuggestionGenerator());  
+    registerNodeCateogry(ASYNC_FUNCTION_DECLARATION, NodeCategory.Statement, new Generator());
   }
 }

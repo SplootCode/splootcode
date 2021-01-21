@@ -2,29 +2,39 @@ import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
-import { ExpressionKind, FunctionDeclarationKind } from "ast-types/gen/kinds";
+import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { FunctionDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
+import { SuggestedNode } from "../suggested_node";
+import { DeclaredIdentifier } from "./declared_identifier";
 
 export const FUNCTION_DECLARATION = 'FUNCTION_DECLARATION';
+
+class Generator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
+    let sampleNode = new FunctionDeclaration(null);
+    let suggestedNode = new SuggestedNode(sampleNode, 'function', 'function', true, 'A new function block.');
+    return [suggestedNode];
+  };
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
+    return [];
+  };
+}
 
 export class FunctionDeclaration extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, FUNCTION_DECLARATION);
-    this.setProperty('identifier', '');
+    this.addChildSet('identifier', ChildSetType.Single, NodeCategory.DeclaredIdentifier);
     this.addChildSet('params', ChildSetType.Many, NodeCategory.DeclaredIdentifier);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);
   }
 
-  setName(name: string) {
-    this.setProperty('identifier', name);
-  }
-
-  getName() {
-    return this.getProperty('identifier');
+  getIdentifier() {
+    return this.getChildSet('identifier');
   }
 
   getParams() {
@@ -36,7 +46,11 @@ export class FunctionDeclaration extends SplootNode {
   }
 
   addSelfToScope() {
-    let identifier = this.getName();
+    if (this.getIdentifier().getCount() === 0) {
+      // No identifier, we can't be added to the scope.
+      return;
+    }
+    let identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName();
     this.getScope(true).addFunction({
       name: identifier,
       deprecated: false,
@@ -58,7 +72,6 @@ export class FunctionDeclaration extends SplootNode {
     });
   }
 
-
   generateJsAst() : FunctionDeclarationKind {
     let statements = [];
     this.getBody().children.forEach((node: SplootNode) => {
@@ -71,13 +84,13 @@ export class FunctionDeclaration extends SplootNode {
       }
     });
     let block = recast.types.builders.blockStatement(statements);
-    let identifier = recast.types.builders.identifier(this.getName());
+    let identifier = this.getIdentifier().getChild(0).generateJsAst() as IdentifierKind
     return recast.types.builders.functionDeclaration(identifier, [], block);
   }
 
   static deserializer(serializedNode: SerializedNode) : FunctionDeclaration {
     let node = new FunctionDeclaration(null);
-    node.setName(serializedNode.properties['identifier']);
+    node.deserializeChildSet('identifier', serializedNode);
     node.deserializeChildSet('params', serializedNode);
     node.deserializeChildSet('body', serializedNode);
     return node;
@@ -92,12 +105,12 @@ export class FunctionDeclaration extends SplootNode {
     functionType.childSets = {'params': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.Statement};
     functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'function'),
-      new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
   
     registerType(functionType);
-    registerNodeCateogry(FUNCTION_DECLARATION, NodeCategory.Statement, new EmptySuggestionGenerator());  
+    registerNodeCateogry(FUNCTION_DECLARATION, NodeCategory.Statement, new Generator());
   }
 }

@@ -349,6 +349,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.nodes.splice(mutation.index + idx, 0, nodeBlock);
       });
       this.renumberChildren();
+      // When nodes have been inserted, we need to update the scope.
+      // TODO: this shouldn't be done by the layout engine.
+      // It has to be the parent, since this change might an identifier.
+      this.parentRef.node.node.recursivelyBuildScope();
+      // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
       this.selection.updateRenderPositions();
       if (mutation.nodes.length === 1) {
         let insertedNode = this.nodes[mutation.index];

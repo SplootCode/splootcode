@@ -1,14 +1,29 @@
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
 import { ExpressionKind, FunctionExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 
 import * as recast from "recast";
 import { HighlightColorCategory } from "../../layout/colors";
+import { SuggestedNode } from "../suggested_node";
 
 export const INLINE_FUNCTION_DECLARATION = 'INLINE_FUNCTION_DECLARATION';
+
+class Generator implements SuggestionGenerator {
+
+  staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
+    let sampleNode = new InlineFunctionDeclaration(null);
+    let suggestedNode = new SuggestedNode(sampleNode, 'inline function', 'inline function', true, 'An inline function or callback.');
+    return [suggestedNode];
+  };
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
+    return [];
+  };
+}
+
 
 export class InlineFunctionDeclaration extends SplootNode {
   constructor(parentReference: ParentReference) {
@@ -69,6 +84,6 @@ export class InlineFunctionDeclaration extends SplootNode {
     ]);
 
     registerType(typeRegistration);
-    registerNodeCateogry(INLINE_FUNCTION_DECLARATION, NodeCategory.Expression, new EmptySuggestionGenerator());
+    registerNodeCateogry(INLINE_FUNCTION_DECLARATION, NodeCategory.ExpressionToken, new Generator());
   }
 }
