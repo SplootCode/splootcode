@@ -28,12 +28,16 @@ class Generator implements SuggestionGenerator {
       return [];
     }
     let leftChild = parent.getChildSet().getChild(index - 1);
-    if (leftChild.type === VARIABLE_REFERENCE && (leftChild as VariableReference).getName() === 'console') {
-      return ['log', 'info', 'warn', 'debug', 'error'].map((name: string) => {
+
+    if (leftChild.type === VARIABLE_REFERENCE) {
+      let variable = leftChild as VariableReference;
+      let members = parent.node.getScope().getVariableMembers(variable.getName());
+      return members.map(memberDefinition => {
+        let name = memberDefinition.name;
         let node = new MemberExpression(null);
-        node.setMember(name);
-        return new SuggestedNode(node, `member ${name}`, name, true, name, 'object');
-      });
+        node.setMember(memberDefinition.name);
+        return new SuggestedNode(node, `member ${name}`, name, true, memberDefinition.documentation ?? "No documentation", 'object');
+      })
     }
     return [];
   };
@@ -46,7 +50,7 @@ class Generator implements SuggestionGenerator {
 export class MemberExpression extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, MEMBER_EXPRESSION);
-    this.addChildSet('object', ChildSetType.Single , NodeCategory.Expression);
+    this.addChildSet('object', ChildSetType.Single , NodeCategory.ExpressionToken);
     this.setProperty('member', '')
   }
 

@@ -1,6 +1,8 @@
 
-import { FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, typeRegistry, VariableDefinition } from "../lib/loader";
+import { FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
 import { SplootNode } from "../node";
+import { FunctionDeclaration } from "../types/functions";
+import { MemberExpression } from "../types/member_expression";
 
 export class Scope {
   parent: Scope;
@@ -48,6 +50,16 @@ export class Scope {
       return;
     }
     return this.parent.getVariableDefintionByName(name);
+  }
+
+  getVariableMembers(name: string) : VariableDefinition[] {
+    let definition = this.getVariableDefintionByName(name);
+    return resolvePropertiesFromTypeExpression(definition.type);
+  }
+
+  getMethods(name: string) : FunctionDefinition[] {
+    let definition = this.getVariableDefintionByName(name);
+    return resolveMethodsFromTypeExpression(definition.type);
   }
 
   getFunctionDefinitionByName(name: string): FunctionDefinition {

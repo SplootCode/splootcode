@@ -1,3 +1,5 @@
+import { FunctionDeclaration } from "../types/functions";
+
 export interface FunctionTypeDefinition {
   parameters: VariableDefinition[];
   returnType: TypeExpression;
@@ -42,6 +44,44 @@ export let typeRegistry : {[key:string]: TypeDefinition} = {};
 export let typeAliasRegistry : {[key:string]: TypeAlias} = {};
 export let javascriptBuiltInGlobals : VariableDefinition[] = [];
 export let javascriptBuiltInGlobalFunctions: FunctionDefinition[] = [];
+
+export function resolvePropertiesFromTypeExpression(typeExpression: TypeExpression) : VariableDefinition[] {
+  let members : VariableDefinition[] = [];
+
+  switch (typeExpression.type) {
+    case "reference":
+      if (typeExpression.reference in typeRegistry) {
+        return typeRegistry[typeExpression.reference].properties;
+      }
+      if (typeExpression.reference in typeAliasRegistry) {
+        return resolvePropertiesFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression);
+      }
+    case "intersection":
+    case "union":
+    case "literal":
+  }
+  return members;
+}
+
+export function resolveMethodsFromTypeExpression(typeExpression: TypeExpression) : FunctionDefinition[] {
+  let members : FunctionDefinition[] = [];
+
+  switch (typeExpression.type) {
+    case "reference":
+      if (typeExpression.reference in typeRegistry) {
+        return typeRegistry[typeExpression.reference].methods;
+      }
+      if (typeExpression.reference in typeAliasRegistry) {
+        return resolveMethodsFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression);
+      }
+    case "intersection":
+    case "union":
+    case "literal":
+  }
+  return members;
+}
+
+
 
 /** Populates the type registry and global vars */
 export async function loadTypescriptTypeInfo() {

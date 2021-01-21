@@ -6,7 +6,6 @@ import { NodeObserver } from "./observers";
 import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from "./type_registry";
 import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
 import { ASTNode } from "ast-types";
-import { typeRegistry } from "./lib/loader";
 import { getGlobalScope, Scope } from "./scope/scope";
 
 export class ParentReference {

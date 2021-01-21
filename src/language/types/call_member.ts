@@ -28,12 +28,16 @@ class Generator implements SuggestionGenerator {
       return [];
     }
     let leftChild = parent.getChildSet().getChild(index - 1);
-    if (leftChild.type === VARIABLE_REFERENCE && (leftChild as VariableReference).getName() === 'console') {
-      return ['log', 'info', 'warn', 'debug', 'error'].map((name: string) => {
+
+    if (leftChild.type === VARIABLE_REFERENCE) {
+      let variable = leftChild as VariableReference;
+      let members = parent.node.getScope().getMethods(variable.getName());
+      return members.map(methodDefinition => {
+        let name = methodDefinition.name;
         let node = new CallMember(null);
-        node.setMember(name);
-        return new SuggestedNode(node, `callmember ${name}`, name, true, name, 'object');
-      });
+        node.setMember(methodDefinition.name);
+        return new SuggestedNode(node, `callmember ${name}`, name, true, methodDefinition.documentation ?? "No documentation", 'object');
+      })
     }
     return [];
   }
