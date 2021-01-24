@@ -1,6 +1,8 @@
 # SplootCode Editor
 An experimental coding interface that's tree-based.
 
+For progress updates, please join the mailing list on [splootcode.io](https://splootcode.io/).
+
 <img src="screenshot1.png" alt="Screenshot of SplootCode example" width="400">
 
 With a regular text-based programming language, the first step to process it is to parse it into an abstract-syntax-tree.
