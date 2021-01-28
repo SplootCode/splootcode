@@ -11,7 +11,6 @@ import { parseHtml } from '../code_io/import_html';
 import { NodeBlock } from '../layout/rendered_node';
 import { parseJs } from '../code_io/import_js';
 import { loadTypes } from '../language/type_loader';
-import { CommandlinePage } from '../components/commandline/commandline';
 import { generateScope } from "../language/scope/scope";
 import { SplootNode } from '../language/node';
 import { JAVASCRIPT_FILE } from '../language/types/file';
@@ -210,7 +209,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
     if (ready) {
       rootNode = editors[selectedFile].rootNode.node;
       if (rootNode.type === JAVASCRIPT_FILE) {
-        viewComponent = <CommandlinePage rootNode={rootNode} />;
+        viewComponent = null;
       } else if (rootNode.type === HTML_DOCUMENT) {
         viewComponent = <ViewPage rootNode={rootNode} />;
       }
