@@ -14,7 +14,12 @@ module.exports = webpackMerge(common, {
   devServer: {
     port: 3001,
     hot: true,
-    contentBase: path.join(__dirname, 'sites', 'projection') // TODO: make the choice of site changeable
+    contentBase: path.join(__dirname, 'dev-frame-dist'),
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    }
   },
 
   plugins: [

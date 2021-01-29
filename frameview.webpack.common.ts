@@ -2,6 +2,8 @@ import path from 'path'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
+
 
 export default {
   resolve: {
@@ -34,6 +36,9 @@ export default {
   },
 
   plugins: [
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/serviceworker/serviceworker.ts'),
+    }),
     new CopyWebpackPlugin([path.resolve('./src/view/splootframeclient.html')]),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({

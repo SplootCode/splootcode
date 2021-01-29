@@ -42,6 +42,10 @@ export class SplootHtmlElement extends SplootNode {
     return this.getChildSet('content');
   }
 
+  generateHtml() : string {
+    return '';
+  }
+
   static deserializer(serializedNode: SerializedNode) : SplootHtmlElement {
     let doc = new SplootHtmlElement(null, serializedNode.properties.tag);
     doc.deserializeChildSet('attributes', serializedNode);

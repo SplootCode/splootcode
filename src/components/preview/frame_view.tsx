@@ -1,18 +1,17 @@
 import React from 'react'
 import { Component } from 'react'
-import { observer, inject } from 'mobx-react'
-
 import { SplootNode } from '../../language/node';
-
-import './frame_view.css';
 import { globalMutationDispatcher } from '../../language/mutations/mutation_dispatcher';
 import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
+import './frame_view.css';
+
 export enum FrameState {
   DEAD = 0,
-  LOADING,
-  LOADED,
+  AWAITING_SW_PORT,
+  CONNECTING_TO_SW,
+  CONNECTED,
   UNMOUNTED,
 }
 
@@ -43,12 +42,12 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   private lastHeartbeatTimestamp: Date;
   private lastSentNodeTree: Date;
   private needsNewNodeTree: boolean;
-
+  private serviceWorkerPort: MessagePort;
 
   constructor(props: DocumentNodeProps) {
     super(props);
     this.frameRef = React.createRef();
-    this.frameState = FrameState.LOADING;
+    this.frameState = FrameState.AWAITING_SW_PORT;
     this.lastHeartbeatTimestamp = new Date();
     this.lastSentNodeTree = new Date();
     this.needsNewNodeTree = false;
@@ -63,14 +62,20 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       );
   }
 
-  sendNodeTreeToFrame() {
+  sendRequestForServiceWorkerPort() {
+    let payload = {type: 'requestserviceworkerport' };
+    this.postMessageToFrame(payload);
+  }
+
+  sendNodeTreeToServiceWorker() {
     let now = new Date();
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
     // Only send if it's been some time since we last sent.
-    if (millis > 1000) {
-      let domTree = this.props.rootNode.serialize();
-      let payload = {type: 'htmlnodetree', data:domTree};
-      this.postMessageToFrame(payload);
+    if (millis > 0) {
+      console.log('Sending node tree');
+      let tree = this.props.rootNode.serialize();
+      let payload = {type: 'nodetree', data: tree};
+      this.postMessageToServiceWorker(payload);
       this.needsNewNodeTree = false;
       this.lastSentNodeTree = now;
       return;
@@ -88,9 +93,18 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     }
   }
 
+  postMessageToServiceWorker(payload: object) {
+    try {
+      this.serviceWorkerPort.postMessage(payload);
+    }
+    catch (error) {
+      console.warn(error);
+    }
+  }
+
   sendHeartbeatRequest() {
     let payload = {type: 'heartbeat' };
-    this.postMessageToFrame(payload);
+    this.postMessageToServiceWorker(payload);
   }
 
   checkHeartbeatFromFrame = () => {
@@ -103,37 +117,59 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       this.frameState = FrameState.DEAD;
     }
     switch (this.frameState) {
-      case FrameState.LOADING:
-        this.sendNodeTreeToFrame();
+      case FrameState.AWAITING_SW_PORT:
+        this.sendRequestForServiceWorkerPort();
+        break;
+      case FrameState.CONNECTING_TO_SW:
+        this.sendHeartbeatRequest();
+        break;
+      case FrameState.CONNECTED:
         break;
       case FrameState.DEAD:
         console.warn('frame is dead, reloading');
         this.frameRef.current.src = getFrameSrc();
-        this.frameState = FrameState.LOADING;
+        this.frameState = FrameState.AWAITING_SW_PORT;
         this.lastHeartbeatTimestamp = new Date();
-        break;
-      case FrameState.LOADED:
-        if (this.needsNewNodeTree) {
-          this.sendNodeTreeToFrame();
-        }
-        this.sendHeartbeatRequest();
         break;
     }
 
     setTimeout(() => {
       this.checkHeartbeatFromFrame();
-    }, 5000);
+    }, 20000); // 20s
   }
 
   handleNodeMutation = (mutation: NodeMutation) => {
-    this.sendNodeTreeToFrame();
+    this.sendNodeTreeToServiceWorker();
   }
 
   handleChildSetMutation = (mutation: ChildSetMutation) => {
-    this.sendNodeTreeToFrame();
+    this.sendNodeTreeToServiceWorker();
   }
 
   processMessage = (event: MessageEvent) => {
+    if (event.origin === getFrameDomain()) {
+      this.handleMessageFromFrame(event);
+    }
+  }
+
+  handleMessageFromServiceWorker = (event: MessageEvent) => {
+    let data = event.data;
+    switch (data.type) {
+      case 'heartbeat':
+        this.frameState = FrameState.CONNECTED;
+        // Load the index.html from the service worker.
+        console.log('connected');
+        break;
+      case 'ready':
+        this.frameState = FrameState.CONNECTED;
+        this.frameRef.current.src = getFrameDomain() + '/index.html';
+        break;
+      default:
+        console.log('Parent. Unkown message from service worker:', event);
+    }
+  }
+
+  handleMessageFromFrame(event: MessageEvent) {
     let type = event.data.type as string;
     if (!event.data.type) {
       return;
@@ -143,9 +179,12 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       return;
     }
     switch(type) {
-      case 'heartbeat':
-        let newState = event.data.state as FrameState;
-        this.frameState = newState;
+      case 'serviceworkerport':
+        this.serviceWorkerPort = event.ports[0];
+        this.serviceWorkerPort.addEventListener('message', this.handleMessageFromServiceWorker);
+        this.serviceWorkerPort.start();
+        this.frameState = FrameState.CONNECTING_TO_SW;
+        this.sendNodeTreeToServiceWorker();
         this.lastHeartbeatTimestamp = new Date();
         break;
       default:
@@ -154,7 +193,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   }
 
   componentDidMount() {
-    this.frameState = FrameState.LOADING;
+    this.frameState = FrameState.AWAITING_SW_PORT;
     globalMutationDispatcher.registerChildSetObserver(this);
     window.addEventListener("message", this.processMessage, false);
     // trigger background process to wait for a response
