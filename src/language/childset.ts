@@ -38,7 +38,6 @@ export class ChildSet {
   }
 
   fireMutation(mutation: ChildSetMutation) {
-    console.log('ChildSet Mutation: ', mutation);
     this.mutationObservers.forEach((observer: ChildSetObserver) => {
       observer.handleChildSetMutation(mutation);
     })

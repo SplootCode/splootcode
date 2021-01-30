@@ -10,7 +10,6 @@ export enum FrameState {
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
 
 function sendServiceWorkerPort(serviceWorkerRegistration: ServiceWorkerRegistration) {
-  console.log('Sending ports');
   const messageChannel = new MessageChannel();
   parent.postMessage({'type': 'serviceworkerport'}, PARENT_TARGET_DOMAIN, [messageChannel.port1]);
   serviceWorkerRegistration.active.postMessage({'type': 'parentwindowport'}, [messageChannel.port2]);
@@ -18,9 +17,8 @@ function sendServiceWorkerPort(serviceWorkerRegistration: ServiceWorkerRegistrat
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    runtime.register().then(function(registration) {
+    runtime.register().then(function(registration: ServiceWorkerRegistration) {
       // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
       sendServiceWorkerPort(registration);
     }, function(err) {
       // registration failed :(

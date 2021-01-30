@@ -6,12 +6,13 @@ import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
 import './frame_view.css';
+import { reduceEachTrailingCommentRange } from 'typescript';
 
 export enum FrameState {
   DEAD = 0,
   AWAITING_SW_PORT,
   CONNECTING_TO_SW,
-  CONNECTED,
+  CONNECTED_SW_READY,
   UNMOUNTED,
 }
 
@@ -49,7 +50,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     this.frameRef = React.createRef();
     this.frameState = FrameState.AWAITING_SW_PORT;
     this.lastHeartbeatTimestamp = new Date();
-    this.lastSentNodeTree = new Date();
+    this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000);
     this.needsNewNodeTree = false;
   }
 
@@ -62,17 +63,11 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       );
   }
 
-  sendRequestForServiceWorkerPort() {
-    let payload = {type: 'requestserviceworkerport' };
-    this.postMessageToFrame(payload);
-  }
-
   sendNodeTreeToServiceWorker() {
     let now = new Date();
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
-    // Only send if it's been some time since we last sent.
-    if (millis > 0) {
-      console.log('Sending node tree');
+    // Rate limit: Only send if it's been some time since we last sent.
+    if (millis > 100) {
       let tree = this.props.rootNode.serialize();
       let payload = {type: 'nodetree', data: tree};
       this.postMessageToServiceWorker(payload);
@@ -80,8 +75,6 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       this.lastSentNodeTree = now;
       return;
     }
-    // There's a node tree version we've not loaded yet.
-    this.needsNewNodeTree = true;
   }
 
   postMessageToFrame = (payload: object) => {
@@ -118,15 +111,21 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     }
     switch (this.frameState) {
       case FrameState.AWAITING_SW_PORT:
-        this.sendRequestForServiceWorkerPort();
+        // Waiting for the initial frame load to send us the port.
+        // If this doesn't happen, we'll mark the frame dead and reload.
         break;
       case FrameState.CONNECTING_TO_SW:
         this.sendHeartbeatRequest();
         break;
-      case FrameState.CONNECTED:
+      case FrameState.CONNECTED_SW_READY:
+        if (this.needsNewNodeTree) {
+          this.sendNodeTreeToServiceWorker();
+        } else {
+          this.sendHeartbeatRequest();
+        }
         break;
       case FrameState.DEAD:
-        console.warn('frame is dead, reloading');
+        console.warn('frame or service worker is dead, reloading');
         this.frameRef.current.src = getFrameSrc();
         this.frameState = FrameState.AWAITING_SW_PORT;
         this.lastHeartbeatTimestamp = new Date();
@@ -135,14 +134,18 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
     setTimeout(() => {
       this.checkHeartbeatFromFrame();
-    }, 20000); // 20s
+    }, 1000); // 1s
   }
 
   handleNodeMutation = (mutation: NodeMutation) => {
+    // There's a node tree version we've not loaded yet.
+    this.needsNewNodeTree = true;
     this.sendNodeTreeToServiceWorker();
   }
 
   handleChildSetMutation = (mutation: ChildSetMutation) => {
+    // There's a node tree version we've not loaded yet.
+    this.needsNewNodeTree = true;
     this.sendNodeTreeToServiceWorker();
   }
 
@@ -156,12 +159,12 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     let data = event.data;
     switch (data.type) {
       case 'heartbeat':
-        this.frameState = FrameState.CONNECTED;
-        // Load the index.html from the service worker.
-        console.log('connected');
+        this.frameState = FrameState.CONNECTED_SW_READY;
         break;
       case 'ready':
-        this.frameState = FrameState.CONNECTED;
+        // Service worker is ready to serve content.
+        this.frameState = FrameState.CONNECTED_SW_READY;
+        // Set the frame to the user's site, this triggers a reload.
         this.frameRef.current.src = getFrameDomain() + '/index.html';
         break;
       default:
@@ -171,6 +174,9 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
   handleMessageFromFrame(event: MessageEvent) {
     let type = event.data.type as string;
+    if (event.origin !== getFrameDomain()) {
+      return;
+    }
     if (!event.data.type) {
       return;
     }
