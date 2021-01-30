@@ -5,6 +5,9 @@ import { ParentReference, SplootNode } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
+import { SplootHtmlAttribute } from "./html_attribute";
+import { HTML_SCRIPT_ElEMENT } from "./html_script_element";
+import { StringLiteral, STRING_LITERAL } from "./literals";
 
 export const HTML_ElEMENT = 'HTML_ELEMENT';
 
@@ -42,8 +45,25 @@ export class SplootHtmlElement extends SplootNode {
     return this.getChildSet('content');
   }
 
-  generateHtml() : string {
-    return '';
+  generateHtmlElement(doc: Document) : HTMLElement {
+    let thisEl = doc.createElement(this.getTag());
+    this.getAttributes().children.forEach((childNode) => {
+      if (childNode.type === 'HTML_ATTRIBUTE') {
+        let attrNode = childNode as SplootHtmlAttribute;
+        thisEl.setAttribute(attrNode.getName(), attrNode.getValueAsString());
+      }
+    });
+    this.getContent().children.forEach((child: SplootNode) => {
+      if (child.type === HTML_ElEMENT || child.type === HTML_SCRIPT_ElEMENT) {
+        let el = child as SplootHtmlElement;
+        thisEl.appendChild(el.generateHtmlElement(doc));
+      }
+      if (child.type === STRING_LITERAL) {
+        let stringEl = child as StringLiteral;
+        thisEl.appendChild(doc.createTextNode(stringEl.getValue()));
+      }
+    });
+    return thisEl;
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlElement {

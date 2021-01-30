@@ -539,6 +539,11 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
+"@types/xmldom@^0.1.30":
+  version "0.1.30"
+  resolved "https://registry.yarnpkg.com/@types/xmldom/-/xmldom-0.1.30.tgz#d36d9a7d64af4693d3b18d5dc02ce432a95be12e"
+  integrity sha512-edqgAFXMEtVvaBZ3YnhamvmrHjoYpuxETmnb0lbTZmf/dXpAsO9ZKotUO4K2rn2SIZBDFCMOuA7fOe0H6dRZcA==
+
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
@@ -7193,6 +7198,11 @@ xmlchars@^2.1.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
+
+xmldom@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.4.0.tgz#8771e482a333af44587e30ce026f0998c23f3830"
+  integrity sha512-2E93k08T30Ugs+34HBSTQLVtpi6mCddaY8uO+pMNk1pqSjV5vElzn4mmh6KLxN3hki8rNcHSYzILoh3TEWORvA==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"

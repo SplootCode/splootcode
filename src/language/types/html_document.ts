@@ -5,6 +5,7 @@ import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, reg
 import { HighlightColorCategory } from "../../layout/colors";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { StringLiteral, STRING_LITERAL } from "./literals";
+import { DOMParser, XMLSerializer } from 'xmldom';
 
 export const HTML_DOCUMENT = 'HTML_DOCUMENT';
 
@@ -18,14 +19,22 @@ export class SplootHtmlDocument extends SplootNode {
     return this.getChildSet('body');
   }
 
-  generateHtml() : string {    
-    return "<!DOCTYPE html>" + this.getBody().children.map((node: SplootNode) => {
-      if (node.type === HTML_ElEMENT) {
-        return (node as SplootHtmlElement).generateHtml();
-      } else if (node.type === STRING_LITERAL) {
-        return (node as StringLiteral).getValue();
+  generateHtml() : string {
+    let doc = new DOMParser().parseFromString('<!DOCTYPE html>', 'text/html');
+    this.getBody().children.forEach((child: SplootNode) => {
+      if (child.type === HTML_ElEMENT) {
+        let el = child as SplootHtmlElement;
+        doc.appendChild(el.generateHtmlElement(doc));
       }
-    }).join('');
+      if (child.type === STRING_LITERAL) {
+        let stringEl = child as StringLiteral;
+        doc.appendChild(doc.createTextNode(stringEl.getValue()));
+      }
+    });
+    // @types/xmldom is wrong here. The boolean is for isHtml which affects the xml generation
+    // in very significant ways.
+    // @ts-ignore
+    return new XMLSerializer().serializeToString(doc, true);
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlDocument {
