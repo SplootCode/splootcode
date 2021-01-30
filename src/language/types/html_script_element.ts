@@ -11,6 +11,8 @@ import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
+import { StringLiteral, STRING_LITERAL } from "./literals";
+import { SplootHtmlAttribute } from "./html_attribute";
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT';
 
@@ -43,6 +45,24 @@ export class SplootHtmlScriptElement extends SplootNode {
 
   getContent() {
     return this.getChildSet('content');
+  }
+
+  generateHtmlElement(doc: Document) : HTMLElement {
+    let thisEl = doc.createElement('script');
+    this.getAttributes().children.forEach((childNode) => {
+      if (childNode.type === 'HTML_ATTRIBUTE') {
+        let attrNode = childNode as SplootHtmlAttribute;
+        thisEl.setAttribute(attrNode.getName(), attrNode.getValueAsString());
+      }
+    });
+    let jsString = recast.print(this.generateJsAst()).code;
+    // If we're in a script tag we need to escape this or it'll break.
+    // We're hiding this problem because it's a very text parsing problem.
+    // It might break some legit js, but only if you have a very odd regex
+    // and it would've broken anyway without this hack.
+    jsString = jsString.replace('</script>', '<\\/script>')
+    thisEl.appendChild(doc.createTextNode(jsString));
+    return thisEl;
   }
 
   generateJsAst() : ASTNode {

@@ -6,6 +6,7 @@ import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
+import { StringLiteral, STRING_LITERAL } from "./literals";
 
 export const HTML_ATTRIBUTE = 'HTML_ATTRIBUTE';
 
@@ -43,12 +44,22 @@ export class SplootHtmlAttribute extends SplootNode {
     this.addChildSet('value', ChildSetType.Single, NodeCategory.AttributeValueNode);
   }
 
-  getName() {
+  getName(): string {
     return this.getProperty('name');
   }
 
   getValue() {
     return this.getChildSet('value');
+  }
+
+  getValueAsString() {
+    if (this.getValue().getCount() === 0) {
+      return '';
+    }
+    let child = this.getValue().getChild(0);
+    if (child.type === STRING_LITERAL) {
+      return (child as StringLiteral).getValue();
+    }
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlAttribute {

@@ -14,7 +14,7 @@ module.exports = webpackMerge(common, {
   devServer: {
     port: 3001,
     hot: true,
-    contentBase: path.join(__dirname, 'sites', 'projection') // TODO: make the choice of site changeable
+    contentBase: path.join(__dirname, 'dev-frame-dist'),
   },
 
   plugins: [
