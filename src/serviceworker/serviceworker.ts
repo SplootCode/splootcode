@@ -5,6 +5,8 @@ import { deserializeNode, SerializedNode } from "../language/type_registry";
 let parentWindowPort : MessagePort = null;
 let cache = {};
 
+loadTypes();
+
 self.addEventListener('install', function(event) {
   return Promise.resolve('loaded');
 });
@@ -43,10 +45,6 @@ function handleParentWindowMessage(event: MessageEvent) {
       console.log('Service worker. Unknow message from parent:', event);
   }
 }
-
-self.addEventListener('activate', (event) => {
-  loadTypes();
-});
 
 self.addEventListener('message', event => {
   let data = event.data;
