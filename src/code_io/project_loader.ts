@@ -50,49 +50,51 @@ const BOUNCY_INDEX_HTML = `
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <script>
-  let context = null;
-  let ballX = 50;
-  let ballY = 70;
-  let ballVelocityX = -5;
-  let ballVelocityY = 0;
-
-  function updatePosition() {
-    ballY = ballY + ballVelocityY;
-    ballX = ballX + ballVelocityX;
-    if (ballY + 10 >= window.innerHeight) {
-      ballVelocityY = -1 * ballVelocityY;
-    }
-    if (ballY + 20 < window.innerHeight) {
-      ballVelocityY = ballVelocityY + 1;
-    }
-    if(ballX + 20 > window.innerWidth || ballX - 20 < 0){
-      ballVelocityX = -1 * ballVelocityX;
-    }
-  }
-
-  function draw(timestamp) {
-    updatePosition();
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    window.requestAnimationFrame(draw);
-    context.beginPath();
-    context.arc(ballX, ballY, 20, 0, 2 * Math.PI);
-    context.fillStyle = 'rgb(0, 0, 200)';
-    context.fill();
-  }
-
-  function load() {
-    let canvas = document.getElementById('canvas');
-    context = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    window.requestAnimationFrame(draw);
-  }
-  window.onload = load;
-  </script>
+  <script src="/app.js"></script>
 </body>
 </html>
    `;
+
+const BOUNCY_APP_JS = `
+let context = null;
+let ballX = 50;
+let ballY = 70;
+let ballVelocityX = -5;
+let ballVelocityY = 0;
+
+function updatePosition() {
+  ballY = ballY + ballVelocityY;
+  ballX = ballX + ballVelocityX;
+  if (ballY + 10 >= window.innerHeight) {
+    ballVelocityY = -1 * ballVelocityY;
+  }
+  if (ballY + 20 < window.innerHeight) {
+    ballVelocityY = ballVelocityY + 1;
+  }
+  if(ballX + 20 > window.innerWidth || ballX - 20 < 0){
+    ballVelocityX = -1 * ballVelocityX;
+  }
+}
+
+function draw(timestamp) {
+  updatePosition();
+  context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  window.requestAnimationFrame(draw);
+  context.beginPath();
+  context.arc(ballX, ballY, 20, 0, 2 * Math.PI);
+  context.fillStyle = 'rgb(0, 0, 200)';
+  context.fill();
+}
+
+function load() {
+  let canvas = document.getElementById('canvas');
+  context = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.requestAnimationFrame(draw);
+}
+window.onload = load;
+`;
 
 class MockFileLoader implements FileLoader {
   async loadFile(projectId: string, packageId: string, filename: string) : Promise<SplootNode> {
@@ -105,7 +107,7 @@ class MockFileLoader implements FileLoader {
               rootNode = parseHtml(BOUNCY_INDEX_HTML);
               break;
             case 'app.js':
-              rootNode = parseJs('console.log("foo")');
+              rootNode = parseJs(BOUNCY_APP_JS);
               break;
             default:
               reject('Unknown filename');

@@ -12,129 +12,12 @@ import { observer } from 'mobx-react';
 
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
-import { SplootNode } from '../language/node';
 import { Project } from '../language/projects/project';
 import { loadProject } from '../code_io/project_loader';
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
 
-
-const StartingDocuments = [
-  {
-    filename: 'blank.html',
-    contents: `
-    `
-  },  
-  {
-  filename: 'index.html',
-  contents: `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Sploooooot</title>
-  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-</head>
-<body>
-  <p class="special">Why, hello there.<br>How are you?</p>
-  <div class="container" onClick="doSomething()">
-    <button>Click Me</button>
-  </div>
-  <div id="root"></div>
-  <script>
-  function load() {
-    let x = 3 + 5 / 100 * 8;
-    ReactDOM.render(
-      React.createElement('div', null, 'Hello World'),
-      document.getElementById('root')
-    );
-  }
-  window.onload = load;
-  </script>
-</body>
-</html>
-   `
-},
-{
-  filename: 'bouncy.html',
-  contents: `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Bouncy ball</title>
-</head>
-<body>
-  <canvas id="canvas"></canvas>
-  <script>
-  let context = null;
-  let ballX = 50;
-  let ballY = 70;
-  let ballVelocityX = -5;
-  let ballVelocityY = 0;
-
-  function updatePosition() {
-    ballY = ballY + ballVelocityY;
-    ballX = ballX + ballVelocityX;
-    if (ballY + 10 >= window.innerHeight) {
-      ballVelocityY = -1 * ballVelocityY;
-    }
-    if (ballY + 20 < window.innerHeight) {
-      ballVelocityY = ballVelocityY + 1;
-    }
-    if(ballX + 20 > window.innerWidth || ballX - 20 < 0){
-      ballVelocityX = -1 * ballVelocityX;
-    }
-  }
-
-  function draw(timestamp) {
-    updatePosition();
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    window.requestAnimationFrame(draw);
-    context.beginPath();
-    context.arc(ballX, ballY, 20, 0, 2 * Math.PI);
-    context.fillStyle = 'rgb(0, 0, 200)';
-    context.fill();
-  }
-
-  function load() {
-    let canvas = document.getElementById('canvas');
-    context = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    window.requestAnimationFrame(draw);
-  }
-  window.onload = load;
-  </script>
-</body>
-</html>
-   `
-},
-{
-  filename: 'app.js',
-  contents: `
-async function main() {
-  console.log('Hello world!');
-  setTimeout(function() {console.log("Time's up!")}, 2000);
-  console.log("test" + " something".toUpperCase(), 3 + 100 * 10, null);
-  let x = await prompt('Enter a thing: ');
-  console.log('You entered "' + x + '"');
-  x = parseInt(x);
-  if (x > 100) {
-    console.log('That\\\'s over a hundred!');
-  }
-  if (x === 100) {
-    console.log('That\\\'s a hundred!');
-  }
-  if (x < 100) {
-    console.log('That\\\'s not even a hundred!');
-  }
-  document.getElementById('id').value;
-  document.thing.foo.bar.whatever.value;
-}
-main();
-`
-}] as {filename, contents}[];
 
 interface PageEditorProps {
 };

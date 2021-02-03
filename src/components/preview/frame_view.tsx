@@ -7,6 +7,7 @@ import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 import './frame_view.css';
 import { SplootPackage } from '../../language/projects/package';
 import { observer } from 'mobx-react';
+import { RSA_PKCS1_PADDING } from 'constants';
 
 export enum FrameState {
   DEAD = 0,
@@ -68,18 +69,18 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
     let pkg = this.props.pkg;
 
-    pkg.getLoadedFile(pkg.entryPoints[0]).then((file) => {
-      let rootNode = file.rootNode;
-      // Rate limit: Only send if it's been some time since we last sent.
-      if (millis > 100) {
-        let tree = rootNode.serialize();
-        let payload = {type: 'nodetree', data: tree};
-        this.postMessageToServiceWorker(payload);
-        this.needsNewNodeTree = false;
-        this.lastSentNodeTree = now;
-        return;
-      }
-    })
+    if (millis > 100) {
+      pkg.fileOrder.forEach(filename => {
+        pkg.getLoadedFile(filename).then((file) => {
+          // Rate limit: Only send if it's been some time since we last sent.
+          let payload = {type: 'nodetree', data: {filename: file.name, tree: file.rootNode.serialize()}};
+          this.postMessageToServiceWorker(payload);
+          return;
+        })
+      })
+      this.needsNewNodeTree = false;
+      this.lastSentNodeTree = now;
+    }
   }
 
   postMessageToFrame = (payload: object) => {
@@ -165,6 +166,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     switch (data.type) {
       case 'heartbeat':
         this.frameState = FrameState.CONNECTED_SW_READY;
+        this.lastHeartbeatTimestamp = new Date();
         break;
       case 'ready':
         // Service worker is ready to serve content.
