@@ -6,6 +6,7 @@ import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
 import './frame_view.css';
 import { SplootPackage } from '../../language/projects/package';
+import { observer } from 'mobx-react';
 
 export enum FrameState {
   DEAD = 0,
@@ -229,6 +230,7 @@ type ViewPageState = {
     errorInfo: any;
 }
 
+@observer
 export class ViewPage extends Component<ViewPageProps, ViewPageState> {
     constructor(props : ViewPageProps) {
       super(props);

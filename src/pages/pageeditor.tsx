@@ -4,18 +4,14 @@ import { Component } from 'react'
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 
-
 import './pageeditor.css';
 import { Editor } from '../components/editor/editor';
 import { Panel } from '../components/panel';
 import { EditorStateContext, EditorState } from '../context/editor_context';
 import { observer } from 'mobx-react';
 
-import { parseHtml } from '../code_io/import_html';
 import { NodeBlock } from '../layout/rendered_node';
-import { parseJs } from '../code_io/import_js';
 import { loadTypes } from '../language/type_loader';
-import { generateScope } from "../language/scope/scope";
 import { SplootNode } from '../language/node';
 import { Project } from '../language/projects/project';
 import { loadProject } from '../code_io/project_loader';
@@ -176,8 +172,6 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
 
   render() {
     let {ready, selectedFile, project} = this.state;
-    let rootNode : SplootNode = null;
-    let viewComponent = null;
 
     if (!ready) {
       return null;

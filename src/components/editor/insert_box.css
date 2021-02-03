@@ -71,6 +71,10 @@
   color: var(--editor-autcompleted-text-color);
 }
 
+.autocomplete-suggestions svg {
+  display: inline-block;
+}
+
 .autocomplete-description {
   display: inline-block;
   padding: 9px 6px 4px;
