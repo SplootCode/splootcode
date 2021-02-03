@@ -5,7 +5,7 @@ import { SplootHtmlElement } from "../language/types/html_element";
 import { StringLiteral } from "../language/types/literals";
 import { SplootHtmlScriptElement } from "../language/types/html_script_element";
 import { parseJs } from "./import_js";
-import { SplootFile } from "../language/types/file";
+import { JavascriptFile } from "../language/types/javascript_file";
 
 
 function createScriptElement(domElement: Element) : SplootHtmlScriptElement {
@@ -14,7 +14,7 @@ function createScriptElement(domElement: Element) : SplootHtmlScriptElement {
     if (childNode.nodeType !== Node.TEXT_NODE) {
       console.warn('Found non-text node inside script tag??');
     } else {
-      let jsNode = parseJs((childNode as Text).textContent) as SplootFile;
+      let jsNode = parseJs((childNode as Text).textContent) as JavascriptFile;
       jsNode.getBody().children.forEach((node : SplootNode) => {
         splootNode.getContent().addChild(node);
       });

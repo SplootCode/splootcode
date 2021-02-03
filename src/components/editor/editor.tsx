@@ -6,7 +6,7 @@ import { NodeSelection, NodeSelectionState, SelectionState } from '../../context
 import { observer } from 'mobx-react';
 import { ExpandedListBlockView } from './list_block';
 import { InsertBox } from './insert_box';
-import { JAVASCRIPT_FILE } from '../../language/types/file';
+import { JAVASCRIPT_FILE } from '../../language/types/javascript_file';
 import { HTML_DOCUMENT } from '../../language/types/html_document';
 import { ActiveCursor } from './cursor';
 

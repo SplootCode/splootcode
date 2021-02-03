@@ -1,6 +1,10 @@
 import React from 'react'
 import { Component } from 'react'
 
+import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
+
+
 import './pageeditor.css';
 import { Editor } from '../components/editor/editor';
 import { Panel } from '../components/panel';
@@ -13,7 +17,7 @@ import { parseJs } from '../code_io/import_js';
 import { loadTypes } from '../language/type_loader';
 import { generateScope } from "../language/scope/scope";
 import { SplootNode } from '../language/node';
-import { JAVASCRIPT_FILE } from '../language/types/file';
+import { JAVASCRIPT_FILE } from '../language/types/javascript_file';
 import { HTML_DOCUMENT } from '../language/types/html_document';
 import { ViewPage } from '../components/preview/frame_view';
 
@@ -218,13 +222,59 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
     return (
       <div className="page-editor-container">
         <nav className="left-panel">
-          <ul className="file-nav-list">
-            {
-              editorOrder.map((filename: string) => {
-                return <li className={ selectedFile === filename ? 'selected' : ''} onClick={() => { this.setState({selectedFile: filename})}}>{ filename }</li>
-              })
-            }
-          </ul>
+          <Menu>
+            <MenuButton
+              aria-label="Project Options"
+              as={Button}
+              rightIcon={<HamburgerIcon />}
+              variant="ghost"
+              borderRadius={0}
+              textAlign="left"
+              justifyContent="left"
+              fontSize="sm"
+              w="100%"
+              px={3}
+            >
+                Project
+            </MenuButton>
+            <MenuList>
+              <MenuItem>New Project</MenuItem>
+              <MenuItem>Open Project</MenuItem>
+              <MenuItem>Save</MenuItem>
+            </MenuList>
+          </Menu>
+          <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>
+            <AccordionItem>
+              <AccordionButton p={2} fontSize="sm">
+                <AccordionIcon/>
+                <Box flex="1" textAlign="left" mx={1}>
+                  Main
+                </Box>
+              </AccordionButton>
+              <AccordionPanel px={0} paddingBottom={3} paddingTop={0}>
+                <Stack spacing={0.5}>
+                  {
+                    editorOrder.map((filename: string) => {
+                      return <Button
+                        borderRadius={0}
+                        paddingLeft={7}
+                        variant="ghost"
+                        justifyContent="left"
+                        fontWeight="normal"
+                        textAlign="left"
+                        size="sm"
+                        color="whiteAlpha.700"
+                        height={6}
+                        isActive={selectedFile === filename}
+                        onClick={() => { this.setState({selectedFile: filename})}}>
+                          { filename }
+                      </Button>
+                    })
+                  }
+                </Stack>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </nav>
         <div className="page-editor-column">
           {

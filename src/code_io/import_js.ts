@@ -18,7 +18,7 @@ import { CallMember } from "../language/types/call_member";
 import { CallVariable } from "../language/types/call_variable";
 import { LogicalExpression } from "../language/types/logical_expression";
 import { SplootExpression } from "../language/types/expression";
-import { SplootFile } from "../language/types/file";
+import { JavascriptFile } from "../language/types/javascript_file";
 import { Assignment } from "../language/types/assignment";
 import { InlineFunctionDeclaration } from "../language/types/inline_function";
 import { AwaitExpression } from "../language/types/await_expression";
@@ -147,7 +147,7 @@ function createNodeFromAst(parentRef: ParentReference, astNode : ASTNode) : Splo
   switch(astNode.type) {
     case 'File':
       let fileNode = astNode as FileKind;
-      node = new SplootFile(parentRef);
+      node = new JavascriptFile(parentRef);
       populateChildSetFromAst(node.getBody(), fileNode.program.body);
       break;
     case 'FunctionDeclaration':

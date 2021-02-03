@@ -11,7 +11,7 @@ import { HighlightColorCategory } from "../../layout/colors";
 
 export const JAVASCRIPT_FILE = 'JAVASCRIPT_FILE';
 
-export class SplootFile extends SplootNode {
+export class JavascriptFile extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, JAVASCRIPT_FILE);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);

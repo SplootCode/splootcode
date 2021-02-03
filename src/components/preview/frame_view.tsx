@@ -6,7 +6,6 @@ import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
 import './frame_view.css';
-import { reduceEachTrailingCommentRange } from 'typescript';
 
 export enum FrameState {
   DEAD = 0,
