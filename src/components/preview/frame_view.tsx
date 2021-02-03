@@ -1,12 +1,13 @@
 import React from 'react'
 import { Component } from 'react'
-import { SplootNode } from '../../language/node';
 import { globalMutationDispatcher } from '../../language/mutations/mutation_dispatcher';
 import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
 import './frame_view.css';
-import { reduceEachTrailingCommentRange } from 'typescript';
+import { SplootPackage } from '../../language/projects/package';
+import { observer } from 'mobx-react';
+import { RSA_PKCS1_PADDING } from 'constants';
 
 export enum FrameState {
   DEAD = 0,
@@ -17,7 +18,7 @@ export enum FrameState {
 }
 
 interface DocumentNodeProps {
-    rootNode?: SplootNode
+    pkg?: SplootPackage,
 }
 
 const subdomain = "projection"; // TODO: Make dynamic
@@ -66,14 +67,19 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   sendNodeTreeToServiceWorker() {
     let now = new Date();
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
-    // Rate limit: Only send if it's been some time since we last sent.
+    let pkg = this.props.pkg;
+
     if (millis > 100) {
-      let tree = this.props.rootNode.serialize();
-      let payload = {type: 'nodetree', data: tree};
-      this.postMessageToServiceWorker(payload);
+      pkg.fileOrder.forEach(filename => {
+        pkg.getLoadedFile(filename).then((file) => {
+          // Rate limit: Only send if it's been some time since we last sent.
+          let payload = {type: 'nodetree', data: {filename: file.name, tree: file.rootNode.serialize()}};
+          this.postMessageToServiceWorker(payload);
+          return;
+        })
+      })
       this.needsNewNodeTree = false;
       this.lastSentNodeTree = now;
-      return;
     }
   }
 
@@ -160,6 +166,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     switch (data.type) {
       case 'heartbeat':
         this.frameState = FrameState.CONNECTED_SW_READY;
+        this.lastHeartbeatTimestamp = new Date();
         break;
       case 'ready':
         // Service worker is ready to serve content.
@@ -216,7 +223,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 }
 
 type ViewPageProps = {
-  rootNode: SplootNode,
+  pkg: SplootPackage,
 }
 
 type ViewPageState = {
@@ -225,6 +232,7 @@ type ViewPageState = {
     errorInfo: any;
 }
 
+@observer
 export class ViewPage extends Component<ViewPageProps, ViewPageState> {
     constructor(props : ViewPageProps) {
       super(props);
@@ -248,7 +256,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
     }
 
     render() {
-        let { rootNode } = this.props;
+        let { pkg } = this.props;
         if (this.state.hasError) {
             return (
                 <div>
@@ -260,7 +268,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
         }
         return (
             <div>
-                <DocumentNodeComponent rootNode={rootNode}/>
+                <DocumentNodeComponent pkg={pkg}/>
             </div>
         );
     }

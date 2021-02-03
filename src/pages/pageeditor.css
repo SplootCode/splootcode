@@ -6,7 +6,7 @@ body {
 
 .page-editor-container {
     display: grid;
-    grid-template-columns: 140px auto 500px;
+    grid-template-columns: 180px auto 500px;
     grid-column-gap: 0px;
     height: 100vh;
 }

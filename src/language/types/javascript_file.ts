@@ -3,7 +3,7 @@ import * as recast from "recast";
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType } from "../type_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
 import { ASTNode } from "ast-types";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
@@ -11,7 +11,7 @@ import { HighlightColorCategory } from "../../layout/colors";
 
 export const JAVASCRIPT_FILE = 'JAVASCRIPT_FILE';
 
-export class SplootFile extends SplootNode {
+export class JavascriptFile extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, JAVASCRIPT_FILE);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);
@@ -49,19 +49,24 @@ export class SplootFile extends SplootNode {
       }
     });
   }
+
+  static deserializer(serializedNode: SerializedNode) : JavascriptFile {
+    let jsFile = new JavascriptFile(null);
+    jsFile.deserializeChildSet('body', serializedNode);
+    return jsFile;
+  }
+
+  static register() {
+    let typeRegistration = new TypeRegistration();
+    typeRegistration.typeName = JAVASCRIPT_FILE;
+    typeRegistration.deserializer = JavascriptFile.deserializer;
+    typeRegistration.properties = [];
+    typeRegistration.childSets = {'body': NodeCategory.Statement};
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
+    ]);
+
+    registerType(typeRegistration);
+    registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.Statement, new EmptySuggestionGenerator());
+  }
 }
-
-function register() {
-  let typeRegistration = new TypeRegistration();
-  typeRegistration.typeName = JAVASCRIPT_FILE;
-  typeRegistration.properties = [];
-  typeRegistration.childSets = {'body': NodeCategory.Statement};
-  typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
-    new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
-  ]);
-
-  registerType(typeRegistration);
-  registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.Statement, new EmptySuggestionGenerator());
-}
-
-register();

@@ -1,4 +1,7 @@
-import { SplootHtmlDocument } from "../language/types/html_document";
+import * as recast from "recast";
+
+import { HTML_DOCUMENT, SplootHtmlDocument } from "../language/types/html_document";
+import { JavascriptFile, JAVASCRIPT_FILE } from "../language/types/javascript_file";
 import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 
@@ -25,9 +28,19 @@ self.addEventListener('fetch', (event : FetchEvent) => {
   }
 });
 
-function handleNodeTree(rootNode: SerializedNode) {
-  let htmlDocument = deserializeNode(rootNode) as SplootHtmlDocument;
-  cache['/index.html'] = htmlDocument.generateHtml();
+function handleNodeTree(filename: string, serializedNode: SerializedNode) {
+  let rootNode = deserializeNode(serializedNode);
+  if (rootNode === null) {
+    console.warn('Failed to deserialize node tree.');
+    return;
+  }
+  if (rootNode.type === HTML_DOCUMENT) {
+    let htmlDocument = rootNode as SplootHtmlDocument;
+    cache['/' + filename] = htmlDocument.generateHtml();
+  } else if (rootNode.type === JAVASCRIPT_FILE) {
+    let jsDoc = rootNode as JavascriptFile;
+    cache['/' + filename] = recast.print(jsDoc.generateJsAst()).code;
+  }
 }
 
 function handleParentWindowMessage(event: MessageEvent) {
@@ -38,7 +51,8 @@ function handleParentWindowMessage(event: MessageEvent) {
       parentWindowPort.postMessage({type: 'heartbeat'});
       break;
     case 'nodetree':
-      handleNodeTree(data.data as SerializedNode)
+      let {filename, tree} = data.data;
+      handleNodeTree(filename, tree as SerializedNode)
       parentWindowPort.postMessage({type: 'ready'});
       break;
     default:

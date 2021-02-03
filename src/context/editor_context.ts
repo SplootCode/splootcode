@@ -1,5 +1,4 @@
 import React from 'react';
-import { SplootNode } from '../language/node';
 import { NodeSelection } from './selection';
 import { NodeBlock } from '../layout/rendered_node';
 import { observable, action } from 'mobx';

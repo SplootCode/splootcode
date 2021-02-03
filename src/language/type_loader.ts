@@ -13,6 +13,7 @@ import { SplootHtmlElement } from "./types/html_element";
 import { SplootHtmlScriptElement } from "./types/html_script_element";
 import { IfStatement } from "./types/if";
 import { InlineFunctionDeclaration } from "./types/inline_function";
+import { JavascriptFile } from "./types/javascript_file";
 import { NullLiteral, NumericLiteral, StringLiteral } from "./types/literals";
 import { LogicalExpression } from "./types/logical_expression";
 import { MemberExpression } from "./types/member_expression";
@@ -45,4 +46,6 @@ export function loadTypes() {
   SplootHtmlAttribute.register();
   SplootHtmlElement.register();
   SplootHtmlScriptElement.register();
+
+  JavascriptFile.register();
 }
