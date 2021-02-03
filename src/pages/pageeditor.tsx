@@ -17,8 +17,10 @@ import { parseJs } from '../code_io/import_js';
 import { loadTypes } from '../language/type_loader';
 import { generateScope } from "../language/scope/scope";
 import { SplootNode } from '../language/node';
-import { JAVASCRIPT_FILE } from '../language/types/javascript_file';
-import { HTML_DOCUMENT } from '../language/types/html_document';
+import { Project } from '../language/projects/project';
+import { loadProject } from '../code_io/project_loader';
+import { SplootFile } from '../language/projects/file';
+import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
 
 
@@ -138,31 +140,13 @@ main();
 `
 }] as {filename, contents}[];
 
-async function loadDocument(filename: string, contents: string): Promise<EditorState> {
-  let rootNode : SplootNode = null;
-  if (filename.endsWith('.html') || filename.endsWith('.htm')) {
-    rootNode = parseHtml(contents);
-  } else if (filename.endsWith('.js')) {
-    rootNode = parseJs(contents);
-  }
-  await generateScope(rootNode);
-  let editorState = new EditorState();
-  // Each node needs a ref to the selection and the selection needs access to the nodes.
-  let newRootNode = new NodeBlock(null, rootNode, editorState.selection, 0, false);
-  editorState.selection.setRootNode(newRootNode);
-  editorState.setRootNode(newRootNode);
-
-  return editorState;
-}
-
 interface PageEditorProps {
 };
 
 interface PageEditorState {
   ready: boolean;
-  selectedFile: string;
-  editors: { [key: string]: EditorState };
-  editorOrder: string[];
+  selectedFile: EditorState;
+  project: Project;
 };
 
 class PageEditorInternal extends Component<PageEditorProps, PageEditorState, EditorState> {
@@ -171,54 +155,35 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
   constructor(props : PageEditorProps) {
       super(props);
 
-      let editorOrder = [];
-      StartingDocuments.forEach((documentInfo) => {
-        editorOrder.push(documentInfo.filename);
-      })
-
       this.state = {
         ready: false,
-        selectedFile: 'blank.html',
-        editors: {},
-        editorOrder: editorOrder,
+        selectedFile: null,
+        project: null,
       };
   }
 
   componentDidMount() {
     loadTypes();
 
-    let editorOrder = [];
-
-    Promise.all(StartingDocuments.map((documentInfo) => {
-      editorOrder.push(documentInfo.filename);
-      return loadDocument(documentInfo.filename, documentInfo.contents);
-    })).then(editorStates => {
-      let editors = {};
-      editorOrder.forEach((filename, index) => {
-        editors[filename] = editorStates[index];
-      })
+    loadProject('bouncyexample').then((project) => {
       this.setState({
+        project: project,
+        selectedFile: null,
         ready: true,
-        selectedFile: 'blank.html',
-        editorOrder: editorOrder,
-        editors: editors,
-      })
-    })
+      });
+    });
   }
 
   render() {
-    let {ready, selectedFile, editorOrder, editors} = this.state;
+    let {ready, selectedFile, project} = this.state;
     let rootNode : SplootNode = null;
     let viewComponent = null;
-    if (ready) {
-      rootNode = editors[selectedFile].rootNode.node;
-      if (rootNode.type === JAVASCRIPT_FILE) {
-        viewComponent = null;
-      } else if (rootNode.type === HTML_DOCUMENT) {
-        viewComponent = <ViewPage rootNode={rootNode} />;
-      }
+
+    if (!ready) {
+      return null;
     }
 
+    let onlyPackage : SplootPackage = project.packages[0];
     return (
       <div className="page-editor-container">
         <nav className="left-panel">
@@ -254,7 +219,8 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
               <AccordionPanel px={0} paddingBottom={3} paddingTop={0}>
                 <Stack spacing={0.5}>
                   {
-                    editorOrder.map((filename: string) => {
+                    onlyPackage.fileOrder.map((filename: string) => {
+                      let splootFile = onlyPackage.files[filename];
                       return <Button
                         borderRadius={0}
                         paddingLeft={7}
@@ -265,8 +231,8 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
                         size="sm"
                         color="whiteAlpha.700"
                         height={6}
-                        isActive={selectedFile === filename}
-                        onClick={() => { this.setState({selectedFile: filename})}}>
+                        isActive={false} // todo
+                        onClick={() => { this.selectFile(onlyPackage, splootFile) }}>
                           { filename }
                       </Button>
                     })
@@ -278,27 +244,39 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
         </nav>
         <div className="page-editor-column">
           {
-            editorOrder.map((filename: string) => {
-              let editor = editors[filename];
-              if (!!!editor) {
-                return null;
-              }
-              return (
-                <EditorStateContext.Provider value={editor}>
-                  <div className={'editor-panel' + (selectedFile === filename ? ' selected' : '')}>
-                    <Panel selection={editor.selection}/>
-                    <Editor block={editor.rootNode} selection={editor.selection} width={300} />
+            (ready && selectedFile) ?
+                <EditorStateContext.Provider value={selectedFile}>
+                  <div className={'editor-panel selected'}>
+                    <Panel selection={selectedFile.selection}/>
+                    <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
                   </div>
                 </EditorStateContext.Provider>
-              );
-            })
+            : null
           }
         </div>
         <div className={'page-editor-preview-panel'} >
-          { ready ? viewComponent : null }
+          { ready ? <ViewPage pkg={onlyPackage}/> : null }
         </div>
       </div>
     )
+  }
+
+  selectFile(selectedPackage: SplootPackage, file: SplootFile) {
+    if (!file.isLoaded) {
+      selectedPackage.getLoadedFile(file.name).then((file: SplootFile) => {
+        let editorState = new EditorState();
+        let newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false);
+        editorState.selection.setRootNode(newRootNode);
+        editorState.setRootNode(newRootNode);
+        this.setState({selectedFile: editorState});
+      })
+    } else {
+      let editorState = new EditorState();
+        let newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false);
+        editorState.selection.setRootNode(newRootNode);
+        editorState.setRootNode(newRootNode);
+        this.setState({selectedFile: editorState});
+    }
   }
 }
 

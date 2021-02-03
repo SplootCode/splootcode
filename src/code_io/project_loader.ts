@@ -4,10 +4,12 @@ import { SerializedProject, Project, FileLoader } from '../language/projects/pro
 import { SplootNode } from '../language/node';
 import { parseHtml } from './import_html';
 import { parseJs } from './import_js';
+import { generateScope } from '../language/scope/scope';
 
 let projects : {[key:string]: SerializedProject} = {}
 let ballExample = {
-  name: "Bouncy ball canvas example",
+  name: 'bouncyexample',
+  title: "Bouncy ball canvas example",
   path: 'examples/bouncy.spl',
   packages: [
     {
@@ -16,9 +18,10 @@ let ballExample = {
         {name: 'index.html', type: HTML_DOCUMENT},
         {name: 'app.js', type: JAVASCRIPT_FILE}
       ],
+      entryPoints: ['index.html'],
       buildType: 'STATIC'
     }
-  ]
+  ],
 };
 projects['bouncyexample'] = ballExample;
 
@@ -93,20 +96,25 @@ const BOUNCY_INDEX_HTML = `
 
 class MockFileLoader implements FileLoader {
   async loadFile(projectId: string, packageId: string, filename: string) : Promise<SplootNode> {
-    let promise : Promise<SplootNode> = new Promise(() => {
+    let promise : Promise<SplootNode> = new Promise((resolve, reject) => {
       if (projectId === 'bouncyexample') {
         if (packageId === 'main') {
+          let rootNode = null;
           switch(filename) {
             case 'index.html':
-              return parseHtml(BOUNCY_INDEX_HTML);
+              rootNode = parseHtml(BOUNCY_INDEX_HTML);
+              break;
             case 'app.js':
-              return parseJs('console.log("foo")');
+              rootNode = parseJs('console.log("foo")');
+              break;
             default:
-              return null;
-          } 
+              reject('Unknown filename');
+          }
+          generateScope(rootNode).then(() => {resolve(rootNode)});
+          return;
         }
       }
-      return null;
+      reject('Unknown project ID or package ID');
     });
     return await promise;
   }

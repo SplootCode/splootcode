@@ -8,6 +8,7 @@ export interface SerializedSplootPackage {
   name: string;
   files: SerializedSplootFileRef[];
   buildType: string;
+  entryPoints: string[];
 }
 
 enum PackageType {
@@ -20,8 +21,10 @@ export class SplootPackage {
   projectId: string;
   name: string;
   files: { [key:string]: SplootFile };
+  fileOrder: string[];
   buildType: PackageType;
   fileLoader: FileLoader;
+  entryPoints: string[];
 
   constructor(projectId: string, pack: SerializedSplootPackage, fileLoader: FileLoader) {
     this.projectId = projectId;
@@ -29,9 +32,12 @@ export class SplootPackage {
     this.fileLoader = fileLoader;
     this.buildType = PackageType[pack.buildType];
     this.files = {};
+    this.fileOrder = [];
+    this.entryPoints = pack.entryPoints;
     pack.files.forEach(serializedFile => {
       let file = new SplootFile(serializedFile);
       this.files[file.name] = file;
+      this.fileOrder.push(file.name);
     });
   }
 

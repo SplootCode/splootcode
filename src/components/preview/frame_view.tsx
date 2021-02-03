@@ -1,11 +1,11 @@
 import React from 'react'
 import { Component } from 'react'
-import { SplootNode } from '../../language/node';
 import { globalMutationDispatcher } from '../../language/mutations/mutation_dispatcher';
 import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
 import './frame_view.css';
+import { SplootPackage } from '../../language/projects/package';
 
 export enum FrameState {
   DEAD = 0,
@@ -16,7 +16,7 @@ export enum FrameState {
 }
 
 interface DocumentNodeProps {
-    rootNode?: SplootNode
+    pkg?: SplootPackage,
 }
 
 const subdomain = "projection"; // TODO: Make dynamic
@@ -65,15 +65,20 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   sendNodeTreeToServiceWorker() {
     let now = new Date();
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
-    // Rate limit: Only send if it's been some time since we last sent.
-    if (millis > 100) {
-      let tree = this.props.rootNode.serialize();
-      let payload = {type: 'nodetree', data: tree};
-      this.postMessageToServiceWorker(payload);
-      this.needsNewNodeTree = false;
-      this.lastSentNodeTree = now;
-      return;
-    }
+    let pkg = this.props.pkg;
+
+    pkg.getLoadedFile(pkg.entryPoints[0]).then((file) => {
+      let rootNode = file.rootNode;
+      // Rate limit: Only send if it's been some time since we last sent.
+      if (millis > 100) {
+        let tree = rootNode.serialize();
+        let payload = {type: 'nodetree', data: tree};
+        this.postMessageToServiceWorker(payload);
+        this.needsNewNodeTree = false;
+        this.lastSentNodeTree = now;
+        return;
+      }
+    })
   }
 
   postMessageToFrame = (payload: object) => {
@@ -215,7 +220,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 }
 
 type ViewPageProps = {
-  rootNode: SplootNode,
+  pkg: SplootPackage,
 }
 
 type ViewPageState = {
@@ -247,7 +252,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
     }
 
     render() {
-        let { rootNode } = this.props;
+        let { pkg } = this.props;
         if (this.state.hasError) {
             return (
                 <div>
@@ -259,7 +264,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
         }
         return (
             <div>
-                <DocumentNodeComponent rootNode={rootNode}/>
+                <DocumentNodeComponent pkg={pkg}/>
             </div>
         );
     }
