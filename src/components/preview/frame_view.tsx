@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { Component } from 'react'
 import { globalMutationDispatcher } from '../../language/mutations/mutation_dispatcher';
 import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
-import { Box, ButtonGroup, Button, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import { Box, ButtonGroup, FormControl, FormLabel, Switch, IconButton, HStack, Spacer } from "@chakra-ui/react";
 import { RepeatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 import './frame_view.css';
@@ -48,6 +48,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   private lastSentNodeTree: Date;
   private needsNewNodeTree: boolean;
   private serviceWorkerPort: MessagePort;
+  private autorefresh: boolean;
 
   constructor(props: DocumentNodeProps) {
     super(props);
@@ -56,18 +57,26 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     this.lastHeartbeatTimestamp = new Date();
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000);
     this.needsNewNodeTree = false;
+    this.autorefresh = true;
   }
 
   render() {
       return (
         <div id="frame-container">
-          <FramePanel reload={this.reloadSiteInFrame} frameUrl={getFrameDomain() + '/index.html'} />
+          <FramePanel
+              reload={this.reloadSiteInFrame}
+              frameUrl={getFrameDomain() + '/index.html'}
+              setAutorefresh={this.setAutorefresh}/>
           <iframe ref={this.frameRef}
             id="view-frame"
             src={getFrameSrc()}
           />
         </div>
       );
+  }
+
+  setAutorefresh = (autorefresh: boolean) => {
+    this.autorefresh = autorefresh;
   }
 
   sendNodeTreeToServiceWorker() {
@@ -182,7 +191,9 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
         // Service worker is ready to serve content.
         this.frameState = FrameState.CONNECTED_SW_READY;
         // Set the frame to the user's site, this triggers a reload.
-        this.reloadSiteInFrame();
+        if (this.autorefresh) {
+          this.reloadSiteInFrame();
+        }
         break;
       default:
         console.log('Parent. Unkown message from service worker:', event);
@@ -244,17 +255,44 @@ type ViewPageState = {
 
 interface FramePanelProps {
   reload: () => void;
+  setAutorefresh: (autorefresh: boolean) => void;
   frameUrl: string;
 }
 
-export class FramePanel extends Component<FramePanelProps> {
+interface FramePanelState {
+  autorefresh: boolean;
+}
+
+export class FramePanel extends Component<FramePanelProps, FramePanelState> {
+
+  constructor(props: FramePanelProps) {
+    super(props);
+    this.state = {
+      autorefresh: true,
+    }
+  }
+
+  onAutorefreshChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    this.props.setAutorefresh(event.target.checked);
+    this.setState({autorefresh: event.target.checked})
+  }
+
   render() {
     return (
       <Box justifyContent="center" textAlign="center" p={3}>
-        <ButtonGroup size="md" isAttached variant="outline">
-          <IconButton onClick={this.props.reload} aria-label="refresh" icon={<RepeatIcon/>}/>
-          <IconButton onClick={() => { window.open(this.props.frameUrl, "_blank")}} aria-label="open in new tab" icon={<ExternalLinkIcon/>}/>
-        </ButtonGroup>
+        <HStack>
+        <FormControl display="flex" alignItems="center" width="48" >
+            <Switch id="autorefresh" isChecked={this.state.autorefresh} onChange={this.onAutorefreshChanged}/>
+            <FormLabel htmlFor="autorefresh" mb="0" ml="3">
+              Auto-refresh
+            </FormLabel>
+          </FormControl>
+          <Spacer/>
+          <ButtonGroup size="md" isAttached variant="outline">
+            <IconButton onClick={this.props.reload} aria-label="refresh" icon={<RepeatIcon/>}>reload</IconButton>
+            <IconButton onClick={() => { window.open(this.props.frameUrl, "_blank")}} aria-label="open in new tab" icon={<ExternalLinkIcon/>}/>
+          </ButtonGroup>
+        </HStack>
       </Box>
     );
   }
