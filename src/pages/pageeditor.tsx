@@ -124,7 +124,6 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
             (ready && selectedFile) ?
                 <EditorStateContext.Provider value={selectedFile}>
                   <div className={'editor-panel selected'}>
-                    <Panel selection={selectedFile.selection}/>
                     <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
                   </div>
                 </EditorStateContext.Provider>

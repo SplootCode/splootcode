@@ -2,13 +2,14 @@ import React from 'react'
 import { NodeBlock } from '../../layout/rendered_node';
 
 import "./editor.css";
-import { NodeSelection, NodeSelectionState, SelectionState } from '../../context/selection';
+import { NodeSelection } from '../../context/selection';
 import { observer } from 'mobx-react';
 import { ExpandedListBlockView } from './list_block';
 import { InsertBox } from './insert_box';
 import { JAVASCRIPT_FILE } from '../../language/types/javascript_file';
 import { HTML_DOCUMENT } from '../../language/types/html_document';
 import { ActiveCursor } from './cursor';
+import { Panel } from '../panel';
 
 
 interface EditorProps {
@@ -31,10 +32,11 @@ export class Editor extends React.Component<EditorProps> {
       // Whelp, this is ugly, but hey it works. :shrug:
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
       let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.id;
-      insertBox = <InsertBox key={insertKey} editorX={180} editorY={44} selection={selection} insertBoxData={selection.insertBox} />
+      insertBox = <InsertBox key={insertKey} editorX={1} editorY={45} selection={selection} insertBoxData={selection.insertBox} />
     }
     return <div className="editor">
-      <svg xmlns="http://www.w3.org/2000/svg" height={height} width={800}>
+      <Panel selection={selection}/>
+      <svg className="editor-svg" xmlns="http://www.w3.org/2000/svg" height={height} preserveAspectRatio="none">
         <ExpandedListBlockView
             block={fileBody}
             selection={this.props.selection}

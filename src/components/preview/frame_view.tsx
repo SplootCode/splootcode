@@ -4,10 +4,13 @@ import { globalMutationDispatcher } from '../../language/mutations/mutation_disp
 import { NodeMutation } from '../../language/mutations/node_mutations';
 import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
 
+import { Box, ButtonGroup, Button, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import { RepeatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+
 import './frame_view.css';
 import { SplootPackage } from '../../language/projects/package';
 import { observer } from 'mobx-react';
-import { RSA_PKCS1_PADDING } from 'constants';
+
 
 export enum FrameState {
   DEAD = 0,
@@ -57,10 +60,13 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
   render() {
       return (
-        <iframe ref={this.frameRef}
-          id="view-frame"
-          src={getFrameSrc()}
-        />
+        <div id="frame-container">
+          <FramePanel reload={this.reloadSiteInFrame} frameUrl={getFrameDomain() + '/index.html'} />
+          <iframe ref={this.frameRef}
+            id="view-frame"
+            src={getFrameSrc()}
+          />
+        </div>
       );
   }
 
@@ -161,6 +167,10 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     }
   }
 
+  reloadSiteInFrame = () => {
+    this.frameRef.current.src = getFrameDomain() + '/index.html';
+  }
+
   handleMessageFromServiceWorker = (event: MessageEvent) => {
     let data = event.data;
     switch (data.type) {
@@ -172,7 +182,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
         // Service worker is ready to serve content.
         this.frameState = FrameState.CONNECTED_SW_READY;
         // Set the frame to the user's site, this triggers a reload.
-        this.frameRef.current.src = getFrameDomain() + '/index.html';
+        this.reloadSiteInFrame();
         break;
       default:
         console.log('Parent. Unkown message from service worker:', event);
@@ -232,6 +242,24 @@ type ViewPageState = {
     errorInfo: any;
 }
 
+interface FramePanelProps {
+  reload: () => void;
+  frameUrl: string;
+}
+
+export class FramePanel extends Component<FramePanelProps> {
+  render() {
+    return (
+      <Box justifyContent="center" textAlign="center" p={3}>
+        <ButtonGroup size="md" isAttached variant="outline">
+          <IconButton onClick={this.props.reload} aria-label="refresh" icon={<RepeatIcon/>}/>
+          <IconButton onClick={() => { window.open(this.props.frameUrl, "_blank")}} aria-label="open in new tab" icon={<ExternalLinkIcon/>}/>
+        </ButtonGroup>
+      </Box>
+    );
+  }
+}
+
 @observer
 export class ViewPage extends Component<ViewPageProps, ViewPageState> {
     constructor(props : ViewPageProps) {
@@ -267,9 +295,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
             );
         }
         return (
-            <div>
-                <DocumentNodeComponent pkg={pkg}/>
-            </div>
+          <DocumentNodeComponent pkg={pkg}/>
         );
     }
 }
