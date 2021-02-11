@@ -7,6 +7,7 @@ import { parseJs } from './import_js';
 import { generateScope } from '../language/scope/scope';
 import { SerializedSplootPackage, SplootPackage } from '../language/projects/package';
 import { propagateChangeConfirmed } from 'mobx/lib/internal';
+import { FileSystemFileLoader } from './filesystem_file_loader';
 
 let projects : {[key:string]: SerializedProject} = {}
 let ballExample : SerializedProject = {
@@ -72,9 +73,19 @@ export async function saveProject(directoryHandle: FileSystemDirectoryHandle, pr
   })
 }
 
+export async function loadProject(directoryHandle: FileSystemDirectoryHandle) : Promise<Project> {
+  let fileLoader = new FileSystemFileLoader(directoryHandle);
+  let projStr = await (await (await directoryHandle.getFileHandle('project.spl')).getFile()).text();
+  let proj = JSON.parse(projStr) as SerializedProject;
+  let packages = proj.packages.map(async packRef => {
+    return fileLoader.loadPackage(proj.name, packRef.name);
+  })
+  return new Project(proj, await Promise.all(packages), fileLoader);
+}
+
 // This is an API that we will later replace with either server calls or
 // filesystem access.
-export async function loadProject(projectId: string) : Promise<Project> {
+export async function loadExampleProject(projectId: string) : Promise<Project> {
   if (projectId in projects) {
     let proj = projects[projectId];
     let fileLoader = new MockFileLoader();

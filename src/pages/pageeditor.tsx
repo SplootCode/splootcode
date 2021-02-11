@@ -13,7 +13,7 @@ import { observer } from 'mobx-react';
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
 import { Project } from '../language/projects/project';
-import { loadProject, saveProject } from '../code_io/project_loader';
+import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader';
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
@@ -44,7 +44,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
   componentDidMount() {
     loadTypes();
 
-    loadProject('bouncyexample').then((project) => {
+    loadExampleProject('bouncyexample').then((project) => {
       this.setState({
         project: project,
         selectedFile: null,
@@ -81,7 +81,16 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
             </MenuButton>
             <MenuList>
               <MenuItem>New Project</MenuItem>
-              <MenuItem>Open Project</MenuItem>
+              <MenuItem onClick={async (event) => {
+                const dirHandle = await window.showDirectoryPicker();
+                let proj = await loadProject(dirHandle);
+                this.setState({
+                  project: proj,
+                  selectedFile: null,
+                  ready: true,
+                });
+              }}
+              >Load Project</MenuItem>
               <MenuItem onClick={async (event) => {
                 const dirHandle = await window.showDirectoryPicker();
                 await saveProject(dirHandle, project);
