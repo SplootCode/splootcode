@@ -5,32 +5,71 @@ import { SplootNode } from '../language/node';
 import { parseHtml } from './import_html';
 import { parseJs } from './import_js';
 import { generateScope } from '../language/scope/scope';
+import { SerializedSplootPackage, SplootPackage } from '../language/projects/package';
+import { propagateChangeConfirmed } from 'mobx/lib/internal';
 
 let projects : {[key:string]: SerializedProject} = {}
-let ballExample = {
+let ballExample : SerializedProject = {
   name: 'bouncyexample',
   title: "Bouncy ball canvas example",
-  path: 'examples/bouncy.spl',
+  splootversion: '0.0.1',
   packages: [
     {
       name: 'main',
-      files: [
-        {name: 'index.html', type: HTML_DOCUMENT},
-        {name: 'app.js', type: JAVASCRIPT_FILE}
-      ],
-      entryPoints: ['index.html'],
       buildType: 'STATIC'
     }
   ],
 };
 projects['bouncyexample'] = ballExample;
+let packages : {[key:string]: SerializedSplootPackage} = {
+  'main': {
+    name: 'main',
+    files: [
+      {name: 'index.html', type: HTML_DOCUMENT},
+      {name: 'app.js', type: JAVASCRIPT_FILE}
+    ],
+    entryPoints: ['index.html'],
+    buildType: 'STATIC'
+  }
+}
 
 // This is an API that we will later replace with either server calls or
 // filesystem access.
 export async function listProjects() {
-  return [
-    ['Bouncy ball canvas example', 'bouncyexample'],
-  ];
+  return await fetch(new Request('http://localhost:3002/projects', {
+
+  })).then(response => {
+    return response.json();
+  });
+}
+
+export async function savePackage(directoryHandle: FileSystemDirectoryHandle, project: Project, pack: SplootPackage) {
+  let packDir = await directoryHandle.getDirectoryHandle(pack.name, {create: true});
+  const packFile = await packDir.getFileHandle('package.spl', { create: true });
+  const writable = await packFile.createWritable();
+  await writable.write(pack.serialize());
+  await writable.close();
+  // Save each file
+  let promises = pack.fileOrder.map(async filename => {
+    const fileHandle = await packDir.getFileHandle(filename + '.spl', { create: true });
+    console.log(fileHandle);
+    const writable = await fileHandle.createWritable();
+    await writable.write(pack.files[filename].serialize());
+    await writable.close();
+  });
+  await Promise.all(promises);
+}
+
+export async function saveProject(directoryHandle: FileSystemDirectoryHandle, project: Project) {
+  // Write project file
+  const fileHandle = await directoryHandle.getFileHandle('project.spl', { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(project.serialize());
+  await writable.close();
+  // Save each package
+  project.packages.forEach(pack => {
+    savePackage(directoryHandle, project, pack);
+  })
 }
 
 // This is an API that we will later replace with either server calls or
@@ -38,7 +77,12 @@ export async function listProjects() {
 export async function loadProject(projectId: string) : Promise<Project> {
   if (projectId in projects) {
     let proj = projects[projectId];
-    return new Project(proj, new MockFileLoader());
+    let fileLoader = new MockFileLoader();
+    let packagePromises = proj.packages.map(packRef => {
+      return fileLoader.loadPackage(projectId, packRef.name);
+    })
+    let packages = await Promise.all(packagePromises);
+    return new Project(proj, packages, fileLoader);
   }
 }
 
@@ -97,6 +141,16 @@ window.onload = load;
 `;
 
 class MockFileLoader implements FileLoader {
+
+  async loadPackage(projectId: string, packageId: string) : Promise<SplootPackage> {
+    let promise : Promise<SplootPackage> = new Promise((resolve, reject) => {
+      let pack = new SplootPackage(projectId, packages[packageId], this);
+      resolve(pack);
+      return;
+    });
+    return promise;
+  }
+
   async loadFile(projectId: string, packageId: string, filename: string) : Promise<SplootNode> {
     let promise : Promise<SplootNode> = new Promise((resolve, reject) => {
       if (projectId === 'bouncyexample') {

@@ -13,7 +13,7 @@ import { observer } from 'mobx-react';
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
 import { Project } from '../language/projects/project';
-import { loadProject } from '../code_io/project_loader';
+import { loadProject, saveProject } from '../code_io/project_loader';
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
@@ -82,7 +82,11 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
             <MenuList>
               <MenuItem>New Project</MenuItem>
               <MenuItem>Open Project</MenuItem>
-              <MenuItem>Save</MenuItem>
+              <MenuItem onClick={async (event) => {
+                const dirHandle = await window.showDirectoryPicker();
+                await saveProject(dirHandle, project);
+              }}
+              >Save</MenuItem>
             </MenuList>
           </Menu>
           <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>

@@ -3,6 +3,10 @@ import { SplootNode } from "../node";
 import { SerializedSplootFileRef, SplootFile } from "./file";
 import { FileLoader } from "./project";
 
+export interface SerializedSplootPackageRef {
+  name: string;
+  buildType: string;
+}
 
 export interface SerializedSplootPackage {
   name: string;
@@ -31,14 +35,24 @@ export class SplootPackage {
     this.name = pack.name;
     this.fileLoader = fileLoader;
     this.buildType = PackageType[pack.buildType];
+    this.fileOrder = pack.files.map(file => file.name);
     this.files = {};
-    this.fileOrder = [];
-    this.entryPoints = pack.entryPoints;
-    pack.files.forEach(serializedFile => {
-      let file = new SplootFile(serializedFile);
-      this.files[file.name] = file;
-      this.fileOrder.push(file.name);
+    pack.files.forEach(file => {
+      this.files[file.name] = new SplootFile(file);
+    })
+  }
+
+  serialize() : string {
+    let ser : SerializedSplootPackage = {
+      name: this.name,
+      buildType: PackageType[this.buildType],
+      entryPoints: this.entryPoints,
+      files: [],
+    };
+    this.fileOrder.forEach(filename => {
+      ser.files.push(this.files[filename].getSerializedRef());
     });
+    return JSON.stringify(ser, null, 2) + '\n';
   }
 
   async getLoadedFile(name: string) : Promise<SplootFile> {
