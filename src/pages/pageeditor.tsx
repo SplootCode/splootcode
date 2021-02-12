@@ -1,15 +1,12 @@
 import React from 'react'
 import { Component } from 'react'
-
-import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
-import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
-
-import './pageeditor.css';
-import { Editor } from '../components/editor/editor';
-import { Panel } from '../components/panel';
-import { EditorStateContext, EditorState } from '../context/editor_context';
 import { observer } from 'mobx-react';
 
+import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+
+import { Editor } from '../components/editor/editor';
+import { EditorStateContext, EditorState } from '../context/editor_context';
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
 import { Project } from '../language/projects/project';
@@ -17,12 +14,16 @@ import { loadExampleProject, loadProject, saveProject } from '../code_io/project
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
+import { LoadProjectModal } from '../components/load_modal';
+
+import './pageeditor.css';
 
 
 interface PageEditorProps {
 };
 
 interface PageEditorState {
+  openModal: boolean;
   ready: boolean;
   selectedFile: EditorState;
   project: Project;
@@ -35,6 +36,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
       super(props);
 
       this.state = {
+        openModal: true,
         ready: false,
         selectedFile: null,
         project: null,
@@ -44,7 +46,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
   componentDidMount() {
     loadTypes();
 
-    loadExampleProject('bouncyexample').then((project) => {
+    loadExampleProject('blank').then((project) => {
       this.setState({
         project: project,
         selectedFile: null,
@@ -53,8 +55,22 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
     });
   }
 
+  loadProjectIntoEditor = (project: Project) => {
+    this.setState({
+      project: project,
+      selectedFile: null,
+      ready: true,
+    });
+  }
+
+  openLoadProjectModal = (event) => {
+    this.setState({
+      openModal: true,
+    })
+  }
+
   render() {
-    let {ready, selectedFile, project} = this.state;
+    let {ready, selectedFile, project, openModal} = this.state;
 
     if (!ready) {
       return null;
@@ -63,6 +79,9 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
     let onlyPackage : SplootPackage = project.packages[0];
     return (
       <div className="page-editor-container">
+        <LoadProjectModal isOpen={openModal} onClose={() => {
+          this.setState({openModal: false});
+        }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
         <nav className="left-panel">
           <Menu>
             <MenuButton
@@ -80,22 +99,17 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
                 Project
             </MenuButton>
             <MenuList>
-              <MenuItem>New Project</MenuItem>
+              <MenuItem onClick={this.openLoadProjectModal}>New Project</MenuItem>
               <MenuItem onClick={async (event) => {
-                const dirHandle = await window.showDirectoryPicker();
-                let proj = await loadProject(dirHandle);
-                this.setState({
-                  project: proj,
-                  selectedFile: null,
-                  ready: true,
-                });
-              }}
-              >Load Project</MenuItem>
+                 const dirHandle = await window.showDirectoryPicker();
+                 let proj = await loadProject(dirHandle);
+                 this.loadProjectIntoEditor(proj);
+              }}>Open Project</MenuItem>
               <MenuItem onClick={async (event) => {
                 const dirHandle = await window.showDirectoryPicker();
                 await saveProject(dirHandle, project);
               }}
-              >Save</MenuItem>
+              >Save Project As...</MenuItem>
             </MenuList>
           </Menu>
           <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>
