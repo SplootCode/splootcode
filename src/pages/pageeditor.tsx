@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 import { Component } from 'react'
 import { observer } from 'mobx-react';
 
-import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
+import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem, Icon, Spacer, Flex, IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { Editor } from '../components/editor/editor';
@@ -15,15 +15,21 @@ import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { ViewPage } from '../components/preview/frame_view';
 import { LoadProjectModal } from '../components/load_modal';
+import { RiFileAddLine } from "react-icons/ri";
+
 
 import './pageeditor.css';
+import { NewFileModal } from '../components/new_file_modal';
+import { SplootNode } from '../language/node';
 
 
 interface PageEditorProps {
 };
 
 interface PageEditorState {
-  openModal: boolean;
+  openNewProjectModal: boolean;
+  openNewFileModal: boolean;
+  newFilePackageName: string;
   ready: boolean;
   selectedFile: EditorState;
   project: Project;
@@ -36,7 +42,9 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
       super(props);
 
       this.state = {
-        openModal: true,
+        openNewProjectModal: true,
+        openNewFileModal: false,
+        newFilePackageName: '',
         ready: false,
         selectedFile: null,
         project: null,
@@ -65,12 +73,22 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
 
   openLoadProjectModal = (event) => {
     this.setState({
-      openModal: true,
+      openNewProjectModal: true,
     })
   }
 
+  newFileModal(packageName: string) {
+    return (event : MouseEvent) => {
+      event.stopPropagation();
+      this.setState({
+        newFilePackageName: packageName,
+        openNewFileModal: true,
+      });
+    }
+  }
+
   render() {
-    let {ready, selectedFile, project, openModal} = this.state;
+    let {ready, selectedFile, project, openNewProjectModal: openModal, openNewFileModal} = this.state;
 
     if (!ready) {
       return null;
@@ -80,8 +98,15 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
     return (
       <div className="page-editor-container">
         <LoadProjectModal isOpen={openModal} onClose={() => {
-          this.setState({openModal: false});
+          this.setState({openNewProjectModal: false});
         }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
+        <NewFileModal isOpen={openNewFileModal} onClose={() => {
+          this.setState({openNewFileModal: false, newFilePackageName: ''});
+        }} addCodeFile={
+          (name: string, type: string, rootNode: SplootNode) => {
+            onlyPackage.addFile(name, type, rootNode);
+          }
+        }/>
         <nav className="left-panel">
           <Menu>
             <MenuButton
@@ -116,9 +141,9 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
             <AccordionItem>
               <AccordionButton p={2} fontSize="sm">
                 <AccordionIcon/>
-                <Box flex="1" textAlign="left" mx={1}>
-                  Main
-                </Box>
+                <Flex textAlign="left" justifyContent="space-between" mx={1} width="100%" alignItems="center">
+                  <Box>{onlyPackage.name}</Box><IconButton onClick={this.newFileModal(onlyPackage.name)} aria-label="New file" size="sm" variant="ghost" icon={<Icon as={RiFileAddLine}/>} />
+                </Flex>
               </AccordionButton>
               <AccordionPanel px={0} paddingBottom={3} paddingTop={0}>
                 <Stack spacing={0.5}>

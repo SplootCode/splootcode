@@ -27,4 +27,4 @@ export class FileSystemFileLoader implements FileLoader {
     generateScope(rootNode);
     return rootNode;
   }
-}
+} 

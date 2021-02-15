@@ -11,10 +11,10 @@ export class SplootFile {
   rootNode: SplootNode;
   isLoaded: boolean;
 
-  constructor(file: SerializedSplootFileRef) {
+  constructor(name: string, type: string) {
     this.rootNode = null;
-    this.name = file.name;
-    this.type = file.type;
+    this.name = name;
+    this.type = type;
     this.isLoaded = false;
   }
 

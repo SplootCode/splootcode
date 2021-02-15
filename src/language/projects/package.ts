@@ -38,7 +38,7 @@ export class SplootPackage {
     this.fileOrder = pack.files.map(file => file.name);
     this.files = {};
     pack.files.forEach(file => {
-      this.files[file.name] = new SplootFile(file);
+      this.files[file.name] = new SplootFile(file.name, file.type);
     })
   }
 
@@ -53,6 +53,13 @@ export class SplootPackage {
       ser.files.push(this.files[filename].getSerializedRef());
     });
     return JSON.stringify(ser, null, 2) + '\n';
+  }
+
+  async addFile(name: string, type: string, rootNode: SplootNode) {
+    let splootFile = new SplootFile(name, type);
+    splootFile.fileLoaded(rootNode);
+    this.files[name] = splootFile;
+    this.fileOrder.push(name);
   }
 
   async getLoadedFile(name: string) : Promise<SplootFile> {
