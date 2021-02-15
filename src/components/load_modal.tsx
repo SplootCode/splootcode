@@ -50,11 +50,11 @@ export function LoadProjectModal(props: LoadProjectModalProps) {
     let proj = null;
     switch (selectedProject) {
       case 'bouncing':
-        proj = await loadExampleProject('bouncing')
+      case 'flashcards':
+        proj = await loadExampleProject(selectedProject)
         break;
       case 'blank':
       case 'gallery':
-      case 'flashcards':
         proj = await loadExampleProject('blank')
         break;
       case 'files':

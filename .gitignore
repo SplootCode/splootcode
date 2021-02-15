@@ -5,6 +5,8 @@ production.env
 
 # Lambda zips
 
+# Mac files
+.DS_Store
 
 # Logs
 logs
