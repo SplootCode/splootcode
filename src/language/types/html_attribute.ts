@@ -6,28 +6,18 @@ import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
+import { HTML_SCRIPT_ElEMENT } from "./html_script_element";
 import { StringLiteral, STRING_LITERAL } from "./literals";
 
 export const HTML_ATTRIBUTE = 'HTML_ATTRIBUTE';
-
-function sanitizeIdentifier(textInput: string) : string {
-  textInput = textInput.replace(/[^\w\s\d]/g, ' ');
-  // From SO: https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
-  return textInput.split(' ').map(function(word,index){
-    // If it is the first word make sure to lowercase all the chars.
-    if(index == 0){
-      return word.toLowerCase();
-    }
-    // If it is not the first word only upper case the first char and lowercase the rest.
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }).join('');
-}
 
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
     if (parent.node.type === HTML_ElEMENT) {
-      return getValidAttributes(parent.node as SplootHtmlElement);
+      return getValidAttributes((parent.node as SplootHtmlElement).getTag());
+    } else if (parent.node.type === HTML_SCRIPT_ElEMENT) {
+      return getValidAttributes('script');
     }
     return [];
   };

@@ -249,9 +249,8 @@ export function getValidElements(element: SplootHtmlElement, parentTags: string[
     return suggestedElements;
 }
 
-export function getValidAttributes(element: SplootHtmlElement) : SuggestedNode[] {
+export function getValidAttributes(targetTag: string) : SuggestedNode[] {
   let suggestions = [];
-  let targetTag = element.getTag();
   let seen = new Set();
   let tag = htmlData.tags.find(tag => tag.name === targetTag);
   tag.attributes.forEach(attr => {
