@@ -16,6 +16,7 @@ import { InlineFunctionDeclaration } from "./types/inline_function";
 import { JavascriptFile } from "./types/javascript_file";
 import { NullLiteral, NumericLiteral, StringLiteral } from "./types/literals";
 import { LogicalExpression } from "./types/logical_expression";
+import { LookupExpression } from "./types/lookup_expression";
 import { MemberExpression } from "./types/member_expression";
 import { VariableDeclaration } from "./types/variable_declaration";
 import { VariableReference } from "./types/variable_reference";
@@ -27,6 +28,7 @@ export function loadTypes() {
   CallMember.register();
   CallVariable.register();
   MemberExpression.register();
+  LookupExpression.register();
   VariableReference.register();
   VariableDeclaration.register();
   FunctionDeclaration.register();

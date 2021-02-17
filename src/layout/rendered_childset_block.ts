@@ -56,6 +56,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   @observable
   isLastInlineComponent: boolean;
   childSetTreeLabels: string[];
+  childSetRightAttachLabel: string;
 
   @observable
   x: number;
@@ -84,6 +85,12 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata;
       }
+    }
+
+    if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT && layoutComponent.metadata) {
+      this.childSetRightAttachLabel = layoutComponent.metadata as string;
+    } else {
+      this.childSetRightAttachLabel = '';
     }
 
     this.childSet.children.forEach((childNode: SplootNode, i: number) => {
@@ -201,7 +208,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         leftPos += boxWidth;
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-      let leftPos = x + 16;
+      let labelWidth = labelStringWidth(this.childSetRightAttachLabel) + 4;
+      let leftPos = x + 16 + labelWidth;
+      this.width += labelWidth;
       this.nodes.forEach((childNodeBlock: NodeBlock) => {
         childNodeBlock.calculateDimensions(leftPos, y, selection);
         leftPos += childNodeBlock.rowWidth;
@@ -269,7 +278,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       // Only ever one child, so this one is easier to calculate.
-      return [this.x + 14, this.y];
+      let labelWidth = labelStringWidth(this.childSetRightAttachLabel);
+      return [this.x + 14 + labelWidth,  this.y];
     }
     console.warn('Insert position not implemented for LayoutComponentType', this.componentType)
     return [100, 100];
