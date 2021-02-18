@@ -109,7 +109,7 @@ export class AsyncFunctionDeclaration extends SplootNode {
     functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'async function'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'params'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
   

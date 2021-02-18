@@ -98,6 +98,7 @@ export class NodeBlock implements NodeObserver {
       let isLastInlineComponent = !this.isInlineChild && ((idx === numComponents - 1) || (idx === numComponents - 2)
           && this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK)
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK
+          || component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
           || component.type === LayoutComponentType.CHILD_SET_TREE
           || component.type === LayoutComponentType.CHILD_SET_INLINE
           || component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST
@@ -126,7 +127,8 @@ export class NodeBlock implements NodeObserver {
   updateLayout() {
     let nodeLayout = this.node.getNodeLayout();
     for (let component  of nodeLayout.components) {
-      if (component.type === LayoutComponentType.CHILD_SET_TREE
+      if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
+        || component.type === LayoutComponentType.CHILD_SET_TREE
         || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
           this.renderedChildSets[component.identifier].updateLayout(component);
       }
@@ -177,7 +179,24 @@ export class NodeBlock implements NodeObserver {
 
         if (isLastInlineComponent) {
           this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
-          // This minux 16 here accounts for the distance from the dot to the edge of the node.
+          // This minus 16 here accounts for the distance from the dot to the edge of the node.
+          // This is dumb tbh.
+          marginRight += Math.max(childSetBlock.width - 16, 0);
+        } else {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+        }
+      }
+      else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+        let childSetBlock = this.renderedChildSets[component.identifier];
+        childSetBlock.calculateDimensions(leftPos, y, selection);
+        let width = 20;
+        this.blockWidth += width;
+        leftPos += width;
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
+
+        if (isLastInlineComponent) {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+          // This minus 16 here accounts for the distance from the dot to the edge of the node.
           // This is dumb tbh.
           marginRight += Math.max(childSetBlock.width - 16, 0);
         } else {

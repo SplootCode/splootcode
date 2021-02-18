@@ -79,7 +79,7 @@ export class InlineFunctionDeclaration extends SplootNode {
     typeRegistration.childSets = {'params': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.Statement};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'inline function'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'params'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
 

@@ -87,6 +87,12 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
   updateLayout(layoutComponent: LayoutComponent) {
     this.childSetTreeLabels = [];
+    if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+      if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
+        this.childSetTreeLabels = layoutComponent.metadata;
+      }
+    }
+
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata;
@@ -146,12 +152,36 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.width += boxWidth;
         leftPos += boxWidth;
       }
-    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       let labels = this.childSetTreeLabels;
       let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
       let topPos = this.isLastInlineComponent ? y : y + NODE_BLOCK_HEIGHT + ROW_SPACING;
       this.height = this.isLastInlineComponent ? 0 : NODE_BLOCK_HEIGHT + ROW_SPACING;
       let indent = this.isLastInlineComponent ? 48 : 18;
+      indent += maxLabelWidth;
+      this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
+        if (idx === insertIndex) {
+          let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
+          topPos += NODE_BLOCK_HEIGHT + ROW_SPACING;
+          this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
+          this.width = Math.max(this.width, boxWidth);
+        }
+        childNodeBlock.calculateDimensions(x + indent, topPos, selection);
+        topPos += childNodeBlock.rowHeight + ROW_SPACING;
+        this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
+        this.width = Math.max(this.width, childNodeBlock.blockWidth + childNodeBlock.rowWidth + indent); 
+      });
+      if (this.nodes.length === insertIndex) {
+        let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
+        this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
+        this.width = Math.max(this.width, boxWidth);
+      }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
+      let labels = this.childSetTreeLabels;
+      let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
+      let topPos = y;
+      this.height = 0;
+      let indent = 36;
       indent += maxLabelWidth;
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
@@ -263,9 +293,22 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (this.nodes.length === insertIndex) {
         return [this.x, topPos];
       }
-    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       let topPos = this.isLastInlineComponent ? this.y : this.y + NODE_BLOCK_HEIGHT + ROW_SPACING;
       let indent = this.isLastInlineComponent ? 40 : 18;
+      for (let i = 0; i < this.nodes.length; i++) {
+        let childNodeBlock = this.nodes[i];
+        if (i === insertIndex) {
+          return [this.x + indent, topPos];
+        }
+        topPos += childNodeBlock.rowHeight + ROW_SPACING;        
+      }
+      if (this.nodes.length === insertIndex) {
+        return [this.x + indent, topPos];
+      }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
+      let topPos = this.y;
+      let indent = 40;
       for (let i = 0; i < this.nodes.length; i++) {
         let childNodeBlock = this.nodes[i];
         if (i === insertIndex) {

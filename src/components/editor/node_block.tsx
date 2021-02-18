@@ -6,7 +6,7 @@ import { InlineStringLiteral } from './string_literal';
 import { InlineProperty } from './property';
 import { SplootExpressionView } from './expression';
 import { LayoutComponent, LayoutComponentType } from '../../language/type_registry';
-import { TreeListBlockView } from './tree_list_block';
+import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block';
 import { AttachedChildRightExpressionView } from './attached_child';
 import { SPLOOT_EXPRESSION } from '../../language/types/expression';
 
@@ -117,6 +117,11 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             }
             else if (renderedComponent.layoutComponent.type === LayoutComponentType.PROPERTY) {
               result = <InlineProperty key={idx} topPos={topPos} leftPos={internalLeftPos} block={block} propertyName={renderedComponent.layoutComponent.identifier} selectState={selectionState} selection={selection} />
+              internalLeftPos += renderedComponent.width;
+            }
+            else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+              let childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier];
+              result = <TreeListBlockBracketsView key={idx} block={childSetBlock} isSelected={isSelected} selection={this.props.selection}/>
               internalLeftPos += renderedComponent.width;
             }
             else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE) {

@@ -97,7 +97,7 @@ export class CallVariable extends SplootNode {
   getNodeLayout() : NodeLayout {
     let layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments', this.getArgumentNames()),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments', this.getArgumentNames()),
     ])
     return layout;
   }
@@ -115,7 +115,7 @@ export class CallVariable extends SplootNode {
     typeRegistration.childSets = {'arguments': NodeCategory.Expression};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
   
     registerType(typeRegistration);

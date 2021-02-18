@@ -86,7 +86,7 @@ export class CallMember extends SplootNode {
     let layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
       new LayoutComponent(LayoutComponentType.KEYWORD, `.${this.getMember()}`),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
     return layout;
   }
@@ -132,7 +132,7 @@ export class CallMember extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'arguments'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
 
     registerType(typeRegistration);

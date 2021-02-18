@@ -60,7 +60,7 @@ export class ListExpression extends SplootNode {
   getNodeLayout() : NodeLayout {
     let layout = new NodeLayout(HighlightColorCategory.LITERAL_LIST, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'values', this.getArgumentNames()),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'values', this.getArgumentNames()),
     ])
     return layout;
   }
@@ -78,7 +78,7 @@ export class ListExpression extends SplootNode {
     typeRegistration.childSets = {'values': NodeCategory.Expression};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.LITERAL_LIST, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'values'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'values'),
     ]);
   
     registerType(typeRegistration);

@@ -150,6 +150,8 @@ export class ActiveCursor extends React.Component<ActiveCursorProps> {
         return <line className="active-inline-cursor" x1={x - 2} y1={y + 2} x2={x - 2} y2={y + 28}/>
       case LayoutComponentType.CHILD_SET_INLINE:
         return <line className="active-inline-cursor" x1={x + 2} y1={y + 2} x2={x + 2} y2={y + 28}/>
+      case LayoutComponentType.CHILD_SET_TREE_BRACKETS:
+        return <TreeDotActiveCursor selection={selection} />
       case LayoutComponentType.CHILD_SET_TREE:
         return <TreeDotActiveCursor selection={selection} />
       case LayoutComponentType.CHILD_SET_BLOCK:
