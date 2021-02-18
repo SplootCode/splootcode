@@ -69,11 +69,10 @@ export class Assignment extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'set to'),
     ]);
   
     registerType(typeRegistration);
     registerNodeCateogry(ASSIGNMENT, NodeCategory.ExpressionToken, new Generator());
   }
 }
-

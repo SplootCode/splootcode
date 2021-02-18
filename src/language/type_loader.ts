@@ -14,6 +14,7 @@ import { SplootHtmlScriptElement } from "./types/html_script_element";
 import { IfStatement } from "./types/if";
 import { InlineFunctionDeclaration } from "./types/inline_function";
 import { JavascriptFile } from "./types/javascript_file";
+import { ListExpression } from "./types/list";
 import { NullLiteral, NumericLiteral, StringLiteral } from "./types/literals";
 import { LogicalExpression } from "./types/logical_expression";
 import { LookupExpression } from "./types/lookup_expression";
@@ -43,6 +44,7 @@ export function loadTypes() {
   StringLiteral.register();
   NumericLiteral.register();
   NullLiteral.register();
+  ListExpression.register();
   
   SplootHtmlDocument.register();
   SplootHtmlAttribute.register();

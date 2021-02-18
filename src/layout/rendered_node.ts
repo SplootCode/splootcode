@@ -7,6 +7,7 @@ import { NodeCursor, NodeSelection } from "../context/selection";
 import { SPLOOT_EXPRESSION } from "../language/types/expression";
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
 import { getColour } from "./colors";
+import { eachField } from "ast-types";
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_BLOCK_HEIGHT = 30;
@@ -119,6 +120,16 @@ export class NodeBlock implements NodeObserver {
       this.blockWidth = this.renderedChildSets['tokens'].width;
       let childSetBlock = this.renderedChildSets['tokens'];
       this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+    }
+  }
+
+  updateLayout() {
+    let nodeLayout = this.node.getNodeLayout();
+    for (let component  of nodeLayout.components) {
+      if (component.type === LayoutComponentType.CHILD_SET_TREE
+        || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
+          this.renderedChildSets[component.identifier].updateLayout(component);
+      }
     }
   }
 

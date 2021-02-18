@@ -14,12 +14,9 @@ const ROW_SPACING = 6;
 /**
  * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
  * 
- * @param {String} text The text to be rendered.
- * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
- * 
  * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
  */
-function getTextWidth(text, font) {
+function getTextWidth(text: string, font: string) {
   // re-use canvas object for better performance
   var canvas = getTextWidth['canvas'] || (getTextWidth['canvas'] = document.createElement("canvas"));
   var context = canvas.getContext("2d");
@@ -29,11 +26,10 @@ function getTextWidth(text, font) {
 }
 
 function labelStringWidth(s: string) {
-  return getTextWidth(s, "8pt 'Source Sans Pro'");
+  return getTextWidth(s, "9pt 'Source Sans Pro'");
 }
 
 export function stringWidth(s: string) {
-  // return s.length * 8;
   return getTextWidth(s, "11pt 'Source Sans Pro'");
 }
 
@@ -80,6 +76,16 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.width = 0;
     this.height = 0;
     this.isLastInlineComponent = isLastInlineComponent;
+    this.childSet.children.forEach((childNode: SplootNode, i: number) => {
+      let isInlineChild = this.componentType === LayoutComponentType.CHILD_SET_INLINE;
+      let childNodeBlock = new NodeBlock(this, childNode, selection, i, isInlineChild);
+      this.nodes.push(childNodeBlock);
+    });
+
+    this.updateLayout(layoutComponent);
+  }
+
+  updateLayout(layoutComponent: LayoutComponent) {
     this.childSetTreeLabels = [];
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
@@ -92,12 +98,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else {
       this.childSetRightAttachLabel = '';
     }
-
-    this.childSet.children.forEach((childNode: SplootNode, i: number) => {
-      let isInlineChild = this.componentType === LayoutComponentType.CHILD_SET_INLINE;
-      let childNodeBlock = new NodeBlock(this, childNode, selection, i, isInlineChild);
-      this.nodes.push(childNodeBlock);
-    });
   }
 
   calculateDimensions(x: number, y: number, selection: NodeSelection) {
@@ -364,6 +364,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       // It has to be the parent, since this change might an identifier.
       this.parentRef.node.node.recursivelyBuildScope();
       // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
+      // Update layout refreshes things like list index numbers and function param names.
+      this.parentRef.node.updateLayout();
       this.selection.updateRenderPositions();
       if (mutation.nodes.length === 1) {
         let insertedNode = this.nodes[mutation.index];

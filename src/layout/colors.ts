@@ -7,6 +7,7 @@ export enum HighlightColorCategory {
   VARIABLE_DECLARATION,
   LITERAL_NUMBER,
   LITERAL_STRING,
+  LITERAL_LIST,
   CONTROL,
   KEYWORD,
   OPERATOR,
@@ -32,7 +33,9 @@ export function getColour(category: HighlightColorCategory) : string {
     case HighlightColorCategory.LITERAL_NUMBER:
       return 'rgb(124 179 253)';
     case HighlightColorCategory.LITERAL_STRING:
-        return 'rgb(123 216 188)';
+      return 'rgb(123 216 188)';
+    case HighlightColorCategory.LITERAL_LIST:
+      return keywordColor;
     case HighlightColorCategory.KEYWORD:
       return keywordColor;
     case HighlightColorCategory.CONTROL:
