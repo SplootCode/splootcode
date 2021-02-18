@@ -108,7 +108,7 @@ export class SplootExpression extends SplootNode {
     return this.getChildSet('tokens');
   }
 
-  generateJsAst() : ASTNode {
+  generateJsAst() : ExpressionKind {
     if (this.getTokenSet().children.length === 0) {
       // TODO: Raise some kind of error here, a null expression means the user hasn't filled it in yet.
       console.warn('Attempted to get tokens from empty expression');

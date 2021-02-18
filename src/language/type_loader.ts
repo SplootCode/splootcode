@@ -14,8 +14,10 @@ import { SplootHtmlScriptElement } from "./types/html_script_element";
 import { IfStatement } from "./types/if";
 import { InlineFunctionDeclaration } from "./types/inline_function";
 import { JavascriptFile } from "./types/javascript_file";
+import { ListExpression } from "./types/list";
 import { NullLiteral, NumericLiteral, StringLiteral } from "./types/literals";
 import { LogicalExpression } from "./types/logical_expression";
+import { LookupExpression } from "./types/lookup_expression";
 import { MemberExpression } from "./types/member_expression";
 import { VariableDeclaration } from "./types/variable_declaration";
 import { VariableReference } from "./types/variable_reference";
@@ -27,6 +29,7 @@ export function loadTypes() {
   CallMember.register();
   CallVariable.register();
   MemberExpression.register();
+  LookupExpression.register();
   VariableReference.register();
   VariableDeclaration.register();
   FunctionDeclaration.register();
@@ -41,6 +44,7 @@ export function loadTypes() {
   StringLiteral.register();
   NumericLiteral.register();
   NullLiteral.register();
+  ListExpression.register();
   
   SplootHtmlDocument.register();
   SplootHtmlAttribute.register();
