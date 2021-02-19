@@ -31,7 +31,7 @@ export class Editor extends React.Component<EditorProps> {
     if (selection.isCursor() && selection.insertBox !== null) {
       // Whelp, this is ugly, but hey it works. :shrug:
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
-      let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.id;
+      let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
       insertBox = <InsertBox key={insertKey} editorX={1} editorY={45} selection={selection} insertBoxData={selection.insertBox} />
     }
     return <div className="editor">

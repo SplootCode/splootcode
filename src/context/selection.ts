@@ -93,7 +93,7 @@ export class NodeSelection {
     if (!this.cursor || this.isCursor()) {
       return false;
     }
-    return node?.id === this.selectedNode?.id;
+    return node === this.selectedNode;
   }
 
   @observable

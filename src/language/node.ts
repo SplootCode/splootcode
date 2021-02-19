@@ -24,7 +24,6 @@ export class ParentReference {
 
 export class SplootNode {
   parent: ParentReference;
-  id: string;
   type: string;
   properties: { [key: string] : any}; // Depends on the type
   childSets: { [key: string]: ChildSet };
@@ -33,7 +32,6 @@ export class SplootNode {
   scope: Scope;
 
   constructor(parent: ParentReference, type: string) {
-    this.id = uuid();
     this.parent = parent;
     this.type = type;
     this.childSets = {};
@@ -134,7 +132,6 @@ export class SplootNode {
 
   serialize(): SerializedNode {
     let result = {
-      id: this.id,
       type: this.type,
       properties: {},
       childSets: {}
