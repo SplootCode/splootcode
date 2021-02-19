@@ -7,9 +7,9 @@ import { NodeCursor, NodeSelection } from "../context/selection";
 import { SPLOOT_EXPRESSION } from "../language/types/expression";
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
 import { getColour } from "./colors";
-import { eachField } from "ast-types";
 
 export const NODE_INLINE_SPACING = 8;
+export const NODE_INLINE_SPACING_SMALL = 6;
 export const NODE_BLOCK_HEIGHT = 30;
 const INDENT = 30;
 
@@ -138,12 +138,13 @@ export class NodeBlock implements NodeObserver {
   calculateDimensions(x: number, y: number, selection: NodeSelection) {
     this.x = x;
     this.y = y;
-    this.blockWidth = NODE_INLINE_SPACING + 2;
+    const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING;
+    this.blockWidth = nodeInlineSpacing + 2;
     this.rowHeight = NODE_BLOCK_HEIGHT;
     this.indentedBlockHeight = 0;
     this.renderedInlineComponents = []; // TODO: Find a way to avoid recreating this every time.
 
-    let leftPos = this.x + NODE_INLINE_SPACING;
+    let leftPos = this.x + nodeInlineSpacing;
     let marginRight = 0;
     this.marginLeft = 0;
     let numComponents = this.layout.components.length;
@@ -157,14 +158,14 @@ export class NodeBlock implements NodeObserver {
       }
       else if (component.type === LayoutComponentType.STRING_LITERAL) {
         let val = this.node.getProperty(component.identifier)
-        let width = stringWidth('""' + val) + NODE_INLINE_SPACING;
+        let width = stringWidth('""' + val) + nodeInlineSpacing;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       }
       else if (component.type === LayoutComponentType.PROPERTY) {
         let val = this.node.getProperty(component.identifier)
-        let width =  stringWidth(val.toString()) + NODE_INLINE_SPACING;
+        let width =  stringWidth(val.toString()) + nodeInlineSpacing;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
@@ -206,7 +207,7 @@ export class NodeBlock implements NodeObserver {
       else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
         let childSetBlock = this.renderedChildSets[component.identifier];
         childSetBlock.calculateDimensions(leftPos, y, selection);
-        let width = childSetBlock.width + NODE_INLINE_SPACING;
+        let width = childSetBlock.width + nodeInlineSpacing;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
         this.blockWidth += width;
@@ -225,7 +226,7 @@ export class NodeBlock implements NodeObserver {
         marginRight += childSetBlock.width;
       }
       else {
-        let width = stringWidth(component.identifier) + NODE_INLINE_SPACING;
+        let width = stringWidth(component.identifier) + nodeInlineSpacing;
         leftPos += width;
         this.blockWidth += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));

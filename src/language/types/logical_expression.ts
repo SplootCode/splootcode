@@ -56,7 +56,7 @@ export class LogicalExpression extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
-    ], NodeAttachmentLocation.SIDE);
+    ]);
   
     registerType(typeRegistration);
     registerNodeCateogry(LOGICAL_EXPRESSION, NodeCategory.ExpressionToken, new EmptySuggestionGenerator());  

@@ -93,7 +93,7 @@ export class BinaryOperator extends SplootNode {
     typeRegistration.childSets = {};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
-    ], NodeAttachmentLocation.SIDE);
+    ]);
   
     registerType(typeRegistration);
     registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator()); 

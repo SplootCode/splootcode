@@ -98,7 +98,12 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       if (block.leftBreadcrumbChildSet) {
         shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} onClick={onClickHandler} />
       } else {
-        shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" onClick={onClickHandler} />
+        if (block.layout.small) {
+          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4" onClick={onClickHandler} />
+          internalLeftPos = leftPos + 8;
+        } else {
+          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" onClick={onClickHandler} />
+        }
       }
     }
 

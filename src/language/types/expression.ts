@@ -145,7 +145,7 @@ export class SplootExpression extends SplootNode {
     typeRegistration.childSets = {'tokens': NodeCategory.ExpressionToken};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens'),    
-    ], NodeAttachmentLocation.SIDE);
+    ]);
   
     registerType(typeRegistration);
     // When needed create the expression while autocompleting the expresison token.

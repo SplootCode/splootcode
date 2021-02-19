@@ -22,12 +22,12 @@ export enum NodeAttachmentLocation {
 export class NodeLayout {
   color: HighlightColorCategory;
   components: LayoutComponent[];
-  attachment: NodeAttachmentLocation;
+  small: boolean;
 
-  constructor(color: HighlightColorCategory, layoutComponents: LayoutComponent[], attachment:NodeAttachmentLocation = NodeAttachmentLocation.SIDE) {
+  constructor(color: HighlightColorCategory, layoutComponents: LayoutComponent[], small: boolean = false) {
     this.color = color;
-    this.attachment = attachment,
     this.components = layoutComponents;
+    this.small = small;
   }
 }
 
@@ -39,7 +39,6 @@ export enum LayoutComponentType {
   CHILD_SET_INLINE,
   CHILD_SET_TREE_BRACKETS,
   CHILD_SET_TREE,
-  CHILD_SET_ATTACH_LEFT,
   CHILD_SET_ATTACH_RIGHT,
   CHILD_SET_TOKEN_LIST,
   CHILD_SET_BREADCRUMBS,
