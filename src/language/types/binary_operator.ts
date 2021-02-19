@@ -31,16 +31,16 @@ const OPERATORS = {
   '+': {display: '+', precedence: 120, key: '+', searchTerms: ['add', 'plus'], description: 'add'},
   '-': {display: '-', precedence: 120, key: '-', searchTerms: ['minus', 'subtract']}, description: 'minus',
   '/': {display: '÷', precedence: 130, key: '/', searchTerms: ['divide', 'divided by', 'division'], description: 'divide'},
-  '===': {display: '===', precedence: 90, key: '===', searchTerms: ['equals', 'equal', '=='], description: 'is equal to'},
-  '!==': {display: '!==', precedence: 90, key: '!==', searchTerms: ['not equals', 'equal', '!='], description: 'is not equal to'},
-  '&&': {display: '&&', precedence: 50, key: '&&', searchTerms: ['and'], description: 'AND'},
-  '||': {display: '||', precedence: 40, key: '||', searchTerms: ['or'], description: 'OR'},
-  '|': {display: '|', precedence: 60, key: '|', searchTerms: ['bitwise OR'], description: 'bitwise OR'},
-  '&': {display: '&', precedence: 80, key: '&', searchTerms: ['bitwise AND'], description: 'bitwise AND'},
+  '===': {display: '=', precedence: 90, key: '===', searchTerms: ['equals', 'equal', '=='], description: 'is equal to'},
+  '!==': {display: '≠', precedence: 90, key: '!==', searchTerms: ['not equals', 'equal', '!='], description: 'is not equal to'},
+  '&&': {display: 'and', precedence: 50, key: '&&', searchTerms: ['and'], description: 'AND'},
+  '||': {display: 'or', precedence: 40, key: '||', searchTerms: ['or'], description: 'OR'},
+  '|': {display: 'bitwise-or', precedence: 60, key: '|', searchTerms: ['bitwise OR'], description: 'bitwise OR'},
+  '&': {display: 'bitwise-and', precedence: 80, key: '&', searchTerms: ['bitwise AND'], description: 'bitwise AND'},
   '<': {display: '<', precedence: 100, key: '<', searchTerms: ['less than'], description: 'is less than'},
-  '<=': {display: '<=', precedence: 100, key: '<=', searchTerms: ['less than equal'], description: 'is less than or equal to'},
+  '<=': {display: '≤', precedence: 100, key: '<=', searchTerms: ['less than equal'], description: 'is less than or equal to'},
   '>': {display: '>', precedence: 100, key: '>', searchTerms: ['greater than'], description: 'is greater than'},
-  '>=': {display: '>=', precedence: 100, key: '>=', searchTerms: ['greater than equal'], description: 'is greater than or equal to'},
+  '>=': {display: '≥', precedence: 100, key: '>=', searchTerms: ['greater than equal'], description: 'is greater than or equal to'},
 }
 
 class Generator implements SuggestionGenerator {
@@ -85,6 +85,12 @@ export class BinaryOperator extends SplootNode {
     return node;
   }
 
+  getNodeLayout() {
+    return new NodeLayout(HighlightColorCategory.OPERATOR, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, OPERATORS[this.getOperator()].display),
+    ], true)
+  }
+
   static register() {
     let typeRegistration = new TypeRegistration();
     typeRegistration.typeName = BINARY_OPERATOR;
@@ -93,7 +99,7 @@ export class BinaryOperator extends SplootNode {
     typeRegistration.childSets = {};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
-    ]);
+    ], true);
   
     registerType(typeRegistration);
     registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator()); 

@@ -47,6 +47,13 @@ export class LogicalExpression extends SplootNode {
     return node;
   }
 
+  getNodeLayout() {
+    return new NodeLayout(HighlightColorCategory.OPERATOR, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, this.getOperator() === '&&' ? 'AND' : 'OR'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
+    ]);
+  }
+
   static register() {
     let typeRegistration = new TypeRegistration();
     typeRegistration.typeName = LOGICAL_EXPRESSION;
