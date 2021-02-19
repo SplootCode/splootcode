@@ -19,6 +19,8 @@ import { NullLiteral, NumericLiteral, StringLiteral } from "./types/literals";
 import { LogicalExpression } from "./types/logical_expression";
 import { LookupExpression } from "./types/lookup_expression";
 import { MemberExpression } from "./types/member_expression";
+import { ObjectExpression } from "./types/object_expression";
+import { ObjectProperty } from "./types/object_property";
 import { VariableDeclaration } from "./types/variable_declaration";
 import { VariableReference } from "./types/variable_reference";
 
@@ -45,6 +47,8 @@ export function loadTypes() {
   NumericLiteral.register();
   NullLiteral.register();
   ListExpression.register();
+  ObjectExpression.register();
+  ObjectProperty.register();
   
   SplootHtmlDocument.register();
   SplootHtmlAttribute.register();

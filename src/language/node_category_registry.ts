@@ -15,6 +15,7 @@ export enum NodeCategory {
     DeclaredIdentifier,
     Expression,
     ExpressionToken,
+    ObjectPropertyDeclaration,
 }
 
 export interface SuggestionGenerator {
