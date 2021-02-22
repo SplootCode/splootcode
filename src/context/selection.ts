@@ -47,7 +47,7 @@ export class NodeSelection {
   }
 
   @computed get selectedNode() {
-    if (!this.cursor || this.state) {
+    if (!this.cursor || !this.state) {
       return null;
     }
     return this.cursor.selectedNode();
@@ -165,6 +165,12 @@ export class NodeSelection {
   insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
     // Insert node will also update the render positions.
     listBlock.childSet.insertNode(node, index);
+  }
+
+  insertNodeAtCurrentCursor(node: SplootNode) {
+    if (this.isCursor()) {
+      this.insertNode(this.cursor.listBlock, this.cursor.index, node);
+    }
   }
 
   @action
