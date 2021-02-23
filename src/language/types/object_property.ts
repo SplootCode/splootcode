@@ -8,6 +8,7 @@ import { ExpressionKind, ObjectPropertyKind } from "ast-types/gen/kinds";
 import { SplootExpression } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
+import { ObjectExpression, OBJECT_EXPRESSION } from "./object_expression";
 
 export const OBJECT_PROPERTY = 'OBJECT_PROPERTY';
 
@@ -68,6 +69,11 @@ export class ObjectProperty extends SplootNode {
       new LayoutComponent(LayoutComponentType.PROPERTY, 'key'),
         new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
     ], true);
+    typeRegistration.pasteAdapters[OBJECT_EXPRESSION] = (node: SplootNode) => {
+      let obj = new ObjectExpression(null);
+      obj.getProperties().addChild(node);
+      return obj;
+    };
   
     registerType(typeRegistration);
     registerNodeCateogry(OBJECT_PROPERTY, NodeCategory.ObjectPropertyDeclaration, new Generator());

@@ -82,6 +82,11 @@ export class InlineFunctionDeclaration extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
 
     registerType(typeRegistration);
     registerNodeCateogry(INLINE_FUNCTION_DECLARATION, NodeCategory.ExpressionToken, new Generator());

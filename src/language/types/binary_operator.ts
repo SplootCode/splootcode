@@ -3,6 +3,7 @@ import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
 import { HighlightColorCategory } from "../../layout/colors";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 
 export const BINARY_OPERATOR = 'BINARY_OPERATOR';
 
@@ -100,6 +101,11 @@ export class BinaryOperator extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
     ], true);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator()); 

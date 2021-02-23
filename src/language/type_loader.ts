@@ -1,3 +1,4 @@
+import { typeRegistry } from "./lib/loader";
 import { Assignment } from "./types/assignment";
 import { AsyncFunctionDeclaration } from "./types/async_function";
 import { AwaitExpression } from "./types/await_expression";
@@ -23,6 +24,7 @@ import { ObjectExpression } from "./types/object_expression";
 import { ObjectProperty } from "./types/object_property";
 import { VariableDeclaration } from "./types/variable_declaration";
 import { VariableReference } from "./types/variable_reference";
+import { resolvePasteAdapters } from "./type_registry";
 
 
 export function loadTypes() {
@@ -56,4 +58,7 @@ export function loadTypes() {
   SplootHtmlScriptElement.register();
 
   JavascriptFile.register();
+
+  // Must go at the end
+  resolvePasteAdapters();
 }

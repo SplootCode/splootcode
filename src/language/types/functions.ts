@@ -10,6 +10,7 @@ import { FunctionDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
 import { DeclaredIdentifier } from "./declared_identifier";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 
 export const FUNCTION_DECLARATION = 'FUNCTION_DECLARATION';
 
@@ -109,6 +110,11 @@ export class FunctionDeclaration extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
+    functionType.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(functionType);
     registerNodeCateogry(FUNCTION_DECLARATION, NodeCategory.Statement, new Generator());

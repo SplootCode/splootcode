@@ -1,12 +1,13 @@
 import uuid from "uuid";
 import { ChildSet, ChildSetType } from "./childset";
-import { NodeCategory } from "./node_category_registry";
+import { isNodeInCategory, NodeCategory } from "./node_category_registry";
 import { NodeMutationType, NodeMutation } from "./mutations/node_mutations";
 import { NodeObserver } from "./observers";
 import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from "./type_registry";
 import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
 import { ASTNode } from "ast-types";
 import { getGlobalScope, Scope } from "./scope/scope";
+import { typeRegistry } from "./lib/loader";
 
 export class ParentReference {
   node: SplootNode;

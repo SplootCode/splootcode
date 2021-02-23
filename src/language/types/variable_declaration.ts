@@ -11,6 +11,7 @@ import { ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
 import { VariableDefinition } from "../lib/loader";
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "./declared_identifier";
 import { HighlightColorCategory } from "../../layout/colors";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION';
 
@@ -84,6 +85,11 @@ export class VariableDeclaration extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'init'),
     ]);
+    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(VARIABLE_DECLARATION, NodeCategory.Statement, new Generator());

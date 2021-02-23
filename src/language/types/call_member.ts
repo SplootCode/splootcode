@@ -134,6 +134,11 @@ export class CallMember extends SplootNode {
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
 
     registerType(typeRegistration);
     registerNodeCateogry(CALL_MEMBER, NodeCategory.ExpressionToken, new Generator());

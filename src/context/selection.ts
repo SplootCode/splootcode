@@ -6,9 +6,6 @@ import { NodeBlock } from "../layout/rendered_node";
 import { InsertBoxData } from "./insert_box";
 import { NodeCategory } from "../language/node_category_registry";
 import { SplootExpression } from "../language/types/expression";
-import { globalMutationDispatcher } from "../language/mutations/mutation_dispatcher";
-import { ChildSetMutation, ChildSetMutationType } from "../language/mutations/child_set_mutations";
-
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -206,6 +203,12 @@ export class NodeSelection {
 
   setState(newState: SelectionState) {
     this.state = newState;
+  }
+
+  getPasteDestinationCategory() : NodeCategory {
+    if (this.cursor) {
+      return this.cursor.listBlock.childSet.nodeCategory;
+    }
   }
 
   @action

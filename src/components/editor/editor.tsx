@@ -10,7 +10,7 @@ import { JAVASCRIPT_FILE } from '../../language/types/javascript_file';
 import { HTML_DOCUMENT } from '../../language/types/html_document';
 import { ActiveCursor } from './cursor';
 import { Panel } from '../panel';
-import { deserializeNode } from '../../language/type_registry';
+import { adaptNodeToPasteDestination, deserializeNode } from '../../language/type_registry';
 
 const SPLOOT_MIME_TYPE = 'application/splootcodenode';
 
@@ -70,13 +70,18 @@ export class Editor extends React.Component<EditorProps> {
       let splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE);
       if (splootData) {
         let node = deserializeNode(JSON.parse(splootData));
-        if (selection.isCursor()) {
+        let destinationCategory = selection.getPasteDestinationCategory();
+        node = adaptNodeToPasteDestination(node, destinationCategory);
+        if (node && selection.isCursor()) {
           selection.insertNodeAtCurrentCursor(node);
-        } else if (selection.isSingleNode()) {
+          event.preventDefault();
+        } else if (node && selection.isSingleNode()) {
           selection.deleteSelectedNode();
           selection.insertNodeAtCurrentCursor(node);
+          event.preventDefault();
+        } else {
+          // paste failed :(
         }
-        event.preventDefault();
       }
     }
   }

@@ -6,7 +6,7 @@ import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
 import { ExpressionKind, MemberExpressionKind } from "ast-types/gen/kinds";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 
 
@@ -73,6 +73,11 @@ export class LookupExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'object'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'property', 'item'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(LOOKUP_EXPRESSION, NodeCategory.ExpressionToken, new Generator());

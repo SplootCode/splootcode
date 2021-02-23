@@ -10,6 +10,7 @@ import { FunctionDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
 import { DeclaredIdentifier } from "./declared_identifier";
 import { SuggestedNode } from "../suggested_node";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 
 export const ASYNC_FUNCTION_DECLARATION = 'ASYNC_FUNCTION_DECLARATION';
 
@@ -112,6 +113,11 @@ export class AsyncFunctionDeclaration extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
+    functionType.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(functionType);
     registerNodeCateogry(ASYNC_FUNCTION_DECLARATION, NodeCategory.Statement, new Generator());

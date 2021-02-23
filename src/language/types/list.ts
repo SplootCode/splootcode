@@ -80,6 +80,11 @@ export class ListExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'values'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(LIST_EXPRESSION, NodeCategory.ExpressionToken, new Generator());

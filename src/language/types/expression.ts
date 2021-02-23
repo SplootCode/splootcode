@@ -2,13 +2,14 @@ import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator, getAutocompleteFunctionsForCategory } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator, getAutocompleteFunctionsForCategory } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
-import { ASTNode } from "ast-types";
 import { BinaryOperator, BINARY_OPERATOR } from "./binary_operator";
 import { ExpressionKind, UnaryExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { typeRegistry } from "../lib/loader";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION';
@@ -146,6 +147,11 @@ export class SplootExpression extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens'),    
     ]);
+    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(typeRegistration);
     // When needed create the expression while autocompleting the expresison token.

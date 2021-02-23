@@ -6,7 +6,7 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { HighlightColorCategory } from "../../layout/colors";
 import { ChildSet, ChildSetType } from "../childset";
 import { ExpressionKind } from "ast-types/gen/kinds";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 
 export const LOGICAL_EXPRESSION = 'LOGICAL_EXPRESSION';
 
@@ -64,6 +64,11 @@ export class LogicalExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(LOGICAL_EXPRESSION, NodeCategory.ExpressionToken, new EmptySuggestionGenerator());  

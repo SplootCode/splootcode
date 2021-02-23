@@ -35,6 +35,7 @@ export class EmptySuggestionGenerator implements SuggestionGenerator {
 
 const CategoryMap = new Map<NodeCategory, Set<string>>();
 const AutocompleteFunctionMap = new Map<NodeCategory, Set<SuggestionGenerator>>();
+const TypeToCategoryMap = new Map<string, Set<NodeCategory>>();
 
 export function registerNodeCateogry(nodeType: string, category: NodeCategory, autocomplete: SuggestionGenerator) {
   if (!CategoryMap.has(category)) {
@@ -45,7 +46,15 @@ export function registerNodeCateogry(nodeType: string, category: NodeCategory, a
   }
   CategoryMap.get(category).add(nodeType);
   AutocompleteFunctionMap.get(category).add(autocomplete);
+  if (!TypeToCategoryMap.has(nodeType)) {
+    TypeToCategoryMap.set(nodeType, new Set<NodeCategory>());
+  }
+  TypeToCategoryMap.get(nodeType).add(category);
 };
+
+export function getNodeCategoriesForType(typeName: string) : Set<NodeCategory> {
+  return TypeToCategoryMap.get(typeName);
+}
 
 export function getNodesForCategory(category: NodeCategory) {
   return CategoryMap.get(category);
