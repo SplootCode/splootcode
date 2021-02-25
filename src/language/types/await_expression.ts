@@ -9,6 +9,7 @@ import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ASTNode } from "ast-types";
 import { ExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const AWAIT_EXPRESSION = 'AWAIT_EXPRESSION';
 
@@ -26,7 +27,7 @@ class Generator implements SuggestionGenerator {
 
 }
 
-export class AwaitExpression extends SplootNode {
+export class AwaitExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, AWAIT_EXPRESSION);
     this.addChildSet('expression', ChildSetType.Single, NodeCategory.Expression);
@@ -38,7 +39,7 @@ export class AwaitExpression extends SplootNode {
   }
 
   generateJsAst() : ASTNode {
-    let expression = this.getExpression().getChild(0).generateJsAst() as ExpressionKind;
+    let expression = (this.getExpression().getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     return recast.types.builders.awaitExpression(expression);
   }
 

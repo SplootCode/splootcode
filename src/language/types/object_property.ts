@@ -9,6 +9,7 @@ import { SplootExpression } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
 import { ObjectExpression, OBJECT_EXPRESSION } from "./object_expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const OBJECT_PROPERTY = 'OBJECT_PROPERTY';
 
@@ -48,7 +49,7 @@ export class ObjectProperty extends SplootNode {
 
   generateJsAst() : ObjectPropertyKind {
     let key = recast.types.builders.identifier(this.getKey());
-    let value = this.getValue().getChild(0).generateJsAst() as ExpressionKind;
+    let value = (this.getValue().getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     let property = recast.types.builders.objectProperty(key, value);
     return property;
   }

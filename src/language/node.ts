@@ -122,9 +122,9 @@ export class SplootNode {
     this.mutationObservers.push(observer);
   }
 
-  generateJsAst() : ASTNode {
-    console.warn('Missing generateJsAst implementation for: ', this.type);
-    return null;
+  generateCodeString() : string {
+    console.warn('Missing generateCodeString implementation for: ', this.type);
+    return '';
   }
 
   getNodeLayout() : NodeLayout {

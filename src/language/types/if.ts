@@ -10,6 +10,7 @@ import { ASTNode } from "ast-types";
 import { ExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const IF_STATEMENT = 'IF_STATEMENT';
 
@@ -65,9 +66,9 @@ export class IfStatement extends SplootNode {
   }
 
   generateJsAst() : ASTNode {
-    let test = this.getCondition().getChild(0).generateJsAst() as ExpressionKind;
+    let test = (this.getCondition().getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     let statements = [];
-    this.getTrueBlock().children.forEach((node: SplootNode) => {
+    this.getTrueBlock().children.forEach((node: JavaScriptSplootNode) => {
       let ast = node.generateJsAst();
       if (node.type === SPLOOT_EXPRESSION) {
         ast = recast.types.builders.expressionStatement(ast as ExpressionKind);

@@ -12,6 +12,7 @@ import { VariableDefinition } from "../lib/loader";
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "./declared_identifier";
 import { HighlightColorCategory } from "../../layout/colors";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION';
 
@@ -57,8 +58,8 @@ export class VariableDeclaration extends SplootNode {
   }
 
   generateJsAst() : ASTNode {
-    let id = this.getDeclarationIdentifier().getChild(0).generateJsAst() as IdentifierKind;
-    let init = this.getInit().getChild(0).generateJsAst() as ExpressionKind;
+    let id = (this.getDeclarationIdentifier().getChild(0) as JavaScriptSplootNode).generateJsAst() as IdentifierKind;
+    let init = (this.getInit().getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     let declarator = recast.types.builders.variableDeclarator(id, init);
     return recast.types.builders.variableDeclaration('let', [declarator]);
   }

@@ -56,7 +56,7 @@ export class Editor extends React.Component<EditorProps> {
         let selectedNode = selection.selectedNode;
         if (selectedNode !== null) {
           let jsonNode = JSON.stringify(selectedNode.serialize());
-          let friendlytext = selectedNode.type;
+          let friendlytext = selectedNode.generateCodeString();
           event.clipboardData.setData('text/plain', friendlytext);
           event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode);
           event.preventDefault();

@@ -7,6 +7,7 @@ import { SuggestedNode } from "../suggested_node";
 import { IdentifierKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { VariableReference, VARIABLE_REFERENCE } from "./variable_reference";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER';
 
@@ -41,7 +42,7 @@ export class VariableDeclarationGenerator implements SuggestionGenerator {
   }
 }
 
-export class DeclaredIdentifier extends SplootNode {
+export class DeclaredIdentifier extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, DECLARED_IDENTIFIER);
     this.setProperty('identifier', name);

@@ -10,6 +10,7 @@ import { ExpressionKind, UnaryExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { typeRegistry } from "../lib/loader";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION';
@@ -64,7 +65,7 @@ function parseLeaf(tokens: SplootNode[], current: number) : [ExpressionKind, num
       return [expr, newCurrent];
     }
   }
-  return [tokens[current].generateJsAst() as ExpressionKind, current + 1];
+  return [(tokens[current] as JavaScriptSplootNode).generateJsAst() as ExpressionKind, current + 1];
 }
 
 function parseExpression(lhs: ExpressionKind, tokens: SplootNode[], current: number, minPrecedence : number)
@@ -99,7 +100,7 @@ function parseExpression(lhs: ExpressionKind, tokens: SplootNode[], current: num
   return [lhs, current];
 }
 
-export class SplootExpression extends SplootNode {
+export class SplootExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, SPLOOT_EXPRESSION);
     this.addChildSet('tokens', ChildSetType.Many , NodeCategory.ExpressionToken);

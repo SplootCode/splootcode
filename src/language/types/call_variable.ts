@@ -10,6 +10,7 @@ import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 import { FunctionDefinition } from "../lib/loader";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const CALL_VARIABLE = 'CALL_VARIABLE';
 
@@ -40,7 +41,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class CallVariable extends SplootNode {
+export class CallVariable extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string, argCount: number = 0) {
     super(parentReference, CALL_VARIABLE);
     this.setProperty('identifier', name);
@@ -64,7 +65,7 @@ export class CallVariable extends SplootNode {
 
   generateJsAst() : CallExpressionKind {
     let identifier = recast.types.builders.identifier(this.getIdentifier());
-    let args = this.getArguments().children.map((argNode: SplootNode) => {
+    let args = this.getArguments().children.map((argNode: JavaScriptSplootNode) => {
       return argNode.generateJsAst() as ExpressionKind;
     })
     let call = recast.types.builders.callExpression(identifier, args);

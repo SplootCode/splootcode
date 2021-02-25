@@ -7,11 +7,12 @@ import { HighlightColorCategory } from "../../layout/colors";
 import { ChildSet, ChildSetType } from "../childset";
 import { ExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const LOGICAL_EXPRESSION = 'LOGICAL_EXPRESSION';
 
 
-export class LogicalExpression extends SplootNode {
+export class LogicalExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, LOGICAL_EXPRESSION);
     this.setProperty('operator', '');
@@ -32,7 +33,7 @@ export class LogicalExpression extends SplootNode {
 
   generateJsAst() : ExpressionKind {
     let args = this.getArguments();
-    let lhsExpression = args.getChild(0).generateJsAst() as ExpressionKind;
+    let lhsExpression = (args.getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     args.children.slice(1).forEach((child: SplootExpression) => {
       let rhsExpression = child.generateJsAst() as ExpressionKind;
       lhsExpression = recast.types.builders.logicalExpression(this.getOperator(), lhsExpression, rhsExpression);

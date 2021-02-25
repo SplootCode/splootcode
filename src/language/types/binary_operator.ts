@@ -4,6 +4,7 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { SuggestedNode } from "../suggested_node";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const BINARY_OPERATOR = 'BINARY_OPERATOR';
 
@@ -62,7 +63,7 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class BinaryOperator extends SplootNode {
+export class BinaryOperator extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, BINARY_OPERATOR);
     this.setProperty('operator', '');

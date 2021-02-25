@@ -13,6 +13,7 @@ import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { StringLiteral, STRING_LITERAL } from "./literals";
 import { SplootHtmlAttribute } from "./html_attribute";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT';
 
@@ -32,7 +33,7 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class SplootHtmlScriptElement extends SplootNode {
+export class SplootHtmlScriptElement extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, HTML_SCRIPT_ElEMENT);
     this.addChildSet('attributes', ChildSetType.Many, NodeCategory.AttributeNode);
@@ -67,7 +68,7 @@ export class SplootHtmlScriptElement extends SplootNode {
 
   generateJsAst() : ASTNode {
     let statements = [];
-    this.getContent().children.forEach((node : SplootNode) => {
+    this.getContent().children.forEach((node : JavaScriptSplootNode) => {
       let result = null;
       if (node.type === SPLOOT_EXPRESSION) {
         let expressionNode = node.generateJsAst() as ExpressionKind;

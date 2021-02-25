@@ -8,6 +8,7 @@ import { IdentifierKind } from "ast-types/gen/kinds";
 import { VariableDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const VARIABLE_REFERENCE = 'VARIABLE_REFERENCE';
@@ -56,7 +57,7 @@ export class VariableReferenceGenerator implements SuggestionGenerator {
   }
 }
 
-export class VariableReference extends SplootNode {
+export class VariableReference extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, VARIABLE_REFERENCE);
     this.setProperty('identifier', name);

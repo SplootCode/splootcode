@@ -8,6 +8,7 @@ import { ExpressionKind, FunctionExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const INLINE_FUNCTION_DECLARATION = 'INLINE_FUNCTION_DECLARATION';
 
@@ -25,7 +26,7 @@ class Generator implements SuggestionGenerator {
 }
 
 
-export class InlineFunctionDeclaration extends SplootNode {
+export class InlineFunctionDeclaration extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, INLINE_FUNCTION_DECLARATION);
     this.addChildSet('params', ChildSetType.Many, NodeCategory.DeclaredIdentifier);
@@ -42,7 +43,7 @@ export class InlineFunctionDeclaration extends SplootNode {
 
   generateJsAst() : FunctionExpressionKind {
     let statements = [];
-    this.getBody().children.forEach((node: SplootNode) => {
+    this.getBody().children.forEach((node: JavaScriptSplootNode) => {
       let ast = node.generateJsAst();
       if (node.type === SPLOOT_EXPRESSION) {
         ast = recast.types.builders.expressionStatement(ast as ExpressionKind);

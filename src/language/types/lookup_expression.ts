@@ -8,6 +8,7 @@ import { SuggestedNode } from "../suggested_node";
 import { ExpressionKind, MemberExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const LOOKUP_EXPRESSION = 'LOOKUP_EXPRESSION';
@@ -26,7 +27,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class LookupExpression extends SplootNode {
+export class LookupExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, LOOKUP_EXPRESSION);
     this.addChildSet('object', ChildSetType.Single , NodeCategory.ExpressionToken);

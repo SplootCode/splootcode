@@ -8,6 +8,7 @@ import { ObjectExpressionKind, ObjectPropertyKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const OBJECT_EXPRESSION = 'OBJECT_EXPRESSION';
 
@@ -23,7 +24,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class ObjectExpression extends SplootNode {
+export class ObjectExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, OBJECT_EXPRESSION);
     this.addChildSet('properties', ChildSetType.Many, NodeCategory.ObjectPropertyDeclaration);
@@ -34,7 +35,7 @@ export class ObjectExpression extends SplootNode {
   }
 
   generateJsAst() : ObjectExpressionKind {
-    let properties = this.getProperties().children.map((argNode: SplootNode) => {
+    let properties = this.getProperties().children.map((argNode: JavaScriptSplootNode) => {
       return argNode.generateJsAst() as ObjectPropertyKind;
     })
     let objExpression = recast.types.builders.objectExpression(properties);

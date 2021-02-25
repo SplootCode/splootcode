@@ -6,6 +6,7 @@ import { registerNodeCateogry, NodeCategory, EmptySuggestionGenerator, Suggestio
 import { SuggestedNode } from '../suggested_node';
 import { HighlightColorCategory } from '../../layout/colors';
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const STRING_LITERAL = 'STRING_LITERAL';
@@ -26,7 +27,7 @@ class StringGenerator implements SuggestionGenerator {
   }
 }
 
-export class StringLiteral extends SplootNode {
+export class StringLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, value: string) {
     super(parentReference, STRING_LITERAL);
     this.properties = {value: value};
@@ -81,7 +82,7 @@ class NumberGenerator implements SuggestionGenerator {
 }
 
 
-export class NumericLiteral extends SplootNode {
+export class NumericLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, value: number) {
     super(parentReference, NUMERIC_LITERAL);
     this.properties = {value: value};
@@ -128,7 +129,7 @@ class NullGenerator implements SuggestionGenerator {
   }
 }
 
-export class NullLiteral extends SplootNode {
+export class NullLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, NULL_LITERAL);
     this.properties = {};

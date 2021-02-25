@@ -11,6 +11,7 @@ import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { CALL_MEMBER } from "./call_member";
 import { STRING_LITERAL } from "./literals";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION';
@@ -58,7 +59,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class MemberExpression extends SplootNode {
+export class MemberExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, MEMBER_EXPRESSION);
     this.addChildSet('object', ChildSetType.Single , NodeCategory.ExpressionToken);
