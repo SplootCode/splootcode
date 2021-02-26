@@ -6,6 +6,8 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { SuggestedNode } from "../suggested_node";
 import { IdentifierKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { VariableReference, VARIABLE_REFERENCE } from "./variable_reference";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER';
 
@@ -40,7 +42,7 @@ export class VariableDeclarationGenerator implements SuggestionGenerator {
   }
 }
 
-export class DeclaredIdentifier extends SplootNode {
+export class DeclaredIdentifier extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, DECLARED_IDENTIFIER);
     this.setProperty('identifier', name);
@@ -72,6 +74,11 @@ export class DeclaredIdentifier extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
     ]);
+    typeRegistration.pasteAdapters[VARIABLE_REFERENCE] = (node: SplootNode) => {
+      let varDec = node as DeclaredIdentifier;
+      let newNode = new VariableReference(null, varDec.getName());
+      return newNode;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(DECLARED_IDENTIFIER, NodeCategory.DeclaredIdentifier, new VariableDeclarationGenerator());

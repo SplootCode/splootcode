@@ -8,6 +8,8 @@ import { SuggestedNode } from "../suggested_node";
 import { SplootExpression } from "./expression";
 import { ExpressionKind, IdentifierKind, MemberExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const ASSIGNMENT = 'ASSIGNMENT';
@@ -25,7 +27,7 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class Assignment extends SplootNode {
+export class Assignment extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, ASSIGNMENT);
     this.addChildSet('left', ChildSetType.Single, NodeCategory.Expression);
@@ -43,8 +45,8 @@ export class Assignment extends SplootNode {
   }
 
   generateJsAst() {
-    let left = this.getLeft().children[0].generateJsAst() as IdentifierKind | MemberExpressionKind;
-    let right = this.getRight().children[0].generateJsAst() as ExpressionKind;
+    let left = (this.getLeft().children[0] as JavaScriptSplootNode).generateJsAst() as IdentifierKind | MemberExpressionKind;
+    let right = (this.getRight().children[0] as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     return recast.types.builders.assignmentExpression('=', left, right);
   }
 
@@ -71,6 +73,11 @@ export class Assignment extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'set to'),
     ]);
+    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(ASSIGNMENT, NodeCategory.ExpressionToken, new Generator());

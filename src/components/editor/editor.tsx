@@ -10,7 +10,9 @@ import { JAVASCRIPT_FILE } from '../../language/types/javascript_file';
 import { HTML_DOCUMENT } from '../../language/types/html_document';
 import { ActiveCursor } from './cursor';
 import { Panel } from '../panel';
+import { adaptNodeToPasteDestination, deserializeNode } from '../../language/type_registry';
 
+const SPLOOT_MIME_TYPE = 'application/splootcodenode';
 
 interface EditorProps {
   block: NodeBlock;
@@ -47,7 +49,47 @@ export class Editor extends React.Component<EditorProps> {
     </div>;
   }
 
+  clipboardHandler = (event: ClipboardEvent) => {
+    let {selection} = this.props;
+    if (event.type === 'copy' || event.type === 'cut') {
+      if(event.target instanceof SVGElement) {
+        let selectedNode = selection.selectedNode;
+        if (selectedNode !== null) {
+          let jsonNode = JSON.stringify(selectedNode.serialize());
+          // Maybe change to selectedNode.generateCodeString()
+          // once we have paste of text code supported.
+          let friendlytext = jsonNode;
+          event.clipboardData.setData('text/plain', friendlytext);
+          event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode);
+          event.preventDefault();
+        }
+      }
+    }
+    if (event.type === 'cut') {
+      selection.deleteSelectedNode();
+    }
+    if (event.type === 'paste') {
+      let splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE);
+      if (splootData) {
+        let node = deserializeNode(JSON.parse(splootData));
+        let destinationCategory = selection.getPasteDestinationCategory();
+        node = adaptNodeToPasteDestination(node, destinationCategory);
+        if (node && selection.isCursor()) {
+          selection.insertNodeAtCurrentCursor(node);
+          event.preventDefault();
+        } else if (node && selection.isSingleNode()) {
+          selection.deleteSelectedNode();
+          selection.insertNodeAtCurrentCursor(node);
+          event.preventDefault();
+        } else {
+          // paste failed :(
+        }
+      }
+    }
+  }
+
   keyHandler = (event: KeyboardEvent) => {
+    let { selection } = this.props;
     if (event.isComposing) {
       // IME composition
       return;
@@ -56,7 +98,7 @@ export class Editor extends React.Component<EditorProps> {
       this.props.selection.deleteSelectedNode();
     }
     if (event.key === 'Tab') {
-      this.props.selection.moveCursorToNextInsert();
+      selection.moveCursorToNextInsert();
       event.preventDefault();
       event.cancelBubble = true;
     }
@@ -64,9 +106,15 @@ export class Editor extends React.Component<EditorProps> {
 
   componentDidMount() {
     document.addEventListener('keydown', this.keyHandler);
+    document.addEventListener('cut', this.clipboardHandler);
+    document.addEventListener('copy', this.clipboardHandler);
+    document.addEventListener('paste', this.clipboardHandler);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyHandler);
+    document.removeEventListener('cut', this.clipboardHandler);
+    document.removeEventListener('copy', this.clipboardHandler);
+    document.removeEventListener('paste', this.clipboardHandler);
   }
 }

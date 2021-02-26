@@ -5,6 +5,8 @@ import { SplootNode, ParentReference } from '../node';
 import { registerNodeCateogry, NodeCategory, EmptySuggestionGenerator, SuggestionGenerator } from '../node_category_registry';
 import { SuggestedNode } from '../suggested_node';
 import { HighlightColorCategory } from '../../layout/colors';
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const STRING_LITERAL = 'STRING_LITERAL';
@@ -25,7 +27,7 @@ class StringGenerator implements SuggestionGenerator {
   }
 }
 
-export class StringLiteral extends SplootNode {
+export class StringLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, value: string) {
     super(parentReference, STRING_LITERAL);
     this.properties = {value: value};
@@ -51,6 +53,11 @@ export class StringLiteral extends SplootNode {
     stringLiteral.layout = new NodeLayout(HighlightColorCategory.LITERAL_STRING, [
       new LayoutComponent(LayoutComponentType.STRING_LITERAL, 'value'),
     ]);
+    stringLiteral.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
     registerType(stringLiteral);
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode, new StringGenerator());
@@ -75,7 +82,7 @@ class NumberGenerator implements SuggestionGenerator {
 }
 
 
-export class NumericLiteral extends SplootNode {
+export class NumericLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, value: number) {
     super(parentReference, NUMERIC_LITERAL);
     this.properties = {value: value};
@@ -101,13 +108,16 @@ export class NumericLiteral extends SplootNode {
     numericLiteral.layout = new NodeLayout(HighlightColorCategory.LITERAL_NUMBER, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'value'),
     ]);
+    numericLiteral.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
     registerType(numericLiteral);
     registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.ExpressionToken, new NumberGenerator());
     registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.AttributeValueNode, new NumberGenerator());
   }
 }
-
-
 
 class NullGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
@@ -119,7 +129,7 @@ class NullGenerator implements SuggestionGenerator {
   }
 }
 
-export class NullLiteral extends SplootNode {
+export class NullLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, NULL_LITERAL);
     this.properties = {};
@@ -141,6 +151,11 @@ export class NullLiteral extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'null'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
     registerType(typeRegistration);
     registerNodeCateogry(NULL_LITERAL, NodeCategory.ExpressionToken, new NullGenerator());
   }

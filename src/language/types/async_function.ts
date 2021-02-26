@@ -1,8 +1,9 @@
 import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
+import { JavaScriptSplootNode } from "../javascript_node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
 import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
@@ -10,6 +11,7 @@ import { FunctionDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
 import { DeclaredIdentifier } from "./declared_identifier";
 import { SuggestedNode } from "../suggested_node";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 
 export const ASYNC_FUNCTION_DECLARATION = 'ASYNC_FUNCTION_DECLARATION';
 
@@ -25,7 +27,7 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class AsyncFunctionDeclaration extends SplootNode {
+export class AsyncFunctionDeclaration extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, ASYNC_FUNCTION_DECLARATION);
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.DeclaredIdentifier);
@@ -84,7 +86,7 @@ export class AsyncFunctionDeclaration extends SplootNode {
   generateJsAst() : FunctionDeclarationKind {
     let statements = [];
     this.getBody().children.forEach((node: SplootNode) => {
-      let ast = node.generateJsAst();
+      let ast = (node as JavaScriptSplootNode).generateJsAst();
       if (node.type === SPLOOT_EXPRESSION) {
         ast = recast.types.builders.expressionStatement(ast as ExpressionKind);
       }
@@ -93,7 +95,7 @@ export class AsyncFunctionDeclaration extends SplootNode {
       }
     });
     let block = recast.types.builders.blockStatement(statements);
-    let identifier = this.getIdentifier().getChild(0).generateJsAst() as IdentifierKind;
+    let identifier = (this.getIdentifier().getChild(0) as JavaScriptSplootNode).generateJsAst() as IdentifierKind;
     let result = recast.types.builders.functionDeclaration(identifier, [], block);
     result.async = true;
     return result;
@@ -112,6 +114,11 @@ export class AsyncFunctionDeclaration extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'params'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
+    functionType.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(functionType);
     registerNodeCateogry(ASYNC_FUNCTION_DECLARATION, NodeCategory.Statement, new Generator());

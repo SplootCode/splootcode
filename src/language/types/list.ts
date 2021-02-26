@@ -8,6 +8,7 @@ import { ArrayExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const LIST_EXPRESSION = 'LIST_EXPRESSION';
 
@@ -23,7 +24,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class ListExpression extends SplootNode {
+export class ListExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, LIST_EXPRESSION);
     this.addChildSet('values', ChildSetType.Many, NodeCategory.Expression);
@@ -34,7 +35,7 @@ export class ListExpression extends SplootNode {
   }
 
   generateJsAst() : ArrayExpressionKind{
-    let values = this.getValues().children.map((argNode: SplootNode) => {
+    let values = this.getValues().children.map((argNode: JavaScriptSplootNode) => {
       return argNode.generateJsAst() as ExpressionKind;
     })
     let listInit = recast.types.builders.arrayExpression(values);
@@ -80,6 +81,11 @@ export class ListExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'values'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(LIST_EXPRESSION, NodeCategory.ExpressionToken, new Generator());

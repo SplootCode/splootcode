@@ -6,12 +6,13 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { HighlightColorCategory } from "../../layout/colors";
 import { ChildSet, ChildSetType } from "../childset";
 import { ExpressionKind } from "ast-types/gen/kinds";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const LOGICAL_EXPRESSION = 'LOGICAL_EXPRESSION';
 
 
-export class LogicalExpression extends SplootNode {
+export class LogicalExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, LOGICAL_EXPRESSION);
     this.setProperty('operator', '');
@@ -32,7 +33,7 @@ export class LogicalExpression extends SplootNode {
 
   generateJsAst() : ExpressionKind {
     let args = this.getArguments();
-    let lhsExpression = args.getChild(0).generateJsAst() as ExpressionKind;
+    let lhsExpression = (args.getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
     args.children.slice(1).forEach((child: SplootExpression) => {
       let rhsExpression = child.generateJsAst() as ExpressionKind;
       lhsExpression = recast.types.builders.logicalExpression(this.getOperator(), lhsExpression, rhsExpression);
@@ -64,6 +65,11 @@ export class LogicalExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(LOGICAL_EXPRESSION, NodeCategory.ExpressionToken, new EmptySuggestionGenerator());  

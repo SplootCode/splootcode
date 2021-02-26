@@ -8,10 +8,11 @@ import { ASTNode } from "ast-types";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const JAVASCRIPT_FILE = 'JAVASCRIPT_FILE';
 
-export class JavascriptFile extends SplootNode {
+export class JavascriptFile extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, JAVASCRIPT_FILE);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);
@@ -23,7 +24,7 @@ export class JavascriptFile extends SplootNode {
 
   generateJsAst() : ASTNode {
     let statements = [];
-    this.getBody().children.forEach((node : SplootNode) => {
+    this.getBody().children.forEach((node : JavaScriptSplootNode) => {
       let result = null;
       if (node.type === SPLOOT_EXPRESSION) {
         let expressionNode = node.generateJsAst() as ExpressionKind;
@@ -38,6 +39,10 @@ export class JavascriptFile extends SplootNode {
       }
     });
     return recast.types.builders.program(statements);
+  }
+
+  generateCodeString() : string {
+    return recast.print(this.generateJsAst()).code;
   }
 
   clean() {

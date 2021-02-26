@@ -42,7 +42,7 @@ export class SplootHtmlAttribute extends SplootNode {
     return this.getChildSet('value');
   }
 
-  getValueAsString() {
+  generateCodeString() {
     if (this.getValue().getCount() === 0) {
       return '';
     }

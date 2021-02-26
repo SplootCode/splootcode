@@ -6,9 +6,6 @@ import { NodeBlock } from "../layout/rendered_node";
 import { InsertBoxData } from "./insert_box";
 import { NodeCategory } from "../language/node_category_registry";
 import { SplootExpression } from "../language/types/expression";
-import { globalMutationDispatcher } from "../language/mutations/mutation_dispatcher";
-import { ChildSetMutation, ChildSetMutationType } from "../language/mutations/child_set_mutations";
-
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -47,7 +44,7 @@ export class NodeSelection {
   }
 
   @computed get selectedNode() {
-    if (!this.cursor || this.state) {
+    if (!this.cursor || !this.state) {
       return null;
     }
     return this.cursor.selectedNode();
@@ -167,6 +164,12 @@ export class NodeSelection {
     listBlock.childSet.insertNode(node, index);
   }
 
+  insertNodeAtCurrentCursor(node: SplootNode) {
+    if (this.isCursor()) {
+      this.insertNode(this.cursor.listBlock, this.cursor.index, node);
+    }
+  }
+
   @action
   wrapNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode, childSetId: string) {
     // remove child at index
@@ -200,6 +203,12 @@ export class NodeSelection {
 
   setState(newState: SelectionState) {
     this.state = newState;
+  }
+
+  getPasteDestinationCategory() : NodeCategory {
+    if (this.cursor) {
+      return this.cursor.listBlock.childSet.nodeCategory;
+    }
   }
 
   @action

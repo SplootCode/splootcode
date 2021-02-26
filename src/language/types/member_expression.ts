@@ -7,10 +7,11 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { SuggestedNode } from "../suggested_node";
 import { VariableReference, VariableReferenceGenerator, VARIABLE_REFERENCE } from "./variable_reference";
 import { ExpressionKind, MemberExpressionKind } from "ast-types/gen/kinds";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { CALL_MEMBER } from "./call_member";
 import { STRING_LITERAL } from "./literals";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION';
@@ -58,7 +59,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class MemberExpression extends SplootNode {
+export class MemberExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, MEMBER_EXPRESSION);
     this.addChildSet('object', ChildSetType.Single , NodeCategory.ExpressionToken);
@@ -113,6 +114,11 @@ export class MemberExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(MEMBER_EXPRESSION, NodeCategory.ExpressionToken, new Generator());

@@ -50,7 +50,7 @@ export class SplootHtmlElement extends SplootNode {
     this.getAttributes().children.forEach((childNode) => {
       if (childNode.type === 'HTML_ATTRIBUTE') {
         let attrNode = childNode as SplootHtmlAttribute;
-        thisEl.setAttribute(attrNode.getName(), attrNode.getValueAsString());
+        thisEl.setAttribute(attrNode.getName(), attrNode.generateCodeString());
       }
     });
     this.getContent().children.forEach((child: SplootNode) => {
@@ -64,6 +64,13 @@ export class SplootHtmlElement extends SplootNode {
       }
     });
     return thisEl;
+  }
+
+  generateCodeString() : string {
+    let doc = new DOMParser().parseFromString('<!DOCTYPE html>', 'text/html');
+    let result = this.generateHtmlElement(doc);
+    // @ts-ignore
+    return new XMLSerializer().serializeToString(result, true);
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlElement {

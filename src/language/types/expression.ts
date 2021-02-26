@@ -2,13 +2,15 @@ import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator, getAutocompleteFunctionsForCategory } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator, getAutocompleteFunctionsForCategory } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
-import { ASTNode } from "ast-types";
 import { BinaryOperator, BINARY_OPERATOR } from "./binary_operator";
 import { ExpressionKind, UnaryExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
+import { typeRegistry } from "../lib/loader";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION';
@@ -63,7 +65,7 @@ function parseLeaf(tokens: SplootNode[], current: number) : [ExpressionKind, num
       return [expr, newCurrent];
     }
   }
-  return [tokens[current].generateJsAst() as ExpressionKind, current + 1];
+  return [(tokens[current] as JavaScriptSplootNode).generateJsAst() as ExpressionKind, current + 1];
 }
 
 function parseExpression(lhs: ExpressionKind, tokens: SplootNode[], current: number, minPrecedence : number)
@@ -98,7 +100,7 @@ function parseExpression(lhs: ExpressionKind, tokens: SplootNode[], current: num
   return [lhs, current];
 }
 
-export class SplootExpression extends SplootNode {
+export class SplootExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, SPLOOT_EXPRESSION);
     this.addChildSet('tokens', ChildSetType.Many , NodeCategory.ExpressionToken);
@@ -146,6 +148,11 @@ export class SplootExpression extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens'),    
     ]);
+    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+      let scriptEl = new SplootHtmlScriptElement(null);
+      scriptEl.getContent().addChild(node);
+      return scriptEl;
+    }
   
     registerType(typeRegistration);
     // When needed create the expression while autocompleting the expresison token.

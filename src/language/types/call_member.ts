@@ -12,6 +12,7 @@ import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { MEMBER_EXPRESSION } from "./member_expression";
 import { STRING_LITERAL } from "./literals";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const CALL_MEMBER = 'CALL_MEMBER';
@@ -58,7 +59,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class CallMember extends SplootNode {
+export class CallMember extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, CALL_MEMBER);
     this.addChildSet('object', ChildSetType.Single , NodeCategory.ExpressionToken);
@@ -109,7 +110,7 @@ export class CallMember extends SplootNode {
     tempExpr.getTokenSet().addChild(this.getObjectExpressionToken().getChild(0).clone());
     let object = tempExpr.generateJsAst() as ExpressionKind;
     let memberExpression = recast.types.builders.memberExpression(object, member);
-    let args = this.getArguments().children.map((argNode: SplootNode) => {
+    let args = this.getArguments().children.map((argNode: JavaScriptSplootNode) => {
       return argNode.generateJsAst() as ExpressionKind;
     })
     let call = recast.types.builders.callExpression(memberExpression, args);
@@ -134,6 +135,11 @@ export class CallMember extends SplootNode {
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
 
     registerType(typeRegistration);
     registerNodeCateogry(CALL_MEMBER, NodeCategory.ExpressionToken, new Generator());

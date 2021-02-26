@@ -7,6 +7,8 @@ import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, reg
 import { ObjectExpressionKind, ObjectPropertyKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const OBJECT_EXPRESSION = 'OBJECT_EXPRESSION';
 
@@ -22,7 +24,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class ObjectExpression extends SplootNode {
+export class ObjectExpression extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, OBJECT_EXPRESSION);
     this.addChildSet('properties', ChildSetType.Many, NodeCategory.ObjectPropertyDeclaration);
@@ -33,7 +35,7 @@ export class ObjectExpression extends SplootNode {
   }
 
   generateJsAst() : ObjectExpressionKind {
-    let properties = this.getProperties().children.map((argNode: SplootNode) => {
+    let properties = this.getProperties().children.map((argNode: JavaScriptSplootNode) => {
       return argNode.generateJsAst() as ObjectPropertyKind;
     })
     let objExpression = recast.types.builders.objectExpression(properties);
@@ -55,6 +57,11 @@ export class ObjectExpression extends SplootNode {
       new LayoutComponent(LayoutComponentType.KEYWORD, 'object'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'properties'),
     ]);
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(typeRegistration);
     registerNodeCateogry(OBJECT_EXPRESSION, NodeCategory.ExpressionToken, new Generator());

@@ -11,8 +11,8 @@ import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
-import { StringLiteral, STRING_LITERAL } from "./literals";
 import { SplootHtmlAttribute } from "./html_attribute";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT';
 
@@ -32,7 +32,7 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class SplootHtmlScriptElement extends SplootNode {
+export class SplootHtmlScriptElement extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, HTML_SCRIPT_ElEMENT);
     this.addChildSet('attributes', ChildSetType.Many, NodeCategory.AttributeNode);
@@ -52,7 +52,7 @@ export class SplootHtmlScriptElement extends SplootNode {
     this.getAttributes().children.forEach((childNode) => {
       if (childNode.type === 'HTML_ATTRIBUTE') {
         let attrNode = childNode as SplootHtmlAttribute;
-        thisEl.setAttribute(attrNode.getName(), attrNode.getValueAsString());
+        thisEl.setAttribute(attrNode.getName(), attrNode.generateCodeString());
       }
     });
     let jsString = recast.print(this.generateJsAst()).code;
@@ -65,9 +65,16 @@ export class SplootHtmlScriptElement extends SplootNode {
     return thisEl;
   }
 
+  generateCodeString() : string {
+    let doc = new DOMParser().parseFromString('<!DOCTYPE html>', 'text/html');
+    let result = this.generateHtmlElement(doc);
+    // @ts-ignore
+    return new XMLSerializer().serializeToString(result, true);
+  }
+
   generateJsAst() : ASTNode {
     let statements = [];
-    this.getContent().children.forEach((node : SplootNode) => {
+    this.getContent().children.forEach((node : JavaScriptSplootNode) => {
       let result = null;
       if (node.type === SPLOOT_EXPRESSION) {
         let expressionNode = node.generateJsAst() as ExpressionKind;

@@ -7,6 +7,8 @@ import { SuggestedNode } from "../suggested_node";
 import { IdentifierKind } from "ast-types/gen/kinds";
 import { VariableDefinition } from "../lib/loader";
 import { HighlightColorCategory } from "../../layout/colors";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { JavaScriptSplootNode } from "../javascript_node";
 
 
 export const VARIABLE_REFERENCE = 'VARIABLE_REFERENCE';
@@ -55,7 +57,7 @@ export class VariableReferenceGenerator implements SuggestionGenerator {
   }
 }
 
-export class VariableReference extends SplootNode {
+export class VariableReference extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, VARIABLE_REFERENCE);
     this.setProperty('identifier', name);
@@ -85,6 +87,11 @@ export class VariableReference extends SplootNode {
     varType.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
     ]);
+    varType.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
   
     registerType(varType);
     registerNodeCateogry(VARIABLE_REFERENCE, NodeCategory.ExpressionToken, new VariableReferenceGenerator());
