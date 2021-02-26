@@ -41,6 +41,10 @@ export class JavascriptFile extends JavaScriptSplootNode {
     return recast.types.builders.program(statements);
   }
 
+  generateCodeString() : string {
+    return recast.print(this.generateJsAst()).code;
+  }
+
   clean() {
     this.getBody().children.forEach((child: SplootNode, index: number) => {
       if (child.type === SPLOOT_EXPRESSION) {

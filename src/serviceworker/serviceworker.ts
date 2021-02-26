@@ -1,7 +1,5 @@
-import * as recast from "recast";
-
-import { HTML_DOCUMENT, SplootHtmlDocument } from "../language/types/html_document";
-import { JavascriptFile, JAVASCRIPT_FILE } from "../language/types/javascript_file";
+import { HTML_DOCUMENT } from "../language/types/html_document";
+import { JAVASCRIPT_FILE } from "../language/types/javascript_file";
 import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 
@@ -34,12 +32,8 @@ function handleNodeTree(filename: string, serializedNode: SerializedNode) {
     console.warn('Failed to deserialize node tree.');
     return;
   }
-  if (rootNode.type === HTML_DOCUMENT) {
-    let htmlDocument = rootNode as SplootHtmlDocument;
-    cache['/' + filename] = htmlDocument.generateHtml();
-  } else if (rootNode.type === JAVASCRIPT_FILE) {
-    let jsDoc = rootNode as JavascriptFile;
-    cache['/' + filename] = recast.print(jsDoc.generateJsAst()).code;
+  if (rootNode.type === HTML_DOCUMENT || rootNode.type === JAVASCRIPT_FILE) {
+    cache['/' + filename] = rootNode.generateCodeString();
   }
 }
 

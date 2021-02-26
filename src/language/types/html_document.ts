@@ -19,7 +19,7 @@ export class SplootHtmlDocument extends SplootNode {
     return this.getChildSet('body');
   }
 
-  generateHtml() : string {
+  generateCodeString() : string {
     let doc = new DOMParser().parseFromString('<!DOCTYPE html>', 'text/html');
     this.getBody().children.forEach((child: SplootNode) => {
       if (child.type === HTML_ElEMENT) {

@@ -11,7 +11,6 @@ import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
 import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
-import { StringLiteral, STRING_LITERAL } from "./literals";
 import { SplootHtmlAttribute } from "./html_attribute";
 import { JavaScriptSplootNode } from "../javascript_node";
 
@@ -53,7 +52,7 @@ export class SplootHtmlScriptElement extends JavaScriptSplootNode {
     this.getAttributes().children.forEach((childNode) => {
       if (childNode.type === 'HTML_ATTRIBUTE') {
         let attrNode = childNode as SplootHtmlAttribute;
-        thisEl.setAttribute(attrNode.getName(), attrNode.getValueAsString());
+        thisEl.setAttribute(attrNode.getName(), attrNode.generateCodeString());
       }
     });
     let jsString = recast.print(this.generateJsAst()).code;
@@ -64,6 +63,13 @@ export class SplootHtmlScriptElement extends JavaScriptSplootNode {
     jsString = jsString.replace('</script>', '<\\/script>')
     thisEl.appendChild(doc.createTextNode(jsString));
     return thisEl;
+  }
+
+  generateCodeString() : string {
+    let doc = new DOMParser().parseFromString('<!DOCTYPE html>', 'text/html');
+    let result = this.generateHtmlElement(doc);
+    // @ts-ignore
+    return new XMLSerializer().serializeToString(result, true);
   }
 
   generateJsAst() : ASTNode {
