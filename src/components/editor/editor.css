@@ -27,9 +27,10 @@ text {
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: #2d343e;
   --editor-node-block-edge: #13171b;
-  --editor-connector-stroke: #8c99ab;
-  --editor-indented-block-stroke: #888F99;
-  --editor-anchor-dot: #8c99ab;
+  --editor-connector-stroke: #545c67;
+  --editor-connector-label: #767e8a;
+  --editor-indented-block-stroke: #545c67;
+  --editor-anchor-dot: #545c67;
 
   --editor-autcompleted-bg-color: #134777;
   --editor-autcompleted-edge-color: #3191ea;
@@ -40,6 +41,7 @@ text {
   --editor-selected-node-block-edge: #3191ea;
   --editor-selected-node-block-input: #166ab7;
   --editor-selected-connector-stroke: #3191ea;
+  --editor-selected-connector-label: #3191ea;
   --editor-selected-indented-block-stroke: #3191ea;
   --editor-selected-anchor-dot: #3191ea;
 

@@ -112,21 +112,3 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
     }
   }
 }
-
-interface InsertCursorProps {
-  listBlock: RenderedChildSetBlock;
-  index: number;
-  selection: NodeSelection;
-}
-
-class InsertCursor extends React.Component<InsertCursorProps> {
-  render() {
-    return <span onClick={this.onClick}>{ this.props.children }</span>
-  }
-
-  onClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    let { selection, listBlock, index} = this.props;
-    selection.startInsertNode(listBlock, index);
-  }
-}

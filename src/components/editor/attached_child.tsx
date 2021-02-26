@@ -34,7 +34,8 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
 
     // TODO: This is going to break when we have a labeled childset with no contents, no child.
     let bracketLeftPos = (child === null) ? block.x : child.x - 16;
-    let label = <text className="tree-label" x={block.x + 6} y={block.y + 12}>{block.childSetRightAttachLabel}</text>
+    let labelClass = "tree-label " + (isSelected ? "selected" : "");
+    let label = <text className={labelClass} x={block.x + 6} y={block.y + 12}>{block.childSetRightAttachLabel}</text>
     let connectorClass = "tree-connector " + (isSelected ? "selected" : "");
     if (allowInsert) {
       return (

@@ -24,6 +24,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
     let topPos = block.y;
 
     let connectorClass = "tree-connector " + (isSelected ? "selected" : "");
+    let labelClass = "tree-label " + (isSelected ? "selected" : "");
     let anchorClass = "svg-anchor-dot " + (isSelected ? "selected" : "");
     let labels = block.childSetTreeLabels;
     return (
@@ -36,7 +37,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
             let line = null;
             let label = null;
             if (labels.length > idx) {
-              label = <text className="tree-label" x={leftPos + 34} y={nodeBlock.y + 12}>{labels[idx]}</text>
+              label = <text className={labelClass} x={leftPos + 34} y={nodeBlock.y + 12}>{labels[idx]}</text>
             }
             if (idx === 0) {
               line = <line className={connectorClass} x1={leftPos + 8} y1={topPos + 16} x2={nodeBlock.x} y2={topPos + 16} />
@@ -90,6 +91,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
     let nodeCount = block.nodes.length;
     let allowInsert = block.allowInsert();
     let connectorClass = "tree-connector " + (isSelected ? "selected" : "");
+    let labelClass = "tree-label " + (isSelected ? "selected" : "");
     let anchorClass = "svg-anchor-dot " + (isSelected ? "selected" : "");
     let labels = block.childSetTreeLabels;
     return (
@@ -103,7 +105,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
               let line = null;
               let label = null;
               if (labels.length > idx) {
-                label = <text className="tree-label" x={leftPos + 34} y={nodeBlock.y + 12}>{labels[idx]}</text>
+                label = <text className={labelClass} x={leftPos + 34} y={nodeBlock.y + 12}>{labels[idx]}</text>
               }
               if (idx === 0) {
                 line = <line className={connectorClass} x1={leftPos + 8} y1={topPos + 16} x2={nodeBlock.x - 8} y2={topPos + 16} />

@@ -20,10 +20,10 @@
 
 .indented-rule {
   stroke: var(--editor-indented-block-stroke);
-  stroke-width: 1px;
+  stroke-width: 1.4px;
 }
 
 .indented-rule.selected {
   stroke: var(--editor-selected-indented-block-stroke);
-  stroke-width: 1px;
+  stroke-width: 1.4px;
 }
