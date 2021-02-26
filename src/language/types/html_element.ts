@@ -29,7 +29,7 @@ export class SplootHtmlElement extends SplootNode {
   constructor(parentReference: ParentReference, tag: string) {
     super(parentReference, HTML_ElEMENT);
     this.setProperty('tag', tag);
-    this.addChildSet('attributes', ChildSetType.Many, NodeCategory.AttributeNode);
+    this.addChildSet('attributes', ChildSetType.Many, NodeCategory.HtmlAttribute);
     this.addChildSet('content', ChildSetType.Many, NodeCategory.DomNode);
   }
 
@@ -85,7 +85,7 @@ export class SplootHtmlElement extends SplootNode {
     typeRegistration.typeName = HTML_ElEMENT;
     typeRegistration.deserializer = SplootHtmlElement.deserializer;
     typeRegistration.childSets = {
-      'attributes': NodeCategory.AttributeNode,
+      'attributes': NodeCategory.HtmlAttribute,
       'content': NodeCategory.DomNode,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [

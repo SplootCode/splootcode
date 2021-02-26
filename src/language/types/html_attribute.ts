@@ -31,7 +31,7 @@ export class SplootHtmlAttribute extends SplootNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, HTML_ATTRIBUTE);
     this.setProperty('name', name);
-    this.addChildSet('value', ChildSetType.Single, NodeCategory.AttributeValueNode);
+    this.addChildSet('value', ChildSetType.Single, NodeCategory.HtmlAttributeValue);
   }
 
   getName(): string {
@@ -63,7 +63,7 @@ export class SplootHtmlAttribute extends SplootNode {
     typeRegistration.typeName = HTML_ATTRIBUTE;
     typeRegistration.deserializer = SplootHtmlAttribute.deserializer;
     typeRegistration.childSets = {
-      'value': NodeCategory.AttributeValueNode,
+      'value': NodeCategory.HtmlAttributeValue,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ATTRIBUTE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'name'),
@@ -71,7 +71,7 @@ export class SplootHtmlAttribute extends SplootNode {
     ], true);
   
     registerType(typeRegistration);
-    registerNodeCateogry(HTML_ATTRIBUTE, NodeCategory.AttributeNode, new Generator());
+    registerNodeCateogry(HTML_ATTRIBUTE, NodeCategory.HtmlAttribute, new Generator());
   }
 }
 

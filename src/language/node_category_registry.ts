@@ -3,19 +3,16 @@ import { SuggestedNode } from "./suggested_node";
 
 export enum NodeCategory {
     Unknown = 0,
-    Root,
-    DocumentNode,
+    HtmlDocument,
     DomNode,
-    AttributeNode,
-    AttributeValueNode,
-    StyleNode,
-    StyleValueNode,
-    Ephemeral,
+    HtmlAttribute,
+    HtmlAttributeValue,
     Statement,
     DeclaredIdentifier,
     Expression,
     ExpressionToken,
     ObjectPropertyDeclaration,
+    JavascriptFile,
 }
 
 export interface SuggestionGenerator {

@@ -72,6 +72,6 @@ export class JavascriptFile extends JavaScriptSplootNode {
     ]);
 
     registerType(typeRegistration);
-    registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.Statement, new EmptySuggestionGenerator());
+    registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.JavascriptFile, new EmptySuggestionGenerator());
   }
 }

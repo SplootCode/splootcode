@@ -54,7 +54,7 @@ export class SplootHtmlDocument extends SplootNode {
     ]);
   
     registerType(typeRegistration);
-    registerNodeCateogry(HTML_DOCUMENT, NodeCategory.DocumentNode, new EmptySuggestionGenerator());
+    registerNodeCateogry(HTML_DOCUMENT, NodeCategory.HtmlDocument, new EmptySuggestionGenerator());
   } 
 }
 

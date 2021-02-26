@@ -35,7 +35,7 @@ class Generator implements SuggestionGenerator {
 export class SplootHtmlScriptElement extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, HTML_SCRIPT_ElEMENT);
-    this.addChildSet('attributes', ChildSetType.Many, NodeCategory.AttributeNode);
+    this.addChildSet('attributes', ChildSetType.Many, NodeCategory.HtmlAttribute);
     this.addChildSet('content', ChildSetType.Many, NodeCategory.Statement);
   }
 
@@ -113,7 +113,7 @@ export class SplootHtmlScriptElement extends JavaScriptSplootNode {
     typeRegistration.typeName = HTML_SCRIPT_ElEMENT;
     typeRegistration.deserializer = SplootHtmlScriptElement.deserializer;
     typeRegistration.childSets = {
-      'attributes': NodeCategory.AttributeNode,
+      'attributes': NodeCategory.HtmlAttribute,
       'content': NodeCategory.DomNode,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
