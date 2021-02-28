@@ -6,6 +6,7 @@ import { registerType, SerializedNode, TypeRegistration } from "../../type_regis
 import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from "../../node_category_registry";
 import { ArrayExpressionKind } from "ast-types/gen/kinds";
 import { SplootDataFieldDeclaration } from "./field_declaration";
+import { SplootDataRow } from "./row";
 
 export const DATA_SHEET = 'DATA_SHEET';
 
@@ -23,6 +24,14 @@ export class SplootDataSheet extends SplootNode {
 
   addFieldDeclaration(dec: SplootDataFieldDeclaration) {
     this.getChildSet('field_declarations').addChild(dec);
+  }
+
+  getRows(): SplootDataRow[] {
+    return this.getChildSet('rows').children as SplootDataRow[];
+  }
+
+  addRow() {
+    this.getChildSet('rows').addChild(new SplootDataRow(null));
   }
 
   generateJsAst() : ArrayExpressionKind {

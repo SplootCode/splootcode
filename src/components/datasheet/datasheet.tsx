@@ -85,28 +85,65 @@ export class DataSheetEditor extends React.Component<DataSheetEditorProps> {
     let {dataSheetState} = this.props;
     let fields = dataSheetState.dataSheetNode.getFieldDeclarations();
     let columnLabels = fields.map(fieldDec => fieldDec.getName());
+    let columnIds = fields.map(fieldDec => fieldDec.getKey());
 
-    const data = [
-      [{ value: "你好" }, { value: "nǐ hǎo" }, {value: 'Hello'}],
-      [{ value: "什么" }, { value: "shén me" }, {value: 'what'}],
-      [{ value: "再见" }, { value: "zài jiàn" }, {value: 'Goodbye'}],
-      [],
-      [],
-    ];
+    const data = dataSheetState.dataSheetNode.getRows().map(row => {
+      return row.getValuesAsList(columnLabels);
+    });
 
     return (
-      <HStack align='start'>
-        <Spreadsheet data={data} columnLabels={columnLabels}/>
+      <>
+        <HStack align='start'>
+          <Spreadsheet data={data} columnLabels={columnLabels}/>
+          <Box>
+            <AddColumnForm addColumn={this.addColumn} />
+          </Box>
+        </HStack>
         <Box>
-          <AddColumnForm addColumn={this.addColumn} />
+          <Button size="xs" colorScheme='gray' variant='outline' leftIcon={<AddIcon fontSize={8}/>} mt={0.5} onClick={this.addRow}>
+            Row
+          </Button>
         </Box>
-      </HStack>
+      </>
     );
+  }
+
+  addRow = () => {
+    let {dataSheetState} = this.props;
+    dataSheetState.dataSheetNode.addRow();
   }
 
   addColumn = (name: string) => {
     let {dataSheetState} = this.props;
-    let dec = new SplootDataFieldDeclaration(null, name);
-    dataSheetState.dataSheetNode.addFieldDeclaration(dec);
+    let node = dataSheetState.dataSheetNode;
+    let existingKeys = new Set<string>()
+    node.getFieldDeclarations().forEach(dec => {
+      existingKeys.add(dec.getKey());
+    });
+    let key = '';
+    let unique = false;
+    let count = 0;
+    let length = 3;
+    while (!unique) {
+      if (count > 10) {
+        length += 1;
+        count = 0;
+      }
+      key = generateRandomKey(length);
+      unique = !existingKeys.has(key);
+      count += 1;
+    }
+    let dec = new SplootDataFieldDeclaration(null, key, name);
+    node.addFieldDeclaration(dec);
   }
+}
+
+function generateRandomKey(length: number) {
+  var result           = 'k'; // make sure it starts with a letter
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }

@@ -6,17 +6,22 @@ import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from "..
 export const DATA_FIELD_DECLARATION = 'DATA_FIELD_DECLARATION';
 
 export class SplootDataFieldDeclaration extends SplootNode {
-  constructor(parentReference: ParentReference, fieldName: string) {
+  constructor(parentReference: ParentReference, key: string, fieldName: string) {
     super(parentReference, DATA_FIELD_DECLARATION);
+    this.setProperty('key', key);
     this.setProperty('name', fieldName);
   }
 
-  getName() : string {
-      return this.getProperty('name');
+  getName(): string {
+    return this.getProperty('name');
+  }
+
+  getKey(): string {
+    return this.getProperty('key');
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootDataFieldDeclaration {
-    let node = new SplootDataFieldDeclaration(null, serializedNode.properties['name']);
+    let node = new SplootDataFieldDeclaration(null, serializedNode.properties['key'], serializedNode.properties['name']);
     return node;
   }
 

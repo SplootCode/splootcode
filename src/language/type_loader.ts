@@ -1,4 +1,3 @@
-import { typeRegistry } from "./lib/loader";
 import { Assignment } from "./types/assignment";
 import { AsyncFunctionDeclaration } from "./types/async_function";
 import { AwaitExpression } from "./types/await_expression";
@@ -7,6 +6,8 @@ import { CallMember } from "./types/call_member";
 import { CallVariable } from "./types/call_variable";
 import { SplootDataSheet } from "./types/dataset/datasheet";
 import { SplootDataFieldDeclaration } from "./types/dataset/field_declaration";
+import { SplootDataRow } from "./types/dataset/row";
+import { SplootDataStringEntry } from "./types/dataset/string_entry";
 import { DeclaredIdentifier } from "./types/declared_identifier";
 import { SplootExpression } from "./types/expression";
 import { FunctionDeclaration } from "./types/functions";
@@ -60,8 +61,11 @@ export function loadTypes() {
   SplootHtmlScriptElement.register();
 
   JavascriptFile.register();
+
   SplootDataSheet.register();
   SplootDataFieldDeclaration.register();
+  SplootDataRow.register();
+  SplootDataStringEntry.register();
 
   // Must go at the end
   resolvePasteAdapters();
