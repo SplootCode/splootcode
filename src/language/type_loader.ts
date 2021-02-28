@@ -5,6 +5,8 @@ import { AwaitExpression } from "./types/await_expression";
 import { BinaryOperator } from "./types/binary_operator";
 import { CallMember } from "./types/call_member";
 import { CallVariable } from "./types/call_variable";
+import { SplootDataSheet } from "./types/dataset/datasheet";
+import { SplootDataFieldDeclaration } from "./types/dataset/field_declaration";
 import { DeclaredIdentifier } from "./types/declared_identifier";
 import { SplootExpression } from "./types/expression";
 import { FunctionDeclaration } from "./types/functions";
@@ -58,6 +60,8 @@ export function loadTypes() {
   SplootHtmlScriptElement.register();
 
   JavascriptFile.register();
+  SplootDataSheet.register();
+  SplootDataFieldDeclaration.register();
 
   // Must go at the end
   resolvePasteAdapters();

@@ -189,7 +189,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
                   </div>
                   </EditorStateContext.Provider>
                   :
-                  <DataSheetEditor state={selectedDatasheet}/>
+                  <DataSheetEditor dataSheetState={selectedDatasheet}/>
                 )
             : null
           }

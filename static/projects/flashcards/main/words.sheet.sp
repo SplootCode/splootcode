@@ -1,1 +1,1 @@
-{"type":"DATA_SHEET","properties":{"name":"datasheet"},"childSets":{"field_declaration":[],"rows":[]}}
+{"type":"DATA_SHEET","properties":{"name":"datasheet"},"childSets":{"field_declarations":[{"type":"DATA_FIELD_DECLARATION","properties":{"name":"Chinese"},"childSets":{}},{"type":"DATA_FIELD_DECLARATION","properties":{"name":"Pinyin"},"childSets":{}},{"type":"DATA_FIELD_DECLARATION","properties":{"name":"English"},"childSets":{}}],"rows":[]}}
