@@ -13,6 +13,10 @@ export enum NodeCategory {
     ExpressionToken,
     ObjectPropertyDeclaration,
     JavascriptFile,
+    DataSheet,
+    DataSheetFieldDeclaration,
+    DataSheetRow,
+    DataSheetEntry,
 }
 
 export interface SuggestionGenerator {

@@ -5,11 +5,13 @@ import { HTML_DOCUMENT, SplootHtmlDocument } from '../language/types/html_docume
 import { JavascriptFile, JAVASCRIPT_FILE } from '../language/types/javascript_file';
 import { SplootNode } from '../language/node';
 import { generateScope } from '../language/scope/scope';
+import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
 
 
 const fileExtension = {
   HTML_DOCUMENT: '.html',
   JAVASCRIPT_FILE: '.js',
+  DATA_SHEET: '.sheet',
 }
 
 interface NewFileModalProps {
@@ -49,6 +51,8 @@ export function NewFileModal(props: NewFileModalProps) {
     } else if (fileType == JAVASCRIPT_FILE) {
       rootNode = new JavascriptFile(null);
       generateScope(rootNode);
+    } else if (fileType == DATA_SHEET) {
+      rootNode = new SplootDataSheet(null);
     }
     addCodeFile(fileName, fileType, rootNode);
     onClose();
@@ -79,15 +83,20 @@ export function NewFileModal(props: NewFileModalProps) {
             <FormHelperText></FormHelperText>
           </FormControl>
           <HStack {...group}>
-            {/* 
+            {/*
               // @ts-ignore */}
             <RadioCard key={HTML_DOCUMENT} {...getRadioProps({value: HTML_DOCUMENT})}>
               HTML
             </RadioCard>
-            {/* 
+            {/*
               // @ts-ignore */}
             <RadioCard key={JAVASCRIPT_FILE} {...getRadioProps({value: JAVASCRIPT_FILE})}>
               JavaScript 
+            </RadioCard>
+            {/*
+              // @ts-ignore */}
+            <RadioCard key={DATA_SHEET} {...getRadioProps({value: DATA_SHEET})}>
+              Data Spreadsheet
             </RadioCard>
           </HStack>
           </ModalBody>

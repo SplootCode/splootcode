@@ -9,6 +9,10 @@
     {
       "name": "app.js",
       "type": "JAVASCRIPT_FILE"
+    },
+    {
+      "name": "words.sheet",
+      "type": "DATA_SHEET"
     }
   ]
 }
