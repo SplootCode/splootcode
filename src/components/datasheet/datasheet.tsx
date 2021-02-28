@@ -1,10 +1,12 @@
 import React, { MutableRefObject } from 'react'
 import { observer } from "mobx-react";
-import Spreadsheet from "react-spreadsheet";
+import { Spreadsheet, DataEditor } from "react-spreadsheet";
 import { DataSheetState } from '../../context/editor_context';
 import { Box, Button, ButtonGroup, FormControl, FormLabel, HStack, Input, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverTrigger, Stack, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { SplootDataFieldDeclaration } from '../../language/types/dataset/field_declaration';
+import { SplootDataStringEntry } from '../../language/types/dataset/string_entry';
+import { SplootDataRow } from '../../language/types/dataset/row';
 
 
 interface TextInputProps{
@@ -75,26 +77,39 @@ const AddColumnForm = ({addColumn}) => {
 }
 
 
+
 interface DataSheetEditorProps {
   dataSheetState: DataSheetState;
 }
+
 
 @observer
 export class DataSheetEditor extends React.Component<DataSheetEditorProps> {
   render() {
     let {dataSheetState} = this.props;
-    let fields = dataSheetState.dataSheetNode.getFieldDeclarations();
+    let sheetNode = dataSheetState.dataSheetNode;
+    let fields = sheetNode.getFieldDeclarations();
     let columnLabels = fields.map(fieldDec => fieldDec.getName());
     let columnIds = fields.map(fieldDec => fieldDec.getKey());
 
+    const SplootCellEditor = (props) => {
+      const onEdit = (event) => {
+        let fieldName = columnIds[props.column];
+        let dataRow = sheetNode.getRows()[props.row] as SplootDataRow;
+        dataRow.setValue(fieldName, event.value);
+        props.onChange(event);
+      }
+      return <DataEditor {...props} onChange={onEdit} />;
+    }
+
     const data = dataSheetState.dataSheetNode.getRows().map(row => {
-      return row.getValuesAsList(columnLabels);
+      return row.getValuesAsList(columnIds);
     });
 
     return (
       <>
         <HStack align='start'>
-          <Spreadsheet data={data} columnLabels={columnLabels}/>
+          <Spreadsheet data={data} columnLabels={columnLabels} DataEditor={SplootCellEditor}/>
           <Box>
             <AddColumnForm addColumn={this.addColumn} />
           </Box>

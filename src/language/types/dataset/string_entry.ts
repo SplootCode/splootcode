@@ -20,6 +20,10 @@ export class SplootDataStringEntry extends SplootNode {
     return this.getProperty('value');
   }
 
+  setValue(value: string) {
+    this.setProperty('value', value);
+  }
+
   static deserializer(serializedNode: SerializedNode) : SplootDataStringEntry {
     let node = new SplootDataStringEntry(null, serializedNode.properties['fieldname'], serializedNode.properties['value']);
     return node;
