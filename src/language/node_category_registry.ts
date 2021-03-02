@@ -13,6 +13,7 @@ export enum NodeCategory {
     ExpressionToken,
     ObjectPropertyDeclaration,
     JavascriptFile,
+    ModuleSource,
     DataSheet,
     DataSheetFieldDeclaration,
     DataSheetRow,
