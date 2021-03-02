@@ -229,6 +229,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   componentDidMount() {
     this.frameState = FrameState.AWAITING_SW_PORT;
     globalMutationDispatcher.registerChildSetObserver(this);
+    globalMutationDispatcher.registerNodeObserver(this);
     window.addEventListener("message", this.processMessage, false);
     // trigger background process to wait for a response
     setTimeout(() => {
@@ -238,6 +239,8 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
   componentWillUnmount() {
     this.frameState = FrameState.UNMOUNTED;
+    globalMutationDispatcher.deregisterChildSetObserver(this);
+    globalMutationDispatcher.deregisterNodeObserver(this);
     // mutationDispatcher.deregisterHandler(this.handleMutation);
     window.removeEventListener("message", this.processMessage, false);
   }
