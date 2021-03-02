@@ -2,7 +2,7 @@ import React, { MutableRefObject } from 'react'
 import { observer } from "mobx-react";
 import { Spreadsheet, DataEditor } from "react-spreadsheet";
 import { DataSheetState } from '../../context/editor_context';
-import { Box, Button, ButtonGroup, FormControl, FormLabel, HStack, Input, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverTrigger, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, FormControl, FormHelperText, FormLabel, HStack, Input, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverTrigger, Stack, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { SplootDataFieldDeclaration } from '../../language/types/dataset/field_declaration';
 import { SplootDataStringEntry } from '../../language/types/dataset/string_entry';
@@ -108,6 +108,12 @@ export class DataSheetEditor extends React.Component<DataSheetEditorProps> {
 
     return (
       <>
+        <Box borderWidth="1px" borderRadius="lg" m={2} p={2}>
+          <HStack>
+            <FormLabel htmlFor="variable" size="sm" fontWeight="normal" m={0.5}>Export as variable</FormLabel>
+            <Input type="text" name="variable" size="sm" width={24} defaultValue={sheetNode.getName()} onChange={this.setVariableName}/>
+          </HStack>
+        </Box>
         <HStack align='start'>
           <Spreadsheet data={data} columnLabels={columnLabels} DataEditor={SplootCellEditor}/>
           <Box>
@@ -121,6 +127,11 @@ export class DataSheetEditor extends React.Component<DataSheetEditorProps> {
         </Box>
       </>
     );
+  }
+
+  setVariableName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let {dataSheetState} = this.props;
+    dataSheetState.dataSheetNode.setName(event.target.value);
   }
 
   addRow = () => {

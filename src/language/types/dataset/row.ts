@@ -1,8 +1,11 @@
+import * as recast from "recast";
+
 import { SplootNode, ParentReference } from "../../node";
 import { registerType, SerializedNode, TypeRegistration } from "../../type_registry";
 import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from "../../node_category_registry";
 import { ChildSetType } from "../../childset";
 import { SplootDataStringEntry } from "./string_entry";
+import { ExpressionKind, ObjectExpressionKind } from "ast-types/gen/kinds";
 
 
 export interface DataEntrySplootNode extends SplootNode {
@@ -45,6 +48,24 @@ export class SplootDataRow extends SplootNode {
       }
       return {value: ''};
     })
+  }
+
+  getValuesAsObject(order: string[], labels: string[]) : ObjectExpressionKind {
+    let temp = {};
+    this.getValues().children.forEach((entry: DataEntrySplootNode) => {
+      temp[entry.getFieldName()] = entry.getValue();
+    });
+    let properties = order.map((key,i) => {
+      let labelExp = recast.types.builders.identifier(labels[i]);
+      let valueExp: ExpressionKind;
+      if (key in temp) {
+        valueExp = recast.types.builders.stringLiteral(temp[key]);
+      } else {
+        valueExp = recast.types.builders.stringLiteral('');
+      }
+      return recast.types.builders.objectProperty(labelExp, valueExp);;
+    })
+    return recast.types.builders.objectExpression(properties);
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootDataRow {

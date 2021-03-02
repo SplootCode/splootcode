@@ -1,3 +1,4 @@
+import { DATA_SHEET } from "../language/types/dataset/datasheet";
 import { HTML_DOCUMENT } from "../language/types/html_document";
 import { JAVASCRIPT_FILE } from "../language/types/javascript_file";
 import { loadTypes } from "../language/type_loader";
@@ -13,8 +14,8 @@ self.addEventListener('install', function(event) {
 });
 
 async function resoleFileFromCache(pathname: string) {
-  let contents = cache[pathname];
-  let headers = {'Content-Type': 'text/html;charset=UTF-8'}
+  let {contents, contentType} = cache[pathname];
+  let headers = {'Content-Type': contentType}
   let response = new Response(contents, {status: 200, statusText: 'ok', headers: headers});
   return response;
 }
@@ -32,9 +33,17 @@ function handleNodeTree(filename: string, serializedNode: SerializedNode) {
     console.warn('Failed to deserialize node tree.');
     return;
   }
-  if (rootNode.type === HTML_DOCUMENT || rootNode.type === JAVASCRIPT_FILE) {
-    cache['/' + filename] = rootNode.generateCodeString();
+  let contentType = 'text/html;charset=UTF-8';
+  switch (serializedNode.type) {
+    case JAVASCRIPT_FILE:
+    case DATA_SHEET:
+      contentType = 'text/javascript';
+      break;
   }
+  cache['/' + filename] = {
+    contentType: contentType,
+    contents: rootNode.generateCodeString(),
+  };
 }
 
 function handleParentWindowMessage(event: MessageEvent) {
