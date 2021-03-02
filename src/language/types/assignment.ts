@@ -5,10 +5,9 @@ import { ChildSetType } from "../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
 import { SuggestedNode } from "../suggested_node";
-import { SplootExpression } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, IdentifierKind, MemberExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../layout/colors";
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
 import { JavaScriptSplootNode } from "../javascript_node";
 
 
@@ -73,10 +72,10 @@ export class Assignment extends JavaScriptSplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'set to'),
     ]);
-    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
-      let scriptEl = new SplootHtmlScriptElement(null);
-      scriptEl.getContent().addChild(node);
-      return scriptEl;
+    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
+      let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
     }
   
     registerType(typeRegistration);

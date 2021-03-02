@@ -6,7 +6,7 @@ import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, Accordi
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { Editor } from '../components/editor/editor';
-import { EditorStateContext, EditorState } from '../context/editor_context';
+import { EditorStateContext, EditorState, DataSheetState } from '../context/editor_context';
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
 import { Project } from '../language/projects/project';
@@ -21,6 +21,8 @@ import { RiFileAddLine } from "react-icons/ri";
 import './pageeditor.css';
 import { NewFileModal } from '../components/new_file_modal';
 import { SplootNode } from '../language/node';
+import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
+import { DataSheetEditor } from '../components/datasheet/datasheet';
 
 
 interface PageEditorProps {
@@ -31,11 +33,13 @@ interface PageEditorState {
   openNewFileModal: boolean;
   newFilePackageName: string;
   ready: boolean;
+  isNodeEditor: boolean;
   selectedFile: EditorState;
+  selectedDatasheet: DataSheetState;
   project: Project;
 };
 
-class PageEditorInternal extends Component<PageEditorProps, PageEditorState, EditorState> {
+class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
   static contextType = EditorStateContext;
 
   constructor(props : PageEditorProps) {
@@ -46,7 +50,9 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
         openNewFileModal: false,
         newFilePackageName: '',
         ready: false,
+        isNodeEditor: true,
         selectedFile: null,
+        selectedDatasheet: null,
         project: null,
       };
   }
@@ -88,13 +94,14 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
   }
 
   render() {
-    let {ready, selectedFile, project, openNewProjectModal: openModal, openNewFileModal} = this.state;
+    let {ready, selectedFile, selectedDatasheet, project, isNodeEditor, openNewProjectModal: openModal, openNewFileModal} = this.state;
 
     if (!ready) {
       return null;
     }
 
     let onlyPackage : SplootPackage = project.packages[0];
+
     return (
       <div className="page-editor-container">
         <LoadProjectModal isOpen={openModal} onClose={() => {
@@ -173,12 +180,17 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
         </nav>
         <div className="page-editor-column">
           {
-            (ready && selectedFile) ?
-                <EditorStateContext.Provider value={selectedFile}>
+            (ready && (selectedFile || selectedDatasheet)) ?
+                (
+                  (isNodeEditor) ?
+                  <EditorStateContext.Provider value={selectedFile}>
                   <div className={'editor-panel selected'}>
                     <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
                   </div>
-                </EditorStateContext.Provider>
+                  </EditorStateContext.Provider>
+                  :
+                  <DataSheetEditor dataSheetState={selectedDatasheet}/>
+                )
             : null
           }
         </div>
@@ -190,20 +202,23 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState, Edi
   }
 
   selectFile(selectedPackage: SplootPackage, file: SplootFile) {
-    if (!file.isLoaded) {
-      selectedPackage.getLoadedFile(file.name).then((file: SplootFile) => {
+    let loadEditor = (file: SplootFile) => {
+      if (file.type === DATA_SHEET) {
+        let dataSheetState = new DataSheetState();
+        dataSheetState.setDataSheetNode(file.rootNode as SplootDataSheet);
+        this.setState({selectedDatasheet: dataSheetState, isNodeEditor: false});
+      } else {
         let editorState = new EditorState();
         let newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false);
         editorState.selection.setRootNode(newRootNode);
         editorState.setRootNode(newRootNode);
-        this.setState({selectedFile: editorState});
-      })
+        this.setState({selectedFile: editorState, isNodeEditor: true});
+      }
+    };
+    if (!file.isLoaded) {
+      selectedPackage.getLoadedFile(file.name).then(loadEditor)
     } else {
-      let editorState = new EditorState();
-        let newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false);
-        editorState.selection.setRootNode(newRootNode);
-        editorState.setRootNode(newRootNode);
-        this.setState({selectedFile: editorState});
+      loadEditor(file);
     }
   }
 }

@@ -75,7 +75,7 @@ export class ChildSet {
 
   @action
   addChild(child: SplootNode) {
-    this.children.push(child);
+    this.insertNode(child, this.children.length);
     child.parent = this.childParentRef;
   }
 

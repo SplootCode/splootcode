@@ -2,6 +2,7 @@ import React from 'react';
 import { NodeSelection } from './selection';
 import { NodeBlock } from '../layout/rendered_node';
 import { observable, action } from 'mobx';
+import { SplootDataSheet } from '../language/types/dataset/datasheet';
 
 export class EditorState {
   @observable
@@ -19,5 +20,21 @@ export class EditorState {
     this.selection.setRootNode(rootNode);
   }
 }
+
+export class DataSheetState {
+  @observable
+  dataSheetNode: SplootDataSheet;
+
+  constructor() {
+    this.dataSheetNode = null;
+  }
+
+  @action
+  setDataSheetNode(dataSheetNode: SplootDataSheet) {
+    this.dataSheetNode = dataSheetNode;
+  }
+}
+
+export const DataSheetStateContext = React.createContext(null);
 
 export const EditorStateContext = React.createContext(null);

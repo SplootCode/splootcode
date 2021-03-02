@@ -7,6 +7,7 @@ import { SuggestedNode } from '../suggested_node';
 import { HighlightColorCategory } from '../../layout/colors';
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { JavaScriptSplootNode } from "../javascript_node";
+import { StringLiteralKind } from "ast-types/gen/kinds";
 
 
 export const STRING_LITERAL = 'STRING_LITERAL';
@@ -37,7 +38,7 @@ export class StringLiteral extends JavaScriptSplootNode {
     return this.properties.value;
   }
 
-  generateJsAst() {
+  generateJsAst() : StringLiteralKind {
     return recast.types.builders.stringLiteral(this.getValue());
   }
 
@@ -62,6 +63,7 @@ export class StringLiteral extends JavaScriptSplootNode {
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.HtmlAttributeValue, new StringGenerator());
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.ModuleSource, new StringGenerator());
   }
 }
 
