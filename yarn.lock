@@ -6592,10 +6592,10 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-spreadsheet@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/react-spreadsheet/-/react-spreadsheet-0.5.2.tgz#c125b5b7136a9fbeaf147b47c0563d1510e42651"
-  integrity sha512-rzZPfRRkfD/00uRqhlw3NgcgDOFHZwZQGIBa6lxQA8ChGe7SjXyXGz8u39ClQVG4ZQITTyto5zjWjSED27x87w==
+react-spreadsheet@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/react-spreadsheet/-/react-spreadsheet-0.5.4.tgz#d3bc604b5e6c0e2dd6b8f27d772182df912701ca"
+  integrity sha512-/MGLHrP8OrobDcRAe9Xw8URBo/uYupRRD4G/unIgAHRUZ0fPJ3ULsJHHFnNPIxtxfdfaDPwHO+Tidmml+PYuMA==
   dependencies:
     "@types/array.prototype.flatmap" "^1.2.2"
     "@types/classnames" "^2.2.11"
