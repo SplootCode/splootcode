@@ -2,13 +2,14 @@ import * as recast from "recast";
 
 import { SplootNode, ParentReference } from "../node";
 import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
 import { ExpressionKind, FunctionExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { SuggestedNode } from "../suggested_node";
 import { JavaScriptSplootNode } from "../javascript_node";
+import { DeclaredIdentifier } from "./declared_identifier";
 
 export const INLINE_FUNCTION_DECLARATION = 'INLINE_FUNCTION_DECLARATION';
 
@@ -42,6 +43,10 @@ export class InlineFunctionDeclaration extends JavaScriptSplootNode {
   }
 
   generateJsAst() : FunctionExpressionKind {
+    let params = this.getParams().children.map(param => {
+      let id = param as DeclaredIdentifier;
+      return id.generateJsAst();
+    })
     let statements = [];
     this.getBody().children.forEach((node: JavaScriptSplootNode) => {
       let ast = node.generateJsAst();
@@ -51,7 +56,7 @@ export class InlineFunctionDeclaration extends JavaScriptSplootNode {
       statements.push(ast);
     });
     let block = recast.types.builders.blockStatement(statements);
-    return recast.types.builders.functionExpression(null, [], block);
+    return recast.types.builders.functionExpression(null, params, block);
   }
 
   static deserializer(serializedNode: SerializedNode) : InlineFunctionDeclaration {

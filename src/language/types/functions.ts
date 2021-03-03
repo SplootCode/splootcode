@@ -76,6 +76,10 @@ export class FunctionDeclaration extends JavaScriptSplootNode {
 
   generateJsAst() : FunctionDeclarationKind {
     let statements = [];
+    let params = this.getParams().children.map(param => {
+      let id = param as DeclaredIdentifier;
+      return id.generateJsAst();
+    })
     this.getBody().children.forEach((node: JavaScriptSplootNode) => {
       let ast = node.generateJsAst();
       if (node.type === SPLOOT_EXPRESSION) {
@@ -87,7 +91,7 @@ export class FunctionDeclaration extends JavaScriptSplootNode {
     });
     let block = recast.types.builders.blockStatement(statements);
     let identifier = (this.getIdentifier().getChild(0) as JavaScriptSplootNode).generateJsAst() as IdentifierKind
-    return recast.types.builders.functionDeclaration(identifier, [], block);
+    return recast.types.builders.functionDeclaration(identifier, params, block);
   }
 
   static deserializer(serializedNode: SerializedNode) : FunctionDeclaration {
