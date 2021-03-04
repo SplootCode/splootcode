@@ -127,7 +127,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     }
     let now = new Date();
     let millis = (now.getTime() - this.lastHeartbeatTimestamp.getTime());
-    if (millis > 60000) {
+    if (millis > 10000) {
       this.frameState = FrameState.DEAD;
     }
     switch (this.frameState) {
