@@ -18,6 +18,9 @@ export enum NodeCategory {
     DataSheetFieldDeclaration,
     DataSheetRow,
     DataSheetEntry,
+    StyleSheetStatement,
+    StyleSheetSelector,
+    StyleSheetProperty,
 }
 
 export interface SuggestionGenerator {

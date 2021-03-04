@@ -15,6 +15,7 @@ import { SplootHtmlAttribute } from "./types/html_attribute";
 import { SplootHtmlDocument } from "./types/html_document";
 import { SplootHtmlElement } from "./types/html_element";
 import { SplootHtmlScriptElement } from "./types/html_script_element";
+import { SplootHtmlStyleElement } from "./types/html_style_element";
 import { IfStatement } from "./types/if";
 import { ImportStatement } from "./types/import";
 import { InlineFunctionDeclaration } from "./types/inline_function";
@@ -26,6 +27,9 @@ import { LookupExpression } from "./types/lookup_expression";
 import { MemberExpression } from "./types/member_expression";
 import { ObjectExpression } from "./types/object_expression";
 import { ObjectProperty } from "./types/object_property";
+import { StyleProperty } from "./types/styles/style_property";
+import { StyleRule } from "./types/styles/style_rule";
+import { StyleSelector } from "./types/styles/style_selector";
 import { VariableDeclaration } from "./types/variable_declaration";
 import { VariableReference } from "./types/variable_reference";
 import { resolvePasteAdapters } from "./type_registry";
@@ -61,6 +65,11 @@ export function loadTypes() {
   SplootHtmlAttribute.register();
   SplootHtmlElement.register();
   SplootHtmlScriptElement.register();
+  SplootHtmlStyleElement.register();
+
+  StyleRule.register();
+  StyleSelector.register();
+  StyleProperty.register();
 
   JavascriptFile.register();
 
