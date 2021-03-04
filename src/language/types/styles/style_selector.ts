@@ -1,3 +1,5 @@
+import * as csstree from "css-tree";
+
 import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
 import { ParentReference, SplootNode } from "../../node";
@@ -9,9 +11,9 @@ import { StringLiteral, STRING_LITERAL } from "../literals";
 export const STYLE_SELECTOR_BASIC = 'STYLE_SELECTOR_BASIC';
 
 const selectorTypes = {
-  'class': {},
-  'id': {},
-  'element': {},
+  'class': {astType: 'ClassSelector'},
+  'id': {astType: 'IdSelector'},
+  'element': {astType: 'TypeSelector'},
 }
 
 class Generator implements SuggestionGenerator {
@@ -42,6 +44,30 @@ export class StyleSelector extends SplootNode {
 
   getValue() {
     return this.getChildSet('value');
+  }
+
+  getValueAsString() : string {
+    if (this.getValue().getCount() === 0) {
+      return '';
+    }
+    let child = this.getValue().getChild(0);
+    if (child.type === STRING_LITERAL) {
+      return (child as StringLiteral).getValue();
+    }
+  }
+
+  getSelectorListAst() : csstree.SelectorList {
+    let astType = selectorTypes[this.getSelectorType()].astType;
+    let node = csstree.fromPlainObject({
+      type: 'SelectorList',
+      children: [
+        {
+          type: astType,
+          name: this.getValueAsString(),
+        }
+      ]
+    } as csstree.SelectorListPlain) as csstree.SelectorList;
+    return node;
   }
 
   generateCodeString() {

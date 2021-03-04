@@ -1,9 +1,11 @@
+import * as csstree from "css-tree";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
 import { ParentReference, SplootNode } from "../../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
 import { SuggestedNode } from "../../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
+import { StyleSelector } from "./style_selector";
 
 export const STYLE_RULE = 'STYLE_RULE';
 
@@ -31,6 +33,22 @@ export class StyleRule extends SplootNode {
 
   getProperties() {
     return this.getChildSet('properties');
+  }
+
+  getCssAst() : csstree.CssNode {
+    if (this.getSelector().getCount() === 0) {
+      return null;
+    }
+    let selectorNode = this.getSelector().getChild(0) as StyleSelector;
+    let cssNode = {
+      type: 'Rule',
+      prelude: selectorNode.getSelectorListAst(),
+      block: csstree.fromPlainObject({
+        type: 'Block',
+        children: [],
+      } as csstree.BlockPlain),
+    } as csstree.Rule;
+    return cssNode;
   }
 
   generateCodeString() : string {

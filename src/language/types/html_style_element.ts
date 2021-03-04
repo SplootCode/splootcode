@@ -1,14 +1,17 @@
+import * as csstree from 'css-tree';
+
 import { ChildSetType } from "../childset";
-import { ParentReference, SplootNode } from "../node";
+import { ParentReference } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
-import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../layout/colors";
 import { isTagValidWithParent } from "../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { SplootHtmlAttribute } from "./html_attribute";
 import { JavaScriptSplootNode } from "../javascript_node";
+import { astNodesAreEquivalent } from 'ast-types';
+import { StyleRule } from './styles/style_rule';
 
 export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT';
 
@@ -64,7 +67,14 @@ export class SplootHtmlStyleElement extends JavaScriptSplootNode {
   }
 
   generateCSS() : string {
-    return '';
+    console.log('generating Css');
+    let ast = csstree.parse('');
+    let stylesheet = ast as csstree.StyleSheet;
+    this.getContent().children.forEach(node => {
+      let cssNode = (node as StyleRule).getCssAst();
+      stylesheet.children.push(cssNode);
+    });
+    return csstree.generate(stylesheet);
   }
 
   static deserializer(serializedNode: SerializedNode) : SplootHtmlStyleElement {

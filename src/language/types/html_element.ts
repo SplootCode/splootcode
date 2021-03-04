@@ -7,6 +7,7 @@ import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
 import { SplootHtmlAttribute } from "./html_attribute";
 import { HTML_SCRIPT_ElEMENT } from "./html_script_element";
+import { HTML_STYLE_ELEMENT } from "./html_style_element";
 import { StringLiteral, STRING_LITERAL } from "./literals";
 
 export const HTML_ElEMENT = 'HTML_ELEMENT';
@@ -54,7 +55,7 @@ export class SplootHtmlElement extends SplootNode {
       }
     });
     this.getContent().children.forEach((child: SplootNode) => {
-      if (child.type === HTML_ElEMENT || child.type === HTML_SCRIPT_ElEMENT) {
+      if (child.type === HTML_ElEMENT || child.type === HTML_SCRIPT_ElEMENT || child.type === HTML_STYLE_ELEMENT) {
         let el = child as SplootHtmlElement;
         thisEl.appendChild(el.generateHtmlElement(doc));
       }
