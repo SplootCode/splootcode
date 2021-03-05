@@ -67,7 +67,6 @@ export class SplootHtmlStyleElement extends JavaScriptSplootNode {
   }
 
   generateCSS() : string {
-    console.log('generating Css');
     let ast = csstree.parse('');
     let stylesheet = ast as csstree.StyleSheet;
     this.getContent().children.forEach(node => {

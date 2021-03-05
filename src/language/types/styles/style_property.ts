@@ -1,3 +1,5 @@
+import * as csstree from "css-tree";
+
 import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
 import { ParentReference, SplootNode } from "../../node";
@@ -34,7 +36,7 @@ export class StyleProperty extends SplootNode {
   constructor(parentReference: ParentReference, property: string) {
     super(parentReference, STYLE_PROPERTY);
     this.setProperty('property', property);
-    this.addChildSet('value', ChildSetType.Single, NodeCategory.HtmlAttributeValue);
+    this.addChildSet('value', ChildSetType.Single, NodeCategory.StyleSheetPropertyValue);
   }
 
   getPropertyName(): string {
@@ -43,6 +45,29 @@ export class StyleProperty extends SplootNode {
 
   getValue() {
     return this.getChildSet('value');
+  }
+
+  getCssAst() : csstree.Declaration {
+    let valueChildren = new csstree.List();
+    let valueNode = this.getValue().getChild(0);
+    if (valueNode.type === STRING_LITERAL) {
+      valueChildren.push(
+        {
+          type: 'Raw',
+          value: (valueNode as StringLiteral).getValue(),
+        } as csstree.Raw
+      )
+    }
+    let property = {
+      type: 'Declaration',
+      important: false,
+      property: this.getPropertyName(),
+      value: {
+        type: 'Value',
+        children: valueChildren
+      }
+    } as csstree.Declaration;
+    return property;
   }
 
   generateCodeString() {
@@ -60,13 +85,13 @@ export class StyleProperty extends SplootNode {
     doc.deserializeChildSet('value', serializedNode);
     return doc;
   }
-  
+
   static register() {
     let typeRegistration = new TypeRegistration();
     typeRegistration.typeName = STYLE_PROPERTY;
     typeRegistration.deserializer = StyleProperty.deserializer;
     typeRegistration.childSets = {
-      'value': NodeCategory.HtmlAttributeValue,
+      'value': NodeCategory.StyleSheetPropertyValue,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.STYLE_PROPERTY, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'property'),
@@ -77,4 +102,3 @@ export class StyleProperty extends SplootNode {
     registerNodeCateogry(STYLE_PROPERTY, NodeCategory.StyleSheetProperty, new Generator());
   }
 }
-

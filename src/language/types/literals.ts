@@ -64,6 +64,7 @@ export class StringLiteral extends JavaScriptSplootNode {
     registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.HtmlAttributeValue, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ModuleSource, new StringGenerator());
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.StyleSheetPropertyValue, new StringGenerator());
   }
 }
 

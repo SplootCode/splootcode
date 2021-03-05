@@ -5,6 +5,7 @@ import { ParentReference, SplootNode } from "../../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
 import { SuggestedNode } from "../../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
+import { StyleProperty } from "./style_property";
 import { StyleSelector } from "./style_selector";
 
 export const STYLE_RULE = 'STYLE_RULE';
@@ -40,13 +41,19 @@ export class StyleRule extends SplootNode {
       return null;
     }
     let selectorNode = this.getSelector().getChild(0) as StyleSelector;
+    let rules = new csstree.List();
+    this.getProperties().children.forEach(node => {
+      let propNode = node as StyleProperty;
+      rules.push(propNode.getCssAst());
+    });
+
     let cssNode = {
       type: 'Rule',
       prelude: selectorNode.getSelectorListAst(),
-      block: csstree.fromPlainObject({
+      block: {
         type: 'Block',
-        children: [],
-      } as csstree.BlockPlain),
+        children: rules,
+      } as csstree.Block,
     } as csstree.Rule;
     return cssNode;
   }
@@ -71,7 +78,7 @@ export class StyleRule extends SplootNode {
       'content': NodeCategory.DomNode,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.STYLE_RULE, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'select'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'style-set'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'selector'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'properties'),
     ]);
