@@ -11,13 +11,6 @@ import { StringLiteral, STRING_LITERAL } from "../literals";
 
 export const STYLE_PROPERTY = 'STYLE_PROPERTY';
 
-const properties = {
-  'font': {},
-  'width': {},
-  'height': {},
-  'background-color': {},
-}
-
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
