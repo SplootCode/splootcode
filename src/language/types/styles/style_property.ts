@@ -2,6 +2,7 @@ import * as csstree from "css-tree";
 
 import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
+import { getCssProperties } from "../../css/css_properties";
 import { ParentReference, SplootNode } from "../../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
 import { SuggestedNode } from "../../suggested_node";
@@ -21,7 +22,7 @@ class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
     let res = [];
-    for (let prop in properties) {
+    for (let prop of getCssProperties()) {
       res.push(new SuggestedNode(new StyleProperty(null, prop), 'style-prop ' + prop, prop, true));
     }
     return res;
