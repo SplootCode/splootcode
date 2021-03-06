@@ -1,22 +1,27 @@
-import { HighlightColorCategory } from "../../layout/colors";
+import * as csstree from 'css-tree';
+
 import { ChildSetType } from "../childset";
-import { getValidElements } from "../html/tags";
-import { ParentReference, SplootNode } from "../node";
+import { ParentReference } from "../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
 import { SuggestedNode } from "../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
+import { HighlightColorCategory } from "../../layout/colors";
+import { isTagValidWithParent } from "../html/tags";
+import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { SplootHtmlAttribute } from "./html_attribute";
-import { HTML_SCRIPT_ElEMENT } from "./html_script_element";
-import { HTML_STYLE_ELEMENT } from "./html_style_element";
-import { StringLiteral, STRING_LITERAL } from "./literals";
+import { JavaScriptSplootNode } from "../javascript_node";
+import { astNodesAreEquivalent } from 'ast-types';
+import { StyleRule } from './styles/style_rule';
 
-export const HTML_ElEMENT = 'HTML_ELEMENT';
+export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT';
 
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
     if (parent.node.type === HTML_ElEMENT) {
-      return getValidElements(parent.node as SplootHtmlElement, [])
+      if (isTagValidWithParent("style", (parent.node as SplootHtmlElement).getTag())) {
+        return [new SuggestedNode(new SplootHtmlStyleElement(null), "element style", "style css", true, "The style element.")];
+      }
     }
     return [];
   };
@@ -26,16 +31,11 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class SplootHtmlElement extends SplootNode {
-  constructor(parentReference: ParentReference, tag: string) {
-    super(parentReference, HTML_ElEMENT);
-    this.setProperty('tag', tag);
+export class SplootHtmlStyleElement extends JavaScriptSplootNode {
+  constructor(parentReference: ParentReference) {
+    super(parentReference, HTML_STYLE_ELEMENT);
     this.addChildSet('attributes', ChildSetType.Many, NodeCategory.HtmlAttribute);
-    this.addChildSet('content', ChildSetType.Many, NodeCategory.DomNode);
-  }
-
-  getTag() : string {
-    return this.getProperty('tag');
+    this.addChildSet('content', ChildSetType.Many, NodeCategory.StyleSheetStatement);
   }
 
   getAttributes() {
@@ -47,23 +47,15 @@ export class SplootHtmlElement extends SplootNode {
   }
 
   generateHtmlElement(doc: Document) : HTMLElement {
-    let thisEl = doc.createElement(this.getTag());
+    let thisEl = doc.createElement('style');
     this.getAttributes().children.forEach((childNode) => {
       if (childNode.type === 'HTML_ATTRIBUTE') {
         let attrNode = childNode as SplootHtmlAttribute;
         thisEl.setAttribute(attrNode.getName(), attrNode.generateCodeString());
       }
     });
-    this.getContent().children.forEach((child: SplootNode) => {
-      if (child.type === HTML_ElEMENT || child.type === HTML_SCRIPT_ElEMENT || child.type === HTML_STYLE_ELEMENT) {
-        let el = child as SplootHtmlElement;
-        thisEl.appendChild(el.generateHtmlElement(doc));
-      }
-      if (child.type === STRING_LITERAL) {
-        let stringEl = child as StringLiteral;
-        thisEl.appendChild(doc.createTextNode(stringEl.getValue()));
-      }
-    });
+    let cssStr = this.generateCSS();
+    thisEl.appendChild(doc.createTextNode(cssStr));
     return thisEl;
   }
 
@@ -74,8 +66,18 @@ export class SplootHtmlElement extends SplootNode {
     return new XMLSerializer().serializeToString(result, true);
   }
 
-  static deserializer(serializedNode: SerializedNode) : SplootHtmlElement {
-    let doc = new SplootHtmlElement(null, serializedNode.properties.tag);
+  generateCSS() : string {
+    let ast = csstree.parse('');
+    let stylesheet = ast as csstree.StyleSheet;
+    this.getContent().children.forEach(node => {
+      let cssNode = (node as StyleRule).getCssAst();
+      stylesheet.children.push(cssNode);
+    });
+    return csstree.generate(stylesheet);
+  }
+
+  static deserializer(serializedNode: SerializedNode) : SplootHtmlStyleElement {
+    let doc = new SplootHtmlStyleElement(null);
     doc.deserializeChildSet('attributes', serializedNode);
     doc.deserializeChildSet('content', serializedNode);
     return doc;
@@ -83,19 +85,19 @@ export class SplootHtmlElement extends SplootNode {
 
   static register() {
     let typeRegistration = new TypeRegistration();
-    typeRegistration.typeName = HTML_ElEMENT;
-    typeRegistration.deserializer = SplootHtmlElement.deserializer;
+    typeRegistration.typeName = HTML_STYLE_ELEMENT;
+    typeRegistration.deserializer = SplootHtmlStyleElement.deserializer;
     typeRegistration.childSets = {
       'attributes': NodeCategory.HtmlAttribute,
-      'content': NodeCategory.DomNode,
+      'content': NodeCategory.StyleSheetStatement,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
-      new LayoutComponent(LayoutComponentType.PROPERTY, 'tag'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'style'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'attributes'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'content'),
     ]);
 
     registerType(typeRegistration);
-    registerNodeCateogry(HTML_ElEMENT, NodeCategory.DomNode, new Generator());
+    registerNodeCateogry(HTML_STYLE_ELEMENT, NodeCategory.DomNode, new Generator());
   }
 }

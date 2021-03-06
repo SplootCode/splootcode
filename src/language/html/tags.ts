@@ -236,7 +236,7 @@ export function getValidElements(element: SplootHtmlElement, parentTags: string[
 
     let suggestedElements : SuggestedNode[] = [];
     htmlData.tags.forEach((tag: Tag) => {
-      if (tag.name === 'script') {
+      if (tag.name === 'script' || tag.name === 'style') {
         // Skip script tags, they're autocompleted separately.
         return;
       }

@@ -13,6 +13,8 @@ export enum HighlightColorCategory {
   OPERATOR,
   HTML_ELEMENT,
   HTML_ATTRIBUTE,
+  STYLE_RULE,
+  STYLE_PROPERTY,
 }
 
 const keywordColor = "rgb(199, 166, 255)";
@@ -44,6 +46,10 @@ export function getColour(category: HighlightColorCategory) : string {
       return '#F3ABFF';
     case HighlightColorCategory.HTML_ATTRIBUTE:
       return 'rgb(149, 217, 255)';
+    case HighlightColorCategory.STYLE_RULE:
+      return 'rgb(199, 166, 255)';
+    case HighlightColorCategory.STYLE_PROPERTY:
+      return 'rgb(255 254 196)';
     default:
       return 'rgb(255, 255, 255)';
   }
