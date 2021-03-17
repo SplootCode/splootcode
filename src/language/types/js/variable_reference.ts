@@ -1,14 +1,14 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
+import { SplootNode, ParentReference } from "../../node";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
 import { IdentifierKind } from "ast-types/gen/kinds";
-import { VariableDefinition } from "../lib/loader";
-import { HighlightColorCategory } from "../../layout/colors";
+import { VariableDefinition } from "../../lib/loader";
+import { HighlightColorCategory } from "../../../layout/colors";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 
 export const VARIABLE_REFERENCE = 'VARIABLE_REFERENCE';

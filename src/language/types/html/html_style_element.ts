@@ -1,17 +1,16 @@
 import * as csstree from 'css-tree';
 
-import { ChildSetType } from "../childset";
-import { ParentReference } from "../node";
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
-import { SuggestedNode } from "../suggested_node";
-import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
-import { HighlightColorCategory } from "../../layout/colors";
-import { isTagValidWithParent } from "../html/tags";
+import { ChildSetType } from "../../childset";
+import { ParentReference } from "../../node";
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
+import { SuggestedNode } from "../../suggested_node";
+import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { isTagValidWithParent } from "../../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { SplootHtmlAttribute } from "./html_attribute";
-import { JavaScriptSplootNode } from "../javascript_node";
-import { astNodesAreEquivalent } from 'ast-types';
-import { StyleRule } from './styles/style_rule';
+import { JavaScriptSplootNode } from "../../javascript_node";
+import { StyleRule } from '../styles/style_rule';
 
 export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT';
 

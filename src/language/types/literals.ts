@@ -2,10 +2,10 @@ import * as recast from "recast";
 
 import { TypeRegistration, LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode } from '../type_registry';
 import { SplootNode, ParentReference } from '../node';
-import { registerNodeCateogry, NodeCategory, EmptySuggestionGenerator, SuggestionGenerator } from '../node_category_registry';
+import { registerNodeCateogry, NodeCategory, SuggestionGenerator } from '../node_category_registry';
 import { SuggestedNode } from '../suggested_node';
 import { HighlightColorCategory } from '../../layout/colors';
-import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "./js/expression";
 import { JavaScriptSplootNode } from "../javascript_node";
 import { StringLiteralKind } from "ast-types/gen/kinds";
 

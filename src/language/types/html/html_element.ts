@@ -1,14 +1,14 @@
-import { HighlightColorCategory } from "../../layout/colors";
-import { ChildSetType } from "../childset";
-import { getValidElements } from "../html/tags";
-import { ParentReference, SplootNode } from "../node";
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
-import { SuggestedNode } from "../suggested_node";
-import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { ChildSetType } from "../../childset";
+import { getValidElements } from "../../html/tags";
+import { ParentReference, SplootNode } from "../../node";
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
+import { SuggestedNode } from "../../suggested_node";
+import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
 import { SplootHtmlAttribute } from "./html_attribute";
 import { HTML_SCRIPT_ElEMENT } from "./html_script_element";
 import { HTML_STYLE_ELEMENT } from "./html_style_element";
-import { StringLiteral, STRING_LITERAL } from "./literals";
+import { StringLiteral, STRING_LITERAL } from "../literals";
 
 export const HTML_ElEMENT = 'HTML_ELEMENT';
 

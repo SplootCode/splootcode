@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { NodeSelection, NodeSelectionState } from '../../context/selection';
-import { SPLOOT_EXPRESSION } from '../../language/types/expression';
+import { SPLOOT_EXPRESSION } from '../../language/types/js/expression';
 import { NodeBlock } from '../../layout/rendered_node';
 import { TokenListBlockView } from './token_list_block';
 

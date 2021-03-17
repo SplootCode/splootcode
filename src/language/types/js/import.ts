@@ -1,13 +1,13 @@
 import * as recast from "recast";
 
-import { ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
-import { HighlightColorCategory } from "../../layout/colors";
-import { JavaScriptSplootNode } from "../javascript_node";
-import { StringLiteral } from './literals';
+import { ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { JavaScriptSplootNode } from "../../javascript_node";
+import { StringLiteral } from '../literals';
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "./declared_identifier";
 import { IdentifierKind } from "ast-types/gen/kinds";
 

@@ -1,15 +1,15 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ExpressionKind, ObjectPropertyKind } from "ast-types/gen/kinds";
 import { SplootExpression } from "./expression";
-import { HighlightColorCategory } from "../../layout/colors";
-import { SuggestedNode } from "../suggested_node";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { SuggestedNode } from "../../suggested_node";
 import { ObjectExpression, OBJECT_EXPRESSION } from "./object_expression";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const OBJECT_PROPERTY = 'OBJECT_PROPERTY';
 

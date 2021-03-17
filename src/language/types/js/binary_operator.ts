@@ -1,10 +1,10 @@
-import { SplootNode, ParentReference } from "../node";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
-import { HighlightColorCategory } from "../../layout/colors";
+import { SplootNode, ParentReference } from "../../node";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
+import { HighlightColorCategory } from "../../../layout/colors";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const BINARY_OPERATOR = 'BINARY_OPERATOR';
 

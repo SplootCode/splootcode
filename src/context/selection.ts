@@ -5,7 +5,7 @@ import { RenderedChildSetBlock } from "../layout/rendered_childset_block";
 import { NodeBlock } from "../layout/rendered_node";
 import { InsertBoxData } from "./insert_box";
 import { NodeCategory } from "../language/node_category_registry";
-import { SplootExpression } from "../language/types/expression";
+import { SplootExpression } from "../language/types/js/expression";
 
 export enum NodeSelectionState {
   UNSELECTED = 0,

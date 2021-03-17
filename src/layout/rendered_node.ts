@@ -4,7 +4,7 @@ import { NodeObserver } from "../language/observers";
 import { NodeMutation } from "../language/mutations/node_mutations";
 import { observable } from "mobx";
 import { NodeCursor, NodeSelection } from "../context/selection";
-import { SPLOOT_EXPRESSION } from "../language/types/expression";
+import { SPLOOT_EXPRESSION } from "../language/types/js/expression";
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
 import { getColour } from "./colors";
 

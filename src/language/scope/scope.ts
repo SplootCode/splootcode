@@ -1,8 +1,6 @@
 
 import { FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
 import { SplootNode } from "../node";
-import { FunctionDeclaration } from "../types/functions";
-import { MemberExpression } from "../types/member_expression";
 
 export class Scope {
   parent: Scope;

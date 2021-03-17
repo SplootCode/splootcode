@@ -1,18 +1,18 @@
 import * as recast from "recast";
 
 import { ASTNode } from "ast-types";
-import { ChildSetType } from "../childset";
-import { ParentReference, SplootNode } from "../node";
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../node_category_registry";
-import { SuggestedNode } from "../suggested_node";
-import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../type_registry";
-import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
+import { ChildSetType } from "../../childset";
+import { ParentReference, SplootNode } from "../../node";
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
+import { SuggestedNode } from "../../suggested_node";
+import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
+import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
-import { HighlightColorCategory } from "../../layout/colors";
-import { isTagValidWithParent } from "../html/tags";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { isTagValidWithParent } from "../../html/tags";
 import { HTML_ElEMENT, SplootHtmlElement } from "./html_element";
 import { SplootHtmlAttribute } from "./html_attribute";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT';
 

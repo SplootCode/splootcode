@@ -1,9 +1,9 @@
 import { SuggestedNode } from "../suggested_node";
-import { SplootHtmlElement } from "../types/html_element";
+import { SplootHtmlElement } from "../types/html/html_element";
 
 // https://github.com/microsoft/vscode-custom-data/blob/master/web-data/data/browsers.html-data.json
 import * as vscodeHtmlData from 'vscode-web-custom-data/data/browsers.html-data.json';
-import { SplootHtmlAttribute } from "../types/html_attribute";
+import { SplootHtmlAttribute } from "../types/html/html_attribute";
 
 interface Description {
   kind: string,

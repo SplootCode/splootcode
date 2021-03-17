@@ -1,6 +1,5 @@
 import { DATA_SHEET } from "../language/types/dataset/datasheet";
-import { HTML_DOCUMENT } from "../language/types/html_document";
-import { JAVASCRIPT_FILE } from "../language/types/javascript_file";
+import { JAVASCRIPT_FILE } from "../language/types/js/javascript_file";
 import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 

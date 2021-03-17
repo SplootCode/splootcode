@@ -1,16 +1,16 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSet, ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
 import { sanitizeIdentifier } from "./variable_reference";
 import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
-import { FunctionDefinition } from "../lib/loader";
+import { FunctionDefinition } from "../../lib/loader";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { HighlightColorCategory } from "../../layout/colors";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const CALL_VARIABLE = 'CALL_VARIABLE';
 

@@ -1,17 +1,17 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { FunctionDefinition } from "../lib/loader";
-import { HighlightColorCategory } from "../../layout/colors";
-import { SuggestedNode } from "../suggested_node";
+import { FunctionDefinition } from "../../lib/loader";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { SuggestedNode } from "../../suggested_node";
 import { DeclaredIdentifier } from "./declared_identifier";
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "../html/html_script_element";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const FUNCTION_DECLARATION = 'FUNCTION_DECLARATION';
 

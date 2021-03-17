@@ -6,7 +6,7 @@ import { ChildSetMutation, ChildSetMutationType } from "../language/mutations/ch
 import { observable, action } from "mobx";
 import { NodeSelectionState, NodeSelection, SelectionState, NodeCursor } from "../context/selection";
 import { NODE_BLOCK_HEIGHT, NodeBlock, RenderedParentRef } from "./rendered_node";
-import { SPLOOT_EXPRESSION } from "../language/types/expression";
+import { SPLOOT_EXPRESSION } from "../language/types/js/expression";
 
 const EXPRESSION_TOKEN_SPACING = 6;
 const ROW_SPACING = 6;

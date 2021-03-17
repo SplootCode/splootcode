@@ -1,18 +1,18 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
 import { SplootExpression } from "./expression";
 import { ASTNode } from "ast-types";
 import { ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
-import { VariableDefinition } from "../lib/loader";
+import { VariableDefinition } from "../../lib/loader";
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "./declared_identifier";
-import { HighlightColorCategory } from "../../layout/colors";
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "./html_script_element";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "../html/html_script_element";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION';
 

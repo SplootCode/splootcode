@@ -1,17 +1,17 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../type_registry";
-import { SuggestedNode } from "../suggested_node";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
+import { SuggestedNode } from "../../suggested_node";
 import { VariableReference, VariableReferenceGenerator, VARIABLE_REFERENCE } from "./variable_reference";
 import { ExpressionKind, MemberExpressionKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { HighlightColorCategory } from "../../layout/colors";
+import { HighlightColorCategory } from "../../../layout/colors";
 import { CALL_MEMBER } from "./call_member";
-import { STRING_LITERAL } from "./literals";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { STRING_LITERAL } from "./../literals";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION';

@@ -1,14 +1,14 @@
 import * as recast from "recast";
 
-import { SplootNode, ParentReference } from "../node";
-import { ChildSetType } from "../childset";
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../type_registry";
+import { SplootNode, ParentReference } from "../../node";
+import { ChildSetType } from "../../childset";
+import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "../../node_category_registry";
+import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ASTNode } from "ast-types";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { ExpressionKind, StatementKind } from "ast-types/gen/kinds";
-import { HighlightColorCategory } from "../../layout/colors";
-import { JavaScriptSplootNode } from "../javascript_node";
+import { HighlightColorCategory } from "../../../layout/colors";
+import { JavaScriptSplootNode } from "../../javascript_node";
 
 export const JAVASCRIPT_FILE = 'JAVASCRIPT_FILE';
 

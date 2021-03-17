@@ -1,9 +1,9 @@
 import { NodeMutation } from "../language/mutations/node_mutations";
 import { SplootNode } from "../language/node";
-import { SplootHtmlAttribute } from "../language/types/html_attribute";
-import { SplootHtmlDocument } from "../language/types/html_document";
-import { SplootHtmlElement } from "../language/types/html_element";
-import { SplootHtmlScriptElement } from "../language/types/html_script_element";
+import { SplootHtmlAttribute } from "../language/types/html/html_attribute";
+import { SplootHtmlDocument } from "../language/types/html/html_document";
+import { SplootHtmlElement } from "../language/types/html/html_element";
+import { SplootHtmlScriptElement } from "../language/types/html/html_script_element";
 import { StringLiteral } from "../language/types/literals";
 
 import * as recast from "recast";

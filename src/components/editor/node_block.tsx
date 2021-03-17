@@ -8,7 +8,7 @@ import { SplootExpressionView } from './expression';
 import { LayoutComponent, LayoutComponentType } from '../../language/type_registry';
 import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block';
 import { AttachedChildRightExpressionView } from './attached_child';
-import { SPLOOT_EXPRESSION } from '../../language/types/expression';
+import { SPLOOT_EXPRESSION } from '../../language/types/js/expression';
 
 import "./node_block.css";
 import { observer } from 'mobx-react';
