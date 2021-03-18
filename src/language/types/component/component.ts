@@ -4,7 +4,7 @@ import { SplootNode, ParentReference } from "../../node";
 import { ChildSetType } from "../../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
-import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from "ast-types/gen/kinds";
+import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 import { FunctionDefinition } from "../../lib/loader";
 import { HighlightColorCategory } from "../../../layout/colors";
@@ -74,7 +74,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
     });
   }
 
-  generateJsAst() : FunctionDeclarationKind {
+  generateJsAst() : ExportDeclarationKind {
     let statements = [];
     let params = [recast.types.builders.identifier('props')];
     this.getBody().children.forEach((node: JavaScriptSplootNode) => {
@@ -88,7 +88,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
     });
     let block = recast.types.builders.blockStatement(statements);
     let identifier = (this.getIdentifier().getChild(0) as JavaScriptSplootNode).generateJsAst() as IdentifierKind
-    return recast.types.builders.functionDeclaration(identifier, params, block);
+    return recast.types.builders.exportDeclaration(false, recast.types.builders.functionDeclaration(identifier, params, block));
   }
 
   static deserializer(serializedNode: SerializedNode) : ComponentDeclaration {
