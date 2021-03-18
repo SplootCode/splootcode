@@ -11,24 +11,25 @@ import { ExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { JavaScriptSplootNode } from "../../javascript_node";
 
-export const AWAIT_EXPRESSION = 'AWAIT_EXPRESSION';
+export const RETURN_STATEMENT = 'RETURN_STATEMENT';
 
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    let sampleNode = new AwaitExpression(null);
-    let suggestedNode = new SuggestedNode(sampleNode, 'await', 'await', true, 'wait for result');
+    // TODO: Check if we're inside a function scope.
+    let sampleNode = new ReturnStatement(null);
+    let suggestedNode = new SuggestedNode(sampleNode, 'return', 'return', true, 'return a result from a function');
     return [suggestedNode];
   };
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
     return [];
-  }
+  };
 }
 
-export class AwaitExpression extends JavaScriptSplootNode {
+export class ReturnStatement extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
-    super(parentReference, AWAIT_EXPRESSION);
+    super(parentReference, RETURN_STATEMENT);
     this.addChildSet('expression', ChildSetType.Single, NodeCategory.Expression);
     this.getChildSet('expression').addChild(new SplootExpression(null));
   }
@@ -39,11 +40,11 @@ export class AwaitExpression extends JavaScriptSplootNode {
 
   generateJsAst() : ASTNode {
     let expression = (this.getExpression().getChild(0) as JavaScriptSplootNode).generateJsAst() as ExpressionKind;
-    return recast.types.builders.awaitExpression(expression);
+    return recast.types.builders.returnStatement(expression);
   }
 
-  static deserialize(serializedNode: SerializedNode) : AwaitExpression {
-    let node = new AwaitExpression(null);
+  static deserialize(serializedNode: SerializedNode) : ReturnStatement {
+    let node = new ReturnStatement(null);
     node.getExpression().removeChild(0);
     node.deserializeChildSet('expression', serializedNode);
     return node;
@@ -51,22 +52,17 @@ export class AwaitExpression extends JavaScriptSplootNode {
 
   static register() {
     let typeRegistration = new TypeRegistration();
-    typeRegistration.typeName = AWAIT_EXPRESSION;
-    typeRegistration.deserializer = AwaitExpression.deserialize;
+    typeRegistration.typeName = RETURN_STATEMENT;
+    typeRegistration.deserializer = ReturnStatement.deserialize;
     typeRegistration.childSets = {
       'expression': NodeCategory.Expression,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'await'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'return'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'expression'),
     ]);
-    typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
-      let exp = new SplootExpression(null);
-      exp.getTokenSet().addChild(node);
-      return exp;
-    }
   
     registerType(typeRegistration);
-    registerNodeCateogry(AWAIT_EXPRESSION, NodeCategory.ExpressionToken, new Generator());
+    registerNodeCateogry(RETURN_STATEMENT, NodeCategory.Statement, new Generator());
   }
 }

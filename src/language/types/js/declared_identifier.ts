@@ -13,11 +13,15 @@ export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER';
 
 function sanitizeIdentifier(textInput: string) : string {
   textInput = textInput.replace(/[^\w\s\d]/g, ' ');
-  // From SO: https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
-  return textInput.split(' ').map(function(word,index){
-    // If it is the first word make sure to lowercase all the chars.
-    if(index == 0){
-      return word.toLowerCase();
+  // Don't mess with it if there are no spaces or punctuation.
+  if (textInput.indexOf(' ') === -1) {
+    return textInput;
+  }
+  
+  return textInput.split(' ').map(function(word, index){
+    if (index == 0) {
+      // Don't change the capitalization of the first word.
+      return word;
     }
     // If it is not the first word only upper case the first char and lowercase the rest.
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();

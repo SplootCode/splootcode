@@ -33,6 +33,9 @@ import { StyleSelector } from "./types/styles/style_selector";
 import { VariableDeclaration } from "./types/js/variable_declaration";
 import { VariableReference } from "./types/js/variable_reference";
 import { resolvePasteAdapters } from "./type_registry";
+import { ComponentDeclaration } from "./types/component/component";
+import { ReturnStatement } from "./types/js/return";
+import { ReactElementNode } from "./types/component/react_element";
 
 
 export function loadTypes() {
@@ -53,6 +56,7 @@ export function loadTypes() {
   AwaitExpression.register();
   IfStatement.register();
   ImportStatement.register();
+  ReturnStatement.register();
 
   StringLiteral.register();
   NumericLiteral.register();
@@ -70,6 +74,9 @@ export function loadTypes() {
   StyleRule.register();
   StyleSelector.register();
   StyleProperty.register();
+
+  ComponentDeclaration.register();
+  ReactElementNode.register();
 
   JavascriptFile.register();
 

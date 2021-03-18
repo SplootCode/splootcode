@@ -4,6 +4,7 @@ import { SplootHtmlElement } from "../types/html/html_element";
 // https://github.com/microsoft/vscode-custom-data/blob/master/web-data/data/browsers.html-data.json
 import * as vscodeHtmlData from 'vscode-web-custom-data/data/browsers.html-data.json';
 import { SplootHtmlAttribute } from "../types/html/html_attribute";
+import { ReactElementNode } from "../types/component/react_element";
 
 interface Description {
   kind: string,
@@ -231,8 +232,8 @@ export function generateAncestorInfo(ancestorChain: string[]) : SummarisedAncest
     return ancestorInfo;
 }
 
-export function getValidElements(element: SplootHtmlElement, parentTags: string[]) : SuggestedNode[] {
-    let parentInfo = generateAncestorInfo(parentTags);
+export function getValidElements(parentTag: string, ancestorTags: string[]) : SuggestedNode[] {
+    let parentInfo = generateAncestorInfo(ancestorTags);
 
     let suggestedElements : SuggestedNode[] = [];
     htmlData.tags.forEach((tag: Tag) => {
@@ -240,13 +241,31 @@ export function getValidElements(element: SplootHtmlElement, parentTags: string[
         // Skip script tags, they're autocompleted separately.
         return;
       }
-      let suggestion = getSuggestedElement(element.getTag(), parentInfo, tag);
+      let suggestion = getSuggestedElement(parentTag, parentInfo, tag);
         // TODO: Allow invalid tags once we've got the UI giving a useful warning.
         if (suggestion.valid) {
           suggestedElements.push(suggestion);
         }
     })
     return suggestedElements;
+}
+
+export function getValidReactElements(parentTag: string, ancestorTags: string[]) : SuggestedNode[] {
+  let parentInfo = generateAncestorInfo(ancestorTags);
+
+  let suggestedElements : SuggestedNode[] = [];
+  htmlData.tags.forEach((tag: Tag) => {
+    if (tag.name === 'script' || tag.name === 'style') {
+      // Skip script tags, they're autocompleted separately.
+      return;
+    }
+    let suggestion = getSuggestedReactElement(parentTag, parentInfo, tag);
+      // TODO: Allow invalid tags once we've got the UI giving a useful warning.
+      if (suggestion.valid) {
+        suggestedElements.push(suggestion);
+      }
+  })
+  return suggestedElements;
 }
 
 export function getValidAttributes(targetTag: string) : SuggestedNode[] {
@@ -502,4 +521,20 @@ export function getSuggestedElement(parentTag: string, ancestorInfo: SummarisedA
     
     // Assume all other elements are valid :)
     return new SuggestedNode(new SplootHtmlElement(null, potentialChildTag.name), `element ${potentialChildTag.name}`, potentialChildTag.name, true, potentialChildTag.description.value)
+}
+
+
+export function getSuggestedReactElement(parentTag: string, ancestorInfo: SummarisedAncestorInfo, potentialChildTag: Tag) : SuggestedNode {
+  let valid = isTagValidWithParent(potentialChildTag.name, parentTag);
+  if (!valid) {
+      return new SuggestedNode(new ReactElementNode(null, potentialChildTag.name), `element ${potentialChildTag.name}`, potentialChildTag.name, false, `Can't use inside ${parentTag} element.`)
+  }
+
+  let invalidAncestor = findInvalidAncestorForTag(potentialChildTag.name, ancestorInfo);
+  if (invalidAncestor) {
+    return new SuggestedNode(new ReactElementNode(null, potentialChildTag.name), `element ${potentialChildTag.name}`, potentialChildTag.name, false, `Not allowed inside ${invalidAncestor} element.`)
+  }
+  
+  // Assume all other elements are valid :)
+  return new SuggestedNode(new ReactElementNode(null, potentialChildTag.name), `element ${potentialChildTag.name}`, potentialChildTag.name, true, potentialChildTag.description.value)
 }

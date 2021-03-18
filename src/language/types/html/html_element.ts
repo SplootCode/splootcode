@@ -16,7 +16,7 @@ class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
     if (parent.node.type === HTML_ElEMENT) {
-      return getValidElements(parent.node as SplootHtmlElement, [])
+      return getValidElements((parent.node as SplootHtmlElement).getTag(), [])
     }
     return [];
   };

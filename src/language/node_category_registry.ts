@@ -22,6 +22,8 @@ export enum NodeCategory {
     StyleSheetSelector,
     StyleSheetProperty,
     StyleSheetPropertyValue,
+    ComponentProperty,
+    ComponentBodyStatement
 }
 
 export interface SuggestionGenerator {
