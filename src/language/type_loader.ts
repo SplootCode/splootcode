@@ -36,6 +36,7 @@ import { resolvePasteAdapters } from "./type_registry";
 import { ComponentDeclaration } from "./types/component/component";
 import { ReturnStatement } from "./types/js/return";
 import { ReactElementNode } from "./types/component/react_element";
+import { ForEachExpression } from "./types/component/for_each_expression";
 
 
 export function loadTypes() {
@@ -77,6 +78,7 @@ export function loadTypes() {
 
   ComponentDeclaration.register();
   ReactElementNode.register();
+  ForEachExpression.register();
 
   JavascriptFile.register();
 
