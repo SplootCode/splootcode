@@ -5,10 +5,11 @@ import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
 import { getValidReactElements } from "../../html/tags";
 import { JavaScriptSplootNode } from "../../javascript_node";
-import { ParentReference } from "../../node";
+import { ParentReference, SplootNode } from "../../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
 import { SuggestedNode } from "../../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
+import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 
 export const REACT_ELEMENT = 'REACT_ELEMENT';
 
@@ -45,6 +46,16 @@ export class ReactElementNode extends JavaScriptSplootNode {
 
   getContent() {
     return this.getChildSet('content');
+  }
+
+  clean() {
+    this.getContent().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getContent().removeChild(index);
+        }
+      }
+    });
   }
 
   generateJsAst() : ExpressionKind {
