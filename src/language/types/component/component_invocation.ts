@@ -3,7 +3,6 @@ import * as recast from "recast";
 import { ExpressionKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { ChildSetType } from "../../childset";
-import { getValidReactElements } from "../../html/tags";
 import { JavaScriptSplootNode } from "../../javascript_node";
 import { ParentReference, SplootNode } from "../../node";
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from "../../node_category_registry";
@@ -11,17 +10,24 @@ import { SuggestedNode } from "../../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
 import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 import { ComponentProperty } from "./component_property";
+import { ComponentDefinition, VariableDefinition } from "../../lib/loader";
 
-export const REACT_ELEMENT = 'REACT_ELEMENT';
+export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION';
 
 class Generator implements SuggestionGenerator {
 
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    if (parent.node.type === REACT_ELEMENT) {
-      return getValidReactElements((parent.node as ReactElementNode).getTag(), [])
-    }
-    // Assume all body elements are ok for react nodes.
-    return getValidReactElements('body', []);
+    let scope = parent.node.getScope();
+    let suggestions = scope.getAllComponentDefinitions().map((componentDef: ComponentDefinition) => {
+      let varName = componentDef.name;
+      let newVar = new ComponentInvocation(null, varName);
+      let doc = componentDef.documentation;
+      if (!doc) {
+        doc = "No documentation";
+      }
+      return new SuggestedNode(newVar, `component ${varName}`, varName, true, doc);
+    });
+    return suggestions;
   };
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
@@ -29,20 +35,29 @@ class Generator implements SuggestionGenerator {
   };
 }
 
-export class ReactElementNode extends JavaScriptSplootNode {
-  constructor(parentReference: ParentReference, tag: string) {
-    super(parentReference, REACT_ELEMENT);
-    this.setProperty('tag', tag);
+export class ComponentInvocation extends JavaScriptSplootNode {
+  constructor(parentReference: ParentReference, name: string) {
+    super(parentReference, COMPONENT_INVOCATION);
+    this.setProperty('name', name);
     this.addChildSet('attributes', ChildSetType.Many, NodeCategory.ComponentProperty);
     this.addChildSet('content', ChildSetType.Many, NodeCategory.Expression);
   }
 
-  getTag() : string {
-    return this.getProperty('tag');
+  getName() : string {
+    return this.getProperty('name');
   }
 
   getAttributes() {
     return this.getChildSet('attributes');
+  }
+
+  getPropertyDefinitions() : VariableDefinition[] {
+    let scope = this.getScope();
+    if (!scope) {
+      return [];
+    }
+    let compDef = scope.getComponentDefinitionByName(this.getName());
+    return compDef.proptypes;
   }
 
   getContent() {
@@ -68,7 +83,7 @@ export class ReactElementNode extends JavaScriptSplootNode {
       }
     });
 
-    let callArguments : ExpressionKind[] = [recast.types.builders.stringLiteral(this.getTag())];
+    let callArguments : ExpressionKind[] = [recast.types.builders.identifier(this.getName())];
     let props = recast.types.builders.objectExpression(this.getAttributes().children.map(
       (node: SplootNode) => {
         return (node as ComponentProperty).generateJsAst();
@@ -82,8 +97,8 @@ export class ReactElementNode extends JavaScriptSplootNode {
     return recast.types.builders.callExpression(reactCreateElement, callArguments);
   }
 
-  static deserializer(serializedNode: SerializedNode) : ReactElementNode {
-    let doc = new ReactElementNode(null, serializedNode.properties.tag);
+  static deserializer(serializedNode: SerializedNode) : ComponentInvocation {
+    let doc = new ComponentInvocation(null, serializedNode.properties.name);
     doc.deserializeChildSet('attributes', serializedNode);
     doc.deserializeChildSet('content', serializedNode);
     return doc;
@@ -91,19 +106,19 @@ export class ReactElementNode extends JavaScriptSplootNode {
 
   static register() {
     let typeRegistration = new TypeRegistration();
-    typeRegistration.typeName = REACT_ELEMENT;
-    typeRegistration.deserializer = ReactElementNode.deserializer;
+    typeRegistration.typeName = COMPONENT_INVOCATION;
+    typeRegistration.deserializer = ComponentInvocation.deserializer;
     typeRegistration.childSets = {
       'attributes': NodeCategory.ComponentProperty,
       'content': NodeCategory.DomNode,
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
-      new LayoutComponent(LayoutComponentType.PROPERTY, 'tag'),
+      new LayoutComponent(LayoutComponentType.PROPERTY, 'name'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'attributes'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'content'),
     ]);
 
     registerType(typeRegistration);
-    registerNodeCateogry(REACT_ELEMENT, NodeCategory.ExpressionToken, new Generator());
+    registerNodeCateogry(COMPONENT_INVOCATION, NodeCategory.ExpressionToken, new Generator());
   }
 }

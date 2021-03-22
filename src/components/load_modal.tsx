@@ -51,6 +51,7 @@ export function LoadProjectModal(props: LoadProjectModalProps) {
     switch (selectedProject) {
       case 'bouncing':
       case 'flashcards':
+      case 'gallery':
         proj = await loadExampleProject(selectedProject)
         break;
       case 'blank':

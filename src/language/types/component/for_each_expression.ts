@@ -5,7 +5,7 @@ import { ChildSetType } from "../../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
 import { SuggestedNode } from "../../suggested_node";
-import { SplootExpression } from "../js/expression";
+import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 import { ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
 import { VariableDefinition } from "../../lib/loader";
 import { DeclaredIdentifier, DECLARED_IDENTIFIER } from "../js/declared_identifier";
@@ -46,7 +46,7 @@ export class ForEachExpression extends SplootNode {
       this.getScope().addVariable({
         name: (this.getDeclarationIdentifier().getChild(0) as DeclaredIdentifier).getName(),
         deprecated: false,
-        documentation: 'Local variable',
+        documentation: 'Local for-loop variable',
         type: {type: 'any'},
       } as VariableDefinition);
     }
@@ -59,6 +59,17 @@ export class ForEachExpression extends SplootNode {
   getContent() {
     return this.getChildSet('content');
   }
+
+  clean() {
+    this.getContent().children.forEach((child: SplootNode, index: number) => {
+      if (child.type === SPLOOT_EXPRESSION) {
+        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
+          this.getContent().removeChild(index);
+        }
+      }
+    });
+  }
+
 
   generateJsAst() : ExpressionKind {
     let id = (this.getDeclarationIdentifier().getChild(0) as JavaScriptSplootNode).generateJsAst() as IdentifierKind;

@@ -5,6 +5,7 @@ import { SplootHtmlElement } from "../types/html/html_element";
 import * as vscodeHtmlData from 'vscode-web-custom-data/data/browsers.html-data.json';
 import { SplootHtmlAttribute } from "../types/html/html_attribute";
 import { ReactElementNode } from "../types/component/react_element";
+import { ComponentProperty } from "../types/component/component_property";
 
 interface Description {
   kind: string,
@@ -280,6 +281,23 @@ export function getValidAttributes(targetTag: string) : SuggestedNode[] {
     // There are some duplicates between tag-specific attributes and global ones.
     if (!seen.has(attr.name)) {
       suggestions.push(new SuggestedNode(new SplootHtmlAttribute(null, attr.name), `attr ${attr.name}`, attr.name, true, attr.description?.value ?? `${attr.name} attribute`));
+    }
+  })
+  return suggestions;
+}
+
+export function getValidReactAttributes(targetTag: string) : SuggestedNode[] {
+  let suggestions = [];
+  let seen = new Set();
+  let tag = htmlData.tags.find(tag => tag.name === targetTag);
+  tag.attributes.forEach(attr => {
+    seen.add(attr.name);
+    suggestions.push(new SuggestedNode(new ComponentProperty(null, attr.name), `attr ${attr.name}`, attr.name, true, attr.description?.value ?? `${attr.name} attribute`));
+  })
+  htmlData.globalAttributes.forEach(attr => {
+    // There are some duplicates between tag-specific attributes and global ones.
+    if (!seen.has(attr.name)) {
+      suggestions.push(new SuggestedNode(new ComponentProperty(null, attr.name), `attr ${attr.name}`, attr.name, true, attr.description?.value ?? `${attr.name} attribute`));
     }
   })
   return suggestions;

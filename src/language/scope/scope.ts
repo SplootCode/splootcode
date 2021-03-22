@@ -1,5 +1,5 @@
 
-import { FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
+import { ComponentDefinition, FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
 import { SplootNode } from "../node";
 
 export class Scope {
@@ -7,12 +7,21 @@ export class Scope {
   id: string;
   isGlobal: boolean;
   variables: {[key:string]: VariableDefinition};
+  properties: {[key:string]: VariableDefinition};
+  components: {[key:string]: ComponentDefinition};
   functions: {[key:string]: FunctionDefinition};
 
   constructor(parent: Scope) {
     this.parent = parent;
     this.variables = {};
+    this.components = {};
+    this.properties = {};
     this.functions = {};
+  }
+
+  addProperty(property: VariableDefinition) {
+    // TODO: Check it's not already there?
+    this.properties[property.name] = property;
   }
 
   addVariable(variable: VariableDefinition) {
@@ -20,8 +29,29 @@ export class Scope {
     this.variables[variable.name] = variable;
   }
 
+  addComponent(def: ComponentDefinition) {
+    this.components[def.name] = def;
+  }
+
   addFunction(func: FunctionDefinition) {
+    // TODO: Check it's not already there?
     this.functions[func.name] = func;
+  }
+
+  getAllComponentDefinitions(): ComponentDefinition[] {
+    let locals = Object.keys(this.components).map(key => this.components[key]);
+    if (this.parent === null) {
+      return locals;
+    }
+    return locals.concat(this.parent.getAllComponentDefinitions());
+  }
+
+  getAllPropertyDefinitions(): VariableDefinition[] {
+    let locals = Object.keys(this.properties).map(key => this.properties[key]);
+    if (this.parent === null) {
+      return locals;
+    }
+    return locals.concat(this.parent.getAllPropertyDefinitions());
   }
 
   getAllVariableDefinitions() : VariableDefinition[] {
@@ -74,6 +104,16 @@ export class Scope {
       return;
     }
     return this.parent.getFunctionDefinitionByName(name);
+  }
+
+  getComponentDefinitionByName(name: string): ComponentDefinition {
+    if (name in this.components) {
+      return this.components[name];
+    }
+    if (this.isGlobal) {
+      return;
+    }
+    return this.parent.getComponentDefinitionByName(name);
   }
 }
 

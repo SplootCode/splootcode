@@ -6,12 +6,13 @@ import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../n
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
-import { FunctionDefinition } from "../../lib/loader";
+import { ComponentDefinition, FunctionDefinition, VariableDefinition } from "../../lib/loader";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { SuggestedNode } from "../../suggested_node";
 import { DeclaredIdentifier } from "../js/declared_identifier";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "../html/html_script_element";
 import { JavaScriptSplootNode } from "../../javascript_node";
+import { DeclaredProperty } from "./declared_property";
 
 export const COMPONENT_DECLARATION = 'COMPONENT_DECLARATION';
 
@@ -31,7 +32,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, COMPONENT_DECLARATION);
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.DeclaredIdentifier);
-    this.addChildSet('props', ChildSetType.Many, NodeCategory.ComponentProperty);
+    this.addChildSet('props', ChildSetType.Many, NodeCategory.ComponentPropertyDeclaration);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.Statement);
   }
 
@@ -52,16 +53,17 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
       // No identifier, we can't be added to the scope.
       return;
     }
+    let proptypes = this.getProps().children.map(node => {
+      let prop = node as DeclaredProperty;
+      return prop.getVariableDefinition();
+    })
     let identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName();
-    this.getScope(true).addFunction({
+    this.getScope(true).addComponent({
       name: identifier,
       deprecated: false,
-      documentation: 'Local function',
-      type: {
-        parameters: [],
-        returnType: {type: 'any'}
-      },
-    } as FunctionDefinition);
+      documentation: 'React Component',
+      proptypes: proptypes,
+    } as ComponentDefinition);
   }
 
   clean() {
@@ -105,7 +107,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
     typeRegistration.deserializer = ComponentDeclaration.deserializer;
     typeRegistration.hasScope = true;
     typeRegistration.properties = ['identifier'];
-    typeRegistration.childSets = {'props': NodeCategory.ComponentProperty, 'body': NodeCategory.Statement};
+    typeRegistration.childSets = {'props': NodeCategory.ComponentPropertyDeclaration, 'body': NodeCategory.Statement};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'component'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
