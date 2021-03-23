@@ -1,15 +1,12 @@
-import * as recast from "recast";
-
-import { SplootNode, ParentReference } from "../../node";
+import { ParentReference } from "../../node";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
 import { SuggestedNode } from "../../suggested_node";
-import { IdentifierKind } from "ast-types/gen/kinds";
 import { HighlightColorCategory } from "../../../layout/colors";
-import { VariableReference, VARIABLE_REFERENCE } from "./variable_reference";
 import { JavaScriptSplootNode } from "../../javascript_node";
+import { VariableDefinition } from "../../lib/loader";
 
-export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER';
+export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY';
 
 function sanitizeIdentifier(textInput: string) : string {
   textInput = textInput.replace(/[^\w\s\d]/g, ' ');
@@ -28,7 +25,7 @@ function sanitizeIdentifier(textInput: string) : string {
   }).join('');
 }
 
-export class VariableDeclarationGenerator implements SuggestionGenerator {
+export class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
     // TODO: Fill in-scope declared variables here.
     return [];
@@ -40,15 +37,15 @@ export class VariableDeclarationGenerator implements SuggestionGenerator {
       varName = '_' + varName;
     }
 
-    let newVar = new DeclaredIdentifier(null, varName);
+    let newVar = new DeclaredProperty(null, varName);
     let suggestedNode = new SuggestedNode(newVar, `identifier ${varName}`, '', true);
     return [suggestedNode];
   }
 }
 
-export class DeclaredIdentifier extends JavaScriptSplootNode {
+export class DeclaredProperty extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, name: string) {
-    super(parentReference, DECLARED_IDENTIFIER);
+    super(parentReference, DELCARED_PROEPRTY);
     this.setProperty('identifier', name);
   }
 
@@ -60,31 +57,39 @@ export class DeclaredIdentifier extends JavaScriptSplootNode {
     return this.getProperty('identifier');
   }
 
-  generateJsAst() : IdentifierKind {
-    let identifier = recast.types.builders.identifier(this.getName());
-    return identifier;
+  addSelfToScope() {
+    this.getScope().addProperty(this.getVariableDefinition());
   }
 
-  static deserializer(serializedNode: SerializedNode) : DeclaredIdentifier {
-    let node = new DeclaredIdentifier(null, serializedNode.properties.identifier);
+  getVariableDefinition() : VariableDefinition {
+    return {
+      name: this.getName(),
+      deprecated: false,
+      documentation: 'Property',
+      type: {type: "any"},
+    };
+  }
+
+  generateJsAst() {
+    console.warn('Invalid call to generate JS AST from component property declaration.')
+    return null;
+  }
+
+  static deserializer(serializedNode: SerializedNode) : DeclaredProperty {
+    let node = new DeclaredProperty(null, serializedNode.properties.identifier);
     return node;
   }
 
   static register() {
     let typeRegistration = new TypeRegistration();
-    typeRegistration.typeName = DECLARED_IDENTIFIER;
-    typeRegistration.deserializer = DeclaredIdentifier.deserializer;
+    typeRegistration.typeName = DELCARED_PROEPRTY;
+    typeRegistration.deserializer = DeclaredProperty.deserializer;
     typeRegistration.properties = ['identifier'];
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
     ]);
-    typeRegistration.pasteAdapters[VARIABLE_REFERENCE] = (node: SplootNode) => {
-      let varDec = node as DeclaredIdentifier;
-      let newNode = new VariableReference(null, varDec.getName());
-      return newNode;
-    }
   
     registerType(typeRegistration);
-    registerNodeCateogry(DECLARED_IDENTIFIER, NodeCategory.DeclaredIdentifier, new VariableDeclarationGenerator());
+    registerNodeCateogry(DELCARED_PROEPRTY, NodeCategory.ComponentPropertyDeclaration, new Generator());
   }
 }

@@ -33,6 +33,14 @@ import { StyleSelector } from "./types/styles/style_selector";
 import { VariableDeclaration } from "./types/js/variable_declaration";
 import { VariableReference } from "./types/js/variable_reference";
 import { resolvePasteAdapters } from "./type_registry";
+import { ComponentDeclaration } from "./types/component/component_declaration";
+import { DeclaredProperty } from "./types/component/declared_property";
+import { ReturnStatement } from "./types/js/return";
+import { ReactElementNode } from "./types/component/react_element";
+import { ForEachExpression } from "./types/component/for_each_expression";
+import { ComponentProperty } from "./types/component/component_property";
+import { PropertyReference } from "./types/component/property_reference";
+import { ComponentInvocation } from "./types/component/component_invocation";
 
 
 export function loadTypes() {
@@ -53,6 +61,7 @@ export function loadTypes() {
   AwaitExpression.register();
   IfStatement.register();
   ImportStatement.register();
+  ReturnStatement.register();
 
   StringLiteral.register();
   NumericLiteral.register();
@@ -70,6 +79,14 @@ export function loadTypes() {
   StyleRule.register();
   StyleSelector.register();
   StyleProperty.register();
+
+  ComponentDeclaration.register();
+  ComponentInvocation.register();
+  DeclaredProperty.register();
+  ComponentProperty.register();
+  PropertyReference.register();
+  ReactElementNode.register();
+  ForEachExpression.register();
 
   JavascriptFile.register();
 

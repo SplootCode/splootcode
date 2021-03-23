@@ -12,6 +12,13 @@ export interface FunctionDefinition {
   type: FunctionTypeDefinition;
 }
 
+export interface ComponentDefinition {
+  name: string;
+  deprecated: boolean;
+  documentation?: string;
+  proptypes: VariableDefinition[];
+}
+
 export interface VariableDefinition {
   name: string;
   type: TypeExpression;
