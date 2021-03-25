@@ -24,7 +24,9 @@ export enum NodeCategory {
     StyleSheetPropertyValue,
     ComponentPropertyDeclaration,
     ComponentProperty,
-    ComponentBodyStatement
+    ComponentBodyStatement,
+    JssBodyContent,
+    JssStyleProperties,
 }
 
 export interface SuggestionGenerator {

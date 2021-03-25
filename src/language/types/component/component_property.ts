@@ -12,8 +12,6 @@ import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, Seriali
 import { ReactElementNode, REACT_ELEMENT } from "./react_element";
 import { SplootExpression } from "../js/expression";
 import { ComponentInvocation, COMPONENT_INVOCATION } from "./component_invocation";
-import { VariableDefinition } from "../../lib/loader";
-import { deprecated } from "mobx/lib/internal";
 
 export const COMPONENT_PROPERTY = 'COMPONENT_PROPERTY';
 
@@ -52,15 +50,6 @@ export class ComponentProperty extends JavaScriptSplootNode {
     return this.getChildSet('value');
   }
 
-  getVariableDefinition() : VariableDefinition {
-    return {
-      name: this.getName(),
-      deprecated: false,
-      documentation: 'Property',
-      type: {type: "any"},
-    };
-  }
-
   generateJsAst() : ObjectPropertyKind {
     let key = recast.types.builders.identifier(this.getName());
     let value = this.getValue().getChild(0) as SplootExpression;
@@ -94,4 +83,3 @@ export class ComponentProperty extends JavaScriptSplootNode {
     registerNodeCateogry(COMPONENT_PROPERTY, NodeCategory.ComponentProperty, new Generator());
   }
 }
-

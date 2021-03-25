@@ -41,6 +41,10 @@ import { ForEachExpression } from "./types/component/for_each_expression";
 import { ComponentProperty } from "./types/component/component_property";
 import { PropertyReference } from "./types/component/property_reference";
 import { ComponentInvocation } from "./types/component/component_invocation";
+import { JssStyleBlock } from "./types/jss_styles/jss_style_block";
+import { ImportDefaultStatement } from "./types/js/import_default";
+import { JssClassBlock } from "./types/jss_styles/jss_class_block";
+import { JssStyleProperty } from "./types/jss_styles/jss_style_property";
 
 
 export function loadTypes() {
@@ -61,6 +65,7 @@ export function loadTypes() {
   AwaitExpression.register();
   IfStatement.register();
   ImportStatement.register();
+  ImportDefaultStatement.register();
   ReturnStatement.register();
 
   StringLiteral.register();
@@ -87,6 +92,10 @@ export function loadTypes() {
   PropertyReference.register();
   ReactElementNode.register();
   ForEachExpression.register();
+
+  JssStyleBlock.register();
+  JssClassBlock.register();
+  JssStyleProperty.register();
 
   JavascriptFile.register();
 
