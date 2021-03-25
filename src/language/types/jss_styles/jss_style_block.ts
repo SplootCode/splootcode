@@ -64,7 +64,7 @@ export class JssStyleBlock extends JavaScriptSplootNode {
       button: {
         float: 'left'
       }
-    })
+    }).attach();
     */
     let jss = recast.types.builders.identifier('jss');
     let createStyleSheet = recast.types.builders.identifier('createStyleSheet');
@@ -75,11 +75,15 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     });
 
     let stylesObject = recast.types.builders.objectExpression(properties);
+    let callCreateStyleSheet = recast.types.builders.callExpression(member, [stylesObject]);
 
-    let call = recast.types.builders.callExpression(member, [stylesObject]);
+    // (...).attach()
+    let attachFunc = recast.types.builders.memberExpression(callCreateStyleSheet, recast.types.builders.identifier('attach'));
+    let callAttach = recast.types.builders.callExpression(attachFunc, []);
+
+    // const sheet = ...
     let identifier = recast.types.builders.identifier((this.getIdentifier().getChild(0) as DeclaredIdentifier).getName());
-    
-    let declarator = recast.types.builders.variableDeclarator(identifier, call);
+    let declarator = recast.types.builders.variableDeclarator(identifier, callAttach);
     return recast.types.builders.variableDeclaration('const', [declarator]);
   }
 
