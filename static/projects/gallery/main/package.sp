@@ -9,6 +9,10 @@
     {
       "name": "gallery.js",
       "type": "JAVASCRIPT_FILE"
+    },
+    {
+      "name": "setupjss.js",
+      "type": "JAVASCRIPT_FILE"
     }
   ]
 }

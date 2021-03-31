@@ -4,7 +4,7 @@ import { SplootNode, ParentReference } from "../../node";
 import { ChildSetType } from "../../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
-import { FunctionDeclarationKind, ObjectPropertyKind, StatementKind } from "ast-types/gen/kinds";
+import { ObjectPropertyKind, StatementKind } from "ast-types/gen/kinds";
 import { FunctionDefinition } from "../../lib/loader";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { SuggestedNode } from "../../suggested_node";
