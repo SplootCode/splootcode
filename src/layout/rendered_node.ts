@@ -49,6 +49,8 @@ export class NodeBlock implements NodeObserver {
   @observable
   renderedChildSets: {[key: string]: RenderedChildSetBlock}
   @observable
+  childSetOrder: string[];
+  @observable
   rightAttachedChildSet: string;
   @observable
   leftBreadcrumbChildSet: string;
@@ -75,6 +77,7 @@ export class NodeBlock implements NodeObserver {
     this.selection = selection;
     this.index = index;
     this.renderedChildSets = {};
+    this.childSetOrder = [];
     this.layout = node.getNodeLayout();
     this.textColor = getColour(this.layout.color)
     this.node = node;
@@ -105,6 +108,7 @@ export class NodeBlock implements NodeObserver {
           || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT
           || component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         let childSet = node.getChildSet(component.identifier)
+        this.childSetOrder.push(component.identifier);
         let childSetParentRef = new RenderedParentRef(this, component.identifier);
         let renderedChildSet = new RenderedChildSetBlock(childSetParentRef, selection, childSet, component, isLastInlineComponent);
         this.renderedChildSets[component.identifier] = renderedChildSet;
@@ -258,10 +262,10 @@ export class NodeBlock implements NodeObserver {
   }
 
   getNextInsertAfterChildSet(childSetId: string) : NodeCursor {
-    let index = this.node.childSetOrder.indexOf(childSetId);
+    let index = this.childSetOrder.indexOf(childSetId);
     index += 1;
-    while (index < this.node.childSetOrder.length) {
-      let nextChildSetId = this.node.childSetOrder[index];
+    while (index < this.childSetOrder.length) {
+      let nextChildSetId = this.childSetOrder[index];
       let nextChildSet = this.renderedChildSets[nextChildSetId]
       let nextInsert = nextChildSet.getNextChildInsert();
       if (nextInsert) {
@@ -274,7 +278,7 @@ export class NodeBlock implements NodeObserver {
   }
 
   getNextChildInsertCursor() : NodeCursor {
-    for (let childSetId of this.node.childSetOrder) {
+    for (let childSetId of this.childSetOrder) {
       let childSetListBlock = this.renderedChildSets[childSetId];
       let nextCursor = childSetListBlock.getNextChildInsert()
       if (nextCursor) {
