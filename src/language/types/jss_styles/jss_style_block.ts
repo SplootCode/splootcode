@@ -5,14 +5,14 @@ import { ChildSetType } from "../../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ObjectPropertyKind, StatementKind } from "ast-types/gen/kinds";
-import { FunctionDefinition } from "../../lib/loader";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { SuggestedNode } from "../../suggested_node";
-import { DeclaredIdentifier } from "../js/declared_identifier";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "../html/html_script_element";
 import { JavaScriptSplootNode } from "../../javascript_node";
+import { VariableDefinition } from "../../lib/loader";
 
 export const JSS_STYLE_BLOCK = 'JSS_STYLE_BLOCK';
+export const LOCAL_STYLES_IDENTIFIER = 'jss_local_styles';
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
@@ -29,12 +29,7 @@ class Generator implements SuggestionGenerator {
 export class JssStyleBlock extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, JSS_STYLE_BLOCK);
-    this.addChildSet('identifier', ChildSetType.Single, NodeCategory.DeclaredIdentifier);
     this.addChildSet('body', ChildSetType.Many, NodeCategory.JssBodyContent);
-  }
-
-  getIdentifier() {
-    return this.getChildSet('identifier');
   }
 
   getBody() {
@@ -42,20 +37,23 @@ export class JssStyleBlock extends JavaScriptSplootNode {
   }
 
   addSelfToScope() {
-    if (this.getIdentifier().getCount() === 0) {
-      // No identifier, we can't be added to the scope.
-      return;
-    }
-    let identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName();
-    this.getScope(true).addFunction({
-      name: identifier,
+    // Need to add LOCAL_STYLES_IDENTIFIER to scope
+    // TODO: Hide this from autocomplete (?).
+    let varDef : VariableDefinition = {
+      name: LOCAL_STYLES_IDENTIFIER,
       deprecated: false,
-      documentation: 'Local function',
       type: {
-        parameters: [],
-        returnType: {type: 'any'}
+        type: 'object',
+        objectProperties: {
+          'classes': {
+            type: 'object',
+            objectProperties: {},
+          },
+        },
       },
-    } as FunctionDefinition);
+      documentation: 'Local style sheet',
+    };
+    this.getScope().addVariable(varDef);
   }
 
   generateJsAst() : StatementKind {
@@ -82,14 +80,20 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     let callAttach = recast.types.builders.callExpression(attachFunc, []);
 
     // const sheet = ...
-    let identifier = recast.types.builders.identifier((this.getIdentifier().getChild(0) as DeclaredIdentifier).getName());
+    let identifier = recast.types.builders.identifier(LOCAL_STYLES_IDENTIFIER);
     let declarator = recast.types.builders.variableDeclarator(identifier, callAttach);
     return recast.types.builders.variableDeclaration('const', [declarator]);
   }
 
+  getNodeLayout() : NodeLayout {
+    return new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'private stylesheet'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'body'),
+    ]);
+  }
+
   static deserializer(serializedNode: SerializedNode) : JssStyleBlock {
     let node = new JssStyleBlock(null);
-    node.deserializeChildSet('identifier', serializedNode);
     node.deserializeChildSet('body', serializedNode);
     return node;
   }
@@ -98,7 +102,7 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     let functionType = new TypeRegistration();
     functionType.typeName = JSS_STYLE_BLOCK;
     functionType.deserializer = JssStyleBlock.deserializer;
-    functionType.hasScope = true;
+    functionType.hasScope = false;
     functionType.properties = ['identifier'];
     functionType.childSets = {'params': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.JssBodyContent};
     functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
