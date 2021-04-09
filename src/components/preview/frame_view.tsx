@@ -282,7 +282,7 @@ export class FramePanel extends Component<FramePanelProps, FramePanelState> {
 
   render() {
     return (
-      <Box justifyContent="center" textAlign="center" p={3}>
+      <Box justifyContent="center" textAlign="center" p={3} borderBottom={"1px"} borderBottomColor="rgb(209, 209, 209)">
         <HStack>
         <FormControl display="flex" alignItems="center" width="48" >
             <Switch id="autorefresh" isChecked={this.state.autorefresh} onChange={this.onAutorefreshChanged}/>
