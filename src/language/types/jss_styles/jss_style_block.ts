@@ -85,13 +85,6 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     return recast.types.builders.variableDeclaration('const', [declarator]);
   }
 
-  getNodeLayout() : NodeLayout {
-    return new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'private stylesheet'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'body'),
-    ]);
-  }
-
   static deserializer(serializedNode: SerializedNode) : JssStyleBlock {
     let node = new JssStyleBlock(null);
     node.deserializeChildSet('body', serializedNode);
@@ -105,9 +98,8 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     functionType.hasScope = false;
     functionType.properties = ['identifier'];
     functionType.childSets = {'params': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.JssBodyContent};
-    functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'styles'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+    functionType.layout = new NodeLayout(HighlightColorCategory.HTML_ELEMENT, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'private stylesheet'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
     functionType.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {

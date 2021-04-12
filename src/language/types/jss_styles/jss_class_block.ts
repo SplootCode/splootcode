@@ -69,13 +69,6 @@ export class JssClassBlock extends JavaScriptSplootNode {
     return recast.types.builders.objectProperty(key, value);
   }
 
-  getNodeLayout() : NodeLayout {
-    return new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'class'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
-    ])
-  }
-
   static deserializer(serializedNode: SerializedNode) : JssClassBlock {
     let node = new JssClassBlock(null);
     node.deserializeChildSet('identifier', serializedNode);
@@ -84,24 +77,24 @@ export class JssClassBlock extends JavaScriptSplootNode {
   }
 
   static register() {
-    let functionType = new TypeRegistration();
-    functionType.typeName = JSS_CLASS_BLOCK;
-    functionType.deserializer = JssClassBlock.deserializer;
-    functionType.hasScope = false;
-    functionType.properties = ['identifier'];
-    functionType.childSets = {'identifier': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.JssStyleProperties};
-    functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
+    let typeRegistration = new TypeRegistration();
+    typeRegistration.typeName = JSS_CLASS_BLOCK;
+    typeRegistration.deserializer = JssClassBlock.deserializer;
+    typeRegistration.hasScope = false;
+    typeRegistration.properties = ['identifier'];
+    typeRegistration.childSets = {'identifier': NodeCategory.DeclaredIdentifier, 'body': NodeCategory.JssStyleProperties};
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'class'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ]);
-    functionType.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
+    typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
       let scriptEl = new SplootHtmlScriptElement(null);
       scriptEl.getContent().addChild(node);
       return scriptEl;
     }
   
-    registerType(functionType);
+    registerType(typeRegistration);
     registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssBodyContent, new Generator());
     registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssStyleProperties, new Generator());
   }
