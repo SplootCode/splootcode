@@ -66,6 +66,7 @@ export class JavascriptFile extends JavaScriptSplootNode {
     typeRegistration.typeName = JAVASCRIPT_FILE;
     typeRegistration.deserializer = JavascriptFile.deserializer;
     typeRegistration.properties = [];
+    typeRegistration.hasScope = true;
     typeRegistration.childSets = {'body': NodeCategory.Statement};
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),

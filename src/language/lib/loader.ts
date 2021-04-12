@@ -40,6 +40,7 @@ export interface TypeExpression {
   literal?: number | string | boolean;
   reference?: string;
   function?: FunctionTypeDefinition;
+  objectProperties?: {[key:string]: TypeExpression};
 }
 
 export interface TypeAlias {

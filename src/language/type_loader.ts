@@ -46,6 +46,7 @@ import { ImportDefaultStatement } from "./types/js/import_default";
 import { JssClassBlock } from "./types/jss_styles/jss_class_block";
 import { JssStyleProperty } from "./types/jss_styles/jss_style_property";
 import { JssHoverBlock } from "./types/jss_styles/jss_hover_block";
+import { JssClassReference } from "./types/jss_styles/jss_class_reference";
 
 
 export function loadTypes() {
@@ -98,6 +99,7 @@ export function loadTypes() {
   JssClassBlock.register();
   JssStyleProperty.register();
   JssHoverBlock.register();
+  JssClassReference.register();
 
   JavascriptFile.register();
 

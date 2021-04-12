@@ -6,13 +6,13 @@ body {
 
 .page-editor-container {
     display: grid;
-    grid-template-columns: 180px auto 500px;
+    grid-template-columns: 120px 700px auto;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
 .page-editor-preview-panel {
-    grid-column-start: 3;
+    grid-column-start: 2;
 }
 
 .left-panel {
@@ -22,8 +22,8 @@ body {
 }
 
 .page-editor-column {
-    grid-column-start: 2;
-    border-right: 1px solid rgb(209, 209, 209);
+    grid-column-start: 3;
+    border-left: 1px solid rgb(209, 209, 209);
 }
 
 .file-nav-list {

@@ -53,7 +53,7 @@ export class JssHoverBlock extends JavaScriptSplootNode {
     let functionType = new TypeRegistration();
     functionType.typeName = JSS_HOVER_BLOCK;
     functionType.deserializer = JssHoverBlock.deserializer;
-    functionType.hasScope = true;
+    functionType.hasScope = false;
     functionType.properties = [];
     functionType.childSets = {'body': NodeCategory.JssStyleProperties};
     functionType.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [

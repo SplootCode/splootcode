@@ -178,6 +178,9 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
             </AccordionItem>
           </Accordion>
         </nav>
+        <div className={'page-editor-preview-panel'} >
+          { ready ? <ViewPage pkg={onlyPackage}/> : null }
+        </div>
         <div className="page-editor-column">
           {
             (ready && (selectedFile || selectedDatasheet)) ?
@@ -193,9 +196,6 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
                 )
             : null
           }
-        </div>
-        <div className={'page-editor-preview-panel'} >
-          { ready ? <ViewPage pkg={onlyPackage}/> : null }
         </div>
       </div>
     )
