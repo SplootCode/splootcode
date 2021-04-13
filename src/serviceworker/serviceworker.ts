@@ -4,25 +4,32 @@ import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 
 let parentWindowPort : MessagePort = null;
-let cache = {};
+const CacheName = 'splootcache';
 
 loadTypes();
 
 self.addEventListener('install', function(event) {
+  caches.delete(CacheName);
   return Promise.resolve('loaded');
 });
 
-async function resoleFileFromCache(pathname: string) {
-  let {contents, contentType} = cache[pathname];
-  let headers = {'Content-Type': contentType}
-  let response = new Response(contents, {status: 200, statusText: 'ok', headers: headers});
-  return response;
+async function addFileToCache(pathname: string, contentType: string, contents: string) {
+  caches.open(CacheName).then(function(cache) {
+    let request = pathname;
+    let headers = {'Content-Type': contentType};
+    let response = new Response(contents, {status: 200, statusText: 'ok', headers: headers});  
+    cache.put(request, response);
+  });
 }
 
 self.addEventListener('fetch', (event : FetchEvent) => {
-  let url = new URL(event.request.url);
-  if (url.pathname in cache) {
-    event.respondWith(resoleFileFromCache(url.pathname));
+  let reqUrl = new URL(event.request.url);
+  if (reqUrl.origin === self.location.origin) {
+    event.respondWith(caches.open(CacheName).then(cache => {
+      return cache.match(event.request).then(function(response) {
+        return response || fetch(event.request);
+      });
+    }));
   }
 });
 
@@ -39,10 +46,7 @@ function handleNodeTree(filename: string, serializedNode: SerializedNode) {
       contentType = 'text/javascript';
       break;
   }
-  cache['/' + filename] = {
-    contentType: contentType,
-    contents: rootNode.generateCodeString(),
-  };
+  addFileToCache('/' + filename, contentType, rootNode.generateCodeString());
 }
 
 function handleParentWindowMessage(event: MessageEvent) {
