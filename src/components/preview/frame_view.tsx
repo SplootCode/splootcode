@@ -14,10 +14,10 @@ import { observer } from 'mobx-react';
 
 export enum FrameState {
   DEAD = 0,
-  AWAITING_SW_PORT,
-  CONNECTING_TO_SW,
-  CONNECTED_SW_READY,
-  UNMOUNTED,
+  LOADING,
+  SW_INSTALLING,
+  LIVE,
+  UNMOUNTED
 }
 
 interface DocumentNodeProps {
@@ -28,7 +28,7 @@ const subdomain = "projection"; // TODO: Make dynamic
 const FRAME_VIEW_DOMAIN = process.env.FRAME_VIEW_DOMAIN;
 const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME;
 
-function getFrameSrc() {
+function getHiddenFrameSrc() {
   let rand = Math.floor((Math.random() * 1000000) + 1);
   return getFrameDomain() + '/splootframeclient.html' + '?a=' + rand;
 }
@@ -42,21 +42,22 @@ function getFrameDomain() {
 
 
 class DocumentNodeComponent extends Component<DocumentNodeProps> {
-  private frameRef: React.RefObject<HTMLIFrameElement>;
-  private frameState: FrameState;
+  private previewFrameRef: React.RefObject<HTMLIFrameElement>;
+  private hiddenFrameRef: React.RefObject<HTMLIFrameElement>;
+  private hiddenFrameState: FrameState;
   private lastHeartbeatTimestamp: Date;
   private lastSentNodeTree: Date;
   private needsNewNodeTree: boolean;
-  private serviceWorkerPort: MessagePort;
   private autorefresh: boolean;
 
   constructor(props: DocumentNodeProps) {
     super(props);
-    this.frameRef = React.createRef();
-    this.frameState = FrameState.AWAITING_SW_PORT;
+    this.previewFrameRef = React.createRef();
+    this.hiddenFrameRef = React.createRef();
+    this.hiddenFrameState = FrameState.LOADING;
     this.lastHeartbeatTimestamp = new Date();
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000);
-    this.needsNewNodeTree = false;
+    this.needsNewNodeTree = true;
     this.autorefresh = true;
   }
 
@@ -67,9 +68,13 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
               reload={this.reloadSiteInFrame}
               frameUrl={getFrameDomain() + '/index.html'}
               setAutorefresh={this.setAutorefresh}/>
-          <iframe ref={this.frameRef}
+          <iframe ref={this.previewFrameRef}
             id="view-frame"
-            src={getFrameSrc()}
+            src={getFrameDomain() + '/index.html'}
+          />
+          <iframe ref={this.hiddenFrameRef}
+            id="hidden-frame"
+            src={getHiddenFrameSrc()}
           />
         </div>
       );
@@ -79,37 +84,28 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     this.autorefresh = autorefresh;
   }
 
-  sendNodeTreeToServiceWorker() {
+  sendNodeTreeToHiddenFrame() {
     let now = new Date();
     let millis = (now.getTime() - this.lastSentNodeTree.getTime());
     let pkg = this.props.pkg;
 
-    if (millis > 100) {
+    // Rate limit: Only send if it's been some time since we last sent.
+    if (millis > 200) {
+      this.lastSentNodeTree = now;
+      this.needsNewNodeTree = false;
       pkg.fileOrder.forEach(filename => {
         pkg.getLoadedFile(filename).then((file) => {
-          // Rate limit: Only send if it's been some time since we last sent.
           let payload = {type: 'nodetree', data: {filename: file.name, tree: file.rootNode.serialize()}};
-          this.postMessageToServiceWorker(payload);
+          this.postMessageToHiddenFrame(payload);
           return;
         })
       })
-      this.needsNewNodeTree = false;
-      this.lastSentNodeTree = now;
     }
   }
 
-  postMessageToFrame = (payload: object) => {
+  postMessageToHiddenFrame(payload: object) {
     try {
-      this.frameRef.current.contentWindow.postMessage(payload, getFrameDomain());
-    }
-    catch (error) {
-      console.warn(error);
-    }
-  }
-
-  postMessageToServiceWorker(payload: object) {
-    try {
-      this.serviceWorkerPort.postMessage(payload);
+      this.hiddenFrameRef.current.contentWindow.postMessage(payload, getFrameDomain());
     }
     catch (error) {
       console.warn(error);
@@ -117,90 +113,68 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   }
 
   sendHeartbeatRequest() {
-    let payload = {type: 'heartbeat' };
-    this.postMessageToServiceWorker(payload);
+    let payload = {type: 'heartbeat'};
+    this.postMessageToHiddenFrame(payload);
   }
 
   checkHeartbeatFromFrame = () => {
-    if (this.frameState === FrameState.UNMOUNTED) {
+    if (this.hiddenFrameState === FrameState.UNMOUNTED) {
       return;
     }
     let now = new Date();
     let millis = (now.getTime() - this.lastHeartbeatTimestamp.getTime());
-    if (millis > 10000) {
-      this.frameState = FrameState.DEAD;
+    if (millis > 30000) {
+      this.hiddenFrameState = FrameState.DEAD;
     }
-    switch (this.frameState) {
-      case FrameState.AWAITING_SW_PORT:
-        // Waiting for the initial frame load to send us the port.
+    switch (this.hiddenFrameState) {
+      case FrameState.LOADING:
+      case FrameState.SW_INSTALLING:
+        // Waiting for the initial frame load to tell us it's ready.
         // If this doesn't happen, we'll mark the frame dead and reload.
         break;
-      case FrameState.CONNECTING_TO_SW:
-        this.sendHeartbeatRequest();
-        break;
-      case FrameState.CONNECTED_SW_READY:
+      case FrameState.LIVE:
         if (this.needsNewNodeTree) {
-          this.sendNodeTreeToServiceWorker();
+          this.sendNodeTreeToHiddenFrame();
         } else {
           this.sendHeartbeatRequest();
         }
         break;
       case FrameState.DEAD:
-        console.warn('frame or service worker is dead, reloading');
-        this.frameRef.current.src = getFrameSrc();
-        this.frameState = FrameState.AWAITING_SW_PORT;
+        console.warn('hidden frame is dead, reloading');
+        this.previewFrameRef.current.src = getHiddenFrameSrc();
+        this.hiddenFrameState = FrameState.LOADING;
         this.lastHeartbeatTimestamp = new Date();
         break;
     }
 
     setTimeout(() => {
       this.checkHeartbeatFromFrame();
-    }, 1000); // 1s
+    }, 5000); // 5s
   }
 
   handleNodeMutation = (mutation: NodeMutation) => {
     // There's a node tree version we've not loaded yet.
     this.needsNewNodeTree = true;
-    this.sendNodeTreeToServiceWorker();
+    this.sendNodeTreeToHiddenFrame();
   }
 
   handleChildSetMutation = (mutation: ChildSetMutation) => {
     // There's a node tree version we've not loaded yet.
     this.needsNewNodeTree = true;
-    this.sendNodeTreeToServiceWorker();
+    this.sendNodeTreeToHiddenFrame();
   }
 
   processMessage = (event: MessageEvent) => {
     if (event.origin === getFrameDomain()) {
-      this.handleMessageFromFrame(event);
+      this.handleMessageFromHiddenFrame(event);
     }
   }
 
   reloadSiteInFrame = () => {
-    this.frameRef.current.src = getFrameDomain() + '/index.html';
+    this.previewFrameRef.current.src = getFrameDomain() + '/index.html';
   }
 
-  handleMessageFromServiceWorker = (event: MessageEvent) => {
-    let data = event.data;
-    switch (data.type) {
-      case 'heartbeat':
-        this.frameState = FrameState.CONNECTED_SW_READY;
-        this.lastHeartbeatTimestamp = new Date();
-        break;
-      case 'ready':
-        // Service worker is ready to serve content.
-        this.frameState = FrameState.CONNECTED_SW_READY;
-        // Set the frame to the user's site, this triggers a reload.
-        if (this.autorefresh) {
-          this.reloadSiteInFrame();
-        }
-        break;
-      default:
-        console.log('Parent. Unkown message from service worker:', event);
-    }
-  }
-
-  handleMessageFromFrame(event: MessageEvent) {
+  handleMessageFromHiddenFrame(event: MessageEvent) {
     let type = event.data.type as string;
     if (event.origin !== getFrameDomain()) {
       return;
@@ -213,13 +187,22 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       return;
     }
     switch(type) {
-      case 'serviceworkerport':
-        this.serviceWorkerPort = event.ports[0];
-        this.serviceWorkerPort.addEventListener('message', this.handleMessageFromServiceWorker);
-        this.serviceWorkerPort.start();
-        this.frameState = FrameState.CONNECTING_TO_SW;
-        this.sendNodeTreeToServiceWorker();
+      case 'heartbeat':
+        let newState = event.data.data['state']
+        if (newState === FrameState.LIVE && this.hiddenFrameState !== FrameState.LIVE) {
+          // Frame recently became live, send nodetree.
+          if (this.needsNewNodeTree) {
+            this.sendNodeTreeToHiddenFrame();
+          }
+        }
+        this.hiddenFrameState = newState;
         this.lastHeartbeatTimestamp = new Date();
+        break;
+      case 'loaded':
+        this.lastHeartbeatTimestamp = new Date();
+        if (this.autorefresh) {
+          this.reloadSiteInFrame();
+        }
         break;
       default:
         console.warn('Unknown event from frame: ', event);
@@ -227,7 +210,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   }
 
   componentDidMount() {
-    this.frameState = FrameState.AWAITING_SW_PORT;
+    this.hiddenFrameState = FrameState.LOADING;
     globalMutationDispatcher.registerChildSetObserver(this);
     globalMutationDispatcher.registerNodeObserver(this);
     window.addEventListener("message", this.processMessage, false);
@@ -238,7 +221,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   }
 
   componentWillUnmount() {
-    this.frameState = FrameState.UNMOUNTED;
+    this.hiddenFrameState = FrameState.UNMOUNTED;
     globalMutationDispatcher.deregisterChildSetObserver(this);
     globalMutationDispatcher.deregisterNodeObserver(this);
     // mutationDispatcher.deregisterHandler(this.handleMutation);

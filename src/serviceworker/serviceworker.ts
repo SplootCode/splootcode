@@ -3,7 +3,6 @@ import { JAVASCRIPT_FILE } from "../language/types/js/javascript_file";
 import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 
-let parentWindowPort : MessagePort = null;
 const CacheName = 'splootcache';
 
 loadTypes();
@@ -49,32 +48,18 @@ function handleNodeTree(filename: string, serializedNode: SerializedNode) {
   addFileToCache('/' + filename, contentType, rootNode.generateCodeString());
 }
 
-function handleParentWindowMessage(event: MessageEvent) {
-  let data = event.data;
-  switch (data.type) {
-    case 'heartbeat':
-      // Send heartbeat reply so the parent doesn't kill the frame.
-      parentWindowPort.postMessage({type: 'heartbeat'});
-      break;
-    case 'nodetree':
-      let {filename, tree} = data.data;
-      handleNodeTree(filename, tree as SerializedNode)
-      parentWindowPort.postMessage({type: 'ready'});
-      break;
-    default:
-      console.log('Service worker. Unknow message from parent:', event);
-  }
-}
-
-self.addEventListener('message', event => {
+self.addEventListener('message', (event: MessageEvent) => {
   let data = event.data;
   if (event.origin == self.location.origin) {
-    if (data.type === 'parentwindowport') {
-      parentWindowPort = event.ports[0];
-      parentWindowPort.addEventListener('message', handleParentWindowMessage)
-      parentWindowPort.start();
+    switch (data.type) {
+      case 'nodetree':
+        let {filename, tree} = data.data;
+        handleNodeTree(filename, tree as SerializedNode);
+        // @ts-ignore
+        event.source.postMessage({type: 'loaded', filename: filename});
+        break;
+      default:
+        console.log('Service worker. Unknown message from origin:', event);
     }
-  } else {
-    console.warn('Service worker recieved event from unknown origin:', event)
   }
 });
