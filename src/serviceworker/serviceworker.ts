@@ -3,7 +3,7 @@ import { JAVASCRIPT_FILE } from "../language/types/js/javascript_file";
 import { loadTypes } from "../language/type_loader";
 import { deserializeNode, SerializedNode } from "../language/type_registry";
 
-const CacheName = 'splootcache';
+const CacheName = 'splootcache-v1';
 
 loadTypes();
 

@@ -57,27 +57,28 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
     this.hiddenFrameState = FrameState.LOADING;
     this.lastHeartbeatTimestamp = new Date();
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000);
-    this.needsNewNodeTree = true;
+    this.needsNewNodeTree = false;
     this.autorefresh = true;
   }
 
   render() {
-      return (
-        <div id="frame-container">
-          <FramePanel
-              reload={this.reloadSiteInFrame}
-              frameUrl={getFrameDomain() + '/index.html'}
-              setAutorefresh={this.setAutorefresh}/>
-          <iframe ref={this.previewFrameRef}
-            id="view-frame"
-            src={getFrameDomain() + '/index.html'}
-          />
-          <iframe ref={this.hiddenFrameRef}
-            id="hidden-frame"
-            src={getHiddenFrameSrc()}
-          />
-        </div>
-      );
+    this.needsNewNodeTree = true;
+    return (
+      <div id="frame-container">
+        <FramePanel
+            reload={this.reloadSiteInFrame}
+            frameUrl={getFrameDomain() + '/index.html'}
+            setAutorefresh={this.setAutorefresh}/>
+        <iframe ref={this.previewFrameRef}
+          id="view-frame"
+          src={getFrameDomain() + '/index.html'}
+        />
+        <iframe ref={this.hiddenFrameRef}
+          id="hidden-frame"
+          src={getHiddenFrameSrc()}
+        />
+      </div>
+    );
   }
 
   setAutorefresh = (autorefresh: boolean) => {
@@ -149,7 +150,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
     setTimeout(() => {
       this.checkHeartbeatFromFrame();
-    }, 5000); // 5s
+    }, 2000); // 2s
   }
 
   handleNodeMutation = (mutation: NodeMutation) => {
