@@ -1,0 +1,7 @@
+
+.drag-overlay {
+  position: absolute;
+  background-color: transparent;
+  top: 0;
+  left: 0;
+}

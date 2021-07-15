@@ -1,13 +1,12 @@
-import React from 'react'
+import "./tree_list_block.css"
 
-import { observer } from "mobx-react";
-import { NodeSelection, NodeSelectionState } from "../../context/selection";
-import { NodeBlock } from "../../layout/rendered_node";
-import { EditorNodeBlock } from './node_block';
+import { observer } from "mobx-react"
+import React from "react"
 
-import "./tree_list_block.css";
-import { InlineCursor } from './cursor';
-import { RenderedChildSetBlock } from '../../layout/rendered_childset_block';
+import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
+import { NodeBlock } from "../../layout/rendered_node"
+import { EditorNodeBlock } from "./node_block"
 
 interface TokenListBlockViewProps {
     block: RenderedChildSetBlock;
@@ -37,13 +36,11 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
                   selection={this.props.selection}
                   selectionState={selectionState}
                   onClickHandler={this.onClickByIndex(idx)}/>
-                <InlineCursor index={idx} listBlock={block} leftPos={nodeBlock.x} topPos={nodeBlock.y} selection={selection}/>
               </React.Fragment>
             );
             return result;
           })
         }
-        <InlineCursor index={nodeCount} listBlock={block} leftPos={block.x + block.width} topPos={block.y} selection={selection}/>
       </React.Fragment>
     );
   }

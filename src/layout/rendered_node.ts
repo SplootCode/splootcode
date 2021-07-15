@@ -1,13 +1,18 @@
-import { SplootNode } from "../language/node";
-import { NodeLayout, LayoutComponent, LayoutComponentType } from "../language/type_registry";
-import { NodeObserver } from "../language/observers";
-import { NodeMutation } from "../language/mutations/node_mutations";
-import { observable } from "mobx";
-import { NodeCursor, NodeSelection } from "../context/selection";
-import { SPLOOT_EXPRESSION } from "../language/types/js/expression";
-import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
-import { getColour } from "./colors";
-import { PYTHON_EXPRESSION } from "../language/types/python/python_expression";
+import { observable } from "mobx"
+
+import { NodeCursor, NodeSelection } from "../context/selection"
+import { NodeMutation } from "../language/mutations/node_mutations"
+import { SplootNode } from "../language/node"
+import { NodeObserver } from "../language/observers"
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+} from "../language/type_registry"
+import { SPLOOT_EXPRESSION } from "../language/types/js/expression"
+import { PYTHON_EXPRESSION } from "../language/types/python/python_expression"
+import { getColour } from "./colors"
+import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;
@@ -244,6 +249,8 @@ export class NodeBlock implements NodeObserver {
       marginRight = this.renderedChildSets['tokens'].width;
       this.blockWidth = 0;
       this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+    } else if (selection !== null) {
+      selection.cursorMap.registerCursorStart(this.parentChildSet, this.index, x + this.marginLeft, y, false);
     }
     this.rowWidth = this.marginLeft + this.blockWidth + marginRight;
   }
