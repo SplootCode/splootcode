@@ -5,16 +5,24 @@
   padding: 0px;
   background-color: var(--editor-bg-color);
   font-family: 'Source Sans Pro', 'monospace';
-  overflow-y: scroll;
-  height: 100vh;
-  position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 200px auto;
   grid-gap: 0px;
 }
 
+.editor-column {
+  overflow-y: scroll;
+  position: relative;
+  height: 100vh;
+}
+
+.editor-column::-webkit-scrollbar {
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
 .editor-svg {
+  grid-column-start: 2;
   width: 100%;
 }
 

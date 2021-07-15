@@ -1,5 +1,15 @@
 
 .tray {
   width: 200px;
+  height: 99vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-right: 1px solid white;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.tray::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
 }

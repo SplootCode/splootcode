@@ -28,9 +28,7 @@ export class WebEditorPanels extends React.Component<WebEditorProps> {
                 (
                   (isNodeEditor) ?
                   <EditorStateContext.Provider value={selectedFile}>
-                  <div className={'editor-panel selected'}>
                     <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
-                  </div>
                   </EditorStateContext.Provider>
                   :
                   <DataSheetEditor dataSheetState={selectedDatasheet}/>

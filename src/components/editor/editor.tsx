@@ -28,6 +28,13 @@ interface EditorProps {
 
 @observer
 export class Editor extends React.Component<EditorProps> {
+  private editorSvgRef : React.RefObject<SVGSVGElement>;
+  
+  constructor(props: EditorProps) {
+    super(props);
+    this.editorSvgRef = React.createRef();
+  }
+
   render() {
     let {block, selection} = this.props;
     let fileBody = null;
@@ -40,18 +47,19 @@ export class Editor extends React.Component<EditorProps> {
       // Whelp, this is ugly, but hey it works. :shrug:
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
       let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
-      insertBox = <InsertBox key={insertKey} editorX={201} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
+      insertBox = <InsertBox key={insertKey} editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
     }
     return <React.Fragment>
         <div className="editor">
           <Tray width={200} startDrag={this.startDrag}/>
-          <div className="editor-colum" draggable={true} onDragStart={this.onDragStart}>
+          <div className="editor-column">
             <svg
               className="editor-svg"
               xmlns="http://www.w3.org/2000/svg"
               height={height}
               preserveAspectRatio="none"
               onClick={this.onClickHandler}
+              ref={this.editorSvgRef}
             >
               <ExpandedListBlockView
                   block={fileBody}
@@ -62,7 +70,7 @@ export class Editor extends React.Component<EditorProps> {
             { insertBox }
           </div>
       </div>
-      <DragOverlay selection={selection}/>
+      <DragOverlay selection={selection} editorRef={this.editorSvgRef}/>
     </React.Fragment>;
   }
 
@@ -72,8 +80,11 @@ export class Editor extends React.Component<EditorProps> {
 
   onClickHandler = (event: React.MouseEvent) => {
     let selection = this.props.selection;
-    let x = event.pageX - 364; // Horrible hack
-    selection.placeCursorByXYCoordinate(x, event.pageY);
+    let refBox = this.editorSvgRef.current.getBoundingClientRect();
+    let x = event.pageX - refBox.left;
+    let y = event.pageY - refBox.top;
+ 
+    selection.placeCursorByXYCoordinate(x, y);
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
@@ -148,20 +159,6 @@ export class Editor extends React.Component<EditorProps> {
         event.preventDefault();
         break;
     }
-  }
-
-  onDragStart = (event: React.DragEvent) => {
-    let x = event.screenX;
-    let y = event.screenY;
-    // TODO: Use coords to find correct node to drag.
-    // For now just pick the first node that we know is there?
-    let listBlock = this.props.block.renderedChildSets['body'].nodes[0].renderedChildSets['tokens'];
-    let index = 0;
-    let node = listBlock.nodes[0];
-    // TODO: Remove selected node from the tree while it's being dragged.
-    this.startDrag(node, 0, 0);
-    event.preventDefault();
-    event.stopPropagation();
   }
 
   componentDidMount() {
