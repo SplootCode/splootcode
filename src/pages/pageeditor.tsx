@@ -5,15 +5,13 @@ import { observer } from 'mobx-react';
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem, Icon, Spacer, Flex, IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
-import { Editor } from '../components/editor/editor';
 import { EditorStateContext, EditorState, DataSheetState } from '../context/editor_context';
 import { NodeBlock } from '../layout/rendered_node';
 import { loadTypes } from '../language/type_loader';
-import { Project } from '../language/projects/project';
+import { Project, ProjectLayoutType } from '../language/projects/project';
 import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader';
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
-import { ViewPage } from '../components/preview/frame_view';
 import { LoadProjectModal } from '../components/load_modal';
 import { RiFileAddLine } from "react-icons/ri";
 
@@ -22,8 +20,8 @@ import './pageeditor.css';
 import { NewFileModal } from '../components/new_file_modal';
 import { SplootNode } from '../language/node';
 import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
-import { DataSheetEditor } from '../components/datasheet/datasheet';
-
+import { WebEditorPanels } from './web_editor';
+import { PythonEditorPanels } from './python_editor';
 
 interface PageEditorProps {
 };
@@ -103,7 +101,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
     let onlyPackage : SplootPackage = project.packages[0];
 
     return (
-      <div className="page-editor-container">
+      <div className={ project.layoutType === ProjectLayoutType.WEB ? "web-editor-container" : "python-editor-container"}>
         <LoadProjectModal isOpen={openModal} onClose={() => {
           this.setState({openNewProjectModal: false});
         }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
@@ -178,25 +176,11 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
             </AccordionItem>
           </Accordion>
         </nav>
-        <div className={'page-editor-preview-panel'} >
-          { ready ? <ViewPage pkg={onlyPackage}/> : null }
-        </div>
-        <div className="page-editor-column">
-          {
-            (ready && (selectedFile || selectedDatasheet)) ?
-                (
-                  (isNodeEditor) ?
-                  <EditorStateContext.Provider value={selectedFile}>
-                  <div className={'editor-panel selected'}>
-                    <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
-                  </div>
-                  </EditorStateContext.Provider>
-                  :
-                  <DataSheetEditor dataSheetState={selectedDatasheet}/>
-                )
-            : null
-          }
-        </div>
+        { project.layoutType === ProjectLayoutType.PYTHON_CLI ? 
+          <PythonEditorPanels project={project} selectedFile={selectedFile}  />
+          :
+          <WebEditorPanels isNodeEditor={isNodeEditor} project={project} selectedDatasheet={selectedDatasheet} selectedFile={selectedFile} />
+        }
       </div>
     )
   }

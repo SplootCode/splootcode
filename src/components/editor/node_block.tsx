@@ -12,6 +12,7 @@ import { SPLOOT_EXPRESSION } from '../../language/types/js/expression';
 
 import "./node_block.css";
 import { observer } from 'mobx-react';
+import { PYTHON_EXPRESSION } from '../../language/types/python/python_expression';
 
 
 interface NodeBlockProps {
@@ -83,7 +84,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     let topPos = block.y;
     let internalLeftPos = leftPos + 10;
 
-    if (block.node.type === SPLOOT_EXPRESSION) {
+    if (block.node.type === SPLOOT_EXPRESSION || block.node.type === PYTHON_EXPRESSION) {
       return <SplootExpressionView block={block} selection={selection} selectionState={selectionState}/>
     }
 

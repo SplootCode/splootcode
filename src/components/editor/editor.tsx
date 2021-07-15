@@ -11,6 +11,7 @@ import { HTML_DOCUMENT } from '../../language/types/html/html_document';
 import { ActiveCursor } from './cursor';
 import { Panel } from '../panel';
 import { adaptNodeToPasteDestination, deserializeNode } from '../../language/type_registry';
+import { PYTHON_FILE } from '../../language/types/python/python_file';
 
 const SPLOOT_MIME_TYPE = 'application/splootcodenode';
 
@@ -25,7 +26,7 @@ export class Editor extends React.Component<EditorProps> {
   render() {
     let {block, selection} = this.props;
     let fileBody = null;
-    if (block.node.type === JAVASCRIPT_FILE || block.node.type === HTML_DOCUMENT) {
+    if (block.node.type === JAVASCRIPT_FILE || block.node.type === HTML_DOCUMENT || block.node.type === PYTHON_FILE) {
       fileBody = block.renderedChildSets['body'];
     }
     let height = block.rowHeight + block.indentedBlockHeight;

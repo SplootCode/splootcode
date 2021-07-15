@@ -1,5 +1,5 @@
-import { ParentReference, SplootNode } from "./node";
-import { SuggestedNode } from "./suggested_node";
+import { ParentReference, SplootNode } from "./node"
+import { SuggestedNode } from "./suggested_node"
 
 export enum NodeCategory {
     Unknown = 0,
@@ -27,6 +27,11 @@ export enum NodeCategory {
     ComponentBodyStatement,
     JssBodyContent,
     JssStyleProperties,
+    PythonFile,
+    PythonStatement,
+    PythonExpression,
+    PythonExpressionToken,
+    PythonAssignableExpressionToken,
 }
 
 export interface SuggestionGenerator {
