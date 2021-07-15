@@ -4,15 +4,26 @@ body {
     margin: 0;
 }
 
-.page-editor-container {
+.web-editor-container {
     display: grid;
-    grid-template-columns: 120px 700px auto;
+    grid-template-columns: 160px 600px auto;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
-.page-editor-preview-panel {
+.python-editor-container {
+    display: grid;
+    grid-template-columns: 160px auto 500px;
+    grid-column-gap: 0px;
+    height: 100vh;
+}
+
+.web-editor-preview-panel {
     grid-column-start: 2;
+}
+
+.python-editor-preview-panel {
+    grid-column-start: 3;
 }
 
 .left-panel {
@@ -21,8 +32,13 @@ body {
     border-right: 1px solid rgb(209, 209, 209);
 }
 
-.page-editor-column {
+.web-editor-column {
     grid-column-start: 3;
+    border-left: 1px solid rgb(209, 209, 209);
+}
+
+.python-editor-column {
+    grid-column-start: 2;
     border-left: 1px solid rgb(209, 209, 209);
 }
 

@@ -61,6 +61,7 @@ export class StringLiteral extends JavaScriptSplootNode {
     }
     registerType(stringLiteral);
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken, new StringGenerator());
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.PythonExpressionToken, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.HtmlAttributeValue, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ModuleSource, new StringGenerator());
@@ -118,6 +119,7 @@ export class NumericLiteral extends JavaScriptSplootNode {
     }
     registerType(numericLiteral);
     registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.ExpressionToken, new NumberGenerator());
+    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.PythonExpressionToken, new NumberGenerator());
     registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.HtmlAttributeValue, new NumberGenerator());
   }
 }

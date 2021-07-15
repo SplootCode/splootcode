@@ -7,6 +7,7 @@ import { NodeCursor, NodeSelection } from "../context/selection";
 import { SPLOOT_EXPRESSION } from "../language/types/js/expression";
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block";
 import { getColour } from "./colors";
+import { PYTHON_EXPRESSION } from "../language/types/python/python_expression";
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;
@@ -121,7 +122,7 @@ export class NodeBlock implements NodeObserver {
       }
     });
 
-    if (node.type === SPLOOT_EXPRESSION) {
+    if (node.type === SPLOOT_EXPRESSION || node.type === PYTHON_EXPRESSION) {
       this.blockWidth = this.renderedChildSets['tokens'].width;
       let childSetBlock = this.renderedChildSets['tokens'];
       this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
@@ -237,7 +238,7 @@ export class NodeBlock implements NodeObserver {
       }            
     });
 
-    if (this.node.type === SPLOOT_EXPRESSION) {
+    if (this.node.type === SPLOOT_EXPRESSION || this.node.type === PYTHON_EXPRESSION) {
       let childSetBlock = this.renderedChildSets['tokens'];
       childSetBlock.calculateDimensions(x, y, selection);
       marginRight = this.renderedChildSets['tokens'].width;
