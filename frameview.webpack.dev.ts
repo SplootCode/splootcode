@@ -14,7 +14,6 @@ module.exports = webpackMerge(common, {
   devServer: {
     port: 3001,
     hot: true,
-    contentBase: path.join(__dirname, 'dev-frame-dist'),
   },
 
   plugins: [

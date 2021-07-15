@@ -26,12 +26,6 @@ function setState(newState: FrameState) {
 let serviceWorkerRegistration : ServiceWorkerRegistration;
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
 
-function sendServiceWorkerPort(serviceWorkerRegistration: ServiceWorkerRegistration) {
-  const messageChannel = new MessageChannel();
-  parent.postMessage({'type': 'serviceworkerport'}, PARENT_TARGET_DOMAIN, [messageChannel.port1]);
-  serviceWorkerRegistration.active.postMessage({'type': 'parentwindowport'}, [messageChannel.port2]);
-}
-
 function sendToParent(payload) {
   parent.postMessage(payload, PARENT_TARGET_DOMAIN);
 }
