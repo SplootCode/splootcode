@@ -22,9 +22,6 @@ export class WebEditorPanels extends React.Component<WebEditorProps> {
 
     return (
       <React.Fragment>
-        <div className={'web-editor-preview-panel'} >
-        <ViewPage pkg={onlyPackage}/>
-        </div>
         <div className="web-editor-column">
           {
             ((selectedFile || selectedDatasheet)) ?
@@ -40,6 +37,9 @@ export class WebEditorPanels extends React.Component<WebEditorProps> {
                 )
             : null
           }
+        </div>
+        <div className={'web-editor-preview-panel'} >
+          <ViewPage pkg={onlyPackage}/>
         </div>
       </React.Fragment>
     );
