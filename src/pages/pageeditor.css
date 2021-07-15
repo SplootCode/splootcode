@@ -6,7 +6,7 @@ body {
 
 .web-editor-container {
     display: grid;
-    grid-template-columns: 160px 600px auto;
+    grid-template-columns: 160px auto 500px;
     grid-column-gap: 0px;
     height: 100vh;
 }
@@ -19,7 +19,7 @@ body {
 }
 
 .web-editor-preview-panel {
-    grid-column-start: 2;
+    grid-column-start: 3;
 }
 
 .python-editor-preview-panel {
@@ -33,7 +33,7 @@ body {
 }
 
 .web-editor-column {
-    grid-column-start: 3;
+    grid-column-start: 2;
     border-left: 1px solid rgb(209, 209, 209);
 }
 
