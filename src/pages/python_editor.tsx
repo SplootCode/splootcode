@@ -23,12 +23,10 @@ export class PythonEditorPanels extends React.Component<WebEditorProps> {
       <React.Fragment>
         <div className="python-editor-column">
           <EditorStateContext.Provider value={selectedFile}>
-            <div className={'editor-panel selected'}>
-              { selectedFile ? 
-                <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
-                : null
-              }
-            </div>
+            { selectedFile ? 
+              <Editor block={selectedFile.rootNode} selection={selectedFile.selection} width={300} />
+              : null
+            }
           </EditorStateContext.Provider>
         </div>
         <div className="python-editor-preview-panel">

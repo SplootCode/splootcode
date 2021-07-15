@@ -10,12 +10,13 @@ import { adaptNodeToPasteDestination } from "../../language/type_registry"
 
 interface OverlayProps {
   selection: NodeSelection;
+  editorRef: React.RefObject<SVGSVGElement>
 }
 
 @observer
 export class DragOverlay extends React.Component<OverlayProps> {
   render() {
-    let { selection } = this.props;
+    let { selection, editorRef } = this.props;
     let dragState = selection.dragState;
     let block = dragState?.node;
     if (!dragState || block === null) {
@@ -27,7 +28,9 @@ export class DragOverlay extends React.Component<OverlayProps> {
         initialX={0}
         initialY={0}
         onEndDrag={this.onEndDrag}
-        selection={selection}/>);
+        selection={selection}
+        editorRef={editorRef}
+      />);
   }
 
   onEndDrag = () => {
@@ -41,6 +44,7 @@ interface DragOverlayInternalProps {
   initialX: number,
   initialY: number,
   selection: NodeSelection,
+  editorRef: React.RefObject<SVGSVGElement>,
 }
 
 interface DragOverlayInternalState {
@@ -82,10 +86,11 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
   }
 
   onMouseUp = (event: React.MouseEvent) => {
-    let {selection, block} = this.props;
+    let {selection, block, editorRef} = this.props;
 
-    let x = event.pageX - 364; // Horrible hack
-    let y = event.pageY;
+    let refBox = editorRef.current.getBoundingClientRect();
+    let x = event.pageX - refBox.left;
+    let y = event.pageY - refBox.top;
 
     // TODO: Only allow cursors in positions that make sense.
     selection.placeCursorByXYCoordinate(x, y);
@@ -106,8 +111,9 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
         x: event.pageX,
         y: event.pageY
       })
-      let x = event.pageX - 364; // Horrible hack
-      let y = event.pageY;
+      let refBox = this.props.editorRef.current.getBoundingClientRect();
+      let x = event.pageX - refBox.left;
+      let y = event.pageY - refBox.top;
 
       // TODO: Only allow cursors in positions that make sense.
       selection.placeCursorByXYCoordinate(x, y);

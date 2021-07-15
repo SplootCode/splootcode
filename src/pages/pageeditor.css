@@ -55,11 +55,3 @@ body {
     background-color: #343b44;
     color: white;
 }
-
-.editor-panel {
-    display: none;
-}
-
-.editor-panel.selected {
-    display: block;
-}
