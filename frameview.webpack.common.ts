@@ -14,6 +14,7 @@ export default {
 
   entry: {
     splootframeclient: './src/view/index.tsx',
+    splootframepythonclient: './src/view/python.tsx',
   },
 
   optimization: {
@@ -39,12 +40,21 @@ export default {
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, 'src/serviceworker/serviceworker.ts'),
     }),
-    new CopyWebpackPlugin([path.resolve('./src/view/splootframeclient.html')]),
+    new CopyWebpackPlugin([
+      path.resolve('./src/view/splootframeclient.html'),
+      path.resolve('./src/view/splootframepythonclient.html')
+    ]),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/view/splootframeclient.html',
-      filename: 'splootframeclient.html'
+      filename: 'splootframeclient.html',
+      excludeChunks: ['splootframepythonclient']
     }),
+    new HtmlWebpackPlugin({
+      template: './src/view/splootframepythonclient.html',
+      filename: 'splootframepythonclient.html',
+      excludeChunks: ['splootframeclient']
+    })
   ],
 
   devtool: 'cheap-module-source-map',

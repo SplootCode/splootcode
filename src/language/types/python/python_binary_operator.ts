@@ -16,7 +16,7 @@ import {
 } from "../../type_registry"
 import { PYTHON_EXPRESSION, PythonExpression } from "./python_expression"
 
-export const PYTHON_BINARY_OPERATOR = 'BINARY_OPERATOR';
+export const PYTHON_BINARY_OPERATOR = 'PYTHON_BINARY_OPERATOR';
 
 
 const OPERATORS = {
