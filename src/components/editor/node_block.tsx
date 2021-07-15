@@ -1,19 +1,22 @@
-import React, { ReactElement } from 'react'
-import { NodeBlock, RenderedInlineComponent } from '../../layout/rendered_node';
-import { ExpandedListBlockView, InlineListBlockView } from './list_block';
-import { NodeSelection, NodeSelectionState } from '../../context/selection';
-import { InlineStringLiteral } from './string_literal';
-import { InlineProperty } from './property';
-import { SplootExpressionView } from './expression';
-import { LayoutComponent, LayoutComponentType } from '../../language/type_registry';
-import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block';
-import { AttachedChildRightExpressionView } from './attached_child';
-import { SPLOOT_EXPRESSION } from '../../language/types/js/expression';
+import "./node_block.css"
 
-import "./node_block.css";
-import { observer } from 'mobx-react';
-import { PYTHON_EXPRESSION } from '../../language/types/python/python_expression';
+import { observer } from "mobx-react"
+import React, { ReactElement } from "react"
 
+import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import {
+  LayoutComponent,
+  LayoutComponentType,
+} from "../../language/type_registry"
+import { SPLOOT_EXPRESSION } from "../../language/types/js/expression"
+import { PYTHON_EXPRESSION } from "../../language/types/python/python_expression"
+import { NodeBlock, RenderedInlineComponent } from "../../layout/rendered_node"
+import { AttachedChildRightExpressionView } from "./attached_child"
+import { SplootExpressionView } from "./expression"
+import { ExpandedListBlockView, InlineListBlockView } from "./list_block"
+import { InlineProperty } from "./property"
+import { InlineStringLiteral } from "./string_literal"
+import { TreeListBlockBracketsView, TreeListBlockView } from "./tree_list_block"
 
 interface NodeBlockProps {
   block: NodeBlock;
@@ -70,9 +73,15 @@ function getBreadcrumbMiddleShapePath(x: number, y: number, width: number) : str
 
 @observer
 export class EditorNodeBlock extends React.Component<NodeBlockProps> {
-  
+  private draggableRef: React.RefObject<SVGGElement>;
+
+  constructor(props) {
+    super(props);
+    this.draggableRef = React.createRef();
+  }
+
   render() {
-    let {block, selection, selectionState, onClickHandler} = this.props;
+    let {block, selection, selectionState} = this.props;
     let isSelected = selectionState === NodeSelectionState.SELECTED;
 
     if (block === null) {
@@ -91,24 +100,24 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     let shape : ReactElement;
     if (this.props.isInsideBreadcrumbs) {
       if (block.leftBreadcrumbChildSet) {
-        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbMiddleShapePath(leftPos + 1, topPos + 1, width)} onClick={onClickHandler} />
+        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbMiddleShapePath(leftPos + 1, topPos + 1, width)}/>
       } else {
-        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbStartShapePath(leftPos + 1, topPos + 1, width)} onClick={onClickHandler} />
+        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbStartShapePath(leftPos + 1, topPos + 1, width)}/>
       }
     } else {
       if (block.leftBreadcrumbChildSet) {
-        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} onClick={onClickHandler} />
+        shape = <path className={"svgsplootnode" + (isSelected ? " selected" : "")} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)}/>
       } else {
         if (block.layout.small) {
-          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4" onClick={onClickHandler} />
+          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4"/>
           internalLeftPos = leftPos + 8;
         } else {
-          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" onClick={onClickHandler} />
+          shape = <rect className={"svgsplootnode" + (isSelected ? " selected" : "")} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4"/>
         }
       }
     }
 
-    return  <React.Fragment>
+    return  <g>
         { this.renderLeftAttachedBreadcrumbsChildSet() }
         { shape }
         {
@@ -161,7 +170,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             }
           })
         }
-    </React.Fragment>
+    </g>
   }
 
   renderLeftAttachedBreadcrumbsChildSet() {

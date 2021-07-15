@@ -1,13 +1,12 @@
-import React from 'react'
-import { NodeBlock } from '../../layout/rendered_node';
-import { EditorNodeBlock } from './node_block';
-import { NodeSelection, NodeSelectionState } from '../../context/selection';
-import { observer } from 'mobx-react';
-import { RenderedChildSetBlock } from '../../layout/rendered_childset_block';
-import { InlineCursor, NewLineCursor } from './cursor';
+import "./list_block.css"
 
-import "./list_block.css";
+import { observer } from "mobx-react"
+import React from "react"
 
+import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
+import { NodeBlock } from "../../layout/rendered_node"
+import { EditorNodeBlock } from "./node_block"
 
 interface ExpandedListBlockViewProps {
   block: RenderedChildSetBlock;
@@ -42,12 +41,10 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
                   selectionState={selectionState}
                   onClickHandler={this.onClickByIndex(idx)}
                   isInsideBreadcrumbs={isInsideBreadcrumbs} />
-              { allowInsert ? <InlineCursor index={idx} listBlock={block} leftPos={block.x} topPos={block.y} selection={selection}/> : null}
             </React.Fragment>
           );
         })
       }
-      { allowInsert ? <InlineCursor index={block.nodes.length} listBlock={block} leftPos={block.x + block.width + 5} topPos={block.y} selection={selection}/> : null }
     </React.Fragment>
   }
 
@@ -86,15 +83,14 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)} />
-              <NewLineCursor index={idx} listBlock={block} leftPos={nodeBlock.x} topPos={nodeBlock.y} selection={selection}/>
+                  onClickHandler={this.onClickByIndex(idx)}
+              />
             </React.Fragment>
           );
           topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight;
           return result;
         })
       }
-      <NewLineCursor index={block.nodes.length} listBlock={block} leftPos={block.x} topPos={block.y + block.height - 12} selection={selection}/>
     </React.Fragment>;
   }
 

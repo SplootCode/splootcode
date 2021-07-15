@@ -1,11 +1,14 @@
 
-import { SplootNode } from "../language/node";
-import { action, observable, computed } from "mobx";
-import { RenderedChildSetBlock } from "../layout/rendered_childset_block";
-import { NodeBlock } from "../layout/rendered_node";
-import { InsertBoxData } from "./insert_box";
-import { NodeCategory } from "../language/node_category_registry";
-import { SplootExpression } from "../language/types/js/expression";
+import { action, computed, observable } from "mobx"
+import { off } from "process"
+
+import { SplootNode } from "../language/node"
+import { NodeCategory } from "../language/node_category_registry"
+import { SplootExpression } from "../language/types/js/expression"
+import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
+import { NodeBlock } from "../layout/rendered_node"
+import { CursorMap } from "./cursor_map"
+import { InsertBoxData } from "./insert_box"
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -22,7 +25,14 @@ export enum SelectionState {
   Inserting,
 }
 
+export interface DragState {
+  node: NodeBlock,
+  offsetX: number,
+  offsetY: number,
+}
+
 export class NodeSelection {
+  cursorMap: CursorMap;
   rootNode: NodeBlock;
   @observable
   cursor: NodeCursor;
@@ -31,11 +41,21 @@ export class NodeSelection {
   @observable
   insertBox: InsertBoxData;
 
+  @observable
+  dragState: DragState | null;
+
+  lastXCoordinate: number;
+  lastYCoordinate: number;
+
   constructor() {
     this.rootNode = null;
+    this.cursorMap = new CursorMap();
     this.cursor = null;
     this.insertBox = null;
     this.state = SelectionState.Empty;
+    this.dragState = null;
+    this.lastXCoordinate = 0;
+    this.lastYCoordinate = 0;
   }
 
   setRootNode(rootNode: NodeBlock) {
@@ -51,8 +71,10 @@ export class NodeSelection {
   }
 
   updateRenderPositions() {
+    this.cursorMap = new CursorMap();
     this.rootNode.calculateDimensions(-10, -30, this);
   }
+
 
   @observable
   isCursor() {
@@ -145,6 +167,27 @@ export class NodeSelection {
   }
 
   @action
+  insertNewline() {
+    let insertCursor = this.cursor.listBlock.getNewLineInsertPosition(this.cursor.index);
+    if (insertCursor !== null) {
+      this.placeCursor(insertCursor.listBlock, insertCursor.index);
+      this.startInsertAtCurrentCursor();
+    }
+  }
+
+  @action
+  unindentCursor() {
+    let parent = this.cursor.listBlock.parentRef.node;
+    if (parent !== null && parent.parentChildSet !== null) {
+      let insertCursor = parent.parentChildSet.getNewLineInsertPosition(parent.index + 1);
+      if (insertCursor !== null) {
+        this.placeCursor(insertCursor.listBlock, insertCursor.index);
+        this.startInsertAtCurrentCursor();
+      }
+    }
+  }
+
+  @action
   startInsertNode(listBlock: RenderedChildSetBlock, index: number) {
     this.exitEdit();
     if (this.cursor) {
@@ -186,8 +229,11 @@ export class NodeSelection {
 
   @action
   exitEdit() {
-    if (this.state === SelectionState.Editing || this.state == SelectionState.Inserting) {
+    if (this.state === SelectionState.Editing) {
       this.state = SelectionState.SingleNode;
+    }
+    if (this.state == SelectionState.Inserting) {
+      this.state = SelectionState.Cursor;
       this.updateRenderPositions();
     }
   }
@@ -221,6 +267,79 @@ export class NodeSelection {
     listBlock.selectedIndex = index;
     listBlock.selectionState = SelectionState.SingleNode;
     this.setState(SelectionState.SingleNode);
+  }
+
+  @action
+  moveCursorRight() {
+    let [cursor, isCursor, x, y] = this.cursorMap.getCursorRightOfCoordinate(this.lastXCoordinate, this.lastYCoordinate);
+    this.lastXCoordinate = x;
+    this.lastYCoordinate = y;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index);
+    } else {
+      this.selectNodeByIndex(cursor.listBlock, cursor.index);
+    }
+  }
+
+  @action
+  moveCursorLeft() {
+    let [cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfCoordinate(this.lastXCoordinate, this.lastYCoordinate);
+    this.lastXCoordinate = x;
+    this.lastYCoordinate = y;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index);
+    } else {
+      this.selectNodeByIndex(cursor.listBlock, cursor.index);
+    }
+  }
+
+  @action
+  moveCursorUp() {
+    let [cursor, isCursor, x, y] = this.cursorMap.getCursorUpOfCoordinate(this.lastXCoordinate, this.lastYCoordinate);
+    this.lastXCoordinate = x;
+    this.lastYCoordinate = y;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index);
+    } else {
+      this.selectNodeByIndex(cursor.listBlock, cursor.index);
+    }
+  }
+
+  @action
+  moveCursorDown() {
+    let [cursor, isCursor, x, y] = this.cursorMap.getCursorDownOfCoordinate(this.lastXCoordinate, this.lastYCoordinate);
+    this.lastXCoordinate = x;
+    this.lastYCoordinate = y;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index);
+    } else {
+      this.selectNodeByIndex(cursor.listBlock, cursor.index);
+    }
+  }
+
+  startDrag(nodeBlock: NodeBlock, offsetX: number, offestY: number) {
+    let tempNodeBlock = new NodeBlock(null, nodeBlock.node, null, 0, false);
+    tempNodeBlock.calculateDimensions(0, 0, null);
+    this.dragState = {
+      node: tempNodeBlock,
+      offsetX: offsetX,
+      offsetY: offestY,
+    }
+  }
+
+  placeCursorByXYCoordinate(x: number, y: number) {
+    let [cursor, isCursor] = this.cursorMap.getCursorByCoordinate(x, y);
+    this.lastYCoordinate = y;
+    this.lastXCoordinate = x;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index);
+    } else {
+      this.selectNodeByIndex(cursor.listBlock, cursor.index);
+    }
+  }
+
+  endDrag() {
+    this.dragState = null;
   }
 
   @action

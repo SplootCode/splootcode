@@ -1,16 +1,24 @@
-import React, { ChangeEvent } from 'react'
-import { Component } from 'react'
-import { globalMutationDispatcher } from '../../language/mutations/mutation_dispatcher';
-import { NodeMutation } from '../../language/mutations/node_mutations';
-import { ChildSetMutation } from '../../language/mutations/child_set_mutations';
+import "./frame_view.css"
 
-import { Box, ButtonGroup, FormControl, FormLabel, Switch, IconButton, HStack, Spacer } from "@chakra-ui/react";
-import { RepeatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { observer } from "mobx-react"
+import React, { ChangeEvent, Component } from "react"
 
-import './frame_view.css';
-import { SplootPackage } from '../../language/projects/package';
-import { observer } from 'mobx-react';
+import { ExternalLinkIcon, RepeatIcon } from "@chakra-ui/icons"
+import {
+  Box,
+  ButtonGroup,
+  FormControl,
+  FormLabel,
+  HStack,
+  IconButton,
+  Spacer,
+  Switch,
+} from "@chakra-ui/react"
 
+import { ChildSetMutation } from "../../language/mutations/child_set_mutations"
+import { globalMutationDispatcher } from "../../language/mutations/mutation_dispatcher"
+import { NodeMutation } from "../../language/mutations/node_mutations"
+import { SplootPackage } from "../../language/projects/package"
 
 export enum FrameState {
   DEAD = 0,
@@ -170,7 +178,6 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       this.handleMessageFromHiddenFrame(event);
     }
   }
-
   reloadSiteInFrame = () => {
     this.previewFrameRef.current.src = getFrameDomain() + '/index.html';
   }

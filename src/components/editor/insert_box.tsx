@@ -1,16 +1,22 @@
-import React from 'react'
-import Fuse from 'fuse.js';
+import "./insert_box.css"
 
-import { NodeSelection, NodeSelectionState, SelectionState } from '../../context/selection';
-import { observer } from 'mobx-react';
-import { SuggestedNode } from '../../language/suggested_node';
-import { getAutocompleteFunctionsForCategory, SuggestionGenerator } from '../../language/node_category_registry';
-import { ParentReference } from '../../language/node';
+import Fuse from "fuse.js"
+import { observer } from "mobx-react"
+import React from "react"
 
-import "./insert_box.css";
-import { InsertBoxData } from '../../context/insert_box';
-import { EditorNodeBlock } from './node_block';
-
+import { InsertBoxData } from "../../context/insert_box"
+import {
+  NodeSelection,
+  NodeSelectionState,
+  SelectionState,
+} from "../../context/selection"
+import { ParentReference } from "../../language/node"
+import {
+  getAutocompleteFunctionsForCategory,
+  SuggestionGenerator,
+} from "../../language/node_category_registry"
+import { SuggestedNode } from "../../language/suggested_node"
+import { EditorNodeBlock } from "./node_block"
 
 function filterSuggestions(parentRef: ParentReference, index: number, staticSuggestions: SuggestedNode[], generators: Set<SuggestionGenerator>, userInput: string) : SuggestedNode[] {
   let suggestions = [...staticSuggestions];
@@ -62,7 +68,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     this.state = {
       userInput: '',
       autoWidth: this.getWidth(''),
-      filteredSuggestions: filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, ''),
+      filteredSuggestions: [],
       suggestionGenerators: suggestionGeneratorSet,
       staticSuggestions: staticSuggestions,
       activeSuggestion: 0,
@@ -75,7 +81,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const isInserting = selection.state === SelectionState.Inserting;
 
     let suggestionsListComponent: JSX.Element;
-
     if (selection.state === SelectionState.Inserting) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
@@ -102,7 +107,12 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
                       className="autocomplete-inline-svg"
                       height={suggestion.nodeBlock.rowHeight}
                       width={suggestion.nodeBlock.rowWidth + 2}
-                  ><EditorNodeBlock block={suggestion.nodeBlock} onClickHandler={()=>{}} selection={null} selectionState={NodeSelectionState.UNSELECTED}/></svg>
+                  ><EditorNodeBlock
+                      block={suggestion.nodeBlock}
+                      onClickHandler={()=>{}}
+                      selection={null}
+                      selectionState={NodeSelectionState.UNSELECTED}
+                    /></svg>
                   <span className="autocomplete-description">{ suggestion.description}</span>
                 </li>
               );
@@ -111,9 +121,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         );
       } else {
         suggestionsListComponent = (
-          <div className="autocomplete-no-suggestions">
-            <em>No suggestions, you're on your own!</em>
-          </div>
+          null
         );
       }
     }
@@ -155,18 +163,26 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   }
 
   onKeyDown = (e : React.KeyboardEvent<HTMLInputElement>) => {
-    // Escape and enter keys
-    if (e.keyCode === 27 || e.keyCode === 13) {
-      // Clear edit state
-      this.props.selection.exitEdit();
-      e.stopPropagation();
+    let { selection } = this.props;
+
+    if (selection.state === SelectionState.Cursor) {
+      if (e.keyCode === 13) {
+        selection.insertNewline()
+      }
+      return;
     }
 
-    const { activeSuggestion, filteredSuggestions } = this.state;
+    const { activeSuggestion, filteredSuggestions, userInput } = this.state;
+
+    // Enter key when inserting
+    if (e.keyCode === 13 && userInput === '') {
+      selection.unindentCursor();
+      return;
+    }
 
     // Escape
     if (e.keyCode === 27) {
-      this.props.selection.exitEdit();
+      selection.exitEdit();
       e.stopPropagation();
     }
 
@@ -183,6 +199,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
     // User pressed the up arrow, decrement the index
     else if (e.keyCode === 38) {
+      e.stopPropagation()
+      e.nativeEvent.stopImmediatePropagation()
       if (activeSuggestion === 0) {
         return;
       }
@@ -191,6 +209,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
     // User pressed the down arrow, increment the index
     else if (e.keyCode === 40) {
+      e.stopPropagation()
+      e.nativeEvent.stopImmediatePropagation()
       if (activeSuggestion - 1 === filteredSuggestions.length) {
         return;
       }

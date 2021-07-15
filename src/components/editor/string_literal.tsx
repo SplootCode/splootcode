@@ -1,10 +1,10 @@
-import React from 'react'
+import "./string_literal.css"
 
-import { NodeSelection, NodeCursor, NodeSelectionState } from '../../context/selection';
-import { NodeBlock } from '../../layout/rendered_node';
-import { observer } from 'mobx-react';
+import { observer } from "mobx-react"
+import React from "react"
 
-import "./string_literal.css";
+import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { NodeBlock } from "../../layout/rendered_node"
 
 interface StringLiteralEditState {
   userInput: string;

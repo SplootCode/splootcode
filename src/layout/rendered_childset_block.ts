@@ -1,12 +1,25 @@
-import { SplootNode } from "../language/node";
-import { ChildSet, ChildSetType } from "../language/childset";
-import { LayoutComponent, LayoutComponentType } from "../language/type_registry";
-import { ChildSetObserver } from "../language/observers";
-import { ChildSetMutation, ChildSetMutationType } from "../language/mutations/child_set_mutations";
-import { observable, action } from "mobx";
-import { NodeSelectionState, NodeSelection, SelectionState, NodeCursor } from "../context/selection";
-import { NODE_BLOCK_HEIGHT, NodeBlock, RenderedParentRef } from "./rendered_node";
-import { SPLOOT_EXPRESSION } from "../language/types/js/expression";
+import { action, observable } from "mobx"
+
+import {
+  NodeCursor,
+  NodeSelection,
+  NodeSelectionState,
+  SelectionState,
+} from "../context/selection"
+import { ChildSet, ChildSetType } from "../language/childset"
+import {
+  ChildSetMutation,
+  ChildSetMutationType,
+} from "../language/mutations/child_set_mutations"
+import { SplootNode } from "../language/node"
+import { ChildSetObserver } from "../language/observers"
+import { LayoutComponent, LayoutComponentType } from "../language/type_registry"
+import { SPLOOT_EXPRESSION } from "../language/types/js/expression"
+import {
+  NODE_BLOCK_HEIGHT,
+  NodeBlock,
+  RenderedParentRef,
+} from "./rendered_node"
 
 const EXPRESSION_TOKEN_SPACING = 6;
 const ROW_SPACING = 6;
@@ -176,6 +189,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
         this.width = Math.max(this.width, boxWidth);
       }
+      this.height -= ROW_SPACING; // Remove extra space at the end
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       let labels = this.childSetTreeLabels;
       let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
@@ -200,6 +214,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
         this.width = Math.max(this.width, boxWidth);
       }
+      this.height -= ROW_SPACING; // Remove extra space at the end
     } else if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
       let topPos = y + ROW_SPACING;
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
@@ -209,11 +224,17 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
           this.width = Math.max(this.width, boxWidth);
         }
+        if (selection !== null) {
+          selection.cursorMap.registerLineCursor(this, idx, topPos);
+        }
         childNodeBlock.calculateDimensions(x, topPos, selection);
         topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
         this.width = Math.max(this.width, childNodeBlock.rowWidth);
       });
+      if (selection !== null) {
+        selection.cursorMap.registerLineCursor(this, this.nodes.length, topPos);
+      }
       if (this.nodes.length === insertIndex) {
         let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
@@ -221,6 +242,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
       let leftPos = x;
+      if (selection !== null) {
+        selection.cursorMap.registerCursorStart(this, 0, x - EXPRESSION_TOKEN_SPACING*2, y, true);
+      }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
@@ -228,6 +252,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           leftPos += boxWidth;
         }
         childNodeBlock.calculateDimensions(leftPos, y, selection);
+        if (selection !== null) {
+          selection.cursorMap.registerCursorStart(this, idx + 1, leftPos + childNodeBlock.rowWidth, y, true);
+        }
         leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING;
         this.width += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING;
         this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight);
@@ -388,6 +415,35 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       nextChildCursor = this.parentRef.node.getNextInsertAfterThisNode()
       if (nextChildCursor) {
         return new NodeCursor(nextChildCursor.listBlock, nextChildCursor.index);
+      }
+    }
+    return null;
+  }
+
+  getNewLineInsertPosition(index: number) {
+    if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
+      // Blocks are always new lines.
+      return new NodeCursor(this, index);
+    }
+    if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT || this.componentType === LayoutComponentType.CHILD_SET_INLINE) {
+      let parentNode = this.parentRef.node;
+      let parentChildSet = parentNode.parentChildSet;
+      let parentChildSetIndex = parentNode.index;
+      return parentChildSet.getNewLineInsertPosition(parentChildSetIndex + 1);
+    }
+    if (this.componentType === LayoutComponentType.CHILD_SET_TREE || this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+      // TODO: Check if we allow insert or not.
+      return new NodeCursor(this, index);
+    }
+    if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
+      let parentNode = this.parentRef.node;
+      let parentChildSet = parentNode.parentChildSet;
+      let parentChildSetIndex = parentNode.index;
+      if (index === 0) {
+        // Enter at the start of an expression, we want to insert above.
+        return parentChildSet.getNewLineInsertPosition(parentChildSetIndex);
+      } else {
+        return parentChildSet.getNewLineInsertPosition(parentChildSetIndex + 1);
       }
     }
     return null;

@@ -9,6 +9,9 @@
   height: 100vh;
   position: relative;
   width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 0px;
 }
 
 .editor-svg {

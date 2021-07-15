@@ -1,13 +1,12 @@
-import React from 'react'
+import "./tree_list_block.css"
 
-import { observer } from "mobx-react";
-import { NodeSelection, NodeSelectionState } from "../../context/selection";
-import { NodeBlock } from "../../layout/rendered_node";
-import { EditorNodeBlock } from './node_block';
+import { observer } from "mobx-react"
+import React from "react"
 
-import "./tree_list_block.css";
-import { RenderedChildSetBlock } from '../../layout/rendered_childset_block';
-import { TreeDotCursor, TreeDotCursorSecondary } from './cursor';
+import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
+import { NodeBlock } from "../../layout/rendered_node"
+import { EditorNodeBlock } from "./node_block"
 
 interface TreeListBlockViewProps {
     block: RenderedChildSetBlock;
@@ -51,14 +50,13 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)} />
-              <TreeDotCursorSecondary index={idx + 1} listBlock={block} leftPos={nodeBlock.x} topPos={nodeBlock.y + nodeBlock.rowHeight} selection={selection}/>
+                  onClickHandler={this.onClickByIndex(idx)}
+              />
             </React.Fragment>
             // topPos += nodeBlock.rowHeight;
             return result;
           })
         }
-        <TreeDotCursor index={0} listBlock={block} leftPos={block.x + 8} topPos={block.y} selection={selection}/>
       </React.Fragment>
     );
   }
@@ -120,8 +118,8 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                     block={nodeBlock}
                     selection={this.props.selection}
                     selectionState={selectionState}
-                    onClickHandler={this.onClickByIndex(idx)} />
-                <TreeDotCursorSecondary index={idx + 1} listBlock={block} leftPos={nodeBlock.x} topPos={nodeBlock.y + nodeBlock.rowHeight} selection={selection}/>
+                    onClickHandler={this.onClickByIndex(idx)}
+                />
                 <path className={connectorClass} d={"M " + (nodeBlock.x + nodeBlock.rowWidth + 2) + " " + nodeBlock.y + " a 40 40 45 0 1 0 30" } fill="transparent"></path>
               </React.Fragment>
               // topPos += nodeBlock.rowHeight;
@@ -142,12 +140,10 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                     selectionState={selectionState}
                     onClickHandler={this.onClickByIndex(idx)}
                 />
-                <TreeDotCursorSecondary index={idx + 1} listBlock={block} leftPos={nodeBlock.x} topPos={nodeBlock.y + nodeBlock.rowHeight} selection={selection}/>
               </React.Fragment>
               return result;
           })
         }
-        <TreeDotCursor index={0} listBlock={block} leftPos={block.x + 8} topPos={block.y} selection={selection}/>
       </React.Fragment>
     );
   }
