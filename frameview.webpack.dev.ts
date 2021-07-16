@@ -13,7 +13,7 @@ module.exports = webpackMerge(common, {
 
   devServer: {
     port: 3001,
-    hot: true,
+    hot: false,
   },
 
   plugins: [

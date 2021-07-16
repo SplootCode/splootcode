@@ -34,12 +34,12 @@ body {
 
 .web-editor-column {
     grid-column-start: 2;
-    border-left: 1px solid rgb(209, 209, 209);
+    border-right: 1px solid rgb(209, 209, 209);
 }
 
 .python-editor-column {
     grid-column-start: 2;
-    border-left: 1px solid rgb(209, 209, 209);
+    border-right: 1px solid rgb(209, 209, 209);
 }
 
 .file-nav-list {
