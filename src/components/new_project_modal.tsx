@@ -36,31 +36,24 @@ function RadioCard(props) {
   )
 }
 
-interface LoadProjectModalProps {
+interface NewProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
   loadProjectIntoEditor: (proj: Project) => void;
 }
 
-export function LoadProjectModal(props: LoadProjectModalProps) {
+export function NewProjectModal(props: NewProjectModalProps) {
   let { isOpen, onClose, loadProjectIntoEditor } = props;
   let [selectedProject, setSelectedProject] = useState('');
 
   const handleLoad = async (event) => {
     let proj = null;
     switch (selectedProject) {
-      case 'bouncing':
-      case 'flashcards':
-      case 'gallery':
-      case 'helloworld':
-        proj = await loadExampleProject(selectedProject)
-        break;
-      case 'blank':
+      case 'website':
         proj = await loadExampleProject('blank')
         break;
-      case 'files':
-        const dirHandle = await window.showDirectoryPicker();
-        proj = await loadProject(dirHandle);
+      case 'python':
+        proj = await loadExampleProject('blankpython')
         break;
     }
     loadProjectIntoEditor(proj);
@@ -82,30 +75,26 @@ export function LoadProjectModal(props: LoadProjectModalProps) {
       <Modal isOpen={isOpen} onClose={onClose} size='xl'>
         <ModalOverlay/>
         <ModalContent>
-          <ModalHeader>Load Example Project</ModalHeader>
+          <ModalHeader>New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody {...group}>
-            <Grid templateColumns="repeat(3, 1fr)" gap={4} mb={4}>
+            <Text size="sm" pb={2}>What kind of project is this?</Text>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4} mb={4}>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "helloworld"})}>
-                <Heading size="sm" my={3}>Hello World <br/>(Python CLI)</Heading>
+              <RadioCard {...getRadioProps({value: "website"})}>
+                <Heading size="sm" my={3}>Website<br/>(HTML/CSS/JS)</Heading>
               </RadioCard>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "bouncing"})}>
-                <Heading size="sm" my={3}>Bouncing balls (HTML Canvas)</Heading>
-              </RadioCard>
-              {/* 
-                // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "gallery"})}>
-                <Heading size="sm" my={3}>Photo Gallery<br/>(React)</Heading>
+              <RadioCard {...getRadioProps({value: "python"})}>
+                <Heading size="sm" my={3}>Command line<br/>(Python)</Heading>
               </RadioCard>
             </Grid>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>Load Project</Button>
+            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>Create project</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -22,11 +22,13 @@ import { SplootNode } from '../language/node';
 import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
 import { WebEditorPanels } from './web_editor';
 import { PythonEditorPanels } from './python_editor';
+import { NewProjectModal } from '../components/new_project_modal';
 
 interface PageEditorProps {
 };
 
 interface PageEditorState {
+  openLoadProjectModal: boolean;
   openNewProjectModal: boolean;
   openNewFileModal: boolean;
   newFilePackageName: string;
@@ -44,7 +46,8 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
       super(props);
 
       this.state = {
-        openNewProjectModal: true,
+        openLoadProjectModal: true,
+        openNewProjectModal: false,
         openNewFileModal: false,
         newFilePackageName: '',
         ready: false,
@@ -77,9 +80,16 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
 
   openLoadProjectModal = (event) => {
     this.setState({
+      openLoadProjectModal: true,
+    })
+  }
+
+  openNewProjectModal = (event) => {
+    this.setState({
       openNewProjectModal: true,
     })
   }
+
 
   newFileModal(packageName: string) {
     return (event : MouseEvent) => {
@@ -92,7 +102,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
   }
 
   render() {
-    let {ready, selectedFile, selectedDatasheet, project, isNodeEditor, openNewProjectModal: openModal, openNewFileModal} = this.state;
+    let {ready, selectedFile, selectedDatasheet, project, isNodeEditor, openLoadProjectModal, openNewProjectModal, openNewFileModal} = this.state;
 
     if (!ready) {
       return null;
@@ -102,7 +112,10 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
 
     return (
       <div className={ project.layoutType === ProjectLayoutType.WEB ? "web-editor-container" : "python-editor-container"}>
-        <LoadProjectModal isOpen={openModal} onClose={() => {
+        <LoadProjectModal isOpen={openLoadProjectModal} onClose={() => {
+          this.setState({openLoadProjectModal: false});
+        }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
+        <NewProjectModal isOpen={openNewProjectModal} onClose={() => {
           this.setState({openNewProjectModal: false});
         }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
         <NewFileModal isOpen={openNewFileModal} onClose={() => {
@@ -129,12 +142,13 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
                 Project
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={this.openLoadProjectModal}>New Project</MenuItem>
+              <MenuItem onClick={this.openLoadProjectModal}>Load Example</MenuItem>
+              <MenuItem onClick={this.openNewProjectModal}>New Project</MenuItem>
               <MenuItem onClick={async (event) => {
                  const dirHandle = await window.showDirectoryPicker();
                  let proj = await loadProject(dirHandle);
                  this.loadProjectIntoEditor(proj);
-              }}>Open Project</MenuItem>
+              }}>Open Project from Folder</MenuItem>
               <MenuItem onClick={async (event) => {
                 const dirHandle = await window.showDirectoryPicker();
                 await saveProject(dirHandle, project);
