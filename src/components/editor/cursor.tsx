@@ -51,7 +51,7 @@ export class ActiveCursor extends React.Component<ActiveCursorProps> {
       return null;
     }
     let listBlock = selection.cursor.listBlock;
-    let [x, y] = listBlock.getInsertCoordinates(selection.cursor.index);
+    let [x, y] = listBlock.getInsertCoordinates(selection.cursor.index, true);
 
     switch (listBlock.componentType) {
       case LayoutComponentType.CHILD_SET_TOKEN_LIST:
@@ -61,7 +61,7 @@ export class ActiveCursor extends React.Component<ActiveCursorProps> {
       case LayoutComponentType.CHILD_SET_TREE_BRACKETS:
         return <TreeDotActiveCursor selection={selection} />
       case LayoutComponentType.CHILD_SET_TREE:
-        return <TreeDotActiveCursor selection={selection} />
+        return <line className="active-inline-cursor" x1={x - 2} y1={y + 2} x2={x - 2} y2={y + 28}/>
       case LayoutComponentType.CHILD_SET_BLOCK:
         return <line className="active-inline-cursor" x1={x - 2} y1={y + 2} x2={x - 2} y2={y + 28}/>
         // return <line className="active-inline-cursor" x1={x + 2} y1={y - 3} x2={x + 200} y2={y - 3}/>;

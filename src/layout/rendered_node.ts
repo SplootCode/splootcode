@@ -233,7 +233,7 @@ export class NodeBlock implements NodeObserver {
         let childSetBlock = this.renderedChildSets[component.identifier];
         childSetBlock.calculateDimensions(leftPos + 2, y, selection);
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
-        marginRight += childSetBlock.width;
+        marginRight += childSetBlock.width + 8; // Extra for line and brackets
       }
       else {
         let width = stringWidth(component.identifier) + nodeInlineSpacing;
