@@ -2,82 +2,141 @@ import "./tray.css"
 
 import { observer } from "mobx-react"
 import React from "react"
-import { render } from "react-dom"
 
 import { NodeSelectionState } from "../../context/selection"
-import { CallVariable } from "../../language/types/js/call_variable"
 import { NumericLiteral, StringLiteral } from "../../language/types/literals"
 import { PythonAssignment } from "../../language/types/python/python_assignment"
 import { PythonBinaryOperator } from "../../language/types/python/python_binary_operator"
 import { PythonCallVariable } from "../../language/types/python/python_call_variable"
 import { PythonVariableReference } from "../../language/types/python/variable_reference"
 import { NodeBlock } from "../../layout/rendered_node"
-import { SPLOOT_MIME_TYPE } from "./editor"
 import { EditorNodeBlock } from "./node_block"
+import { SplootNode } from "../../language/node"
+import { PYTHON_FILE } from "../../language/types/python/python_file"
+import { HTML_DOCUMENT } from "../../language/types/html/html_document"
+import { SplootHtmlElement } from "../../language/types/html/html_element"
+import { SplootHtmlScriptElement } from "../../language/types/html/html_script_element"
+import { SplootHtmlStyleElement } from "../../language/types/html/html_style_element"
+import { JAVASCRIPT_FILE } from "../../language/types/js/javascript_file"
+import { CallMember } from "../../language/types/js/call_member"
+import { VariableReference } from "../../language/types/js/variable_reference"
+import { SplootExpression } from "../../language/types/js/expression"
+import { VariableDeclaration } from "../../language/types/js/variable_declaration"
+import { BinaryOperator } from "../../language/types/js/binary_operator"
+import { Assignment } from "../../language/types/js/assignment"
+import { FunctionDeclaration } from "../../language/types/js/functions"
+import { IfStatement } from "../../language/types/js/if"
+import { ReturnStatement } from "../../language/types/js/return"
+import { ImportStatement } from "../../language/types/js/import"
+import { ImportDefaultStatement } from "../../language/types/js/import_default"
 
 interface TrayProps {
+  rootNode: SplootNode,
   width: number;
   startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any;
 }
 
 interface TrayState {
-  selectedNode?: number,
   trayNodes: NodeBlock[],
-  draggingNode: NodeBlock,
-  draggingX: number,
-  draggyingY: number,
+  height: number,
 }
 
-function getTrayNodeSuggestions() : NodeBlock[] {
-  let nodes = [
-    new PythonCallVariable(null, 'print', 1),
-    new PythonAssignment(null),
-    new PythonVariableReference(null, 'my_variable'),
-    new NumericLiteral(null, 123),
-    new PythonBinaryOperator(null, '+'),
-    new PythonBinaryOperator(null, '*'),
-    new StringLiteral(null, ''),
-    new StringLiteral(null, 'Hi there!'),
-  ];
+function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
+  let nodes = []
+  if (rootNode.type === PYTHON_FILE) {
+    nodes = [
+      new PythonCallVariable(null, 'print', 1),
+      new PythonAssignment(null),
+      new PythonVariableReference(null, 'my_variable'),
+      new StringLiteral(null, ''),
+      new StringLiteral(null, 'Hi there!'),
+      new NumericLiteral(null, 123),
+      new PythonBinaryOperator(null, '+'),
+      new PythonBinaryOperator(null, '-'),
+      new PythonBinaryOperator(null, '*'),
+      new PythonBinaryOperator(null, '/'),
+      new PythonBinaryOperator(null, '%'),
+    ];
+  } else if (rootNode.type === HTML_DOCUMENT) {
+    nodes = [
+      new StringLiteral(null, ''),
+      new StringLiteral(null, 'Hi there!'),
+      new SplootHtmlStyleElement(null),
+      new SplootHtmlElement(null, 'p'),
+      new SplootHtmlElement(null, 'h1'),
+      new SplootHtmlElement(null, 'h2'),
+      new SplootHtmlElement(null, 'h3'),
+      new SplootHtmlElement(null, 'h4'),
+      new SplootHtmlElement(null, 'div'),
+      new SplootHtmlElement(null, 'img'),
+      new SplootHtmlElement(null, 'strong'),
+      new SplootHtmlElement(null, 'em'),
+      new SplootHtmlScriptElement(null),
+    ]
+  } else if (rootNode.type === JAVASCRIPT_FILE) {
+    let console = new CallMember(null);
+    console.getObjectExpressionToken().addChild(new VariableReference(null, 'console'))
+    console.setMember('log');
+    console.getArguments().addChild(new SplootExpression(null))
+
+    nodes = [
+      new ImportStatement(null),
+      new ImportDefaultStatement(null),
+      new VariableReference(null, 'window'),
+      new VariableReference(null, 'document'),
+      console,
+      new VariableDeclaration(null),
+      new Assignment(null),
+      new FunctionDeclaration(null),
+      new ReturnStatement(null),
+      new IfStatement(null),
+      new StringLiteral(null, ''),
+      new StringLiteral(null, 'Hi there!'),
+      new NumericLiteral(null, 123),
+      new BinaryOperator(null, '+'),
+      new PythonBinaryOperator(null, '-'),
+      new PythonBinaryOperator(null, '*'),
+      new PythonBinaryOperator(null, '/'),
+      new PythonBinaryOperator(null, '%'),
+    ]
+  }
+
   let renderedNodes = [];
   let topPos = 10;
   for (let node of nodes) {
     console.log(node);
     let nodeBlock = new NodeBlock(null, node, null, 0, false);
     nodeBlock.calculateDimensions(16, topPos, null);
-    topPos += nodeBlock.rowHeight + 10;
+    topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight + 10;
     renderedNodes.push(nodeBlock);
   }
-  return renderedNodes;
+  return [renderedNodes, topPos];
 }
 
 @observer
 export class Tray extends React.Component<TrayProps, TrayState> {
   constructor(props) {
     super(props);
+    let [trayNodes, height] = getTrayNodeSuggestions(this.props.rootNode);
     this.state = {
-      selectedNode: null,
-      trayNodes: getTrayNodeSuggestions(),
-      draggingNode: null,
-      draggingX: 0,
-      draggyingY: 0,
-    };
+      trayNodes: trayNodes,
+      height: height,
+    }
   }
   
   render() {
-    let height = 500;
-    let { selectedNode, trayNodes } = this.state
+    let {trayNodes, height} = this.state;
     return (
       <div>
         <div className="tray" draggable={true} onDragStart={this.onDragStart}>
           <svg xmlns="http://www.w3.org/2000/svg" height={height} width={200} preserveAspectRatio="none">
             {
               trayNodes.map((nodeBlock, i) => {
-                let selectionState = (i == selectedNode) ? NodeSelectionState.SELECTED : NodeSelectionState.UNSELECTED
+                let selectionState = NodeSelectionState.UNSELECTED
                 return (
                   <EditorNodeBlock
                       block={nodeBlock}
-                      onClickHandler={()=>{this.selectNode(i)}}
+                      onClickHandler={()=>{}}
                       selection={null} selectionState={selectionState}/>
                 );
               })
@@ -103,9 +162,5 @@ export class Tray extends React.Component<TrayProps, TrayState> {
     }
     event.preventDefault();
     event.stopPropagation();
-  }
-
-  selectNode = (index) => {
-    this.setState({selectedNode: index});
   }
 }

@@ -72,15 +72,13 @@ function populateExpressionNodeFromAst(expressionNode: SplootExpression, astNode
     case 'UnaryExpression':
         let unNode = astNode as UnaryExpressionKind;
         // Beacuse we're just assmbling tokens, there's no differnce between a unary and binary operator.
-        let unTokenNode = new BinaryOperator(parentRef);
-        unTokenNode.setOperator(unNode.operator);
+        let unTokenNode = new BinaryOperator(parentRef, unNode.operator);
         expressionNode.getTokenSet().addChild(unTokenNode);
         populateExpressionNodeFromAst(expressionNode, unNode.argument);
         break;
     case 'BinaryExpression':
       let binNode = astNode as BinaryExpressionKind;
-      let binTokenNode = new BinaryOperator(parentRef);
-      binTokenNode.setOperator(binNode.operator);
+      let binTokenNode = new BinaryOperator(parentRef, binNode.operator);
       populateExpressionNodeFromAst(expressionNode, binNode.left);
       expressionNode.getTokenSet().addChild(binTokenNode);
       populateExpressionNodeFromAst(expressionNode, binNode.right);

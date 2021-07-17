@@ -51,7 +51,7 @@ export class Editor extends React.Component<EditorProps> {
     }
     return <React.Fragment>
         <div className="editor">
-          <Tray width={200} startDrag={this.startDrag}/>
+          <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node}/>
           <div className="editor-column">
             <svg
               className="editor-svg"
