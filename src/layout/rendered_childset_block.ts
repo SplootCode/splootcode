@@ -172,6 +172,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.height = this.isLastInlineComponent ? 0 : NODE_BLOCK_HEIGHT + ROW_SPACING;
       let indent = this.isLastInlineComponent ? 48 : 18;
       indent += maxLabelWidth;
+      if (selection !== null && this.nodes.length === 0) {
+        selection.cursorMap.registerCursorStart(this, 0, x, y, true);
+      }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
@@ -197,6 +200,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.height = 0;
       let indent = 36;
       indent += maxLabelWidth;
+      if (selection !== null) {
+        selection.cursorMap.registerCursorStart(this, 0, x, y, true);
+      }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
@@ -205,6 +211,14 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           this.width = Math.max(this.width, boxWidth);
         }
         childNodeBlock.calculateDimensions(x + indent, topPos, selection);
+        if (selection !== null) {
+          if (idx !== 0) {
+            selection.cursorMap.registerLineCursor(this, idx, topPos);
+          }
+          if (idx === this.nodes.length - 1) {
+            selection.cursorMap.registerCursorStart(this, idx + 1, x + indent + childNodeBlock.rowWidth, topPos, true);
+          }
+        }
         topPos += childNodeBlock.rowHeight + ROW_SPACING;
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
         this.width = Math.max(this.width, childNodeBlock.blockWidth + childNodeBlock.rowWidth + indent); 
@@ -268,6 +282,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       let labelWidth = labelStringWidth(this.childSetRightAttachLabel) + 4;
       let leftPos = x + 16 + labelWidth;
       this.width += labelWidth;
+      if (selection !== null && this.nodes.length === 0) {
+        selection.cursorMap.registerCursorStart(this, 0, x, y, true);
+      }
+      // Will only ever be one
       this.nodes.forEach((childNodeBlock: NodeBlock) => {
         childNodeBlock.calculateDimensions(leftPos, y, selection);
         leftPos += childNodeBlock.rowWidth;
@@ -281,7 +299,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
   }
 
-  getInsertCoordinates(insertIndex: number) : number[] {
+  getInsertCoordinates(insertIndex: number, cursorOnly: boolean = false) : number[] {
     if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
       let leftPos = this.x;
       for (let i = 0; i < this.nodes.length; i++) {
@@ -335,11 +353,14 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       let topPos = this.y;
-      let indent = 40;
+      let indent = 36;
       for (let i = 0; i < this.nodes.length; i++) {
         let childNodeBlock = this.nodes[i];
         if (i === insertIndex) {
           return [this.x + indent, topPos];
+        }
+        if (i === this.nodes.length - 1 && insertIndex === this.nodes.length && cursorOnly) {
+          return [this.x + indent + childNodeBlock.rowWidth, topPos];
         }
         topPos += childNodeBlock.rowHeight + ROW_SPACING;        
       }
@@ -349,7 +370,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       // Only ever one child, so this one is easier to calculate.
       let labelWidth = labelStringWidth(this.childSetRightAttachLabel);
-      return [this.x + 14 + labelWidth,  this.y];
+      return [this.x + 18 + labelWidth,  this.y];
     }
     console.warn('Insert position not implemented for LayoutComponentType', this.componentType)
     return [100, 100];
