@@ -94,17 +94,16 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new StringLiteral(null, 'Hi there!'),
       new NumericLiteral(null, 123),
       new BinaryOperator(null, '+'),
-      new PythonBinaryOperator(null, '-'),
-      new PythonBinaryOperator(null, '*'),
-      new PythonBinaryOperator(null, '/'),
-      new PythonBinaryOperator(null, '%'),
+      new BinaryOperator(null, '-'),
+      new BinaryOperator(null, '*'),
+      new BinaryOperator(null, '/'),
+      new BinaryOperator(null, '%'),
     ]
   }
 
   let renderedNodes = [];
   let topPos = 10;
   for (let node of nodes) {
-    console.log(node);
     let nodeBlock = new NodeBlock(null, node, null, 0, false);
     nodeBlock.calculateDimensions(16, topPos, null);
     topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight + 10;
@@ -115,8 +114,11 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
 
 @observer
 export class Tray extends React.Component<TrayProps, TrayState> {
+  private scrollableTrayRef : React.RefObject<SVGSVGElement>;
+
   constructor(props) {
     super(props);
+    this.scrollableTrayRef = React.createRef();
     let [trayNodes, height] = getTrayNodeSuggestions(this.props.rootNode);
     this.state = {
       trayNodes: trayNodes,
@@ -128,8 +130,8 @@ export class Tray extends React.Component<TrayProps, TrayState> {
     let {trayNodes, height} = this.state;
     return (
       <div>
-        <div className="tray" draggable={true} onDragStart={this.onDragStart}>
-          <svg xmlns="http://www.w3.org/2000/svg" height={height} width={200} preserveAspectRatio="none">
+        <div className="tray" draggable={true} onDragStart={this.onDragStart} >
+          <svg xmlns="http://www.w3.org/2000/svg" height={height} width={200} preserveAspectRatio="none" ref={this.scrollableTrayRef}>
             {
               trayNodes.map((nodeBlock, i) => {
                 let selectionState = NodeSelectionState.UNSELECTED
@@ -148,11 +150,12 @@ export class Tray extends React.Component<TrayProps, TrayState> {
   }
 
   onDragStart = (event: React.DragEvent) => {
-    let x = event.pageX;
-    let y = event.pageY;
+    let refBox = this.scrollableTrayRef.current.getBoundingClientRect();
+    // let x = event.pageX - refBox.left;
+    let y = event.pageY - refBox.top;
     let node = null as NodeBlock;
     for (let nodeBlock of this.state.trayNodes) {
-      if (y > nodeBlock.y && y < nodeBlock.y + nodeBlock.rowHeight) {
+      if (y > nodeBlock.y && y < nodeBlock.y + nodeBlock.rowHeight + nodeBlock.indentedBlockHeight) {
         node = nodeBlock;
         break;
       }

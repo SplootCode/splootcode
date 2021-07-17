@@ -33,6 +33,7 @@ const OPERATORS = {
   '+': {display: '+', precedence: 120, key: '+', searchTerms: ['add', 'plus'], description: 'add'},
   '-': {display: '-', precedence: 120, key: '-', searchTerms: ['minus', 'subtract']}, description: 'minus',
   '/': {display: '÷', precedence: 130, key: '/', searchTerms: ['divide', 'divided by', 'division'], description: 'divide'},
+  '%': {display: 'mod', precedence: 130, key: '%', searchTerms: ['remainder', 'mod', 'modulus'], description: 'remainder (modulus)'},
   '===': {display: '=', precedence: 90, key: '===', searchTerms: ['equals', 'equal', '=='], description: 'is equal to'},
   '!==': {display: '≠', precedence: 90, key: '!==', searchTerms: ['not equals', 'equal', '!='], description: 'is not equal to'},
   '&&': {display: 'and', precedence: 50, key: '&&', searchTerms: ['and'], description: 'AND'},
