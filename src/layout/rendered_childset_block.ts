@@ -462,6 +462,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       // TODO: this shouldn't be done by the layout engine.
       // It has to be the parent, since this change might an identifier.
       this.parentRef.node.node.recursivelyBuildScope();
+      // We also need to make sure that mutation-firing is enabled/disable according to the parent's setting.
+      this.parentRef.node.node.recursivelySetMutations(this.parentRef.node.node.enableMutations);
       // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
       // Update layout refreshes things like list index numbers and function param names.
       this.parentRef.node.updateLayout();

@@ -26,6 +26,7 @@ export class StaticFileLoader implements FileLoader {
     let serNode = JSON.parse(fileStr) as SerializedNode;
     let rootNode = deserializeNode(serNode);
     generateScope(rootNode);
+    rootNode.recursivelySetMutations(true);
     return rootNode;
   }
 }
