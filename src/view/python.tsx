@@ -121,7 +121,6 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         }
         break;
       case 'nodetree':
-        console.log(data.data.tree);
         this.setState({
           nodeTree: data.data.tree,
           nodeTreeLoaded: true,

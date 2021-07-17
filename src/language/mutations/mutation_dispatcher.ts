@@ -1,5 +1,3 @@
-import { observable } from "mobx";
-import { ParentReference } from "../node";
 import { ChildSetObserver, NodeObserver } from "../observers";
 import { ChildSetMutation } from "./child_set_mutations";
 import { NodeMutation } from "./node_mutations";
@@ -26,7 +24,6 @@ class MutationDispatcher {
   }
 
   handleNodeMutation(mutation: NodeMutation) {
-    console.log('Node mutation', mutation);
     this.nodeObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation);
     });
@@ -44,7 +41,6 @@ class MutationDispatcher {
   }
 
   handleChildSetMutation(mutation: ChildSetMutation) {
-    console.log('Childset mutation', mutation);
     this.childSetObservers.forEach((observer: ChildSetObserver) => {
       observer.handleChildSetMutation(mutation);
     });
