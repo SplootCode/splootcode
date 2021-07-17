@@ -185,20 +185,25 @@ export function getGlobalScope() : Scope {
 }
 
 export async function generateScope(rootNode: SplootNode) {
-  await loadTypescriptTypeInfo();
   let scope = new Scope(null);
   scope.id = "global";
   scope.isGlobal = true;
-  let windowType = typeRegistry['Window'];
-  windowType.properties.forEach((variable : VariableDefinition) => {
-    scope.addVariable(variable);
-  });
-  windowType.methods.forEach((method : FunctionDefinition) => {
-    scope.addFunction(method);
-  });
-  javascriptBuiltInGlobalFunctions.forEach((func : FunctionDefinition) => {
-    scope.addFunction(func);
-  })
+  // Must hardcode this string instead of importing, because of bootstrapping issue.
+  if (rootNode.type === 'JAVASCRIPT_FILE') {
+    await loadTypescriptTypeInfo();
+    let windowType = typeRegistry['Window'];
+    windowType.properties.forEach((variable : VariableDefinition) => {
+      scope.addVariable(variable);
+    });
+    windowType.methods.forEach((method : FunctionDefinition) => {
+      scope.addFunction(method);
+    });
+    javascriptBuiltInGlobalFunctions.forEach((func : FunctionDefinition) => {
+      scope.addFunction(func);
+    })
+  } else if (rootNode.type === 'PYTHON_FILE') {
+    // TODO: add Python built-in functions to global scope
+  }
   globalScope = scope;
   rootNode.recursivelyBuildScope();
 }
