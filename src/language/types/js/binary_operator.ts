@@ -51,8 +51,7 @@ class Generator implements SuggestionGenerator {
     let results = [];
     for (let operator in OPERATORS) {
       let info = OPERATORS[operator];
-      let node = new BinaryOperator(null);
-      node.setOperator(operator);
+      let node = new BinaryOperator(null, operator);
       results.push(new SuggestedNode(node, info.key, info.searchTerms, true, info.description));
     }
     return results;
@@ -64,9 +63,9 @@ class Generator implements SuggestionGenerator {
 }
 
 export class BinaryOperator extends JavaScriptSplootNode {
-  constructor(parentReference: ParentReference) {
+  constructor(parentReference: ParentReference, operator: string) {
     super(parentReference, BINARY_OPERATOR);
-    this.setProperty('operator', '');
+    this.setProperty('operator', operator);
   }
 
   setOperator(operator: string) {
@@ -82,8 +81,7 @@ export class BinaryOperator extends JavaScriptSplootNode {
   }
 
   static deserializer(serializedNode: SerializedNode) : BinaryOperator {
-    let node = new BinaryOperator(null);
-    node.setOperator(serializedNode.properties.operator);
+    let node = new BinaryOperator(null, serializedNode.properties.operator);
     return node;
   }
 
