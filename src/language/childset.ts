@@ -16,6 +16,7 @@ export class ChildSet {
   type: ChildSetType;
   nodeCategory: NodeCategory;
   mutationObservers: ChildSetObserver[];
+  enableMutations: boolean;
 
   constructor(owner: SplootNode, childSetId: string, type: ChildSetType, nodeCategory: NodeCategory) {
     this.children = [];
@@ -23,6 +24,7 @@ export class ChildSet {
     this.type = type;
     this.nodeCategory = nodeCategory;
     this.mutationObservers = [];
+    this.enableMutations = false;
   }
 
   getParentRef() {
@@ -52,24 +54,29 @@ export class ChildSet {
   insertNode(node: SplootNode, index: number) {
     this.children.splice(index, 0, node);
     node.parent = this.childParentRef;
-    let mutation = new ChildSetMutation();
-    mutation.type = ChildSetMutationType.INSERT;
-    mutation.childSet = this;
-    mutation.nodes = [node];
-    mutation.index = index;
-    this.fireMutation(mutation);
+    if (this.enableMutations) {
+      let mutation = new ChildSetMutation();
+      mutation.type = ChildSetMutationType.INSERT;
+      mutation.childSet = this;
+      mutation.nodes = [node];
+      mutation.index = index;
+      this.fireMutation(mutation);
+    }
   }
 
   @action
   removeChild(index: number) : SplootNode {
     let child = this.children.splice(index, 1)[0];
     child.parent = null;
-    let mutation = new ChildSetMutation();
-    mutation.type = ChildSetMutationType.DELETE;
-    mutation.childSet = this;
-    mutation.nodes = [];
-    mutation.index = index;
-    this.fireMutation(mutation);
+    child.recursivelySetMutations(false);
+    if (this.enableMutations) {
+      let mutation = new ChildSetMutation();
+      mutation.type = ChildSetMutationType.DELETE;
+      mutation.childSet = this;
+      mutation.nodes = [];
+      mutation.index = index;
+      this.fireMutation(mutation);
+    }
     return child;
   }
 

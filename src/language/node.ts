@@ -26,6 +26,7 @@ export class SplootNode {
   properties: { [key: string] : any}; // Depends on the type
   childSets: { [key: string]: ChildSet };
   childSetOrder: string[];
+  enableMutations: boolean;
   mutationObservers: NodeObserver[];
   scope: Scope;
 
@@ -35,6 +36,7 @@ export class SplootNode {
     this.childSets = {};
     this.childSetOrder = [];
     this.properties = {};
+    this.enableMutations = false;
     this.mutationObservers = [];
     this.scope = null;
   }
@@ -61,6 +63,17 @@ export class SplootNode {
   addSelfToScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  recursivelySetMutations(enable: boolean) {
+    this.enableMutations = enable;
+    this.childSetOrder.forEach((childSetId: string) => {
+      let childSet = this.getChildSet(childSetId);
+      childSet.enableMutations = enable;
+      childSet.getChildren().forEach((node: SplootNode) => {
+        node.recursivelySetMutations(enable);
+      });
+    })
   }
 
   recursivelyBuildScope() {
@@ -90,12 +103,14 @@ export class SplootNode {
 
   setProperty(name: string, value: any) {
     this.properties[name] = value;
-    let mutation = new NodeMutation();
-    mutation.node = this
-    mutation.property = name;
-    mutation.value = value;
-    mutation.type = NodeMutationType.SET_PROPERTY;
-    this.fireMutation(mutation)
+    if (this.enableMutations) {
+      let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.property = name;
+      mutation.value = value;
+      mutation.type = NodeMutationType.SET_PROPERTY;
+      this.fireMutation(mutation)
+    }
   }
 
   clean() {

@@ -26,6 +26,7 @@ class MutationDispatcher {
   }
 
   handleNodeMutation(mutation: NodeMutation) {
+    console.log('Node mutation', mutation);
     this.nodeObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation);
     });
@@ -43,6 +44,7 @@ class MutationDispatcher {
   }
 
   handleChildSetMutation(mutation: ChildSetMutation) {
+    console.log('Childset mutation', mutation);
     this.childSetObservers.forEach((observer: ChildSetObserver) => {
       observer.handleChildSetMutation(mutation);
     });

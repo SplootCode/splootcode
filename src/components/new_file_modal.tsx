@@ -51,6 +51,7 @@ export function NewFileModal(props: NewFileModalProps) {
     } else if (fileType == JAVASCRIPT_FILE) {
       rootNode = new JavascriptFile(null);
       generateScope(rootNode);
+      rootNode.recursivelySetMutations(true);
     } else if (fileType == DATA_SHEET) {
       rootNode = new SplootDataSheet(null);
     }
