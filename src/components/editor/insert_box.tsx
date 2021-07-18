@@ -77,7 +77,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
   render() {
     let { userInput, autoWidth, filteredSuggestions, activeSuggestion } = this.state;
-    let { selection } = this.props;
+    let { selection, insertBoxData } = this.props;
     const isInserting = selection.state === SelectionState.Inserting;
 
     let suggestionsListComponent: JSX.Element;
@@ -127,7 +127,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
 
     let {editorX, editorY} = this.props;
-    let {x, y} = this.props.insertBoxData;
+    let {x, y} = insertBoxData;
     let positionStyles : React.CSSProperties;
     if (isInserting) {
       positionStyles = {

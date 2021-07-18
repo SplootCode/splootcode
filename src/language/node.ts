@@ -101,6 +101,14 @@ export class SplootNode {
     return this.properties[name];
   }
 
+  getEditableProperty() : string {
+    return null;
+  }
+
+  setPropertyFromString(name: string, value: string) {
+    this.setProperty(name, value);
+  }
+
   setProperty(name: string, value: any) {
     this.properties[name] = value;
     if (this.enableMutations) {

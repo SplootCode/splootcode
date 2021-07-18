@@ -82,7 +82,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
 
   render() {
     let {block, selection, selectionState} = this.props;
-    let isSelected = selectionState === NodeSelectionState.SELECTED;
+    let isSelected = selectionState !== NodeSelectionState.UNSELECTED;
 
     if (block === null) {
       return null;

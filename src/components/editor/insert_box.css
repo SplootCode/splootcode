@@ -9,6 +9,7 @@
 .input-box input[type=text] {
   background-color: var(--editor-selected-node-block-input);
   font-family: inherit;
+  font-size: 11pt;
   border-style: none;
   color:white;
   height: 20px;
