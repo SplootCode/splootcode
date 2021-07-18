@@ -77,7 +77,6 @@ export class NodeSelection {
     this.rootNode.calculateDimensions(-10, -30, this);
   }
 
-
   @observable
   isCursor() {
     return this.state === SelectionState.Cursor || this.state === SelectionState.Inserting;
@@ -373,19 +372,6 @@ export class NodeSelection {
 
   endDrag() {
     this.dragState = null;
-  }
-
-  @action
-  editNodeByIndex(listBlock: RenderedChildSetBlock, index: number) {
-    console.log('THIS IS NEVER CALLED', index)
-    this.exitEdit();
-    if (this.cursor) {
-      this.cursor.listBlock.selectionState = SelectionState.Empty;
-    }
-    this.selectNodeByIndex(listBlock, index);
-    listBlock.selectedIndex = index;
-    listBlock.selectionState = SelectionState.Editing;
-    this.setState(SelectionState.Editing);
   }
 }
 

@@ -35,7 +35,7 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)}/>
+                />
               </React.Fragment>
             );
             return result;
@@ -43,19 +43,5 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
         }
       </React.Fragment>
     );
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }

@@ -75,7 +75,6 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
           <g transform={`translate(${x} ${y})`}>
             <EditorNodeBlock
               block={block}
-              onClickHandler={null}
               selection={null}
               selectionState={NodeSelectionState.UNSELECTED}
             />

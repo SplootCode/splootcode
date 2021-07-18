@@ -138,8 +138,9 @@ export class Tray extends React.Component<TrayProps, TrayState> {
                 return (
                   <EditorNodeBlock
                       block={nodeBlock}
-                      onClickHandler={()=>{}}
-                      selection={null} selectionState={selectionState}/>
+                      selection={null}
+                      selectionState={selectionState}
+                  />
                 );
               })
             }
