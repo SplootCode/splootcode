@@ -38,6 +38,10 @@ export class StringLiteral extends JavaScriptSplootNode {
     return this.properties.value;
   }
 
+  getEditableProperty() {
+    return 'value';
+  }
+
   generateJsAst() : StringLiteralKind {
     return recast.types.builders.stringLiteral(this.getValue());
   }
@@ -93,11 +97,24 @@ export class NumericLiteral extends JavaScriptSplootNode {
   }
 
   getValue() {
-    return parseInt(this.getProperty('value'));
+    return this.getProperty('value');
   }
 
   generateJsAst() {
     return recast.types.builders.numericLiteral(this.getValue());
+  }
+
+  getEditableProperty() : string {
+    return 'value';
+  }
+
+  setPropertyFromString(name: string, value: string) {
+    let intNum = parseInt(value);
+    if (!isNaN(intNum)) {
+      this.setProperty('value', intNum);
+      return;
+    }
+    console.warn("Invalid number attempted to set as property value on Numeric Literal");
   }
 
   static deserializer(serializedNode: SerializedNode) : NumericLiteral {

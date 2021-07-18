@@ -1,13 +1,12 @@
 
 import { action, computed, observable } from "mobx"
-import { off } from "process"
-
 import { SplootNode } from "../language/node"
 import { NodeCategory } from "../language/node_category_registry"
 import { SplootExpression } from "../language/types/js/expression"
 import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
 import { NodeBlock } from "../layout/rendered_node"
 import { CursorMap } from "./cursor_map"
+import { EditBoxData } from "./edit_box"
 import { InsertBoxData } from "./insert_box"
 
 export enum NodeSelectionState {
@@ -40,6 +39,8 @@ export class NodeSelection {
   state: SelectionState;
   @observable
   insertBox: InsertBoxData;
+  @observable
+  editBox: EditBoxData;
 
   @observable
   dragState: DragState | null;
@@ -52,6 +53,7 @@ export class NodeSelection {
     this.cursorMap = new CursorMap();
     this.cursor = null;
     this.insertBox = null;
+    this.editBox = null;
     this.state = SelectionState.Empty;
     this.dragState = null;
     this.lastXCoordinate = 0;
@@ -83,6 +85,11 @@ export class NodeSelection {
 
   isSingleNode() {
     return this.state === SelectionState.Editing || this.state === SelectionState.SingleNode;
+  }
+
+  @observable
+  isEditingSingleNode() {
+    return this.state === SelectionState.Editing;
   }
 
   @observable
@@ -152,6 +159,29 @@ export class NodeSelection {
   startInsertAtCurrentCursor() {
     this.state = SelectionState.Inserting;
     this.updateRenderPositions();
+  }
+
+  @action
+  startEditAtCurrentCursor() {
+    if (this.isSingleNode()) {
+      const index = this.cursor.index;
+      // Return null if not editable node.
+      this.editBox = this.cursor.listBlock.getEditData(index)
+      if (this.editBox !== null) {
+        this.cursor.listBlock.selectionState = SelectionState.Editing;
+        this.setState(SelectionState.Editing);
+        this.updateRenderPositions();
+      }
+    }
+  }
+
+  @action
+  updatePropertyEdit(newValue: string) {
+    if (this.isEditingSingleNode()) {
+      const property = this.editBox.property;
+      this.cursor.listBlock.nodes[this.cursor.index].node.setPropertyFromString(property, newValue);
+      this.updateRenderPositions();
+    }
   }
 
   @action
@@ -230,7 +260,10 @@ export class NodeSelection {
   @action
   exitEdit() {
     if (this.state === SelectionState.Editing) {
-      this.state = SelectionState.SingleNode;
+      this.editBox = null;
+      this.setState(SelectionState.SingleNode);
+      this.cursor.listBlock.selectionState = SelectionState.SingleNode;
+      this.updateRenderPositions();
     }
     if (this.state == SelectionState.Inserting) {
       this.state = SelectionState.Cursor;
@@ -344,6 +377,7 @@ export class NodeSelection {
 
   @action
   editNodeByIndex(listBlock: RenderedChildSetBlock, index: number) {
+    console.log('THIS IS NEVER CALLED', index)
     this.exitEdit();
     if (this.cursor) {
       this.cursor.listBlock.selectionState = SelectionState.Empty;

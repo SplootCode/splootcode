@@ -17,6 +17,8 @@ import { DragOverlay } from "./drag_overlay"
 import { InsertBox } from "./insert_box"
 import { ExpandedListBlockView } from "./list_block"
 import { Tray } from "./tray"
+import { EditBoxData } from "../../context/edit_box"
+import { EditBox } from "./edit_box"
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode';
 
@@ -43,11 +45,17 @@ export class Editor extends React.Component<EditorProps> {
     }
     let height = block.rowHeight + block.indentedBlockHeight;
     let insertBox = null;
+    let editBox = null;
     if (selection.isCursor() && selection.insertBox !== null) {
       // Whelp, this is ugly, but hey it works. :shrug:
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
       let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
       insertBox = <InsertBox key={insertKey} editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
+    } else if (selection.isEditingSingleNode()) {
+      // Whelp, this is ugly, but hey it works. :shrug:
+      // This forces the insertbox to be regenerated and refocused when the insert changes position.
+      let editKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
+      editBox = <EditBox key={editKey} editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
     return <React.Fragment>
         <div className="editor">
@@ -68,6 +76,7 @@ export class Editor extends React.Component<EditorProps> {
               <ActiveCursor selection={selection}/>
             </svg>
             { insertBox }
+            { editBox }
           </div>
       </div>
       <DragOverlay selection={selection} editorRef={this.editorSvgRef}/>
@@ -140,6 +149,11 @@ export class Editor extends React.Component<EditorProps> {
       selection.moveCursorToNextInsert();
       event.preventDefault();
       event.cancelBubble = true;
+    }
+    if (event.key === 'Enter') {
+      if (selection.isSingleNode()) {
+        selection.startEditAtCurrentCursor();
+      }
     }
     switch (event.key) {
       case 'ArrowLeft':

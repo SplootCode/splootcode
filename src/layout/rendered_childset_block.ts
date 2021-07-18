@@ -20,6 +20,7 @@ import {
   NodeBlock,
   RenderedParentRef,
 } from "./rendered_node"
+import { EditBoxData } from "../context/edit_box"
 
 const EXPRESSION_TOKEN_SPACING = 6;
 const ROW_SPACING = 6;
@@ -297,6 +298,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
       this.height += 20;
     }
+  }
+
+  getEditData(editIndex: number) : EditBoxData {
+    const node = this.nodes[editIndex];
+    const property = node.node.getEditableProperty();
+    if (property === null) {
+      return null;
+    }
+    return new EditBoxData(node, property, this.getInsertCoordinates(editIndex));
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly: boolean = false) : number[] {
