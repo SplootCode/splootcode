@@ -39,27 +39,12 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)}
                   isInsideBreadcrumbs={isInsideBreadcrumbs} />
             </React.Fragment>
           );
         })
       }
     </React.Fragment>
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }
 
@@ -83,7 +68,6 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)}
               />
             </React.Fragment>
           );
@@ -92,19 +76,5 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
         })
       }
     </React.Fragment>;
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }

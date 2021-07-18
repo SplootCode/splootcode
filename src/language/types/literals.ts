@@ -9,7 +9,6 @@ import { SplootExpression, SPLOOT_EXPRESSION } from "./js/expression";
 import { JavaScriptSplootNode } from "../javascript_node";
 import { StringLiteralKind } from "ast-types/gen/kinds";
 
-
 export const STRING_LITERAL = 'STRING_LITERAL';
 export const NUMERIC_LITERAL = 'NUMERIC_LITERAL';
 export const NULL_LITERAL = 'NULL_LITERAL';
@@ -114,7 +113,7 @@ export class NumericLiteral extends JavaScriptSplootNode {
       this.setProperty('value', intNum);
       return;
     }
-    console.warn("Invalid number attempted to set as property value on Numeric Literal");
+    this.setProperty(name, value);
   }
 
   static deserializer(serializedNode: SerializedNode) : NumericLiteral {

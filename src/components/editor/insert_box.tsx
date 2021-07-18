@@ -109,7 +109,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
                       width={suggestion.nodeBlock.rowWidth + 2}
                   ><EditorNodeBlock
                       block={suggestion.nodeBlock}
-                      onClickHandler={()=>{}}
                       selection={null}
                       selectionState={NodeSelectionState.UNSELECTED}
                     /></svg>

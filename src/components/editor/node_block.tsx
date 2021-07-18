@@ -23,7 +23,6 @@ interface NodeBlockProps {
   selection: NodeSelection;
   selectionState: NodeSelectionState;
   isInsideBreadcrumbs?: boolean;
-  onClickHandler: (event: React.MouseEvent) => void;
 }
 
 function getBreadcrumbStartShapePath(x: number, y: number, width: number) : string {

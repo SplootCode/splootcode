@@ -256,7 +256,7 @@ export class NodeBlock implements NodeObserver {
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
-    console.log('Mutation recieved');
+    // TODO: Handle validation UI changes here.
   }
 
   getNextInsertAfterThisNode() : NodeCursor {

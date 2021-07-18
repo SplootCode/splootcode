@@ -50,7 +50,6 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
                   block={nodeBlock}
                   selection={this.props.selection}
                   selectionState={selectionState}
-                  onClickHandler={this.onClickByIndex(idx)}
               />
             </React.Fragment>
             // topPos += nodeBlock.rowHeight;
@@ -59,20 +58,6 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
         }
       </React.Fragment>
     );
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }
 
@@ -118,7 +103,6 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                     block={nodeBlock}
                     selection={this.props.selection}
                     selectionState={selectionState}
-                    onClickHandler={this.onClickByIndex(idx)}
                 />
                 <path className={connectorClass} d={"M " + (nodeBlock.x + nodeBlock.rowWidth + 2) + " " + nodeBlock.y + " a 40 40 45 0 1 0 30" } fill="transparent"></path>
               </React.Fragment>
@@ -138,7 +122,6 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                     block={nodeBlock}
                     selection={this.props.selection}
                     selectionState={selectionState}
-                    onClickHandler={this.onClickByIndex(idx)}
                 />
               </React.Fragment>
               return result;
@@ -146,19 +129,5 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
         }
       </React.Fragment>
     );
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }

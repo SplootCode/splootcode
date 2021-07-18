@@ -55,25 +55,10 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
             block={child}
             selection={this.props.selection}
             selectionState={selectionState}
-            onClickHandler={this.onClickByIndex(0)}
         />
         <path className={connectorClass} d={"M " + (bracketLeftPos + childWidth + 18) + " " + topPos + " a 40 40 45 0 1 0 30" } fill="transparent"></path>
       </React.Fragment>
     );
-  }
-
-  onClickByIndex(idx: number) {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
-      let { block } = this.props;
-      let isSelected = block.getChildSelectionState(idx) === NodeSelectionState.SELECTED;
-      if (isSelected) {
-        // if already selected, go into edit mode
-        this.props.selection.editNodeByIndex(block, idx);
-        return;
-      }
-      this.props.selection.selectNodeByIndex(block, idx);
-    }
   }
 }
 
