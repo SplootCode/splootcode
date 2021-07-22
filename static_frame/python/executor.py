@@ -156,14 +156,29 @@ def generateAssignmentStatement(assign_node):
     value = generateAstExpression(assign_node['childSets']['right'][0])
     return ast.Assign([target], value)
 
-def generateIfStatement(if_node):
-    condition = generateAstExpression(if_node['childSets']['condition'][0])
+def getStatementsFromBlock(blockChildSet):
     statements = []
-    for node in if_node['childSets']['trueblock']:
+    for node in blockChildSet:
         statement = generateAstStatement(node)
         if statement:
             statements.append(statement)
+    return statements
+
+def generateIfStatement(if_node):
+    condition = generateAstExpression(if_node['childSets']['condition'][0])
+    statements = getStatementsFromBlock(if_node['childSets']['trueblock'])
     return ast.If(condition, statements, [])
+
+def generateWhileStatement(while_node):
+    condition = generateAstExpression(while_node['childSets']['condition'][0])
+    statements = getStatementsFromBlock(while_node['childSets']['block'])
+    return ast.While(condition, statements, [])
+
+def generateForStatement(for_node):
+    target = generateAstAssignableExpression(for_node['childSets']['target'][0])
+    iterable = generateAstExpression(for_node['childSets']['iterable'][0])
+    statements = getStatementsFromBlock(for_node['childSets']['block'])
+    return ast.For(target, iterable, statements, [])
 
 def generateAstStatement(sploot_node):
     if sploot_node['type'] == 'PYTHON_EXPRESSION':
@@ -173,15 +188,18 @@ def generateAstStatement(sploot_node):
         return generateAssignmentStatement(sploot_node)
     elif sploot_node['type'] == 'PYTHON_IF_STATEMENT':
         return generateIfStatement(sploot_node)
+    elif sploot_node['type'] == 'PYTHON_WHILE_LOOP':
+        return generateWhileStatement(sploot_node)
+    elif sploot_node['type'] == 'PYTHON_FOR_LOOP':
+        return generateForStatement(sploot_node)
+    else:
+        print('Error: Unrecognised statement type: ', sploot_node['type'])
+        return None
 
 
 def executePythonFile(tree):
     if (tree['type'] == 'PYTHON_FILE'):
-        statements = []
-        for node in tree['childSets']['body']:
-            statement = generateAstStatement(node)
-            if statement:
-                statements.append(statement)
+        statements = getStatementsFromBlock(tree['childSets']['body'])
         mods = ast.Module(body=statements, type_ignores=[])
         code = compile(ast.fix_missing_locations(mods), '<string>', mode='exec')
         exec(code)

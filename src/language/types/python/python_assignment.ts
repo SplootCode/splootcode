@@ -62,7 +62,7 @@ export class PythonAssignment extends SplootNode {
     typeRegistration.deserializer = PythonAssignment.deserializer;
     typeRegistration.properties = [];
     typeRegistration.childSets = {
-      'left': NodeCategory.Expression,
+      'left': NodeCategory.PythonAssignableExpressionToken,
       'right': NodeCategory.Expression
     };
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [

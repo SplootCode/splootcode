@@ -55,6 +55,8 @@ import { StyleProperty } from "./types/styles/style_property"
 import { StyleRule } from "./types/styles/style_rule"
 import { StyleSelector } from "./types/styles/style_selector"
 import { PythonIfStatement } from "./types/python/python_if"
+import { PythonWhileLoop } from "./types/python/python_while"
+import { PythonForLoop } from "./types/python/python_for"
 
 export function loadTypes() {
   Assignment.register();
@@ -117,6 +119,8 @@ export function loadTypes() {
 
   PythonFile.register();
   PythonIfStatement.register();
+  PythonWhileLoop.register();
+  PythonForLoop.register();
   PythonExpression.register();
   PythonBinaryOperator.register();
   PythonCallVariable.register();

@@ -30,6 +30,8 @@ import { ReturnStatement } from "../../language/types/js/return"
 import { ImportStatement } from "../../language/types/js/import"
 import { ImportDefaultStatement } from "../../language/types/js/import_default"
 import { PythonIfStatement } from "../../language/types/python/python_if"
+import { PythonWhileLoop } from "../../language/types/python/python_while"
+import { PythonForLoop } from "../../language/types/python/python_for"
 
 interface TrayProps {
   rootNode: SplootNode,
@@ -59,6 +61,8 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonBinaryOperator(null, '%'),
       new PythonBinaryOperator(null, '//'),
       new PythonIfStatement(null),
+      new PythonWhileLoop(null),
+      new PythonForLoop(null),
       new PythonBinaryOperator(null, '=='),
       new PythonBinaryOperator(null, '!='),
       new PythonBinaryOperator(null, '<'),
