@@ -54,6 +54,7 @@ import { PythonVariableReference } from "./types/python/variable_reference"
 import { StyleProperty } from "./types/styles/style_property"
 import { StyleRule } from "./types/styles/style_rule"
 import { StyleSelector } from "./types/styles/style_selector"
+import { PythonIfStatement } from "./types/python/python_if"
 
 export function loadTypes() {
   Assignment.register();
@@ -115,6 +116,7 @@ export function loadTypes() {
   SplootDataStringEntry.register();
 
   PythonFile.register();
+  PythonIfStatement.register();
   PythonExpression.register();
   PythonBinaryOperator.register();
   PythonCallVariable.register();

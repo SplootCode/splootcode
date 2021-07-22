@@ -36,14 +36,17 @@ def parseLeaf(tokens, currentIndex):
     lookahead = tokens[currentIndex]
     if (lookahead['type'] == 'PYTHON_BINARY_OPERATOR'):
         op = lookahead['properties']['operator']
-        if op in ['+', '-']:
-            argument, currentIndex = parseLeaf(tokens, currentIndex + 1)
+        if op in UNARY_OPERATORS:
+            # treat RHS as it's own expression, depending on precedence.
+            lhs, index = parseLeaf(tokens, currentIndex + 1)
+            top_expr, index = parseExpression(lhs, tokens, index, getUnaryPrecedence(op))
             # Create Unary expression
-            return [ast.UnaryOp(getAstUnaryOperator(op), argument), currentIndex]
+            return [ast.UnaryOp(getAstUnaryOperator(op), top_expr), index]
     return [generateAstExpressionToken(tokens[currentIndex]), currentIndex + 1]
 
 
 UNARY_OPERATORS = {
+    'not': {'precedence': 70, 'ast': ast.Not()},
     '+': {'precedence': 150, 'ast': ast.UAdd()},
     '-': {'precedence': 150, 'ast': ast.USub()},
     '~': {'precedence': 150, 'ast': ast.Invert()}, # Bitwise not
@@ -52,7 +55,6 @@ UNARY_OPERATORS = {
 OPERATORS = {
     'or': {'precedence': 50, 'ast': ast.Or()},
     'and': {'precedence': 60, 'ast': ast.And()},
-    'not': {'precedence': 70, 'ast': ast.Not()},
     '==': {'precedence': 80, 'ast': ast.Eq()},
     '!=': {'precedence': 80, 'ast': ast.NotEq()},
     '>=': {'precedence': 80, 'ast': ast.GtE()},
@@ -92,8 +94,11 @@ def isCompareOp(stringOp):
 def getAstUnaryOperator(stringOp):
     return UNARY_OPERATORS[stringOp]['ast']
 
-def getPrecedence(op):
+def getBinaryPrecedence(op):
     return OPERATORS[op]['precedence']
+
+def getUnaryPrecedence(op):
+    return UNARY_OPERATORS[op]['precedence']
 
 def parseExpression(lhs, tokens, currentIndex, minPrecedence):
     if currentIndex >= len(tokens):
@@ -102,18 +107,18 @@ def parseExpression(lhs, tokens, currentIndex, minPrecedence):
     lookahead = tokens[currentIndex]
     while (lookahead is not None
            and lookahead['type'] == 'PYTHON_BINARY_OPERATOR'
-           and getPrecedence(lookahead['properties']['operator']) >= minPrecedence):
+           and getBinaryPrecedence(lookahead['properties']['operator']) >= minPrecedence):
         operator = lookahead['properties']['operator']
-        operatorPrecedence = getPrecedence(operator)
+        operatorPrecedence = getBinaryPrecedence(operator)
         currentIndex += 1
         rhs, currentIndex = parseLeaf(tokens, currentIndex)
         if currentIndex < len(tokens):
             lookahead = tokens[currentIndex]
             while (lookahead is not None
                    and lookahead['type'] == 'PYTHON_BINARY_OPERATOR'
-                   and getPrecedence(lookahead['properties']['operator']) >= operatorPrecedence):
+                   and getBinaryPrecedence(lookahead['properties']['operator']) >= operatorPrecedence):
                 lookaheadOp = lookahead['properties']['operator']
-                [rhs, currentIndex] = parseExpression(rhs, tokens, currentIndex, getPrecedence(lookaheadOp))
+                [rhs, currentIndex] = parseExpression(rhs, tokens, currentIndex, getBinaryPrecedence(lookaheadOp))
                 if currentIndex < len(tokens):
                     lookahead = tokens[currentIndex]
                 else:
@@ -151,12 +156,23 @@ def generateAssignmentStatement(assign_node):
     value = generateAstExpression(assign_node['childSets']['right'][0])
     return ast.Assign([target], value)
 
+def generateIfStatement(if_node):
+    condition = generateAstExpression(if_node['childSets']['condition'][0])
+    statements = []
+    for node in if_node['childSets']['trueblock']:
+        statement = generateAstStatement(node)
+        if statement:
+            statements.append(statement)
+    return ast.If(condition, statements, [])
+
 def generateAstStatement(sploot_node):
     if sploot_node['type'] == 'PYTHON_EXPRESSION':
         exp = generateAstExpressionStatement(sploot_node)
         return exp
-    if sploot_node['type'] == 'PYTHON_ASSIGNMENT':
+    elif sploot_node['type'] == 'PYTHON_ASSIGNMENT':
         return generateAssignmentStatement(sploot_node)
+    elif sploot_node['type'] == 'PYTHON_IF_STATEMENT':
+        return generateIfStatement(sploot_node)
 
 
 def executePythonFile(tree):

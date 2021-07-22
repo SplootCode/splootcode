@@ -29,6 +29,7 @@ import { IfStatement } from "../../language/types/js/if"
 import { ReturnStatement } from "../../language/types/js/return"
 import { ImportStatement } from "../../language/types/js/import"
 import { ImportDefaultStatement } from "../../language/types/js/import_default"
+import { PythonIfStatement } from "../../language/types/python/python_if"
 
 interface TrayProps {
   rootNode: SplootNode,
@@ -56,6 +57,19 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonBinaryOperator(null, '*'),
       new PythonBinaryOperator(null, '/'),
       new PythonBinaryOperator(null, '%'),
+      new PythonBinaryOperator(null, '//'),
+      new PythonIfStatement(null),
+      new PythonBinaryOperator(null, '=='),
+      new PythonBinaryOperator(null, '!='),
+      new PythonBinaryOperator(null, '<'),
+      new PythonBinaryOperator(null, '<='),
+      new PythonBinaryOperator(null, '>'),
+      new PythonBinaryOperator(null, '<='),
+      new PythonBinaryOperator(null, 'in'),
+      new PythonBinaryOperator(null, 'not in'),
+      new PythonBinaryOperator(null, 'and'),
+      new PythonBinaryOperator(null, 'or'),
+      new PythonBinaryOperator(null, 'not'),
     ];
   } else if (rootNode.type === HTML_DOCUMENT) {
     nodes = [
