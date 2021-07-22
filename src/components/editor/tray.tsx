@@ -69,6 +69,7 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonBinaryOperator(null, 'not in'),
       new PythonBinaryOperator(null, 'and'),
       new PythonBinaryOperator(null, 'or'),
+      new PythonBinaryOperator(null, 'not'),
     ];
   } else if (rootNode.type === HTML_DOCUMENT) {
     nodes = [
