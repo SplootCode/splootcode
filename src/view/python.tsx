@@ -1,12 +1,10 @@
 import "tslib"
+import "xterm/css/xterm.css"
+
+import { Terminal } from 'xterm';
 
 import React from "react"
 import ReactDOM from "react-dom"
-
-declare global {
-  let pyodide;
-  let loadPyodide;
-}
 
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
 export enum FrameState {
@@ -20,38 +18,28 @@ function sendToParent(payload) {
   parent.postMessage(payload, PARENT_TARGET_DOMAIN);
 }
 
-class Stdout {
-  appendOutput: (s: string) => void;
-
-  constructor(appendFunc: (s: string) => void) {
-    this.appendOutput = appendFunc;
-  }
-
-  write(s: string) {
-    this.appendOutput(s);
-  }
-
-  flush() {
-  }
-}
 
 interface ConsoleProps {
-
 }
 
 interface ConsoleState {
-  output: string[];
   ready: boolean;
   nodeTree: any;
   nodeTreeLoaded: boolean;
 }
 
 class Console extends React.Component<ConsoleProps, ConsoleState> {
+  private termRef : React.RefObject<HTMLDivElement>;
+  private term : Terminal;
+  private worker : Worker;
+  private stdinbuffer : SharedArrayBuffer;
+  private stdinbufferInt : Int32Array;
 
   constructor(props) {
     super(props);
+    this.termRef = React.createRef();
+    this.worker = null;
     this.state = {
-      output: [],
       ready: false,
       nodeTree: null,
       nodeTreeLoaded: false,
@@ -59,45 +47,60 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   render() {
-    let {output, ready, nodeTreeLoaded} = this.state;
+    let {ready, nodeTreeLoaded} = this.state;
     return <div>
       <button onClick={this.run} disabled={!(ready && nodeTreeLoaded)}>Run</button>
-      <pre>{output.join('')}</pre>
+      <div ref={this.termRef}/>
     </div>
   }
 
   run = async () => {
-    let nodetree = this.state.nodeTree;
-    this.setState({output: []});
-    let code = await (await fetch('/static_frame/python/executor.py')).text()
-    try {
-      // await pyodide.pyodide_py.eval_code_async(code, pyodide.toPy({node_tree: nodetree}), undefined, 'none');
-      await pyodide.pyodide_py.eval_code_async(code, undefined, undefined, 'none');
-    } catch(err) {
-      let output = this.state.output.slice()
-      output.push(err);
-      this.setState({output: output});
+    this.term.clear();
+    this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT);
+    this.stdinbufferInt = new Int32Array(this.stdinbuffer);
+    this.stdinbufferInt[0] = -1;
+    this.worker.postMessage({
+      type: 'run',
+      nodetree: this.state.nodeTree,
+      buffer: this.stdinbuffer,
+    })
+  }
+
+  handleMessageFromWorker = (event : MessageEvent) => {
+    let type = event.data.type;
+    if (type === 'ready') {
+      this.setState({'ready': true});
+    } else if (type === 'stdout') {
+      this.term.write(event.data.stdout.replace('\n', '\r\n'));
+    }
+  }
+
+  onTerminalKey = (arg: {key: string, domEvent: KeyboardEvent}) => {
+    if (this.stdinbuffer && this.stdinbufferInt) {
+      this.term.write(arg.key.replace('\r', '\r\n'));
+      let startingIndex = 1;
+      if (this.stdinbufferInt[0] > 0) {
+        startingIndex = this.stdinbufferInt[0];
+      }
+      const data = new TextEncoder().encode(arg.key);
+      data.forEach((value, index) => {
+        this.stdinbufferInt[startingIndex + index] = value;
+      });
+
+      this.stdinbufferInt[0] = startingIndex + data.length - 1;
+      Atomics.notify(this.stdinbufferInt, 0, 1);
     }
   }
 
   componentDidMount() {
+    this.term = new Terminal();
+    this.term.open(this.termRef.current);
+    this.term.onKey(this.onTerminalKey)
+
     sendToParent({type: 'heartbeat', data: {state: FrameState.LOADING}});
-    // todo await this
-    loadPyodide({ indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.17.0/full/' }).then(() => {
-      pyodide.registerJsModule('fakeprint', {
-        stdout: new Stdout((s: string) => {
-          let newOutput = this.state.output.slice();
-          newOutput.push(s);
-          this.setState({output: newOutput})
-        }),
-      });
-      pyodide.registerJsModule('nodetree', {
-        getNodeTree: () => {
-          return pyodide.toPy(this.state.nodeTree);
-        }
-      });
-      this.setState({ready: true});
-    });
+
+    this.worker = new Worker('/static_frame/webworker.js');
+    this.worker.onmessage = this.handleMessageFromWorker;
     window.addEventListener("message", this.handleMessage, false);
   }
 

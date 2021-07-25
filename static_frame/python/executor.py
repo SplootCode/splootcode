@@ -267,6 +267,7 @@ else:
 
     sys.stdout = fakeprint.stdout
     sys.stderr = fakeprint.stdout
+    sys.stdin = fakeprint.stdin
 
     tree = nodetree.getNodeTree() # pylint: disable=undefined-variable
     executePythonFile(tree)
