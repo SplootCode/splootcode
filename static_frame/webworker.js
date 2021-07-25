@@ -25,7 +25,6 @@ const stdin = {
         newStdinData[i] = stdinbuffer[1 + i];
       }
       responseStdin = new TextDecoder("utf-8").decode(newStdinData);
-      console.log(responseStdin.toString());
       text += responseStdin;
     }
     return text.replace('\r', '\n');
@@ -69,8 +68,6 @@ loadPyodide({ indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.17.0/full/' }).the
 });
 
 onmessage = function(e) {
-  console.log('Message received from main script');
-  console.log(e);
   switch (e.data.type) {
     case 'run':
       nodetree = e.data.nodetree;
