@@ -59,6 +59,7 @@ export class PythonFrame extends Component<ViewPageProps> {
           src={getFrameSrc()}
           width={480}
           height={700}
+          allow="cross-origin-isolated"
         />
       </div>
     );

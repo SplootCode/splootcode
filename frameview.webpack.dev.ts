@@ -14,6 +14,11 @@ module.exports = webpackMerge(common, {
   devServer: {
     port: 3001,
     hot: false,
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+      "Cross-Origin-Resource-Policy": "same-site",
+    }
   },
 
   plugins: [
