@@ -15,7 +15,12 @@ self.addEventListener('install', function(event) {
 async function addFileToCache(pathname: string, contentType: string, contents: string) {
   caches.open(CacheName).then(function(cache) {
     let request = pathname;
-    let headers = {'Content-Type': contentType};
+    let headers = {
+      'Content-Type': contentType,
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Resource-Policy': 'same-site',
+    };
     let response = new Response(contents, {status: 200, statusText: 'ok', headers: headers});  
     cache.put(request, response);
   });

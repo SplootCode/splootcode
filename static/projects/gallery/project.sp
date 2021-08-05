@@ -1,5 +1,6 @@
 {
   "name": "blank",
+  "layouttype": "WEB",
   "title": "Untitled Project",
   "packages": [
     {
