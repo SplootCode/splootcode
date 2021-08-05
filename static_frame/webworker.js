@@ -15,19 +15,21 @@ const stdout = {
 
 const stdin = {
   readline: () => {
+    // Send message to activate input mode
+    postMessage({
+      type: 'inputMode',
+    })
     let text = '';
-    while (!text.endsWith('\r')) {
-      Atomics.wait(stdinbuffer, 0, -1);
-      const numberOfElements = stdinbuffer[0];
-      stdinbuffer[0] = -1;
-      const newStdinData = new Uint8Array(numberOfElements);
-      for (let i = 0; i < numberOfElements; i++) {
-        newStdinData[i] = stdinbuffer[1 + i];
-      }
-      responseStdin = new TextDecoder("utf-8").decode(newStdinData);
-      text += responseStdin;
+    Atomics.wait(stdinbuffer, 0, -1);
+    const numberOfElements = stdinbuffer[0];
+    stdinbuffer[0] = -1;
+    const newStdinData = new Uint8Array(numberOfElements);
+    for (let i = 0; i < numberOfElements; i++) {
+      newStdinData[i] = stdinbuffer[1 + i];
     }
-    return text.replace('\r', '\n');
+    responseStdin = new TextDecoder("utf-8").decode(newStdinData);
+    text += responseStdin;
+    return text; //.replace('\r', '\n');
   }
 }
 
