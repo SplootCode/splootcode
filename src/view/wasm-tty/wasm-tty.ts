@@ -11,8 +11,6 @@ export interface ActivePrompt {
  * It acts an an interface for the shell and terminal to read/write from,
  * and communicate with one another
  */
-// type AutoCompleteHandler = (index: number, tokens: string[]) => string[];
-
 export default class WasmTTY {
   xterm: Terminal;
 

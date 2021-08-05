@@ -80,10 +80,12 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
         <iframe ref={this.previewFrameRef}
           id="view-frame"
           src={getFrameDomain() + '/index.html'}
+          allow="cross-origin-isolated"
         />
         <iframe ref={this.hiddenFrameRef}
           id="hidden-frame"
           src={getHiddenFrameSrc()}
+          allow="cross-origin-isolated"
         />
       </div>
     );
