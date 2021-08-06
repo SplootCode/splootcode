@@ -1,0 +1,15 @@
+
+#python-frame-container {
+  position: relative;
+  height: 100vh;
+  background-color: inherit;
+}
+
+#view-python-frame {
+  position: absolute;
+  border: none;
+  background-color: white;
+  display: block;
+  width: 100%;
+  height: calc(100%);
+}

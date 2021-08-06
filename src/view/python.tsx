@@ -1,12 +1,17 @@
 import "tslib"
 import "xterm/css/xterm.css"
 
+import "./terminal.css"
+
 import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
 
 import React from "react"
 import ReactDOM from "react-dom"
 
 import WasmTTY  from "./wasm-tty/wasm-tty";
+import { AppProviders } from "../providers";
+import { Button, ButtonGroup } from "@chakra-ui/react";
 
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
 export enum FrameState {
@@ -25,6 +30,7 @@ interface ConsoleProps {
 
 interface ConsoleState {
   ready: boolean;
+  running: boolean;
   nodeTree: any;
   nodeTreeLoaded: boolean;
 }
@@ -32,6 +38,7 @@ interface ConsoleState {
 class Console extends React.Component<ConsoleProps, ConsoleState> {
   private termRef : React.RefObject<HTMLDivElement>;
   private term : Terminal;
+  private terminalFitAddon : FitAddon;
   private worker : Worker;
   private stdinbuffer : SharedArrayBuffer;
   private stdinbufferInt : Int32Array;
@@ -46,16 +53,20 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     this.wasmTty = null;
     this.state = {
       ready: false,
+      running: false,
       nodeTree: null,
       nodeTreeLoaded: false,
     };
   }
 
   render() {
-    let {ready, nodeTreeLoaded} = this.state;
-    return <div>
-      <button onClick={this.run} disabled={!(ready && nodeTreeLoaded)}>Run</button>
-      <div ref={this.termRef}/>
+    let {ready, running, nodeTreeLoaded} = this.state;
+    return <div id="terminal-container">
+      <ButtonGroup spacing="3" size="sm" m={2}>
+        <Button isLoading={running} loadingText="Running" colorScheme="teal" onClick={this.run} disabled={!(ready && nodeTreeLoaded && !running)}>Run</Button>
+        <Button disabled={!running} onClick={this.stop}>Stop</Button>
+      </ButtonGroup>
+      <div id="terminal" ref={this.termRef}/>
     </div>
   }
 
@@ -69,6 +80,15 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       nodetree: this.state.nodeTree,
       buffer: this.stdinbuffer,
     })
+    this.setState({running: true})
+  }
+
+  stop = () => {
+    this.resolveActiveRead();
+    this.term.write('\r\nProgram Stopped.\r\n');
+    this.worker.terminate();
+    this.setState({running: false, ready: false})
+    this.initialiseWorker();
   }
 
   handleMessageFromWorker = (event : MessageEvent) => {
@@ -79,6 +99,8 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       this.wasmTty.print(event.data.stdout)
     } else if (type === 'inputMode') {
       this.activateInputMode();
+    } else if (type === 'finished') {
+      this.setState({running: false})
     }
   }
 
@@ -248,16 +270,30 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   };
 
   componentDidMount() {
-    this.term = new Terminal();
+    this.terminalFitAddon = new FitAddon();
+    this.term = new Terminal({scrollback: 10000, fontSize: 14});
+    this.term.loadAddon(this.terminalFitAddon);
     this.wasmTty = new WasmTTY(this.term);
     this.term.open(this.termRef.current);
+    this.terminalFitAddon.fit();
     this.term.onData(this.handleTermData)
 
     window.addEventListener("message", this.handleMessage, false);
     sendToParent({type: 'heartbeat', data: {state: FrameState.LOADING}});
 
+    window.addEventListener("resize", this.handleResize, false);
+    this.initialiseWorker();
+  }
+
+  initialiseWorker = () => {
     this.worker = new Worker('/static_frame/webworker.js');
     this.worker.onmessage = this.handleMessageFromWorker;
+  }
+
+  handleResize = (event) => {
+    if (this.terminalFitAddon) {
+      this.terminalFitAddon.fit();
+    }
   }
 
   componentWillUnmount() {
@@ -294,4 +330,10 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
 const root = document.getElementById('app-root')
 
-ReactDOM.render(<Console/>, root);
+ReactDOM.render(
+  <AppProviders>
+    <Console />
+  </AppProviders>,
+  root
+);
+

@@ -6,6 +6,8 @@ import { globalMutationDispatcher } from "../../language/mutations/mutation_disp
 import { NodeMutation } from "../../language/mutations/node_mutations"
 import { SplootPackage } from "../../language/projects/package"
 
+import "./python_frame.css";
+
 export enum FrameState {
   DEAD = 0,
   LOADING,
@@ -53,9 +55,9 @@ export class PythonFrame extends Component<ViewPageProps> {
   render() {
     this.needsNewNodeTree = true;
     return (
-      <div id="frame-container">
+      <div id="python-frame-container">
         <iframe ref={this.frameRef}
-          id="view-frame"
+          id="view-python-frame"
           src={getFrameSrc()}
           width={480}
           height={700}

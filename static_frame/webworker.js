@@ -46,6 +46,9 @@ const run = async () => {
       stdout: err.toString(),
     })
   }
+  postMessage({
+    'type': 'finished',
+  })
 }
 
 const getNodeTree = () => {

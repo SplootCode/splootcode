@@ -1,0 +1,25 @@
+
+html {
+  height: 100%;
+}
+
+body { 
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#app-root {
+  height: 100%;
+}
+
+#terminal-container {
+  height: 100%;
+}
+
+#terminal {
+  height: calc(100% - 48px);
+  background-color: black;
+  box-sizing: border-box;
+  padding-left: 6px;
+}

@@ -46,7 +46,8 @@
     "vscode-web-custom-data": "^0.3.2",
     "webpack-merge": "^4.2.2",
     "xmldom": "^0.4.0",
-    "xterm": "^4.13.0"
+    "xterm": "^4.13.0",
+    "xterm-addon-fit": "^0.5.0"
   },
   "devDependencies": {
     "@types/jest": "^25.1.1",
