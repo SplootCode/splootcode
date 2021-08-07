@@ -34,11 +34,10 @@ function sanitizeIdentifier(textInput: string) : string {
   
   return textInput.split(' ').map(function(word, index){
     if (index == 0) {
-      // Don't change the capitalization of the first word.
+      // Don't prefix the first word.
       return word;
     }
-    // If it is not the first word only upper case the first char and lowercase the rest.
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    return '_' + word.toLowerCase();
   }).join('');
 }
 
