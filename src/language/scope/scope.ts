@@ -1,5 +1,6 @@
 import { ComponentDefinition, FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, TypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
 import { SplootNode } from "../node";
+import { loadPythonBuiltinFunctions } from "./python";
 
 function cloneType(type: TypeExpression) : TypeExpression {
   return JSON.parse(JSON.stringify(type));
@@ -202,9 +203,11 @@ export async function generateScope(rootNode: SplootNode) {
       scope.addFunction(func);
     })
   } else if (rootNode.type === 'PYTHON_FILE') {
-    // TODO: add Python built-in functions to global scope
+    const pythonGlobalFuncs = loadPythonBuiltinFunctions()
+    pythonGlobalFuncs.forEach(func => {
+      scope.addFunction(func);
+    });
   }
   globalScope = scope;
   rootNode.recursivelyBuildScope();
 }
-

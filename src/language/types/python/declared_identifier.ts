@@ -44,8 +44,13 @@ function sanitizeIdentifier(textInput: string) : string {
 
 export class VariableDeclarationGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    // TODO: Fill in-scope declared variables here.
-    return [];
+    let scope = parent.node.getScope();
+    let suggestions = scope.getAllVariableDefinitions().map(varDef => {
+      const varName = varDef.name;
+      const newNode = new PythonDeclaredIdentifier(null, varName);
+      return new SuggestedNode(newNode, `var ${varName}`, varName, true, varDef.documentation || '');
+    })
+    return suggestions;
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {

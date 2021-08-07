@@ -10,14 +10,22 @@ import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { JavaScriptSplootNode } from "../../javascript_node";
+import { FunctionDefinition } from "../../lib/loader";
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE';
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    let suggestions = ['print'].map(name => {
-        return new SuggestedNode(new PythonCallVariable(null, name), 'call ' + name, name, true);
-    })
+    let scope = parent.node.getScope();
+    let suggestions = scope.getAllFunctionDefinitions().map((funcDef: FunctionDefinition) => {
+      let funcName = funcDef.name;
+      let newCall = new PythonCallVariable(null, funcName, funcDef.type?.parameters?.length || 0);
+      let doc = funcDef.documentation;
+      if (!doc) {
+        doc = "";
+      }
+      return new SuggestedNode(newCall, `call ${funcName}`, funcName, true, doc);
+    });
     return suggestions;
   }
 

@@ -1,5 +1,6 @@
 import { HighlightColorCategory } from "../../../layout/colors"
 import { ChildSetType } from "../../childset"
+import { VariableDefinition } from "../../lib/loader"
 import { ParentReference, SplootNode } from "../../node"
 import {
   NodeCategory,
@@ -15,6 +16,7 @@ import {
   SerializedNode,
   TypeRegistration,
 } from "../../type_registry"
+import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from "./declared_identifier"
 import { PythonExpression } from "./python_expression"
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT';
@@ -46,6 +48,18 @@ export class PythonAssignment extends SplootNode {
 
   getRight() {
     return this.getChildSet('right');
+  }
+
+  addSelfToScope() {
+    let identifierChildSet = this.getLeft();
+    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
+      this.getScope().addVariable({
+        name: (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName(),
+        deprecated: false,
+        documentation: 'Variable',
+        type: {type: 'any'},
+      } as VariableDefinition);
+    }
   }
 
   static deserializer(serializedNode: SerializedNode) : PythonAssignment {

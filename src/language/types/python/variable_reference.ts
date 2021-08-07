@@ -52,14 +52,7 @@ export class VariableReferenceGenerator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    let varName = sanitizeIdentifier(textInput);
-    let newVar = new PythonVariableReference(null, varName);
-    if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
-      return [];
-    }
-
-    let suggestedNode = new SuggestedNode(newVar, `var ${varName}`, '', false, 'undeclared variable');
-    return [suggestedNode];
+    return [];
   }
 }
 
@@ -117,6 +110,5 @@ export class PythonVariableReference extends SplootNode {
   
     registerType(varType);
     registerNodeCateogry(PYTHON_VARIABLE_REFERENCE, NodeCategory.PythonExpressionToken, new VariableReferenceGenerator());
-    registerNodeCateogry(PYTHON_VARIABLE_REFERENCE, NodeCategory.PythonAssignableExpressionToken, new AssignableVariableReferenceGenerator());
   }
 }
