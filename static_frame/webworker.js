@@ -1,6 +1,7 @@
 
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js')
+importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.0/full/pyodide.js')
 
+let pyodide = null;
 let stdinbuffer = null;
 
 const stdout = {
@@ -36,10 +37,9 @@ const stdin = {
 let executorCode = null;
 let nodetree = null;
 
-
 const run = async () => {
   try {
-    await pyodide.pyodide_py.eval_code_async(executorCode, undefined, undefined, 'none');
+    await pyodide.runPythonAsync(executorCode);
   } catch(err) {
     postMessage({
       type: 'stdout',
@@ -55,7 +55,9 @@ const getNodeTree = () => {
   return nodetree;
 }
 
-loadPyodide({ indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.17.0/full/' }).then(async () => {
+const initialise = async () => {
+  executorCode = await (await fetch('/static_frame/python/executor.py')).text()
+  pyodide = await loadPyodide({ fullStdLib: false, indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.18.0/full/' });
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
     stderr: stdout,
@@ -66,11 +68,12 @@ loadPyodide({ indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.17.0/full/' }).the
       return pyodide.toPy(getNodeTree());
     }
   });
-  executorCode = await (await fetch('/static_frame/python/executor.py')).text()
   postMessage({
     type: 'ready',
-  })
-});
+  });
+};
+
+initialise();
 
 onmessage = function(e) {
   switch (e.data.type) {

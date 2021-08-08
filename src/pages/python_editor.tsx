@@ -17,8 +17,6 @@ export class PythonEditorPanels extends React.Component<WebEditorProps> {
     const { project, selectedFile } = this.props;
     let onlyPackage : SplootPackage = project.packages[0];
 
-    console.log('Pythoon editor')
-
     return (
       <React.Fragment>
         <div className="python-editor-column">

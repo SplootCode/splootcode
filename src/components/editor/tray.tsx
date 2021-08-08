@@ -49,6 +49,7 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
   if (rootNode.type === PYTHON_FILE) {
     nodes = [
       new PythonCallVariable(null, 'print', 1),
+      new PythonCallVariable(null, 'input', 1),
       new PythonAssignment(null),
       new PythonVariableReference(null, 'my_variable'),
       new StringLiteral(null, ''),

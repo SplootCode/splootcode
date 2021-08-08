@@ -86,7 +86,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   stop = () => {
     this.resolveActiveRead();
     this.term.write('\r\nProgram Stopped.\r\n');
+    this.worker.removeEventListener('message', this.handleMessageFromWorker);
     this.worker.terminate();
+    this.worker = null;
     this.setState({running: false, ready: false})
     this.initialiseWorker();
   }
@@ -286,8 +288,10 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   initialiseWorker = () => {
-    this.worker = new Worker('/static_frame/webworker.js');
-    this.worker.onmessage = this.handleMessageFromWorker;
+    if (!this.worker) {
+      this.worker = new Worker('/static_frame/webworker.js');
+      this.worker.addEventListener('message', this.handleMessageFromWorker);
+    }
   }
 
   handleResize = (event) => {
