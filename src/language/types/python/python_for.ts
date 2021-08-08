@@ -5,6 +5,8 @@ import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, reg
 import { SuggestedNode } from "../../suggested_node";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
+import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from "./declared_identifier";
+import { VariableDefinition } from "../../lib/loader";
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP';
 
@@ -32,6 +34,18 @@ export class PythonForLoop extends SplootNode {
 
   getTarget() {
     return this.getChildSet('target');
+  }
+
+  addSelfToScope() {
+    let identifierChildSet = this.getTarget();
+    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
+      this.getScope().addVariable({
+        name: (this.getTarget().getChild(0) as PythonDeclaredIdentifier).getName(),
+        deprecated: false,
+        documentation: 'for-loop variable',
+        type: {type: 'any'},
+      } as VariableDefinition);
+    }
   }
 
   getIterable() {

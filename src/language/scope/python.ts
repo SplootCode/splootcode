@@ -49,7 +49,7 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'value', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to a string'}
+        {name: '', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to a string'}
       ],
       returnType: {type: 'literal', literal:'string'},
     },
@@ -60,7 +60,7 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'value', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to an integer'}
+        {name: '', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to an integer'}
       ],
       returnType: {type: 'literal', literal:'number'},
     },
@@ -93,8 +93,8 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'start at', type: {type: 'any'}, deprecated: false, documentation: 'The number to start counting from.'},
-        {name: 'end before', type: {type: 'any'}, deprecated: false, documentation: 'Stop counting before this number, not including this number.'}
+        {name: 'start', type: {type: 'any'}, deprecated: false, documentation: 'The number to start counting from.'},
+        {name: 'end', type: {type: 'any'}, deprecated: false, documentation: 'Stop counting before this number, not including this number.'}
       ],
       returnType: {type: 'any'},
     },

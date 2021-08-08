@@ -28,7 +28,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
     let labels = block.childSetTreeLabels;
     return (
       <React.Fragment>
-        <circle cx={leftPos + 8} cy={topPos + 16} r="6" className={anchorClass}></circle>
+        <circle cx={leftPos + 4} cy={topPos + 16} r="5" className={anchorClass}></circle>
         {
           block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
             let selectionState = block.getChildSelectionState(idx);
@@ -41,7 +41,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
             if (idx === 0) {
               line = <line className={connectorClass} x1={leftPos + 8} y1={topPos + 16} x2={nodeBlock.x} y2={topPos + 16} />
             } else {
-              line = <path className={connectorClass} d={"M " + (leftPos + 30) + " " + (topPos + 16) + " L " + (leftPos + 30) + " " + (nodeBlock.y + 16) + " H " + (nodeBlock.x)} fill="transparent"/>
+              line = <path className={connectorClass} d={"M " + (leftPos + 16) + " " + (topPos + 16) + " L " + (leftPos + 16) + " " + (nodeBlock.y + 16) + " H " + (nodeBlock.x)} fill="transparent"/>
             }
             let result = <React.Fragment>
               { line }
@@ -79,7 +79,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
     let labels = block.childSetTreeLabels;
     return (
       <React.Fragment>
-        <circle cx={leftPos + 8} cy={topPos + 16} r="6" className={anchorClass}></circle>
+        <circle cx={leftPos + 4} cy={topPos + 16} r="5" className={anchorClass}></circle>
         {
           isLastInlineComponent ?
             block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
@@ -88,12 +88,12 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
               let line = null;
               let label = null;
               if (labels.length > idx) {
-                label = <text className={labelClass} x={leftPos + 34} y={nodeBlock.y + 12}>{labels[idx]}</text>
+                label = <text className={labelClass} x={leftPos + 20} y={nodeBlock.y + 12}>{labels[idx]}</text>
               }
               if (idx === 0) {
                 line = <line className={connectorClass} x1={leftPos + 8} y1={topPos + 16} x2={nodeBlock.x - 8} y2={topPos + 16} />
               } else {
-                line = <path className={connectorClass} d={"M " + (leftPos + 30) + " " + (topPos + 16) + " L " + (leftPos + 30) + " " + (nodeBlock.y + 16) + " H " + (nodeBlock.x - 8)} fill="transparent"/>
+                line = <path className={connectorClass} d={"M " + (leftPos + 16) + " " + (topPos + 16) + " L " + (leftPos + 16) + " " + (nodeBlock.y + 16) + " H " + (nodeBlock.x - 8)} fill="transparent"/>
               }
               let result = <React.Fragment>
                 { line }

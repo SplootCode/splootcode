@@ -25,7 +25,7 @@ class TreeDotActiveCursor extends React.Component<ActiveCursorProps> {
       let topPos = y;
       return (
         <>
-          <circle className="active-inline-cursor" cx={x + 8} cy={topPos + 16} r="5"></circle>
+          <circle className="active-inline-cursor" cx={x + 4} cy={topPos + 16} r="4"></circle>
           <line className="active-inline-cursor" x1={x + 23} x2={x + 29} y1={topPos + 10} y2={topPos + 10}></line>
           <line className="active-inline-cursor" x1={x + 26} x2={x + 26} y1={topPos + 7} y2={topPos + 13}></line>
           <line className="active-inline-cursor" x1={x + 4} x2={x + 26} y1={topPos + 16} y2={topPos + 16}></line>

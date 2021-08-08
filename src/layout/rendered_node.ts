@@ -183,16 +183,16 @@ export class NodeBlock implements NodeObserver {
       else if (component.type === LayoutComponentType.CHILD_SET_TREE) {
         let childSetBlock = this.renderedChildSets[component.identifier];
         childSetBlock.calculateDimensions(leftPos, y, selection);
-        let width = 20;
+        let width = 10;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
 
         if (isLastInlineComponent) {
           this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
-          // This minus 16 here accounts for the distance from the dot to the edge of the node.
+          // This minus 8 here accounts for the distance from the dot to the edge of the node.
           // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 16, 0);
+          marginRight += Math.max(childSetBlock.width - 8, 0);
         } else {
           this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
         }
@@ -200,16 +200,16 @@ export class NodeBlock implements NodeObserver {
       else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
         let childSetBlock = this.renderedChildSets[component.identifier];
         childSetBlock.calculateDimensions(leftPos, y, selection);
-        let width = 20;
+        let width = 10;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
 
         if (isLastInlineComponent) {
           this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
-          // This minus 16 here accounts for the distance from the dot to the edge of the node.
+          // This minus 8 here accounts for the distance from the dot to the edge of the node.
           // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 16, 0);
+          marginRight += Math.max(childSetBlock.width - 8, 0);
         } else {
           this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
         }

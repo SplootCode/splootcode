@@ -171,7 +171,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
       let topPos = this.isLastInlineComponent ? y : y + NODE_BLOCK_HEIGHT + ROW_SPACING;
       this.height = this.isLastInlineComponent ? 0 : NODE_BLOCK_HEIGHT + ROW_SPACING;
-      let indent = this.isLastInlineComponent ? 48 : 18;
+      let indent = this.isLastInlineComponent ? 32 : 18;
       indent += maxLabelWidth;
       if (selection !== null && this.nodes.length === 0) {
         selection.cursorMap.registerCursorStart(this, 0, x, y, true);
@@ -199,7 +199,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
       let topPos = y;
       this.height = 0;
-      let indent = 36;
+      let indent = 24;
       indent += maxLabelWidth;
       if (selection !== null) {
         selection.cursorMap.registerCursorStart(this, 0, x, y, true);
@@ -349,8 +349,12 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         return [this.x, topPos];
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+      let labels = this.childSetTreeLabels;
+      let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
       let topPos = this.isLastInlineComponent ? this.y : this.y + NODE_BLOCK_HEIGHT + ROW_SPACING;
-      let indent = this.isLastInlineComponent ? 40 : 18;
+      let indent = this.isLastInlineComponent ? 32 : 18;
+      indent += maxLabelWidth;
+
       for (let i = 0; i < this.nodes.length; i++) {
         let childNodeBlock = this.nodes[i];
         if (i === insertIndex) {
@@ -362,8 +366,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         return [this.x + indent, topPos];
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
+      let labels = this.childSetTreeLabels;
+      let maxLabelWidth = Math.max(0, ...labels.map(label => labelStringWidth(label)));
       let topPos = this.y;
-      let indent = 36;
+      let indent = 24;
+      indent += maxLabelWidth;
       for (let i = 0; i < this.nodes.length; i++) {
         let childNodeBlock = this.nodes[i];
         if (i === insertIndex) {
