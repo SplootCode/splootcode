@@ -1,0 +1,27 @@
+{
+  "projects": {
+    "default": "splootcode-dev"
+  },
+  "targets": {
+    "splootcode-dev": {
+      "hosting": {
+        "editor": [
+          "splootcode-dev-editor"
+        ],
+        "runtime": [
+          "splootcode-dev-runtime"
+        ]
+      }
+    },
+    "splootcode-prod": {
+      "hosting": {
+        "runtime": [
+          "sploot-runtime"
+        ],
+        "editor": [
+          "sploot-editor"
+        ]
+      }
+    }
+  }
+}

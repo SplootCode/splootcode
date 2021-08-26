@@ -7,7 +7,7 @@ module.exports = webpackMerge(common, {
   mode: 'development',
 
   output: {
-    path: path.resolve('dev-frame-dist'),
+    path: path.resolve('frame-dist'),
     filename: '[name].js',
   },
 

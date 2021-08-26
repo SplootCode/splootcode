@@ -1,4 +1,9 @@
+# non-dev env files
 production.env
+staging.env
+
+# Firebase files
+.firebase
 
 # Terraform
 .terraform

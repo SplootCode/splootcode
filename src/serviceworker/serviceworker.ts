@@ -19,7 +19,7 @@ async function addFileToCache(pathname: string, contentType: string, contents: s
       'Content-Type': contentType,
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Resource-Policy': 'same-site',
+      'Cross-Origin-Resource-Policy': 'cross-origin',
     };
     let response = new Response(contents, {status: 200, statusText: 'ok', headers: headers});  
     cache.put(request, response);

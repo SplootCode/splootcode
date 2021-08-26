@@ -18,8 +18,8 @@ module.exports = webpackMerge(common, {
   },
 
   output: {
-    path: path.resolve('dev-dist'),
-    filename: '[name].js',
+    path: path.resolve('dist'),
+    filename: '[name]-[contenthash].js',
   },
 
   plugins: [
