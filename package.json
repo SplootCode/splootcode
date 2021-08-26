@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "watch": "yarn webpack --config webpack.dev.ts --watch",
+    "watch-frame": "yarn webpack --config frameview.webpack.dev.ts --watch",
     "start": "npx firebase emulators:start",
     "build": "yarn webpack --config webpack.dev.ts",
     "build-staging": "yarn webpack --config webpack.staging.ts && yarn webpack --config ./frameview.webpack.staging.ts",
