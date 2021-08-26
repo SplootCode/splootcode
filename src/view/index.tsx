@@ -70,6 +70,7 @@ if ('serviceWorker' in navigator) {
     window.addEventListener("message", handleMessage, false);
     runtime.register().then(function(registration: ServiceWorkerRegistration) {
       serviceWorkerRegistration = registration;
+      serviceWorkerRegistration.update();
       if (registration.installing) {
         setState(FrameState.SW_INSTALLING);
         registration.installing.addEventListener('statechange', (event) => {

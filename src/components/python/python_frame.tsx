@@ -15,15 +15,11 @@ export enum FrameState {
   UNMOUNTED
 }
 
-const subdomain = "projection"; // TODO: Make dynamic
 const FRAME_VIEW_DOMAIN = process.env.FRAME_VIEW_DOMAIN;
 const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME;
 
 function getFrameDomain() {
-  if (FRAME_VIEW_DOMAIN.startsWith('localhost')) {
-    return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN;
-  }
-  return FRAME_VIEW_SCHEME + '://' + subdomain + '.' + FRAME_VIEW_DOMAIN;
+  return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN;
 }
 
 function getFrameSrc() {

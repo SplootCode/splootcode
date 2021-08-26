@@ -1,9 +1,13 @@
 {
   "scripts": {
-    "build": "yarn webpack --config webpack.prod.ts",
-    "start": "yarn webpack-dev-server --config webpack.dev.ts",
-    "build-frame": "yarn webpack --config ./frameview.webpack.prod.ts",
-    "start-frame": "yarn webpack-dev-server --config ./frameview.webpack.dev.ts",
+    "start": "npx firebase emulators:start",
+    "build": "yarn webpack --config webpack.dev.ts",
+    "build-staging": "yarn webpack --config webpack.staging.ts && yarn webpack --config ./frameview.webpack.staging.ts",
+    "build-prod": "yarn webpack --config webpack.prod.ts && yarn webpack --config ./frameview.webpack.prod.ts",
+    "deploy-staging": "yarn build-staging && npx firebase deploy -P ${SPLOOT_STAGING_PROJECT}",
+    "deploy-prod": "yarn buid-prod && npx firebase deploy -P ${SPLOOT_PROD_PROJECT}",
+    "devserver": "yarn webpack-dev-server --config webpack.dev.ts",
+    "devserver-frame": "yarn webpack-dev-server --config ./frameview.webpack.dev.ts",
     "generate-types": "yarn ts-node scripts/generateLibs.ts"
   },
   "license": "BUSL-1.1",
@@ -25,6 +29,7 @@
     "css-loader": "^3.2.0",
     "css-tree": "^1.1.2",
     "file-loader": "^6.0.0",
+    "firebase-tools": "^9.16.5",
     "focus-visible": "^5.2.0",
     "framer-motion": "^3.2.2-rc.1",
     "fuse.js": "^3.4.6",

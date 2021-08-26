@@ -41,6 +41,7 @@ export default {
       entry: path.join(__dirname, 'src/serviceworker/serviceworker.ts'),
     }),
     new CopyWebpackPlugin([
+      path.resolve('./static_frame/**'),
       path.resolve('./src/view/splootframeclient.html'),
       path.resolve('./src/view/splootframepythonclient.html')
     ]),

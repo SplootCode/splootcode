@@ -32,7 +32,6 @@ interface DocumentNodeProps {
     pkg?: SplootPackage,
 }
 
-const subdomain = "projection"; // TODO: Make dynamic
 const FRAME_VIEW_DOMAIN = process.env.FRAME_VIEW_DOMAIN;
 const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME;
 
@@ -42,10 +41,7 @@ function getHiddenFrameSrc() {
 }
 
 function getFrameDomain() {
-  if (FRAME_VIEW_DOMAIN.startsWith('localhost')) {
-    return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN;
-  }
-  return FRAME_VIEW_SCHEME + '://' + subdomain + '.' + FRAME_VIEW_DOMAIN;
+  return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN;
 }
 
 
