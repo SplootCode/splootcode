@@ -132,6 +132,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
     if (this.componentType === LayoutComponentType.CHILD_SET_INLINE) {
       let leftPos = x;
+      if (selection !== null && this.allowInsert()) {
+        selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true);
+      }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           let boxWidth = getInsertBoxWidth(selection.insertBox.contents);
@@ -142,6 +145,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         leftPos += childNodeBlock.rowWidth;
         this.width += childNodeBlock.rowWidth;
         this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight);
+        if (selection !== null && this.allowInsert()) {
+          selection.cursorMap.registerCursorStart(this, idx + 1, leftPos, y, true);
+        }
       })
       if (this.nodes.length === insertIndex) {
         let boxWidth = getInsertBoxWidth(selection.insertBox.contents);

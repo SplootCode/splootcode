@@ -8,6 +8,7 @@ import { HighlightColorCategory } from '../../layout/colors';
 import { SplootExpression, SPLOOT_EXPRESSION } from "./js/expression";
 import { JavaScriptSplootNode } from "../javascript_node";
 import { StringLiteralKind } from "ast-types/gen/kinds";
+import { PythonExpression, PYTHON_EXPRESSION } from "./python/python_expression";
 
 export const STRING_LITERAL = 'STRING_LITERAL';
 export const NUMERIC_LITERAL = 'NUMERIC_LITERAL';
@@ -21,6 +22,10 @@ class StringGenerator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+    if (!isNaN(parseStringToNum(textInput))) {
+      // Don't autocomplete string versions of valid numbers.
+      return [];
+    }
     let customString = new StringLiteral(null, textInput);
     let suggestedNode = new SuggestedNode(customString, `string ${textInput}`, '', true, 'string');
     return [suggestedNode];
@@ -62,6 +67,11 @@ export class StringLiteral extends JavaScriptSplootNode {
       exp.getTokenSet().addChild(node);
       return exp;
     }
+    stringLiteral.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
+      let exp = new PythonExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
     registerType(stringLiteral);
     registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken, new StringGenerator());
     registerNodeCateogry(STRING_LITERAL, NodeCategory.PythonExpressionToken, new StringGenerator());
@@ -78,7 +88,7 @@ class NumberGenerator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    let val = parseInt(textInput);
+    let val = parseStringToNum(textInput);
     if (!isNaN(val)) {
       let num = new NumericLiteral(null, val);
       let suggestedNode = new SuggestedNode(num, `number ${val}`, '', true, 'number');
@@ -88,6 +98,16 @@ class NumberGenerator implements SuggestionGenerator {
   }
 }
 
+function parseStringToNum(textValue: string | number) : number {
+  if (typeof textValue === 'string') {
+    let val = parseInt(textValue);
+    if (textValue.includes('.')) {
+      val = parseFloat(textValue)
+    }
+    return val;
+  }
+  return textValue;
+}
 
 export class NumericLiteral extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, value: number) {
@@ -108,16 +128,11 @@ export class NumericLiteral extends JavaScriptSplootNode {
   }
 
   setPropertyFromString(name: string, value: string) {
-    let intNum = parseInt(value);
-    if (!isNaN(intNum)) {
-      this.setProperty('value', intNum);
-      return;
-    }
-    this.setProperty(name, value);
+    this.setProperty(name, parseStringToNum(value));
   }
 
   static deserializer(serializedNode: SerializedNode) : NumericLiteral {
-    return new NumericLiteral(null, parseInt(serializedNode.properties.value))
+    return new NumericLiteral(null, parseStringToNum(serializedNode.properties.value))
   }
 
   static register() {
@@ -130,6 +145,11 @@ export class NumericLiteral extends JavaScriptSplootNode {
     ]);
     numericLiteral.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
       let exp = new SplootExpression(null);
+      exp.getTokenSet().addChild(node);
+      return exp;
+    }
+    numericLiteral.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
+      let exp = new PythonExpression(null);
       exp.getTokenSet().addChild(node);
       return exp;
     }
