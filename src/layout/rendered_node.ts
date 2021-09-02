@@ -1,7 +1,7 @@
 import { observable } from "mobx"
 
 import { NodeCursor, NodeSelection } from "../context/selection"
-import { NodeMutation } from "../language/mutations/node_mutations"
+import { NodeMutation, NodeMutationType } from "../language/mutations/node_mutations"
 import { SplootNode } from "../language/node"
 import { NodeObserver } from "../language/observers"
 import {
@@ -78,6 +78,9 @@ export class NodeBlock implements NodeObserver {
   @observable
   marginLeft: number;
 
+  @observable
+  runtimeAnnotation: string[];
+
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
     this.parentChildSet = parentListBlock;
     this.selection = selection;
@@ -87,6 +90,7 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout();
     this.textColor = getColour(this.layout.color)
     this.node = node;
+    this.runtimeAnnotation = [];
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
       this.node.registerObserver(this);
@@ -132,6 +136,10 @@ export class NodeBlock implements NodeObserver {
       let childSetBlock = this.renderedChildSets['tokens'];
       this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
     }
+  }
+
+  getRuntimeAnnotation() : string[] {
+    return this.runtimeAnnotation;
   }
 
   updateLayout() {
@@ -257,6 +265,9 @@ export class NodeBlock implements NodeObserver {
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
     // TODO: Handle validation UI changes here.
+    if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATION) {
+      this.runtimeAnnotation = nodeMutation.annotationValue;
+    }
   }
 
   getNextInsertAfterThisNode() : NodeCursor {

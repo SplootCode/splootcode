@@ -68,6 +68,14 @@ const initialise = async () => {
       return pyodide.toPy(getNodeTree());
     }
   });
+  pyodide.registerJsModule('runtime_capture', {
+    report: (json_dump) => {
+      postMessage({
+        type: 'runtime_capture',
+        capture: json_dump,
+      })
+    }
+  });
   postMessage({
     type: 'ready',
   });

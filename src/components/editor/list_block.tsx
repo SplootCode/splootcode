@@ -48,6 +48,34 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
   }
 }
 
+interface RuntimeAnnotationProps {
+  nodeBlock: NodeBlock
+}
+
+@observer
+export class RuntimeAnnotation extends React.Component<RuntimeAnnotationProps> {
+  render() {
+    const block = this.props.nodeBlock;
+    const annotations = block.runtimeAnnotation;
+    if (annotations.length != 0) {
+      const x = block.x + block.rowWidth + 12;
+      let y = block.y + 20 - (annotations.length - 1) * 8;
+      return (
+        <g>
+          {
+            annotations.map(annotation => {
+              const entry = <text x={x} y={y} className="annotation">{annotation}</text>
+              y += 16;
+              return entry;
+            })
+          }
+        </g>
+      )
+    }
+    return null;
+  }
+}
+
 @observer
 export class ExpandedListBlockView extends React.Component<ExpandedListBlockViewProps> {
   render() {
@@ -69,6 +97,7 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
                   selection={this.props.selection}
                   selectionState={selectionState}
               />
+              <RuntimeAnnotation nodeBlock={nodeBlock}/>
             </React.Fragment>
           );
           topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight;

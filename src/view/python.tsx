@@ -103,6 +103,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       this.activateInputMode();
     } else if (type === 'finished') {
       this.setState({running: false})
+    } else if (type === 'runtime_capture') {
+      // Pass on capture info to the parent window.
+      sendToParent(event.data);
     }
   }
 

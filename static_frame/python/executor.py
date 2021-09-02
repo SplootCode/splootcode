@@ -1,5 +1,8 @@
 import ast
 import sys
+import json
+import os
+
 
 SPLOOT_KEY = "__spt__"
 
@@ -351,7 +354,7 @@ class SplootCapture:
         return self.root.toDict()
 
 
-capture = SplootCapture()
+capture = None
 
 
 def executePythonFile(tree):
@@ -364,8 +367,7 @@ def executePythonFile(tree):
         # print()
         capture = SplootCapture()
         exec(code, {SPLOOT_KEY: capture})
-        print()
-        print(capture.toDict())
+        return capture.toDict()
 
 
 if __name__ == "__main__":
@@ -455,19 +457,26 @@ if __name__ == "__main__":
 else:
     import fakeprint  # pylint: disable=import-error
     import nodetree  # pylint: disable=import-error
+    import runtime_capture # pylint: disable=import-error
 
-    def wrapStdout(write):
-        def f(s):
-            capture.logSideEffect({"type": "stdout", "value": str(s)})
-            write(s)
+    # Only wrap stdout once.
+    # Horrifying hack.
+    try:
+        wrapStdout
+    except NameError:
+        def wrapStdout(write):
+            def f(s):
+                capture.logSideEffect({"type": "stdout", "value": str(s)})
+                write(s)
 
-        return f
+            return f
 
-    fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
+        fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
 
     sys.stdout = fakeprint.stdout
     sys.stderr = fakeprint.stdout
     sys.stdin = fakeprint.stdin
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
-    executePythonFile(tree)
+    cap = executePythonFile(tree)
+    runtime_capture.report(json.dumps(cap))

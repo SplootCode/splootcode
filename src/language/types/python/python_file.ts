@@ -4,6 +4,7 @@ import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from "..
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
+import { PythonFileData, StatementCapture } from "../../capture/runtime_capture";
 
 export const PYTHON_FILE = 'PYTHON_FILE';
 
@@ -29,6 +30,20 @@ export class PythonFile extends SplootNode {
         }
       }
     });
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
+    console.log(capture);
+    const bodyChildren = this.getBody().children;
+    const data = capture.data as PythonFileData;
+    console.log(`${data.body.length} should match ${bodyChildren.length}`)
+    for (let i = 0; i < data.body.length; i++) {
+      bodyChildren[i].recursivelyApplyRuntimeCapture(data.body[i]);
+    }
+    return;
   }
 
   static deserializer(serializedNode: SerializedNode) : PythonFile {

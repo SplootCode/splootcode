@@ -5,6 +5,8 @@ import { NodeObserver } from "./observers";
 import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from "./type_registry";
 import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
 import { getGlobalScope, Scope } from "./scope/scope";
+import { StatementCapture } from "./capture/runtime_capture";
+import { reduceEachTrailingCommentRange } from "typescript";
 
 export class ParentReference {
   node: SplootNode;
@@ -63,6 +65,16 @@ export class SplootNode {
   addSelfToScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    console.log(this.type, capture);
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
+    // Default is nothing, only really applies to statement nodes.
+    console.warn('Runtime capture not supported for type ', this.type)
+    return;
   }
 
   recursivelySetMutations(enable: boolean) {
@@ -135,7 +147,10 @@ export class SplootNode {
     this.mutationObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation);
     })
-    globalMutationDispatcher.handleNodeMutation(mutation);
+    // Don't fire global mutations for annotation changes;
+    if (mutation.type === NodeMutationType.SET_RUNTIME_ANNOTATION) {
+      globalMutationDispatcher.handleNodeMutation(mutation);
+    }
   }
 
   registerObserver(observer: NodeObserver) {
