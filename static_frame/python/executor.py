@@ -1,6 +1,7 @@
 import ast
 import sys
 
+SPLOOT_KEY = '__spt__'
 
 def generateAstExpressionToken(node):
     if node['type'] == 'PYTHON_CALL_VARIABLE':
@@ -148,20 +149,34 @@ def generateAstExpressionStatement(exp_node):
     top_expr = generateAstExpression(exp_node)
     if not top_expr:
         return None
-    expr = ast.Expr(value=top_expr, lineno=1, col_offset=0)
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='logExpressionResult', ctx=ast.Load())
+    args = [ast.Constant('PYTHON_EXPRESSION'), ast.Dict([],[]), top_expr]
+    wrapped = ast.Call(func, args=args, keywords=[])
+    expr = ast.Expr(value=wrapped, lineno=1, col_offset=0)
     return expr
 
 def generateAssignmentStatement(assign_node):
     target = generateAstAssignableExpression(assign_node['childSets']['left'][0])
     value = generateAstExpression(assign_node['childSets']['right'][0])
-    return ast.Assign([target], value)
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='logExpressionResult', ctx=ast.Load())
+    args = [
+        ast.Constant('PYTHON_ASSIGNMENT'),
+        ast.Dict([],[]),
+        value
+    ]
+    wrapped = ast.Call(func, args=args, keywords=[])
+    return ast.Assign([target], wrapped)
 
 def getStatementsFromBlock(blockChildSet):
     statements = []
     for node in blockChildSet:
-        statement = generateAstStatement(node)
-        if statement:
-            statements.append(statement)
+        new_statements = generateAstStatement(node)
+        if new_statements:
+            statements.extend(new_statements)
     return statements
 
 def generateIfStatement(if_node):
@@ -171,8 +186,46 @@ def generateIfStatement(if_node):
 
 def generateWhileStatement(while_node):
     condition = generateAstExpression(while_node['childSets']['condition'][0])
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='logExpressionResultAndStartFrame', ctx=ast.Load())
+    args = [
+        ast.Constant('PYTHON_WHILE_LOOP_ITERATION'),
+        ast.Constant('condition'),
+        condition
+    ]
+    wrapped_condition = ast.Call(func, args=args, keywords=[])
+
     statements = getStatementsFromBlock(while_node['childSets']['block'])
-    return ast.While(condition, statements, [])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='startChildSet', ctx=ast.Load())
+    args = [ast.Constant('block')]
+    call_start_childset = ast.Call(func, args=args, keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='endFrame', ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
+    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
+    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='startFrame', ctx=ast.Load())
+    while_start_frame = ast.Call(func, args=[
+        ast.Constant('PYTHON_WHILE_LOOP'),
+        ast.Constant('frames'),
+    ], keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr='endFrame', ctx=ast.Load())
+    while_end_frame = ast.Call(func, args=[], keywords=[])
+
+    return [
+        ast.Expr(while_start_frame, lineno=1, col_offset=0),
+        ast.While(wrapped_condition, statements, []),
+        ast.Expr(while_end_frame, lineno=1, col_offset=0),
+        ast.Expr(while_end_frame, lineno=1, col_offset=0)
+    ]
 
 def generateForStatement(for_node):
     target = generateAstAssignableExpression(for_node['childSets']['target'][0])
@@ -183,26 +236,93 @@ def generateForStatement(for_node):
 def generateAstStatement(sploot_node):
     if sploot_node['type'] == 'PYTHON_EXPRESSION':
         exp = generateAstExpressionStatement(sploot_node)
-        return exp
+        return [exp]
     elif sploot_node['type'] == 'PYTHON_ASSIGNMENT':
-        return generateAssignmentStatement(sploot_node)
+        return [generateAssignmentStatement(sploot_node)]
     elif sploot_node['type'] == 'PYTHON_IF_STATEMENT':
-        return generateIfStatement(sploot_node)
+        return [generateIfStatement(sploot_node)]
     elif sploot_node['type'] == 'PYTHON_WHILE_LOOP':
         return generateWhileStatement(sploot_node)
     elif sploot_node['type'] == 'PYTHON_FOR_LOOP':
-        return generateForStatement(sploot_node)
+        return [generateForStatement(sploot_node)]
     else:
         print('Error: Unrecognised statement type: ', sploot_node['type'])
         return None
 
 
+class CaptureContext:
+    def __init__(self, type, childset):
+        self.type = type
+        self.blocks = {childset:[]}
+        self.childset = childset
+    
+    def startChildSet(self, childset):
+        self.childset = childset
+        if childset not in self.blocks:
+            self.blocks[childset] = []
+
+    def addStatementResult(self, type, data, sideEffects):
+        self.blocks[self.childset].append({
+            'type': type,
+            'data': data,
+            'sideEffects': sideEffects,
+        })
+
+    def toDict(self):
+        return {
+            "type": self.type,
+            "data": self.blocks,
+        }
+
+class SplootCapture:
+    def __init__(self):
+        self.root = CaptureContext('PYTHON_FILE', 'body')
+        self.stack = [self.root]
+        self.sideEffects = []
+    
+    def logExpressionResultAndStartFrame(self, nodetype, childset, result):
+        self.startFrame(nodetype, childset)
+        self.logExpressionResult(nodetype, {}, result)
+        return result
+
+    def startFrame(self, type, childset):
+        frame = CaptureContext(type, childset)
+        self.stack.append(frame)
+    
+    def startChildSet(self, childset):
+        self.stack[-1].startChildSet(childset)
+        
+    def endFrame(self):
+        frame = self.stack.pop()
+        self.stack[-1].addStatementResult(frame.type, frame.blocks, [])
+    
+    def logSideEffect(self, data):
+        self.sideEffects.append(data)
+
+    def logExpressionResult(self, nodetype, data, result):
+        data['result'] = str(result)
+        data['resultType'] = type(result).__name__
+        self.stack[-1].addStatementResult(nodetype, data, self.sideEffects)        
+        self.sideEffects = []
+        return result
+    
+    def toDict(self):
+        return self.root.toDict()
+
+capture = SplootCapture()
+
 def executePythonFile(tree):
+    global capture
     if (tree['type'] == 'PYTHON_FILE'):
         statements = getStatementsFromBlock(tree['childSets']['body'])
         mods = ast.Module(body=statements, type_ignores=[])
         code = compile(ast.fix_missing_locations(mods), '<string>', mode='exec')
-        exec(code)
+        #print(ast.unparse(ast.fix_missing_locations(mods)))
+        #print()
+        capture = SplootCapture()
+        exec(code, {SPLOOT_KEY: capture})
+        print()
+        print(capture.toDict())
 
 
 if __name__ == '__main__':
@@ -264,6 +384,14 @@ if __name__ == '__main__':
 else:
     import fakeprint # pylint: disable=import-error
     import nodetree # pylint: disable=import-error
+
+    def wrapStdout(write):
+        def f(s):
+            capture.logSideEffect({'type': 'stdout', 'value': str(s)})
+            write(s)
+        return f
+
+    fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
 
     sys.stdout = fakeprint.stdout
     sys.stderr = fakeprint.stdout
