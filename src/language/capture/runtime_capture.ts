@@ -14,6 +14,11 @@ export interface WhileLoopIteration {
     block?: StatementCapture[]
 }
 
+export interface IfStatementData {
+    condition: StatementCapture[],
+    trueblock?: StatementCapture[]
+}
+
 export interface PythonFileData {
     body?: StatementCapture[],
 }
@@ -25,6 +30,6 @@ export interface SingleStatementData {
 
 export interface StatementCapture {
     type: string,
-    data: PythonFileData | WhileLoopData | WhileLoopIteration | SingleStatementData,
+    data: PythonFileData | WhileLoopData | WhileLoopIteration | IfStatementData | SingleStatementData,
     sideEffects?: SideEffect[]
 }

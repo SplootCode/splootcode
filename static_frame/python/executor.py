@@ -213,8 +213,39 @@ def getStatementsFromBlock(blockChildSet):
 
 def generateIfStatement(if_node):
     condition = generateAstExpression(if_node["childSets"]["condition"][0])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(
+        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
+    )
+    args = [
+        ast.Constant("PYTHON_IF_STATEMENT"),
+        ast.Constant("condition"),
+        condition,
+    ]
+    wrapped_condition = ast.Call(func, args=args, keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
     statements = getStatementsFromBlock(if_node["childSets"]["trueblock"])
-    return ast.If(condition, statements, [])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
+    args = [ast.Constant("trueblock")]
+    call_start_childset = ast.Call(func, args=args, keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
+    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
+
+    return [
+        ast.If(wrapped_condition, statements, []),
+        ast.Expr(call_end_frame, lineno=1, col_offset=0),
+    ]
 
 
 def generateWhileStatement(while_node):
@@ -281,7 +312,7 @@ def generateAstStatement(sploot_node):
     elif sploot_node["type"] == "PYTHON_ASSIGNMENT":
         return [generateAssignmentStatement(sploot_node)]
     elif sploot_node["type"] == "PYTHON_IF_STATEMENT":
-        return [generateIfStatement(sploot_node)]
+        return generateIfStatement(sploot_node)
     elif sploot_node["type"] == "PYTHON_WHILE_LOOP":
         return generateWhileStatement(sploot_node)
     elif sploot_node["type"] == "PYTHON_FOR_LOOP":
