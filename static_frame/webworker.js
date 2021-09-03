@@ -1,8 +1,9 @@
-
 importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.0/full/pyodide.js')
 
 let pyodide = null;
 let stdinbuffer = null;
+let rerun = false;
+let readlines = [];
 
 const stdout = {
   write: (s) => {
@@ -16,6 +17,17 @@ const stdout = {
 
 const stdin = {
   readline: () => {
+    if (rerun) {
+      if (readlines.length == 0) {
+        return '';
+      }
+      const val = readlines.shift();
+      postMessage({
+        type: 'stdout',
+        stdout: val,
+      })
+      return val;
+    }
     // Send message to activate input mode
     postMessage({
       type: 'inputMode',
@@ -30,6 +42,10 @@ const stdin = {
     }
     responseStdin = new TextDecoder("utf-8").decode(newStdinData);
     text += responseStdin;
+    postMessage({
+      type: 'inputValue',
+      value: text,
+    })
     return text; //.replace('\r', '\n');
   }
 }
@@ -37,7 +53,7 @@ const stdin = {
 let executorCode = null;
 let nodetree = null;
 
-const run = async () => {
+const run = async (isRerun) => {
   try {
     await pyodide.runPythonAsync(executorCode);
   } catch(err) {
@@ -88,6 +104,14 @@ onmessage = function(e) {
     case 'run':
       nodetree = e.data.nodetree;
       stdinbuffer = new Int32Array(e.data.buffer);
-      run(e.data.nodetree)
+      rerun = false;
+      run();
+      break
+    case 'rerun':
+      nodetree = e.data.nodetree;
+      readlines = e.data.readlines;
+      rerun = true;
+      run();
+      break;
   }
 }

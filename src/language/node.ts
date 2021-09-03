@@ -76,6 +76,11 @@ export class SplootNode {
     console.warn('Runtime capture not supported for type ', this.type)
     return;
   }
+  recursivelyClearRuntimeCapture() {
+    // Default is nothing, only really applies to statement nodes.
+    console.warn('Runtime capture not supported for type ', this.type)
+    return;
+  }
 
   recursivelySetMutations(enable: boolean) {
     this.enableMutations = enable;
@@ -148,7 +153,7 @@ export class SplootNode {
       observer.handleNodeMutation(mutation);
     })
     // Don't fire global mutations for annotation changes;
-    if (mutation.type === NodeMutationType.SET_RUNTIME_ANNOTATION) {
+    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATION) {
       globalMutationDispatcher.handleNodeMutation(mutation);
     }
   }

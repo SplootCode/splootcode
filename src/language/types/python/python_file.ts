@@ -40,9 +40,16 @@ export class PythonFile extends SplootNode {
     const bodyChildren = this.getBody().children;
     const data = capture.data as PythonFileData;
     console.log(`${data.body.length} should match ${bodyChildren.length}`)
-    for (let i = 0; i < data.body.length; i++) {
+    let i = 0;
+    for (; i < data.body.length; i++) {
       bodyChildren[i].recursivelyApplyRuntimeCapture(data.body[i]);
     }
+    if (i < bodyChildren.length) {
+      for (; i < bodyChildren.length; i++) {
+        bodyChildren[i].recursivelyClearRuntimeCapture();
+      }
+    }
+
     return;
   }
 

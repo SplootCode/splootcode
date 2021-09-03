@@ -85,11 +85,19 @@ export class PythonAssignment extends SplootNode {
         .map(sideEffect => sideEffect.value).join('')
       annotation.push(`prints "${stdout}"`);
     }
-    annotation.push(`${this.getLeftAsString()} ← ${formatPythonData(data.result, data.resultType)}`)
+    annotation.push(`${this.getLeftAsString()} = ${formatPythonData(data.result, data.resultType)}`)
     let mutation = new NodeMutation();
       mutation.node = this
       mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
       mutation.annotationValue = annotation;
+    this.fireMutation(mutation);
+  }
+
+  recursivelyClearRuntimeCapture() {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = [];
     this.fireMutation(mutation);
   }
 

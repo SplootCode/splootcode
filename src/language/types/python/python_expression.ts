@@ -103,6 +103,14 @@ export class PythonExpression extends SplootNode {
     this.fireMutation(mutation);
     return;
   }
+
+  recursivelyClearRuntimeCapture() {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = [];
+    this.fireMutation(mutation);
+  }
   
   static register() {
     let typeRegistration = new TypeRegistration();

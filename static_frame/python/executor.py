@@ -471,7 +471,14 @@ else:
 
             return f
 
+        def wrapStdin(readline):
+            def f():
+                runtime_capture.report(json.dumps(capture.toDict()))
+                return readline()
+            return f
+
         fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
+        fakeprint.stdin.readline = wrapStdin(fakeprint.stdin.readline)
 
     sys.stdout = fakeprint.stdout
     sys.stderr = fakeprint.stdout
