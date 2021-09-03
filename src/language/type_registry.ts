@@ -1,4 +1,3 @@
-import { type } from "os";
 import { HighlightColorCategory } from "../layout/colors";
 import { SplootNode } from "./node";
 import { getNodeCategoriesForType, isNodeInCategory, NodeCategory } from "./node_category_registry";

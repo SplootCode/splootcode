@@ -24,25 +24,44 @@ That being said, building a tree-editing interface that's fast, compact and intu
 ### Requirements
 You'll need to have [nodejs](https://nodejs.org/) and [yarn](https://yarnpkg.com/) installed.
 
-### Local Dev Server
-Local dev is set up using webpack-dev-server which includes hot reloading.
-
+### Local Dev
 Install dependencies:
 
-```$ yarn install```
+```
+$ yarn install
+```
 
 Generate type information for built-in Javascript variables and functions.
 
-```$ yarn generate-types```
+```
+$ yarn generate-types
+```
 
-The editor includes an iframe which executes the code as a preview.
-You will need to run the webpack devserver for both the main app and the frame.
 
-```$ yarn start```
+There are two parts to this project, the editor and the runtime which is the iframe which executes the code.
+You will need to build the compiled assests for both the main editor and the frame.
 
-And in a separate terminal:
+```
+$ yarn build && yarn build-frame
+```
 
-```$ yarn start-frame```
+This app depends on firebase, but the tools are installs by yarn. Start the firebase emulator like this:
+```
+$ yarn start
+```
+
+The app should now become availble at `http://localhost:5000`.
+
+If you want to continually rebuild as you change the code, run this (rebuilds the editor only):
+
+```
+$ yarn watch
+```
+
+And in a separate terminal, run this to continually rebuild the frame:
+```
+$ yarn watch-frame
+```
 
 ## License
 If you're planning to use this for commercial purposes, please check the [LICENSE](LICENSE) file. It is not a standard open source license.

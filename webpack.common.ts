@@ -1,11 +1,17 @@
 import path from 'path'
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 
 export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+
+  output: {
+    path: path.resolve('dist'),
+    filename: '[name]-[contenthash].js',
+    clean: true,
   },
 
   entry: {
@@ -36,9 +42,8 @@ export default {
   },
 
   plugins: [
-   
-    new CopyWebpackPlugin([path.resolve('./static/**')]),
-    new CleanWebpackPlugin(),
+    new NodePolyfillPlugin(),
+    new CopyWebpackPlugin({patterns:[path.resolve('./static/**')]}),
     new HtmlWebpackPlugin({
       template: './static/index.html',
     }),

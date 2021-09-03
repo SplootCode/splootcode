@@ -1,15 +1,11 @@
-import path from 'path'
-import webpackMerge from 'webpack-merge';
+import { Configuration } from "webpack";
+import { merge } from 'webpack-merge';
 import common from './webpack.common';
 import Dotenv from 'dotenv-webpack'
 
-module.exports = webpackMerge(common, {
-  mode: 'production',
 
-  output: {
-    path: path.resolve('dist'),
-    filename: '[name]-[contenthash].js',
-  },
+module.exports = merge<Configuration>(common as Configuration, {
+  mode: 'production',
 
   plugins: [
     new Dotenv({safe: true, path: 'staging.env'})

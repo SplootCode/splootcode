@@ -1,13 +1,17 @@
 import path from 'path'
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
-
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 
 export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+
+  output: {
+    path: path.resolve('frame-dist'),
+    filename: '[name]-[contenthash].js',
+    clean: true,
   },
 
   mode: process.env.NODE_ENV || 'development',
@@ -15,6 +19,10 @@ export default {
   entry: {
     splootframeclient: './src/view/index.tsx',
     splootframepythonclient: './src/view/python.tsx',
+    serviceworker: {
+      import: './src/serviceworker/serviceworker.ts',
+      filename: 'sw.js' // Service worker needs a consistent file name.
+    }
   },
 
   optimization: {
@@ -37,15 +45,12 @@ export default {
   },
 
   plugins: [
-    new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, 'src/serviceworker/serviceworker.ts'),
+    new NodePolyfillPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        path.resolve('./static_frame/**'),
+      ]
     }),
-    new CopyWebpackPlugin([
-      path.resolve('./static_frame/**'),
-      path.resolve('./src/view/splootframeclient.html'),
-      path.resolve('./src/view/splootframepythonclient.html')
-    ]),
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/view/splootframeclient.html',
       filename: 'splootframeclient.html',

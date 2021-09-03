@@ -1,5 +1,4 @@
 import 'tslib'
-import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 export enum FrameState {
   DEAD = 0,
@@ -68,7 +67,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', handleMessageFromServiceWorker);
   window.addEventListener('load', function() {
     window.addEventListener("message", handleMessage, false);
-    runtime.register().then(function(registration: ServiceWorkerRegistration) {
+    navigator.serviceWorker.register('/sw.js').then(function(registration: ServiceWorkerRegistration) {
       serviceWorkerRegistration = registration;
       serviceWorkerRegistration.update();
       if (registration.installing) {
