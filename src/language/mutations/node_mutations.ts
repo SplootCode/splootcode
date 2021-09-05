@@ -12,4 +12,5 @@ export class NodeMutation {
   property: string;
   value: string;
   annotationValue: string[];
+  iterationCount: number;
 }

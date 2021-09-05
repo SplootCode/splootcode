@@ -6,7 +6,6 @@ import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNod
 import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
 import { getGlobalScope, Scope } from "./scope/scope";
 import { StatementCapture } from "./capture/runtime_capture";
-import { reduceEachTrailingCommentRange } from "typescript";
 
 export class ParentReference {
   node: SplootNode;
@@ -31,6 +30,7 @@ export class SplootNode {
   enableMutations: boolean;
   mutationObservers: NodeObserver[];
   scope: Scope;
+  isLoop: boolean;
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent;
@@ -41,6 +41,7 @@ export class SplootNode {
     this.enableMutations = false;
     this.mutationObservers = [];
     this.scope = null;
+    this.isLoop = false;
   }
 
   get hasChildSets(): boolean {
@@ -67,8 +68,11 @@ export class SplootNode {
     // Variable declarations and named function declarations will do this.
   }
 
+  selectRuntimeCaptureFrame(index: number) {
+    console.warn(`Capture frames not supported for node type ${this.type}`);
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
-    console.log(this.type, capture);
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
     }

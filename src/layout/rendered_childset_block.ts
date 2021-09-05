@@ -302,7 +302,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.width += 22; // Space for brackets
     }
     if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
-      this.height += 20;
+      this.height += NODE_BLOCK_HEIGHT;
     }
   }
 

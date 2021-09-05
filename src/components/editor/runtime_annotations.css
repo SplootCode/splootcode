@@ -1,0 +1,44 @@
+
+.annotation {
+    fill: var(--editor-connector-label);
+    font-size: 10pt;
+    pointer-events: none;
+}
+
+.loop-annotation-dot {
+    fill: white;
+}
+
+.loop-annotation-dot.selected {
+    fill: blue;
+}
+
+.slider-track {
+    fill: var(--editor-connector-label);
+}
+
+.slider-fill {
+    fill: white;
+    transition: width 0.5s;
+}
+
+.slider-handle {
+    fill: white;
+    transition: cx 0.5s;
+}
+
+.slider-background {
+    fill: transparent;
+}
+
+.slider-button {
+    fill: var(--editor-node-block-fill);
+}
+
+.slider-button-label {
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

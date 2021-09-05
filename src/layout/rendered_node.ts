@@ -17,6 +17,7 @@ import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;
 export const NODE_BLOCK_HEIGHT = 30;
+export const LOOP_ANNOTATION_HEIGHT = 12;
 const INDENT = 30;
 
 export class RenderedParentRef {
@@ -77,9 +78,15 @@ export class NodeBlock implements NodeObserver {
   indentedBlockHeight: number;
   @observable
   marginLeft: number;
+  @observable
+  marginTop: number;
 
   @observable
   runtimeAnnotation: string[];
+  @observable
+  runtimeIterations: number;
+  @observable
+  runtimeCaptureFrame: number;
 
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
     this.parentChildSet = parentListBlock;
@@ -91,6 +98,7 @@ export class NodeBlock implements NodeObserver {
     this.textColor = getColour(this.layout.color)
     this.node = node;
     this.runtimeAnnotation = [];
+    this.runtimeCaptureFrame = 0;
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
       this.node.registerObserver(this);
@@ -138,10 +146,6 @@ export class NodeBlock implements NodeObserver {
     }
   }
 
-  getRuntimeAnnotation() : string[] {
-    return this.runtimeAnnotation;
-  }
-
   updateLayout() {
     let nodeLayout = this.node.getNodeLayout();
     for (let component  of nodeLayout.components) {
@@ -154,11 +158,15 @@ export class NodeBlock implements NodeObserver {
   }
 
   calculateDimensions(x: number, y: number, selection: NodeSelection) {
+    this.marginTop = 0;
+    if (this.node.isLoop) {
+      this.marginTop = LOOP_ANNOTATION_HEIGHT;
+    }
     this.x = x;
     this.y = y;
     const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING;
     this.blockWidth = nodeInlineSpacing + 2;
-    this.rowHeight = NODE_BLOCK_HEIGHT;
+    this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop;
     this.indentedBlockHeight = 0;
     this.renderedInlineComponents = []; // TODO: Find a way to avoid recreating this every time.
 
@@ -190,57 +198,57 @@ export class NodeBlock implements NodeObserver {
       }
       else if (component.type === LayoutComponentType.CHILD_SET_TREE) {
         let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y, selection);
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
         let width = 10;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
 
         if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
           // This minus 8 here accounts for the distance from the dot to the edge of the node.
           // This is dumb tbh.
           marginRight += Math.max(childSetBlock.width - 8, 0);
         } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
         }
       }
       else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
         let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y, selection);
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
         let width = 10;
         this.blockWidth += width;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
 
         if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
           // This minus 8 here accounts for the distance from the dot to the edge of the node.
           // This is dumb tbh.
           marginRight += Math.max(childSetBlock.width - 8, 0);
         } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
         }
       }
       else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
         let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y, selection);
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
         let width = childSetBlock.width + nodeInlineSpacing;
         leftPos += width;
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
         this.blockWidth += width;
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
       }
       else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(x, y, selection);
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection);
         this.marginLeft += childSetBlock.width;
         leftPos += childSetBlock.width;
       }
       else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos + 2, y, selection);
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+        childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection);
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
         marginRight += childSetBlock.width + 8; // Extra for line and brackets
       }
       else {
@@ -253,10 +261,10 @@ export class NodeBlock implements NodeObserver {
 
     if (this.node.type === SPLOOT_EXPRESSION || this.node.type === PYTHON_EXPRESSION) {
       let childSetBlock = this.renderedChildSets['tokens'];
-      childSetBlock.calculateDimensions(x, y, selection);
+      childSetBlock.calculateDimensions(x, y + this.marginTop, selection);
       marginRight = this.renderedChildSets['tokens'].width;
       this.blockWidth = 0;
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
     } else if (selection !== null) {
       selection.cursorMap.registerCursorStart(this.parentChildSet, this.index, x + this.marginLeft, y, false);
     }
@@ -267,8 +275,15 @@ export class NodeBlock implements NodeObserver {
     // TODO: Handle validation UI changes here.
     if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATION) {
       this.runtimeAnnotation = nodeMutation.annotationValue;
+      this.runtimeIterations = nodeMutation.iterationCount;
     }
   }
+
+  selectRuntimeCaptureFrame(idx: number) {
+    this.runtimeCaptureFrame = idx;
+    this.node.selectRuntimeCaptureFrame(idx);
+  }
+
 
   getNextInsertAfterThisNode() : NodeCursor {
     if (this.parentChildSet === null) {
