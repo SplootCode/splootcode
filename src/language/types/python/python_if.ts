@@ -62,7 +62,19 @@ export class PythonIfStatement extends SplootNode {
     // });
   }
 
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = [capture.exceptionType, capture.exceptionMessage];
+    this.fireMutation(mutation);
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      return;
+    }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
     }

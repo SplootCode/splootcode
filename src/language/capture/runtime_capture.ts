@@ -30,6 +30,8 @@ export interface SingleStatementData {
 
 export interface StatementCapture {
     type: string,
-    data: PythonFileData | WhileLoopData | WhileLoopIteration | IfStatementData | SingleStatementData,
-    sideEffects?: SideEffect[]
+    data?: PythonFileData | WhileLoopData | WhileLoopIteration | IfStatementData | SingleStatementData,
+    sideEffects?: SideEffect[],
+    exceptionType?: string,
+    exceptionMessage?: string,
 }

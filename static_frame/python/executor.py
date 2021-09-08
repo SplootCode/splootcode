@@ -1,7 +1,7 @@
 import ast
 import sys
 import json
-import os
+import traceback
 
 
 SPLOOT_KEY = "__spt__"
@@ -342,6 +342,19 @@ class CaptureContext:
             }
         )
 
+    def addExceptionResult(self, exceptionType, message):
+        self.blocks[self.childset].append(
+            {
+                "type": "EXCEPTION",
+                "exceptionType": exceptionType,
+                "exceptionMessage": message,
+            }
+        )
+
+    def checkFrameLimit(self):
+        if iterationLimit and len(self.blocks[self.childset]) > iterationLimit:
+            raise Exception('Too many iterations.')
+
     def toDict(self):
         return {
             "type": self.type,
@@ -362,6 +375,8 @@ class SplootCapture:
 
     def startFrame(self, type, childset):
         frame = CaptureContext(type, childset)
+        self.stack[-1].checkFrameLimit()
+        self.stack[-1].addStatementResult(frame.type, frame.blocks, [])
         self.stack.append(frame)
 
     def startChildSet(self, childset):
@@ -369,7 +384,6 @@ class SplootCapture:
 
     def endFrame(self):
         frame = self.stack.pop()
-        self.stack[-1].addStatementResult(frame.type, frame.blocks, [])
 
     def logSideEffect(self, data):
         self.sideEffects.append(data)
@@ -381,6 +395,9 @@ class SplootCapture:
         self.sideEffects = []
         return result
 
+    def logException(self, exceptionType, message):
+        self.stack[-1].addExceptionResult(exceptionType, message)
+
     def toDict(self):
         return self.root.toDict()
 
@@ -391,13 +408,26 @@ capture = None
 def executePythonFile(tree):
     global capture
     if tree["type"] == "PYTHON_FILE":
-        statements = getStatementsFromBlock(tree["childSets"]["body"])
-        mods = ast.Module(body=statements, type_ignores=[])
-        code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
+        try:
+            statements = getStatementsFromBlock(tree["childSets"]["body"])
+            mods = ast.Module(body=statements, type_ignores=[])
+            code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
+        except:
+            # TODO: Nice handling when the AST build fails.
+            # Currently relying on the JS to check validity.
+            return None
         # print(ast.unparse(ast.fix_missing_locations(mods)))
         # print()
         capture = SplootCapture()
-        exec(code, {SPLOOT_KEY: capture})
+        try:
+            exec(code, {SPLOOT_KEY: capture})
+        except EOFError as e:
+            # This is because we don't have inputs in a rerun.
+            capture.logException(type(e).__name__, str(e))
+        except BaseException as e:
+            capture.logException(type(e).__name__, str(e))
+            traceback.print_exc()
+
         return capture.toDict()
 
 
@@ -497,9 +527,9 @@ else:
     except NameError:
         def wrapStdout(write):
             def f(s):
-                capture.logSideEffect({"type": "stdout", "value": str(s)})
+                if capture:
+                    capture.logSideEffect({"type": "stdout", "value": str(s)})
                 write(s)
-
             return f
 
         def wrapStdin(readline):
@@ -516,5 +546,7 @@ else:
     sys.stdin = fakeprint.stdin
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
+    iterationLimit = nodetree.getIterationLimit()
     cap = executePythonFile(tree)
-    runtime_capture.report(json.dumps(cap))
+    if cap:
+        runtime_capture.report(json.dumps(cap))

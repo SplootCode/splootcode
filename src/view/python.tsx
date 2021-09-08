@@ -73,7 +73,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   run = async () => {
+    this.resolveActiveRead();
     this.term.clear();
+    this.wasmTty.clearTty();
     this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT);
     this.stdinbufferInt = new Int32Array(this.stdinbuffer);
     this.stdinbufferInt[0] = -1;
@@ -87,6 +89,8 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   rerun = async () => {
+    this.resolveActiveRead();
+    this.wasmTty.clearTty();
     this.term.clear();
     this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT);
     this.stdinbufferInt = new Int32Array(this.stdinbuffer);
@@ -94,6 +98,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     this.worker.postMessage({
       type: 'rerun',
       nodetree: this.state.nodeTree,
+      buffer: this.stdinbuffer,
       readlines: this.inputRecord,
     })
     this.setState({running: true})
@@ -178,6 +183,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   resolveActiveRead() {
     // Abort the read if we were reading
+    if (this._activeInput) {
+      this.term.write('\r\n');
+    }
     this._activeInput = false;
   }
 

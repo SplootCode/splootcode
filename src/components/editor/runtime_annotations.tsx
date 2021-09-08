@@ -26,7 +26,7 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
     // Loops always have frames, even if it's just to evaluate the condition, and the body is never run.
     if (frames > 0) {
       const frameArray = Array.from(Array(frames).keys())
-      const label = `Runs ${frames-1} times`;
+      const label = `Ran ${frames-1} times`;
       const dotX = block.x + 6 + stringWidth(label);
       const selected = (block.runtimeCaptureFrame > frames - 1 || block.runtimeCaptureFrame === -1)? frames - 1 : block.runtimeCaptureFrame;
       const width = Math.min((frames - 1) * 10, 200);

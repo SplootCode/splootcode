@@ -17,10 +17,7 @@ const stdout = {
 
 const stdin = {
   readline: () => {
-    if (rerun) {
-      if (readlines.length == 0) {
-        return '';
-      }
+    if (rerun && readlines.length != 0) {
       const val = readlines.shift();
       postMessage({
         type: 'stdout',
@@ -53,7 +50,7 @@ const stdin = {
 let executorCode = null;
 let nodetree = null;
 
-const run = async (isRerun) => {
+const run = async () => {
   try {
     await pyodide.runPythonAsync(executorCode);
   } catch(err) {
@@ -82,6 +79,12 @@ const initialise = async () => {
   pyodide.registerJsModule('nodetree', {
     getNodeTree: () => {
       return pyodide.toPy(getNodeTree());
+    },
+    getIterationLimit: () => {
+      if (rerun) {
+        return pyodide.toPy(10000);
+      }
+      return pyodide.toPy(0);
     }
   });
   pyodide.registerJsModule('runtime_capture', {
@@ -109,6 +112,7 @@ onmessage = function(e) {
       break
     case 'rerun':
       nodetree = e.data.nodetree;
+      stdinbuffer = new Int32Array(e.data.buffer);
       readlines = e.data.readlines;
       rerun = true;
       run();
