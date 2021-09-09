@@ -1,6 +1,8 @@
 import { HighlightColorCategory } from "../../../layout/colors"
+import { SingleStatementData, StatementCapture } from "../../capture/runtime_capture"
 import { ChildSetType } from "../../childset"
 import { VariableDefinition } from "../../lib/loader"
+import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations"
 import { ParentReference, SplootNode } from "../../node"
 import {
   NodeCategory,
@@ -18,6 +20,7 @@ import {
 } from "../../type_registry"
 import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from "./declared_identifier"
 import { PythonExpression } from "./python_expression"
+import { formatPythonData } from "./utils"
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT';
 
@@ -60,6 +63,54 @@ export class PythonAssignment extends SplootNode {
         type: {type: 'any'},
       } as VariableDefinition);
     }
+  }
+
+  getLeftAsString() : string {
+    let identifierChildSet = this.getLeft();
+    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
+      return (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName();
+    }
+    return '';
+  }
+
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = [capture.exceptionType, capture.exceptionMessage];
+    this.fireMutation(mutation);
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    if (capture.type == 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      return 
+    }
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
+    const data = capture.data as SingleStatementData;
+    const annotation = [];
+    if (capture.sideEffects.length > 0) {
+      const stdout = capture.sideEffects
+        .filter(sideEffect => sideEffect.type === 'stdout')
+        .map(sideEffect => sideEffect.value).join('')
+      annotation.push(`prints "${stdout}"`);
+    }
+    annotation.push(`${this.getLeftAsString()} = ${formatPythonData(data.result, data.resultType)}`)
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = annotation;
+    this.fireMutation(mutation);
+  }
+
+  recursivelyClearRuntimeCapture() {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = [];
+    this.fireMutation(mutation);
   }
 
   static deserializer(serializedNode: SerializedNode) : PythonAssignment {

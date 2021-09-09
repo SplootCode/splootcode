@@ -1,8 +1,9 @@
-
 importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.0/full/pyodide.js')
 
 let pyodide = null;
 let stdinbuffer = null;
+let rerun = false;
+let readlines = [];
 
 const stdout = {
   write: (s) => {
@@ -16,6 +17,14 @@ const stdout = {
 
 const stdin = {
   readline: () => {
+    if (rerun && readlines.length != 0) {
+      const val = readlines.shift();
+      postMessage({
+        type: 'stdout',
+        stdout: val,
+      })
+      return val;
+    }
     // Send message to activate input mode
     postMessage({
       type: 'inputMode',
@@ -30,6 +39,10 @@ const stdin = {
     }
     responseStdin = new TextDecoder("utf-8").decode(newStdinData);
     text += responseStdin;
+    postMessage({
+      type: 'inputValue',
+      value: text,
+    })
     return text; //.replace('\r', '\n');
   }
 }
@@ -66,6 +79,20 @@ const initialise = async () => {
   pyodide.registerJsModule('nodetree', {
     getNodeTree: () => {
       return pyodide.toPy(getNodeTree());
+    },
+    getIterationLimit: () => {
+      if (rerun) {
+        return pyodide.toPy(10000);
+      }
+      return pyodide.toPy(0);
+    }
+  });
+  pyodide.registerJsModule('runtime_capture', {
+    report: (json_dump) => {
+      postMessage({
+        type: 'runtime_capture',
+        capture: json_dump,
+      })
     }
   });
   postMessage({
@@ -80,6 +107,15 @@ onmessage = function(e) {
     case 'run':
       nodetree = e.data.nodetree;
       stdinbuffer = new Int32Array(e.data.buffer);
-      run(e.data.nodetree)
+      rerun = false;
+      run();
+      break
+    case 'rerun':
+      nodetree = e.data.nodetree;
+      stdinbuffer = new Int32Array(e.data.buffer);
+      readlines = e.data.readlines;
+      rerun = true;
+      run();
+      break;
   }
 }

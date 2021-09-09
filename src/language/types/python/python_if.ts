@@ -5,6 +5,9 @@ import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, reg
 import { SuggestedNode } from "../../suggested_node";
 import { HighlightColorCategory } from "../../../layout/colors";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
+import { IfStatementData, SingleStatementData, StatementCapture } from "../../capture/runtime_capture";
+import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations";
+import { formatPythonData } from "./utils";
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT';
 
@@ -58,6 +61,68 @@ export class PythonIfStatement extends SplootNode {
     //   }
     // });
   }
+
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = [capture.exceptionType, capture.exceptionMessage];
+    this.fireMutation(mutation);
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      return;
+    }
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
+    const data = capture.data as IfStatementData;
+    const condition = data.condition[0]
+    const conditionData = condition.data as SingleStatementData;
+
+    const annotation = [];
+    if (condition.sideEffects.length > 0) {
+      const stdout = condition.sideEffects
+        .filter(sideEffect => sideEffect.type === 'stdout')
+        .map(sideEffect => sideEffect.value).join('')
+      annotation.push(`prints "${stdout}"`);
+    }
+    annotation.push(`→ ${formatPythonData(conditionData.result, conditionData.resultType)}`)
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = annotation;
+    this.fireMutation(mutation);
+
+    if (data.trueblock) {
+      const trueBlockChildren = this.getTrueBlock().children;
+      const trueBlockData = data.trueblock;
+      let i = 0;
+      for (; i < trueBlockData.length; i++) {
+        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i]);
+      }
+      if (i < trueBlockChildren.length) {
+        for (; i < trueBlockChildren.length; i++) {
+          trueBlockChildren[i].recursivelyClearRuntimeCapture();
+        }
+      }
+    }
+  }
+
+  recursivelyClearRuntimeCapture() {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = [];
+    this.fireMutation(mutation);
+    let blockChildren = this.getTrueBlock().children;
+    for (let i = 0; i < blockChildren.length; i++) {
+      blockChildren[i].recursivelyClearRuntimeCapture();
+    }
+  }
+
 
   static deserializer(serializedNode: SerializedNode) : PythonIfStatement {
     let node = new PythonIfStatement(null);

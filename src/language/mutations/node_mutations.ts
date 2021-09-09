@@ -3,6 +3,7 @@ import { SplootNode } from "../node"
 
 export enum NodeMutationType {
   SET_PROPERTY,
+  SET_RUNTIME_ANNOTATION,
 }
 
 export class NodeMutation {
@@ -10,4 +11,6 @@ export class NodeMutation {
   type: NodeMutationType;
   property: string;
   value: string;
+  annotationValue: string[];
+  iterationCount: number;
 }

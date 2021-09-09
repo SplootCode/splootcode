@@ -44,6 +44,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   private stdinbufferInt : Int32Array;
   private _activeInput : boolean;
   private wasmTty : WasmTTY;
+  private inputRecord : string[];
 
   constructor(props) {
     super(props);
@@ -51,6 +52,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     this.worker = null;
     this._activeInput = false;
     this.wasmTty = null;
+    this.inputRecord = [];
     this.state = {
       ready: false,
       running: false,
@@ -71,14 +73,33 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   run = async () => {
+    this.resolveActiveRead();
+    this.term.clear();
+    this.wasmTty.clearTty();
+    this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT);
+    this.stdinbufferInt = new Int32Array(this.stdinbuffer);
+    this.stdinbufferInt[0] = -1;
+    this.inputRecord = [];
+    this.worker.postMessage({
+      type: 'run',
+      nodetree: this.state.nodeTree,
+      buffer: this.stdinbuffer,
+    })
+    this.setState({running: true})
+  }
+
+  rerun = async () => {
+    this.resolveActiveRead();
+    this.wasmTty.clearTty();
     this.term.clear();
     this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT);
     this.stdinbufferInt = new Int32Array(this.stdinbuffer);
     this.stdinbufferInt[0] = -1;
     this.worker.postMessage({
-      type: 'run',
+      type: 'rerun',
       nodetree: this.state.nodeTree,
       buffer: this.stdinbuffer,
+      readlines: this.inputRecord,
     })
     this.setState({running: true})
   }
@@ -101,14 +122,23 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       this.wasmTty.print(event.data.stdout)
     } else if (type === 'inputMode') {
       this.activateInputMode();
+    } else if (type === 'inputValue') {
+      this.recordInput(event.data.value);
     } else if (type === 'finished') {
       this.setState({running: false})
+    } else if (type === 'runtime_capture') {
+      // Pass on capture info to the parent window.
+      sendToParent(event.data);
     }
   }
 
   activateInputMode = () => {
     this._activeInput = true;
     this.wasmTty.read();
+  }
+
+  recordInput = (s: string) => {
+    this.inputRecord.push(s);
   }
 
   handleTermData = (data: string) => {
@@ -153,6 +183,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   resolveActiveRead() {
     // Abort the read if we were reading
+    if (this._activeInput) {
+      this.term.write('\r\n');
+    }
     this._activeInput = false;
   }
 
@@ -325,6 +358,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           nodeTreeLoaded: true,
         })
         sendToParent({type: 'heartbeat', data: {state: FrameState.LIVE}});
+        if (this.state.ready && !this.state.running) {
+          this.rerun();
+        }
         break;
       default:
         console.warn('Unrecognised message recieved:', event.data);

@@ -4,6 +4,7 @@
     "watch-frame": "yarn webpack --config frameview.webpack.dev.ts --watch",
     "start": "yarn firebase emulators:start",
     "build": "yarn webpack --config webpack.dev.ts",
+    "build-frame": "yarn webpack --config frameview.webpack.dev.ts",
     "build-staging": "yarn webpack --config webpack.staging.ts && yarn webpack --config ./frameview.webpack.staging.ts",
     "build-prod": "yarn webpack --config webpack.prod.ts && yarn webpack --config ./frameview.webpack.prod.ts",
     "deploy-staging": "yarn build-staging && yarn firebase deploy -P ${SPLOOT_STAGING_PROJECT}",

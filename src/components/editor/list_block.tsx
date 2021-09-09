@@ -7,6 +7,7 @@ import { NodeSelection, NodeSelectionState } from "../../context/selection"
 import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
 import { NodeBlock } from "../../layout/rendered_node"
 import { EditorNodeBlock } from "./node_block"
+import { RuntimeAnnotation } from "./runtime_annotations"
 
 interface ExpandedListBlockViewProps {
   block: RenderedChildSetBlock;
@@ -69,6 +70,7 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
                   selection={this.props.selection}
                   selectionState={selectionState}
               />
+              <RuntimeAnnotation nodeBlock={nodeBlock}/>
             </React.Fragment>
           );
           topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight;

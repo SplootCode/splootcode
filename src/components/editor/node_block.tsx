@@ -17,6 +17,7 @@ import { ExpandedListBlockView, InlineListBlockView } from "./list_block"
 import { InlineProperty } from "./property"
 import { InlineStringLiteral } from "./string_literal"
 import { TreeListBlockBracketsView, TreeListBlockView } from "./tree_list_block"
+import { LoopAnnotation } from "./runtime_annotations"
 
 interface NodeBlockProps {
   block: NodeBlock;
@@ -89,11 +90,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
 
     let width = block.blockWidth;
     let leftPos = block.x + block.marginLeft;
-    let topPos = block.y;
+    let topPos = block.y + block.marginTop;
     let internalLeftPos = leftPos + 10;
 
     if (block.node.type === SPLOOT_EXPRESSION || block.node.type === PYTHON_EXPRESSION) {
       return <SplootExpressionView block={block} selection={selection} selectionState={selectionState}/>
+    }
+
+    let loopAnnotation = null;
+    if (block.node.isLoop) {
+      loopAnnotation = <LoopAnnotation nodeBlock={block}/>
     }
 
     let shape : ReactElement;
@@ -118,6 +124,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
 
     return  <g>
         { this.renderLeftAttachedBreadcrumbsChildSet() }
+        { loopAnnotation }
         { shape }
         {
           block.renderedInlineComponents.map((renderedComponent: RenderedInlineComponent, idx: number) => {
@@ -159,7 +166,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         }
         { this.renderRightAttachedChildSet() }
         { block.indentedBlockHeight > 0 ? 
-        <line x1={leftPos + 6} y1={topPos + 34} x2={leftPos + 6} y2={topPos - 8 + block.indentedBlockHeight + block.rowHeight} className={"indented-rule " + (isSelected ? "selected" : "")} /> : null }
+        <line x1={leftPos + 6} y1={block.y + block.rowHeight + 4} x2={leftPos + 6} y2={block.y + block.rowHeight + block.indentedBlockHeight} className={"indented-rule " + (isSelected ? "selected" : "")} /> : null }
         {
           block.layout.components.map((layoutComponent: LayoutComponent, idx: number) => {
             if (layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {

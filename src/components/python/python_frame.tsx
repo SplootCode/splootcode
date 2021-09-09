@@ -1,5 +1,6 @@
 import { observer } from "mobx-react"
 import React, { Component } from "react"
+import { StatementCapture } from "../../language/capture/runtime_capture"
 
 import { ChildSetMutation } from "../../language/mutations/child_set_mutations"
 import { globalMutationDispatcher } from "../../language/mutations/mutation_dispatcher"
@@ -142,11 +143,25 @@ export class PythonFrame extends Component<ViewPageProps> {
       case 'loaded':
         this.lastHeartbeatTimestamp = new Date();
         break;
+      case 'runtime_capture':
+        let capture = JSON.parse(event.data.capture) as StatementCapture;
+        this.updateRuntimeCapture(capture);
+        break;
       default:
         console.warn('Unknown event from frame: ', event);
     }
   }
 
+  updateRuntimeCapture(capture : StatementCapture) {
+    // TODO: handle mutliple python files or different names.
+    const filename = 'main.py'
+    this.props.pkg.getLoadedFile(filename).then(file => {
+      file.rootNode.recursivelyApplyRuntimeCapture(capture);
+    }).catch(err => {
+      console.warn(err);
+      console.warn(`Failed to apply runtime capture`)
+    });
+  }
   
   sendHeartbeatRequest() {
     let payload = {type: 'heartbeat'};

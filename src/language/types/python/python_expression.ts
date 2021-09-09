@@ -1,5 +1,7 @@
 import { HighlightColorCategory } from "../../../layout/colors"
+import { SingleStatementData, StatementCapture } from "../../capture/runtime_capture"
 import { ChildSetType } from "../../childset"
+import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations"
 import { ParentReference, SplootNode } from "../../node"
 import {
   getAutocompleteFunctionsForCategory,
@@ -16,6 +18,7 @@ import {
   SerializedNode,
   TypeRegistration,
 } from "../../type_registry"
+import { formatPythonData } from "./utils"
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION';
 
@@ -76,6 +79,49 @@ export class PythonExpression extends SplootNode {
     let res = new PythonExpression(null);
     res.deserializeChildSet('tokens', serializedNode);
     return res;
+  }
+
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+      mutation.annotationValue = [capture.exceptionType, capture.exceptionMessage];
+    this.fireMutation(mutation);
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      return;
+    }
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
+    const data = capture.data as SingleStatementData;
+    const annotation = [];
+    if (capture.sideEffects.length > 0) {
+      const stdout = capture.sideEffects
+        .filter(sideEffect => sideEffect.type === 'stdout')
+        .map(sideEffect => sideEffect.value).join('').replace('\n', '')
+      annotation.push(`prints "${stdout}"`);
+    }
+    if (annotation.length == 0 || data.resultType != 'NoneType') {
+      annotation.push(`→ ${formatPythonData(data.result, data.resultType)}`)
+    }
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = annotation;
+    this.fireMutation(mutation);
+    return;
+  }
+
+  recursivelyClearRuntimeCapture() {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
+    mutation.annotationValue = [];
+    this.fireMutation(mutation);
   }
   
   static register() {
