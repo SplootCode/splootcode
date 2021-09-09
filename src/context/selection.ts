@@ -74,7 +74,7 @@ export class NodeSelection {
 
   updateRenderPositions() {
     this.cursorMap = new CursorMap();
-    this.rootNode.calculateDimensions(-10, -30, this);
+    this.rootNode.calculateDimensions(-10, -20, this);
   }
 
   @observable

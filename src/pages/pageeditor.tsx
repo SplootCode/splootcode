@@ -13,7 +13,6 @@ import { loadExampleProject, loadProject, saveProject } from '../code_io/project
 import { SplootFile } from '../language/projects/file';
 import { SplootPackage } from '../language/projects/package';
 import { LoadProjectModal } from '../components/load_modal';
-import { RiFileAddLine } from "react-icons/ri";
 
 
 import './pageeditor.css';
