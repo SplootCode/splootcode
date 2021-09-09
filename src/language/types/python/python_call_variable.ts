@@ -19,7 +19,8 @@ class Generator implements SuggestionGenerator {
     let scope = parent.node.getScope();
     let suggestions = scope.getAllFunctionDefinitions().map((funcDef: FunctionDefinition) => {
       let funcName = funcDef.name;
-      let newCall = new PythonCallVariable(null, funcName, funcDef.type?.parameters?.length || 0);
+      let argCount = funcDef.type?.parameters?.length || 1;
+      let newCall = new PythonCallVariable(null, funcName, argCount);
       let doc = funcDef.documentation;
       if (!doc) {
         doc = "";
@@ -31,7 +32,7 @@ class Generator implements SuggestionGenerator {
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     let varName = sanitizeIdentifier(textInput);
-    let newVar = new PythonCallVariable(null, varName);
+    let newVar = new PythonCallVariable(null, varName, 1);
     if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
       return [];
     }
@@ -73,8 +74,10 @@ export class PythonCallVariable extends SplootNode {
   }
 
   clean() {
+    const numArgs = this.getArguments().children.length;
     this.getArguments().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
+      // Don't remove the first argument - leave the brackets there.
+      if (!(index == 0 && numArgs == 1) && child.type === PYTHON_EXPRESSION) {
         if ((child as PythonExpression).getTokenSet().getCount() === 0) {
           this.getArguments().removeChild(index);
         }

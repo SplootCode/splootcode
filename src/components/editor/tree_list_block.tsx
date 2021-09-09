@@ -3,7 +3,7 @@ import "./tree_list_block.css"
 import { observer } from "mobx-react"
 import React from "react"
 
-import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { NodeSelection } from "../../context/selection"
 import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
 import { NodeBlock } from "../../layout/rendered_node"
 import { EditorNodeBlock } from "./node_block"
@@ -17,8 +17,7 @@ interface TreeListBlockViewProps {
 @observer
 export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
   render() {
-    let {isSelected, block, selection} = this.props;
-    let isLastInlineComponent = block.isLastInlineComponent;
+    let {isSelected, block} = this.props;
     let leftPos = block.x;
     let topPos = block.y;
 
@@ -32,7 +31,6 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
         {
           block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
             let selectionState = block.getChildSelectionState(idx);
-            let insertBefore = block.isInsert(idx);
             let line = null;
             let label = null;
             if (labels.length > idx) {
@@ -65,14 +63,11 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
 @observer
 export class TreeListBlockBracketsView extends React.Component<TreeListBlockViewProps> {
   render() {
-    let {isSelected, block, selection} = this.props;
+    let {isSelected, block} = this.props;
     let isLastInlineComponent = block.isLastInlineComponent;
-    let className = isSelected ? 'selected' : '';
     let leftPos = block.x;
     let topPos = block.y;
 
-    let nodeCount = block.nodes.length;
-    let allowInsert = block.allowInsert();
     let connectorClass = "tree-connector " + (isSelected ? "selected" : "");
     let labelClass = "tree-label " + (isSelected ? "selected" : "");
     let anchorClass = "svg-anchor-dot " + (isSelected ? "selected" : "");
@@ -84,7 +79,6 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
           isLastInlineComponent ?
             block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
               let selectionState = block.getChildSelectionState(idx);
-              let insertBefore = block.isInsert(idx);
               let line = null;
               let label = null;
               if (labels.length > idx) {
@@ -112,7 +106,6 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
           :
             block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
               let selectionState = block.getChildSelectionState(idx);
-              let insertBefore = block.isInsert(idx);
               let line = null;
               topPos += nodeBlock.rowHeight;
               line = <path className={connectorClass} d={"M " + (leftPos + 8) + " " + (topPos - 18) + " v 34 h 9"} fill="transparent"/>

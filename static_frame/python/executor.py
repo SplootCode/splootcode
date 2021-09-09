@@ -11,7 +11,9 @@ def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
         args = []
         for argExp in node["childSets"]["arguments"]:
-            args.append(generateAstExpression(argExp))
+            exp = generateAstExpression(argExp)
+            if exp is not None:
+                args.append(generateAstExpression(argExp))
         varName = node["properties"]["identifier"]
         return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=[])
     elif node["type"] == "STRING_LITERAL":

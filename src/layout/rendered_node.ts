@@ -289,7 +289,7 @@ export class NodeBlock implements NodeObserver {
     if (this.parentChildSet === null) {
       return null;
     }
-    if (this.parentChildSet.allowInsert() && this.index < this.parentChildSet.nodes.length) {
+    if (this.parentChildSet.allowInsertCursor() && this.index < this.parentChildSet.nodes.length) {
       return new NodeCursor(this.parentChildSet, this.index + 1);
     }
     return this.parentChildSet.getNextInsertCursorInOrAfterNode(this.index + 1);

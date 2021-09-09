@@ -132,7 +132,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
     if (this.componentType === LayoutComponentType.CHILD_SET_INLINE) {
       let leftPos = x;
-      if (selection !== null && this.allowInsert()) {
+      if (selection !== null && this.allowInsertCursor()) {
         selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true);
       }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
@@ -145,7 +145,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         leftPos += childNodeBlock.rowWidth;
         this.width += childNodeBlock.rowWidth;
         this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight);
-        if (selection !== null && this.allowInsert()) {
+        if (selection !== null && this.allowInsertCursor()) {
           selection.cursorMap.registerCursorStart(this, idx + 1, leftPos, y, true);
         }
       })
@@ -414,7 +414,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   @observable
-  allowInsert() : boolean {
+  allowInsertCursor() : boolean {
+    if (this.componentType === LayoutComponentType.CHILD_SET_TREE || this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+      return false;
+    }
     return this.childSet.type === ChildSetType.Many || (this.childSet.getCount() === 0)
   }
 
@@ -430,7 +433,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getNextChildInsert() : NodeCursor {
-    if (this.allowInsert()) {
+    if (this.allowInsertCursor()) {
       return new NodeCursor(this, 0);
     }
     for (let node of this.nodes) {
@@ -449,7 +452,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
     if (nextChildCursor) {
       return nextChildCursor;
-    } else if (this.allowInsert() && index < this.nodes.length) {
+    } else if (this.allowInsertCursor() && index < this.nodes.length) {
       return new NodeCursor(this, index + 1);
     } else {
       nextChildCursor = this.parentRef.node.getNextInsertAfterChildSet(this.parentRef.childSetId);
@@ -531,6 +534,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.nodes.splice(mutation.index, 1);
       this.renumberChildren();
       this.selection.placeCursor(this, mutation.index);
+      this.selection.updateRenderPositions();
     }
   }
 }

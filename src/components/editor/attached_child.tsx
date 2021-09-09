@@ -20,7 +20,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
     let {isSelected, block, selection} = this.props;
     let topPos = block.y;
 
-    let allowInsert = block.allowInsert();
+    let allowInsert = block.allowInsertCursor();
 
     // Can only be one child (or zero) for attached childsets
     let child = block.nodes.length > 0 ? block.nodes[0] : null;

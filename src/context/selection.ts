@@ -127,7 +127,7 @@ export class NodeSelection {
   }
 
   @action
-  placeCursor(listBlock: RenderedChildSetBlock, index: number) {
+  placeCursor(listBlock: RenderedChildSetBlock, index: number, updateXY: boolean = true) {
     this.exitEdit();
     if (this.cursor) {
       this.cursor.listBlock.selectionState = SelectionState.Empty;
@@ -137,6 +137,9 @@ export class NodeSelection {
     listBlock.selectionState = SelectionState.Cursor;
     this.insertBox = new InsertBoxData(listBlock.getInsertCoordinates(index));
     this.state = SelectionState.Cursor;
+    if (updateXY) {
+      this.updateCursorXYToCursor();
+    }
   }
 
   @action
@@ -151,6 +154,7 @@ export class NodeSelection {
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean();
       this.updateRenderPositions();
+      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate);
     }
   }
 
@@ -183,6 +187,13 @@ export class NodeSelection {
     }
   }
 
+  updateCursorXYToCursor() {
+    const cursor = this.cursor;
+    let [x, y] = cursor.listBlock.getInsertCoordinates(cursor.index, true);
+    this.lastXCoordinate = x - 2;
+    this.lastYCoordinate = y;
+  }
+
   @action
   moveCursorToNextInsert() {
     if (this.cursor) {
@@ -199,7 +210,7 @@ export class NodeSelection {
   insertNewline() {
     let insertCursor = this.cursor.listBlock.getNewLineInsertPosition(this.cursor.index);
     if (insertCursor !== null) {
-      this.placeCursor(insertCursor.listBlock, insertCursor.index);
+      this.placeCursor(insertCursor.listBlock, insertCursor.index, false);
       this.startInsertAtCurrentCursor();
     }
   }
@@ -210,7 +221,7 @@ export class NodeSelection {
     if (parent !== null && parent.parentChildSet !== null) {
       let insertCursor = parent.parentChildSet.getNewLineInsertPosition(parent.index + 1);
       if (insertCursor !== null) {
-        this.placeCursor(insertCursor.listBlock, insertCursor.index);
+        this.placeCursor(insertCursor.listBlock, insertCursor.index, false);
         this.startInsertAtCurrentCursor();
       }
     }
@@ -234,6 +245,8 @@ export class NodeSelection {
   insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
     // Insert node will also update the render positions.
     listBlock.childSet.insertNode(node, index);
+    // Trigger a clean from the parent upward.
+    listBlock.parentRef.node.node.clean();
   }
 
   insertNodeAtCurrentCursor(node: SplootNode) {
@@ -266,6 +279,7 @@ export class NodeSelection {
     }
     if (this.state == SelectionState.Inserting) {
       this.state = SelectionState.Cursor;
+      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate);
       this.updateRenderPositions();
     }
   }
@@ -307,7 +321,7 @@ export class NodeSelection {
     this.lastXCoordinate = x;
     this.lastYCoordinate = y;
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index);
+      this.placeCursor(cursor.listBlock, cursor.index, false);
     } else {
       this.selectNodeByIndex(cursor.listBlock, cursor.index);
     }
@@ -319,7 +333,7 @@ export class NodeSelection {
     this.lastXCoordinate = x;
     this.lastYCoordinate = y;
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index);
+      this.placeCursor(cursor.listBlock, cursor.index, false);
     } else {
       this.selectNodeByIndex(cursor.listBlock, cursor.index);
     }
@@ -331,7 +345,7 @@ export class NodeSelection {
     this.lastXCoordinate = x;
     this.lastYCoordinate = y;
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index);
+      this.placeCursor(cursor.listBlock, cursor.index, false);
     } else {
       this.selectNodeByIndex(cursor.listBlock, cursor.index);
     }
@@ -343,7 +357,7 @@ export class NodeSelection {
     this.lastXCoordinate = x;
     this.lastYCoordinate = y;
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index);
+      this.placeCursor(cursor.listBlock, cursor.index, false);
     } else {
       this.selectNodeByIndex(cursor.listBlock, cursor.index);
     }
@@ -364,7 +378,7 @@ export class NodeSelection {
     this.lastYCoordinate = y;
     this.lastXCoordinate = x;
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index);
+      this.placeCursor(cursor.listBlock, cursor.index, false);
     } else {
       this.selectNodeByIndex(cursor.listBlock, cursor.index);
     }

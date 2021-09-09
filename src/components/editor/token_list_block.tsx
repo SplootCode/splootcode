@@ -22,7 +22,7 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
     let className = isSelected ? 'selected' : '';
 
     let nodeCount = block.nodes.length;
-    let allowInsert = block.allowInsert();
+    let allowInsert = block.allowInsertCursor();
     return (
       <React.Fragment>
         {

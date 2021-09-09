@@ -98,7 +98,7 @@ export class CursorMap {
 
     let entries = line.entries.slice();
     let isFirstEntryCursor = entries.length > 0 && entries[0].isCursor;
-    if (!isFirstEntryCursor && line.parentListBlock.allowInsert()) {
+    if (!isFirstEntryCursor && line.parentListBlock.allowInsertCursor()) {
       entries.unshift({
         index: line.parentIndex,
         listBlock: line.parentListBlock,

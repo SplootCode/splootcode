@@ -29,7 +29,7 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
   render() {
     let {selection, isInsideBreadcrumbs} = this.props;
     let block = this.props.block;
-    let allowInsert = block.allowInsert();
+    let allowInsert = block.allowInsertCursor();
     return <React.Fragment>
       {
         block.nodes.map((nodeBlock : NodeBlock, idx: number) => {
