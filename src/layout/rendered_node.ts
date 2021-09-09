@@ -266,7 +266,7 @@ export class NodeBlock implements NodeObserver {
       this.blockWidth = 0;
       this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
     } else if (selection !== null) {
-      selection.cursorMap.registerCursorStart(this.parentChildSet, this.index, x + this.marginLeft, y, false);
+      selection.cursorMap.registerCursorStart(this.parentChildSet, this.index, x + this.marginLeft, y + this.marginTop, false);
     }
     this.rowWidth = this.marginLeft + this.blockWidth + marginRight;
   }

@@ -245,10 +245,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING;
           this.width = Math.max(this.width, boxWidth);
         }
-        if (selection !== null) {
-          selection.cursorMap.registerLineCursor(this, idx, topPos);
-        }
         childNodeBlock.calculateDimensions(x, topPos, selection);
+        if (selection !== null) {
+          selection.cursorMap.registerLineCursor(this, idx, topPos + childNodeBlock.marginTop);
+        }
         topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING;
         this.width = Math.max(this.width, childNodeBlock.rowWidth);
