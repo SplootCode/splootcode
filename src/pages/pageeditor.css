@@ -6,39 +6,46 @@ body {
 
 .web-editor-container {
     display: grid;
-    grid-template-columns: 160px auto 500px;
+    grid-template-columns: auto 500px;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
 .python-editor-container {
     display: grid;
-    grid-template-columns: 160px auto 500px;
+    grid-template-columns: auto 500px;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
 .web-editor-preview-panel {
-    grid-column-start: 3;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
 
 .python-editor-preview-panel {
-    grid-column-start: 3;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
 
 .left-panel {
     grid-column-start: 1;
+    grid-column-end: 2;
     display: inline-block;
-    border-right: 1px solid rgb(209, 209, 209);
+    border-bottom: 1px solid rgb(209, 209, 209);
+    height: 41px;
 }
 
 .web-editor-column {
-    grid-column-start: 2;
+    grid-column-start: 1;
+    grid-row-start: 2;
     border-right: 1px solid rgb(209, 209, 209);
 }
 
 .python-editor-column {
-    grid-column-start: 2;
+    grid-column-start: 1;
     border-right: 1px solid rgb(209, 209, 209);
 }
 

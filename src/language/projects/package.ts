@@ -55,6 +55,10 @@ export class SplootPackage {
     return JSON.stringify(ser, null, 2) + '\n';
   }
 
+  getDefaultFile() : SplootFile {
+    return this.files[this.fileOrder[0]];
+  }
+
   async addFile(name: string, type: string, rootNode: SplootNode) {
     let splootFile = new SplootFile(name, type);
     splootFile.fileLoaded(rootNode);

@@ -64,18 +64,22 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
     loadExampleProject('blank').then((project) => {
       this.setState({
         project: project,
-        selectedFile: null,
         ready: true,
       });
+      const pack = project.getDefaultPackage();
+      const file = pack.getDefaultFile();
+      setTimeout(() => this.selectFile(pack, file), 20);
     });
   }
 
   loadProjectIntoEditor = (project: Project) => {
+    const pack = project.getDefaultPackage();
+    const file = pack.getDefaultFile();
     this.setState({
       project: project,
-      selectedFile: null,
       ready: true,
     });
+    setTimeout(() => this.selectFile(pack, file), 20);
   }
 
   openLoadProjectModal = (event) => {
@@ -130,13 +134,12 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
             <MenuButton
               aria-label="Project Options"
               as={Button}
-              rightIcon={<HamburgerIcon />}
+              leftIcon={<HamburgerIcon />}
               variant="ghost"
               borderRadius={0}
               textAlign="left"
               justifyContent="left"
               fontSize="sm"
-              w="100%"
               px={3}
             >
                 Project
@@ -156,7 +159,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
               >Save Project As...</MenuItem>
             </MenuList>
           </Menu>
-          <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>
+          {/* <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>
             <AccordionItem>
               <AccordionButton p={2} fontSize="sm">
                 <AccordionIcon/>
@@ -188,7 +191,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
                 </Stack>
               </AccordionPanel>
             </AccordionItem>
-          </Accordion>
+          </Accordion> */}
         </nav>
         { project.layoutType === ProjectLayoutType.PYTHON_CLI ? 
           <PythonEditorPanels project={project} selectedFile={selectedFile}  />

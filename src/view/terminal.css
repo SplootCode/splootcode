@@ -22,4 +22,5 @@ body {
   background-color: black;
   box-sizing: border-box;
   padding-left: 6px;
+  border-top: 1px solid rgb(209, 209, 209);
 }

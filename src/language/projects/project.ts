@@ -41,6 +41,10 @@ export class Project {
     }
   }
 
+  getDefaultPackage() : SplootPackage {
+    return this.packages[0];
+  }
+
   serialize() : string {
     let serProj : SerializedProject = {
       name: this.name,

@@ -62,7 +62,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   render() {
     let {ready, running, nodeTreeLoaded} = this.state;
     return <div id="terminal-container">
-      <ButtonGroup spacing="3" size="sm" m={2}>
+      <ButtonGroup spacing="3" size="sm" m={1}>
         <Button isLoading={running} loadingText="Running" colorScheme="teal" onClick={this.run} disabled={!(ready && nodeTreeLoaded && !running)}>Run</Button>
         <Button disabled={!running} onClick={this.stop}>Stop</Button>
       </ButtonGroup>
