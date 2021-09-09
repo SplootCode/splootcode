@@ -5,7 +5,7 @@
   font-family: 'Source Sans Pro', 'monospace';
   width: 100%;
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 180px auto;
   grid-gap: 0px;
 }
 

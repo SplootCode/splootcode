@@ -1,6 +1,6 @@
 
 .tray {
-  width: 200px;
+  width: 180px;
   height: calc(99vh - 41px);
   overflow-y: scroll;
   overflow-x: hidden;

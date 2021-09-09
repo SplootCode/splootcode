@@ -6,14 +6,14 @@ body {
 
 .web-editor-container {
     display: grid;
-    grid-template-columns: auto 500px;
+    grid-template-columns: auto 480px;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
 .python-editor-container {
     display: grid;
-    grid-template-columns: auto 500px;
+    grid-template-columns: auto 480px;
     grid-column-gap: 0px;
     height: 100vh;
 }

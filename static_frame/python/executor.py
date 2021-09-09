@@ -7,6 +7,19 @@ import traceback
 SPLOOT_KEY = "__spt__"
 
 
+def generateCallMember(node):
+    args = []
+    for argExp in node["childSets"]["arguments"]:
+        exp = generateAstExpression(argExp)
+        if exp is not None:
+            args.append(generateAstExpression(argExp))
+
+    object = generateAstExpressionToken(node["childSets"]["object"][0])
+    member = node["properties"]["member"]
+    memberExpr = ast.Attribute(object, member, ctx=ast.Load())
+    callExpr = ast.Call(memberExpr, args=args, keywords=[])
+    return callExpr
+
 def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
         args = []
@@ -16,16 +29,20 @@ def generateAstExpressionToken(node):
                 args.append(generateAstExpression(argExp))
         varName = node["properties"]["identifier"]
         return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=[])
-    elif node["type"] == "STRING_LITERAL":
+    elif node["type"] in ["STRING_LITERAL", "NUMERIC_LITERAL", "PYTHON_BOOL"]:
         return ast.Constant(node["properties"]["value"])
-    elif node["type"] == "NUMERIC_LITERAL":
-        return ast.Constant(node["properties"]["value"])
+    elif node["type"] == "PYTHON_NONE":
+        return ast.Constant(None)
     elif node["type"] == "PYTHON_VARIABLE_REFERENCE":
         identifier = node["properties"]["identifier"]
         return ast.Name(identifier, ctx=ast.Load())
     elif node["type"] == "PYTHON_DECLARED_IDENTIFIER":
         identifier = node["properties"]["identifier"]
         return ast.Name(identifier, ctx=ast.Store())
+    elif node["type"] == "PYTHON_CALL_MEMBER":
+        return generateCallMember(node)
+    else:
+        raise Exception(f'Unrecognised node type: {node["type"]}')
 
 
 def generateAstAssignableExpression(node):

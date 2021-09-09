@@ -57,6 +57,8 @@ import { StyleSelector } from "./types/styles/style_selector"
 import { PythonIfStatement } from "./types/python/python_if"
 import { PythonWhileLoop } from "./types/python/python_while"
 import { PythonForLoop } from "./types/python/python_for"
+import { PythonCallMember } from "./types/python/python_call_member"
+import { NoneLiteral, PythonBool } from "./types/python/literals"
 
 export function loadTypes() {
   Assignment.register();
@@ -127,6 +129,9 @@ export function loadTypes() {
   PythonAssignment.register();
   PythonDeclaredIdentifier.register();
   PythonVariableReference.register();
+  PythonCallMember.register();
+  NoneLiteral.register();
+  PythonBool.register();
 
   // Must go at the end
   resolvePasteAdapters();
