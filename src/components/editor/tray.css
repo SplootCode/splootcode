@@ -4,7 +4,7 @@
   height: calc(99vh - 41px);
   overflow-y: scroll;
   overflow-x: hidden;
-  border-right: 1px solid white;
+  border-right: 1px solid var(--section-separator-color);
   box-sizing: border-box;
   padding: 0;
 }

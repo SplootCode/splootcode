@@ -6,14 +6,14 @@ body {
 
 .web-editor-container {
     display: grid;
-    grid-template-columns: auto 480px;
+    grid-template-columns: auto 420px;
     grid-column-gap: 0px;
     height: 100vh;
 }
 
 .python-editor-container {
     display: grid;
-    grid-template-columns: auto 480px;
+    grid-template-columns: auto 420px;
     grid-column-gap: 0px;
     height: 100vh;
 }
@@ -34,19 +34,19 @@ body {
     grid-column-start: 1;
     grid-column-end: 2;
     display: inline-block;
-    border-bottom: 1px solid rgb(209, 209, 209);
+    border-bottom: 1px solid var(--section-separator-color);
     height: 41px;
 }
 
 .web-editor-column {
     grid-column-start: 1;
     grid-row-start: 2;
-    border-right: 1px solid rgb(209, 209, 209);
+    border-right: 1px solid var(--section-separator-color);
 }
 
 .python-editor-column {
     grid-column-start: 1;
-    border-right: 1px solid rgb(209, 209, 209);
+    border-right: 1px solid var(--section-separator-color);
 }
 
 .file-nav-list {
@@ -61,4 +61,9 @@ body {
 .file-nav-list li.selected {
     background-color: #343b44;
     color: white;
+}
+
+
+:root {
+    --section-separator-color: #6c737a;
 }

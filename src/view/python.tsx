@@ -33,6 +33,8 @@ interface ConsoleState {
   running: boolean;
   nodeTree: any;
   nodeTreeLoaded: boolean;
+  runtimeCapture: boolean;
+  autoRun: boolean;
 }
 
 class Console extends React.Component<ConsoleProps, ConsoleState> {
@@ -58,6 +60,8 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       running: false,
       nodeTree: null,
       nodeTreeLoaded: false,
+      runtimeCapture: true,
+      autoRun: true,
     };
   }
 
@@ -128,7 +132,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       this.setState({running: false})
     } else if (type === 'runtime_capture') {
       // Pass on capture info to the parent window.
-      sendToParent(event.data);
+      if (this.state.runtimeCapture) {
+        sendToParent(event.data);
+      }
     }
   }
 
@@ -358,7 +364,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           nodeTreeLoaded: true,
         })
         sendToParent({type: 'heartbeat', data: {state: FrameState.LIVE}});
-        if (this.state.ready && !this.state.running) {
+        if (this.state.autoRun && this.state.ready && !this.state.running) {
           this.rerun();
         }
         break;
@@ -372,7 +378,7 @@ const root = document.getElementById('app-root')
 
 ReactDOM.render(
   <AppProviders>
-    <Console />
+    <Console/>
   </AppProviders>,
   root
 );

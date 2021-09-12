@@ -32,6 +32,7 @@ import { ImportDefaultStatement } from "../../language/types/js/import_default"
 import { PythonIfStatement } from "../../language/types/python/python_if"
 import { PythonWhileLoop } from "../../language/types/python/python_while"
 import { PythonForLoop } from "../../language/types/python/python_for"
+import { PythonBool } from "../../language/types/python/literals"
 
 interface TrayProps {
   rootNode: SplootNode,
@@ -51,10 +52,11 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonCallVariable(null, 'print', 1),
       new PythonCallVariable(null, 'input', 1),
       new PythonAssignment(null),
-      new PythonVariableReference(null, 'my_variable'),
       new StringLiteral(null, ''),
       new StringLiteral(null, 'Hi there!'),
       new NumericLiteral(null, 123),
+      new PythonBool(null, true),
+      new PythonBool(null, false),
       new PythonBinaryOperator(null, '+'),
       new PythonBinaryOperator(null, '-'),
       new PythonBinaryOperator(null, '*'),
@@ -75,6 +77,11 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonBinaryOperator(null, 'and'),
       new PythonBinaryOperator(null, 'or'),
       new PythonBinaryOperator(null, 'not'),
+      new PythonCallVariable(null, 'int', 1),
+      new PythonCallVariable(null, 'str', 1),
+      new PythonCallVariable(null, 'float', 1),
+      new PythonCallVariable(null, 'len', 1),
+      new PythonCallVariable(null, 'list', 1),
     ];
   } else if (rootNode.type === HTML_DOCUMENT) {
     nodes = [

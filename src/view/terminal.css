@@ -23,5 +23,9 @@ body {
   box-sizing: border-box;
   padding-left: 8px;
   padding-top: 5px;
-  border-top: 1px solid rgb(209, 209, 209);
+  border-top: 1px solid var(--section-separator-color);
+}
+
+:root {
+  --section-separator-color: #6c737a;
 }

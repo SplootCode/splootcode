@@ -42,7 +42,7 @@ const functions : FunctionDefinition[] = [
       ],
       returnType: {type: 'literal', literal:'string'}
     },
-    documentation:"Outputs information to the terminal",
+    documentation:"Asks the user to enter information into the terminal",
   },
   {
     name: 'str',
