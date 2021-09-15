@@ -7,7 +7,7 @@
 }
 
 .edit-box input[type=text] {
-  background-color: var(--editor-selected-node-block-input);
+  background-color: rgba(0, 0, 0, 0);
   font-family: inherit;
   font-size: 11pt;
   border-style: none;

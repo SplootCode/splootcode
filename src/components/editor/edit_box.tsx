@@ -43,7 +43,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     let {x, y} = editBoxData;
     let positionStyles : React.CSSProperties;
     let adjustX = 15;
-    let adjustY = 4;
+    let adjustY = 2;
     positionStyles = {
       position: 'absolute',
       left: (x + editorX - 2 + adjustX) + 'px',

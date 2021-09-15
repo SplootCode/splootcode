@@ -102,6 +102,6 @@ export class InlineStringLiteral extends React.Component<StringLiteralProps> {
       );
     }
     */
-    return <text className={"string-literal " + className} x={leftPos} y={topPos + 21} style={{fill: block.textColor}}>"{ node.getProperty(propertyName) }"</text>;
+    return <text className={"string-literal " + className} x={leftPos} y={topPos + 20} style={{fill: block.textColor}} xmlSpace="preserve">"{ node.getProperty(propertyName) }"</text>;
   }
 }

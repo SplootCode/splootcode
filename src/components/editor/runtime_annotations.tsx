@@ -35,7 +35,7 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
       const numLabelWidth = Math.max(stringWidth('end'), stringWidth(`${frames}`)) + 24;
       return (
         <g>
-          <text x={block.x + 2} y={block.y + 8} className="annotation">{ label }</text>
+          <text x={block.x + 2} y={block.y + 8} className="annotation" xmlSpace="preserve">{ label }</text>
           <g transform={`translate(${dotX} ${block.y + 2})`} onClick={this.clickHandler} ref={this.sliderRef}>
             <rect className="slider-background" x={-8} y={-6} width={width + 16} height={14}/>
             <rect className="slider-track" width={width} height="3"/>
@@ -43,7 +43,7 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
             <circle className="slider-handle" cx={location} cy={1} r={6}/>
           </g>
           <g transform={`translate(${dotX} ${block.y + 2})`}>
-            <text className="annotation" x={width + 18 + numLabelWidth/2} y={6} text-anchor="middle">{ numLabel }</text>
+            <text className="annotation" x={width + 18 + numLabelWidth/2} y={6} text-anchor="middle" xmlSpace="preserve">{ numLabel }</text>
             <rect className="slider-button" rx="2" x={width + 10} y={-6} width={15} height={16} onClick={this.decrement}/>
             <text className="slider-button-label" x={width + 14} y={7}>&lt;</text>
             <rect className="slider-button" rx="2" x={width + 10 + numLabelWidth} y={-6} width={15} height={16} onClick={this.increment}/>
@@ -107,7 +107,7 @@ export class RuntimeAnnotation extends React.Component<RuntimeAnnotationProps> {
         <g>
           {
             annotations.map(annotation => {
-              const entry = <text x={x} y={y} className="annotation">{annotation}</text>
+              const entry = <text x={x} y={y} className="annotation" xmlSpace="preserve">{annotation}</text>
               y += 16;
               return entry;
             })
