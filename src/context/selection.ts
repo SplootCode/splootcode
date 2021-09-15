@@ -86,6 +86,13 @@ export class NodeSelection {
     return this.state === SelectionState.Editing || this.state === SelectionState.SingleNode;
   }
 
+  isSelectedNode(listBlock: RenderedChildSetBlock, index: number) {
+    if (this.isSingleNode()) {
+      return this.cursor.listBlock == listBlock && this.cursor.index == index;
+    }
+    return false;
+  }
+
   @observable
   isEditingSingleNode() {
     return this.state === SelectionState.Editing;
@@ -370,6 +377,21 @@ export class NodeSelection {
       node: tempNodeBlock,
       offsetX: offsetX,
       offsetY: offestY,
+    }
+  }
+
+  handleClick(x: number, y: number) {
+    let [cursor, isCursor] = this.cursorMap.getCursorByCoordinate(x, y);
+    this.lastYCoordinate = y;
+    this.lastXCoordinate = x;
+    if (isCursor) {
+      this.placeCursor(cursor.listBlock, cursor.index, false);
+    } else {
+      if (this.isSelectedNode(cursor.listBlock, cursor.index)) {
+        this.startEditAtCurrentCursor();
+      } else {
+        this.selectNodeByIndex(cursor.listBlock, cursor.index);
+      }
     }
   }
 

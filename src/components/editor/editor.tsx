@@ -92,8 +92,7 @@ export class Editor extends React.Component<EditorProps> {
     let refBox = this.editorSvgRef.current.getBoundingClientRect();
     let x = event.pageX - refBox.left;
     let y = event.pageY - refBox.top;
- 
-    selection.placeCursorByXYCoordinate(x, y);
+    selection.handleClick(x, y);
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
