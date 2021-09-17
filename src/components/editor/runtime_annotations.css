@@ -1,6 +1,12 @@
 
 .annotation {
-    fill: var(--editor-connector-label);
+    fill: var(--editor-annotation-label);
+    font-size: 10pt;
+    pointer-events: none;
+}
+
+.error-annotation {
+    fill: var(--editor-annotation-error);
     font-size: 10pt;
     pointer-events: none;
 }

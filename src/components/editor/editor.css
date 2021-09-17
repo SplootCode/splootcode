@@ -41,6 +41,9 @@ text {
   --editor-indented-block-stroke: #545c67;
   --editor-anchor-dot: #545c67;
 
+  --editor-annotation-label: #767e8a;
+  --editor-annotation-error: #fa8039;
+
   --editor-autcompleted-bg-color: #134777;
   --editor-autcompleted-edge-color: #3191ea;
   --editor-autcompleted-text-color: #3191ea;

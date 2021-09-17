@@ -1,9 +1,10 @@
+import { LoopAnnotation, NodeAnnotation } from "../annotations/annotations";
 import { SplootNode } from "../node"
 
 
 export enum NodeMutationType {
   SET_PROPERTY,
-  SET_RUNTIME_ANNOTATION,
+  SET_RUNTIME_ANNOTATIONS,
 }
 
 export class NodeMutation {
@@ -11,6 +12,6 @@ export class NodeMutation {
   type: NodeMutationType;
   property: string;
   value: string;
-  annotationValue: string[];
-  iterationCount: number;
+  annotations: NodeAnnotation[];
+  loopAnnotation: LoopAnnotation;
 }

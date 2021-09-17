@@ -6,6 +6,7 @@ import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNod
 import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
 import { getGlobalScope, Scope } from "./scope/scope";
 import { StatementCapture } from "./capture/runtime_capture";
+import { NodeAnnotation, NodeAnnotationType } from "./annotations/annotations";
 
 export class ParentReference {
   node: SplootNode;
@@ -76,14 +77,33 @@ export class SplootNode {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
     }
-    // Default is nothing, only really applies to statement nodes.
-    console.warn('Runtime capture not supported for type ', this.type)
+    if (capture.type == 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      return 
+    }
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+    }
     return;
   }
+
   recursivelyClearRuntimeCapture() {
-    // Default is nothing, only really applies to statement nodes.
-    console.warn('Runtime capture not supported for type ', this.type)
-    return;
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = [];
+    this.fireMutation(mutation);
+  }
+
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = [{type: NodeAnnotationType.RuntimeError, value: {
+      errorType: capture.exceptionType,
+      errorMessage: capture.exceptionMessage
+    }}]
+    this.fireMutation(mutation);
   }
 
   recursivelySetMutations(enable: boolean) {
@@ -157,7 +177,7 @@ export class SplootNode {
       observer.handleNodeMutation(mutation);
     })
     // Don't fire global mutations for annotation changes;
-    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATION) {
+    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
       globalMutationDispatcher.handleNodeMutation(mutation);
     }
   }

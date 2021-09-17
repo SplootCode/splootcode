@@ -17,7 +17,10 @@ const stdout = {
 
 const stdin = {
   readline: () => {
-    if (rerun && readlines.length != 0) {
+    if (rerun) {
+      if (readlines.length === 0) {
+        return '';
+      }
       const val = readlines.shift();
       postMessage({
         type: 'stdout',

@@ -13,6 +13,7 @@ import { SPLOOT_EXPRESSION } from "../language/types/js/expression"
 import { PYTHON_EXPRESSION } from "../language/types/python/python_expression"
 import { getColour } from "./colors"
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
+import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "../language/annotations/annotations"
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;
@@ -82,11 +83,9 @@ export class NodeBlock implements NodeObserver {
   marginTop: number;
 
   @observable
-  runtimeAnnotation: string[];
+  runtimeAnnotations: NodeAnnotation[];
   @observable
-  runtimeIterations: number;
-  @observable
-  runtimeCaptureFrame: number;
+  loopAnnotation: LoopAnnotation;
 
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
     this.parentChildSet = parentListBlock;
@@ -97,8 +96,7 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout();
     this.textColor = getColour(this.layout.color)
     this.node = node;
-    this.runtimeAnnotation = [];
-    this.runtimeCaptureFrame = 0;
+    this.runtimeAnnotations = [];
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
       this.node.registerObserver(this);
@@ -273,17 +271,16 @@ export class NodeBlock implements NodeObserver {
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
     // TODO: Handle validation UI changes here.
-    if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATION) {
-      this.runtimeAnnotation = nodeMutation.annotationValue;
-      this.runtimeIterations = nodeMutation.iterationCount;
+    if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
+      this.runtimeAnnotations = nodeMutation.annotations;
+      this.loopAnnotation = nodeMutation.loopAnnotation;
     }
   }
 
   selectRuntimeCaptureFrame(idx: number) {
-    this.runtimeCaptureFrame = idx;
+    this.loopAnnotation.currentFrame = idx;
     this.node.selectRuntimeCaptureFrame(idx);
   }
-
 
   getNextInsertAfterThisNode() : NodeCursor {
     if (this.parentChildSet === null) {

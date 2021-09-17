@@ -8,6 +8,7 @@ import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
 import { IfStatementData, SingleStatementData, StatementCapture } from "../../capture/runtime_capture";
 import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations";
 import { formatPythonData } from "./utils";
+import { getSideEffectAnnotations, NodeAnnotation, NodeAnnotationType } from "../../annotations/annotations";
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT';
 
@@ -62,14 +63,6 @@ export class PythonIfStatement extends SplootNode {
     // });
   }
 
-  applyRuntimeError(capture: StatementCapture) {
-    let mutation = new NodeMutation();
-      mutation.node = this
-      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
-      mutation.annotationValue = [capture.exceptionType, capture.exceptionMessage];
-    this.fireMutation(mutation);
-  }
-
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture);
@@ -82,31 +75,31 @@ export class PythonIfStatement extends SplootNode {
     const condition = data.condition[0]
     const conditionData = condition.data as SingleStatementData;
 
-    const annotation = [];
-    if (condition.sideEffects.length > 0) {
-      const stdout = condition.sideEffects
-        .filter(sideEffect => sideEffect.type === 'stdout')
-        .map(sideEffect => sideEffect.value).join('')
-      annotation.push(`prints "${stdout}"`);
-    }
-    annotation.push(`→ ${formatPythonData(conditionData.result, conditionData.resultType)}`)
+    const annotations : NodeAnnotation[] = getSideEffectAnnotations(condition);
+    annotations.push({
+      type: NodeAnnotationType.ReturnValue,
+      value: {
+        type: conditionData.resultType,
+        value: conditionData.result,
+      }
+    });
     let mutation = new NodeMutation();
       mutation.node = this
-      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
-      mutation.annotationValue = annotation;
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+      mutation.annotations = annotations;
     this.fireMutation(mutation);
 
+    let i = 0;
+    const trueBlockChildren = this.getTrueBlock().children;
     if (data.trueblock) {
-      const trueBlockChildren = this.getTrueBlock().children;
       const trueBlockData = data.trueblock;
-      let i = 0;
       for (; i < trueBlockData.length; i++) {
         trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i]);
-      }
-      if (i < trueBlockChildren.length) {
-        for (; i < trueBlockChildren.length; i++) {
-          trueBlockChildren[i].recursivelyClearRuntimeCapture();
-        }
+      }  
+    }
+    if (i < trueBlockChildren.length) {
+      for (; i < trueBlockChildren.length; i++) {
+        trueBlockChildren[i].recursivelyClearRuntimeCapture();
       }
     }
   }
@@ -114,8 +107,8 @@ export class PythonIfStatement extends SplootNode {
   recursivelyClearRuntimeCapture() {
     let mutation = new NodeMutation();
     mutation.node = this
-    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
-    mutation.annotationValue = [];
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = [];
     this.fireMutation(mutation);
     let blockChildren = this.getTrueBlock().children;
     for (let i = 0; i < blockChildren.length; i++) {

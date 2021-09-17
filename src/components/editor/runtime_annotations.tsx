@@ -5,6 +5,8 @@ import { NodeBlock } from "../../layout/rendered_node";
 
 import "./runtime_annotations.css";
 import { stringWidth } from "../../layout/rendered_childset_block";
+import { AssignmentAnnotation, NodeAnnotation, NodeAnnotationType, ReturnValueAnnotation, RuntimeErrorAnnotation, SideEffectAnnotation } from "../../language/annotations/annotations";
+import { formatPythonAssingment, formatPythonData, formatPythonReturnValue } from "../../language/types/python/utils";
 
 interface LoopAnnotationProps {
     nodeBlock: NodeBlock;
@@ -21,14 +23,19 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
 
   render() {
     const block = this.props.nodeBlock;
-    const frames = block.runtimeIterations;
+    const loopAnnotation = block.loopAnnotation;
+    if (!loopAnnotation) {
+      return null;
+    }
+    const frames = loopAnnotation.iterations;
+    const currentFrame = loopAnnotation.currentFrame
     
     // Loops always have frames, even if it's just to evaluate the condition, and the body is never run.
     if (frames > 0) {
       const frameArray = Array.from(Array(frames).keys())
       const label = `Ran ${frames-1} times`;
       const dotX = block.x + 6 + stringWidth(label);
-      const selected = (block.runtimeCaptureFrame > frames - 1 || block.runtimeCaptureFrame === -1)? frames - 1 : block.runtimeCaptureFrame;
+      const selected = (currentFrame > frames - 1 || currentFrame === -1)? frames - 1 : currentFrame;
       const width = Math.min((frames - 1) * 10, 200);
       const location = selected/(frames - 1) * width;
       const numLabel = `${(selected == frames - 1) ? 'end' : selected + 1}`
@@ -61,7 +68,7 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
     var x = event.clientX - dim.left - 8;
     
     const block = this.props.nodeBlock;
-    const frames = block.runtimeIterations;
+    const frames = block.loopAnnotation.iterations;
     const width = Math.min((frames - 1) * 10, 200);
     x = Math.min(width, Math.max(x, 0))
     const idx = Math.floor(x / width * frames);
@@ -71,20 +78,20 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
   increment = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.nativeEvent.cancelBubble = true;
-    const current = this.props.nodeBlock.runtimeCaptureFrame;
+    const current = this.props.nodeBlock.loopAnnotation.currentFrame;
     if (current == -1) {
       return;
     }
-    const idx = Math.min(current + 1, this.props.nodeBlock.runtimeIterations - 1);
+    const idx = Math.min(current + 1, this.props.nodeBlock.loopAnnotation.iterations - 1);
     this.props.nodeBlock.selectRuntimeCaptureFrame(idx);
   }
 
   decrement = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.nativeEvent.cancelBubble = true;
-    let current = this.props.nodeBlock.runtimeCaptureFrame;
+    let current = this.props.nodeBlock.loopAnnotation.currentFrame;
     if (current == -1) {
-      current = this.props.nodeBlock.runtimeIterations - 1;
+      current = this.props.nodeBlock.loopAnnotation.iterations - 1;
     }
     const idx = Math.max(current - 1, 0); 
     this.props.nodeBlock.selectRuntimeCaptureFrame(idx);
@@ -95,19 +102,39 @@ interface RuntimeAnnotationProps {
   nodeBlock: NodeBlock
 }
 
+function annotationToString(annotation: NodeAnnotation) : string {
+  switch (annotation.type) {
+    case NodeAnnotationType.Assignment:
+      return formatPythonAssingment(annotation.value as AssignmentAnnotation);;
+    case NodeAnnotationType.SideEffect:
+      return (annotation.value as SideEffectAnnotation).message;
+    case NodeAnnotationType.ReturnValue:
+      return formatPythonReturnValue(annotation.value as ReturnValueAnnotation);
+    case NodeAnnotationType.RuntimeError:
+      const val = annotation.value as RuntimeErrorAnnotation;
+      if(val.errorType === 'EOFError') {
+        return 'No input, run the program to enter input.'
+      }
+      return `${val.errorType}: ${val.errorMessage}`;
+  }
+}
+
+
 @observer
 export class RuntimeAnnotation extends React.Component<RuntimeAnnotationProps> {
   render() {
     const block = this.props.nodeBlock;
-    const annotations = block.runtimeAnnotation;
+    const annotations = block.runtimeAnnotations;
     if (annotations.length != 0) {
       const x = block.x + block.rowWidth + 8;
       let y = block.y + block.marginTop + 20 - (annotations.length - 1) * 8;
       return (
         <g>
           {
-            annotations.map(annotation => {
-              const entry = <text x={x} y={y} className="annotation" xmlSpace="preserve">{annotation}</text>
+            annotations.map((annotation, i) => {
+              const text = annotationToString(annotation);
+              const className = annotation.type === NodeAnnotationType.RuntimeError ? 'error-annotation' : 'annotation';
+              const entry = <text x={x} y={y} key={i} className={className} xmlSpace="preserve">{text}</text>
               y += 16;
               return entry;
             })

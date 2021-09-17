@@ -7,7 +7,7 @@ import { HighlightColorCategory } from "../../../layout/colors";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
 import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations";
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from "../../capture/runtime_capture";
-import { formatPythonData } from "./utils";
+import { NodeAnnotation, NodeAnnotationType } from "../../annotations/annotations";
 
 export const PYTHON_WHILE_LOOP = 'PYTHON_WHILE_LOOP';
 
@@ -57,6 +57,18 @@ export class PythonWhileLoop extends SplootNode {
     });
   }
 
+  applyRuntimeError(capture: StatementCapture) {
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = [{type: NodeAnnotationType.RuntimeError, value: {
+      errorType: capture.exceptionType,
+      errorMessage: capture.exceptionMessage
+    }}]
+    mutation.loopAnnotation = {iterations: frames.length, currentFrame: this.runtimeCaptureFrame}
+    this.fireMutation(mutation);
+  }
+
   selectRuntimeCaptureFrame(index: number) {
     if (!this.runtimeCapture) {
       this.recursivelyClearRuntimeCapture();
@@ -67,35 +79,49 @@ export class PythonWhileLoop extends SplootNode {
     if (index == -1) {
       index = this.runtimeCapture.frames.length - 1;
     }
+    const annotation : NodeAnnotation[] = [];
+
     const frames = this.runtimeCapture.frames;
-    const frame = frames[index]
-    const frameData = frame.data as WhileLoopIteration;
-    const condition = frameData.condition[0]
-    const conditionData = condition.data as SingleStatementData;
-
-    const annotation = [];
-    if (condition.sideEffects.length > 0) {
-      const stdout = condition.sideEffects
-        .filter(sideEffect => sideEffect.type === 'stdout')
-        .map(sideEffect => sideEffect.value).join('')
-      annotation.push(`prints "${stdout}"`);
-    }
-    annotation.push(`→ ${formatPythonData(conditionData.result, conditionData.resultType)}`)
-    let mutation = new NodeMutation();
-      mutation.node = this
-      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
-      mutation.annotationValue = annotation;
-      mutation.iterationCount = frames.length;
-    this.fireMutation(mutation);
-
+    const frame = frames[index];
     let i = 0;
     const trueBlockChildren = this.getBlock().children;
-    if (frameData.block) {
+
+    if (frame.type === 'EXCEPTION') {
+      annotation.push({type: NodeAnnotationType.RuntimeError, value: {
+        errorType: frame.exceptionType,
+        errorMessage: frame.exceptionMessage
+      }});
+    } else {
+      const frameData = frame.data as WhileLoopIteration;
+      const condition = frameData.condition[0]
+      const conditionData = condition.data as SingleStatementData;
+
+      if (condition.sideEffects.length > 0) {
+        const stdout = condition.sideEffects
+          .filter(sideEffect => sideEffect.type === 'stdout')
+          .map(sideEffect => sideEffect.value).join('')
+        annotation.push({type: NodeAnnotationType.SideEffect, value: {message: `prints "${stdout}"`}});
+      }
+      annotation.push({
+        type: NodeAnnotationType.ReturnValue,
+        value: {
+          value: conditionData.result,
+          type: conditionData.resultType,
+        }
+      });
       const trueBlockData = frameData.block;
       for (; i < trueBlockData.length; i++) {
         trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i]);
       }
     }
+    let mutation = new NodeMutation();
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = annotation;
+    mutation.loopAnnotation = {iterations: frames.length, currentFrame: this.runtimeCaptureFrame}
+    this.fireMutation(mutation);
+
+    // Clear remaining children nodes
     if (i < trueBlockChildren.length) {
       for (; i < trueBlockChildren.length; i++) {
         trueBlockChildren[i].recursivelyClearRuntimeCapture();
@@ -107,7 +133,11 @@ export class PythonWhileLoop extends SplootNode {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
     }
-
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture);
+      this.runtimeCapture = null;
+      return;
+    }
     const data = capture.data as WhileLoopData;
     this.runtimeCapture = data;
     this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame);
@@ -116,8 +146,8 @@ export class PythonWhileLoop extends SplootNode {
   recursivelyClearRuntimeCapture() {
     let mutation = new NodeMutation();
     mutation.node = this
-    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATION;
-    mutation.annotationValue = [];
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
+    mutation.annotations = [];
     this.fireMutation(mutation);
     let blockChildren = this.getBlock().children;
     for (let i = 0; i < blockChildren.length; i++) {
