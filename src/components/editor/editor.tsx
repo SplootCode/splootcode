@@ -47,15 +47,11 @@ export class Editor extends React.Component<EditorProps> {
     let insertBox = null;
     let editBox = null;
     if (selection.isCursor() && selection.insertBox !== null) {
-      // Whelp, this is ugly, but hey it works. :shrug:
-      // This forces the insertbox to be regenerated and refocused when the insert changes position.
-      let insertKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
-      insertBox = <InsertBox key={insertKey} editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
+      insertBox = <InsertBox editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
     } else if (selection.isEditingSingleNode()) {
       // Whelp, this is ugly, but hey it works. :shrug:
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
-      let editKey = selection.cursor.index + selection.cursor.listBlock.parentRef.childSetId + selection.cursor.listBlock.parentRef.node.node.type;
-      editBox = <EditBox key={editKey} editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
+      editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
     return <React.Fragment>
         <div className="editor">
@@ -93,6 +89,11 @@ export class Editor extends React.Component<EditorProps> {
     let x = event.pageX - refBox.left;
     let y = event.pageY - refBox.top;
     selection.handleClick(x, y);
+    const insertbox = document.getElementById('insertbox') as HTMLInputElement;
+    if (insertbox) {
+      insertbox.value = '';
+      insertbox.focus();
+    }
   }
 
   clipboardHandler = (event: ClipboardEvent) => {

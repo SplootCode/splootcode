@@ -22,13 +22,16 @@ class StringGenerator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    if (!isNaN(parseStringToNum(textInput))) {
-      // Don't autocomplete string versions of valid numbers.
-      return [];
+    if (textInput.startsWith('\'') || textInput.startsWith('"')) {
+      let value = textInput.slice(1);
+      if (value.length !== 0 && value[value.length - 1] === textInput[0]) {
+        value = value.slice(0, value.length - 1);
+      }
+      const customString = new StringLiteral(null, value);
+      const suggestedNode = new SuggestedNode(customString, `string ${value}`, value, true, 'string');
+      return [suggestedNode];
     }
-    let customString = new StringLiteral(null, textInput);
-    let suggestedNode = new SuggestedNode(customString, `string ${textInput}`, '', true, 'string');
-    return [suggestedNode];
+    return [];
   }
 }
 

@@ -44,7 +44,6 @@ function getFrameDomain() {
   return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN;
 }
 
-
 class DocumentNodeComponent extends Component<DocumentNodeProps> {
   private previewFrameRef: React.RefObject<HTMLIFrameElement>;
   private hiddenFrameRef: React.RefObject<HTMLIFrameElement>;
