@@ -13,10 +13,12 @@ import {
 import { ParentReference } from "../../language/node"
 import {
   getAutocompleteFunctionsForCategory,
+  NodeCategory,
   SuggestionGenerator,
 } from "../../language/node_category_registry"
 import { SuggestedNode } from "../../language/suggested_node"
 import { EditorNodeBlock } from "./node_block"
+import { RenderedChildSetBlock, stringWidth } from "../../layout/rendered_childset_block"
 
 function filterSuggestions(parentRef: ParentReference, index: number, staticSuggestions: SuggestedNode[], generators: Set<SuggestionGenerator>, userInput: string) : SuggestedNode[] {
   let suggestions = [...staticSuggestions];
@@ -39,6 +41,9 @@ interface InsertBoxState {
   staticSuggestions: SuggestedNode[];
   suggestionGenerators: Set<SuggestionGenerator>;
   activeSuggestion: number;
+  category: NodeCategory;
+  index: number;
+  listBlock: RenderedChildSetBlock;
 }
 
 interface InsertBoxProps {
@@ -50,13 +55,14 @@ interface InsertBoxProps {
 
 @observer
 export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
+  private inputRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: InsertBoxProps) {
     super(props);
-    let { selection, insertBoxData } = this.props;
+    this.inputRef = React.createRef();
+    let { selection } = props;
     let childSetBlock = selection.cursor.listBlock;
     let index = selection.cursor.index;
-
     let category = childSetBlock.childSet.nodeCategory;
     let parentRef = childSetBlock.childSet.getParentRef();
     let suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
@@ -64,15 +70,44 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
       staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index))
     })
+    const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, '');
 
     this.state = {
       userInput: '',
       autoWidth: this.getWidth(''),
-      filteredSuggestions: [],
+      filteredSuggestions: filteredSuggestions,
       suggestionGenerators: suggestionGeneratorSet,
       staticSuggestions: staticSuggestions,
       activeSuggestion: 0,
+      category: category,
+      index: index,
+      listBlock: childSetBlock,
     };
+  }
+
+  static getDerivedStateFromProps(props: InsertBoxProps, state: InsertBoxState) {
+    let { selection } = props;
+    let childSetBlock = selection.cursor.listBlock;
+    let index = selection.cursor.index;
+    let category = childSetBlock.childSet.nodeCategory;
+    if (category !== state.category || index !== state.index || childSetBlock !== state.listBlock) {
+      let parentRef = childSetBlock.childSet.getParentRef();
+      let suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
+      let staticSuggestions = [];
+      suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
+        staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index))
+      })
+      const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, state.userInput);
+      return {
+        filteredSuggestions: filteredSuggestions,
+        suggestionGenerators: suggestionGeneratorSet,
+        staticSuggestions: staticSuggestions,
+        category: category,
+        index: index,
+        listBlock: childSetBlock,
+      }
+    }
+    return null;
   }
 
   render() {
@@ -148,10 +183,13 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
           <input
               autoFocus
               type="text"
+              id="insertbox"
+              ref={this.inputRef}
               defaultValue={userInput}
               onChange={this.onChange}
               onClick={this.onClick}
               onKeyDown={this.onKeyDown}
+              onKeyPress={this.onKeyPress}
               onBlur={this.onBlur}
               style={{"width": autoWidth}}
               />
@@ -161,11 +199,27 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     );
   }
 
+  onKeyPress = (e : React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ' ') {
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+      return false;
+    }
+  }
+
+  isOpenString = () => {
+    const inp = this.state.userInput;
+    if (inp.startsWith('\'') || inp.startsWith('"')) {
+      return inp[0] !== inp[inp.length - 1];
+    }
+    return false;
+  }
+
   onKeyDown = (e : React.KeyboardEvent<HTMLInputElement>) => {
     let { selection } = this.props;
 
     if (selection.state === SelectionState.Cursor) {
-      if (e.keyCode === 13) {
+      if (e.key === 'Enter') {
         selection.insertNewline()
       }
       return;
@@ -174,30 +228,32 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const { activeSuggestion, filteredSuggestions, userInput } = this.state;
 
     // Enter key when inserting
-    if (e.keyCode === 13 && userInput === '') {
+    if (e.key === 'Enter' && userInput === '') {
       selection.unindentCursor();
       return;
     }
 
     // Escape
-    if (e.keyCode === 27) {
+    if (e.key === 'Escape') {
+      this.inputRef.current.value = '';
       selection.exitEdit();
       e.stopPropagation();
     }
 
-    // Enter key
-    if (e.keyCode === 13) {
-        e.stopPropagation();
-        let selection = filteredSuggestions[activeSuggestion];
-        if (selection !== undefined) {
-            this.setState({
-                activeSuggestion: 0,
-            });
-            this.onSelected(selection);
-        }
+    // Enter or space key
+    if (e.key === 'Enter' || (e.key === ' ' && !this.isOpenString())) {
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation()
+      let selectedNode = filteredSuggestions[activeSuggestion];
+      if (selectedNode !== undefined) {
+        this.setState({
+          activeSuggestion: 0,
+        });
+        this.onSelected(selectedNode);
+      }
     }
     // User pressed the up arrow, decrement the index
-    else if (e.keyCode === 38) {
+    else if (e.key === 'ArrowUp' && filteredSuggestions.length > 0) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
       if (activeSuggestion === 0) {
@@ -207,14 +263,20 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       this.setState({ activeSuggestion: activeSuggestion - 1 });
     }
     // User pressed the down arrow, increment the index
-    else if (e.keyCode === 40) {
+    else if (e.key === 'ArrowDown' && filteredSuggestions.length > 0) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
+      if (activeSuggestion === filteredSuggestions.length - 1) {
         return;
       }
 
       this.setState({ activeSuggestion: activeSuggestion + 1 });
+    }
+
+    // Don't move the node cursor, just let the text box do its thing for left/right arrows.
+    if (['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.stopPropagation()
+      e.nativeEvent.stopImmediatePropagation();
     }
   }
 
@@ -226,8 +288,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   }
 
   getWidth = (input: string) => {
-    // Horrible hack :)
-    return Math.max(input.length * 8 + 6, 10);
+    return stringWidth(input) + 6;
   }
 
   onClick = (e : React.MouseEvent<HTMLInputElement>) => {
@@ -235,19 +296,30 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   }
 
   onChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value === ' ') {
+      e.currentTarget.value = '';
+    }
     const userInput = e.currentTarget.value;
-    const { staticSuggestions, suggestionGenerators } = this.state;
-    let childSetBlock = this.props.selection.cursor.listBlock;
-    let index = this.props.selection.cursor.index;
+    if (userInput !== '') {
+      const { staticSuggestions, suggestionGenerators } = this.state;
+      let childSetBlock = this.props.selection.cursor.listBlock;
+      let index = this.props.selection.cursor.index;
 
-    let parentRef = childSetBlock.childSet.getParentRef();
-    const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGenerators, userInput);
-    this.props.selection.startInsertAtCurrentCursor();
-    this.setState({
-        userInput: e.currentTarget.value,
+      let parentRef = childSetBlock.childSet.getParentRef();
+      const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGenerators, userInput);
+      this.props.selection.startInsertAtCurrentCursor();
+      this.setState({
+          userInput: e.currentTarget.value,
+          autoWidth: this.getWidth(e.currentTarget.value),
+          filteredSuggestions: filteredSuggestions,
+      });
+    } else {
+      this.setState({
+        userInput: '',
         autoWidth: this.getWidth(e.currentTarget.value),
-        filteredSuggestions: filteredSuggestions,
-    });
+        filteredSuggestions: [],
+      });
+    }
   }
 
   onSelected(suggestion: SuggestedNode) {
@@ -259,6 +331,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     } else {
       selection.insertNode(childSetBlock, index, suggestion.node);
     }
+    this.inputRef.current.value = '';
   }
 
   // Event fired when the user clicks on a suggestion

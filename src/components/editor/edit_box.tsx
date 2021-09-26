@@ -58,7 +58,6 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
               type="text"
               defaultValue={userInput}
               onChange={this.onChange}
-              onClick={this.onClick}
               onKeyDown={this.onKeyDown}
               onBlur={this.onBlur}
               style={{"width": autoWidth}}
@@ -73,29 +72,26 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     const { userInput } = this.state;
 
     // Escape
-    if (e.keyCode === 27) {
+    if (e.key === 'Escape') {
       selection.exitEdit();
     }
 
-    // Enter key
-    if (e.keyCode === 13) {
+    // Enter key or Space
+    if (e.key === 'Enter' || e.key === 'Space') {
       selection.exitEdit();
     }
+
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();  
   }
 
   onBlur = (e : React.FocusEvent<HTMLInputElement>) => {
     let selection = this.props.selection;
-    // selection.exitEdit();
+    selection.exitEdit();
   }
 
   getWidth = (input: string) => {
     return stringWidth(input) + 5;    
-  }
-
-  onClick = (e : React.MouseEvent<HTMLInputElement>) => {
-    // e.stopPropagation();
   }
 
   onChange = (e : React.ChangeEvent<HTMLInputElement>) => {
