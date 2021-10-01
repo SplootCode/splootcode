@@ -1,4 +1,4 @@
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.0/full/pyodide.js')
+importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js')
 
 let pyodide = null;
 let stdinbuffer = null;
@@ -73,7 +73,7 @@ const getNodeTree = () => {
 
 const initialise = async () => {
   executorCode = await (await fetch('/static_frame/python/executor.py')).text()
-  pyodide = await loadPyodide({ fullStdLib: false, indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.18.0/full/' });
+  pyodide = await loadPyodide({ fullStdLib: false, indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/' })
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
     stderr: stdout,
