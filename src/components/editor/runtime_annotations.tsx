@@ -5,8 +5,8 @@ import { NodeBlock } from "../../layout/rendered_node";
 
 import "./runtime_annotations.css";
 import { stringWidth } from "../../layout/rendered_childset_block";
-import { AssignmentAnnotation, NodeAnnotation, NodeAnnotationType, ReturnValueAnnotation, RuntimeErrorAnnotation, SideEffectAnnotation } from "../../language/annotations/annotations";
-import { formatPythonAssingment, formatPythonData, formatPythonReturnValue } from "../../language/types/python/utils";
+import { AssignmentAnnotation, NodeAnnotation, NodeAnnotationType, ReturnValueAnnotation, RuntimeErrorAnnotation, SideEffectAnnotation } from "../../../packages/core/language/annotations/annotations";
+import { formatPythonAssingment, formatPythonData, formatPythonReturnValue } from "@splootcode/core/language/types/python/utils";
 
 interface LoopAnnotationProps {
     nodeBlock: NodeBlock;

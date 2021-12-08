@@ -4,7 +4,7 @@ import { observer } from "mobx-react"
 import React from "react"
 
 import { NodeSelection, NodeSelectionState } from "../../context/selection"
-import { NodeAttachmentLocation } from "../../language/type_registry"
+import { NodeAttachmentLocation } from "@splootcode/core/language/type_registry"
 import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
 import { EditorNodeBlock } from "./node_block"
 

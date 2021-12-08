@@ -3,26 +3,26 @@ import * as babylon from "recast/parsers/babylon.js";
 
 import { ASTNode } from "ast-types";
 
-import { SplootNode, ParentReference } from '../language/node';
+import { SplootNode, ParentReference } from '@splootcode/core/language/node';
 import { FileKind, FunctionDeclarationKind, VariableDeclarationKind, VariableDeclaratorKind, IdentifierKind, StringLiteralKind, IfStatementKind, BlockStatementKind, BinaryExpressionKind, NumericLiteralKind, ExpressionStatementKind, CallExpressionKind, MemberExpressionKind, LogicalExpressionKind, AssignmentExpressionKind, FunctionExpressionKind, NullLiteralKind, AwaitExpressionKind, ExpressionKind, UnaryExpressionKind } from "ast-types/gen/kinds";
-import { FunctionDeclaration } from "../language/types/js/functions";
-import { ChildSet } from "../language/childset";
-import { VariableDeclaration } from "../language/types/js/variable_declaration";
-import { StringLiteral, NumericLiteral, NullLiteral } from "../language/types/literals";
-import { IfStatement } from "../language/types/js/if";
-import { VariableReference } from "../language/types/js/variable_reference";
-import { BinaryOperator } from "../language/types/js/binary_operator";
-import { MemberExpression } from "../language/types/js/member_expression";
-import { DeclaredIdentifier } from "../language/types/js/declared_identifier";
-import { CallMember } from "../language/types/js/call_member";
-import { CallVariable } from "../language/types/js/call_variable";
-import { LogicalExpression } from "../language/types/js/logical_expression";
-import { SplootExpression } from "../language/types/js/expression";
-import { JavascriptFile } from "../language/types/js/javascript_file";
-import { Assignment } from "../language/types/js/assignment";
-import { InlineFunctionDeclaration } from "../language/types/js/inline_function";
-import { AwaitExpression } from "../language/types/js/await_expression";
-import { AsyncFunctionDeclaration } from "../language/types/js/async_function";
+import { FunctionDeclaration } from "@splootcode/core/language/types/js/functions";
+import { ChildSet } from "@splootcode/core/language/childset";
+import { VariableDeclaration } from "@splootcode/core/language/types/js/variable_declaration";
+import { StringLiteral, NumericLiteral, NullLiteral } from "@splootcode/core/language/types/literals";
+import { IfStatement } from "@splootcode/core/language/types/js/if";
+import { VariableReference } from "@splootcode/core/language/types/js/variable_reference";
+import { BinaryOperator } from "@splootcode/core/language/types/js/binary_operator";
+import { MemberExpression } from "@splootcode/core/language/types/js/member_expression";
+import { DeclaredIdentifier } from "@splootcode/core/language/types/js/declared_identifier";
+import { CallMember } from "@splootcode/core/language/types/js/call_member";
+import { CallVariable } from "@splootcode/core/language/types/js/call_variable";
+import { LogicalExpression } from "@splootcode/core/language/types/js/logical_expression";
+import { SplootExpression } from "@splootcode/core/language/types/js/expression";
+import { JavascriptFile } from "@splootcode/core/language/types/js/javascript_file";
+import { Assignment } from "@splootcode/core/language/types/js/assignment";
+import { InlineFunctionDeclaration } from "@splootcode/core/language/types/js/inline_function";
+import { AwaitExpression } from "@splootcode/core/language/types/js/await_expression";
+import { AsyncFunctionDeclaration } from "@splootcode/core/language/types/js/async_function";
 
 
 function populateChildSetFromAst(childSet: ChildSet, nodeList: ASTNode[], createExpressions: boolean = false) {

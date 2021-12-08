@@ -1,11 +1,11 @@
-import { SplootNode } from "../language/node";
-import { SplootHtmlAttribute } from "../language/types/html/html_attribute";
-import { SplootHtmlDocument } from "../language/types/html/html_document";
-import { SplootHtmlElement } from "../language/types/html/html_element";
-import { StringLiteral } from "../language/types/literals";
-import { SplootHtmlScriptElement } from "../language/types/html/html_script_element";
+import { SplootNode } from "@splootcode/core/language/node";
+import { SplootHtmlAttribute } from "@splootcode/core/language/types/html/html_attribute";
+import { SplootHtmlDocument } from "@splootcode/core/language/types/html/html_document";
+import { SplootHtmlElement } from "@splootcode/core/language/types/html/html_element";
+import { StringLiteral } from "@splootcode/core/language/types/literals";
+import { SplootHtmlScriptElement } from "@splootcode/core/language/types/html/html_script_element";
 import { parseJs } from "./import_js";
-import { JavascriptFile } from "../language/types/js/javascript_file";
+import { JavascriptFile } from "@splootcode/core/language/types/js/javascript_file";
 
 
 function createScriptElement(domElement: Element) : SplootHtmlScriptElement {

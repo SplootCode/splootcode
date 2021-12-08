@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { Box, Button, FormControl, FormHelperText, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useRadio, useRadioGroup } from "@chakra-ui/react"
-import { HTML_DOCUMENT, SplootHtmlDocument } from '../language/types/html/html_document';
-import { JavascriptFile, JAVASCRIPT_FILE } from '../language/types/js/javascript_file';
-import { SplootNode } from '../language/node';
-import { generateScope } from '../language/scope/scope';
-import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
+import { HTML_DOCUMENT, SplootHtmlDocument } from '@splootcode/core/language/types/html/html_document';
+import { JavascriptFile, JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_file';
+import { SplootNode } from '@splootcode/core/language/node';
+import { generateScope } from '@splootcode/core/language/scope/scope';
+import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet';
 
 
 const fileExtension = {

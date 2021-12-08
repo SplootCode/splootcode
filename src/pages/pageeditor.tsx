@@ -7,18 +7,18 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { EditorStateContext, EditorState, DataSheetState } from '../context/editor_context';
 import { NodeBlock } from '../layout/rendered_node';
-import { loadTypes } from '../language/type_loader';
-import { Project, ProjectLayoutType } from '../language/projects/project';
+import { loadTypes } from '@splootcode/core/language/type_loader';
+import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project';
 import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader';
-import { SplootFile } from '../language/projects/file';
-import { SplootPackage } from '../language/projects/package';
+import { SplootFile } from '@splootcode/core/language/projects/file';
+import { SplootPackage } from '@splootcode/core/language/projects/package';
 import { LoadProjectModal } from '../components/load_modal';
 
 
 import './pageeditor.css';
 import { NewFileModal } from '../components/new_file_modal';
-import { SplootNode } from '../language/node';
-import { DATA_SHEET, SplootDataSheet } from '../language/types/dataset/datasheet';
+import { SplootNode } from '@splootcode/core/language/node';
+import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet';
 import { WebEditorPanels } from './web_editor';
 import { PythonEditorPanels } from './python_editor';
 import { NewProjectModal } from '../components/new_project_modal';
