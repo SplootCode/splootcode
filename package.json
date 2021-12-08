@@ -15,6 +15,7 @@
   },
   "license": "BUSL-1.1",
   "private": true,
+  "workspaces": ["packages/*"],
   "dependencies": {
     "@chakra-ui/icons": "^1.0.4",
     "@chakra-ui/react": "1.2.1",

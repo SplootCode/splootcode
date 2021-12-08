@@ -7,9 +7,9 @@ import { NodeSelection, NodeSelectionState } from "../../context/selection"
 import {
   LayoutComponent,
   LayoutComponentType,
-} from "../../language/type_registry"
-import { SPLOOT_EXPRESSION } from "../../language/types/js/expression"
-import { PYTHON_EXPRESSION } from "../../language/types/python/python_expression"
+} from "@splootcode/core/language/type_registry"
+import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
+import { PYTHON_EXPRESSION } from "@splootcode/core/language/types/python/python_expression"
 import { NodeBlock, RenderedInlineComponent } from "../../layout/rendered_node"
 import { AttachedChildRightExpressionView } from "./attached_child"
 import { SplootExpressionView } from "./expression"

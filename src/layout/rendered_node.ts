@@ -1,19 +1,19 @@
 import { observable } from "mobx"
 
 import { NodeCursor, NodeSelection } from "../context/selection"
-import { NodeMutation, NodeMutationType } from "../language/mutations/node_mutations"
-import { SplootNode } from "../language/node"
-import { NodeObserver } from "../language/observers"
+import { NodeMutation, NodeMutationType } from "@splootcode/core/language/mutations/node_mutations"
+import { SplootNode } from "@splootcode/core/language/node"
+import { NodeObserver } from "@splootcode/core/language/observers"
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-} from "../language/type_registry"
-import { SPLOOT_EXPRESSION } from "../language/types/js/expression"
-import { PYTHON_EXPRESSION } from "../language/types/python/python_expression"
-import { getColour } from "./colors"
+} from "@splootcode/core/language/type_registry"
+import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
+import { PYTHON_EXPRESSION } from "@splootcode/core/language/types/python/python_expression"
+import { getColour } from "../../packages/core/colors"
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
-import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "../language/annotations/annotations"
+import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "../../packages/core/language/annotations/annotations"
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;

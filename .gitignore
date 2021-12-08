@@ -7,7 +7,7 @@ production.env
 # Terraform
 .terraform
 
-# Lambda zips
+lib
 
 # Mac files
 .DS_Store

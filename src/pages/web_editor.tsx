@@ -3,8 +3,8 @@ import { DataSheetEditor } from '../components/datasheet/datasheet';
 import { Editor } from '../components/editor/editor';
 import { ViewPage } from '../components/preview/frame_view';
 import { DataSheetState, EditorState, EditorStateContext } from '../context/editor_context';
-import { SplootPackage } from '../language/projects/package';
-import { Project } from '../language/projects/project';
+import { SplootPackage } from '@splootcode/core/language/projects/package';
+import { Project } from '@splootcode/core/language/projects/project';
 
 
 interface WebEditorProps {

@@ -6,7 +6,7 @@ import React from "react"
 import { NodeSelection, NodeSelectionState } from "../../context/selection"
 import { NodeBlock } from "../../layout/rendered_node"
 import { EditorNodeBlock } from "./node_block"
-import { adaptNodeToPasteDestination } from "../../language/type_registry"
+import { adaptNodeToPasteDestination } from "@splootcode/core/language/type_registry"
 
 interface OverlayProps {
   selection: NodeSelection;

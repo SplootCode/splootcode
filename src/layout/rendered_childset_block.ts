@@ -6,15 +6,15 @@ import {
   NodeSelectionState,
   SelectionState,
 } from "../context/selection"
-import { ChildSet, ChildSetType } from "../language/childset"
+import { ChildSet, ChildSetType } from "@splootcode/core/language/childset"
 import {
   ChildSetMutation,
   ChildSetMutationType,
-} from "../language/mutations/child_set_mutations"
-import { SplootNode } from "../language/node"
-import { ChildSetObserver } from "../language/observers"
-import { LayoutComponent, LayoutComponentType } from "../language/type_registry"
-import { SPLOOT_EXPRESSION } from "../language/types/js/expression"
+} from "@splootcode/core/language/mutations/child_set_mutations"
+import { SplootNode } from "@splootcode/core/language/node"
+import { ChildSetObserver } from "@splootcode/core/language/observers"
+import { LayoutComponent, LayoutComponentType } from "@splootcode/core/language/type_registry"
+import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
 import {
   NODE_BLOCK_HEIGHT,
   NodeBlock,

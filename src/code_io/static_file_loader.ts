@@ -1,8 +1,8 @@
-import { SplootNode } from "../language/node";
-import { SerializedSplootPackage, SplootPackage } from "../language/projects/package";
-import { FileLoader } from "../language/projects/project";
-import { generateScope } from "../language/scope/scope";
-import { deserializeNode, SerializedNode } from "../language/type_registry";
+import { SplootNode } from "@splootcode/core/language/node";
+import { SerializedSplootPackage, SplootPackage } from "@splootcode/core/language/projects/package";
+import { FileLoader } from "@splootcode/core/language/projects/project";
+import { generateScope } from "@splootcode/core/language/scope/scope";
+import { deserializeNode, SerializedNode } from "@splootcode/core/language/type_registry";
 
 
 export class StaticFileLoader implements FileLoader {

@@ -8,6 +8,15 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "outDir": "lib"
+  },
+  "rootDir": "src",
+  "references": [
+    {
+      "path": "./packages/core"
+    }
+  ]
 }

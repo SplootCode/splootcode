@@ -2,7 +2,7 @@ import React from 'react';
 import { NodeSelection } from './selection';
 import { NodeBlock } from '../layout/rendered_node';
 import { observable, action } from 'mobx';
-import { SplootDataSheet } from '../language/types/dataset/datasheet';
+import { SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet';
 
 export class EditorState {
   @observable

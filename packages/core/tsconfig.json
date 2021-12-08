@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "target": "es5",
+    "module": "commonjs",
+    // "lib": ["dom", "es2015", "es2016", "webworker"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "outDir": "lib",
+    "rootDir": "."
+  }
+}

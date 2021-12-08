@@ -10,35 +10,47 @@ import {
   NodeSelectionState,
   SelectionState,
 } from "../../context/selection"
-import { ParentReference } from "../../language/node"
+import { ParentReference } from "@splootcode/core/language/node"
 import {
   getAutocompleteFunctionsForCategory,
   NodeCategory,
   SuggestionGenerator,
-} from "../../language/node_category_registry"
-import { SuggestedNode } from "../../language/suggested_node"
+} from "@splootcode/core/language/node_category_registry"
+import { SuggestedNode } from "@splootcode/core/language/suggested_node"
 import { EditorNodeBlock } from "./node_block"
 import { RenderedChildSetBlock, stringWidth } from "../../layout/rendered_childset_block"
+import { NodeBlock } from "../../layout/rendered_node"
 
-function filterSuggestions(parentRef: ParentReference, index: number, staticSuggestions: SuggestedNode[], generators: Set<SuggestionGenerator>, userInput: string) : SuggestedNode[] {
+interface RenderedSuggestion extends SuggestedNode {
+  nodeBlock: NodeBlock
+}
+
+function renderSuggestion(suggestedNode: SuggestedNode): RenderedSuggestion {
+  const rendered = suggestedNode as RenderedSuggestion
+  rendered.nodeBlock = new NodeBlock(null, suggestedNode.node, null, 0, false);
+  rendered.nodeBlock.calculateDimensions(0, 0, null);
+  return rendered
+}
+
+function filterSuggestions(parentRef: ParentReference, index: number, staticSuggestions: RenderedSuggestion[], generators: Set<SuggestionGenerator>, userInput: string): RenderedSuggestion[] {
   let suggestions = [...staticSuggestions];
   generators.forEach((generator: SuggestionGenerator) => {
-    suggestions = suggestions.concat(generator.dynamicSuggestions(parentRef, index, userInput))
+    suggestions = suggestions.concat(generator.dynamicSuggestions(parentRef, index, userInput).map(renderSuggestion))
   });
   const options: Fuse.FuseOptions<SuggestedNode> = {
     keys: ['key', 'display', 'searchTerms'],
     caseSensitive: false,
   };
   const fuse = new Fuse(suggestions, options)
-  const results = fuse.search(userInput) as SuggestedNode[];
+  const results = fuse.search(userInput) as RenderedSuggestion[];
   return results;
 }
 
 interface InsertBoxState {
   userInput: string;
   autoWidth: number;
-  filteredSuggestions: SuggestedNode[];
-  staticSuggestions: SuggestedNode[];
+  filteredSuggestions: RenderedSuggestion[];
+  staticSuggestions: RenderedSuggestion[];
   suggestionGenerators: Set<SuggestionGenerator>;
   activeSuggestion: number;
   category: NodeCategory;
@@ -66,9 +78,9 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     let category = childSetBlock.childSet.nodeCategory;
     let parentRef = childSetBlock.childSet.getParentRef();
     let suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
-    let staticSuggestions = [];
+    let staticSuggestions: RenderedSuggestion[] = [];
     suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index))
+      staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index).map(renderSuggestion))
     })
     const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, '');
 
@@ -93,9 +105,9 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     if (category !== state.category || index !== state.index || childSetBlock !== state.listBlock) {
       let parentRef = childSetBlock.childSet.getParentRef();
       let suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
-      let staticSuggestions = [];
+      let staticSuggestions: RenderedSuggestion[] = [];
       suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-        staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index))
+        staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index).map(renderSuggestion))
       })
       const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, state.userInput);
       return {

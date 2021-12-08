@@ -7,10 +7,10 @@ import { NodeSelection, SelectionState } from "../../context/selection"
 import {
   adaptNodeToPasteDestination,
   deserializeNode,
-} from "../../language/type_registry"
-import { HTML_DOCUMENT } from "../../language/types/html/html_document"
-import { JAVASCRIPT_FILE } from "../../language/types/js/javascript_file"
-import { PYTHON_FILE } from "../../language/types/python/python_file"
+} from "@splootcode/core/language/type_registry"
+import { HTML_DOCUMENT } from "@splootcode/core/language/types/html/html_document"
+import { JAVASCRIPT_FILE } from "@splootcode/core/language/types/js/javascript_file"
+import { PYTHON_FILE } from "@splootcode/core/language/types/python/python_file"
 import { NodeBlock } from "../../layout/rendered_node"
 import { ActiveCursor } from "./cursor"
 import { DragOverlay } from "./drag_overlay"

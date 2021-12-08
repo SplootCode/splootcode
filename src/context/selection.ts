@@ -1,8 +1,8 @@
 
 import { action, computed, observable } from "mobx"
-import { SplootNode } from "../language/node"
-import { NodeCategory } from "../language/node_category_registry"
-import { SplootExpression } from "../language/types/js/expression"
+import { SplootNode } from "@splootcode/core/language/node"
+import { NodeCategory } from "@splootcode/core/language/node_category_registry"
+import { SplootExpression } from "@splootcode/core/language/types/js/expression"
 import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
 import { NodeBlock } from "../layout/rendered_node"
 import { CursorMap } from "./cursor_map"

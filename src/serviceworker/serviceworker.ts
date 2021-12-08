@@ -1,7 +1,7 @@
-import { DATA_SHEET } from "../language/types/dataset/datasheet";
-import { JAVASCRIPT_FILE } from "../language/types/js/javascript_file";
-import { loadTypes } from "../language/type_loader";
-import { deserializeNode, SerializedNode } from "../language/type_registry";
+import { DATA_SHEET } from "@splootcode/core/language/types/dataset/datasheet";
+import { JAVASCRIPT_FILE } from "@splootcode/core/language/types/js/javascript_file";
+import { loadTypes } from "@splootcode/core/language/type_loader";
+import { deserializeNode, SerializedNode } from "@splootcode/core/language/type_registry";
 
 const CacheName = 'splootcache-v1';
 

@@ -1,0 +1,7 @@
+{
+  "name": "@splootcode/core",
+  "version": "1.0.0",
+  "dependencies": {
+    "typescript": "^4.5.2"
+  }
+}
