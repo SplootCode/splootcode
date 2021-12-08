@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "tslib";
 import { App } from "./app";
-import { stringWidth } from "./layout/rendered_childset_block";
+import { stringWidth } from "@splootcode/editor/layout/rendered_childset_block";
 import { AppProviders } from "./providers";
 
 const root = document.getElementById("app-root");

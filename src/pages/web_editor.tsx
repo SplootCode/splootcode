@@ -1,8 +1,8 @@
 import React from 'react'
-import { DataSheetEditor } from '../components/datasheet/datasheet';
-import { Editor } from '../components/editor/editor';
+import { DataSheetEditor } from '@splootcode/editor/components/datasheet/datasheet';
+import { Editor } from '@splootcode/editor/components/editor';
 import { ViewPage } from '../components/preview/frame_view';
-import { DataSheetState, EditorState, EditorStateContext } from '../context/editor_context';
+import { DataSheetState, EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context';
 import { SplootPackage } from '@splootcode/core/language/projects/package';
 import { Project } from '@splootcode/core/language/projects/project';
 

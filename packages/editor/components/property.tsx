@@ -1,17 +1,17 @@
-import "./string_literal.css"
+import "./property.css"
 
 import { observer } from "mobx-react"
 import React from "react"
 
-import { NodeSelection, NodeSelectionState } from "../../context/selection"
-import { NodeBlock } from "../../layout/rendered_node"
+import { NodeSelection, NodeSelectionState } from "../context/selection"
+import { NodeBlock } from "../layout/rendered_node"
 
-interface StringLiteralEditState {
+interface PropertyEditState {
   userInput: string;
   autoWidth: number;
 }
 
-interface StringLiteralProps {
+interface PropertyProps {
   block: NodeBlock;
   leftPos: number;
   topPos: number;
@@ -21,13 +21,13 @@ interface StringLiteralProps {
 }
 
 @observer
-class StringLiteralEditor extends React.Component<StringLiteralProps, StringLiteralEditState> {
-  constructor(props: StringLiteralProps) {
+class PropertyEditor extends React.Component<PropertyProps, PropertyEditState> {
+  constructor(props: PropertyProps) {
     super(props);
     let { propertyName } = this.props;
     let { node } = this.props.block;
 
-    let startValue = node.getProperty(propertyName);
+    let startValue = node.getProperty(propertyName).toString();
     this.state = {
       userInput: node.getProperty(propertyName),
       autoWidth: this.getWidth(startValue),
@@ -86,9 +86,9 @@ class StringLiteralEditor extends React.Component<StringLiteralProps, StringLite
   }
 }
 
-export class InlineStringLiteral extends React.Component<StringLiteralProps> {
+export class InlineProperty extends React.Component<PropertyProps> {
   render() {
-    let { block, propertyName, selectState, leftPos, topPos, selection } = this.props;
+    let { block, leftPos, topPos, propertyName, selectState, selection } = this.props;
     let { node } = this.props.block;
     let isEditing = selectState === NodeSelectionState.EDITING;
     let isSelected = isEditing || selectState === NodeSelectionState.SELECTED
@@ -96,12 +96,12 @@ export class InlineStringLiteral extends React.Component<StringLiteralProps> {
     /*
     if (isEditing) {
       return (
-        <text className={"string-literal " + className}>"
-        <StringLiteralEditor block={block} propertyName={propertyName} selectState={selectState} selection={selection}/>
-        "</text>
+        <text className={"inline-component-property " + className}>
+        <PropertyEditor block={block} propertyName={propertyName} selectState={selectState} selection={selection}/>
+        </text>
       );
     }
     */
-    return <text className={"string-literal " + className} x={leftPos} y={topPos + 20} style={{fill: block.textColor}} xmlSpace="preserve">"{ node.getProperty(propertyName) }"</text>;
+    return <text x={leftPos} y={topPos + 20} style={{'fill': block.textColor}}>{ node.getProperty(propertyName) }</text>;
   }
 }

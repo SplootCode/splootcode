@@ -11,9 +11,9 @@ import {
 } from "@splootcode/core/language/type_registry"
 import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
 import { PYTHON_EXPRESSION } from "@splootcode/core/language/types/python/python_expression"
-import { getColour } from "../../packages/core/colors"
+import { getColour } from "@splootcode/core/colors"
 import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
-import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "../../packages/core/language/annotations/annotations"
+import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "@splootcode/core/language/annotations/annotations"
 
 export const NODE_INLINE_SPACING = 8;
 export const NODE_INLINE_SPACING_SMALL = 6;

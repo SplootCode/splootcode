@@ -3,14 +3,14 @@ import "./node_block.css"
 import { observer } from "mobx-react"
 import React, { ReactElement } from "react"
 
-import { NodeSelection, NodeSelectionState } from "../../context/selection"
+import { NodeSelection, NodeSelectionState } from "../context/selection"
 import {
   LayoutComponent,
   LayoutComponentType,
 } from "@splootcode/core/language/type_registry"
 import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
 import { PYTHON_EXPRESSION } from "@splootcode/core/language/types/python/python_expression"
-import { NodeBlock, RenderedInlineComponent } from "../../layout/rendered_node"
+import { NodeBlock, RenderedInlineComponent } from "../layout/rendered_node"
 import { AttachedChildRightExpressionView } from "./attached_child"
 import { SplootExpressionView } from "./expression"
 import { ExpandedListBlockView, InlineListBlockView } from "./list_block"

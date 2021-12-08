@@ -6,9 +6,9 @@ import React from "react"
 import {
   NodeSelection,
   SelectionState,
-} from "../../context/selection"
-import { EditBoxData } from "../../context/edit_box"
-import { stringWidth } from "../../layout/rendered_childset_block"
+} from "../context/selection"
+import { EditBoxData } from "../context/edit_box"
+import { stringWidth } from "../layout/rendered_childset_block"
 
 
 interface EditBoxState {

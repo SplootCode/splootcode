@@ -4,12 +4,12 @@ import Fuse from "fuse.js"
 import { observer } from "mobx-react"
 import React from "react"
 
-import { InsertBoxData } from "../../context/insert_box"
+import { InsertBoxData } from "../context/insert_box"
 import {
   NodeSelection,
   NodeSelectionState,
   SelectionState,
-} from "../../context/selection"
+} from "../context/selection"
 import { ParentReference } from "@splootcode/core/language/node"
 import {
   getAutocompleteFunctionsForCategory,
@@ -18,8 +18,8 @@ import {
 } from "@splootcode/core/language/node_category_registry"
 import { SuggestedNode } from "@splootcode/core/language/suggested_node"
 import { EditorNodeBlock } from "./node_block"
-import { RenderedChildSetBlock, stringWidth } from "../../layout/rendered_childset_block"
-import { NodeBlock } from "../../layout/rendered_node"
+import { RenderedChildSetBlock, stringWidth } from "../layout/rendered_childset_block"
+import { NodeBlock } from "../layout/rendered_node"
 
 interface RenderedSuggestion extends SuggestedNode {
   nodeBlock: NodeBlock
