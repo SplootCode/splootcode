@@ -3,9 +3,9 @@ import "./list_block.css"
 import { observer } from "mobx-react"
 import React from "react"
 
-import { NodeSelection, NodeSelectionState } from "../../context/selection"
-import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
-import { NodeBlock } from "../../layout/rendered_node"
+import { NodeSelection, NodeSelectionState } from "../context/selection"
+import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
+import { NodeBlock } from "../layout/rendered_node"
 import { EditorNodeBlock } from "./node_block"
 import { RuntimeAnnotation } from "./runtime_annotations"
 

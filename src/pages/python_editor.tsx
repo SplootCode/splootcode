@@ -1,7 +1,7 @@
 import React from 'react'
-import { Editor } from '../components/editor/editor';
+import { Editor } from '@splootcode/editor/components/editor';
 import { PythonFrame } from '../components/python/python_frame';
-import { EditorState, EditorStateContext } from '../context/editor_context';
+import { EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context';
 import { SplootPackage } from '@splootcode/core/language/projects/package';
 import { Project } from '@splootcode/core/language/projects/project';
 

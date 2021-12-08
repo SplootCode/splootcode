@@ -3,7 +3,7 @@ import "./editor.css"
 import { observer } from "mobx-react"
 import React from "react"
 
-import { NodeSelection, SelectionState } from "../../context/selection"
+import { NodeSelection, SelectionState } from "../context/selection"
 import {
   adaptNodeToPasteDestination,
   deserializeNode,
@@ -11,13 +11,12 @@ import {
 import { HTML_DOCUMENT } from "@splootcode/core/language/types/html/html_document"
 import { JAVASCRIPT_FILE } from "@splootcode/core/language/types/js/javascript_file"
 import { PYTHON_FILE } from "@splootcode/core/language/types/python/python_file"
-import { NodeBlock } from "../../layout/rendered_node"
+import { NodeBlock } from "../layout/rendered_node"
 import { ActiveCursor } from "./cursor"
 import { DragOverlay } from "./drag_overlay"
 import { InsertBox } from "./insert_box"
 import { ExpandedListBlockView } from "./list_block"
 import { Tray } from "./tray"
-import { EditBoxData } from "../../context/edit_box"
 import { EditBox } from "./edit_box"
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode';

@@ -1,15 +1,15 @@
 import React from "react"
 
 import { observer } from "mobx-react";
-import { NodeBlock } from "../../layout/rendered_node";
+import { NodeBlock } from "../layout/rendered_node";
 
 import "./runtime_annotations.css";
-import { stringWidth } from "../../layout/rendered_childset_block";
-import { AssignmentAnnotation, NodeAnnotation, NodeAnnotationType, ReturnValueAnnotation, RuntimeErrorAnnotation, SideEffectAnnotation } from "../../../packages/core/language/annotations/annotations";
+import { stringWidth } from "../layout/rendered_childset_block";
+import { AssignmentAnnotation, NodeAnnotation, NodeAnnotationType, ReturnValueAnnotation, RuntimeErrorAnnotation, SideEffectAnnotation } from "@splootcode/core/language/annotations/annotations";
 import { formatPythonAssingment, formatPythonData, formatPythonReturnValue } from "@splootcode/core/language/types/python/utils";
 
 interface LoopAnnotationProps {
-    nodeBlock: NodeBlock;
+  nodeBlock: NodeBlock;
 }
 
 @observer

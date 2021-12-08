@@ -3,9 +3,8 @@ import "./tree_list_block.css"
 import { observer } from "mobx-react"
 import React from "react"
 
-import { NodeSelection, NodeSelectionState } from "../../context/selection"
-import { NodeAttachmentLocation } from "@splootcode/core/language/type_registry"
-import { RenderedChildSetBlock } from "../../layout/rendered_childset_block"
+import { NodeSelection } from "../context/selection"
+import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
 import { EditorNodeBlock } from "./node_block"
 
 interface AttachedChildViewProps {

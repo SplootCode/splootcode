@@ -1,7 +1,7 @@
 import React from 'react'
 import { MenuButton } from './menu_button';
-import { EditorState, EditorStateContext } from '../context/editor_context';
-import { NodeSelection } from '../context/selection';
+import { EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context';
+import { NodeSelection } from '@splootcode/editor/context/selection';
 import { observer } from 'mobx-react';
 
 import './panel.css';

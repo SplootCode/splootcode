@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
     "target": "es5",
     "module": "commonjs",
-    "lib": ["dom", "es2015", "es2016", "webworker"],
+    // "lib": ["dom", "es2015", "es2016", "webworker"],
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "composite": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -12,15 +15,5 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "outDir": "lib",
-    "baseUrl": ".",
-  },
-  "rootDir": "src",
-  "references": [
-    {
-      "path": "./packages/core"
-    },
-    {
-      "path": "./packages/editor"
-    }
-  ]
+  }
 }

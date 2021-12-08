@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem, Icon, Spacer, Flex, IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
-import { EditorStateContext, EditorState, DataSheetState } from '../context/editor_context';
-import { NodeBlock } from '../layout/rendered_node';
+import { EditorStateContext, EditorState, DataSheetState } from '@splootcode/editor/context/editor_context';
+import { NodeBlock } from '@splootcode/editor/layout/rendered_node';
 import { loadTypes } from '@splootcode/core/language/type_loader';
 import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project';
 import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader';
