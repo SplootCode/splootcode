@@ -72,7 +72,7 @@ const getNodeTree = () => {
 }
 
 const initialise = async () => {
-  executorCode = await (await fetch('/static_frame/python/executor.py')).text()
+  executorCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/executor.py')).text()
   pyodide = await loadPyodide({ fullStdLib: false, indexURL : 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/' })
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,

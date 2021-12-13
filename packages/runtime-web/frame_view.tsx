@@ -37,7 +37,7 @@ const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME;
 
 function getHiddenFrameSrc() {
   let rand = Math.floor((Math.random() * 1000000) + 1);
-  return getFrameDomain() + '/splootframeclient.html' + '?a=' + rand;
+  return getFrameDomain() + '/splootframewebclient.html' + '?a=' + rand;
 }
 
 function getFrameDomain() {

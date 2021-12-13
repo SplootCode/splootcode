@@ -10,7 +10,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import WasmTTY  from "./wasm-tty/wasm-tty";
-import { AppProviders } from "../providers";
+import { AppProviders } from "./providers";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
@@ -328,7 +328,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   initialiseWorker = () => {
     if (!this.worker) {
-      this.worker = new Worker('/static_frame/webworker.js');
+      this.worker = new Worker(process.env.RUNTIME_PYTHON_WEBWORKER_PATH);
       this.worker.addEventListener('message', this.handleMessageFromWorker);
     }
   }
