@@ -17,11 +17,19 @@ export default {
   mode: process.env.NODE_ENV || 'development',
 
   entry: {
-    splootframeclient: './src/view/index.tsx',
-    splootframepythonclient: './src/view/python.tsx',
-    serviceworker: {
-      import: './src/serviceworker/serviceworker.ts',
+    splootframewebclient: {
+      import: '@splootcode/runtime-web/runtime/index.tsx'
+    },
+    web_serviceworker: {
+      import: '@splootcode/runtime-web/runtime/serviceworker/serviceworker.ts',
       filename: 'sw.js' // Service worker needs a consistent file name.
+    },
+    splootframepythonclient: {
+      import: '@splootcode/runtime-python/runtime/index.tsx'
+    },
+    python_webworker: {
+      import: '@splootcode/runtime-python/runtime/webworker.js',
+      filename: 'runtime-python/webworker.js'
     }
   },
 
@@ -48,18 +56,21 @@ export default {
     new NodePolyfillPlugin(),
     new CopyWebpackPlugin({
       patterns: [
-        path.resolve('./static_frame/**'),
+        {
+          from: path.resolve('node_modules', '@splootcode', 'runtime-python', 'static'), 
+          to: 'runtime-python/static'
+        }
       ]
     }),
     new HtmlWebpackPlugin({
-      template: './src/view/splootframeclient.html',
-      filename: 'splootframeclient.html',
-      excludeChunks: ['splootframepythonclient']
+      template: './src/template.html',
+      filename: 'splootframewebclient.html',
+      chunks: ['splootframewebclient']
     }),
     new HtmlWebpackPlugin({
-      template: './src/view/splootframepythonclient.html',
+      template: './src/template.html',
       filename: 'splootframepythonclient.html',
-      excludeChunks: ['splootframeclient']
+      chunks: ['splootframepythonclient']
     })
   ],
 
