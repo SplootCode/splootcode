@@ -12,10 +12,9 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "outDir": "lib",
-    "rootDir": ".",
-    "baseUrl": "../..",
+    "baseUrl": ".",
     "paths": {
-      "@splootcode/*": ["packages/*"]
+      "@splootcode/*": ["../*"]
     }
   }
 }
