@@ -15,10 +15,10 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "outDir": "lib",
-    "baseUrl": "../..",
+    "baseUrl": ".",
     "paths": {
-      "@splootcode/*": ["packages/*"]
-    },
+      "@splootcode/*": ["../*"]
+    }
   },
   "references": [
     {
