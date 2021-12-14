@@ -1,38 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["dom", "es2015", "es2016", "webworker"],
+    "declaration": true,
+    "declarationMap": true,
+    "target": "es6",
+    "module": "esnext",
+    "lib": ["webworker"],
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "composite": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "jsx": "react",
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "outDir": "lib",
-    "baseUrl": ".",
+    "baseUrl": "../..",
     "paths": {
       "@splootcode/*": ["packages/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-  ],
-  "rootDir": "src",
   "references": [
     {
-      "path": "./packages/core"
+      "path": "../core"
     },
     {
-      "path": "./packages/editor"
-    },
-    {
-      "path": "./packages/runtime-python"
-    },
-    {
-      "path": "./packages/runtime-web"
+      "path": "../runtime-python"
     }
   ]
 }

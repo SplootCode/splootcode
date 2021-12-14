@@ -8,14 +8,21 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "composite": true,
+    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "outDir": "lib",
-    "rootDir": ".",
     "baseUrl": "../..",
     "paths": {
       "@splootcode/*": ["packages/*"]
-    }
-  }
+    },
+  },
+  "references": [
+    {
+      "path": "../core"
+    },
+  ]
 }

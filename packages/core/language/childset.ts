@@ -1,4 +1,3 @@
-import { observable, action } from 'mobx';
 import { ParentReference, SplootNode } from "./node";
 import { NodeCategory } from './node_category_registry';
 import { ChildSetMutation, ChildSetMutationType } from './mutations/child_set_mutations';
@@ -11,8 +10,8 @@ export enum ChildSetType {
 }
 
 export class ChildSet {
-  @observable childParentRef: ParentReference; 
-  @observable children: SplootNode[];
+  childParentRef: ParentReference; 
+  children: SplootNode[];
   type: ChildSetType;
   nodeCategory: NodeCategory;
   mutationObservers: ChildSetObserver[];
@@ -50,7 +49,6 @@ export class ChildSet {
     this.mutationObservers.push(observer);
   }
 
-  @action
   insertNode(node: SplootNode, index: number) {
     this.children.splice(index, 0, node);
     node.parent = this.childParentRef;
@@ -64,7 +62,6 @@ export class ChildSet {
     }
   }
 
-  @action
   removeChild(index: number) : SplootNode {
     let child = this.children.splice(index, 1)[0];
     child.parent = null;
@@ -80,7 +77,6 @@ export class ChildSet {
     return child;
   }
 
-  @action
   addChild(child: SplootNode) {
     this.insertNode(child, this.children.length);
     child.parent = this.childParentRef;

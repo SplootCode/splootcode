@@ -1,4 +1,4 @@
-import "./frame_view.css"
+import "./web_runtime.css"
 
 import { observer } from "mobx-react"
 import React, { ChangeEvent, Component } from "react"
