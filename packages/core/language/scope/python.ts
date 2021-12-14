@@ -1,4 +1,3 @@
-import { NONAME } from "dns";
 import { FunctionDefinition } from "../lib/loader";
 
 /*

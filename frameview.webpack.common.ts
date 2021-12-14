@@ -2,11 +2,15 @@ import path from 'path'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 
 export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    plugins: [new TsconfigPathsPlugin({})]
   },
+
+  context: __dirname,
 
   output: {
     path: path.resolve('frame-dist'),
@@ -17,25 +21,28 @@ export default {
   mode: process.env.NODE_ENV || 'development',
 
   entry: {
-    splootframewebclient: {
-      import: '@splootcode/runtime-web/runtime/index.tsx'
-    },
-    web_serviceworker: {
-      import: '@splootcode/runtime-web/runtime/serviceworker/serviceworker.ts',
-      filename: 'sw.js' // Service worker needs a consistent file name.
-    },
     splootframepythonclient: {
-      import: '@splootcode/runtime-python/runtime/index.tsx'
+      import: './packages/runtime-python/runtime/index.tsx'
     },
     python_webworker: {
-      import: '@splootcode/runtime-python/runtime/webworker.js',
+      import: './packages/runtime-python/runtime/webworker.js',
       filename: 'runtime-python/webworker.js'
+    },
+    splootframewebclient: {
+      import: './packages/runtime-web/index.ts'
+    },
+    web_serviceworker: {
+      import: './packages/runtime-web/serviceworker.ts',
+      filename: 'sw.js' // Service worker needs a consistent file name.
     }
   },
 
   optimization: {
+    runtimeChunk: false,
     splitChunks: {
-      chunks: 'all',
+      chunks(chunk) {
+        return false
+      },
     },
   },
 
@@ -43,7 +50,13 @@ export default {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        exclude: /node_modules/,
+        use: {
+          loader: "ts-loader",
+          options: {
+            projectReferences: true
+          }
+        }
       },
       {
         test: /\.css$/,
