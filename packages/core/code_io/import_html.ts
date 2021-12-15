@@ -1,11 +1,11 @@
-import { SplootNode } from '../language/node'
+import { JavascriptFile } from '../language/types/js/javascript_file'
 import { SplootHtmlAttribute } from '../language/types/html/html_attribute'
 import { SplootHtmlDocument } from '../language/types/html/html_document'
 import { SplootHtmlElement } from '../language/types/html/html_element'
-import { StringLiteral } from '../language/types/literals'
 import { SplootHtmlScriptElement } from '../language/types/html/html_script_element'
+import { SplootNode } from '../language/node'
+import { StringLiteral } from '../language/types/literals'
 import { parseJs } from './import_js'
-import { JavascriptFile } from '../language/types/js/javascript_file'
 
 function createScriptElement(domElement: Element): SplootHtmlScriptElement {
   const splootNode = new SplootHtmlScriptElement(null)

@@ -1,22 +1,22 @@
-import { HighlightColorCategory } from '../../../colors'
-import { getSideEffectAnnotations, NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
-import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { ChildSetType } from '../../childset'
-import { VariableDefinition } from '../../definitions/loader'
-import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from './declared_identifier'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
+import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
+import { SuggestedNode } from '../../suggested_node'
+import { VariableDefinition } from '../../definitions/loader'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 

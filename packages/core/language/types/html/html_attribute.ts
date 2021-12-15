@@ -1,20 +1,20 @@
-import { HighlightColorCategory } from '../../../colors'
 import { ChildSetType } from '../../childset'
-import { getValidAttributes } from '../../html/tags'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { HTML_SCRIPT_ElEMENT } from './html_script_element'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { HTML_SCRIPT_ElEMENT } from './html_script_element'
-import { StringLiteral, STRING_LITERAL } from '../literals'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { STRING_LITERAL, StringLiteral } from '../literals'
+import { SuggestedNode } from '../../suggested_node'
+import { getValidAttributes } from '../../html/tags'
 
 export const HTML_ATTRIBUTE = 'HTML_ATTRIBUTE'
 

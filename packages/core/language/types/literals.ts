@@ -1,21 +1,21 @@
 import * as recast from 'recast'
 
+import { HighlightColorCategory } from '../../colors'
+import { JavaScriptSplootNode } from '../javascript_node'
 import {
-  TypeRegistration,
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../type_registry'
-import { SplootNode, ParentReference } from '../node'
-import { registerNodeCateogry, NodeCategory, SuggestionGenerator } from '../node_category_registry'
-import { SuggestedNode } from '../suggested_node'
-import { HighlightColorCategory } from '../../colors'
-import { SplootExpression, SPLOOT_EXPRESSION } from './js/expression'
-import { JavaScriptSplootNode } from '../javascript_node'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../node_category_registry'
+import { PYTHON_EXPRESSION, PythonExpression } from './python/python_expression'
+import { ParentReference, SplootNode } from '../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from './js/expression'
 import { StringLiteralKind } from 'ast-types/gen/kinds'
-import { PythonExpression, PYTHON_EXPRESSION } from './python/python_expression'
+import { SuggestedNode } from '../suggested_node'
 
 export const STRING_LITERAL = 'STRING_LITERAL'
 export const NUMERIC_LITERAL = 'NUMERIC_LITERAL'

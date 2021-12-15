@@ -1,19 +1,19 @@
 import * as csstree from 'css-tree'
-import { HighlightColorCategory } from '../../../colors'
 import { ChildSetType } from '../../childset'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
 import { StyleProperty } from './style_property'
 import { StyleSelector } from './style_selector'
+import { SuggestedNode } from '../../suggested_node'
 
 export const STYLE_RULE = 'STYLE_RULE'
 

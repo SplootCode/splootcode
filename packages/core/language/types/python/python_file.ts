@@ -1,16 +1,16 @@
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
+import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
-import { PythonExpression, PYTHON_EXPRESSION } from './python_expression'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { ParentReference, SplootNode } from '../../node'
 import { PythonFileData, StatementCapture } from '../../capture/runtime_capture'
 
 export const PYTHON_FILE = 'PYTHON_FILE'

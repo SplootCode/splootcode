@@ -1,7 +1,7 @@
-import { ParentReference, SplootNode } from './node'
-import { NodeCategory } from './node_category_registry'
 import { ChildSetMutation, ChildSetMutationType } from './mutations/child_set_mutations'
 import { ChildSetObserver } from './observers'
+import { NodeCategory } from './node_category_registry'
+import { ParentReference, SplootNode } from './node'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
 export enum ChildSetType {

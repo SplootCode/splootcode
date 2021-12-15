@@ -1,12 +1,12 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
+import { ASTNode } from 'ast-types'
 import { ChildSetType } from '../../childset'
-import { registerType, SerializedNode, TypeRegistration } from '../../type_registry'
 import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SerializedNode, TypeRegistration, registerType } from '../../type_registry'
 import { SplootDataFieldDeclaration } from './field_declaration'
 import { SplootDataRow } from './row'
-import { ASTNode } from 'ast-types'
 
 export const DATA_SHEET = 'DATA_SHEET'
 

@@ -1,22 +1,22 @@
-import { ObjectPropertyKind } from 'ast-types/gen/kinds'
 import * as recast from 'recast'
+import { ObjectPropertyKind } from 'ast-types/gen/kinds'
 
-import { HighlightColorCategory } from '../../../colors'
 import { ChildSetType } from '../../childset'
-import { getCssProperties } from '../../css/css_properties'
+import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { ParentReference } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { StringLiteral, STRING_LITERAL } from '../literals'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
+import { STRING_LITERAL, StringLiteral } from '../literals'
+import { SuggestedNode } from '../../suggested_node'
+import { getCssProperties } from '../../css/css_properties'
 
 export const JSS_STYLE_PROPERTY = 'JSS_STYLE_PROPERTY'
 

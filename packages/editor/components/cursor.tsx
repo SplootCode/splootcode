@@ -1,10 +1,10 @@
 import './cursor.css'
 
-import { observer } from 'mobx-react'
 import React from 'react'
+import { observer } from 'mobx-react'
 
-import { NodeSelection, SelectionState } from '../context/selection'
 import { LayoutComponentType } from '@splootcode/core/language/type_registry'
+import { NodeSelection, SelectionState } from '../context/selection'
 
 interface ActiveCursorProps {
   selection: NodeSelection

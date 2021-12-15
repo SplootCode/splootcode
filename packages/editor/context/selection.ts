@@ -1,12 +1,12 @@
-import { action, computed, observable } from 'mobx'
-import { SplootNode } from '@splootcode/core/language/node'
-import { NodeCategory } from '@splootcode/core/language/node_category_registry'
-import { SplootExpression } from '@splootcode/core/language/types/js/expression'
-import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { NodeBlock } from '../layout/rendered_node'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { NodeBlock } from '../layout/rendered_node'
+import { NodeCategory } from '@splootcode/core/language/node_category_registry'
+import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
+import { SplootExpression } from '@splootcode/core/language/types/js/expression'
+import { SplootNode } from '@splootcode/core/language/node'
+import { action, computed, observable } from 'mobx'
 
 export enum NodeSelectionState {
   UNSELECTED = 0,

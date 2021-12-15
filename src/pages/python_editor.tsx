@@ -1,9 +1,9 @@
 import React from 'react'
 import { Editor } from '@splootcode/editor/components/editor'
-import { PythonFrame } from '@splootcode/editor/runtime/python_frame'
 import { EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { Project } from '@splootcode/core/language/projects/project'
+import { PythonFrame } from '@splootcode/editor/runtime/python_frame'
+import { SplootPackage } from '@splootcode/core/language/projects/package'
 
 interface WebEditorProps {
   project: Project

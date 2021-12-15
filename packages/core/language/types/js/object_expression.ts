@@ -1,21 +1,21 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { ObjectExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
-import { SuggestedNode } from '../../suggested_node'
-import { SplootExpression, SPLOOT_EXPRESSION } from './expression'
 import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ObjectExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
+import { SuggestedNode } from '../../suggested_node'
 
 export const OBJECT_EXPRESSION = 'OBJECT_EXPRESSION'
 

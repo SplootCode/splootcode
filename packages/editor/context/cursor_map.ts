@@ -1,5 +1,5 @@
-import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { NodeCursor } from './selection'
+import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface LineEntry {
   xCoord: number

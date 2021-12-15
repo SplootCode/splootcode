@@ -1,25 +1,25 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
+import { ASTNode } from 'ast-types'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
+import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
+import { ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { HighlightColorCategory } from '../../../colors'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
 import { SplootExpression } from './expression'
-import { ASTNode } from 'ast-types'
-import { ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
+import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
-import { DeclaredIdentifier, DECLARED_IDENTIFIER } from './declared_identifier'
-import { HighlightColorCategory } from '../../../colors'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { JavaScriptSplootNode } from '../../javascript_node'
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION'
 

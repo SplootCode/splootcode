@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { NodeBlock } from '../layout/rendered_node'
+import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { TokenListBlockView } from './token_list_block'
 
 interface NodeBlockProps {

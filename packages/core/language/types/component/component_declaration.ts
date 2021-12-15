@@ -1,25 +1,25 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
-import { SplootExpression, SPLOOT_EXPRESSION } from '../js/expression'
 import { ComponentDefinition } from '../../definitions/loader'
-import { HighlightColorCategory } from '../../../colors'
-import { SuggestedNode } from '../../suggested_node'
 import { DeclaredIdentifier } from '../js/declared_identifier'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import { DeclaredProperty } from './declared_property'
+import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { HighlightColorCategory } from '../../../colors'
+import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
+import { SuggestedNode } from '../../suggested_node'
 
 export const COMPONENT_DECLARATION = 'COMPONENT_DECLARATION'
 

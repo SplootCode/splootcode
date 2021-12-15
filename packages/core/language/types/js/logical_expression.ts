@@ -1,20 +1,20 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from '../../node_category_registry'
+import { ChildSet, ChildSetType } from '../../childset'
+import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { ExpressionKind } from 'ast-types/gen/kinds'
+import { HighlightColorCategory } from '../../../colors'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { HighlightColorCategory } from '../../../colors'
-import { ChildSet, ChildSetType } from '../../childset'
-import { ExpressionKind } from 'ast-types/gen/kinds'
-import { SplootExpression, SPLOOT_EXPRESSION } from './expression'
-import { JavaScriptSplootNode } from '../../javascript_node'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 
 export const LOGICAL_EXPRESSION = 'LOGICAL_EXPRESSION'
 

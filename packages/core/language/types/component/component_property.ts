@@ -1,24 +1,24 @@
 import * as recast from 'recast'
 
+import { COMPONENT_INVOCATION, ComponentInvocation } from './component_invocation'
+import { ChildSetType } from '../../childset'
 import { ExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
-import { ChildSetType } from '../../childset'
-import { getValidReactAttributes } from '../../html/tags'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { ParentReference } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { ReactElementNode, REACT_ELEMENT } from './react_element'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
+import { REACT_ELEMENT, ReactElementNode } from './react_element'
 import { SplootExpression } from '../js/expression'
-import { ComponentInvocation, COMPONENT_INVOCATION } from './component_invocation'
+import { SuggestedNode } from '../../suggested_node'
+import { getValidReactAttributes } from '../../html/tags'
 
 export const COMPONENT_PROPERTY = 'COMPONENT_PROPERTY'
 

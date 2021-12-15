@@ -1,7 +1,7 @@
+import Dotenv from 'dotenv-webpack'
+import common from './frameview.webpack.common'
 import { Configuration } from 'webpack'
 import { merge } from 'webpack-merge'
-import common from './frameview.webpack.common'
-import Dotenv from 'dotenv-webpack'
 
 module.exports = merge<Configuration>(common as Configuration, {
   mode: 'development',

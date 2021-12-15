@@ -3,8 +3,8 @@ import 'xterm/css/xterm.css'
 
 import './terminal.css'
 
-import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
+import { Terminal } from 'xterm'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

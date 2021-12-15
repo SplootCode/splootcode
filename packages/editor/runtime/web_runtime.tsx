@@ -1,15 +1,15 @@
 import './web_runtime.css'
 
-import { observer } from 'mobx-react'
 import React, { ChangeEvent, Component } from 'react'
+import { observer } from 'mobx-react'
 
-import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons'
 import { Box, ButtonGroup, FormControl, FormLabel, HStack, IconButton, Spacer, Switch } from '@chakra-ui/react'
+import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons'
 
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 export enum FrameState {
   DEAD = 0,

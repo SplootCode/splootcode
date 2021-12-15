@@ -1,8 +1,8 @@
-import { SplootNode } from '@splootcode/core/language/node'
-import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
 import { FileLoader } from '@splootcode/core/language/projects/project'
-import { generateScope } from '@splootcode/core/language/scope/scope'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
+import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
+import { SplootNode } from '@splootcode/core/language/node'
+import { generateScope } from '@splootcode/core/language/scope/scope'
 
 export class FileSystemFileLoader implements FileLoader {
   directoryHandle: FileSystemDirectoryHandle

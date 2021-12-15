@@ -1,21 +1,21 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
+import { HighlightColorCategory } from '../../../colors'
+import { IdentifierKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
-import { IdentifierKind } from 'ast-types/gen/kinds'
 import { VariableDefinition } from '../../definitions/loader'
-import { HighlightColorCategory } from '../../../colors'
-import { SplootExpression, SPLOOT_EXPRESSION } from './expression'
-import { JavaScriptSplootNode } from '../../javascript_node'
 
 export const VARIABLE_REFERENCE = 'VARIABLE_REFERENCE'
 

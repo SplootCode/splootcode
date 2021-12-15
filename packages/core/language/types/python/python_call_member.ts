@@ -1,21 +1,21 @@
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
 import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
   LayoutComponent,
-  registerType,
+  LayoutComponentType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 
 import { HighlightColorCategory } from '../../../colors'
-import { STRING_LITERAL } from '../literals'
-import { PYTHON_VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
-import { PythonExpression, PYTHON_EXPRESSION } from './python_expression'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { PYTHON_VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
+import { STRING_LITERAL } from '../literals'
 
 export const PYTHON_CALL_MEMBER = 'PYTHON_CALL_MEMBER'
 

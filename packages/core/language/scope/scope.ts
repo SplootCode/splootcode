@@ -1,13 +1,13 @@
 import {
   ComponentDefinition,
   FunctionDefinition,
+  TypeExpression,
+  VariableDefinition,
   javascriptBuiltInGlobalFunctions,
   loadTypescriptTypeInfo,
   resolveMethodsFromTypeExpression,
   resolvePropertiesFromTypeExpression,
-  TypeExpression,
   typeRegistry,
-  VariableDefinition,
 } from '../definitions/loader'
 import { SplootNode } from '../node'
 import { loadPythonBuiltinFunctions } from './python'

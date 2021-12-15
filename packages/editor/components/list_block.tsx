@@ -1,12 +1,12 @@
 import './list_block.css'
 
-import { observer } from 'mobx-react'
 import React from 'react'
+import { observer } from 'mobx-react'
 
+import { EditorNodeBlock } from './node_block'
+import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { NodeBlock } from '../layout/rendered_node'
-import { EditorNodeBlock } from './node_block'
 import { RuntimeAnnotation } from './runtime_annotations'
 
 interface ExpandedListBlockViewProps {

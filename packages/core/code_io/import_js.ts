@@ -1,47 +1,47 @@
-import * as recast from 'recast'
 import * as babylon from 'recast/parsers/babylon.js'
+import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
 
-import { SplootNode, ParentReference } from '../language/node'
+import { Assignment } from '../language/types/js/assignment'
 import {
+  AssignmentExpressionKind,
+  AwaitExpressionKind,
+  BinaryExpressionKind,
+  BlockStatementKind,
+  CallExpressionKind,
+  ExpressionStatementKind,
   FileKind,
   FunctionDeclarationKind,
+  FunctionExpressionKind,
+  IdentifierKind,
+  IfStatementKind,
+  LogicalExpressionKind,
+  MemberExpressionKind,
+  NumericLiteralKind,
+  StringLiteralKind,
+  UnaryExpressionKind,
   VariableDeclarationKind,
   VariableDeclaratorKind,
-  IdentifierKind,
-  StringLiteralKind,
-  IfStatementKind,
-  BlockStatementKind,
-  BinaryExpressionKind,
-  NumericLiteralKind,
-  ExpressionStatementKind,
-  CallExpressionKind,
-  MemberExpressionKind,
-  LogicalExpressionKind,
-  AssignmentExpressionKind,
-  FunctionExpressionKind,
-  AwaitExpressionKind,
-  UnaryExpressionKind,
 } from 'ast-types/gen/kinds'
-import { FunctionDeclaration } from '../language/types/js/functions'
-import { ChildSet } from '../language/childset'
-import { VariableDeclaration } from '../language/types/js/variable_declaration'
-import { StringLiteral, NumericLiteral, NullLiteral } from '../language/types/literals'
-import { IfStatement } from '../language/types/js/if'
-import { VariableReference } from '../language/types/js/variable_reference'
+import { AsyncFunctionDeclaration } from '../language/types/js/async_function'
+import { AwaitExpression } from '../language/types/js/await_expression'
 import { BinaryOperator } from '../language/types/js/binary_operator'
-import { MemberExpression } from '../language/types/js/member_expression'
-import { DeclaredIdentifier } from '../language/types/js/declared_identifier'
 import { CallMember } from '../language/types/js/call_member'
 import { CallVariable } from '../language/types/js/call_variable'
-import { LogicalExpression } from '../language/types/js/logical_expression'
-import { SplootExpression } from '../language/types/js/expression'
-import { JavascriptFile } from '../language/types/js/javascript_file'
-import { Assignment } from '../language/types/js/assignment'
+import { ChildSet } from '../language/childset'
+import { DeclaredIdentifier } from '../language/types/js/declared_identifier'
+import { FunctionDeclaration } from '../language/types/js/functions'
+import { IfStatement } from '../language/types/js/if'
 import { InlineFunctionDeclaration } from '../language/types/js/inline_function'
-import { AwaitExpression } from '../language/types/js/await_expression'
-import { AsyncFunctionDeclaration } from '../language/types/js/async_function'
+import { JavascriptFile } from '../language/types/js/javascript_file'
+import { LogicalExpression } from '../language/types/js/logical_expression'
+import { MemberExpression } from '../language/types/js/member_expression'
+import { NullLiteral, NumericLiteral, StringLiteral } from '../language/types/literals'
+import { ParentReference, SplootNode } from '../language/node'
+import { SplootExpression } from '../language/types/js/expression'
+import { VariableDeclaration } from '../language/types/js/variable_declaration'
+import { VariableReference } from '../language/types/js/variable_reference'
 
 function populateChildSetFromAst(childSet: ChildSet, nodeList: ASTNode[], createExpressions = false) {
   nodeList.forEach((astNode: ASTNode) => {

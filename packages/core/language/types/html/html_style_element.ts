@@ -1,23 +1,23 @@
 import * as csstree from 'css-tree'
 
 import { ChildSetType } from '../../childset'
-import { ParentReference } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { HighlightColorCategory } from '../../../colors'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { HighlightColorCategory } from '../../../colors'
-import { isTagValidWithParent } from '../../html/tags'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
 import { SplootHtmlAttribute } from './html_attribute'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import { StyleRule } from '../styles/style_rule'
+import { SuggestedNode } from '../../suggested_node'
+import { isTagValidWithParent } from '../../html/tags'
 
 export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT'
 
