@@ -10,7 +10,7 @@ import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
 import { HighlightColorCategory } from "../../../colors";
 import { JavaScriptSplootNode } from "../../javascript_node";
-import { FunctionDefinition } from "../../lib/loader";
+import { FunctionDefinition } from "../../definitions/loader";
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE';
 

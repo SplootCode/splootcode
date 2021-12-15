@@ -6,7 +6,7 @@ import { SuggestedNode } from "../../suggested_node";
 import { HighlightColorCategory } from "../../../colors";
 import { PythonExpression, PYTHON_EXPRESSION } from "./python_expression";
 import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from "./declared_identifier";
-import { VariableDefinition } from "../../lib/loader";
+import { VariableDefinition } from "../../definitions/loader";
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP';
 

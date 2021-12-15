@@ -6,7 +6,7 @@ import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../n
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from "ast-types/gen/kinds";
 import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
-import { ComponentDefinition, FunctionDefinition, VariableDefinition } from "../../lib/loader";
+import { ComponentDefinition, FunctionDefinition, VariableDefinition } from "../../definitions/loader";
 import { HighlightColorCategory } from "../../../colors";
 import { SuggestedNode } from "../../suggested_node";
 import { DeclaredIdentifier } from "../js/declared_identifier";

@@ -4,7 +4,7 @@ import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, reg
 import { SuggestedNode } from "../../suggested_node";
 import { HighlightColorCategory } from "../../../colors";
 import { JavaScriptSplootNode } from "../../javascript_node";
-import { VariableDefinition } from "../../lib/loader";
+import { VariableDefinition } from "../../definitions/loader";
 
 export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY';
 

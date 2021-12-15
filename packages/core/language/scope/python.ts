@@ -1,4 +1,4 @@
-import { FunctionDefinition } from "../lib/loader";
+import { FunctionDefinition } from "../definitions/loader";
 
 /*
 >>> dir(__builtins__)

@@ -1,5 +1,5 @@
 import { HighlightColorCategory } from "../../../colors"
-import { VariableDefinition } from "../../lib/loader"
+import { VariableDefinition } from "../../definitions/loader"
 import { ParentReference, SplootNode } from "../../node"
 import {
   NodeCategory,

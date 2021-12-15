@@ -2,7 +2,7 @@ import { HighlightColorCategory } from "../../../colors"
 import { getSideEffectAnnotations, NodeAnnotation, NodeAnnotationType } from "../../annotations/annotations"
 import { SingleStatementData, StatementCapture } from "../../capture/runtime_capture"
 import { ChildSetType } from "../../childset"
-import { VariableDefinition } from "../../lib/loader"
+import { VariableDefinition } from "../../definitions/loader"
 import { NodeMutation, NodeMutationType } from "../../mutations/node_mutations"
 import { ParentReference, SplootNode } from "../../node"
 import {

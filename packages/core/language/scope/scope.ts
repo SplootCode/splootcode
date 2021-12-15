@@ -1,4 +1,4 @@
-import { ComponentDefinition, FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, TypeExpression, typeRegistry, VariableDefinition } from "../lib/loader";
+import { ComponentDefinition, FunctionDefinition, javascriptBuiltInGlobalFunctions, loadTypescriptTypeInfo, resolveMethodsFromTypeExpression, resolvePropertiesFromTypeExpression, TypeExpression, typeRegistry, VariableDefinition } from "../definitions/loader";
 import { SplootNode } from "../node";
 import { loadPythonBuiltinFunctions } from "./python";
 
