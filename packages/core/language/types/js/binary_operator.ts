@@ -1,12 +1,19 @@
-import { SplootNode, ParentReference } from "../../node";
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
-import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, NodeAttachmentLocation, SerializedNode } from "../../type_registry";
-import { SuggestedNode } from "../../suggested_node";
-import { HighlightColorCategory } from "../../../colors";
-import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
-import { JavaScriptSplootNode } from "../../javascript_node";
+import { SplootNode, ParentReference } from '../../node'
+import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
+import {
+  TypeRegistration,
+  NodeLayout,
+  LayoutComponent,
+  LayoutComponentType,
+  registerType,
+  SerializedNode,
+} from '../../type_registry'
+import { SuggestedNode } from '../../suggested_node'
+import { HighlightColorCategory } from '../../../colors'
+import { SplootExpression, SPLOOT_EXPRESSION } from './expression'
+import { JavaScriptSplootNode } from '../../javascript_node'
 
-export const BINARY_OPERATOR = 'BINARY_OPERATOR';
+export const BINARY_OPERATOR = 'BINARY_OPERATOR'
 
 /*
 16 member	. []
@@ -27,87 +34,126 @@ export const BINARY_OPERATOR = 'BINARY_OPERATOR';
 1 comma	,
 */
 
-
 const OPERATORS = {
-  '*': {display: '×', precedence: 130, key: '*', searchTerms: ['times', 'multiply', 'x'], description: 'multiply'},
-  '+': {display: '+', precedence: 120, key: '+', searchTerms: ['add', 'plus'], description: 'add'},
-  '-': {display: '-', precedence: 120, key: '-', searchTerms: ['minus', 'subtract']}, description: 'minus',
-  '/': {display: '÷', precedence: 130, key: '/', searchTerms: ['divide', 'divided by', 'division'], description: 'divide'},
-  '%': {display: 'mod', precedence: 130, key: '%', searchTerms: ['remainder', 'mod', 'modulus'], description: 'remainder (modulus)'},
-  '===': {display: '=', precedence: 90, key: '===', searchTerms: ['equals', 'equal', '=='], description: 'is equal to'},
-  '!==': {display: '≠', precedence: 90, key: '!==', searchTerms: ['not equals', 'equal', '!='], description: 'is not equal to'},
-  '&&': {display: 'and', precedence: 50, key: '&&', searchTerms: ['and'], description: 'AND'},
-  '||': {display: 'or', precedence: 40, key: '||', searchTerms: ['or'], description: 'OR'},
-  '|': {display: 'bitwise-or', precedence: 60, key: '|', searchTerms: ['bitwise OR'], description: 'bitwise OR'},
-  '&': {display: 'bitwise-and', precedence: 80, key: '&', searchTerms: ['bitwise AND'], description: 'bitwise AND'},
-  '<': {display: '<', precedence: 100, key: '<', searchTerms: ['less than'], description: 'is less than'},
-  '<=': {display: '≤', precedence: 100, key: '<=', searchTerms: ['less than equal'], description: 'is less than or equal to'},
-  '>': {display: '>', precedence: 100, key: '>', searchTerms: ['greater than'], description: 'is greater than'},
-  '>=': {display: '≥', precedence: 100, key: '>=', searchTerms: ['greater than equal'], description: 'is greater than or equal to'},
+  '*': { display: '×', precedence: 130, key: '*', searchTerms: ['times', 'multiply', 'x'], description: 'multiply' },
+  '+': { display: '+', precedence: 120, key: '+', searchTerms: ['add', 'plus'], description: 'add' },
+  '-': { display: '-', precedence: 120, key: '-', searchTerms: ['minus', 'subtract'] },
+  description: 'minus',
+  '/': {
+    display: '÷',
+    precedence: 130,
+    key: '/',
+    searchTerms: ['divide', 'divided by', 'division'],
+    description: 'divide',
+  },
+  '%': {
+    display: 'mod',
+    precedence: 130,
+    key: '%',
+    searchTerms: ['remainder', 'mod', 'modulus'],
+    description: 'remainder (modulus)',
+  },
+  '===': {
+    display: '=',
+    precedence: 90,
+    key: '===',
+    searchTerms: ['equals', 'equal', '=='],
+    description: 'is equal to',
+  },
+  '!==': {
+    display: '≠',
+    precedence: 90,
+    key: '!==',
+    searchTerms: ['not equals', 'equal', '!='],
+    description: 'is not equal to',
+  },
+  '&&': { display: 'and', precedence: 50, key: '&&', searchTerms: ['and'], description: 'AND' },
+  '||': { display: 'or', precedence: 40, key: '||', searchTerms: ['or'], description: 'OR' },
+  '|': { display: 'bitwise-or', precedence: 60, key: '|', searchTerms: ['bitwise OR'], description: 'bitwise OR' },
+  '&': { display: 'bitwise-and', precedence: 80, key: '&', searchTerms: ['bitwise AND'], description: 'bitwise AND' },
+  '<': { display: '<', precedence: 100, key: '<', searchTerms: ['less than'], description: 'is less than' },
+  '<=': {
+    display: '≤',
+    precedence: 100,
+    key: '<=',
+    searchTerms: ['less than equal'],
+    description: 'is less than or equal to',
+  },
+  '>': { display: '>', precedence: 100, key: '>', searchTerms: ['greater than'], description: 'is greater than' },
+  '>=': {
+    display: '≥',
+    precedence: 100,
+    key: '>=',
+    searchTerms: ['greater than equal'],
+    description: 'is greater than or equal to',
+  },
 }
 
 class Generator implements SuggestionGenerator {
-
-  staticSuggestions(parent: ParentReference, index: number) : SuggestedNode[] {
-    let results = [];
-    for (let operator in OPERATORS) {
-      let info = OPERATORS[operator];
-      let node = new BinaryOperator(null, operator);
-      results.push(new SuggestedNode(node, info.key, info.searchTerms, true, info.description));
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    const results = []
+    for (const operator in OPERATORS) {
+      const info = OPERATORS[operator]
+      const node = new BinaryOperator(null, operator)
+      results.push(new SuggestedNode(node, info.key, info.searchTerms, true, info.description))
     }
-    return results;
-  };
+    return results
+  }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) : SuggestedNode[] {
-    return [];
-  };
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    return []
+  }
 }
 
 export class BinaryOperator extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference, operator: string) {
-    super(parentReference, BINARY_OPERATOR);
-    this.setProperty('operator', operator);
+    super(parentReference, BINARY_OPERATOR)
+    this.setProperty('operator', operator)
   }
 
   setOperator(operator: string) {
-    this.setProperty('operator', operator);
+    this.setProperty('operator', operator)
   }
 
   getOperator() {
-    return this.getProperty('operator');
+    return this.getProperty('operator')
   }
 
-  getPrecedence() : number {
-    return OPERATORS[this.getOperator()].precedence;
+  getPrecedence(): number {
+    return OPERATORS[this.getOperator()].precedence
   }
 
-  static deserializer(serializedNode: SerializedNode) : BinaryOperator {
-    let node = new BinaryOperator(null, serializedNode.properties.operator);
-    return node;
+  static deserializer(serializedNode: SerializedNode): BinaryOperator {
+    const node = new BinaryOperator(null, serializedNode.properties.operator)
+    return node
   }
 
   getNodeLayout() {
-    return new NodeLayout(HighlightColorCategory.OPERATOR, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, OPERATORS[this.getOperator()].display),
-    ], true)
+    return new NodeLayout(
+      HighlightColorCategory.OPERATOR,
+      [new LayoutComponent(LayoutComponentType.KEYWORD, OPERATORS[this.getOperator()].display)],
+      true
+    )
   }
 
   static register() {
-    let typeRegistration = new TypeRegistration();
-    typeRegistration.typeName = BINARY_OPERATOR;
-    typeRegistration.deserializer = BinaryOperator.deserializer;
-    typeRegistration.properties = ['operator'];
-    typeRegistration.childSets = {};
-    typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
-      new LayoutComponent(LayoutComponentType.PROPERTY, 'operator'),
-    ], true);
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = BINARY_OPERATOR
+    typeRegistration.deserializer = BinaryOperator.deserializer
+    typeRegistration.properties = ['operator']
+    typeRegistration.childSets = {}
+    typeRegistration.layout = new NodeLayout(
+      HighlightColorCategory.OPERATOR,
+      [new LayoutComponent(LayoutComponentType.PROPERTY, 'operator')],
+      true
+    )
     typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
-      let exp = new SplootExpression(null);
-      exp.getTokenSet().addChild(node);
-      return exp;
+      const exp = new SplootExpression(null)
+      exp.getTokenSet().addChild(node)
+      return exp
     }
-  
-    registerType(typeRegistration);
-    registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator()); 
+
+    registerType(typeRegistration)
+    registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator())
   }
 }

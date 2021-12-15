@@ -1,6 +1,5 @@
-import { SplootNode } from "../node"
-import { ChildSet } from "../childset";
-
+import { SplootNode } from '../node'
+import { ChildSet } from '../childset'
 
 export enum ChildSetMutationType {
   INSERT,
@@ -8,8 +7,8 @@ export enum ChildSetMutationType {
 }
 
 export class ChildSetMutation {
-  childSet: ChildSet;
-  type: ChildSetMutationType;
-  nodes: SplootNode[];
-  index: number;
+  childSet: ChildSet
+  type: ChildSetMutationType
+  nodes: SplootNode[]
+  index: number
 }

@@ -1,84 +1,82 @@
 import React, { MouseEvent } from 'react'
 import { Component } from 'react'
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react'
 
-import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack, Menu, MenuButton, Button, MenuList, MenuItem, Icon, Spacer, Flex, IconButton } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react'
+import { HamburgerIcon } from '@chakra-ui/icons'
 
-import { EditorStateContext, EditorState, DataSheetState } from '@splootcode/editor/context/editor_context';
-import { NodeBlock } from '@splootcode/editor/layout/rendered_node';
-import { loadTypes } from '@splootcode/core/language/type_loader';
-import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project';
-import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader';
-import { SplootFile } from '@splootcode/core/language/projects/file';
-import { SplootPackage } from '@splootcode/core/language/projects/package';
-import { LoadProjectModal } from '../components/load_modal';
+import { EditorStateContext, EditorState, DataSheetState } from '@splootcode/editor/context/editor_context'
+import { NodeBlock } from '@splootcode/editor/layout/rendered_node'
+import { loadTypes } from '@splootcode/core/language/type_loader'
+import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project'
+import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader'
+import { SplootFile } from '@splootcode/core/language/projects/file'
+import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { LoadProjectModal } from '../components/load_modal'
 
+import './pageeditor.css'
+import { NewFileModal } from '../components/new_file_modal'
+import { SplootNode } from '@splootcode/core/language/node'
+import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
+import { WebEditorPanels } from './web_editor'
+import { PythonEditorPanels } from './python_editor'
+import { NewProjectModal } from '../components/new_project_modal'
 
-import './pageeditor.css';
-import { NewFileModal } from '../components/new_file_modal';
-import { SplootNode } from '@splootcode/core/language/node';
-import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet';
-import { WebEditorPanels } from './web_editor';
-import { PythonEditorPanels } from './python_editor';
-import { NewProjectModal } from '../components/new_project_modal';
-
-interface PageEditorProps {
-};
+interface PageEditorProps {}
 
 interface PageEditorState {
-  openLoadProjectModal: boolean;
-  openNewProjectModal: boolean;
-  openNewFileModal: boolean;
-  newFilePackageName: string;
-  ready: boolean;
-  isNodeEditor: boolean;
-  selectedFile: EditorState;
-  selectedDatasheet: DataSheetState;
-  project: Project;
-};
+  openLoadProjectModal: boolean
+  openNewProjectModal: boolean
+  openNewFileModal: boolean
+  newFilePackageName: string
+  ready: boolean
+  isNodeEditor: boolean
+  selectedFile: EditorState
+  selectedDatasheet: DataSheetState
+  project: Project
+}
 
 class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
-  static contextType = EditorStateContext;
+  static contextType = EditorStateContext
 
-  constructor(props : PageEditorProps) {
-      super(props);
+  constructor(props: PageEditorProps) {
+    super(props)
 
-      this.state = {
-        openLoadProjectModal: true,
-        openNewProjectModal: false,
-        openNewFileModal: false,
-        newFilePackageName: '',
-        ready: false,
-        isNodeEditor: true,
-        selectedFile: null,
-        selectedDatasheet: null,
-        project: null,
-      };
+    this.state = {
+      openLoadProjectModal: true,
+      openNewProjectModal: false,
+      openNewFileModal: false,
+      newFilePackageName: '',
+      ready: false,
+      isNodeEditor: true,
+      selectedFile: null,
+      selectedDatasheet: null,
+      project: null,
+    }
   }
 
   componentDidMount() {
-    loadTypes();
+    loadTypes()
 
     loadExampleProject('blank').then((project) => {
       this.setState({
         project: project,
         ready: true,
-      });
-      const pack = project.getDefaultPackage();
-      const file = pack.getDefaultFile();
-      setTimeout(() => this.selectFile(pack, file), 20);
-    });
+      })
+      const pack = project.getDefaultPackage()
+      const file = pack.getDefaultFile()
+      setTimeout(() => this.selectFile(pack, file), 20)
+    })
   }
 
   loadProjectIntoEditor = (project: Project) => {
-    const pack = project.getDefaultPackage();
-    const file = pack.getDefaultFile();
+    const pack = project.getDefaultPackage()
+    const file = pack.getDefaultFile()
     this.setState({
       project: project,
       ready: true,
-    });
-    setTimeout(() => this.selectFile(pack, file), 20);
+    })
+    setTimeout(() => this.selectFile(pack, file), 20)
   }
 
   openLoadProjectModal = (event) => {
@@ -93,41 +91,61 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
     })
   }
 
-
   newFileModal(packageName: string) {
-    return (event : MouseEvent) => {
-      event.stopPropagation();
+    return (event: MouseEvent) => {
+      event.stopPropagation()
       this.setState({
         newFilePackageName: packageName,
         openNewFileModal: true,
-      });
+      })
     }
   }
 
   render() {
-    let {ready, selectedFile, selectedDatasheet, project, isNodeEditor, openLoadProjectModal, openNewProjectModal, openNewFileModal} = this.state;
+    const {
+      ready,
+      selectedFile,
+      selectedDatasheet,
+      project,
+      isNodeEditor,
+      openLoadProjectModal,
+      openNewProjectModal,
+      openNewFileModal,
+    } = this.state
 
     if (!ready) {
-      return null;
+      return null
     }
 
-    let onlyPackage : SplootPackage = project.packages[0];
+    const onlyPackage: SplootPackage = project.packages[0]
 
     return (
-      <div className={ project.layoutType === ProjectLayoutType.WEB ? "web-editor-container" : "python-editor-container"}>
-        <LoadProjectModal isOpen={openLoadProjectModal} onClose={() => {
-          this.setState({openLoadProjectModal: false});
-        }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
-        <NewProjectModal isOpen={openNewProjectModal} onClose={() => {
-          this.setState({openNewProjectModal: false});
-        }} loadProjectIntoEditor={this.loadProjectIntoEditor}/>
-        <NewFileModal isOpen={openNewFileModal} onClose={() => {
-          this.setState({openNewFileModal: false, newFilePackageName: ''});
-        }} addCodeFile={
-          (name: string, type: string, rootNode: SplootNode) => {
-            onlyPackage.addFile(name, type, rootNode);
-          }
-        }/>
+      <div
+        className={project.layoutType === ProjectLayoutType.WEB ? 'web-editor-container' : 'python-editor-container'}
+      >
+        <LoadProjectModal
+          isOpen={openLoadProjectModal}
+          onClose={() => {
+            this.setState({ openLoadProjectModal: false })
+          }}
+          loadProjectIntoEditor={this.loadProjectIntoEditor}
+        />
+        <NewProjectModal
+          isOpen={openNewProjectModal}
+          onClose={() => {
+            this.setState({ openNewProjectModal: false })
+          }}
+          loadProjectIntoEditor={this.loadProjectIntoEditor}
+        />
+        <NewFileModal
+          isOpen={openNewFileModal}
+          onClose={() => {
+            this.setState({ openNewFileModal: false, newFilePackageName: '' })
+          }}
+          addCodeFile={(name: string, type: string, rootNode: SplootNode) => {
+            onlyPackage.addFile(name, type, rootNode)
+          }}
+        />
         <nav className="left-panel">
           <Menu>
             <MenuButton
@@ -141,21 +159,28 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
               fontSize="sm"
               px={3}
             >
-                Project
+              Project
             </MenuButton>
             <MenuList>
               <MenuItem onClick={this.openLoadProjectModal}>Load Example</MenuItem>
               <MenuItem onClick={this.openNewProjectModal}>New Project</MenuItem>
-              <MenuItem onClick={async (event) => {
-                 const dirHandle = await window.showDirectoryPicker();
-                 let proj = await loadProject(dirHandle);
-                 this.loadProjectIntoEditor(proj);
-              }}>Open Project from Folder</MenuItem>
-              <MenuItem onClick={async (event) => {
-                const dirHandle = await window.showDirectoryPicker();
-                await saveProject(dirHandle, project);
-              }}
-              >Save Project As...</MenuItem>
+              <MenuItem
+                onClick={async (event) => {
+                  const dirHandle = await window.showDirectoryPicker()
+                  const proj = await loadProject(dirHandle)
+                  this.loadProjectIntoEditor(proj)
+                }}
+              >
+                Open Project from Folder
+              </MenuItem>
+              <MenuItem
+                onClick={async (event) => {
+                  const dirHandle = await window.showDirectoryPicker()
+                  await saveProject(dirHandle, project)
+                }}
+              >
+                Save Project As...
+              </MenuItem>
             </MenuList>
           </Menu>
           {/* <Accordion allowMultiple={true} defaultIndex={[0, 1, 2, 3]}>
@@ -192,35 +217,40 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
             </AccordionItem>
           </Accordion> */}
         </nav>
-        { project.layoutType === ProjectLayoutType.PYTHON_CLI ? 
-          <PythonEditorPanels project={project} selectedFile={selectedFile}  />
-          :
-          <WebEditorPanels isNodeEditor={isNodeEditor} project={project} selectedDatasheet={selectedDatasheet} selectedFile={selectedFile} />
-        }
+        {project.layoutType === ProjectLayoutType.PYTHON_CLI ? (
+          <PythonEditorPanels project={project} selectedFile={selectedFile} />
+        ) : (
+          <WebEditorPanels
+            isNodeEditor={isNodeEditor}
+            project={project}
+            selectedDatasheet={selectedDatasheet}
+            selectedFile={selectedFile}
+          />
+        )}
       </div>
     )
   }
 
   selectFile(selectedPackage: SplootPackage, file: SplootFile) {
-    let loadEditor = (file: SplootFile) => {
+    const loadEditor = (file: SplootFile) => {
       if (file.type === DATA_SHEET) {
-        let dataSheetState = new DataSheetState();
-        dataSheetState.setDataSheetNode(file.rootNode as SplootDataSheet);
-        this.setState({selectedDatasheet: dataSheetState, isNodeEditor: false});
+        const dataSheetState = new DataSheetState()
+        dataSheetState.setDataSheetNode(file.rootNode as SplootDataSheet)
+        this.setState({ selectedDatasheet: dataSheetState, isNodeEditor: false })
       } else {
-        let editorState = new EditorState();
-        let newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false);
-        editorState.selection.setRootNode(newRootNode);
-        editorState.setRootNode(newRootNode);
-        this.setState({selectedFile: editorState, isNodeEditor: true});
+        const editorState = new EditorState()
+        const newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false)
+        editorState.selection.setRootNode(newRootNode)
+        editorState.setRootNode(newRootNode)
+        this.setState({ selectedFile: editorState, isNodeEditor: true })
       }
-    };
+    }
     if (!file.isLoaded) {
       selectedPackage.getLoadedFile(file.name).then(loadEditor)
     } else {
-      loadEditor(file);
+      loadEditor(file)
     }
   }
 }
 
-export const PageEditor = observer(PageEditorInternal);
+export const PageEditor = observer(PageEditorInternal)

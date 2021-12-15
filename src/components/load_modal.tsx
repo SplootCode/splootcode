@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react'
 
-import { Box, Button, Grid, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, TagLabel, Text, useDisclosure, useRadio, useRadioGroup } from "@chakra-ui/react"
-import { Project } from '@splootcode/core/language/projects/project';
-import { loadExampleProject, loadProject } from '../code_io/project_loader';
+import {
+  Box,
+  Button,
+  Grid,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react'
+import { UseRadioProps, useRadio, useRadioGroup } from '@chakra-ui/radio'
+import { Project } from '@splootcode/core/language/projects/project'
+import { loadExampleProject, loadProject } from '../code_io/project_loader'
 
-
-function RadioCard(props) {
+function RadioCard(props: UseRadioProps & { children: ReactNode }) {
   const { getInputProps, getCheckboxProps } = useRadio(props)
 
   const input = getInputProps()
@@ -24,9 +36,9 @@ function RadioCard(props) {
         textAlign="center"
         minHeight="12"
         _checked={{
-          bg: "gray.600",
+          bg: 'gray.600',
           borderWidth: 1,
-          borderColor: "blue.200",
+          borderColor: 'blue.200',
         }}
         overflow="hidden"
       >
@@ -37,50 +49,50 @@ function RadioCard(props) {
 }
 
 interface LoadProjectModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  loadProjectIntoEditor: (proj: Project) => void;
+  isOpen: boolean
+  onClose: () => void
+  loadProjectIntoEditor: (proj: Project) => void
 }
 
 export function LoadProjectModal(props: LoadProjectModalProps) {
-  let { isOpen, onClose, loadProjectIntoEditor } = props;
-  let [selectedProject, setSelectedProject] = useState('');
+  const { isOpen, onClose, loadProjectIntoEditor } = props
+  const [selectedProject, setSelectedProject] = useState('')
 
   const handleLoad = async (event) => {
-    let proj = null;
+    let proj = null
     switch (selectedProject) {
       case 'bouncing':
       case 'flashcards':
       case 'gallery':
       case 'helloworld':
         proj = await loadExampleProject(selectedProject)
-        break;
+        break
       case 'blank':
         proj = await loadExampleProject('blank')
-        break;
+        break
       case 'files':
-        const dirHandle = await window.showDirectoryPicker();
-        proj = await loadProject(dirHandle);
-        break;
+        const dirHandle = await window.showDirectoryPicker()
+        proj = await loadProject(dirHandle)
+        break
     }
-    loadProjectIntoEditor(proj);
-    onClose();
-  };
+    loadProjectIntoEditor(proj)
+    onClose()
+  }
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "selection",
-    defaultValue: "",
+    name: 'selection',
+    defaultValue: '',
     onChange: (value) => {
-      setSelectedProject(value.toString());
+      setSelectedProject(value.toString())
     },
   })
 
-  const group = getRootProps();
+  const group = getRootProps()
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size='xl'>
-        <ModalOverlay/>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader>Load Example Project</ModalHeader>
           <ModalCloseButton />
@@ -88,24 +100,35 @@ export function LoadProjectModal(props: LoadProjectModalProps) {
             <Grid templateColumns="repeat(3, 1fr)" gap={4} mb={4}>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "helloworld"})}>
-                <Heading size="sm" my={3}>Hello World <br/>(Python CLI)</Heading>
+              <RadioCard {...getRadioProps({ value: 'helloworld' })}>
+                <Heading size="sm" my={3}>
+                  Hello World <br />
+                  (Python CLI)
+                </Heading>
               </RadioCard>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "bouncing"})}>
-                <Heading size="sm" my={3}>Bouncing balls (HTML Canvas)</Heading>
+              <RadioCard {...getRadioProps({ value: 'bouncing' })}>
+                <Heading size="sm" my={3}>
+                  Bouncing balls (HTML Canvas)
+                </Heading>
               </RadioCard>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "gallery"})}>
-                <Heading size="sm" my={3}>Photo Gallery<br/>(React)</Heading>
+              <RadioCard {...getRadioProps({ value: 'gallery' })}>
+                <Heading size="sm" my={3}>
+                  Photo Gallery
+                  <br />
+                  (React)
+                </Heading>
               </RadioCard>
             </Grid>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>Load Project</Button>
+            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>
+              Load Project
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

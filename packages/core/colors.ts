@@ -1,4 +1,3 @@
-
 export enum HighlightColorCategory {
   NONE = 0,
   FUNCTION,
@@ -17,40 +16,40 @@ export enum HighlightColorCategory {
   STYLE_PROPERTY,
 }
 
-const keywordColor = "rgb(199, 166, 255)";
+const keywordColor = 'rgb(199, 166, 255)'
 
-export function getColour(category: HighlightColorCategory) : string {
+export function getColour(category: HighlightColorCategory): string {
   // Hardcode for now, but could be configurable in the future
-  switch(category) {
+  switch (category) {
     case HighlightColorCategory.NONE:
-      return 'rgb(0, 0, 0)';
+      return 'rgb(0, 0, 0)'
     case HighlightColorCategory.FUNCTION:
-      return 'rgb(255 254 196)';
+      return 'rgb(255 254 196)'
     case HighlightColorCategory.FUNCTION_DEFINITION:
-      return keywordColor;
+      return keywordColor
     case HighlightColorCategory.VARIABLE_DECLARATION:
-      return keywordColor;
+      return keywordColor
     case HighlightColorCategory.VARIABLE:
-      return 'rgb(149, 217, 255)';
+      return 'rgb(149, 217, 255)'
     case HighlightColorCategory.LITERAL_NUMBER:
-      return 'rgb(124 179 253)';
+      return 'rgb(124 179 253)'
     case HighlightColorCategory.LITERAL_STRING:
-      return 'rgb(123 216 188)';
+      return 'rgb(123 216 188)'
     case HighlightColorCategory.LITERAL_LIST:
-      return keywordColor;
+      return keywordColor
     case HighlightColorCategory.KEYWORD:
-      return keywordColor;
+      return keywordColor
     case HighlightColorCategory.CONTROL:
-      return keywordColor;
+      return keywordColor
     case HighlightColorCategory.HTML_ELEMENT:
-      return '#F3ABFF';
+      return '#F3ABFF'
     case HighlightColorCategory.HTML_ATTRIBUTE:
-      return 'rgb(149, 217, 255)';
+      return 'rgb(149, 217, 255)'
     case HighlightColorCategory.STYLE_RULE:
-      return 'rgb(199, 166, 255)';
+      return 'rgb(199, 166, 255)'
     case HighlightColorCategory.STYLE_PROPERTY:
-      return 'rgb(255 254 196)';
+      return 'rgb(255 254 196)'
     default:
-      return 'rgb(255, 255, 255)';
+      return 'rgb(255, 255, 255)'
   }
 }

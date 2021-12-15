@@ -1,67 +1,67 @@
-import { ChildSet, ChildSetType } from "./childset";
-import { NodeCategory } from "./node_category_registry";
-import { NodeMutationType, NodeMutation } from "./mutations/node_mutations";
-import { NodeObserver } from "./observers";
-import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from "./type_registry";
-import { globalMutationDispatcher } from "./mutations/mutation_dispatcher";
-import { getGlobalScope, Scope } from "./scope/scope";
-import { StatementCapture } from "./capture/runtime_capture";
-import { NodeAnnotation, NodeAnnotationType } from "./annotations/annotations";
+import { ChildSet, ChildSetType } from './childset'
+import { NodeCategory } from './node_category_registry'
+import { NodeMutationType, NodeMutation } from './mutations/node_mutations'
+import { NodeObserver } from './observers'
+import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from './type_registry'
+import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
+import { getGlobalScope, Scope } from './scope/scope'
+import { StatementCapture } from './capture/runtime_capture'
+import { NodeAnnotationType } from './annotations/annotations'
 
 export class ParentReference {
-  node: SplootNode;
-  childSetId: string; // never directly use string ?
+  node: SplootNode
+  childSetId: string // never directly use string ?
 
   constructor(node: SplootNode, childSetId: string) {
-    this.node = node;
-    this.childSetId = childSetId;
+    this.node = node
+    this.childSetId = childSetId
   }
 
-  getChildSet() : ChildSet {
-    return this.node.getChildSet(this.childSetId);
+  getChildSet(): ChildSet {
+    return this.node.getChildSet(this.childSetId)
   }
 }
 
 export class SplootNode {
-  parent: ParentReference;
-  type: string;
-  properties: { [key: string] : any}; // Depends on the type
-  childSets: { [key: string]: ChildSet };
-  childSetOrder: string[];
-  enableMutations: boolean;
-  mutationObservers: NodeObserver[];
-  scope: Scope;
-  isLoop: boolean;
+  parent: ParentReference
+  type: string
+  properties: { [key: string]: any } // Depends on the type
+  childSets: { [key: string]: ChildSet }
+  childSetOrder: string[]
+  enableMutations: boolean
+  mutationObservers: NodeObserver[]
+  scope: Scope
+  isLoop: boolean
 
   constructor(parent: ParentReference, type: string) {
-    this.parent = parent;
-    this.type = type;
-    this.childSets = {};
-    this.childSetOrder = [];
-    this.properties = {};
-    this.enableMutations = false;
-    this.mutationObservers = [];
-    this.scope = null;
-    this.isLoop = false;
+    this.parent = parent
+    this.type = type
+    this.childSets = {}
+    this.childSetOrder = []
+    this.properties = {}
+    this.enableMutations = false
+    this.mutationObservers = []
+    this.scope = null
+    this.isLoop = false
   }
 
   get hasChildSets(): boolean {
-    return this.childSetOrder.length !== 0;
+    return this.childSetOrder.length !== 0
   }
 
   addChildSet(name: string, type: ChildSetType, category: NodeCategory) {
-    this.childSets[name] = new ChildSet(this, name, type, category);
-    this.childSetOrder.push(name);
+    this.childSets[name] = new ChildSet(this, name, type, category)
+    this.childSetOrder.push(name)
   }
 
-  getScope(skipSelf: boolean = false) : Scope {
+  getScope(skipSelf = false): Scope {
     if (!skipSelf && isScopedNodeType(this.type)) {
-      return this.scope;
+      return this.scope
     }
     if (this.parent === null) {
-      return getGlobalScope();
+      return getGlobalScope()
     }
-    return this.parent.node.getScope();
+    return this.parent.node.getScope()
   }
 
   addSelfToScope() {
@@ -70,94 +70,99 @@ export class SplootNode {
   }
 
   selectRuntimeCaptureFrame(index: number) {
-    console.warn(`Capture frames not supported for node type ${this.type}`);
+    console.warn(`Capture frames not supported for node type ${this.type}`)
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
     if (capture.type != this.type) {
-      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     if (capture.type == 'EXCEPTION') {
-      this.applyRuntimeError(capture);
-      return 
+      this.applyRuntimeError(capture)
+      return
     }
     if (capture.type != this.type) {
-      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`);
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
-    return;
+    return
   }
 
   recursivelyClearRuntimeCapture() {
-    let mutation = new NodeMutation();
+    const mutation = new NodeMutation()
     mutation.node = this
-    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
-    mutation.annotations = [];
-    this.fireMutation(mutation);
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = []
+    this.fireMutation(mutation)
   }
 
   applyRuntimeError(capture: StatementCapture) {
-    let mutation = new NodeMutation();
+    const mutation = new NodeMutation()
     mutation.node = this
-    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS;
-    mutation.annotations = [{type: NodeAnnotationType.RuntimeError, value: {
-      errorType: capture.exceptionType,
-      errorMessage: capture.exceptionMessage
-    }}]
-    this.fireMutation(mutation);
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = [
+      {
+        type: NodeAnnotationType.RuntimeError,
+        value: {
+          errorType: capture.exceptionType,
+          errorMessage: capture.exceptionMessage,
+        },
+      },
+    ]
+    this.fireMutation(mutation)
   }
 
   recursivelySetMutations(enable: boolean) {
-    this.enableMutations = enable;
+    this.enableMutations = enable
     this.childSetOrder.forEach((childSetId: string) => {
-      let childSet = this.getChildSet(childSetId);
-      childSet.enableMutations = enable;
+      const childSet = this.getChildSet(childSetId)
+      childSet.enableMutations = enable
       childSet.getChildren().forEach((node: SplootNode) => {
-        node.recursivelySetMutations(enable);
-      });
+        node.recursivelySetMutations(enable)
+      })
     })
   }
 
   recursivelyBuildScope() {
     if (isScopedNodeType(this.type)) {
       if (this.parent !== null) {
-        this.scope = new Scope(this.parent.node.getScope());
+        this.scope = new Scope(this.parent.node.getScope())
       } else {
-        this.scope = new Scope(getGlobalScope());
+        this.scope = new Scope(getGlobalScope())
       }
     }
-    this.addSelfToScope();
+    this.addSelfToScope()
     this.childSetOrder.forEach((childSetId: string) => {
-      let childSet = this.getChildSet(childSetId);
+      const childSet = this.getChildSet(childSetId)
       childSet.getChildren().forEach((node: SplootNode) => {
-        node.recursivelyBuildScope();
-      });
+        node.recursivelyBuildScope()
+      })
     })
   }
 
   getChildSet(name: string) {
-    return this.childSets[name];
+    return this.childSets[name]
   }
 
   getProperty(name: string) {
-    return this.properties[name];
+    return this.properties[name]
   }
 
-  getEditableProperty() : string {
-    return null;
+  getEditableProperty(): string {
+    return null
   }
 
   setPropertyFromString(name: string, value: string) {
-    this.setProperty(name, value);
+    this.setProperty(name, value)
   }
 
   setProperty(name: string, value: any) {
-    this.properties[name] = value;
+    this.properties[name] = value
     if (this.enableMutations) {
-      let mutation = new NodeMutation();
+      const mutation = new NodeMutation()
       mutation.node = this
-      mutation.property = name;
-      mutation.value = value;
-      mutation.type = NodeMutationType.SET_PROPERTY;
+      mutation.property = name
+      mutation.value = value
+      mutation.type = NodeMutationType.SET_PROPERTY
       this.fireMutation(mutation)
     }
   }
@@ -174,59 +179,59 @@ export class SplootNode {
 
   fireMutation(mutation: NodeMutation) {
     this.mutationObservers.forEach((observer: NodeObserver) => {
-      observer.handleNodeMutation(mutation);
+      observer.handleNodeMutation(mutation)
     })
     // Don't fire global mutations for annotation changes;
     if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
-      globalMutationDispatcher.handleNodeMutation(mutation);
+      globalMutationDispatcher.handleNodeMutation(mutation)
     }
   }
 
   registerObserver(observer: NodeObserver) {
-    this.mutationObservers.push(observer);
+    this.mutationObservers.push(observer)
   }
 
-  generateCodeString() : string {
-    console.warn('Missing generateCodeString implementation for: ', this.type);
-    return '';
+  generateCodeString(): string {
+    console.warn('Missing generateCodeString implementation for: ', this.type)
+    return ''
   }
 
-  getNodeLayout() : NodeLayout {
-    return getLayout(this.type);
+  getNodeLayout(): NodeLayout {
+    return getLayout(this.type)
   }
 
   serialize(): SerializedNode {
-    let result = {
+    const result = {
       type: this.type,
       properties: {},
-      childSets: {}
-    } as SerializedNode;
-    for (let property in this.properties) {
-      result.properties[property] = this.properties[property];
+      childSets: {},
+    } as SerializedNode
+    for (const property in this.properties) {
+      result.properties[property] = this.properties[property]
     }
 
     this.childSetOrder.forEach((childSetId: string) => {
-      let childSet = this.getChildSet(childSetId);
-      result.childSets[childSetId] = [];
+      const childSet = this.getChildSet(childSetId)
+      result.childSets[childSetId] = []
       childSet.getChildren().forEach((node: SplootNode) => {
-        result.childSets[childSetId].push(node.serialize());
-      });
+        result.childSets[childSetId].push(node.serialize())
+      })
     })
-    return result;
+    return result
   }
 
   deserializeChildSet(childSetId: string, serializedNode: SerializedNode) {
-    let childSet = this.getChildSet(childSetId);
+    const childSet = this.getChildSet(childSetId)
     serializedNode.childSets[childSetId].forEach((serializedChildNode: SerializedNode) => {
-      let childNode = deserializeNode(serializedChildNode);
+      const childNode = deserializeNode(serializedChildNode)
       if (childNode !== null) {
-        childSet.addChild(childNode);
+        childSet.addChild(childNode)
       }
-    });
+    })
   }
 
-  clone() : SplootNode {
+  clone(): SplootNode {
     // lol
-    return deserializeNode(this.serialize());
+    return deserializeNode(this.serialize())
   }
 }

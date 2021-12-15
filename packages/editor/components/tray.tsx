@@ -1,50 +1,50 @@
-import "./tray.css"
+import './tray.css'
 
-import { observer } from "mobx-react"
-import React from "react"
+import { observer } from 'mobx-react'
+import React from 'react'
 
-import { NodeSelectionState } from "../context/selection"
-import { NumericLiteral, StringLiteral } from "@splootcode/core/language/types/literals"
-import { PythonAssignment } from "@splootcode/core/language/types/python/python_assignment"
-import { PythonBinaryOperator } from "@splootcode/core/language/types/python/python_binary_operator"
-import { PythonCallVariable } from "@splootcode/core/language/types/python/python_call_variable"
-import { NodeBlock } from "../layout/rendered_node"
-import { EditorNodeBlock } from "./node_block"
-import { SplootNode } from "@splootcode/core/language/node"
-import { PYTHON_FILE } from "@splootcode/core/language/types/python/python_file"
-import { HTML_DOCUMENT } from "@splootcode/core/language/types/html/html_document"
-import { SplootHtmlElement } from "@splootcode/core/language/types/html/html_element"
-import { SplootHtmlScriptElement } from "@splootcode/core/language/types/html/html_script_element"
-import { SplootHtmlStyleElement } from "@splootcode/core/language/types/html/html_style_element"
-import { JAVASCRIPT_FILE } from "@splootcode/core/language/types/js/javascript_file"
-import { CallMember } from "@splootcode/core/language/types/js/call_member"
-import { VariableReference } from "@splootcode/core/language/types/js/variable_reference"
-import { SplootExpression } from "@splootcode/core/language/types/js/expression"
-import { VariableDeclaration } from "@splootcode/core/language/types/js/variable_declaration"
-import { BinaryOperator } from "@splootcode/core/language/types/js/binary_operator"
-import { Assignment } from "@splootcode/core/language/types/js/assignment"
-import { FunctionDeclaration } from "@splootcode/core/language/types/js/functions"
-import { IfStatement } from "@splootcode/core/language/types/js/if"
-import { ReturnStatement } from "@splootcode/core/language/types/js/return"
-import { ImportStatement } from "@splootcode/core/language/types/js/import"
-import { ImportDefaultStatement } from "@splootcode/core/language/types/js/import_default"
-import { PythonIfStatement } from "@splootcode/core/language/types/python/python_if"
-import { PythonWhileLoop } from "@splootcode/core/language/types/python/python_while"
-import { PythonForLoop } from "@splootcode/core/language/types/python/python_for"
-import { PythonBool } from "@splootcode/core/language/types/python/literals"
+import { NodeSelectionState } from '../context/selection'
+import { NumericLiteral, StringLiteral } from '@splootcode/core/language/types/literals'
+import { PythonAssignment } from '@splootcode/core/language/types/python/python_assignment'
+import { PythonBinaryOperator } from '@splootcode/core/language/types/python/python_binary_operator'
+import { PythonCallVariable } from '@splootcode/core/language/types/python/python_call_variable'
+import { NodeBlock } from '../layout/rendered_node'
+import { EditorNodeBlock } from './node_block'
+import { SplootNode } from '@splootcode/core/language/node'
+import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
+import { HTML_DOCUMENT } from '@splootcode/core/language/types/html/html_document'
+import { SplootHtmlElement } from '@splootcode/core/language/types/html/html_element'
+import { SplootHtmlScriptElement } from '@splootcode/core/language/types/html/html_script_element'
+import { SplootHtmlStyleElement } from '@splootcode/core/language/types/html/html_style_element'
+import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_file'
+import { CallMember } from '@splootcode/core/language/types/js/call_member'
+import { VariableReference } from '@splootcode/core/language/types/js/variable_reference'
+import { SplootExpression } from '@splootcode/core/language/types/js/expression'
+import { VariableDeclaration } from '@splootcode/core/language/types/js/variable_declaration'
+import { BinaryOperator } from '@splootcode/core/language/types/js/binary_operator'
+import { Assignment } from '@splootcode/core/language/types/js/assignment'
+import { FunctionDeclaration } from '@splootcode/core/language/types/js/functions'
+import { IfStatement } from '@splootcode/core/language/types/js/if'
+import { ReturnStatement } from '@splootcode/core/language/types/js/return'
+import { ImportStatement } from '@splootcode/core/language/types/js/import'
+import { ImportDefaultStatement } from '@splootcode/core/language/types/js/import_default'
+import { PythonIfStatement } from '@splootcode/core/language/types/python/python_if'
+import { PythonWhileLoop } from '@splootcode/core/language/types/python/python_while'
+import { PythonForLoop } from '@splootcode/core/language/types/python/python_for'
+import { PythonBool } from '@splootcode/core/language/types/python/literals'
 
 interface TrayProps {
-  rootNode: SplootNode,
-  width: number;
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any;
+  rootNode: SplootNode
+  width: number
+  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
 }
 
 interface TrayState {
-  trayNodes: NodeBlock[],
-  height: number,
+  trayNodes: NodeBlock[]
+  height: number
 }
 
-function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
+function getTrayNodeSuggestions(rootNode: SplootNode): [NodeBlock[], number] {
   let nodes = []
   if (rootNode.type === PYTHON_FILE) {
     nodes = [
@@ -81,7 +81,7 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new PythonCallVariable(null, 'float', 1),
       new PythonCallVariable(null, 'len', 1),
       new PythonCallVariable(null, 'list', 1),
-    ];
+    ]
   } else if (rootNode.type === HTML_DOCUMENT) {
     nodes = [
       new StringLiteral(null, ''),
@@ -99,9 +99,9 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
       new SplootHtmlScriptElement(null),
     ]
   } else if (rootNode.type === JAVASCRIPT_FILE) {
-    let console = new CallMember(null);
+    const console = new CallMember(null)
     console.getObjectExpressionToken().addChild(new VariableReference(null, 'console'))
-    console.setMember('log');
+    console.setMember('log')
     console.getArguments().addChild(new SplootExpression(null))
 
     nodes = [
@@ -126,70 +126,68 @@ function getTrayNodeSuggestions(rootNode: SplootNode) : [NodeBlock[], number] {
     ]
   }
 
-  let renderedNodes = [];
-  let topPos = 10;
-  for (let node of nodes) {
-    let nodeBlock = new NodeBlock(null, node, null, 0, false);
-    nodeBlock.calculateDimensions(16, topPos, null);
-    topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight + 10;
-    renderedNodes.push(nodeBlock);
+  const renderedNodes = []
+  let topPos = 10
+  for (const node of nodes) {
+    const nodeBlock = new NodeBlock(null, node, null, 0, false)
+    nodeBlock.calculateDimensions(16, topPos, null)
+    topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight + 10
+    renderedNodes.push(nodeBlock)
   }
-  return [renderedNodes, topPos];
+  return [renderedNodes, topPos]
 }
 
 @observer
 export class Tray extends React.Component<TrayProps, TrayState> {
-  private scrollableTrayRef : React.RefObject<SVGSVGElement>;
+  private scrollableTrayRef: React.RefObject<SVGSVGElement>
 
   constructor(props) {
-    super(props);
-    this.scrollableTrayRef = React.createRef();
-    let [trayNodes, height] = getTrayNodeSuggestions(this.props.rootNode);
+    super(props)
+    this.scrollableTrayRef = React.createRef()
+    const [trayNodes, height] = getTrayNodeSuggestions(this.props.rootNode)
     this.state = {
       trayNodes: trayNodes,
       height: height,
     }
   }
-  
+
   render() {
-    let {trayNodes, height} = this.state;
+    const { trayNodes, height } = this.state
     return (
       <div>
-        <div className="tray" draggable={true} onDragStart={this.onDragStart} >
-          <svg xmlns="http://www.w3.org/2000/svg" height={height} width={200} preserveAspectRatio="none" ref={this.scrollableTrayRef}>
-            {
-              trayNodes.map((nodeBlock, i) => {
-                let selectionState = NodeSelectionState.UNSELECTED
-                return (
-                  <EditorNodeBlock
-                      block={nodeBlock}
-                      selection={null}
-                      selectionState={selectionState}
-                  />
-                );
-              })
-            }
+        <div className="tray" draggable={true} onDragStart={this.onDragStart}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height={height}
+            width={200}
+            preserveAspectRatio="none"
+            ref={this.scrollableTrayRef}
+          >
+            {trayNodes.map((nodeBlock, i) => {
+              const selectionState = NodeSelectionState.UNSELECTED
+              return <EditorNodeBlock key={i} block={nodeBlock} selection={null} selectionState={selectionState} />
+            })}
           </svg>
         </div>
       </div>
-    );
+    )
   }
 
   onDragStart = (event: React.DragEvent) => {
-    let refBox = this.scrollableTrayRef.current.getBoundingClientRect();
+    const refBox = this.scrollableTrayRef.current.getBoundingClientRect()
     // let x = event.pageX - refBox.left;
-    let y = event.pageY - refBox.top;
-    let node = null as NodeBlock;
-    for (let nodeBlock of this.state.trayNodes) {
+    const y = event.pageY - refBox.top
+    let node = null as NodeBlock
+    for (const nodeBlock of this.state.trayNodes) {
       if (y > nodeBlock.y && y < nodeBlock.y + nodeBlock.rowHeight + nodeBlock.indentedBlockHeight) {
-        node = nodeBlock;
-        break;
+        node = nodeBlock
+        break
       }
     }
     if (node !== null) {
-      this.props.startDrag(node, 0, 0);
+      this.props.startDrag(node, 0, 0)
     }
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
   }
 }

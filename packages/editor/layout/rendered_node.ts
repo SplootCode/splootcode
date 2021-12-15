@@ -1,321 +1,337 @@
-import { observable } from "mobx"
+import { observable } from 'mobx'
 
-import { NodeCursor, NodeSelection } from "../context/selection"
-import { NodeMutation, NodeMutationType } from "@splootcode/core/language/mutations/node_mutations"
-import { SplootNode } from "@splootcode/core/language/node"
-import { NodeObserver } from "@splootcode/core/language/observers"
-import {
-  LayoutComponent,
-  LayoutComponentType,
-  NodeLayout,
-} from "@splootcode/core/language/type_registry"
-import { SPLOOT_EXPRESSION } from "@splootcode/core/language/types/js/expression"
-import { PYTHON_EXPRESSION } from "@splootcode/core/language/types/python/python_expression"
-import { getColour } from "@splootcode/core/colors"
-import { RenderedChildSetBlock, stringWidth } from "./rendered_childset_block"
-import { LoopAnnotation, NodeAnnotation, NodeAnnotationType } from "@splootcode/core/language/annotations/annotations"
+import { NodeCursor, NodeSelection } from '../context/selection'
+import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
+import { SplootNode } from '@splootcode/core/language/node'
+import { NodeObserver } from '@splootcode/core/language/observers'
+import { LayoutComponent, LayoutComponentType, NodeLayout } from '@splootcode/core/language/type_registry'
+import { SPLOOT_EXPRESSION } from '@splootcode/core/language/types/js/expression'
+import { PYTHON_EXPRESSION } from '@splootcode/core/language/types/python/python_expression'
+import { getColour } from '@splootcode/core/colors'
+import { RenderedChildSetBlock, stringWidth } from './rendered_childset_block'
+import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 
-export const NODE_INLINE_SPACING = 8;
-export const NODE_INLINE_SPACING_SMALL = 6;
-export const NODE_BLOCK_HEIGHT = 30;
-export const LOOP_ANNOTATION_HEIGHT = 12;
-const INDENT = 30;
+export const NODE_INLINE_SPACING = 8
+export const NODE_INLINE_SPACING_SMALL = 6
+export const NODE_BLOCK_HEIGHT = 30
+export const LOOP_ANNOTATION_HEIGHT = 12
+const INDENT = 30
 
 export class RenderedParentRef {
-  node: NodeBlock;
-  childSetId: string;
+  node: NodeBlock
+  childSetId: string
 
   constructor(node: NodeBlock, childSetId: string) {
-    this.node = node;
-    this.childSetId = childSetId;
+    this.node = node
+    this.childSetId = childSetId
   }
 }
 
 export class RenderedInlineComponent {
-  layoutComponent: LayoutComponent;
-  width: number;
+  layoutComponent: LayoutComponent
+  width: number
 
   constructor(layoutComponent: LayoutComponent, width: number) {
-    this.layoutComponent = layoutComponent;
-    this.width = width;
+    this.layoutComponent = layoutComponent
+    this.width = width
   }
 }
 
 // Watches node.
 export class NodeBlock implements NodeObserver {
-  node: SplootNode;
-  selection: NodeSelection;
-  index: number;
-  parentChildSet: RenderedChildSetBlock;
+  node: SplootNode
+  selection: NodeSelection
+  index: number
+  parentChildSet: RenderedChildSetBlock
 
   @observable
-  layout: NodeLayout;
-  textColor: string;
+  layout: NodeLayout
+  textColor: string
 
   @observable
-  renderedInlineComponents: RenderedInlineComponent[];
+  renderedInlineComponents: RenderedInlineComponent[]
   @observable
-  renderedChildSets: {[key: string]: RenderedChildSetBlock}
+  renderedChildSets: { [key: string]: RenderedChildSetBlock }
   @observable
-  childSetOrder: string[];
+  childSetOrder: string[]
   @observable
-  rightAttachedChildSet: string;
+  rightAttachedChildSet: string
   @observable
-  leftBreadcrumbChildSet: string;
+  leftBreadcrumbChildSet: string
   @observable
-  isInlineChild: boolean;
+  isInlineChild: boolean
 
   @observable
-  x: number;
+  x: number
   @observable
-  y: number;
+  y: number
   @observable
-  rowHeight: number;
+  rowHeight: number
   @observable
-  rowWidth: number;
+  rowWidth: number
   @observable
-  blockWidth: number;
+  blockWidth: number
   @observable
-  indentedBlockHeight: number;
+  indentedBlockHeight: number
   @observable
-  marginLeft: number;
+  marginLeft: number
   @observable
-  marginTop: number;
+  marginTop: number
 
   @observable
-  runtimeAnnotations: NodeAnnotation[];
+  runtimeAnnotations: NodeAnnotation[]
   @observable
-  loopAnnotation: LoopAnnotation;
+  loopAnnotation: LoopAnnotation
 
-  constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number, isInlineChild: boolean) {
-    this.parentChildSet = parentListBlock;
-    this.selection = selection;
-    this.index = index;
-    this.renderedChildSets = {};
-    this.childSetOrder = [];
-    this.layout = node.getNodeLayout();
+  constructor(
+    parentListBlock: RenderedChildSetBlock,
+    node: SplootNode,
+    selection: NodeSelection,
+    index: number,
+    isInlineChild: boolean
+  ) {
+    this.parentChildSet = parentListBlock
+    this.selection = selection
+    this.index = index
+    this.renderedChildSets = {}
+    this.childSetOrder = []
+    this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
-    this.node = node;
-    this.runtimeAnnotations = [];
+    this.node = node
+    this.runtimeAnnotations = []
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
-      this.node.registerObserver(this);
+      this.node.registerObserver(this)
     }
-    this.renderedInlineComponents = [];
-    this.isInlineChild = isInlineChild;
-    this.blockWidth = 0;
-    this.marginLeft = 0;
+    this.renderedInlineComponents = []
+    this.isInlineChild = isInlineChild
+    this.blockWidth = 0
+    this.marginLeft = 0
 
-    this.rowHeight = NODE_BLOCK_HEIGHT;
-    this.indentedBlockHeight = 0;
-    this.rightAttachedChildSet = null;
-    this.leftBreadcrumbChildSet = null;
+    this.rowHeight = NODE_BLOCK_HEIGHT
+    this.indentedBlockHeight = 0
+    this.rightAttachedChildSet = null
+    this.leftBreadcrumbChildSet = null
 
-    let numComponents = this.layout.components.length;
+    const numComponents = this.layout.components.length
 
     this.layout.components.forEach((component: LayoutComponent, idx: number) => {
-      let isLastInlineComponent = !this.isInlineChild && ((idx === numComponents - 1) || (idx === numComponents - 2)
-          && this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK)
-      if (component.type === LayoutComponentType.CHILD_SET_BLOCK
-          || component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
-          || component.type === LayoutComponentType.CHILD_SET_TREE
-          || component.type === LayoutComponentType.CHILD_SET_INLINE
-          || component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST
-          || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT
-          || component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
-        let childSet = node.getChildSet(component.identifier)
-        this.childSetOrder.push(component.identifier);
-        let childSetParentRef = new RenderedParentRef(this, component.identifier);
-        let renderedChildSet = new RenderedChildSetBlock(childSetParentRef, selection, childSet, component, isLastInlineComponent);
-        this.renderedChildSets[component.identifier] = renderedChildSet;
+      const isLastInlineComponent =
+        !this.isInlineChild &&
+        (idx === numComponents - 1 ||
+          (idx === numComponents - 2 &&
+            this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK))
+      if (
+        component.type === LayoutComponentType.CHILD_SET_BLOCK ||
+        component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
+        component.type === LayoutComponentType.CHILD_SET_TREE ||
+        component.type === LayoutComponentType.CHILD_SET_INLINE ||
+        component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
+        component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
+        component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS
+      ) {
+        const childSet = node.getChildSet(component.identifier)
+        this.childSetOrder.push(component.identifier)
+        const childSetParentRef = new RenderedParentRef(this, component.identifier)
+        const renderedChildSet = new RenderedChildSetBlock(
+          childSetParentRef,
+          selection,
+          childSet,
+          component,
+          isLastInlineComponent
+        )
+        this.renderedChildSets[component.identifier] = renderedChildSet
         if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-            this.rightAttachedChildSet = component.identifier;
+          this.rightAttachedChildSet = component.identifier
         }
         if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
-          this.leftBreadcrumbChildSet = component.identifier;
+          this.leftBreadcrumbChildSet = component.identifier
         }
       }
-    });
+    })
 
     if (node.type === SPLOOT_EXPRESSION || node.type === PYTHON_EXPRESSION) {
-      this.blockWidth = this.renderedChildSets['tokens'].width;
-      let childSetBlock = this.renderedChildSets['tokens'];
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height);
+      this.blockWidth = this.renderedChildSets['tokens'].width
+      const childSetBlock = this.renderedChildSets['tokens']
+      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
     }
   }
 
   updateLayout() {
-    let nodeLayout = this.node.getNodeLayout();
-    for (let component  of nodeLayout.components) {
-      if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
-        || component.type === LayoutComponentType.CHILD_SET_TREE
-        || component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-          this.renderedChildSets[component.identifier].updateLayout(component);
+    const nodeLayout = this.node.getNodeLayout()
+    for (const component of nodeLayout.components) {
+      if (
+        component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
+        component.type === LayoutComponentType.CHILD_SET_TREE ||
+        component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT
+      ) {
+        this.renderedChildSets[component.identifier].updateLayout(component)
       }
     }
   }
 
   calculateDimensions(x: number, y: number, selection: NodeSelection) {
-    this.marginTop = 0;
+    this.marginTop = 0
     if (this.node.isLoop) {
-      this.marginTop = LOOP_ANNOTATION_HEIGHT;
+      this.marginTop = LOOP_ANNOTATION_HEIGHT
     }
-    this.x = x;
-    this.y = y;
-    const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING;
-    this.blockWidth = nodeInlineSpacing + 2;
-    this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop;
-    this.indentedBlockHeight = 0;
-    this.renderedInlineComponents = []; // TODO: Find a way to avoid recreating this every time.
+    this.x = x
+    this.y = y
+    const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
+    this.blockWidth = nodeInlineSpacing + 2
+    this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
+    this.indentedBlockHeight = 0
+    this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
-    let leftPos = this.x + nodeInlineSpacing;
-    let marginRight = 0;
-    this.marginLeft = 0;
-    let numComponents = this.layout.components.length;
+    let leftPos = this.x + nodeInlineSpacing
+    let marginRight = 0
+    this.marginLeft = 0
+    const numComponents = this.layout.components.length
     this.layout.components.forEach((component: LayoutComponent, idx) => {
-      let isLastInlineComponent = !this.isInlineChild && ((idx === numComponents - 1) || (idx === numComponents - 2)
-          && this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK)
+      const isLastInlineComponent =
+        !this.isInlineChild &&
+        (idx === numComponents - 1 ||
+          (idx === numComponents - 2 &&
+            this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK))
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection);
-        this.indentedBlockHeight += childSetBlock.height;
-      }
-      else if (component.type === LayoutComponentType.STRING_LITERAL) {
-        let val = this.node.getProperty(component.identifier)
-        let width = stringWidth('""' + val) + nodeInlineSpacing;
-        this.blockWidth += width;
-        leftPos += width;
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
+        this.indentedBlockHeight += childSetBlock.height
+      } else if (component.type === LayoutComponentType.STRING_LITERAL) {
+        const val = this.node.getProperty(component.identifier)
+        const width = stringWidth('""' + val) + nodeInlineSpacing
+        this.blockWidth += width
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+      } else if (component.type === LayoutComponentType.PROPERTY) {
+        const val = this.node.getProperty(component.identifier)
+        const width = stringWidth(val.toString()) + nodeInlineSpacing
+        this.blockWidth += width
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+      } else if (component.type === LayoutComponentType.CHILD_SET_TREE) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
+        const width = 10
+        this.blockWidth += width
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+
+        if (isLastInlineComponent) {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+          // This minus 8 here accounts for the distance from the dot to the edge of the node.
+          // This is dumb tbh.
+          marginRight += Math.max(childSetBlock.width - 8, 0)
+        } else {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        }
+      } else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
+        const width = 10
+        this.blockWidth += width
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+
+        if (isLastInlineComponent) {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+          // This minus 8 here accounts for the distance from the dot to the edge of the node.
+          // This is dumb tbh.
+          marginRight += Math.max(childSetBlock.width - 8, 0)
+        } else {
+          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        }
+      } else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
+        const width = childSetBlock.width + nodeInlineSpacing
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+        this.blockWidth += width
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+      } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+        this.marginLeft += childSetBlock.width
+        leftPos += childSetBlock.width
+      } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        marginRight += childSetBlock.width + 8 // Extra for line and brackets
+      } else {
+        const width = stringWidth(component.identifier) + nodeInlineSpacing
+        leftPos += width
+        this.blockWidth += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       }
-      else if (component.type === LayoutComponentType.PROPERTY) {
-        let val = this.node.getProperty(component.identifier)
-        let width =  stringWidth(val.toString()) + nodeInlineSpacing;
-        this.blockWidth += width;
-        leftPos += width;
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
-      }
-      else if (component.type === LayoutComponentType.CHILD_SET_TREE) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
-        let width = 10;
-        this.blockWidth += width;
-        leftPos += width;
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
-
-        if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-          // This minus 8 here accounts for the distance from the dot to the edge of the node.
-          // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 8, 0);
-        } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-        }
-      }
-      else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
-        let width = 10;
-        this.blockWidth += width;
-        leftPos += width;
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
-
-        if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-          // This minus 8 here accounts for the distance from the dot to the edge of the node.
-          // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 8, 0);
-        } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-        }
-      }
-      else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection);
-        let width = childSetBlock.width + nodeInlineSpacing;
-        leftPos += width;
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
-        this.blockWidth += width;
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-      }
-      else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(x, y + this.marginTop, selection);
-        this.marginLeft += childSetBlock.width;
-        leftPos += childSetBlock.width;
-      }
-      else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-        let childSetBlock = this.renderedChildSets[component.identifier];
-        childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection);
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
-        marginRight += childSetBlock.width + 8; // Extra for line and brackets
-      }
-      else {
-        let width = stringWidth(component.identifier) + nodeInlineSpacing;
-        leftPos += width;
-        this.blockWidth += width;
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width));
-      }            
-    });
+    })
 
     if (this.node.type === SPLOOT_EXPRESSION || this.node.type === PYTHON_EXPRESSION) {
-      let childSetBlock = this.renderedChildSets['tokens'];
-      childSetBlock.calculateDimensions(x, y + this.marginTop, selection);
-      marginRight = this.renderedChildSets['tokens'].width;
-      this.blockWidth = 0;
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop);
+      const childSetBlock = this.renderedChildSets['tokens']
+      childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+      marginRight = this.renderedChildSets['tokens'].width
+      this.blockWidth = 0
+      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
     } else if (selection !== null) {
-      selection.cursorMap.registerCursorStart(this.parentChildSet, this.index, x + this.marginLeft, y + this.marginTop, false);
+      selection.cursorMap.registerCursorStart(
+        this.parentChildSet,
+        this.index,
+        x + this.marginLeft,
+        y + this.marginTop,
+        false
+      )
     }
-    this.rowWidth = this.marginLeft + this.blockWidth + marginRight;
+    this.rowWidth = this.marginLeft + this.blockWidth + marginRight
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
     // TODO: Handle validation UI changes here.
     if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
-      this.runtimeAnnotations = nodeMutation.annotations;
-      this.loopAnnotation = nodeMutation.loopAnnotation;
+      this.runtimeAnnotations = nodeMutation.annotations
+      this.loopAnnotation = nodeMutation.loopAnnotation
     }
   }
 
   selectRuntimeCaptureFrame(idx: number) {
-    this.loopAnnotation.currentFrame = idx;
-    this.node.selectRuntimeCaptureFrame(idx);
+    this.loopAnnotation.currentFrame = idx
+    this.node.selectRuntimeCaptureFrame(idx)
   }
 
-  getNextInsertAfterThisNode() : NodeCursor {
+  getNextInsertAfterThisNode(): NodeCursor {
     if (this.parentChildSet === null) {
-      return null;
+      return null
     }
     if (this.parentChildSet.allowInsertCursor() && this.index < this.parentChildSet.nodes.length) {
-      return new NodeCursor(this.parentChildSet, this.index + 1);
+      return new NodeCursor(this.parentChildSet, this.index + 1)
     }
-    return this.parentChildSet.getNextInsertCursorInOrAfterNode(this.index + 1);
+    return this.parentChildSet.getNextInsertCursorInOrAfterNode(this.index + 1)
   }
 
-  getNextInsertAfterChildSet(childSetId: string) : NodeCursor {
-    let index = this.childSetOrder.indexOf(childSetId);
-    index += 1;
+  getNextInsertAfterChildSet(childSetId: string): NodeCursor {
+    let index = this.childSetOrder.indexOf(childSetId)
+    index += 1
     while (index < this.childSetOrder.length) {
-      let nextChildSetId = this.childSetOrder[index];
-      let nextChildSet = this.renderedChildSets[nextChildSetId]
-      let nextInsert = nextChildSet.getNextChildInsert();
+      const nextChildSetId = this.childSetOrder[index]
+      const nextChildSet = this.renderedChildSets[nextChildSetId]
+      const nextInsert = nextChildSet.getNextChildInsert()
       if (nextInsert) {
-        return nextInsert;
+        return nextInsert
       }
-      index += 1;
+      index += 1
     }
     // This is the last childset, go up a step.
-    return this.getNextInsertAfterThisNode();
+    return this.getNextInsertAfterThisNode()
   }
 
-  getNextChildInsertCursor() : NodeCursor {
-    for (let childSetId of this.childSetOrder) {
-      let childSetListBlock = this.renderedChildSets[childSetId];
-      let nextCursor = childSetListBlock.getNextChildInsert()
+  getNextChildInsertCursor(): NodeCursor {
+    for (const childSetId of this.childSetOrder) {
+      const childSetListBlock = this.renderedChildSets[childSetId]
+      const nextCursor = childSetListBlock.getNextChildInsert()
       if (nextCursor) {
-        return nextCursor;
+        return nextCursor
       }
     }
-    return null;
+    return null
   }
 }

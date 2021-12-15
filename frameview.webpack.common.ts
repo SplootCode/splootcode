@@ -7,7 +7,7 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    plugins: [new TsconfigPathsPlugin({})]
+    plugins: [new TsconfigPathsPlugin({})],
   },
 
   context: __dirname,
@@ -22,19 +22,19 @@ export default {
 
   entry: {
     splootframepythonclient: {
-      import: './packages/runtime-python/runtime/index.tsx'
+      import: './packages/runtime-python/runtime/index.tsx',
     },
     python_webworker: {
       import: './packages/runtime-python/runtime/webworker.js',
-      filename: 'runtime-python/webworker.js'
+      filename: 'runtime-python/webworker.js',
     },
     splootframewebclient: {
-      import: './packages/runtime-web/index.ts'
+      import: './packages/runtime-web/index.ts',
     },
     web_serviceworker: {
       import: './packages/runtime-web/serviceworker.ts',
-      filename: 'sw.js' // Service worker needs a consistent file name.
-    }
+      filename: 'sw.js', // Service worker needs a consistent file name.
+    },
   },
 
   optimization: {
@@ -52,16 +52,16 @@ export default {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "ts-loader",
+          loader: 'ts-loader',
           options: {
-            projectReferences: true
-          }
-        }
+            projectReferences: true,
+          },
+        },
       },
       {
         test: /\.css$/,
-        use: ['style-loader','css-loader']
-      }
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
 
@@ -70,21 +70,21 @@ export default {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve('node_modules', '@splootcode', 'runtime-python', 'static'), 
-          to: 'runtime-python/static'
-        }
-      ]
+          from: path.resolve('node_modules', '@splootcode', 'runtime-python', 'static'),
+          to: 'runtime-python/static',
+        },
+      ],
     }),
     new HtmlWebpackPlugin({
       template: './src/template.html',
       filename: 'splootframewebclient.html',
-      chunks: ['splootframewebclient']
+      chunks: ['splootframewebclient'],
     }),
     new HtmlWebpackPlugin({
       template: './src/template.html',
       filename: 'splootframepythonclient.html',
-      chunks: ['splootframepythonclient']
-    })
+      chunks: ['splootframepythonclient'],
+    }),
   ],
 
   devtool: 'cheap-module-source-map',
