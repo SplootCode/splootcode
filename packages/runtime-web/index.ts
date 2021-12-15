@@ -5,87 +5,90 @@ export enum FrameState {
   LOADING,
   SW_INSTALLING,
   LIVE,
-  UNMOUNTED
+  UNMOUNTED,
 }
 
-let state = FrameState.LOADING;
+let state = FrameState.LOADING
 
 function sendHeartbeat() {
-  sendToParent({type: 'heartbeat', data: {state: state}});
+  sendToParent({ type: 'heartbeat', data: { state: state } })
 }
 
 function setState(newState: FrameState) {
-  let isNew = (state !== newState);
-  state = newState;
+  const isNew = state !== newState
+  state = newState
   if (isNew) {
-    sendHeartbeat();
+    sendHeartbeat()
   }
 }
 
-let serviceWorkerRegistration : ServiceWorkerRegistration;
-const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN;
+let serviceWorkerRegistration: ServiceWorkerRegistration
+const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN
 
 function sendToParent(payload) {
-  parent.postMessage(payload, PARENT_TARGET_DOMAIN);
+  parent.postMessage(payload, PARENT_TARGET_DOMAIN)
 }
 
 function sendToServiceWorker(payload) {
-  serviceWorkerRegistration.active.postMessage(payload);
+  serviceWorkerRegistration.active.postMessage(payload)
 }
 
 function handleMessageFromServiceWorker(event: MessageEvent) {
-  let data = event.data;
+  const data = event.data
   switch (data.type) {
     case 'loaded':
-      sendToParent(data);
-      break;
+      sendToParent(data)
+      break
     default:
-      console.warn('Unrecognised message recieved:', event.data);
+      console.warn('Unrecognised message recieved:', event.data)
   }
 }
 
 function handleMessage(event: MessageEvent) {
-  let data = event.data;
+  const data = event.data
   if (data.type.startsWith('webpack')) {
     // Ignore webpack devserver
-    return;
+    return
   }
   switch (data.type) {
     case 'heartbeat':
-      sendHeartbeat();
-      break;
+      sendHeartbeat()
+      break
     case 'nodetree':
       // Proxy to service worker directly.
-      sendToServiceWorker(data);
-      break;
+      sendToServiceWorker(data)
+      break
     default:
-      console.warn('Unrecognised message recieved:', event.data);
+      console.warn('Unrecognised message recieved:', event.data)
   }
 }
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.addEventListener('message', handleMessageFromServiceWorker);
-  window.addEventListener('load', function() {
-    window.addEventListener("message", handleMessage, false);
-    navigator.serviceWorker.register('/sw.js').then(function(registration: ServiceWorkerRegistration) {
-      serviceWorkerRegistration = registration;
-      serviceWorkerRegistration.update();
-      if (registration.installing) {
-        setState(FrameState.SW_INSTALLING);
-        registration.installing.addEventListener('statechange', (event) => {
-          // @ts-ignore
-          if (event.target.state === 'activated') {
-            setState(FrameState.LIVE);
-          }
-        });
-      } else if (registration.waiting) {
-        setState(FrameState.LIVE);
-      } else if (registration.active) {
-        setState(FrameState.LIVE);
+  navigator.serviceWorker.addEventListener('message', handleMessageFromServiceWorker)
+  window.addEventListener('load', function () {
+    window.addEventListener('message', handleMessage, false)
+    navigator.serviceWorker.register('/sw.js').then(
+      function (registration: ServiceWorkerRegistration) {
+        serviceWorkerRegistration = registration
+        serviceWorkerRegistration.update()
+        if (registration.installing) {
+          setState(FrameState.SW_INSTALLING)
+          registration.installing.addEventListener('statechange', (event) => {
+            // @ts-ignore
+            if (event.target.state === 'activated') {
+              setState(FrameState.LIVE)
+            }
+          })
+        } else if (registration.waiting) {
+          setState(FrameState.LIVE)
+        } else if (registration.active) {
+          setState(FrameState.LIVE)
+        }
+      },
+      function (err) {
+        // registration failed :(
+        console.warn('ServiceWorker registration failed: ', err)
       }
-    }, function(err) {
-      // registration failed :(
-      console.warn('ServiceWorker registration failed: ', err);
-    });
-  });
+    )
+  })
 }

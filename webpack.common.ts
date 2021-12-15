@@ -32,18 +32,18 @@ export default {
       },
       {
         test: /\.css$/,
-        use: ['style-loader','css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(svg)|(woff)|(woff2)|(eot)|(ttf)$/,
-        use: ['file-loader']
-      }
+        use: ['file-loader'],
+      },
     ],
   },
 
   plugins: [
     new NodePolyfillPlugin(),
-    new CopyWebpackPlugin({patterns:[path.resolve('./static/**')]}),
+    new CopyWebpackPlugin({ patterns: [path.resolve('./static/**')] }),
     new HtmlWebpackPlugin({
       template: './static/index.html',
     }),

@@ -1,23 +1,23 @@
-import { RenderedChildSetBlock } from "../layout/rendered_childset_block"
-import { NodeCursor } from "./selection"
+import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
+import { NodeCursor } from './selection'
 
 interface LineEntry {
-  xCoord: number;
-  listBlock: RenderedChildSetBlock;
-  index: number;
-  isCursor: boolean;
+  xCoord: number
+  listBlock: RenderedChildSetBlock
+  index: number
+  isCursor: boolean
 }
 
 interface LineMap {
-  yCoord: number;
-  entries: LineEntry[];
-  parentListBlock: RenderedChildSetBlock;
-  parentIndex: number;
+  yCoord: number
+  entries: LineEntry[]
+  parentListBlock: RenderedChildSetBlock
+  parentIndex: number
 }
 
 export class CursorMap {
-  lines: LineMap[];
-  linesIndex: {[key: number]: LineMap}
+  lines: LineMap[]
+  linesIndex: { [key: number]: LineMap }
 
   constructor() {
     this.lines = []
@@ -27,77 +27,83 @@ export class CursorMap {
   registerLineCursor(listBlock: RenderedChildSetBlock, index: number, y: number) {
     if (listBlock === null) {
       // This is the toplevel node and can't be selected.
-      return;
+      return
     }
     // Check if this is a new line
-    let lineMap : LineMap;
+    let lineMap: LineMap
     if (!(y in this.linesIndex)) {
       // new Line
       lineMap = {
         yCoord: y,
         entries: [],
         parentListBlock: null,
-        parentIndex: null
+        parentIndex: null,
       }
-      this.linesIndex[y] = lineMap;
-      this.lines.push(lineMap);
-      this.lines.sort((a, b) => {return a.yCoord - b.yCoord});
+      this.linesIndex[y] = lineMap
+      this.lines.push(lineMap)
+      this.lines.sort((a, b) => {
+        return a.yCoord - b.yCoord
+      })
     } else {
       lineMap = this.linesIndex[y]
     }
-    lineMap.parentListBlock = listBlock;
-    lineMap.parentIndex = index;
+    lineMap.parentListBlock = listBlock
+    lineMap.parentIndex = index
   }
 
   registerCursorStart(listBlock: RenderedChildSetBlock, index: number, x: number, y: number, isCursor: boolean) {
     if (listBlock === null) {
       // This is the toplevel node and can't be selected.
-      return;
+      return
     }
     // Check if this is a new line
-    let lineMap : LineMap;
+    let lineMap: LineMap
     if (!(y in this.linesIndex)) {
       // new Line
       lineMap = {
         yCoord: y,
         entries: [],
         parentListBlock: null,
-        parentIndex: null
+        parentIndex: null,
       }
-      this.linesIndex[y] = lineMap;
-      this.lines.push(lineMap);
-      this.lines.sort((a, b) => {return a.yCoord - b.yCoord});
+      this.linesIndex[y] = lineMap
+      this.lines.push(lineMap)
+      this.lines.sort((a, b) => {
+        return a.yCoord - b.yCoord
+      })
     } else {
       lineMap = this.linesIndex[y]
     }
 
-    let lineEntry : LineEntry = {
+    const lineEntry: LineEntry = {
       index: index,
       isCursor: isCursor,
       listBlock: listBlock,
       xCoord: x,
     }
-    lineMap.entries.push(lineEntry);
-    lineMap.entries.sort((a, b) => {return a.xCoord - b.xCoord})
+    lineMap.entries.push(lineEntry)
+    lineMap.entries.sort((a, b) => {
+      return a.xCoord - b.xCoord
+    })
   }
 
-  getLineIndexForYCoord(yCoord: number) : number {
-    let lineIndex = 0;
+  getLineIndexForYCoord(yCoord: number): number {
+    let lineIndex = 0
     for (let i = 0; i < this.lines.length; i++) {
-      let line = this.lines[i];
+      const line = this.lines[i]
       if (yCoord < line.yCoord) {
-        return lineIndex;
+        return lineIndex
       }
-      lineIndex = i;
+      lineIndex = i
     }
-    return this.lines.length - 1;
+    return this.lines.length - 1
   }
 
-  getEntryListForLineIndex(lineIndex: number) : LineEntry[] {
-    let line = this.lines[lineIndex];
+  getEntryListForLineIndex(lineIndex: number): LineEntry[] {
+    const line = this.lines[lineIndex]
 
-    let entries = line.entries.slice();
-    let isFirstEntryCursor = entries.length > 0 && entries[0].isCursor;
+    const entries = line.entries.slice()
+    const isFirstEntryCursor = entries.length > 0 && entries[0].isCursor
     if (!isFirstEntryCursor && line.parentListBlock.allowInsertCursor()) {
       entries.unshift({
         index: line.parentIndex,
@@ -106,94 +112,94 @@ export class CursorMap {
         xCoord: 0,
       })
     }
-    return entries;
+    return entries
   }
 
   static getEntryIndexForXCoord(entries: LineEntry[], xCoord: number) {
-    let index = 0;
+    let index = 0
     for (let i = 0; i < entries.length; i++) {
-      let entry = entries[i];
+      const entry = entries[i]
       if (entry.xCoord > xCoord) {
-        break;
+        break
       }
-      index = i;
+      index = i
     }
-    return index;
+    return index
   }
 
-  getCursorByCoordinate(x: number, y: number) : [NodeCursor, boolean] {
-    let lineIndex = this.getLineIndexForYCoord(y);
-    let entries = this.getEntryListForLineIndex(lineIndex);
-    let xIndex = CursorMap.getEntryIndexForXCoord(entries, x);
-    let cursorEntry = entries[xIndex];
-    let nodeCursor = new NodeCursor(cursorEntry.listBlock, cursorEntry.index);
-    return [nodeCursor, cursorEntry.isCursor];
+  getCursorByCoordinate(x: number, y: number): [NodeCursor, boolean] {
+    const lineIndex = this.getLineIndexForYCoord(y)
+    const entries = this.getEntryListForLineIndex(lineIndex)
+    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
+    const cursorEntry = entries[xIndex]
+    const nodeCursor = new NodeCursor(cursorEntry.listBlock, cursorEntry.index)
+    return [nodeCursor, cursorEntry.isCursor]
   }
 
-  getCursorLeftOfCoordinate(x: number, y: number) : [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y);
-    let entries = this.getEntryListForLineIndex(lineIndex);
+  getCursorLeftOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
+    const lineIndex = this.getLineIndexForYCoord(y)
+    const entries = this.getEntryListForLineIndex(lineIndex)
 
-    let xIndex = CursorMap.getEntryIndexForXCoord(entries, x);
-    let entry = entries[xIndex];
+    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
+    let entry = entries[xIndex]
 
     if (xIndex <= 0) {
       if (lineIndex > 0) {
         // Get last cursor for previous line.
-        let line = this.lines[lineIndex - 1];
-        let newEntries = this.getEntryListForLineIndex(lineIndex - 1);
-        entry = newEntries[newEntries.length - 1];
-        y = line.yCoord;
+        const line = this.lines[lineIndex - 1]
+        const newEntries = this.getEntryListForLineIndex(lineIndex - 1)
+        entry = newEntries[newEntries.length - 1]
+        y = line.yCoord
       }
-      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y];
+      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
     }
 
-    entry = entries[xIndex - 1];
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y];
+    entry = entries[xIndex - 1]
+    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
   }
 
-  getCursorRightOfCoordinate(x: number, y: number) : [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y);
-    let entries = this.getEntryListForLineIndex(lineIndex);
+  getCursorRightOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
+    const lineIndex = this.getLineIndexForYCoord(y)
+    const entries = this.getEntryListForLineIndex(lineIndex)
 
-    let xIndex = CursorMap.getEntryIndexForXCoord(entries, x);
-    let entry = entries[xIndex];
+    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
+    let entry = entries[xIndex]
 
     if (xIndex >= entries.length - 1) {
       if (lineIndex < this.lines.length - 1) {
         // Get first cursor for next line.
-        let line = this.lines[lineIndex + 1];
-        entry = this.getEntryListForLineIndex(lineIndex + 1)[0];
-        y = line.yCoord;
+        const line = this.lines[lineIndex + 1]
+        entry = this.getEntryListForLineIndex(lineIndex + 1)[0]
+        y = line.yCoord
       }
-      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y];
+      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
     }
 
-    entry = entries[xIndex + 1];
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y];
+    entry = entries[xIndex + 1]
+    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
   }
 
-  getCursorUpOfCoordinate(x: number, y: number) : [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y);
+  getCursorUpOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
+    let lineIndex = this.getLineIndexForYCoord(y)
     if (lineIndex != 0) {
-      lineIndex -= 1;
-      y = this.lines[lineIndex].yCoord;
+      lineIndex -= 1
+      y = this.lines[lineIndex].yCoord
     }
-    let entries = this.getEntryListForLineIndex(lineIndex);
-    let xIndex = CursorMap.getEntryIndexForXCoord(entries, x);
-    let entry = entries[xIndex];
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y];
+    const entries = this.getEntryListForLineIndex(lineIndex)
+    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
+    const entry = entries[xIndex]
+    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y]
   }
 
-  getCursorDownOfCoordinate(x: number, y: number) : [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y);
+  getCursorDownOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
+    let lineIndex = this.getLineIndexForYCoord(y)
     if (lineIndex < this.lines.length - 1) {
-      lineIndex += 1;
-      y = this.lines[lineIndex].yCoord;
+      lineIndex += 1
+      y = this.lines[lineIndex].yCoord
     }
-    let entries = this.getEntryListForLineIndex(lineIndex);
-    let xIndex = CursorMap.getEntryIndexForXCoord(entries, x);
-    let entry = entries[xIndex];
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y];
+    const entries = this.getEntryListForLineIndex(lineIndex)
+    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
+    const entry = entries[xIndex]
+    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y]
   }
 }

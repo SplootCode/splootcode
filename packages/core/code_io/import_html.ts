@@ -1,99 +1,96 @@
-import { SplootNode } from "../language/node";
-import { SplootHtmlAttribute } from "../language/types/html/html_attribute";
-import { SplootHtmlDocument } from "../language/types/html/html_document";
-import { SplootHtmlElement } from "../language/types/html/html_element";
-import { StringLiteral } from "../language/types/literals";
-import { SplootHtmlScriptElement } from "../language/types/html/html_script_element";
-import { parseJs } from "./import_js";
-import { JavascriptFile } from "../language/types/js/javascript_file";
+import { SplootNode } from '../language/node'
+import { SplootHtmlAttribute } from '../language/types/html/html_attribute'
+import { SplootHtmlDocument } from '../language/types/html/html_document'
+import { SplootHtmlElement } from '../language/types/html/html_element'
+import { StringLiteral } from '../language/types/literals'
+import { SplootHtmlScriptElement } from '../language/types/html/html_script_element'
+import { parseJs } from './import_js'
+import { JavascriptFile } from '../language/types/js/javascript_file'
 
-
-function createScriptElement(domElement: Element) : SplootHtmlScriptElement {
-  let splootNode = new SplootHtmlScriptElement(null);
+function createScriptElement(domElement: Element): SplootHtmlScriptElement {
+  const splootNode = new SplootHtmlScriptElement(null)
   domElement.childNodes.forEach((childNode: ChildNode) => {
     if (childNode.nodeType !== Node.TEXT_NODE) {
-      console.warn('Found non-text node inside script tag??');
+      console.warn('Found non-text node inside script tag??')
     } else {
-      let jsNode = parseJs((childNode as Text).textContent) as JavascriptFile;
-      jsNode.getBody().children.forEach((node : SplootNode) => {
-        splootNode.getContent().addChild(node);
-      });
+      const jsNode = parseJs((childNode as Text).textContent) as JavascriptFile
+      jsNode.getBody().children.forEach((node: SplootNode) => {
+        splootNode.getContent().addChild(node)
+      })
     }
-  });
-  let attrs = domElement.attributes;
+  })
+  const attrs = domElement.attributes
   for (let i = 0; i < attrs.length; i++) {
-    let attr = attrs.item(i);
+    const attr = attrs.item(i)
     // TODO: Detect if this should be a string, number or javascript node.
-    let strLiteral = new StringLiteral(null, attr.value);
-    let newAttrNode = new SplootHtmlAttribute(null, attr.name);
-    newAttrNode.getValue().addChild(strLiteral);
-    splootNode.getAttributes().addChild(newAttrNode);
+    const strLiteral = new StringLiteral(null, attr.value)
+    const newAttrNode = new SplootHtmlAttribute(null, attr.name)
+    newAttrNode.getValue().addChild(strLiteral)
+    splootNode.getAttributes().addChild(newAttrNode)
   }
-  return splootNode;
+  return splootNode
 }
 
-function createDomElement(domElement: Element) : SplootNode{
-  switch(domElement.tagName.toLowerCase()) {
+function createDomElement(domElement: Element): SplootNode {
+  switch (domElement.tagName.toLowerCase()) {
     case 'script':
-      return createScriptElement(domElement);
+      return createScriptElement(domElement)
     default:
-      break;
+      break
   }
-  let splootNode = new SplootHtmlElement(null, domElement.tagName.toLowerCase());
+  const splootNode = new SplootHtmlElement(null, domElement.tagName.toLowerCase())
   domElement.childNodes.forEach((childNode: ChildNode) => {
-    let newNode = createNodeFromDomNode(childNode);
+    const newNode = createNodeFromDomNode(childNode)
     if (newNode !== null) {
-      splootNode.getContent().addChild(newNode);
+      splootNode.getContent().addChild(newNode)
     }
-  });
-  let attrs = domElement.attributes;
+  })
+  const attrs = domElement.attributes
   for (let i = 0; i < attrs.length; i++) {
-    let attr = attrs.item(i);
+    const attr = attrs.item(i)
     // TODO: Detect if this should be a string, number or javascript node.
-    let strLiteral = new StringLiteral(null, attr.value);
-    let newAttrNode = new SplootHtmlAttribute(null, attr.name);
-    newAttrNode.getValue().addChild(strLiteral);
-    splootNode.getAttributes().addChild(newAttrNode);
+    const strLiteral = new StringLiteral(null, attr.value)
+    const newAttrNode = new SplootHtmlAttribute(null, attr.name)
+    newAttrNode.getValue().addChild(strLiteral)
+    splootNode.getAttributes().addChild(newAttrNode)
   }
-  return splootNode;
+  return splootNode
 }
 
-function createTextNode(textElement : Text) : StringLiteral {
+function createTextNode(textElement: Text): StringLiteral {
   if (textElement.textContent.trim().length === 0) {
-    return null;
+    return null
   }
-  let splootNode = new StringLiteral(null, textElement.textContent);
-  return splootNode;
+  const splootNode = new StringLiteral(null, textElement.textContent)
+  return splootNode
 }
 
-
-function createNodeFromDomNode(domNode: ChildNode) : SplootNode {
-  switch(domNode.nodeType) {
+function createNodeFromDomNode(domNode: ChildNode): SplootNode {
+  switch (domNode.nodeType) {
     case Node.ELEMENT_NODE:
-      return createDomElement(domNode as Element);
+      return createDomElement(domNode as Element)
     case Node.TEXT_NODE:
-      return createTextNode(domNode as Text);
+      return createTextNode(domNode as Text)
     case Node.COMMENT_NODE:
       // TODO
-      break;
+      break
     default:
-      console.log('Unknown node type: ', domNode);
+      console.log('Unknown node type: ', domNode)
   }
-  return null;
+  return null
 }
 
+export function parseHtml(source: string): SplootNode {
+  const parser = new DOMParser()
+  const splootNode = new SplootHtmlDocument(null)
+  const htmlDoc = parser.parseFromString(source, 'text/html')
 
-export function parseHtml(source: string) : SplootNode {
-  var parser = new DOMParser();
-  let splootNode = new SplootHtmlDocument(null);
-  var htmlDoc = parser.parseFromString(source, 'text/html');
-  
   htmlDoc.childNodes.forEach((childNode: ChildNode) => {
-    let newNode = createNodeFromDomNode(childNode);
+    const newNode = createNodeFromDomNode(childNode)
     if (newNode !== null) {
-      splootNode.getBody().addChild(newNode);
+      splootNode.getBody().addChild(newNode)
     }
-  });
+  })
 
-  return splootNode;
+  return splootNode
 }

@@ -1,4 +1,4 @@
-import { FunctionDefinition } from "../definitions/loader";
+import { FunctionDefinition } from '../definitions/loader'
 
 /*
 >>> dir(__builtins__)
@@ -25,32 +25,37 @@ import { FunctionDefinition } from "../definitions/loader";
 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip']
 */
 
-const functions : FunctionDefinition[] = [
+const functions: FunctionDefinition[] = [
   {
     name: 'print',
-    deprecated:false,
-    type: {parameters:[], returnType: {type: 'void'}},
-    documentation:"Outputs information to the terminal",
+    deprecated: false,
+    type: { parameters: [], returnType: { type: 'void' } },
+    documentation: 'Outputs information to the terminal',
   },
   {
     name: 'input',
     deprecated: false,
     type: {
       parameters: [
-        {name: 'prompt', type: {type: 'literal', literal:'string'}, deprecated: false, documentation: 'The text to prompt the user to type'}
+        {
+          name: 'prompt',
+          type: { type: 'literal', literal: 'string' },
+          deprecated: false,
+          documentation: 'The text to prompt the user to type',
+        },
       ],
-      returnType: {type: 'literal', literal:'string'}
+      returnType: { type: 'literal', literal: 'string' },
     },
-    documentation:"Asks the user to enter information into the terminal",
+    documentation: 'Asks the user to enter information into the terminal',
   },
   {
     name: 'str',
     deprecated: false,
     type: {
       parameters: [
-        {name: '', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to a string'}
+        { name: '', type: { type: 'any' }, deprecated: false, documentation: 'The value to convert to a string' },
       ],
-      returnType: {type: 'literal', literal:'string'},
+      returnType: { type: 'literal', literal: 'string' },
     },
     documentation: 'Convert to a string (text)',
   },
@@ -59,9 +64,9 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: '', type: {type: 'any'}, deprecated: false, documentation: 'The value to convert to an integer'}
+        { name: '', type: { type: 'any' }, deprecated: false, documentation: 'The value to convert to an integer' },
       ],
-      returnType: {type: 'literal', literal:'number'},
+      returnType: { type: 'literal', literal: 'number' },
     },
     documentation: 'Convert to an integer number (whole number)',
   },
@@ -70,9 +75,14 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'iterable', type: {type: 'any'}, deprecated: false, documentation: 'A list or other iterable object'}
+        {
+          name: 'iterable',
+          type: { type: 'any' },
+          deprecated: false,
+          documentation: 'A list or other iterable object',
+        },
       ],
-      returnType: {type: 'literal', literal:'number'},
+      returnType: { type: 'literal', literal: 'number' },
     },
     documentation: 'Loops over an iterable and returns pairs of the count and the items from the iterable.',
   },
@@ -81,9 +91,14 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'iterable', type: {type: 'any'}, deprecated: false, documentation: 'A list or other iterable object'}
+        {
+          name: 'iterable',
+          type: { type: 'any' },
+          deprecated: false,
+          documentation: 'A list or other iterable object',
+        },
       ],
-      returnType: {type: 'literal', literal:'number'},
+      returnType: { type: 'literal', literal: 'number' },
     },
     documentation: 'Returns the length of something, how many items are in a list or characters in a string',
   },
@@ -92,15 +107,25 @@ const functions : FunctionDefinition[] = [
     deprecated: false,
     type: {
       parameters: [
-        {name: 'start', type: {type: 'any'}, deprecated: false, documentation: 'The number to start counting from.'},
-        {name: 'end', type: {type: 'any'}, deprecated: false, documentation: 'Stop counting before this number, not including this number.'}
+        {
+          name: 'start',
+          type: { type: 'any' },
+          deprecated: false,
+          documentation: 'The number to start counting from.',
+        },
+        {
+          name: 'end',
+          type: { type: 'any' },
+          deprecated: false,
+          documentation: 'Stop counting before this number, not including this number.',
+        },
       ],
-      returnType: {type: 'any'},
+      returnType: { type: 'any' },
     },
     documentation: 'Counts from a starting number up to, but not including, the end number.',
   },
-];
+]
 
-export function loadPythonBuiltinFunctions() : FunctionDefinition[] {
-  return functions;
+export function loadPythonBuiltinFunctions(): FunctionDefinition[] {
+  return functions
 }

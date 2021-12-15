@@ -1,26 +1,26 @@
-import "./drag_overlay.css"
+import './drag_overlay.css'
 
-import { observer } from "mobx-react"
-import React from "react"
+import { observer } from 'mobx-react'
+import React from 'react'
 
-import { NodeSelection, NodeSelectionState } from "../context/selection"
-import { NodeBlock } from "../layout/rendered_node"
-import { EditorNodeBlock } from "./node_block"
-import { adaptNodeToPasteDestination } from "@splootcode/core/language/type_registry"
+import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { NodeBlock } from '../layout/rendered_node'
+import { EditorNodeBlock } from './node_block'
+import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
 
 interface OverlayProps {
-  selection: NodeSelection;
+  selection: NodeSelection
   editorRef: React.RefObject<SVGSVGElement>
 }
 
 @observer
 export class DragOverlay extends React.Component<OverlayProps> {
   render() {
-    let { selection, editorRef } = this.props;
-    let dragState = selection.dragState;
-    let block = dragState?.node;
+    const { selection, editorRef } = this.props
+    const dragState = selection.dragState
+    const block = dragState?.node
     if (!dragState || block === null) {
-      return <div style={{display: 'none'}}/>
+      return <div style={{ display: 'none' }} />
     }
     return (
       <DragOverlayInternal
@@ -30,25 +30,26 @@ export class DragOverlay extends React.Component<OverlayProps> {
         onEndDrag={this.onEndDrag}
         selection={selection}
         editorRef={editorRef}
-      />);
+      />
+    )
   }
 
   onEndDrag = () => {
-    this.props.selection.endDrag();
+    this.props.selection.endDrag()
   }
 }
 
 interface DragOverlayInternalProps {
   block: NodeBlock
-  onEndDrag: () => any;
-  initialX: number,
-  initialY: number,
-  selection: NodeSelection,
-  editorRef: React.RefObject<SVGSVGElement>,
+  onEndDrag: () => any
+  initialX: number
+  initialY: number
+  selection: NodeSelection
+  editorRef: React.RefObject<SVGSVGElement>
 }
 
 interface DragOverlayInternalState {
-  x: number,
+  x: number
   y: number
 }
 
@@ -58,64 +59,61 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
     this.state = {
       x: this.props.initialX,
       y: this.props.initialY,
-    };
+    }
   }
-  
+
   render() {
-    let { block } = this.props;
-    let { x, y } = this.state;
+    const { block } = this.props
+    const { x, y } = this.state
     return (
       <div onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove}>
         <svg
-            className="drag-overlay"
-            xmlns="http://www.w3.org/2000/svg"
-            height={window.innerHeight}
-            width={window.innerWidth}
-            preserveAspectRatio="none">
+          className="drag-overlay"
+          xmlns="http://www.w3.org/2000/svg"
+          height={window.innerHeight}
+          width={window.innerWidth}
+          preserveAspectRatio="none"
+        >
           <g transform={`translate(${x} ${y})`}>
-            <EditorNodeBlock
-              block={block}
-              selection={null}
-              selectionState={NodeSelectionState.UNSELECTED}
-            />
+            <EditorNodeBlock block={block} selection={null} selectionState={NodeSelectionState.UNSELECTED} />
           </g>
         </svg>
       </div>
-    );
+    )
   }
 
   onMouseUp = (event: React.MouseEvent) => {
-    let {selection, block, editorRef} = this.props;
+    const { selection, block, editorRef } = this.props
 
-    let refBox = editorRef.current.getBoundingClientRect();
-    let x = event.pageX - refBox.left;
-    let y = event.pageY - refBox.top;
+    const refBox = editorRef.current.getBoundingClientRect()
+    const x = event.pageX - refBox.left
+    const y = event.pageY - refBox.top
 
     // TODO: Only allow cursors in positions that make sense.
-    selection.placeCursorByXYCoordinate(x, y);
-    let destinationCategory = selection.getPasteDestinationCategory();
-    let node = adaptNodeToPasteDestination(block.node.clone(), destinationCategory);
+    selection.placeCursorByXYCoordinate(x, y)
+    const destinationCategory = selection.getPasteDestinationCategory()
+    const node = adaptNodeToPasteDestination(block.node.clone(), destinationCategory)
     if (node && selection.isCursor()) {
-      selection.insertNodeAtCurrentCursor(node);
+      selection.insertNodeAtCurrentCursor(node)
     }
-    this.props.onEndDrag();
+    this.props.onEndDrag()
   }
 
   onMouseMove = (event: React.MouseEvent) => {
     if (event.buttons === 0) {
-      this.props.onEndDrag();
+      this.props.onEndDrag()
     } else {
-      let {selection} = this.props;
+      const { selection } = this.props
       this.setState({
         x: event.pageX,
-        y: event.pageY
+        y: event.pageY,
       })
-      let refBox = this.props.editorRef.current.getBoundingClientRect();
-      let x = event.pageX - refBox.left;
-      let y = event.pageY - refBox.top;
+      const refBox = this.props.editorRef.current.getBoundingClientRect()
+      const x = event.pageX - refBox.left
+      const y = event.pageY - refBox.top
 
       // TODO: Only allow cursors in positions that make sense.
-      selection.placeCursorByXYCoordinate(x, y);
+      selection.placeCursorByXYCoordinate(x, y)
     }
   }
 }

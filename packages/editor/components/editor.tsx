@@ -1,50 +1,47 @@
-import "./editor.css"
+import './editor.css'
 
-import { observer } from "mobx-react"
-import React from "react"
+import { observer } from 'mobx-react'
+import React from 'react'
 
-import { NodeSelection, SelectionState } from "../context/selection"
-import {
-  adaptNodeToPasteDestination,
-  deserializeNode,
-} from "@splootcode/core/language/type_registry"
-import { HTML_DOCUMENT } from "@splootcode/core/language/types/html/html_document"
-import { JAVASCRIPT_FILE } from "@splootcode/core/language/types/js/javascript_file"
-import { PYTHON_FILE } from "@splootcode/core/language/types/python/python_file"
-import { NodeBlock } from "../layout/rendered_node"
-import { ActiveCursor } from "./cursor"
-import { DragOverlay } from "./drag_overlay"
-import { InsertBox } from "./insert_box"
-import { ExpandedListBlockView } from "./list_block"
-import { Tray } from "./tray"
-import { EditBox } from "./edit_box"
+import { NodeSelection } from '../context/selection'
+import { adaptNodeToPasteDestination, deserializeNode } from '@splootcode/core/language/type_registry'
+import { HTML_DOCUMENT } from '@splootcode/core/language/types/html/html_document'
+import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_file'
+import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
+import { NodeBlock } from '../layout/rendered_node'
+import { ActiveCursor } from './cursor'
+import { DragOverlay } from './drag_overlay'
+import { InsertBox } from './insert_box'
+import { ExpandedListBlockView } from './list_block'
+import { Tray } from './tray'
+import { EditBox } from './edit_box'
 
-export const SPLOOT_MIME_TYPE = 'application/splootcodenode';
+export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
 interface EditorProps {
-  block: NodeBlock;
-  width: number;
-  selection: NodeSelection;
+  block: NodeBlock
+  width: number
+  selection: NodeSelection
 }
 
 @observer
 export class Editor extends React.Component<EditorProps> {
-  private editorSvgRef : React.RefObject<SVGSVGElement>;
-  
+  private editorSvgRef: React.RefObject<SVGSVGElement>
+
   constructor(props: EditorProps) {
-    super(props);
-    this.editorSvgRef = React.createRef();
+    super(props)
+    this.editorSvgRef = React.createRef()
   }
 
   render() {
-    let {block, selection} = this.props;
-    let fileBody = null;
+    const { block, selection } = this.props
+    let fileBody = null
     if (block.node.type === JAVASCRIPT_FILE || block.node.type === PYTHON_FILE || block.node.type === HTML_DOCUMENT) {
-      fileBody = block.renderedChildSets['body'];
+      fileBody = block.renderedChildSets['body']
     }
-    let height = block.rowHeight + block.indentedBlockHeight;
-    let insertBox = null;
-    let editBox = null;
+    const height = block.rowHeight + block.indentedBlockHeight
+    let insertBox = null
+    let editBox = null
     if (selection.isCursor() && selection.insertBox !== null) {
       insertBox = <InsertBox editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
     } else if (selection.isEditingSingleNode()) {
@@ -52,9 +49,10 @@ export class Editor extends React.Component<EditorProps> {
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
-    return <React.Fragment>
+    return (
+      <React.Fragment>
         <div className="editor">
-          <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node}/>
+          <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
           <div className="editor-column">
             <svg
               className="editor-svg"
@@ -64,69 +62,67 @@ export class Editor extends React.Component<EditorProps> {
               onClick={this.onClickHandler}
               ref={this.editorSvgRef}
             >
-              <ExpandedListBlockView
-                  block={fileBody}
-                  selection={this.props.selection}
-                  isSelected={false} />
-              <ActiveCursor selection={selection}/>
+              <ExpandedListBlockView block={fileBody} selection={this.props.selection} isSelected={false} />
+              <ActiveCursor selection={selection} />
             </svg>
-            { insertBox }
-            { editBox }
+            {insertBox}
+            {editBox}
           </div>
-      </div>
-      <DragOverlay selection={selection} editorRef={this.editorSvgRef}/>
-    </React.Fragment>;
+        </div>
+        <DragOverlay selection={selection} editorRef={this.editorSvgRef} />
+      </React.Fragment>
+    )
   }
 
   startDrag = (nodeBlock: NodeBlock, offsetX: number, offestY: number) => {
-    this.props.selection.startDrag(nodeBlock, offsetX, offestY);
+    this.props.selection.startDrag(nodeBlock, offsetX, offestY)
   }
 
   onClickHandler = (event: React.MouseEvent) => {
-    let selection = this.props.selection;
-    let refBox = this.editorSvgRef.current.getBoundingClientRect();
-    let x = event.pageX - refBox.left;
-    let y = event.pageY - refBox.top;
-    selection.handleClick(x, y);
-    const insertbox = document.getElementById('insertbox') as HTMLInputElement;
+    const selection = this.props.selection
+    const refBox = this.editorSvgRef.current.getBoundingClientRect()
+    const x = event.pageX - refBox.left
+    const y = event.pageY - refBox.top
+    selection.handleClick(x, y)
+    const insertbox = document.getElementById('insertbox') as HTMLInputElement
     if (insertbox) {
-      insertbox.value = '';
-      insertbox.focus();
+      insertbox.value = ''
+      insertbox.focus()
     }
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
-    let {selection} = this.props;
+    const { selection } = this.props
     if (event.type === 'copy' || event.type === 'cut') {
-      if(event.target instanceof SVGElement) {
-        let selectedNode = selection.selectedNode;
+      if (event.target instanceof SVGElement) {
+        const selectedNode = selection.selectedNode
         if (selectedNode !== null) {
-          let jsonNode = JSON.stringify(selectedNode.serialize());
+          const jsonNode = JSON.stringify(selectedNode.serialize())
           // Maybe change to selectedNode.generateCodeString()
           // once we have paste of text code supported.
-          let friendlytext = jsonNode;
-          event.clipboardData.setData('text/plain', friendlytext);
-          event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode);
-          event.preventDefault();
+          const friendlytext = jsonNode
+          event.clipboardData.setData('text/plain', friendlytext)
+          event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode)
+          event.preventDefault()
         }
       }
     }
     if (event.type === 'cut') {
-      selection.deleteSelectedNode();
+      selection.deleteSelectedNode()
     }
     if (event.type === 'paste') {
-      let splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE);
+      const splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE)
       if (splootData) {
-        let node = deserializeNode(JSON.parse(splootData));
-        let destinationCategory = selection.getPasteDestinationCategory();
-        node = adaptNodeToPasteDestination(node, destinationCategory);
+        let node = deserializeNode(JSON.parse(splootData))
+        const destinationCategory = selection.getPasteDestinationCategory()
+        node = adaptNodeToPasteDestination(node, destinationCategory)
         if (node && selection.isCursor()) {
-          selection.insertNodeAtCurrentCursor(node);
-          event.preventDefault();
+          selection.insertNodeAtCurrentCursor(node)
+          event.preventDefault()
         } else if (node && selection.isSingleNode()) {
-          selection.deleteSelectedNode();
-          selection.insertNodeAtCurrentCursor(node);
-          event.preventDefault();
+          selection.deleteSelectedNode()
+          selection.insertNodeAtCurrentCursor(node)
+          event.preventDefault()
         } else {
           // paste failed :(
         }
@@ -135,56 +131,56 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   keyHandler = (event: KeyboardEvent) => {
-    let { selection } = this.props;
+    const { selection } = this.props
     if (event.isComposing) {
       // IME composition, let it be captured by the insert box.
-      return;
+      return
     }
     if (event.key === 'Backspace' || event.key === 'Delete') {
-      this.props.selection.deleteSelectedNode();
+      this.props.selection.deleteSelectedNode()
     }
     if (event.key === 'Tab') {
       // TODO: If we're in insert mode, handle the insert first.
-      selection.moveCursorToNextInsert();
-      event.preventDefault();
-      event.cancelBubble = true;
+      selection.moveCursorToNextInsert()
+      event.preventDefault()
+      event.cancelBubble = true
     }
     if (event.key === 'Enter') {
       if (selection.isSingleNode()) {
-        selection.startEditAtCurrentCursor();
+        selection.startEditAtCurrentCursor()
       }
     }
     switch (event.key) {
       case 'ArrowLeft':
-        selection.moveCursorLeft();
-        event.preventDefault();
-        break;
+        selection.moveCursorLeft()
+        event.preventDefault()
+        break
       case 'ArrowRight':
-        selection.moveCursorRight();
-        event.preventDefault();
-        break;
+        selection.moveCursorRight()
+        event.preventDefault()
+        break
       case 'ArrowUp':
-        selection.moveCursorUp();
-        event.preventDefault();
-        break;
+        selection.moveCursorUp()
+        event.preventDefault()
+        break
       case 'ArrowDown':
-        selection.moveCursorDown();
-        event.preventDefault();
-        break;
+        selection.moveCursorDown()
+        event.preventDefault()
+        break
     }
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.keyHandler);
-    document.addEventListener('cut', this.clipboardHandler);
-    document.addEventListener('copy', this.clipboardHandler);
-    document.addEventListener('paste', this.clipboardHandler);
+    document.addEventListener('keydown', this.keyHandler)
+    document.addEventListener('cut', this.clipboardHandler)
+    document.addEventListener('copy', this.clipboardHandler)
+    document.addEventListener('paste', this.clipboardHandler)
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.keyHandler);
-    document.removeEventListener('cut', this.clipboardHandler);
-    document.removeEventListener('copy', this.clipboardHandler);
-    document.removeEventListener('paste', this.clipboardHandler);
+    document.removeEventListener('keydown', this.keyHandler)
+    document.removeEventListener('cut', this.clipboardHandler)
+    document.removeEventListener('copy', this.clipboardHandler)
+    document.removeEventListener('paste', this.clipboardHandler)
   }
 }

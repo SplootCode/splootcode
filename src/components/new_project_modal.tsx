@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react'
 
-import { Box, Button, Grid, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, TagLabel, Text, useDisclosure, useRadio, useRadioGroup } from "@chakra-ui/react"
-import { Project } from '@splootcode/core/language/projects/project';
-import { loadExampleProject, loadProject } from '../code_io/project_loader';
+import {
+  Box,
+  Button,
+  Grid,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+} from '@chakra-ui/react'
+import { UseRadioProps, useRadio, useRadioGroup } from '@chakra-ui/radio'
+import { Project } from '@splootcode/core/language/projects/project'
+import { loadExampleProject } from '../code_io/project_loader'
 
-
-function RadioCard(props) {
+function RadioCard(props: UseRadioProps & { children: ReactNode }) {
   const { getInputProps, getCheckboxProps } = useRadio(props)
 
   const input = getInputProps()
@@ -24,9 +37,9 @@ function RadioCard(props) {
         textAlign="center"
         minHeight="12"
         _checked={{
-          bg: "gray.600",
+          bg: 'gray.600',
           borderWidth: 1,
-          borderColor: "blue.200",
+          borderColor: 'blue.200',
         }}
         overflow="hidden"
       >
@@ -37,64 +50,76 @@ function RadioCard(props) {
 }
 
 interface NewProjectModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  loadProjectIntoEditor: (proj: Project) => void;
+  isOpen: boolean
+  onClose: () => void
+  loadProjectIntoEditor: (proj: Project) => void
 }
 
 export function NewProjectModal(props: NewProjectModalProps) {
-  let { isOpen, onClose, loadProjectIntoEditor } = props;
-  let [selectedProject, setSelectedProject] = useState('');
+  const { isOpen, onClose, loadProjectIntoEditor } = props
+  const [selectedProject, setSelectedProject] = useState('')
 
   const handleLoad = async (event) => {
-    let proj = null;
+    let proj = null
     switch (selectedProject) {
       case 'website':
         proj = await loadExampleProject('blank')
-        break;
+        break
       case 'python':
         proj = await loadExampleProject('blankpython')
-        break;
+        break
     }
-    loadProjectIntoEditor(proj);
-    onClose();
-  };
+    loadProjectIntoEditor(proj)
+    onClose()
+  }
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "selection",
-    defaultValue: "",
+    name: 'selection',
+    defaultValue: '',
     onChange: (value) => {
-      setSelectedProject(value.toString());
+      setSelectedProject(value.toString())
     },
   })
 
-  const group = getRootProps();
+  const group = getRootProps()
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size='xl'>
-        <ModalOverlay/>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody {...group}>
-            <Text size="sm" pb={2}>What kind of project is this?</Text>
+            <Text size="sm" pb={2}>
+              What kind of project is this?
+            </Text>
             <Grid templateColumns="repeat(2, 1fr)" gap={4} mb={4}>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "website"})}>
-                <Heading size="sm" my={3}>Website<br/>(HTML/CSS/JS)</Heading>
+              <RadioCard {...getRadioProps({ value: 'website' })}>
+                <Heading size="sm" my={3}>
+                  Website
+                  <br />
+                  (HTML/CSS/JS)
+                </Heading>
               </RadioCard>
               {/* 
                 // @ts-ignore */}
-              <RadioCard {...getRadioProps({value: "python"})}>
-                <Heading size="sm" my={3}>Command line<br/>(Python)</Heading>
+              <RadioCard {...getRadioProps({ value: 'python' })}>
+                <Heading size="sm" my={3}>
+                  Command line
+                  <br />
+                  (Python)
+                </Heading>
               </RadioCard>
             </Grid>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>Create project</Button>
+            <Button colorScheme="blue" disabled={selectedProject === ''} onClick={handleLoad}>
+              Create project
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -1,133 +1,142 @@
-
 export interface FunctionTypeDefinition {
-  parameters: VariableDefinition[];
-  returnType: TypeExpression;
+  parameters: VariableDefinition[]
+  returnType: TypeExpression
 }
 
 export interface FunctionDefinition {
-  name: string;
-  deprecated: boolean;
-  documentation?: string;
-  type: FunctionTypeDefinition;
+  name: string
+  deprecated: boolean
+  documentation?: string
+  type: FunctionTypeDefinition
 }
 
 export interface ComponentDefinition {
-  name: string;
-  deprecated: boolean;
-  documentation?: string;
-  proptypes: VariableDefinition[];
+  name: string
+  deprecated: boolean
+  documentation?: string
+  proptypes: VariableDefinition[]
 }
 
 export interface VariableDefinition {
-  name: string;
-  type: TypeExpression;
-  deprecated: boolean;
-  documentation?: string;
+  name: string
+  type: TypeExpression
+  deprecated: boolean
+  documentation?: string
 }
 
 export interface TypeDefinition {
-  name?: string;
-  documentation?: string;
-  constructorParams?: VariableDefinition[];
-  properties: VariableDefinition[];
-  methods: FunctionDefinition[];
+  name?: string
+  documentation?: string
+  constructorParams?: VariableDefinition[]
+  properties: VariableDefinition[]
+  methods: FunctionDefinition[]
 }
 
 export interface TypeExpression {
-  type: "any" | "null" | "void" | "this" | "unknown" | "undefined" | "union" | "intersection" | "literal" | "reference" | "function" | "object" | "array";
-  unionOrIntersectionList?: TypeExpression[];
-  literal?: number | string | boolean;
-  reference?: string;
-  function?: FunctionTypeDefinition;
-  objectProperties?: {[key:string]: TypeExpression};
+  type:
+    | 'any'
+    | 'null'
+    | 'void'
+    | 'this'
+    | 'unknown'
+    | 'undefined'
+    | 'union'
+    | 'intersection'
+    | 'literal'
+    | 'reference'
+    | 'function'
+    | 'object'
+    | 'array'
+  unionOrIntersectionList?: TypeExpression[]
+  literal?: number | string | boolean
+  reference?: string
+  function?: FunctionTypeDefinition
+  objectProperties?: { [key: string]: TypeExpression }
 }
 
 export interface TypeAlias {
-  name: string;
-  typeExpression: TypeExpression;
+  name: string
+  typeExpression: TypeExpression
 }
 
-export let typeRegistry : {[key:string]: TypeDefinition} = {};
-export let typeAliasRegistry : {[key:string]: TypeAlias} = {};
-export let javascriptBuiltInGlobals : VariableDefinition[] = [];
-export let javascriptBuiltInGlobalFunctions: FunctionDefinition[] = [];
+export const typeRegistry: { [key: string]: TypeDefinition } = {}
+export const typeAliasRegistry: { [key: string]: TypeAlias } = {}
+export let javascriptBuiltInGlobals: VariableDefinition[] = []
+export let javascriptBuiltInGlobalFunctions: FunctionDefinition[] = []
 
-export function resolvePropertiesFromTypeExpression(typeExpression: TypeExpression) : VariableDefinition[] {
-  let members : VariableDefinition[] = [];
+export function resolvePropertiesFromTypeExpression(typeExpression: TypeExpression): VariableDefinition[] {
+  const members: VariableDefinition[] = []
 
   switch (typeExpression.type) {
-    case "reference":
+    case 'reference':
       if (typeExpression.reference in typeRegistry) {
-        return typeRegistry[typeExpression.reference].properties;
+        return typeRegistry[typeExpression.reference].properties
       }
       if (typeExpression.reference in typeAliasRegistry) {
-        return resolvePropertiesFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression);
+        return resolvePropertiesFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression)
       }
-    case "intersection":
-    case "union":
-    case "literal":
+    case 'intersection':
+    case 'union':
+    case 'literal':
   }
-  return members;
+  return members
 }
 
-export function resolveMethodsFromTypeExpression(typeExpression: TypeExpression) : FunctionDefinition[] {
-  let members : FunctionDefinition[] = [];
+export function resolveMethodsFromTypeExpression(typeExpression: TypeExpression): FunctionDefinition[] {
+  const members: FunctionDefinition[] = []
 
   switch (typeExpression.type) {
-    case "reference":
+    case 'reference':
       if (typeExpression.reference in typeRegistry) {
-        return typeRegistry[typeExpression.reference].methods;
+        return typeRegistry[typeExpression.reference].methods
       }
       if (typeExpression.reference in typeAliasRegistry) {
-        return resolveMethodsFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression);
+        return resolveMethodsFromTypeExpression(typeAliasRegistry[typeExpression.reference].typeExpression)
       }
-    case "intersection":
-    case "union":
-    case "literal":
+    case 'intersection':
+    case 'union':
+    case 'literal':
   }
-  return members;
+  return members
 }
-
-
 
 /** Populates the type registry and global vars */
 export async function loadTypescriptTypeInfo() {
-
-  let a = fetch('/static/generated/ts_global_variables.json')
-    .then(response => {
-      return response.json();
+  const a = fetch('/static/generated/ts_global_variables.json')
+    .then((response) => {
+      return response.json()
     })
     .then((payload: VariableDefinition[]) => {
-      javascriptBuiltInGlobals = payload;
+      javascriptBuiltInGlobals = payload
     })
 
-  let d = fetch('/static/generated/ts_global_functions.json')
-    .then(response => {
-      return response.json();
+  const d = fetch('/static/generated/ts_global_functions.json')
+    .then((response) => {
+      return response.json()
     })
     .then((payload: FunctionDefinition[]) => {
-      javascriptBuiltInGlobalFunctions = payload;
+      javascriptBuiltInGlobalFunctions = payload
     })
 
-  let b = fetch('/static/generated/ts_types.json')
-    .then(response => {
-      return response.json();
+  const b = fetch('/static/generated/ts_types.json')
+    .then((response) => {
+      return response.json()
     })
     .then((payload: TypeDefinition[]) => {
       payload.forEach((typeDec: TypeDefinition) => {
-        typeRegistry[typeDec.name] = typeDec;
-      });
-    });
+        typeRegistry[typeDec.name] = typeDec
+      })
+    })
 
-  let c = fetch('/static/generated/ts_type_aliases.json')
-    .then(response => {
-      return response.json();
+  const c = fetch('/static/generated/ts_type_aliases.json')
+    .then((response) => {
+      return response.json()
     })
     .then((payload: TypeAlias[]) => {
       payload.forEach((typeAlias: TypeAlias) => {
-        typeAliasRegistry[typeAlias.name] = typeAlias;
-      });
-    });
-  
-  await Promise.all([a, b, c]);
+        typeAliasRegistry[typeAlias.name] = typeAlias
+      })
+    })
+
+  await Promise.all([a, b, c, d])
 }
