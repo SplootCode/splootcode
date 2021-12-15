@@ -1,16 +1,16 @@
 import { HighlightColorCategory } from '../../../colors'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { ParentReference, SplootNode } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_BINARY_OPERATOR = 'PYTHON_BINARY_OPERATOR'
 

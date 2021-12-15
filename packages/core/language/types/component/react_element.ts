@@ -1,23 +1,23 @@
 import * as recast from 'recast'
 
+import { ChildSetType } from '../../childset'
+import { ComponentProperty } from './component_property'
 import { ExpressionKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
-import { ChildSetType } from '../../childset'
-import { getValidReactElements } from '../../html/tags'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { SplootExpression, SPLOOT_EXPRESSION } from '../js/expression'
-import { ComponentProperty } from './component_property'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
+import { SuggestedNode } from '../../suggested_node'
+import { getValidReactElements } from '../../html/tags'
 
 export const REACT_ELEMENT = 'REACT_ELEMENT'
 

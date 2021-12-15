@@ -1,16 +1,16 @@
-import { ParentReference } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponent,
-  LayoutComponentType,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
 export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY'

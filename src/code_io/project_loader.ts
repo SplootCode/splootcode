@@ -1,6 +1,6 @@
-import { SerializedProject, Project } from '@splootcode/core/language/projects/project'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { FileSystemFileLoader } from './filesystem_file_loader'
+import { Project, SerializedProject } from '@splootcode/core/language/projects/project'
+import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { StaticFileLoader } from './static_file_loader'
 
 export async function savePackage(directoryHandle: FileSystemDirectoryHandle, project: Project, pack: SplootPackage) {

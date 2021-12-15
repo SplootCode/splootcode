@@ -1,7 +1,7 @@
-import path from 'path'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
+import path from 'path'
 
 export default {
   resolve: {

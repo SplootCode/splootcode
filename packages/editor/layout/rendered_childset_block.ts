@@ -1,13 +1,13 @@
 import { action, observable } from 'mobx'
 
-import { NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { ChildSet, ChildSetType } from '@splootcode/core/language/childset'
 import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core/language/mutations/child_set_mutations'
-import { SplootNode } from '@splootcode/core/language/node'
 import { ChildSetObserver } from '@splootcode/core/language/observers'
+import { EditBoxData } from '../context/edit_box'
 import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
 import { NODE_BLOCK_HEIGHT, NodeBlock, RenderedParentRef } from './rendered_node'
-import { EditBoxData } from '../context/edit_box'
+import { NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
+import { SplootNode } from '@splootcode/core/language/node'
 
 const EXPRESSION_TOKEN_SPACING = 6
 const ROW_SPACING = 6

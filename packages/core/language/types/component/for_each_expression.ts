@@ -1,23 +1,23 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponent,
-  LayoutComponentType,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
-import { SplootExpression, SPLOOT_EXPRESSION } from '../js/expression'
+import { DECLARED_IDENTIFIER, DeclaredIdentifier } from '../js/declared_identifier'
 import { ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
-import { VariableDefinition } from '../../definitions/loader'
-import { DeclaredIdentifier, DECLARED_IDENTIFIER } from '../js/declared_identifier'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
+import { SuggestedNode } from '../../suggested_node'
+import { VariableDefinition } from '../../definitions/loader'
 
 export const FOR_EACH_EXPRESSION = 'FOR_EACH_EXPRESSION'
 

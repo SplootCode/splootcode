@@ -1,21 +1,21 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { ObjectPropertyKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '../../../colors'
-import { SuggestedNode } from '../../suggested_node'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ObjectPropertyKind } from 'ast-types/gen/kinds'
+import { ParentReference, SplootNode } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
 
 export const JSS_HOVER_BLOCK = 'JSS_HOVER_BLOCK'
 

@@ -1,20 +1,20 @@
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
 import { HighlightColorCategory } from '../../../colors'
-import { PythonExpression, PYTHON_EXPRESSION } from './python_expression'
-import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { ParentReference, SplootNode } from '../../node'
+import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
+import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_WHILE_LOOP = 'PYTHON_WHILE_LOOP'
 

@@ -1,18 +1,18 @@
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
 import { HighlightColorCategory } from '../../../colors'
-import { PythonExpression, PYTHON_EXPRESSION } from './python_expression'
-import { PythonDeclaredIdentifier, PYTHON_DECLARED_IDENTIFIER } from './declared_identifier'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { ParentReference, SplootNode } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'

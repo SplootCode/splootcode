@@ -1,22 +1,22 @@
 import * as recast from 'recast'
 
-import { ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
+import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
+import { HighlightColorCategory } from '../../../colors'
+import { IdentifierKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
-import { HighlightColorCategory } from '../../../colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
 import { StringLiteral } from '../literals'
-import { DeclaredIdentifier, DECLARED_IDENTIFIER } from './declared_identifier'
-import { IdentifierKind } from 'ast-types/gen/kinds'
+import { SuggestedNode } from '../../suggested_node'
 
 export const IMPORT = 'IMPORT'
 

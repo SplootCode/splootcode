@@ -1,6 +1,6 @@
-import { SplootNode } from '../node'
-import { SerializedSplootFileRef, SplootFile } from './file'
 import { FileLoader } from './project'
+import { SerializedSplootFileRef, SplootFile } from './file'
+import { SplootNode } from '../node'
 
 export interface SerializedSplootPackageRef {
   name: string

@@ -1,21 +1,21 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
 import { ASTNode } from 'ast-types'
-import { SplootExpression, SPLOOT_EXPRESSION } from './expression'
+import { ChildSetType } from '../../childset'
+import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ExpressionKind, StatementKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 
 export const JAVASCRIPT_FILE = 'JAVASCRIPT_FILE'
 

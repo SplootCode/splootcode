@@ -1,23 +1,23 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { SuggestedNode } from '../../suggested_node'
-import { sanitizeIdentifier } from './../js/variable_reference'
 import { CallExpressionKind, ExpressionKind } from 'ast-types/gen/kinds'
-import { PythonExpression, PYTHON_EXPRESSION } from './python_expression'
+import { ChildSetType } from '../../childset'
+import { FunctionDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { FunctionDefinition } from '../../definitions/loader'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { ParentReference, SplootNode } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
+import { sanitizeIdentifier } from './../js/variable_reference'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 

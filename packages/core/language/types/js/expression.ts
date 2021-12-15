@@ -1,27 +1,27 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
+import { BINARY_OPERATOR, BinaryOperator } from './binary_operator'
 import { ChildSetType } from '../../childset'
+import { ExpressionKind, UnaryExpressionKind } from 'ast-types/gen/kinds'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { HighlightColorCategory } from '../../../colors'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  NodeCategory,
-  registerNodeCateogry,
-  SuggestionGenerator,
-  getAutocompleteFunctionsForCategory,
-} from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  getAutocompleteFunctionsForCategory,
+  registerNodeCateogry,
+} from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
-import { BinaryOperator, BINARY_OPERATOR } from './binary_operator'
-import { ExpressionKind, UnaryExpressionKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '../../../colors'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { JavaScriptSplootNode } from '../../javascript_node'
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION'
 

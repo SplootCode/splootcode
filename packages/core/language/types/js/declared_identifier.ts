@@ -1,20 +1,20 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
+import { HighlightColorCategory } from '../../../colors'
+import { IdentifierKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import {
-  TypeRegistration,
-  NodeLayout,
   LayoutComponent,
   LayoutComponentType,
-  registerType,
+  NodeLayout,
   SerializedNode,
+  TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
-import { IdentifierKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '../../../colors'
-import { VariableReference, VARIABLE_REFERENCE } from './variable_reference'
-import { JavaScriptSplootNode } from '../../javascript_node'
+import { VARIABLE_REFERENCE, VariableReference } from './variable_reference'
 
 export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER'
 

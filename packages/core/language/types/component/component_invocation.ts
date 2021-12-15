@@ -1,23 +1,23 @@
 import * as recast from 'recast'
 
+import { ChildSetType } from '../../childset'
+import { ComponentDefinition, VariableDefinition } from '../../definitions/loader'
+import { ComponentProperty } from './component_property'
 import { ExpressionKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
-import { ChildSetType } from '../../childset'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { SplootExpression, SPLOOT_EXPRESSION } from '../js/expression'
-import { ComponentProperty } from './component_property'
-import { ComponentDefinition, VariableDefinition } from '../../definitions/loader'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
+import { SuggestedNode } from '../../suggested_node'
 
 export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION'
 

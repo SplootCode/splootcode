@@ -1,21 +1,21 @@
 import './insert_box.css'
 
 import Fuse from 'fuse.js'
-import { observer } from 'mobx-react'
 import React from 'react'
+import { observer } from 'mobx-react'
 
+import { EditorNodeBlock } from './node_block'
 import { InsertBoxData } from '../context/insert_box'
-import { NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
-import { ParentReference } from '@splootcode/core/language/node'
+import { NodeBlock } from '../layout/rendered_node'
 import {
-  getAutocompleteFunctionsForCategory,
   NodeCategory,
   SuggestionGenerator,
+  getAutocompleteFunctionsForCategory,
 } from '@splootcode/core/language/node_category_registry'
-import { SuggestedNode } from '@splootcode/core/language/suggested_node'
-import { EditorNodeBlock } from './node_block'
+import { NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
+import { ParentReference } from '@splootcode/core/language/node'
 import { RenderedChildSetBlock, stringWidth } from '../layout/rendered_childset_block'
-import { NodeBlock } from '../layout/rendered_node'
+import { SuggestedNode } from '@splootcode/core/language/suggested_node'
 
 interface RenderedSuggestion extends SuggestedNode {
   nodeBlock: NodeBlock

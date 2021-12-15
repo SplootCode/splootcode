@@ -1,5 +1,5 @@
-import { SplootNode } from '../node'
 import { SerializedSplootPackageRef, SplootPackage } from './package'
+import { SplootNode } from '../node'
 
 export interface SerializedProject {
   name: string

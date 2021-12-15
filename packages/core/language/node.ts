@@ -1,12 +1,12 @@
 import { ChildSet, ChildSetType } from './childset'
-import { NodeCategory } from './node_category_registry'
-import { NodeMutationType, NodeMutation } from './mutations/node_mutations'
-import { NodeObserver } from './observers'
-import { deserializeNode, getLayout, isScopedNodeType, NodeLayout, SerializedNode } from './type_registry'
-import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
-import { getGlobalScope, Scope } from './scope/scope'
-import { StatementCapture } from './capture/runtime_capture'
 import { NodeAnnotationType } from './annotations/annotations'
+import { NodeCategory } from './node_category_registry'
+import { NodeLayout, SerializedNode, deserializeNode, getLayout, isScopedNodeType } from './type_registry'
+import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
+import { NodeObserver } from './observers'
+import { Scope, getGlobalScope } from './scope/scope'
+import { StatementCapture } from './capture/runtime_capture'
+import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
 export class ParentReference {
   node: SplootNode

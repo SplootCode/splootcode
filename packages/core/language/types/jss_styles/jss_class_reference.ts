@@ -1,20 +1,20 @@
 import * as recast from 'recast'
 
-import { ParentReference } from '../../node'
-import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
 import { ExpressionKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
-import { SuggestedNode } from '../../suggested_node'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import { LOCAL_STYLES_IDENTIFIER } from './jss_style_block'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference } from '../../node'
+import { SuggestedNode } from '../../suggested_node'
 
 export const JSS_CLASS_REFERENCE = 'JSS_CLASS_REFERENCE'
 

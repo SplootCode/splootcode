@@ -1,11 +1,11 @@
 import * as recast from 'recast'
 
-import { SplootNode, ParentReference } from '../../node'
-import { registerType, SerializedNode, TypeRegistration } from '../../type_registry'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ChildSetType } from '../../childset'
-import { SplootDataStringEntry } from './string_entry'
+import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ExpressionKind, ObjectExpressionKind } from 'ast-types/gen/kinds'
+import { ParentReference, SplootNode } from '../../node'
+import { SerializedNode, TypeRegistration, registerType } from '../../type_registry'
+import { SplootDataStringEntry } from './string_entry'
 
 export interface DataEntrySplootNode extends SplootNode {
   getFieldName: () => string

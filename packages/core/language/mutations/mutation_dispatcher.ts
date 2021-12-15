@@ -1,5 +1,5 @@
-import { ChildSetObserver, NodeObserver } from '../observers'
 import { ChildSetMutation } from './child_set_mutations'
+import { ChildSetObserver, NodeObserver } from '../observers'
 import { NodeMutation } from './node_mutations'
 
 class MutationDispatcher {

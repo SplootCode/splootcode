@@ -1,11 +1,11 @@
 import './drag_overlay.css'
 
-import { observer } from 'mobx-react'
 import React from 'react'
+import { observer } from 'mobx-react'
 
-import { NodeSelection, NodeSelectionState } from '../context/selection'
-import { NodeBlock } from '../layout/rendered_node'
 import { EditorNodeBlock } from './node_block'
+import { NodeBlock } from '../layout/rendered_node'
+import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
 
 interface OverlayProps {

@@ -1,11 +1,11 @@
-import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
+import { observer } from 'mobx-react'
 
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './python_frame.css'
 

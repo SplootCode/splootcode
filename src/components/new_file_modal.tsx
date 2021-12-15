@@ -17,12 +17,12 @@ import {
   useRadio,
   useRadioGroup,
 } from '@chakra-ui/react'
-import { UseRadioProps } from '@chakra-ui/radio'
-import { HTML_DOCUMENT, SplootHtmlDocument } from '@splootcode/core/language/types/html/html_document'
-import { JavascriptFile, JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_file'
-import { SplootNode } from '@splootcode/core/language/node'
-import { generateScope } from '@splootcode/core/language/scope/scope'
 import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
+import { HTML_DOCUMENT, SplootHtmlDocument } from '@splootcode/core/language/types/html/html_document'
+import { JAVASCRIPT_FILE, JavascriptFile } from '@splootcode/core/language/types/js/javascript_file'
+import { SplootNode } from '@splootcode/core/language/node'
+import { UseRadioProps } from '@chakra-ui/radio'
+import { generateScope } from '@splootcode/core/language/scope/scope'
 
 const fileExtension = {
   HTML_DOCUMENT: '.html',

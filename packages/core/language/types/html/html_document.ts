@@ -1,18 +1,18 @@
-import { SplootNode, ParentReference } from '../../node'
 import { ChildSetType } from '../../childset'
-import { NodeCategory, registerNodeCateogry, EmptySuggestionGenerator } from '../../node_category_registry'
-import {
-  TypeRegistration,
-  NodeLayout,
-  LayoutComponentType,
-  LayoutComponent,
-  registerType,
-  SerializedNode,
-} from '../../type_registry'
-import { HighlightColorCategory } from '../../../colors'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { StringLiteral, STRING_LITERAL } from '../literals'
 import { DOMParser, XMLSerializer } from 'xmldom'
+import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { HighlightColorCategory } from '../../../colors'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { STRING_LITERAL, StringLiteral } from '../literals'
 
 export const HTML_DOCUMENT = 'HTML_DOCUMENT'
 

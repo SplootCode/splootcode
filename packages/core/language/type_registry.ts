@@ -1,6 +1,6 @@
 import { HighlightColorCategory } from '../colors'
+import { NodeCategory, getNodeCategoriesForType, isNodeInCategory } from './node_category_registry'
 import { SplootNode } from './node'
-import { getNodeCategoriesForType, isNodeInCategory, NodeCategory } from './node_category_registry'
 
 const typeRegistry: { [key: string]: TypeRegistration } = {}
 const pasteAdapaterMapping = {}

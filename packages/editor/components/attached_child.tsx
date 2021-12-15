@@ -1,11 +1,11 @@
 import './tree_list_block.css'
 
-import { observer } from 'mobx-react'
 import React from 'react'
+import { observer } from 'mobx-react'
 
+import { EditorNodeBlock } from './node_block'
 import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { EditorNodeBlock } from './node_block'
 
 interface AttachedChildViewProps {
   block: RenderedChildSetBlock

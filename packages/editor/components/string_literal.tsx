@@ -2,8 +2,8 @@ import './string_literal.css'
 
 import React from 'react'
 
-import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { NodeBlock } from '../layout/rendered_node'
+import { NodeSelection, NodeSelectionState } from '../context/selection'
 
 interface StringLiteralProps {
   block: NodeBlock

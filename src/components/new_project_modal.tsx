@@ -14,8 +14,8 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
-import { UseRadioProps, useRadio, useRadioGroup } from '@chakra-ui/radio'
 import { Project } from '@splootcode/core/language/projects/project'
+import { UseRadioProps, useRadio, useRadioGroup } from '@chakra-ui/radio'
 import { loadExampleProject } from '../code_io/project_loader'
 
 function RadioCard(props: UseRadioProps & { children: ReactNode }) {

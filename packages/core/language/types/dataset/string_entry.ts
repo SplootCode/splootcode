@@ -1,6 +1,6 @@
-import { SplootNode, ParentReference } from '../../node'
-import { registerType, SerializedNode, TypeRegistration } from '../../type_registry'
 import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { SerializedNode, TypeRegistration, registerType } from '../../type_registry'
 
 export const DATA_STRING_ENTRY = 'DATA_STRING_ENTRY'
 

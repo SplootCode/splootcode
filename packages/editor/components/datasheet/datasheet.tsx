@@ -1,7 +1,5 @@
 import React, { MutableRefObject } from 'react'
-import { observer } from 'mobx-react'
-import { Spreadsheet, DataEditor } from 'react-spreadsheet'
-import { DataSheetState } from '../../context/editor_context'
+import { AddIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -18,9 +16,12 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { DataEditor, Spreadsheet } from 'react-spreadsheet'
+
+import { DataSheetState } from '../../context/editor_context'
 import { SplootDataFieldDeclaration } from '@splootcode/core/language/types/dataset/field_declaration'
 import { SplootDataRow } from '@splootcode/core/language/types/dataset/row'
+import { observer } from 'mobx-react'
 
 interface TextInputProps {
   id: string

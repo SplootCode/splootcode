@@ -1,20 +1,20 @@
 import * as csstree from 'css-tree'
 
-import { HighlightColorCategory } from '../../../colors'
 import { ChildSetType } from '../../childset'
-import { getCssProperties } from '../../css/css_properties'
-import { ParentReference, SplootNode } from '../../node'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
-import { StringLiteral, STRING_LITERAL } from '../literals'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { ParentReference, SplootNode } from '../../node'
+import { STRING_LITERAL, StringLiteral } from '../literals'
+import { SuggestedNode } from '../../suggested_node'
+import { getCssProperties } from '../../css/css_properties'
 
 export const STYLE_PROPERTY = 'STYLE_PROPERTY'
 

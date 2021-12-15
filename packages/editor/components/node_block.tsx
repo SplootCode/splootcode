@@ -1,20 +1,20 @@
 import './node_block.css'
 
-import { observer } from 'mobx-react'
 import React, { ReactElement } from 'react'
+import { observer } from 'mobx-react'
 
-import { NodeSelection, NodeSelectionState } from '../context/selection'
-import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
-import { SPLOOT_EXPRESSION } from '@splootcode/core/language/types/js/expression'
-import { PYTHON_EXPRESSION } from '@splootcode/core/language/types/python/python_expression'
-import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { AttachedChildRightExpressionView } from './attached_child'
-import { SplootExpressionView } from './expression'
 import { ExpandedListBlockView, InlineListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
-import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
+import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation } from './runtime_annotations'
+import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
+import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { PYTHON_EXPRESSION } from '@splootcode/core/language/types/python/python_expression'
+import { SPLOOT_EXPRESSION } from '@splootcode/core/language/types/js/expression'
+import { SplootExpressionView } from './expression'
+import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
 interface NodeBlockProps {
   block: NodeBlock

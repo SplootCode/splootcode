@@ -1,11 +1,11 @@
-import { SuggestedNode } from '../suggested_node'
 import { SplootHtmlElement } from '../types/html/html_element'
+import { SuggestedNode } from '../suggested_node'
 
 // https://github.com/microsoft/vscode-custom-data/blob/master/web-data/data/browsers.html-data.json
 import * as vscodeHtmlData from 'vscode-web-custom-data/data/browsers.html-data.json'
-import { SplootHtmlAttribute } from '../types/html/html_attribute'
-import { ReactElementNode } from '../types/component/react_element'
 import { ComponentProperty } from '../types/component/component_property'
+import { ReactElementNode } from '../types/component/react_element'
+import { SplootHtmlAttribute } from '../types/html/html_attribute'
 
 interface Description {
   kind: string

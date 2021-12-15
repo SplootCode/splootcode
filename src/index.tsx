@@ -1,10 +1,10 @@
 import 'focus-visible/dist/focus-visible'
+import 'tslib'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'tslib'
 import { App } from './app'
-import { stringWidth } from '@splootcode/editor/layout/rendered_childset_block'
 import { AppProviders } from './providers'
+import { stringWidth } from '@splootcode/editor/layout/rendered_childset_block'
 
 const root = document.getElementById('app-root')
 

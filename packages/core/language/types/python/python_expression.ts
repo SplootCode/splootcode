@@ -1,24 +1,24 @@
-import { HighlightColorCategory } from '../../../colors'
-import { getSideEffectAnnotations, NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
-import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { ChildSetType } from '../../childset'
-import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { ParentReference, SplootNode } from '../../node'
-import {
-  getAutocompleteFunctionsForCategory,
-  NodeCategory,
-  registerNodeCateogry,
-  SuggestionGenerator,
-} from '../../node_category_registry'
-import { SuggestedNode } from '../../suggested_node'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
   NodeLayout,
-  registerType,
   SerializedNode,
   TypeRegistration,
+  registerType,
 } from '../../type_registry'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  getAutocompleteFunctionsForCategory,
+  registerNodeCateogry,
+} from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { ParentReference, SplootNode } from '../../node'
+import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
+import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
