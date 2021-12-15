@@ -4,7 +4,7 @@ production.env
 # Firebase files
 .firebase
 
-lib 
+lib
 
 # Terraform
 .terraform

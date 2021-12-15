@@ -5,7 +5,7 @@ import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../n
 import { TypeRegistration, NodeLayout, LayoutComponent, LayoutComponentType, registerType, SerializedNode } from "../../type_registry";
 import { SuggestedNode } from "../../suggested_node";
 import { IdentifierKind } from "ast-types/gen/kinds";
-import { VariableDefinition } from "../../lib/loader";
+import { VariableDefinition } from "../../definitions/loader";
 import { HighlightColorCategory } from "../../../colors";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { JavaScriptSplootNode } from "../../javascript_node";

@@ -10,7 +10,7 @@ import { SuggestedNode } from "../../suggested_node";
 import { LayoutComponent, LayoutComponentType, NodeLayout, registerType, SerializedNode, TypeRegistration } from "../../type_registry";
 import { SplootExpression, SPLOOT_EXPRESSION } from "../js/expression";
 import { ComponentProperty } from "./component_property";
-import { ComponentDefinition, VariableDefinition } from "../../lib/loader";
+import { ComponentDefinition, VariableDefinition } from "../../definitions/loader";
 
 export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION';
 

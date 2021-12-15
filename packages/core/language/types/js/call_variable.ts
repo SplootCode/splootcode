@@ -7,7 +7,7 @@ import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, reg
 import { SuggestedNode } from "../../suggested_node";
 import { sanitizeIdentifier } from "./variable_reference";
 import { CallExpressionKind, ExpressionKind } from "ast-types/gen/kinds";
-import { FunctionDefinition } from "../../lib/loader";
+import { FunctionDefinition } from "../../definitions/loader";
 import { SplootExpression, SPLOOT_EXPRESSION } from "./expression";
 import { HighlightColorCategory } from "../../../colors";
 import { JavaScriptSplootNode } from "../../javascript_node";

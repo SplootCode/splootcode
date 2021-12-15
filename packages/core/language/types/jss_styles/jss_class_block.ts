@@ -5,7 +5,7 @@ import { ChildSetType } from "../../childset";
 import { NodeCategory, registerNodeCateogry, SuggestionGenerator } from "../../node_category_registry";
 import { TypeRegistration, NodeLayout, LayoutComponentType, LayoutComponent, registerType, SerializedNode } from "../../type_registry";
 import { ObjectPropertyKind } from "ast-types/gen/kinds";
-import { TypeExpression } from "../../lib/loader";
+import { TypeExpression } from "../../definitions/loader";
 import { HighlightColorCategory } from "../../../colors";
 import { SuggestedNode } from "../../suggested_node";
 import { DeclaredIdentifier } from "../js/declared_identifier";

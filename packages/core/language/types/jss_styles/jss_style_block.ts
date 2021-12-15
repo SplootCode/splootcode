@@ -9,7 +9,7 @@ import { HighlightColorCategory } from "../../../colors";
 import { SuggestedNode } from "../../suggested_node";
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from "../html/html_script_element";
 import { JavaScriptSplootNode } from "../../javascript_node";
-import { VariableDefinition } from "../../lib/loader";
+import { VariableDefinition } from "../../definitions/loader";
 
 export const JSS_STYLE_BLOCK = 'JSS_STYLE_BLOCK';
 export const LOCAL_STYLES_IDENTIFIER = 'jss_local_styles';
