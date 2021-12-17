@@ -13,7 +13,7 @@ Code no longer has to rely on cryptic punctuation characters and whitespace to r
 That being said, building a tree-editing interface that's fast, compact and intuitive is no easy feat. This is very much a work in progress.
 
 ## Goals
- * An unrestricted implementation of JavaScript
+ * An unrestricted implementation of JavaScript or Python
  * Fast and easy to edit using a keyboard and autocomplete
  * A responsive layout that adapts to different screen sizes
  * Help developers avoid syntax errors and other common programming errors
@@ -37,31 +37,21 @@ Generate type information for built-in Javascript variables and functions.
 $ yarn generate-types
 ```
 
+There are two main parts to this project, the editor and the runtime which is an iframe which executes the code.
+You will need to build and run dev webservers for both the main editor and the runtime iframe.
 
-There are two parts to this project, the editor and the runtime which is the iframe which executes the code.
-You will need to build the compiled assests for both the main editor and the frame.
-
-```
-$ yarn build && yarn build-frame
-```
-
-This app depends on firebase, but the tools are installs by yarn. Start the firebase emulator like this:
 ```
 $ yarn start
 ```
 
-The app should now become availble at `http://localhost:5000`.
-
-If you want to continually rebuild as you change the code, run this (rebuilds the editor only):
-
+And in a separate terminal, run this serve the runtime iframe:
 ```
-$ yarn watch
+$ yarn start-frame
 ```
 
-And in a separate terminal, run this to continually rebuild the frame:
-```
-$ yarn watch-frame
-```
+The app should become availble at `http://localhost:3000`. The runtime frame will be served from `:3001` and will be loaded automatically by the editor.
+
+The main editor and frame communicate via `postMessage`, and they need to know each other's domains. This is configured in a dotenv file, e.g. `development.env`. If you change the above ports, you'll need to edit that file.
 
 ## License
 If you're planning to use this for commercial purposes, please check the [LICENSE](LICENSE) file. It is not a standard open source license.
