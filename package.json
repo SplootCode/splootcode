@@ -2,17 +2,13 @@
   "scripts": {
     "lint": "yarn eslint .",
     "lint-fix": "yarn eslint . --fix",
+    "start": "yarn webpack-dev-server --config ./webpack.dev.ts",
+    "start-frame": "yarn webpack-dev-server --config ./frameview.webpack.dev.ts",
     "watch": "yarn webpack --config webpack.dev.ts --watch",
     "watch-frame": "yarn webpack --config frameview.webpack.dev.ts --watch",
-    "start": "yarn firebase emulators:start",
     "build": "yarn webpack --config webpack.dev.ts",
     "build-frame": "yarn webpack --config frameview.webpack.dev.ts",
-    "build-staging": "yarn webpack --config webpack.staging.ts && yarn webpack --config ./frameview.webpack.staging.ts",
     "build-prod": "yarn webpack --config webpack.prod.ts && yarn webpack --config ./frameview.webpack.prod.ts",
-    "deploy-staging": "yarn build-staging && yarn firebase deploy -P ${SPLOOT_STAGING_PROJECT}",
-    "deploy-prod": "yarn buid-prod && yarn firebase deploy -P ${SPLOOT_PROD_PROJECT}",
-    "devserver": "yarn webpack-dev-server --config webpack.dev.ts",
-    "devserver-frame": "yarn webpack-dev-server --config ./frameview.webpack.dev.ts",
     "generate-types": "yarn ts-node scripts/generateLibs.ts"
   },
   "license": "BUSL-1.1",
@@ -37,7 +33,6 @@
     "css-loader": "^3.2.0",
     "css-tree": "^1.1.2",
     "file-loader": "^6.0.0",
-    "firebase-tools": "^9.16.5",
     "focus-visible": "^5.2.0",
     "framer-motion": "^3.2.2-rc.1",
     "fuse.js": "^3.4.6",
@@ -54,7 +49,7 @@
     "recast": "^0.19.1",
     "style-loader": "^1.0.1",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.5",
+    "typescript": "^4.5.4",
     "uuid": "^3.3.3",
     "vscode-web-custom-data": "^0.3.2",
     "xmldom": "^0.4.0",
@@ -68,6 +63,7 @@
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",
     "@types/webpack": "^5.28.0",
+    "@types/webpack-dev-server": "^4.5.0",
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
@@ -89,7 +85,7 @@
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "webpack": "5.51.2",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.1.0",
+    "webpack-dev-server": "^4.5.0",
     "webpack-merge": "^5.8.0"
   }
 }
