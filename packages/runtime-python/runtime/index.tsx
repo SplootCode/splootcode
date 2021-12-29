@@ -72,7 +72,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           <Button
             isLoading={running}
             loadingText="Running"
-            colorScheme="teal"
+            colorScheme="blue"
             onClick={this.run}
             disabled={!(ready && nodeTreeLoaded && !running)}
           >
@@ -322,7 +322,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   componentDidMount() {
     this.terminalFitAddon = new FitAddon()
-    this.term = new Terminal({ scrollback: 10000, fontSize: 14 })
+    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#1a1c1f' } })
     this.term.loadAddon(this.terminalFitAddon)
     this.wasmTty = new WasmTTY(this.term)
     this.term.open(this.termRef.current)

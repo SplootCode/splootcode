@@ -19,13 +19,8 @@ body {
 
 #terminal {
   height: calc(100% - 48px);
-  background-color: black;
+  background-color: var(--chakra-colors-gray-900);
   box-sizing: border-box;
   padding-left: 8px;
   padding-top: 5px;
-  border-top: 1px solid var(--section-separator-color);
-}
-
-:root {
-  --section-separator-color: #6c737a;
 }

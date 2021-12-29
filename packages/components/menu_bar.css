@@ -1,0 +1,17 @@
+#menubar {
+  display: flex;
+  justify-content: space-between;
+  height: 41px;
+  padding: 4px 8px;
+  background-color: var(--chakra-colors-gray-700);
+  box-sizing: border-box;
+}
+  
+.menubar-left {
+  display: flex;
+}
+  
+.menubar-item {
+  margin-right: 8px;
+  padding: 7px 5px;
+}

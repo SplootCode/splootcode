@@ -1,7 +1,7 @@
 
 #python-frame-container {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 41px);
   background-color: inherit;
 }
 
@@ -11,5 +11,5 @@
   background-color: white;
   display: block;
   width: 100%;
-  height: calc(100%);
+  height: calc(100vh - 41px);
 }

@@ -32,10 +32,10 @@ text {
 }
 
 :root {
-  --editor-bg-color: #13171b;
+  --editor-bg-color: var(--chakra-colors-gray-900);
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: #2d343e;
-  --editor-node-block-edge: #13171b;
+  --editor-node-block-edge: var(--editor-bg-color);
   --editor-connector-stroke: #545c67;
   --editor-connector-label: #767e8a;
   --editor-indented-block-stroke: #545c67;

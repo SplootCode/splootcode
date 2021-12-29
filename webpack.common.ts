@@ -10,6 +10,7 @@ export default {
 
   output: {
     path: path.resolve('dist'),
+    publicPath: '/',
     filename: '[name]-[contenthash].js',
     clean: true,
   },
