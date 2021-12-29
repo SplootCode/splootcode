@@ -1,3 +1,4 @@
+import './pageeditor.css'
 import React, { MouseEvent } from 'react'
 import { Component } from 'react'
 import { observer } from 'mobx-react'
@@ -5,22 +6,20 @@ import { observer } from 'mobx-react'
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 
+import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
 import { DataSheetState, EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context'
 import { LoadProjectModal } from '../components/load_modal'
-import { NodeBlock } from '@splootcode/editor/layout/rendered_node'
-import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project'
-import { SplootFile } from '@splootcode/core/language/projects/file'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
-import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader'
-import { loadTypes } from '@splootcode/core/language/type_loader'
-
-import './pageeditor.css'
-import { DATA_SHEET, SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
 import { NewFileModal } from '../components/new_file_modal'
 import { NewProjectModal } from '../components/new_project_modal'
+import { NodeBlock } from '@splootcode/editor/layout/rendered_node'
+import { Project, ProjectLayoutType } from '@splootcode/core/language/projects/project'
 import { PythonEditorPanels } from './python_editor'
+import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootNode } from '@splootcode/core/language/node'
+import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { WebEditorPanels } from './web_editor'
+import { loadExampleProject, loadProject, saveProject } from '../code_io/project_loader'
+import { loadTypes } from '@splootcode/core/language/type_loader'
 
 interface PageEditorProps {}
 
@@ -218,7 +217,7 @@ class PageEditorInternal extends Component<PageEditorProps, PageEditorState> {
           </Accordion> */}
         </nav>
         {project.layoutType === ProjectLayoutType.PYTHON_CLI ? (
-          <PythonEditorPanels project={project} selectedFile={selectedFile} />
+          <PythonEditorPanels project={project} />
         ) : (
           <WebEditorPanels
             isNodeEditor={isNodeEditor}

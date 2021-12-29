@@ -3,26 +3,21 @@
     "declaration": true,
     "declarationMap": true,
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     // "lib": ["dom", "es2015", "es2016", "webworker"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "composite": true,
-    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
     "outDir": "lib",
     "baseUrl": ".",
     "paths": {
       "@splootcode/*": ["../*"]
     }
-  },
-  "references": [
-    {
-      "path": "../core"
-    }
-  ]
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "blank",
+  "name": "Hello Name",
   "layouttype": "PYTHON_CLI",
   "title": "Untitled Project",
   "packages": [
