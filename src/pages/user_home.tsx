@@ -16,15 +16,19 @@ export class UserHomePage extends React.Component {
               </Heading>
               <Grid templateColumns="repeat(3, 1fr)" gap={4} mb={4}>
                 <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                  <Link to="/p/examples/helloworld">
-                    <Box p="6">Hello world</Box>
+                  <Link to="/p/examples/helloname">
+                    <Box p="6">Hello Name</Box>
                   </Link>
                 </Box>
                 <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                  <Box p="6">Hello world</Box>
+                  <Link to="/p/examples/temperature_conversion">
+                    <Box p="6">Temperature Conversion</Box>
+                  </Link>
                 </Box>
                 <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                  <Box p="6">Hello world</Box>
+                  <Link to="/p/examples/secret_password">
+                    <Box p="6">Secret password</Box>
+                  </Link>
                 </Box>
               </Grid>
             </Box>

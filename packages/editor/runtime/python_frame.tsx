@@ -198,7 +198,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     // trigger background process to wait for a response
     setTimeout(() => {
       this.checkHeartbeatFromFrame()
-    }, 0)
+    }, 1000)
   }
 
   componentWillUnmount() {
