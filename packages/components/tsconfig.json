@@ -19,5 +19,10 @@
     "paths": {
       "@splootcode/*": ["../*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../core"
+    },
+  ]
 }
