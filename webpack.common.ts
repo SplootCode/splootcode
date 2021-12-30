@@ -29,7 +29,12 @@ export default {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            projectReferences: true,
+          },
+        },
       },
       {
         test: /\.css$/,

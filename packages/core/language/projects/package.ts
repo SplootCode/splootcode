@@ -1,23 +1,23 @@
-import { FileLoader } from './project'
+import { FileLoader } from './file_loader'
 import { SerializedSplootFileRef, SplootFile } from './file'
 import { SplootNode } from '../node'
 
 export interface SerializedSplootPackageRef {
   name: string
-  buildType: string
+  buildType: number
 }
 
 export interface SerializedSplootPackage {
   name: string
   files: SerializedSplootFileRef[]
-  buildType: string
-  entryPoints: string[]
+  buildType: number
 }
 
-enum PackageType {
+export enum PackageBuildType {
   STATIC = 0,
-  JS_BUNDLE,
-  STYLE_BUNDLE,
+  JS_BUNDLE = 1,
+  STYLE_BUNDLE = 2,
+  PYTHON = 4,
 }
 
 export class SplootPackage {
@@ -25,15 +25,14 @@ export class SplootPackage {
   name: string
   files: { [key: string]: SplootFile }
   fileOrder: string[]
-  buildType: PackageType
+  buildType: PackageBuildType
   fileLoader: FileLoader
-  entryPoints: string[]
 
   constructor(projectId: string, pack: SerializedSplootPackage, fileLoader: FileLoader) {
     this.projectId = projectId
     this.name = pack.name
     this.fileLoader = fileLoader
-    this.buildType = PackageType[pack.buildType]
+    this.buildType = pack.buildType
     this.fileOrder = pack.files.map((file) => file.name)
     this.files = {}
     pack.files.forEach((file) => {
@@ -44,8 +43,7 @@ export class SplootPackage {
   serialize(): string {
     const ser: SerializedSplootPackage = {
       name: this.name,
-      buildType: PackageType[this.buildType],
-      entryPoints: this.entryPoints,
+      buildType: this.buildType,
       files: [],
     }
     this.fileOrder.forEach((filename) => {
@@ -56,6 +54,14 @@ export class SplootPackage {
 
   getDefaultFile(): SplootFile {
     return this.files[this.fileOrder[0]]
+  }
+
+  async saveFile(name: string): Promise<boolean> {
+    const file = this.files[name]
+    if (!file.isLoaded) {
+      return true // No point saving a file not loaded, it can't have changed
+    }
+    return this.fileLoader.saveFile(this.projectId, this.name, file)
   }
 
   async addFile(name: string, type: string, rootNode: SplootNode) {
