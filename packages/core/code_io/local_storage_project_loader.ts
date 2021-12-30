@@ -66,10 +66,11 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return proj
   }
 
-  async cloneProject(newProjectId: string, existingProject: Project): Promise<Project> {
+  async cloneProject(newProjectId: string, title: string, existingProject: Project): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
     const serializedProj = JSON.parse(existingProject.serialize()) as SerializedProject
     serializedProj.name = newProjectId
+    serializedProj.title = title
     const packagePromises = existingProject.packages.map(async (existingPackage) => {
       const serializedPack: SerializedSplootPackage = {
         name: existingPackage.name,

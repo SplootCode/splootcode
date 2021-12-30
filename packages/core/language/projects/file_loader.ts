@@ -24,6 +24,6 @@ export interface ProjectLoader {
   loadProject: (projectId: string) => Promise<Project>
   newProject: (projectId: string, title: string) => Promise<Project>
   deleteProject: (projectId: string) => Promise<boolean>
-  cloneProject: (newProjectId: string, existingProject: Project) => Promise<Project>
+  cloneProject: (newProjectId: string, title: string, existingProject: Project) => Promise<Project>
   updateProjectMetadata: (project: Project) => Promise<boolean>
 }

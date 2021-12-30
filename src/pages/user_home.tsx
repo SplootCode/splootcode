@@ -4,7 +4,9 @@ import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
 import { MainMenuItem, MenuBar } from '@splootcode/components/menu_bar'
+import { Project } from '@splootcode/core/language/projects/project'
 import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
+import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 
 interface UserHomePageProps {
@@ -14,41 +16,56 @@ interface UserHomePageProps {
 export const UserHomePage = (props: UserHomePageProps) => {
   const history = useHistory()
   const [projects, setProjects] = useState([])
+  const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
 
   useEffect(() => {
     setProjects(props.projectLoader.listProjectMetadata())
   }, [])
 
-  const newProject = () => {
-    const title = prompt('Enter title for new project: ')
-    props.projectLoader.newProject(title, title).then((proj) => {
-      history.push(`/p/local/${title}`)
+  const newProject = (clonedFrom?: Project) => {
+    setSaveProjectModalState({
+      open: true,
+      clonedFrom: clonedFrom || null,
     })
   }
 
   const menuItems: MainMenuItem[] = [
     {
       name: 'New Project',
-      onClick: newProject,
+      onClick: () => {
+        newProject()
+      },
     },
     {
       name: 'Import Project',
       onClick: async () => {
         const dirHandle = await window.showDirectoryPicker()
         const proj = await loadProjectFromFolder(dirHandle)
-        const isValid = props.projectLoader.isValidProjectId(proj.name)
-        let newName = proj.name
-        if (!isValid) {
-          newName = prompt('Project ID already exists or is invalid. Please enter a new name:')
-        }
-        props.projectLoader.cloneProject(newName, proj).then((newProj) => {
-          setProjects(props.projectLoader.listProjectMetadata())
-        })
+        setSaveProjectModalState({ open: true, clonedFrom: proj })
       },
     },
   ]
   return (
     <React.Fragment>
+      <SaveProjectModal
+        clonedFrom={saveProjectModalState.clonedFrom}
+        isOpen={saveProjectModalState.open}
+        projectLoader={props.projectLoader}
+        onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
+        onComplete={(projectID, title) => {
+          if (saveProjectModalState.clonedFrom) {
+            const proj = saveProjectModalState.clonedFrom
+            props.projectLoader.cloneProject(projectID, title, proj).then((newProj) => {
+              setProjects(props.projectLoader.listProjectMetadata())
+            })
+          } else {
+            props.projectLoader.newProject(projectID, title).then((proj) => {
+              history.push(`/p/local/${projectID}`)
+            })
+          }
+          setSaveProjectModalState({ open: false, clonedFrom: null })
+        }}
+      />
       <MenuBar menuItems={menuItems}></MenuBar>
       <Container maxW="container.md" paddingTop={8}>
         <VStack align="stretch" spacing={8}>
@@ -79,7 +96,7 @@ export const UserHomePage = (props: UserHomePageProps) => {
               <Heading as="h2" size="md">
                 Your projects
               </Heading>
-              <Button size="sm" colorScheme="blue" onClick={newProject}>
+              <Button size="sm" colorScheme="blue" onClick={() => newProject()}>
                 New Project
               </Button>
             </Flex>

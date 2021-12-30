@@ -5,6 +5,7 @@ import { MainMenuItem, MenuBar, MenuBarItem } from '@splootcode/components/menu_
 import { Project } from '@splootcode/core/language/projects/project'
 import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
 import { PythonEditorPanels } from './python_editor'
+import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 import { loadExampleProject } from '../code_io/static_projects'
 import { useHistory, useParams } from 'react-router-dom'
@@ -16,6 +17,8 @@ interface ProjectEditorProps {
 export const ProjectEditor = (props: ProjectEditorProps) => {
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
+  const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
+
   const history = useHistory()
 
   useEffect(() => {
@@ -34,10 +37,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
     {
       name: 'New Project',
       onClick: () => {
-        const title = prompt('Enter title for new project: ')
-        props.projectLoader.newProject(title, title).then((proj) => {
-          history.push(`/p/local/${title}`)
-        })
+        setSaveProjectModalState({ open: true, clonedFrom: null })
       },
     },
     {
@@ -50,9 +50,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
     {
       name: 'Save As...',
       onClick: () => {
-        const title = prompt('Enter title for new project: ')
-        props.projectLoader.cloneProject(title, loadedProject).then((newProj) => {})
-        history.push(`/p/local/${title}`)
+        setSaveProjectModalState({ open: true, clonedFrom: loadedProject })
       },
     },
     {
@@ -67,20 +65,33 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       onClick: async () => {
         const dirHandle = await window.showDirectoryPicker()
         const proj = await loadProjectFromFolder(dirHandle)
-        const isValid = props.projectLoader.isValidProjectId(proj.name)
-        let newName = proj.name
-        if (!isValid) {
-          newName = prompt('Project ID already exists or is invalid. Please enter a new name:')
-        }
-        props.projectLoader.cloneProject(newName, proj).then((newProj) => {
-          history.push(`/p/local/${newName}`)
-        })
+        setSaveProjectModalState({ open: true, clonedFrom: proj })
       },
     },
   ]
 
   return (
     <React.Fragment>
+      <SaveProjectModal
+        clonedFrom={saveProjectModalState.clonedFrom}
+        isOpen={saveProjectModalState.open}
+        projectLoader={props.projectLoader}
+        onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
+        onComplete={(projectID, title) => {
+          if (saveProjectModalState.clonedFrom) {
+            const proj = saveProjectModalState.clonedFrom
+            props.projectLoader.cloneProject(projectID, title, proj).then((newProj) => {
+              history.push(`/p/local/${projectID}`)
+              setSaveProjectModalState({ open: false, clonedFrom: null })
+            })
+          } else {
+            props.projectLoader.newProject(projectID, title).then((proj) => {
+              history.push(`/p/local/${projectID}`)
+              setSaveProjectModalState({ open: false, clonedFrom: null })
+            })
+          }
+        }}
+      />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
       </MenuBar>
