@@ -1,6 +1,7 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
+import { AutosaveHandler } from '@splootcode/components/autosave_handler'
 import { MainMenuItem, MenuBar, MenuBarItem } from '@splootcode/components/menu_bar'
 import { Project } from '@splootcode/core/language/projects/project'
 import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
@@ -94,6 +95,9 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
+        <MenuBarItem>
+          <AutosaveHandler project={loadedProject} />
+        </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {loadedProject === null ? <div>Loading... </div> : <PythonEditorPanels project={loadedProject} />}
