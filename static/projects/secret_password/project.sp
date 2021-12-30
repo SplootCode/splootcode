@@ -1,7 +1,7 @@
 {
-  "name": "Secret Password",
+  "name": "secret-password",
   "layouttype": "PYTHON_CLI",
-  "title": "Untitled Project",
+  "title": "Secret password",
   "packages": [
     {
       "name": "main",

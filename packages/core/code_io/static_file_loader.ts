@@ -1,6 +1,8 @@
-import { FileLoader } from '@splootcode/core/language/projects/project'
+import { FileLoader } from '@splootcode/core/language/projects/file_loader'
+import { Project } from '@splootcode/core/language/projects/project'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
 import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
+import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootNode } from '@splootcode/core/language/node'
 import { generateScope } from '@splootcode/core/language/scope/scope'
 
@@ -12,6 +14,10 @@ export class StaticFileLoader implements FileLoader {
       rootProjectUrl += '/'
     }
     this.rootProjectUrl = rootProjectUrl
+  }
+
+  isReadOnly() {
+    return true
   }
 
   async loadPackage(projectId: string, packageId: string): Promise<SplootPackage> {
@@ -27,5 +33,17 @@ export class StaticFileLoader implements FileLoader {
     generateScope(rootNode)
     rootNode.recursivelySetMutations(true)
     return rootNode
+  }
+
+  async saveProject(project: Project) {
+    return false
+  }
+
+  async saveFile(projectId: string, packageId: string, file: SplootFile) {
+    return false
+  }
+
+  async deleteProject(project: Project) {
+    return false
   }
 }

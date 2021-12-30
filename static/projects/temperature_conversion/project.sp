@@ -1,7 +1,7 @@
 {
-  "name": "Temperature Conversion",
+  "name": "temperature-conversion",
   "layouttype": "PYTHON_CLI",
-  "title": "Untitled Project",
+  "title": "Temperature Conversion",
   "packages": [
     {
       "name": "main",

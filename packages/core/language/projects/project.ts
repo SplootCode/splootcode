@@ -1,5 +1,5 @@
+import { FileLoader } from './file_loader'
 import { SerializedSplootPackageRef, SplootPackage } from './package'
-import { SplootNode } from '../node'
 
 export interface SerializedProject {
   name: string
@@ -9,11 +9,6 @@ export interface SerializedProject {
   packages: SerializedSplootPackageRef[]
 }
 
-export interface FileLoader {
-  loadPackage: (projectId: string, packageId: string) => Promise<SplootPackage>
-  loadFile: (projectId: string, packageId: string, filename: string) => Promise<SplootNode>
-}
-
 export enum ProjectLayoutType {
   WEB = 'WEB',
   PYTHON_CLI = 'PYTHON_CLI',
@@ -21,6 +16,7 @@ export enum ProjectLayoutType {
 
 export class Project {
   name: string
+  isReadOnly: boolean
   layoutType: ProjectLayoutType
   title: string
   splootversion: string
@@ -29,6 +25,7 @@ export class Project {
 
   constructor(proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
     this.name = proj.name
+    this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
     this.fileLoader = fileLoader
     this.packages = packages
@@ -39,6 +36,17 @@ export class Project {
       default:
         this.layoutType = ProjectLayoutType.WEB
     }
+  }
+
+  async save(): Promise<boolean> {
+    if (this.fileLoader.isReadOnly()) {
+      return false
+    }
+    return await this.fileLoader.saveProject(this)
+  }
+
+  async delete(): Promise<boolean> {
+    return await this.fileLoader.deleteProject(this)
   }
 
   getDefaultPackage(): SplootPackage {
@@ -54,7 +62,7 @@ export class Project {
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,
-          buildType: pack.buildType.toString(),
+          buildType: pack.buildType,
         }
         return packRef
       }),

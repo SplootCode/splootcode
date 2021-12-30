@@ -1,7 +1,7 @@
 {
-  "name": "Hello Name",
+  "name": "hello-name",
   "layouttype": "PYTHON_CLI",
-  "title": "Untitled Project",
+  "title": "Hello Name",
   "packages": [
     {
       "name": "main",
