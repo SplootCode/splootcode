@@ -254,6 +254,28 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
         this.width = Math.max(this.width, boxWidth)
       }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
+      let topPos = y + ROW_SPACING
+      this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
+        if (idx === insertIndex) {
+          const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
+          topPos += NODE_BLOCK_HEIGHT + ROW_SPACING
+          this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
+          this.width = Math.max(this.width, boxWidth)
+        }
+        childNodeBlock.calculateDimensions(x, topPos, selection)
+        if (selection !== null) {
+          selection.cursorMap.registerLineCursor(this, idx, topPos + childNodeBlock.marginTop)
+        }
+        topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+        this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+        this.width = Math.max(this.width, childNodeBlock.rowWidth)
+      })
+      if (this.nodes.length === insertIndex) {
+        const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
+        this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
+        this.width = Math.max(this.width, boxWidth)
+      }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
       let leftPos = x
       if (selection !== null) {
@@ -410,7 +432,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   allowInsertCursor(): boolean {
     if (
       this.componentType === LayoutComponentType.CHILD_SET_TREE ||
-      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS
+      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
+      this.componentType === LayoutComponentType.CHILD_SET_STACK
     ) {
       return false
     }

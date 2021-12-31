@@ -14,16 +14,15 @@ import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../n
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { PythonElseBlock } from './python_else'
 import { SuggestedNode } from '../../suggested_node'
 
-export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
+export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const sampleNode = new PythonIfStatement(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'if', 'if', true)
-    return [suggestedNode]
+    const node = new PythonElseBlock(null)
+    // TODO: Check if previous sibling is an if statement
+    return [new SuggestedNode(node, `else`, `else`, true, 'Else block', null, 'elseblock')]
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
@@ -31,42 +30,24 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonIfStatement extends SplootNode {
+export class PythonElseBlock extends SplootNode {
   constructor(parentReference: ParentReference) {
-    super(parentReference, PYTHON_IF_STATEMENT)
-    this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
-    this.getChildSet('condition').addChild(new PythonExpression(null))
-    this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement)
-    this.addChildSet('elseblock', ChildSetType.Single, NodeCategory.PythonElseBlock)
+    super(parentReference, PYTHON_ELSE_STATEMENT)
+    this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
   }
 
-  getCondition() {
-    return this.getChildSet('condition')
-  }
-
-  getTrueBlock() {
-    return this.getChildSet('trueblock')
-  }
-
-  getElseBlock() {
-    return this.getChildSet('elseblock')
+  getBlock() {
+    return this.getChildSet('block')
   }
 
   clean() {
-    this.getTrueBlock().children.forEach((child: SplootNode, index: number) => {
+    this.getBlock().children.forEach((child: SplootNode, index: number) => {
       if (child.type === PYTHON_EXPRESSION) {
         if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getTrueBlock().removeChild(index)
+          this.getBlock().removeChild(index)
         }
       }
     })
-    // this.getElseBlock().children.forEach((child: SplootNode, index: number) => {
-    //   if (child.type === PYTHON_EXPRESSION) {
-    //     if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-    //       this.getElseBlock().removeChild(index);
-    //     }
-    //   }
-    // });
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
@@ -96,7 +77,7 @@ export class PythonIfStatement extends SplootNode {
     this.fireMutation(mutation)
 
     let i = 0
-    const trueBlockChildren = this.getTrueBlock().children
+    const trueBlockChildren = this.getBlock().children
     if (data.trueblock) {
       const trueBlockData = data.trueblock
       for (; i < trueBlockData.length; i++) {
@@ -116,41 +97,32 @@ export class PythonIfStatement extends SplootNode {
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = []
     this.fireMutation(mutation)
-    const blockChildren = this.getTrueBlock().children
+    const blockChildren = this.getBlock().children
     for (let i = 0; i < blockChildren.length; i++) {
       blockChildren[i].recursivelyClearRuntimeCapture()
     }
   }
 
-  static deserializer(serializedNode: SerializedNode): PythonIfStatement {
-    const node = new PythonIfStatement(null)
-    node.getCondition().removeChild(0)
-    node.deserializeChildSet('condition', serializedNode)
-    node.deserializeChildSet('trueblock', serializedNode)
-    node.deserializeChildSet('elseblock', serializedNode)
-    if (node.getElseBlock().getCount() === 0) {
-      node.getElseBlock().addChild(new PythonElseBlock(null))
-    }
+  static deserializer(serializedNode: SerializedNode): PythonElseBlock {
+    const node = new PythonElseBlock(null)
+    node.deserializeChildSet('block', serializedNode)
     return node
   }
 
   static register() {
-    const ifType = new TypeRegistration()
-    ifType.typeName = PYTHON_IF_STATEMENT
-    ifType.deserializer = PythonIfStatement.deserializer
-    ifType.childSets = {
-      condition: NodeCategory.PythonExpression,
-      trueblock: NodeCategory.PythonStatement,
-      elseblock: NodeCategory.PythonElseBlock,
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_ELSE_STATEMENT
+    typeRegistration.deserializer = PythonElseBlock.deserializer
+    typeRegistration.childSets = {
+      block: NodeCategory.PythonStatement,
     }
-    ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'if'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'trueblock'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_STACK, 'elseblock'),
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'else'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
 
-    registerType(ifType)
-    registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatement, new Generator())
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock, new Generator())
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatement, new Generator())
   }
 }

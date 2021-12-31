@@ -229,6 +229,9 @@ def getStatementsFromBlock(blockChildSet):
             statements.extend(new_statements)
     return statements
 
+def generateElseStatements(else_node):
+    statements = getStatementsFromBlock(else_node["childSets"]["block"])
+    return statements
 
 def generateIfStatement(if_node):
     condition = generateAstExpression(if_node["childSets"]["condition"][0])
@@ -250,6 +253,10 @@ def generateIfStatement(if_node):
 
     statements = getStatementsFromBlock(if_node["childSets"]["trueblock"])
 
+    else_statements = []
+    if "elseblock" in if_node["childSets"] and len(if_node["childSets"]["elseblock"]) != 0:
+        else_statements = generateElseStatements(if_node["childSets"]["elseblock"][0])
+
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
     args = [ast.Constant("trueblock")]
@@ -262,7 +269,7 @@ def generateIfStatement(if_node):
     statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
 
     return [
-        ast.If(wrapped_condition, statements, []),
+        ast.If(wrapped_condition, statements, else_statements),
         ast.Expr(call_end_frame, lineno=1, col_offset=0),
     ]
 

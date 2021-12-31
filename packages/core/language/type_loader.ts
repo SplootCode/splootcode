@@ -35,6 +35,7 @@ import { PythonBinaryOperator } from './types/python/python_binary_operator'
 import { PythonCallMember } from './types/python/python_call_member'
 import { PythonCallVariable } from './types/python/python_call_variable'
 import { PythonDeclaredIdentifier } from './types/python/declared_identifier'
+import { PythonElseBlock } from './types/python/python_else'
 import { PythonExpression } from './types/python/python_expression'
 import { PythonFile } from './types/python/python_file'
 import { PythonForLoop } from './types/python/python_for'
@@ -121,6 +122,7 @@ export function loadTypes() {
 
   PythonFile.register()
   PythonIfStatement.register()
+  PythonElseBlock.register()
   PythonWhileLoop.register()
   PythonForLoop.register()
   PythonExpression.register()

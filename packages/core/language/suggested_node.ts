@@ -7,6 +7,7 @@ export class SuggestedNode {
   valid: boolean
   description: string
   wrapChildSetId: string
+  insertChildSetId: string
 
   constructor(
     node: SplootNode,
@@ -14,7 +15,8 @@ export class SuggestedNode {
     searchTerms: string,
     valid: boolean,
     description = '',
-    wrapChildSetId: string = null
+    wrapChildSetId: string = null,
+    insertChildSetId: string = null
   ) {
     this.node = node
     this.key = key
@@ -22,5 +24,6 @@ export class SuggestedNode {
     this.description = description
     this.valid = valid
     this.wrapChildSetId = wrapChildSetId
+    this.insertChildSetId = insertChildSetId
   }
 }
