@@ -15,7 +15,12 @@ export interface WhileLoopIteration {
 export interface IfStatementData {
   condition: StatementCapture[]
   trueblock?: StatementCapture[]
-  elseblock?: StatementCapture[]
+  elseblocks?: StatementCapture[]
+}
+
+export interface ElseIfStatementData {
+  condition: StatementCapture[]
+  block: StatementCapture[]
 }
 
 export interface ElseStatementData {

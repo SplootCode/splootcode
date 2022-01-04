@@ -229,13 +229,66 @@ def getStatementsFromBlock(blockChildSet):
             statements.extend(new_statements)
     return statements
 
-def generateElseStatements(else_node):
-    statements = getStatementsFromBlock(else_node["childSets"]["block"])
+
+def generateIfStatementFromElif(elif_node, else_nodes):
+    condition = generateAstExpression(elif_node["childSets"]["condition"][0])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(
+        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
+    )
+    args = [
+        ast.Constant("PYTHON_ELIF_STATEMENT"),
+        ast.Constant("condition"),
+        condition,
+    ]
+    wrapped_condition = ast.Call(func, args=args, keywords=[])
+
+    statements = getStatementsFromBlock(elif_node["childSets"]["block"])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
+    else_statements = []
+    if len(else_nodes) != 0:
+        else_statements = generateElifNestedChain(else_nodes)
+    
+    # End the elif frame before starting the next else/elif block
+    else_statements.insert(0, ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
-    args = [ast.Constant("elseblock")]
+    args = [ast.Constant("block")]
     call_start_childset = ast.Call(func, args=args, keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
+    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
+    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+
+    return [
+        ast.If(wrapped_condition, statements, else_statements),
+    ]
+    
+
+def generateElifNestedChain(else_nodes):
+    if len(else_nodes) == 1 and else_nodes[0]["type"] == 'PYTHON_ELSE_STATEMENT':
+        return generateElseStatement(else_nodes[0])
+
+    first = else_nodes[0]
+    if first["type"] == 'PYTHON_ELIF_STATEMENT':
+        return generateIfStatementFromElif(first, else_nodes[1:])
+    elif first["type"] == "PYTHON_ELSE_STATEMENT":
+        raise Exception(f'Unexpected else node in middle of else/elif chain')
+    else:
+        raise Exception(f'Unrecognised node type in elif/else chain: {first["type"]}')
+
+
+def generateElseStatement(else_node):
+    statements = getStatementsFromBlock(else_node["childSets"]["block"])
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
@@ -248,7 +301,6 @@ def generateElseStatements(else_node):
         keywords=[],
     )
     statements.insert(0, ast.Expr(else_start_frame, lineno=1, col_offset=0))
-    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
@@ -278,8 +330,13 @@ def generateIfStatement(if_node):
     statements = getStatementsFromBlock(if_node["childSets"]["trueblock"])
 
     else_statements = []
-    if "elseblock" in if_node["childSets"] and len(if_node["childSets"]["elseblock"]) != 0:
-        else_statements = generateElseStatements(if_node["childSets"]["elseblock"][0])
+    if "elseblocks" in if_node["childSets"] and len(if_node["childSets"]["elseblocks"]) != 0:
+        else_statements = generateElifNestedChain(if_node["childSets"]["elseblocks"])
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
+        args = [ast.Constant("elseblocks")]
+        call_start_childset = ast.Call(func, args=args, keywords=[])
+        else_statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
@@ -463,6 +520,7 @@ def executePythonFile(tree):
         code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
         # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
+        # print()
         capture = SplootCapture()
         try:
             exec(code, {SPLOOT_KEY: capture})

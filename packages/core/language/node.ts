@@ -222,6 +222,9 @@ export class SplootNode {
 
   deserializeChildSet(childSetId: string, serializedNode: SerializedNode) {
     const childSet = this.getChildSet(childSetId)
+    if (!(childSetId in serializedNode.childSets)) {
+      console.warn(`Missing childset ${childSetId} in serialized node`, serializedNode)
+    }
     serializedNode.childSets[childSetId].forEach((serializedChildNode: SerializedNode) => {
       const childNode = deserializeNode(serializedChildNode)
       if (childNode !== null) {
