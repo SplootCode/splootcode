@@ -199,6 +199,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       <div style={positionStyles}>
         <div className={isInserting ? 'input-box' : 'hidden-input-box'}>
           <input
+            autoComplete="off"
             autoFocus
             type="text"
             id="insertbox"
@@ -352,6 +353,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const index = selection.cursor.index
     if (suggestion.wrapChildSetId) {
       selection.wrapNode(childSetBlock, index - 1, suggestion.node, suggestion.wrapChildSetId)
+    } else if (suggestion.insertPreviousChildSetId) {
+      selection.insertChildNode(childSetBlock, index - 1, suggestion.insertPreviousChildSetId, suggestion.node)
     } else {
       selection.insertNode(childSetBlock, index, suggestion.node)
     }

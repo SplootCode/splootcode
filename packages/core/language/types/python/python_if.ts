@@ -12,9 +12,9 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { PythonElseBlock } from './python_else'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
@@ -50,6 +50,12 @@ export class PythonIfStatement extends SplootNode {
 
   getElseBlock() {
     return this.getChildSet('elseblock')
+  }
+
+  allowAppendElse(): boolean {
+    const elseBlocks = this.getElseBlock()
+    const count = elseBlocks.getCount()
+    return count === 0 || elseBlocks.getChild(count - 1).type !== PYTHON_ELSE_STATEMENT
   }
 
   clean() {
@@ -131,9 +137,6 @@ export class PythonIfStatement extends SplootNode {
     node.deserializeChildSet('condition', serializedNode)
     node.deserializeChildSet('trueblock', serializedNode)
     node.deserializeChildSet('elseblock', serializedNode)
-    if (node.getElseBlock().getCount() === 0) {
-      node.getElseBlock().addChild(new PythonElseBlock(null))
-    }
     return node
   }
 

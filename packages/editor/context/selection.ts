@@ -276,6 +276,13 @@ export class NodeSelection {
   }
 
   @action
+  insertChildNode(listBlock: RenderedChildSetBlock, index: number, childSetId: string, node: SplootNode) {
+    const parentNode = listBlock.childSet.getChild(index)
+    const childset = parentNode.getChildSet(childSetId)
+    childset.addChild(node)
+  }
+
+  @action
   exitEdit() {
     if (this.state === SelectionState.Editing) {
       this.editBox = null

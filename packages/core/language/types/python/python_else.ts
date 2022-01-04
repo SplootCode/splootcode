@@ -12,6 +12,7 @@ import {
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -19,9 +20,14 @@ export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const node = new PythonElseBlock(null)
-    // TODO: Check if previous sibling is an if statement
-    return [new SuggestedNode(node, `else`, `else`, true, 'Else block', null, 'elseblock')]
+    const leftChild = parent.getChildSet().getChild(index - 1)
+    if (leftChild && leftChild.type === PYTHON_IF_STATEMENT) {
+      const node = new PythonElseBlock(null)
+      if ((leftChild as PythonIfStatement).allowAppendElse()) {
+        return [new SuggestedNode(node, `else`, `else`, true, 'Else block', null, 'elseblock')]
+      }
+    }
+    return []
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {

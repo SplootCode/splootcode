@@ -493,7 +493,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
     if (
       this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
-      this.componentType === LayoutComponentType.CHILD_SET_INLINE
+      this.componentType === LayoutComponentType.CHILD_SET_INLINE ||
+      this.componentType === LayoutComponentType.CHILD_SET_STACK
     ) {
       const parentNode = this.parentRef.node
       const parentChildSet = parentNode.parentChildSet
@@ -558,7 +559,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (mutation.type === ChildSetMutationType.DELETE) {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
-      this.selection.placeCursor(this, mutation.index)
+      if (this.allowInsertCursor()) {
+        this.selection.placeCursor(this, mutation.index)
+      }
       this.selection.updateRenderPositions()
     }
   }
