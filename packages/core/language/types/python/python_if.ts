@@ -60,13 +60,6 @@ export class PythonIfStatement extends SplootNode {
         }
       }
     })
-    // this.getElseBlock().children.forEach((child: SplootNode, index: number) => {
-    //   if (child.type === PYTHON_EXPRESSION) {
-    //     if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-    //       this.getElseBlock().removeChild(index);
-    //     }
-    //   }
-    // });
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
@@ -106,6 +99,13 @@ export class PythonIfStatement extends SplootNode {
     if (i < trueBlockChildren.length) {
       for (; i < trueBlockChildren.length; i++) {
         trueBlockChildren[i].recursivelyClearRuntimeCapture()
+      }
+    }
+    if (this.getElseBlock() && this.getElseBlock().getCount() != 0) {
+      if (data.elseblock) {
+        this.getElseBlock().getChild(0).recursivelyApplyRuntimeCapture(data.elseblock[0])
+      } else {
+        this.getElseBlock().getChild(0).recursivelyClearRuntimeCapture()
       }
     }
   }

@@ -1,6 +1,6 @@
 import { ChildSetType } from '../../childset'
+import { ElseStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { HighlightColorCategory } from '../../../colors'
-import { IfStatementData, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,7 +9,6 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
@@ -58,35 +57,18 @@ export class PythonElseBlock extends SplootNode {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
-    const data = capture.data as IfStatementData
-    const condition = data.condition[0]
-    const conditionData = condition.data as SingleStatementData
-
-    const annotations: NodeAnnotation[] = getSideEffectAnnotations(condition)
-    annotations.push({
-      type: NodeAnnotationType.ReturnValue,
-      value: {
-        type: conditionData.resultType,
-        value: conditionData.result,
-      },
-    })
-    const mutation = new NodeMutation()
-    mutation.node = this
-    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
-    mutation.annotations = annotations
-    this.fireMutation(mutation)
-
+    const data = capture.data as ElseStatementData
+    const blockChildren = this.getBlock().children
     let i = 0
-    const trueBlockChildren = this.getBlock().children
-    if (data.trueblock) {
-      const trueBlockData = data.trueblock
+    if (data.block) {
+      const trueBlockData = data.block
       for (; i < trueBlockData.length; i++) {
-        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
+        blockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
       }
     }
-    if (i < trueBlockChildren.length) {
-      for (; i < trueBlockChildren.length; i++) {
-        trueBlockChildren[i].recursivelyClearRuntimeCapture()
+    if (i < blockChildren.length) {
+      for (; i < blockChildren.length; i++) {
+        blockChildren[i].recursivelyClearRuntimeCapture()
       }
     }
   }

@@ -231,6 +231,30 @@ def getStatementsFromBlock(blockChildSet):
 
 def generateElseStatements(else_node):
     statements = getStatementsFromBlock(else_node["childSets"]["block"])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
+    args = [ast.Constant("elseblock")]
+    call_start_childset = ast.Call(func, args=args, keywords=[])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
+    else_start_frame = ast.Call(
+        func,
+        args=[
+            ast.Constant("PYTHON_ELSE_STATEMENT"),
+            ast.Constant("block"),
+        ],
+        keywords=[],
+    )
+    statements.insert(0, ast.Expr(else_start_frame, lineno=1, col_offset=0))
+    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+
     return statements
 
 def generateIfStatement(if_node):
@@ -434,16 +458,11 @@ capture = None
 def executePythonFile(tree):
     global capture
     if tree["type"] == "PYTHON_FILE":
-        try:
-            statements = getStatementsFromBlock(tree["childSets"]["body"])
-            mods = ast.Module(body=statements, type_ignores=[])
-            code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
-        except:
-            # TODO: Nice handling when the AST build fails.
-            # Currently relying on the JS to check validity.
-            return None
+        statements = getStatementsFromBlock(tree["childSets"]["body"])
+        mods = ast.Module(body=statements, type_ignores=[])
+        code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
+        # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
-        # print()
         capture = SplootCapture()
         try:
             exec(code, {SPLOOT_KEY: capture})
