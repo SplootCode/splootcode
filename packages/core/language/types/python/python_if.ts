@@ -120,6 +120,9 @@ export class PythonIfStatement extends SplootNode {
     for (let i = 0; i < blockChildren.length; i++) {
       blockChildren[i].recursivelyClearRuntimeCapture()
     }
+    if (this.getElseBlock() && this.getElseBlock().getCount() != 0) {
+      this.getElseBlock().getChild(0).recursivelyClearRuntimeCapture()
+    }
   }
 
   static deserializer(serializedNode: SerializedNode): PythonIfStatement {
