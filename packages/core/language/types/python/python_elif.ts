@@ -19,7 +19,18 @@ import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 
-class Generator implements SuggestionGenerator {
+class InsertGenerator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    const node = new PythonElifBlock(null)
+    return [new SuggestedNode(node, `elif`, `else elif`, true, 'Else-if block')]
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    return []
+  }
+}
+
+class AppendGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     const leftChild = parent.getChildSet().getChild(index - 1)
     if (leftChild && leftChild.type === PYTHON_IF_STATEMENT) {
@@ -137,7 +148,7 @@ export class PythonElifBlock extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock, new Generator())
-    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatement, new Generator())
+    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock, new InsertGenerator())
+    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatement, new AppendGenerator())
   }
 }

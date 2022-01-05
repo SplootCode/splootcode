@@ -17,7 +17,7 @@ import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
-class Generator implements SuggestionGenerator {
+class AppendGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     const leftChild = parent.getChildSet().getChild(index - 1)
     if (leftChild && leftChild.type === PYTHON_IF_STATEMENT) {
@@ -104,7 +104,6 @@ export class PythonElseBlock extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock, new Generator())
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatement, new Generator())
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatement, new AppendGenerator())
   }
 }

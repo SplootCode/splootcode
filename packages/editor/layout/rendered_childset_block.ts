@@ -369,6 +369,18 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (this.nodes.length === insertIndex) {
         return [this.x, topPos]
       }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
+      let topPos = this.y + ROW_SPACING
+      for (let i = 0; i < this.nodes.length; i++) {
+        const childNodeBlock = this.nodes[i]
+        if (i === insertIndex) {
+          return [this.x, topPos]
+        }
+        topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+      }
+      if (this.nodes.length === insertIndex) {
+        return [this.x, topPos]
+      }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       const labels = this.childSetTreeLabels
       const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
@@ -432,8 +444,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   allowInsertCursor(): boolean {
     if (
       this.componentType === LayoutComponentType.CHILD_SET_TREE ||
-      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
-      this.componentType === LayoutComponentType.CHILD_SET_STACK
+      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS
     ) {
       return false
     }
