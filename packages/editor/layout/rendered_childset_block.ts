@@ -254,6 +254,28 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
         this.width = Math.max(this.width, boxWidth)
       }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
+      let topPos = y + ROW_SPACING
+      this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
+        if (idx === insertIndex) {
+          const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
+          topPos += NODE_BLOCK_HEIGHT + ROW_SPACING
+          this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
+          this.width = Math.max(this.width, boxWidth)
+        }
+        childNodeBlock.calculateDimensions(x, topPos, selection)
+        if (selection !== null) {
+          selection.cursorMap.registerLineCursor(this, idx, topPos + childNodeBlock.marginTop)
+        }
+        topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+        this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+        this.width = Math.max(this.width, childNodeBlock.rowWidth)
+      })
+      if (this.nodes.length === insertIndex) {
+        const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
+        this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
+        this.width = Math.max(this.width, boxWidth)
+      }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
       let leftPos = x
       if (selection !== null) {
@@ -336,6 +358,18 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       }
       return [this.x + this.width, this.y]
     } else if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
+      let topPos = this.y + ROW_SPACING
+      for (let i = 0; i < this.nodes.length; i++) {
+        const childNodeBlock = this.nodes[i]
+        if (i === insertIndex) {
+          return [this.x, topPos]
+        }
+        topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
+      }
+      if (this.nodes.length === insertIndex) {
+        return [this.x, topPos]
+      }
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
       let topPos = this.y + ROW_SPACING
       for (let i = 0; i < this.nodes.length; i++) {
         const childNodeBlock = this.nodes[i]
@@ -470,7 +504,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
     if (
       this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
-      this.componentType === LayoutComponentType.CHILD_SET_INLINE
+      this.componentType === LayoutComponentType.CHILD_SET_INLINE ||
+      this.componentType === LayoutComponentType.CHILD_SET_STACK
     ) {
       const parentNode = this.parentRef.node
       const parentChildSet = parentNode.parentChildSet
@@ -535,7 +570,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (mutation.type === ChildSetMutationType.DELETE) {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
-      this.selection.placeCursor(this, mutation.index)
+      if (this.allowInsertCursor()) {
+        this.selection.placeCursor(this, mutation.index)
+      }
       this.selection.updateRenderPositions()
     }
   }

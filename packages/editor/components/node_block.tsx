@@ -159,7 +159,10 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         {shape}
         {block.renderedInlineComponents.map((renderedComponent: RenderedInlineComponent, idx: number) => {
           let result = null
-          if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {
+          if (
+            renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK ||
+            renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_STACK
+          ) {
             // pass
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.STRING_LITERAL) {
             result = (
@@ -243,6 +246,17 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         ) : null}
         {block.layout.components.map((layoutComponent: LayoutComponent, idx: number) => {
           if (layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {
+            const childSetBlock = block.renderedChildSets[layoutComponent.identifier]
+            const result = (
+              <ExpandedListBlockView
+                key={idx}
+                block={childSetBlock}
+                isSelected={isSelected}
+                selection={this.props.selection}
+              />
+            )
+            return result
+          } else if (layoutComponent.type === LayoutComponentType.CHILD_SET_STACK) {
             const childSetBlock = block.renderedChildSets[layoutComponent.identifier]
             const result = (
               <ExpandedListBlockView

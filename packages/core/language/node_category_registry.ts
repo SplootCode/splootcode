@@ -29,6 +29,7 @@ export enum NodeCategory {
   JssStyleProperties,
   PythonFile,
   PythonStatement,
+  PythonElseBlock,
   PythonExpression,
   PythonExpressionToken,
   PythonAssignableExpressionToken,

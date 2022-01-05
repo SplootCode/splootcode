@@ -128,7 +128,8 @@ export class NodeBlock implements NodeObserver {
         component.type === LayoutComponentType.CHILD_SET_INLINE ||
         component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
         component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
-        component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS
+        component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS ||
+        component.type === LayoutComponentType.CHILD_SET_STACK
       ) {
         const childSet = node.getChildSet(component.identifier)
         this.childSetOrder.push(component.identifier)
@@ -196,6 +197,10 @@ export class NodeBlock implements NodeObserver {
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
+        this.indentedBlockHeight += childSetBlock.height
+      } else if (component.type === LayoutComponentType.CHILD_SET_STACK) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
       } else if (component.type === LayoutComponentType.STRING_LITERAL) {
         const val = this.node.getProperty(component.identifier)

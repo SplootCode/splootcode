@@ -43,6 +43,7 @@ export enum LayoutComponentType {
   CHILD_SET_ATTACH_RIGHT,
   CHILD_SET_TOKEN_LIST,
   CHILD_SET_BREADCRUMBS,
+  CHILD_SET_STACK,
 }
 
 export class LayoutComponent {

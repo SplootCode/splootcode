@@ -12,6 +12,7 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
@@ -36,7 +37,7 @@ export class PythonIfStatement extends SplootNode {
     this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement)
-    // this.addChildSet('elseblock', ChildSetType.Many, NodeCategory.Statement);
+    this.addChildSet('elseblocks', ChildSetType.Many, NodeCategory.PythonElseBlock)
   }
 
   getCondition() {
@@ -47,9 +48,15 @@ export class PythonIfStatement extends SplootNode {
     return this.getChildSet('trueblock')
   }
 
-  // getElseBlock() {
-  //   return this.getChildSet('elseblock');
-  // }
+  getElseBlocks() {
+    return this.getChildSet('elseblocks')
+  }
+
+  allowAppendElse(): boolean {
+    const elseBlocks = this.getElseBlocks()
+    const count = elseBlocks.getCount()
+    return count === 0 || elseBlocks.getChild(count - 1).type !== PYTHON_ELSE_STATEMENT
+  }
 
   clean() {
     this.getTrueBlock().children.forEach((child: SplootNode, index: number) => {
@@ -59,13 +66,6 @@ export class PythonIfStatement extends SplootNode {
         }
       }
     })
-    // this.getElseBlock().children.forEach((child: SplootNode, index: number) => {
-    //   if (child.type === PYTHON_EXPRESSION) {
-    //     if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-    //       this.getElseBlock().removeChild(index);
-    //     }
-    //   }
-    // });
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture) {
@@ -107,6 +107,18 @@ export class PythonIfStatement extends SplootNode {
         trueBlockChildren[i].recursivelyClearRuntimeCapture()
       }
     }
+    i = 0
+    const elseBlocks = this.getElseBlocks().children
+    if (data.elseblocks) {
+      for (; i < data.elseblocks.length; i++) {
+        elseBlocks[i].recursivelyApplyRuntimeCapture(data.elseblocks[i])
+      }
+    }
+    if (i < elseBlocks.length) {
+      for (; i < elseBlocks.length; i++) {
+        elseBlocks[i].recursivelyClearRuntimeCapture()
+      }
+    }
   }
 
   recursivelyClearRuntimeCapture() {
@@ -119,6 +131,10 @@ export class PythonIfStatement extends SplootNode {
     for (let i = 0; i < blockChildren.length; i++) {
       blockChildren[i].recursivelyClearRuntimeCapture()
     }
+    const elseChildren = this.getElseBlocks().children
+    for (let i = 0; i < elseChildren.length; i++) {
+      elseChildren[i].recursivelyClearRuntimeCapture()
+    }
   }
 
   static deserializer(serializedNode: SerializedNode): PythonIfStatement {
@@ -126,7 +142,7 @@ export class PythonIfStatement extends SplootNode {
     node.getCondition().removeChild(0)
     node.deserializeChildSet('condition', serializedNode)
     node.deserializeChildSet('trueblock', serializedNode)
-    //node.deserializeChildSet('elseblock', serializedNode);
+    node.deserializeChildSet('elseblocks', serializedNode)
     return node
   }
 
@@ -137,12 +153,13 @@ export class PythonIfStatement extends SplootNode {
     ifType.childSets = {
       condition: NodeCategory.PythonExpression,
       trueblock: NodeCategory.PythonStatement,
-      //  'elseblock': NodeCategory.Statement
+      elseblocks: NodeCategory.PythonElseBlock,
     }
     ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'if'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'trueblock'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_STACK, 'elseblocks'),
     ])
 
     registerType(ifType)
