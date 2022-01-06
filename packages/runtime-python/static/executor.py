@@ -413,7 +413,11 @@ def generateForStatement(for_node):
 
 
 def generateAstStatement(sploot_node):
-    if sploot_node["type"] == "PYTHON_EXPRESSION":
+    if sploot_node["type"] == "PYTHON_STATEMENT":
+        if len(sploot_node['childSets']['statement']) != 0:
+            return generateAstStatement(sploot_node['childSets']['statement'][0])
+        return None
+    elif sploot_node["type"] == "PYTHON_EXPRESSION":
         exp = generateAstExpressionStatement(sploot_node)
         return [exp]
     elif sploot_node["type"] == "PYTHON_ASSIGNMENT":

@@ -1,6 +1,6 @@
 import { observable } from 'mobx'
 
-import { LayoutComponent, LayoutComponentType, NodeLayout } from '@splootcode/core/language/type_registry'
+import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
@@ -178,7 +178,8 @@ export class NodeBlock implements NodeObserver {
     }
     this.x = x
     this.y = y
-    const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
+    const nodeInlineSpacing =
+      this.layout.boxType === NodeBoxType.SMALL_BLOCK ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
     this.blockWidth = nodeInlineSpacing + 2
     this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
     this.indentedBlockHeight = 0

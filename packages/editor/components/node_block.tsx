@@ -7,7 +7,7 @@ import { AttachedChildRightExpressionView } from './attached_child'
 import { ExpandedListBlockView, InlineListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
-import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
+import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation } from './runtime_annotations'
 import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
@@ -125,7 +125,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
           />
         )
       } else {
-        if (block.layout.small) {
+        if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
           shape = (
             <rect
               className={'svgsplootnode' + (isSelected ? ' selected' : '')}

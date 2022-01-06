@@ -5,6 +5,7 @@ import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -107,7 +108,7 @@ export class StyleSelector extends SplootNode {
         new LayoutComponent(LayoutComponentType.PROPERTY, 'selectortype'),
         new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
       ],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
 
     registerType(typeRegistration)

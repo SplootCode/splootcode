@@ -17,12 +17,13 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
-class Generator implements SuggestionGenerator {
+class PythonExpressionGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     // Get all static expression tokens available and wrap them in an expression node.
     const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonExpressionToken)
@@ -127,10 +128,17 @@ export class PythonExpression extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
     registerType(typeRegistration)
     // When needed create the expression while autocompleting the expresison token.
-    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatement, new Generator())
-    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression, new Generator())
+    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents, new PythonExpressionGenerator())
+    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression, new PythonExpressionGenerator())
   }
 }

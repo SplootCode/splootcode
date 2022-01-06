@@ -13,6 +13,7 @@ import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../n
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -42,7 +43,6 @@ export class PythonWhileLoop extends SplootNode {
     this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
-    // this.addChildSet('elseblock', ChildSetType.Many, NodeCategory.Statement);
   }
 
   getCondition() {
@@ -179,20 +179,27 @@ export class PythonWhileLoop extends SplootNode {
   }
 
   static register() {
-    const ifType = new TypeRegistration()
-    ifType.typeName = PYTHON_WHILE_LOOP
-    ifType.deserializer = PythonWhileLoop.deserializer
-    ifType.childSets = {
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_WHILE_LOOP
+    typeRegistration.deserializer = PythonWhileLoop.deserializer
+    typeRegistration.childSets = {
       condition: NodeCategory.PythonExpression,
       block: NodeCategory.PythonStatement,
     }
-    ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'while'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
-    registerType(ifType)
-    registerNodeCateogry(PYTHON_WHILE_LOOP, NodeCategory.PythonStatement, new Generator())
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_WHILE_LOOP, NodeCategory.PythonStatementContents, new Generator())
   }
 }

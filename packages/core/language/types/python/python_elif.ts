@@ -15,6 +15,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
@@ -146,9 +147,16 @@ export class PythonElifBlock extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock, new InsertGenerator())
-    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatement, new AppendGenerator())
+    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatementContents, new AppendGenerator())
   }
 }
