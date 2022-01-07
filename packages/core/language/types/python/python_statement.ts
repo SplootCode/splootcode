@@ -1,5 +1,10 @@
 import { ChildSetType } from '../../childset'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import {
+  EmptySuggestionGenerator,
+  NodeCategory,
+  registerBlankFillForNodeCategory,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -66,9 +71,9 @@ export class PythonStatement extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement, new EmptySuggestionGenerator())
-  }
-}
 
-export function WrapStatement(node: SplootNode) {
-  return new PythonStatement(null)
+    registerBlankFillForNodeCategory(NodeCategory.PythonStatement, () => {
+      return new PythonStatement(null)
+    })
+  }
 }

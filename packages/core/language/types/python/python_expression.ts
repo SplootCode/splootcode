@@ -3,6 +3,7 @@ import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -13,6 +14,7 @@ import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteFunctionsForCategory,
+  registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
@@ -125,9 +127,11 @@ export class PythonExpression extends SplootNode {
     typeRegistration.deserializer = PythonExpression.deserializer
     typeRegistration.properties = ['tokens']
     typeRegistration.childSets = { tokens: NodeCategory.PythonExpressionToken }
-    typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens'),
-    ])
+    typeRegistration.layout = new NodeLayout(
+      HighlightColorCategory.NONE,
+      [new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'tokens')],
+      NodeBoxType.INVISIBLE
+    )
     typeRegistration.pasteAdapters = {
       PYTHON_STATEMENT: (node: SplootNode) => {
         const statement = new PythonStatement(null)
@@ -140,5 +144,9 @@ export class PythonExpression extends SplootNode {
     // When needed create the expression while autocompleting the expresison token.
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents, new PythonExpressionGenerator())
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression, new PythonExpressionGenerator())
+
+    registerBlankFillForNodeCategory(NodeCategory.PythonExpression, () => {
+      return new PythonExpression(null)
+    })
   }
 }

@@ -265,6 +265,13 @@ export class NodeBlock implements NodeObserver {
         childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
+      } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+        marginRight = childSetBlock.width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, childSetBlock.width))
+        this.blockWidth = 0
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else {
         const width = stringWidth(component.identifier) + nodeInlineSpacing
         leftPos += width
@@ -273,13 +280,7 @@ export class NodeBlock implements NodeObserver {
       }
     })
 
-    if (this.node.type === SPLOOT_EXPRESSION || this.node.type === PYTHON_EXPRESSION) {
-      const childSetBlock = this.renderedChildSets['tokens']
-      childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
-      marginRight = this.renderedChildSets['tokens'].width
-      this.blockWidth = 0
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-    } else if (selection !== null) {
+    if (selection !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
       selection.cursorMap.registerCursorStart(
         this.parentChildSet,
         this.index,
@@ -328,6 +329,28 @@ export class NodeBlock implements NodeObserver {
     }
     // This is the last childset, go up a step.
     return this.getNextInsertAfterThisNode()
+  }
+
+  /**
+   * When a node is inserted which already has a child (or multiple child nodes) pre-filled
+   * we want the cursor to be posisitioned after the last inserted child node.
+   *
+   * @returns NodeCursor for the new insert position or null if no valid childset insert positions
+   */
+  getNextEndOfChildSetInsertCursor(): NodeCursor {
+    for (const childSetId of this.childSetOrder) {
+      const childSetListBlock = this.renderedChildSets[childSetId]
+      for (const nodeBlock of childSetListBlock.nodes) {
+        const cursor = nodeBlock.getNextEndOfChildSetInsertCursor()
+        if (cursor) {
+          return cursor
+        }
+      }
+      if (childSetListBlock.allowInsertCursor()) {
+        return new NodeCursor(childSetListBlock, childSetListBlock.nodes.length)
+      }
+    }
+    return null
   }
 
   getNextChildInsertCursor(): NodeCursor {

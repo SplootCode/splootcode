@@ -11,9 +11,7 @@ import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/c
 import { LoopAnnotation } from './runtime_annotations'
 import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
-import { PYTHON_EXPRESSION } from '@splootcode/core/language/types/python/python_expression'
-import { SPLOOT_EXPRESSION } from '@splootcode/core/language/types/js/expression'
-import { SplootExpressionView } from './expression'
+import { TokenListBlockView } from './token_list_block'
 import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
 interface NodeBlockProps {
@@ -90,10 +88,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     const topPos = block.y + block.marginTop
     let internalLeftPos = leftPos + 10
 
-    if (block.node.type === SPLOOT_EXPRESSION || block.node.type === PYTHON_EXPRESSION) {
-      return <SplootExpressionView block={block} selection={selection} selectionState={selectionState} />
-    }
-
     let loopAnnotation = null
     if (block.node.isLoop) {
       loopAnnotation = <LoopAnnotation nodeBlock={block} />
@@ -125,7 +119,9 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
           />
         )
       } else {
-        if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
+        if (block.layout.boxType === NodeBoxType.INVISIBLE) {
+          shape = null
+        } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
           shape = (
             <rect
               className={'svgsplootnode' + (isSelected ? ' selected' : '')}
@@ -223,6 +219,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
               />
             )
             internalLeftPos += renderedComponent.width
+          } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
+            const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
+            result = (
+              <TokenListBlockView
+                key={idx}
+                block={childSetBlock}
+                isSelected={isSelected}
+                selection={this.props.selection}
+              />
+            )
           } else {
             // Keywords and child separators left
             result = (

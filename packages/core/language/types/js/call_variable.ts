@@ -79,16 +79,6 @@ export class CallVariable extends JavaScriptSplootNode {
     return call
   }
 
-  clean() {
-    this.getArguments().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === SPLOOT_EXPRESSION) {
-        if ((child as SplootExpression).getTokenSet().getCount() === 0) {
-          this.getArguments().removeChild(index)
-        }
-      }
-    })
-  }
-
   getArgumentNames(): string[] {
     const scope = this.getScope()
     if (!scope) {

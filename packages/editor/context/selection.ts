@@ -2,7 +2,7 @@ import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory } from '@splootcode/core/language/node_category_registry'
+import { NodeCategory, getBlankFillForCategory } from '@splootcode/core/language/node_category_registry'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { SplootExpression } from '@splootcode/core/language/types/js/expression'
 import { SplootNode } from '@splootcode/core/language/node'
@@ -215,9 +215,10 @@ export class NodeSelection {
   @action
   insertNewline() {
     const insertCursor = this.cursor.listBlock.getNewLineInsertPosition(this.cursor.index)
-    if (insertCursor !== null) {
-      this.placeCursor(insertCursor.listBlock, insertCursor.index, false)
-      this.startInsertAtCurrentCursor()
+    const category = insertCursor.listBlock.childSet.nodeCategory
+    const node = getBlankFillForCategory(category)
+    if (node) {
+      this.insertNode(insertCursor.listBlock, insertCursor.index, node)
     }
   }
 
