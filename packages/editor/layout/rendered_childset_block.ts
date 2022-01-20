@@ -582,7 +582,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     if (index === this.nodes.length) {
       const thisChildSetIndex = thisNode.childSetOrder.indexOf(this.parentRef.childSetId)
       const lastChildSetIndex = thisNode.childSetOrder.length - 1
-      console.log(thisChildSetIndex, lastChildSetIndex)
       if (thisChildSetIndex !== lastChildSetIndex) {
         const childSetID = thisNode.childSetOrder[thisChildSetIndex + 1]
         return thisNode.renderedChildSets[childSetID].getNewLinePosition(0, false)
@@ -593,6 +592,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       const [insertCursor] = parentChildSet.getNewLinePosition(thisNode.index, false)
       return [insertCursor, false, new NodeCursor(this, index)]
     }
+    // Not at the start or end of this childset
+    return [null, false, null]
   }
 
   @action

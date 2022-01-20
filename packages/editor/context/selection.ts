@@ -160,7 +160,6 @@ export class NodeSelection {
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()
-      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
     }
   }
 
@@ -215,6 +214,9 @@ export class NodeSelection {
   @action
   insertNewlineOrUnindent() {
     const [newLineCursor, unindent, postInsertCursor] = this.cursor.listBlock.getNewLinePosition(this.cursor.index)
+    if (!newLineCursor) {
+      return
+    }
     if (unindent) {
       this.backspace()
     }
