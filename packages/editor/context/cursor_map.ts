@@ -29,6 +29,10 @@ export class CursorMap {
       // This is the toplevel node and can't be selected.
       return
     }
+    // Don't allow invalid cursors
+    if (!listBlock.allowInsertCursor()) {
+      return
+    }
     // Check if this is a new line
     let lineMap: LineMap
     if (!(y in this.linesIndex)) {
@@ -56,6 +60,12 @@ export class CursorMap {
       // This is the toplevel node and can't be selected.
       return
     }
+
+    // Don't allow invalid cursors
+    if (isCursor && !listBlock.allowInsertCursor()) {
+      return
+    }
+
     // Check if this is a new line
     let lineMap: LineMap
     if (!(y in this.linesIndex)) {

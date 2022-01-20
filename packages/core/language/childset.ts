@@ -2,6 +2,7 @@ import { ChildSetMutation, ChildSetMutationType } from './mutations/child_set_mu
 import { ChildSetObserver } from './observers'
 import { NodeCategory } from './node_category_registry'
 import { ParentReference, SplootNode } from './node'
+import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
 export enum ChildSetType {
@@ -63,6 +64,9 @@ export class ChildSet {
   }
 
   removeChild(index: number): SplootNode {
+    if (index >= this.children.length) {
+      console.warn("Attempting to delete child that doesn't exist!!", index, this.childParentRef.childSetId)
+    }
     const child = this.children.splice(index, 1)[0]
     child.parent = null
     child.recursivelySetMutations(false)
@@ -75,6 +79,26 @@ export class ChildSet {
       this.fireMutation(mutation)
     }
     return child
+  }
+
+  recursivelyApplyRuntimeCapture(captureList: StatementCapture[]) {
+    let i = 0
+    let c = 0
+    while (i < captureList.length && c < this.children.length) {
+      const success = this.children[c].recursivelyApplyRuntimeCapture(captureList[i])
+      if (success) {
+        i++
+      }
+      c++
+    }
+    if (i < captureList.length) {
+      console.warn('Unused runtime capture annodation: ', captureList[i])
+    }
+    while (c < this.children.length) {
+      this.children[c].recursivelyClearRuntimeCapture()
+      c++
+    }
+    return true
   }
 
   addChild(child: SplootNode) {

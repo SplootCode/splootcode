@@ -239,18 +239,18 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     if (selection.state === SelectionState.Cursor) {
       if (e.key === 'Enter') {
-        selection.insertNewline()
+        selection.insertNewlineOrUnindent()
+      } else if (e.key === 'Backspace') {
+        // If the cursor position lands on a selected node after delete
+        // then the editor level backspace handling kicks in.
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation()
+        selection.backspace()
       }
       return
     }
 
-    const { activeSuggestion, filteredSuggestions, userInput } = this.state
-
-    // Enter key when inserting
-    if (e.key === 'Enter' && userInput === '') {
-      selection.unindentCursor()
-      return
-    }
+    const { activeSuggestion, filteredSuggestions } = this.state
 
     // Escape
     if (e.key === 'Escape') {

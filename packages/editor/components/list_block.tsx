@@ -7,7 +7,6 @@ import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { RuntimeAnnotation } from './runtime_annotations'
 
 interface ExpandedListBlockViewProps {
   block: RenderedChildSetBlock
@@ -59,7 +58,6 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
           return (
             <React.Fragment key={idx}>
               <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
-              <RuntimeAnnotation nodeBlock={nodeBlock} />
             </React.Fragment>
           )
         })}

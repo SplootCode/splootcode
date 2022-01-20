@@ -10,8 +10,8 @@ import {
 } from '../../type_registry'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
@@ -62,16 +62,6 @@ export class PythonForLoop extends SplootNode {
 
   getBlock() {
     return this.getChildSet('block')
-  }
-
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
   }
 
   static deserializer(serializedNode: SerializedNode): PythonForLoop {

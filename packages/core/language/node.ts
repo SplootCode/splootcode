@@ -80,18 +80,19 @@ export class SplootNode {
     console.warn(`Capture frames not supported for node type ${this.type}`)
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     if (capture.type == 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      return false
     }
-    return
+    return true
   }
 
   recursivelyClearRuntimeCapture() {

@@ -213,24 +213,39 @@ export class NodeSelection {
   }
 
   @action
-  insertNewline() {
-    const insertCursor = this.cursor.listBlock.getNewLineInsertPosition(this.cursor.index)
-    const category = insertCursor.listBlock.childSet.nodeCategory
+  insertNewlineOrUnindent() {
+    const [newLineCursor, unindent, postInsertCursor] = this.cursor.listBlock.getNewLinePosition(this.cursor.index)
+    if (unindent) {
+      this.backspace()
+    }
+
+    this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
+    const category = newLineCursor.listBlock.childSet.nodeCategory
     const node = getBlankFillForCategory(category)
     if (node) {
-      this.insertNode(insertCursor.listBlock, insertCursor.index, node)
+      this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
+      this.updateRenderPositions()
+      this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
+      while (!this.cursor.listBlock.allowInsertCursor()) {
+        this.moveCursorToNextInsert()
+      }
+      // Hack! Hacks to get around invalid/overlapping cursor positions
+      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
     }
   }
 
   @action
-  unindentCursor() {
-    const parent = this.cursor.listBlock.parentRef.node
-    if (parent !== null && parent.parentChildSet !== null) {
-      const insertCursor = parent.parentChildSet.getNewLineInsertPosition(parent.index + 1)
-      if (insertCursor !== null) {
-        this.placeCursor(insertCursor.listBlock, insertCursor.index, false)
-        this.startInsertAtCurrentCursor()
-      }
+  backspace() {
+    // TODO: Make this not suck
+    const deleteCursor = this.cursor.listBlock.getBackspaceDeletePosition(this.cursor.index)
+    // TODO: Separate check for if allowedDelete
+    if (deleteCursor && deleteCursor.listBlock.allowInsert()) {
+      deleteCursor.listBlock.childSet.removeChild(deleteCursor.index)
+      // Trigger a clean from the parent upward.
+      deleteCursor.listBlock.parentRef.node.node.clean()
+      this.updateRenderPositions()
+      // Hack! Hacks to get around invalid/overlapping cursor positions
+      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
     }
   }
 

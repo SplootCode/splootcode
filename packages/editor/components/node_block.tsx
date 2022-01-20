@@ -8,7 +8,7 @@ import { ExpandedListBlockView, InlineListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
-import { LoopAnnotation } from './runtime_annotations'
+import { LoopAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { TokenListBlockView } from './token_list_block'
@@ -241,12 +241,13 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
           return result
         })}
         {this.renderRightAttachedChildSet()}
+        {<RuntimeAnnotation nodeBlock={block} />}
         {block.indentedBlockHeight > 0 ? (
           <line
             x1={leftPos + 6}
             y1={block.y + block.rowHeight + 4}
             x2={leftPos + 6}
-            y2={block.y + block.rowHeight + block.indentedBlockHeight}
+            y2={block.y + block.rowHeight + block.indentedBlockHeight - 4}
             className={'indented-rule ' + (isSelected ? 'selected' : '')}
           />
         ) : null}

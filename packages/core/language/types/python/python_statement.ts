@@ -1,10 +1,4 @@
 import { ChildSetType } from '../../childset'
-import {
-  EmptySuggestionGenerator,
-  NodeCategory,
-  registerBlankFillForNodeCategory,
-  registerNodeCateogry,
-} from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -15,11 +9,54 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  getAutocompleteFunctionsForCategory,
+  registerBlankFillForNodeCategory,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { StatementCapture } from '../../capture/runtime_capture'
+import { SuggestedNode } from '@splootcode/core/language/suggested_node'
 
 export const PYTHON_STATEMENT = 'PYTHON_STATEMENT'
+
+export class PythonStatementGenerator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    // Get all static expression tokens available and wrap them in an expression node.
+    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonStatementContents)
+    let staticSuggestions = [] as SuggestedNode[]
+    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
+      const allSuggestions = generator.staticSuggestions(parent, index).map((innerSuggestionNode: SuggestedNode) => {
+        const statementNode = new PythonStatement(null)
+        statementNode.getStatement().addChild(innerSuggestionNode.node)
+        innerSuggestionNode.node = statementNode
+        return innerSuggestionNode
+      })
+      staticSuggestions = staticSuggestions.concat(allSuggestions)
+    })
+    return staticSuggestions
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonStatementContents)
+    let staticSuggestions = [] as SuggestedNode[]
+    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
+      const allSuggestions = generator
+        .dynamicSuggestions(parent, index, textInput)
+        .map((innerSuggestionNode: SuggestedNode) => {
+          const statementNode = new PythonStatement(null)
+          statementNode.getStatement().addChild(innerSuggestionNode.node)
+          innerSuggestionNode.node = statementNode
+          return innerSuggestionNode
+        })
+      staticSuggestions = staticSuggestions.concat(allSuggestions)
+    })
+    return staticSuggestions
+  }
+}
 
 export class PythonStatement extends SplootNode {
   constructor(parentReference: ParentReference) {
@@ -46,9 +83,12 @@ export class PythonStatement extends SplootNode {
     return res
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
-    // TODO: Pass statement capture to child
-    return
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
+    if (this.getStatement().getCount() !== 0) {
+      const child = this.getStatement().getChild(0)
+      return child.recursivelyApplyRuntimeCapture(capture)
+    }
+    return false
   }
 
   recursivelyClearRuntimeCapture() {
@@ -65,12 +105,12 @@ export class PythonStatement extends SplootNode {
     typeRegistration.childSets = { statement: NodeCategory.PythonStatementContents }
     typeRegistration.layout = new NodeLayout(
       HighlightColorCategory.NONE,
-      [new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'statement')],
+      [new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'statement')],
       NodeBoxType.INVISIBLE
     )
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement, new EmptySuggestionGenerator())
+    registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement, new PythonStatementGenerator())
 
     registerBlankFillForNodeCategory(NodeCategory.PythonStatement, () => {
       return new PythonStatement(null)

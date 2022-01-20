@@ -11,8 +11,8 @@ import {
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
@@ -53,16 +53,6 @@ export class PythonWhileLoop extends SplootNode {
     return this.getChildSet('block')
   }
 
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
-  }
-
   applyRuntimeError(capture: StatementCapture) {
     const mutation = new NodeMutation()
     mutation.node = this
@@ -94,8 +84,6 @@ export class PythonWhileLoop extends SplootNode {
 
     const frames = this.runtimeCapture.frames
     const frame = frames[index]
-    let i = 0
-    const trueBlockChildren = this.getBlock().children
 
     if (frame.type === 'EXCEPTION') {
       annotation.push({
@@ -124,9 +112,8 @@ export class PythonWhileLoop extends SplootNode {
           type: conditionData.resultType,
         },
       })
-      const trueBlockData = frameData.block
-      for (; i < trueBlockData.length; i++) {
-        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
+      if (frameData.block) {
+        this.getBlock().recursivelyApplyRuntimeCapture(frameData.block)
       }
     }
     const mutation = new NodeMutation()
@@ -135,27 +122,21 @@ export class PythonWhileLoop extends SplootNode {
     mutation.annotations = annotation
     mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
-
-    // Clear remaining children nodes
-    if (i < trueBlockChildren.length) {
-      for (; i < trueBlockChildren.length; i++) {
-        trueBlockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
       this.runtimeCapture = null
-      return
+      return true
     }
     const data = capture.data as WhileLoopData
     this.runtimeCapture = data
     this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    return true
   }
 
   recursivelyClearRuntimeCapture() {

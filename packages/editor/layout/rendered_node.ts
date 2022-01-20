@@ -15,6 +15,7 @@ export const NODE_INLINE_SPACING = 8
 export const NODE_INLINE_SPACING_SMALL = 6
 export const NODE_BLOCK_HEIGHT = 30
 export const LOOP_ANNOTATION_HEIGHT = 12
+export const INDENTED_BLOCK_PADDING_BOTTOM = 12
 const INDENT = 30
 
 export class RenderedParentRef {
@@ -198,7 +199,7 @@ export class NodeBlock implements NodeObserver {
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
-        this.indentedBlockHeight += childSetBlock.height
+        this.indentedBlockHeight += childSetBlock.height + INDENTED_BLOCK_PADDING_BOTTOM
       } else if (component.type === LayoutComponentType.CHILD_SET_STACK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
@@ -254,6 +255,7 @@ export class NodeBlock implements NodeObserver {
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         this.blockWidth += width
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         const childSetBlock = this.renderedChildSets[component.identifier]
@@ -263,7 +265,7 @@ export class NodeBlock implements NodeObserver {
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
@@ -271,7 +273,8 @@ export class NodeBlock implements NodeObserver {
         marginRight = childSetBlock.width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, childSetBlock.width))
         this.blockWidth = 0
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
       } else {
         const width = stringWidth(component.identifier) + nodeInlineSpacing
         leftPos += width

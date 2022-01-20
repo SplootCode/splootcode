@@ -69,10 +69,10 @@ export class PythonAssignment extends SplootNode {
     return ''
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type == 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -93,6 +93,7 @@ export class PythonAssignment extends SplootNode {
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotations
     this.fireMutation(mutation)
+    return true
   }
 
   static deserializer(serializedNode: SerializedNode): PythonAssignment {

@@ -9,7 +9,6 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonFileData, StatementCapture } from '../../capture/runtime_capture'
 
@@ -29,35 +28,14 @@ export class PythonFile extends SplootNode {
     return 'print("Hello, World!")\n'
   }
 
-  clean() {
-    this.getBody().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBody().removeChild(index)
-        }
-      }
-    })
-  }
-
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     console.log(capture)
-    const bodyChildren = this.getBody().children
     const data = capture.data as PythonFileData
-    console.log(`${data.body.length} should match ${bodyChildren.length}`)
-    let i = 0
-    for (; i < data.body.length; i++) {
-      bodyChildren[i].recursivelyApplyRuntimeCapture(data.body[i])
-    }
-    if (i < bodyChildren.length) {
-      for (; i < bodyChildren.length; i++) {
-        bodyChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
-
-    return
+    this.getBody().recursivelyApplyRuntimeCapture(data.body)
+    return true
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFile {

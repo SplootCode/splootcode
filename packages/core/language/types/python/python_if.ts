@@ -69,10 +69,10 @@ export class PythonIfStatement extends SplootNode {
     })
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -95,31 +95,13 @@ export class PythonIfStatement extends SplootNode {
     mutation.annotations = annotations
     this.fireMutation(mutation)
 
-    let i = 0
-    const trueBlockChildren = this.getTrueBlock().children
     if (data.trueblock) {
-      const trueBlockData = data.trueblock
-      for (; i < trueBlockData.length; i++) {
-        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
-      }
+      this.getTrueBlock().recursivelyApplyRuntimeCapture(data.trueblock)
     }
-    if (i < trueBlockChildren.length) {
-      for (; i < trueBlockChildren.length; i++) {
-        trueBlockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
-    i = 0
-    const elseBlocks = this.getElseBlocks().children
     if (data.elseblocks) {
-      for (; i < data.elseblocks.length; i++) {
-        elseBlocks[i].recursivelyApplyRuntimeCapture(data.elseblocks[i])
-      }
+      this.getElseBlocks().recursivelyApplyRuntimeCapture(data.elseblocks)
     }
-    if (i < elseBlocks.length) {
-      for (; i < elseBlocks.length; i++) {
-        elseBlocks[i].recursivelyClearRuntimeCapture()
-      }
-    }
+    return true
   }
 
   recursivelyClearRuntimeCapture() {
