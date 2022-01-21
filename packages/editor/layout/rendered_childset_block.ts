@@ -357,7 +357,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (this.nodes.length === insertIndex) {
         return [leftPos, this.y]
       }
-      return [this.x + this.width, this.y]
+      return [this.x, this.y]
     } else if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
       let topPos = this.y + ROW_SPACING
       for (let i = 0; i < this.nodes.length; i++) {
@@ -503,22 +503,14 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return null
   }
 
-  getBackspaceDeletePosition(index: number): NodeCursor {
-    if (
-      this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
-      this.componentType === LayoutComponentType.CHILD_SET_INLINE
-    ) {
-      if (index !== 0) {
-        return new NodeCursor(this, index - 1)
-      } else {
-        if (this.nodes.length === 0) {
-          // Delete parent
-          // TODO: Don't delete parents when they are required (e.g. if-statement expression)
-          return new NodeCursor(this.parentRef.node.parentChildSet, this.parentRef.node.index)
-        }
-      }
+  getLineNodeIfEmpty(): NodeCursor {
+    if (this.nodes.length !== 0) {
+      return null
     }
-
+    const thisNode = this.parentRef.node
+    if (thisNode.parentChildSet?.isInsertableLineChildset()) {
+      return new NodeCursor(thisNode.parentChildSet, thisNode.index)
+    }
     return null
   }
 
@@ -590,6 +582,38 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return thisNode.parentChildSet.getParentLineCursorIfStartNode(thisNode.index)
   }
 
+  getUnindent(index: number): NodeCursor {
+    if (this.isInsertableLineChildset() && index != 0) {
+      // Only unindent if it's a cursor at the end of the set
+      if (index === this.nodes.length && index !== 0) {
+        const thisNode = this.parentRef.node
+        const unindentedCursor = thisNode.parentChildSet.getParentLineCursorIfEndNode(thisNode.index)
+        return unindentedCursor
+      }
+      return null
+    }
+
+    if (index !== 0 || this.nodes.length !== 0) {
+      return null
+    }
+
+    // Figure out if we should unindent
+    const thisNode = this.parentRef.node
+    const parentChildSet = thisNode.parentChildSet
+    if (!parentChildSet) {
+      return null
+    }
+    const isLastNodeInParentChildSet = thisNode.index === parentChildSet.nodes.length - 1
+    if (thisNode.index !== 0 && isLastNodeInParentChildSet && parentChildSet.isInsertableLineChildset()) {
+      const parentNode = parentChildSet.parentRef.node
+      if (parentNode && parentNode.parentChildSet) {
+        const [unindentCursor] = parentNode.parentChildSet.getNewLinePosition(parentNode.index + 1)
+        return unindentCursor
+      }
+    }
+    return null
+  }
+
   /** Called when Enter is pressed
    Returns: [
     NodeCursor - a cursor position for the newline
@@ -597,54 +621,29 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     NodeCursor - where to place the insert cursor after the new line is added
    ]
   */
-  getNewLinePosition(index: number, allowUnindent = true): [NodeCursor, boolean, NodeCursor] {
+  getNewLinePosition(index: number): [NodeCursor, NodeCursor] {
     if (this.isInsertableLineChildset()) {
-      // Only unindent if it's a cursor at the end of the set
-      if (index === this.nodes.length && index !== 0) {
-        const thisNode = this.parentRef.node
-        const unindentedCursor = thisNode.parentChildSet.getParentLineCursorIfEndNode(thisNode.index)
-        return [unindentedCursor, true, unindentedCursor]
-      }
       // TODO: Is this line empty - should that matter?
-      return [new NodeCursor(this, index), false, new NodeCursor(this, index + 1)]
+      return [new NodeCursor(this, index), new NodeCursor(this, index + 1)]
     }
 
     // Calculate end first because empty lines should be considered "end" not "start" of the line
     // We are at the end of this childset
     if (index === this.nodes.length) {
-      // Figure out if we should unindent
-      const thisNode = this.parentRef.node
-      const parentChildSet = thisNode.parentChildSet
-      const isLastNodeInParentChildSet = thisNode.index === parentChildSet.nodes.length - 1
-      if (
-        allowUnindent &&
-        index === 0 &&
-        thisNode.index !== 0 &&
-        isLastNodeInParentChildSet &&
-        parentChildSet.isInsertableLineChildset()
-      ) {
-        const parentNode = parentChildSet.parentRef.node
-        if (parentNode && parentNode.parentChildSet) {
-          const [unindentCursor] = parentNode.parentChildSet.getNewLinePosition(parentNode.index + 1, false)
-          if (unindentCursor) {
-            return [unindentCursor, true, unindentCursor]
-          }
-        }
-      }
       const endOfLineInsertCursor = this.getParentLineCursorIfEndNode(index)
       if (endOfLineInsertCursor) {
         // Place cursor into new line
-        return [endOfLineInsertCursor, false, endOfLineInsertCursor]
+        return [endOfLineInsertCursor, endOfLineInsertCursor]
       }
     }
 
     // Are we at the start of a line?
     const startOfLineInsertCursor = this.getParentLineCursorIfStartNode(index)
     if (startOfLineInsertCursor) {
-      return [startOfLineInsertCursor, false, new NodeCursor(this, index)]
+      return [startOfLineInsertCursor, new NodeCursor(this, index)]
     }
 
-    return [null, false, null]
+    return [null, null]
   }
 
   @action
@@ -682,7 +681,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
       if (this.allowInsertCursor()) {
-        this.selection.placeCursor(this, mutation.index)
+        this.selection.placeCursor(this, mutation.index, true)
       }
       this.selection.updateRenderPositions()
     }

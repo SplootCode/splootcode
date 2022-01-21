@@ -160,6 +160,7 @@ export class NodeSelection {
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()
+      this.updateCursorXYToCursor()
     }
   }
 
@@ -195,7 +196,7 @@ export class NodeSelection {
   updateCursorXYToCursor() {
     const cursor = this.cursor
     const [x, y] = cursor.listBlock.getInsertCoordinates(cursor.index, true)
-    this.lastXCoordinate = x - 2
+    this.lastXCoordinate = x
     this.lastYCoordinate = y
   }
 
@@ -212,13 +213,41 @@ export class NodeSelection {
   }
 
   @action
+  unindent() {
+    let postInsertCursor = null
+    const newLineCursor = this.cursor.listBlock.getUnindent(this.cursor.index)
+    if (newLineCursor) {
+      const deleteNode = this.cursor.listBlock.parentRef.node
+      deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
+      postInsertCursor = newLineCursor
+
+      this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
+      const category = newLineCursor.listBlock.childSet.nodeCategory
+      const node = getBlankFillForCategory(category)
+      if (node) {
+        this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
+        this.updateRenderPositions()
+        this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
+        while (!this.cursor.listBlock.allowInsertCursor()) {
+          this.moveCursorToNextInsert()
+        }
+        // Hack! Hacks to get around invalid/overlapping cursor positions
+        this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+        return true
+      }
+    }
+    return false
+  }
+
+  @action
   insertNewlineOrUnindent() {
-    const [newLineCursor, unindent, postInsertCursor] = this.cursor.listBlock.getNewLinePosition(this.cursor.index)
-    if (!newLineCursor) {
+    const didUnindent = this.unindent()
+    if (didUnindent) {
       return
     }
-    if (unindent) {
-      this.backspace()
+    const [newLineCursor, postInsertCursor] = this.cursor.listBlock.getNewLinePosition(this.cursor.index)
+    if (!newLineCursor) {
+      return
     }
 
     this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
@@ -238,16 +267,20 @@ export class NodeSelection {
 
   @action
   backspace() {
-    // TODO: Make this not suck
-    const deleteCursor = this.cursor.listBlock.getBackspaceDeletePosition(this.cursor.index)
-    // TODO: Separate check for if allowedDelete
-    if (deleteCursor && deleteCursor.listBlock.allowInsert()) {
-      deleteCursor.listBlock.childSet.removeChild(deleteCursor.index)
-      // Trigger a clean from the parent upward.
-      deleteCursor.listBlock.parentRef.node.node.clean()
-      this.updateRenderPositions()
-      // Hack! Hacks to get around invalid/overlapping cursor positions
-      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+    const didUnindent = this.unindent()
+    if (didUnindent) {
+      return
+    }
+    this.moveCursorLeft()
+    if (this.isSingleNode()) {
+      this.deleteSelectedNode()
+    } else {
+      const cursor = this.cursor.listBlock.getLineNodeIfEmpty()
+      if (cursor) {
+        cursor.listBlock.childSet.removeChild(cursor.index)
+        this.updateRenderPositions()
+      }
+      this.updateCursorXYToCursor()
     }
   }
 
