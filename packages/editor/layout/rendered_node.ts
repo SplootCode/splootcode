@@ -308,6 +308,20 @@ export class NodeBlock implements NodeObserver {
     this.node.selectRuntimeCaptureFrame(idx)
   }
 
+  getInlineLayoutComponents(): LayoutComponent[] {
+    const inlineComponents = []
+    for (const component of this.layout.components) {
+      if (
+        component.type === LayoutComponentType.CHILD_SET_BLOCK ||
+        component.type === LayoutComponentType.CHILD_SET_STACK
+      ) {
+        break
+      }
+      inlineComponents.push(component)
+    }
+    return inlineComponents
+  }
+
   getNextInsertAfterThisNode(): NodeCursor {
     if (this.parentChildSet === null) {
       return null
