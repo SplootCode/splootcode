@@ -12,9 +12,10 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
+import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
@@ -63,20 +64,10 @@ export class PythonElifBlock extends SplootNode {
     return this.getChildSet('block')
   }
 
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
-  }
-
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -112,6 +103,7 @@ export class PythonElifBlock extends SplootNode {
         blockChildren[i].recursivelyClearRuntimeCapture()
       }
     }
+    return true
   }
 
   recursivelyClearRuntimeCapture() {
@@ -146,9 +138,16 @@ export class PythonElifBlock extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock, new InsertGenerator())
-    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatement, new AppendGenerator())
+    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatementContents, new AppendGenerator())
   }
 }

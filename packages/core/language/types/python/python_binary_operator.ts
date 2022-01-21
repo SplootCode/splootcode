@@ -2,6 +2,7 @@ import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -86,7 +87,7 @@ export class PythonBinaryOperator extends SplootNode {
     return new NodeLayout(
       HighlightColorCategory.OPERATOR,
       [new LayoutComponent(LayoutComponentType.KEYWORD, OPERATORS[this.getOperator()].display)],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
   }
 
@@ -99,7 +100,7 @@ export class PythonBinaryOperator extends SplootNode {
     typeRegistration.layout = new NodeLayout(
       HighlightColorCategory.OPERATOR,
       [new LayoutComponent(LayoutComponentType.PROPERTY, 'operator')],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
       const exp = new PythonExpression(null)

@@ -11,8 +11,9 @@ import {
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
+import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -42,7 +43,6 @@ export class PythonWhileLoop extends SplootNode {
     this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
-    // this.addChildSet('elseblock', ChildSetType.Many, NodeCategory.Statement);
   }
 
   getCondition() {
@@ -51,16 +51,6 @@ export class PythonWhileLoop extends SplootNode {
 
   getBlock() {
     return this.getChildSet('block')
-  }
-
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
   }
 
   applyRuntimeError(capture: StatementCapture) {
@@ -94,8 +84,6 @@ export class PythonWhileLoop extends SplootNode {
 
     const frames = this.runtimeCapture.frames
     const frame = frames[index]
-    let i = 0
-    const trueBlockChildren = this.getBlock().children
 
     if (frame.type === 'EXCEPTION') {
       annotation.push({
@@ -124,9 +112,8 @@ export class PythonWhileLoop extends SplootNode {
           type: conditionData.resultType,
         },
       })
-      const trueBlockData = frameData.block
-      for (; i < trueBlockData.length; i++) {
-        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
+      if (frameData.block) {
+        this.getBlock().recursivelyApplyRuntimeCapture(frameData.block)
       }
     }
     const mutation = new NodeMutation()
@@ -135,27 +122,21 @@ export class PythonWhileLoop extends SplootNode {
     mutation.annotations = annotation
     mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
-
-    // Clear remaining children nodes
-    if (i < trueBlockChildren.length) {
-      for (; i < trueBlockChildren.length; i++) {
-        trueBlockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
       this.runtimeCapture = null
-      return
+      return true
     }
     const data = capture.data as WhileLoopData
     this.runtimeCapture = data
     this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    return true
   }
 
   recursivelyClearRuntimeCapture() {
@@ -179,20 +160,27 @@ export class PythonWhileLoop extends SplootNode {
   }
 
   static register() {
-    const ifType = new TypeRegistration()
-    ifType.typeName = PYTHON_WHILE_LOOP
-    ifType.deserializer = PythonWhileLoop.deserializer
-    ifType.childSets = {
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_WHILE_LOOP
+    typeRegistration.deserializer = PythonWhileLoop.deserializer
+    typeRegistration.childSets = {
       condition: NodeCategory.PythonExpression,
       block: NodeCategory.PythonStatement,
     }
-    ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'while'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
-    registerType(ifType)
-    registerNodeCateogry(PYTHON_WHILE_LOOP, NodeCategory.PythonStatement, new Generator())
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_WHILE_LOOP, NodeCategory.PythonStatementContents, new Generator())
   }
 }

@@ -91,14 +91,10 @@ export class StyleProperty extends SplootNode {
     typeRegistration.childSets = {
       value: NodeCategory.StyleSheetPropertyValue,
     }
-    typeRegistration.layout = new NodeLayout(
-      HighlightColorCategory.STYLE_PROPERTY,
-      [
-        new LayoutComponent(LayoutComponentType.PROPERTY, 'property'),
-        new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
-      ],
-      false
-    )
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.STYLE_PROPERTY, [
+      new LayoutComponent(LayoutComponentType.PROPERTY, 'property'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
+    ])
 
     registerType(typeRegistration)
     registerNodeCateogry(STYLE_PROPERTY, NodeCategory.StyleSheetProperty, new Generator())

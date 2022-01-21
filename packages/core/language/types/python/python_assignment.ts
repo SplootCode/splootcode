@@ -14,6 +14,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
@@ -68,10 +69,10 @@ export class PythonAssignment extends SplootNode {
     return ''
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type == 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -92,6 +93,7 @@ export class PythonAssignment extends SplootNode {
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotations
     this.fireMutation(mutation)
+    return true
   }
 
   static deserializer(serializedNode: SerializedNode): PythonAssignment {
@@ -116,8 +118,15 @@ export class PythonAssignment extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'to'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatement, new Generator())
+    registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatementContents, new Generator())
   }
 }

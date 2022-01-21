@@ -10,8 +10,9 @@ import {
 } from '../../type_registry'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
+import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
@@ -63,16 +64,6 @@ export class PythonForLoop extends SplootNode {
     return this.getChildSet('block')
   }
 
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
-  }
-
   static deserializer(serializedNode: SerializedNode): PythonForLoop {
     const node = new PythonForLoop(null)
     node.getIterable().removeChild(0)
@@ -83,23 +74,30 @@ export class PythonForLoop extends SplootNode {
   }
 
   static register() {
-    const ifType = new TypeRegistration()
-    ifType.typeName = PYTHON_FOR_LOOP
-    ifType.deserializer = PythonForLoop.deserializer
-    ifType.childSets = {
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_FOR_LOOP
+    typeRegistration.deserializer = PythonForLoop.deserializer
+    typeRegistration.childSets = {
       target: NodeCategory.PythonAssignableExpressionToken,
       iterable: NodeCategory.PythonExpression,
       block: NodeCategory.PythonStatement,
     }
-    ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'for'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'target'),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'in'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
-    registerType(ifType)
-    registerNodeCateogry(PYTHON_FOR_LOOP, NodeCategory.PythonStatement, new Generator())
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_FOR_LOOP, NodeCategory.PythonStatementContents, new Generator())
   }
 }

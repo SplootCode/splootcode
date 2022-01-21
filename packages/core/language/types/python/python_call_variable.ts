@@ -80,18 +80,6 @@ export class PythonCallVariable extends SplootNode {
     return call
   }
 
-  clean() {
-    const numArgs = this.getArguments().children.length
-    this.getArguments().children.forEach((child: SplootNode, index: number) => {
-      // Don't remove the first argument - leave the brackets there.
-      if (!(index == 0 && numArgs == 1) && child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getArguments().removeChild(index)
-        }
-      }
-    })
-  }
-
   getArgumentNames(): string[] {
     const scope = this.getScope()
     if (!scope) {

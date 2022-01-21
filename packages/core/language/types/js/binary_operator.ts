@@ -3,6 +3,7 @@ import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -132,7 +133,7 @@ export class BinaryOperator extends JavaScriptSplootNode {
     return new NodeLayout(
       HighlightColorCategory.OPERATOR,
       [new LayoutComponent(LayoutComponentType.KEYWORD, OPERATORS[this.getOperator()].display)],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
   }
 
@@ -145,7 +146,7 @@ export class BinaryOperator extends JavaScriptSplootNode {
     typeRegistration.layout = new NodeLayout(
       HighlightColorCategory.OPERATOR,
       [new LayoutComponent(LayoutComponentType.PROPERTY, 'operator')],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
     typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
       const exp = new SplootExpression(null)

@@ -1,6 +1,6 @@
 import { observable } from 'mobx'
 
-import { LayoutComponent, LayoutComponentType, NodeLayout } from '@splootcode/core/language/type_registry'
+import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
@@ -15,6 +15,7 @@ export const NODE_INLINE_SPACING = 8
 export const NODE_INLINE_SPACING_SMALL = 6
 export const NODE_BLOCK_HEIGHT = 30
 export const LOOP_ANNOTATION_HEIGHT = 12
+export const INDENTED_BLOCK_PADDING_BOTTOM = 12
 const INDENT = 30
 
 export class RenderedParentRef {
@@ -178,7 +179,8 @@ export class NodeBlock implements NodeObserver {
     }
     this.x = x
     this.y = y
-    const nodeInlineSpacing = this.layout.small ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
+    const nodeInlineSpacing =
+      this.layout.boxType === NodeBoxType.SMALL_BLOCK ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
     this.blockWidth = nodeInlineSpacing + 2
     this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
     this.indentedBlockHeight = 0
@@ -197,7 +199,7 @@ export class NodeBlock implements NodeObserver {
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
-        this.indentedBlockHeight += childSetBlock.height
+        this.indentedBlockHeight += childSetBlock.height + INDENTED_BLOCK_PADDING_BOTTOM
       } else if (component.type === LayoutComponentType.CHILD_SET_STACK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
@@ -253,6 +255,7 @@ export class NodeBlock implements NodeObserver {
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         this.blockWidth += width
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         const childSetBlock = this.renderedChildSets[component.identifier]
@@ -262,8 +265,16 @@ export class NodeBlock implements NodeObserver {
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
+      } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+        marginRight = childSetBlock.width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, childSetBlock.width))
+        this.blockWidth = 0
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
       } else {
         const width = stringWidth(component.identifier) + nodeInlineSpacing
         leftPos += width
@@ -272,13 +283,7 @@ export class NodeBlock implements NodeObserver {
       }
     })
 
-    if (this.node.type === SPLOOT_EXPRESSION || this.node.type === PYTHON_EXPRESSION) {
-      const childSetBlock = this.renderedChildSets['tokens']
-      childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
-      marginRight = this.renderedChildSets['tokens'].width
-      this.blockWidth = 0
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-    } else if (selection !== null) {
+    if (selection !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
       selection.cursorMap.registerCursorStart(
         this.parentChildSet,
         this.index,
@@ -301,6 +306,20 @@ export class NodeBlock implements NodeObserver {
   selectRuntimeCaptureFrame(idx: number) {
     this.loopAnnotation.currentFrame = idx
     this.node.selectRuntimeCaptureFrame(idx)
+  }
+
+  getInlineLayoutComponents(): LayoutComponent[] {
+    const inlineComponents = []
+    for (const component of this.layout.components) {
+      if (
+        component.type === LayoutComponentType.CHILD_SET_BLOCK ||
+        component.type === LayoutComponentType.CHILD_SET_STACK
+      ) {
+        break
+      }
+      inlineComponents.push(component)
+    }
+    return inlineComponents
   }
 
   getNextInsertAfterThisNode(): NodeCursor {
@@ -327,6 +346,28 @@ export class NodeBlock implements NodeObserver {
     }
     // This is the last childset, go up a step.
     return this.getNextInsertAfterThisNode()
+  }
+
+  /**
+   * When a node is inserted which already has a child (or multiple child nodes) pre-filled
+   * we want the cursor to be posisitioned after the last inserted child node.
+   *
+   * @returns NodeCursor for the new insert position or null if no valid childset insert positions
+   */
+  getNextEndOfChildSetInsertCursor(): NodeCursor {
+    for (const childSetId of this.childSetOrder) {
+      const childSetListBlock = this.renderedChildSets[childSetId]
+      for (const nodeBlock of childSetListBlock.nodes) {
+        const cursor = nodeBlock.getNextEndOfChildSetInsertCursor()
+        if (cursor) {
+          return cursor
+        }
+      }
+      if (childSetListBlock.allowInsertCursor()) {
+        return new NodeCursor(childSetListBlock, childSetListBlock.nodes.length)
+      }
+    }
+    return null
   }
 
   getNextChildInsertCursor(): NodeCursor {

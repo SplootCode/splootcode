@@ -1,4 +1,4 @@
-import { ParentReference } from './node'
+import { ParentReference, SplootNode } from './node'
 import { SuggestedNode } from './suggested_node'
 
 export enum NodeCategory {
@@ -29,6 +29,7 @@ export enum NodeCategory {
   JssStyleProperties,
   PythonFile,
   PythonStatement,
+  PythonStatementContents,
   PythonElseBlock,
   PythonExpression,
   PythonExpressionToken,
@@ -52,6 +53,7 @@ export class EmptySuggestionGenerator implements SuggestionGenerator {
 const CategoryMap = new Map<NodeCategory, Set<string>>()
 const AutocompleteFunctionMap = new Map<NodeCategory, Set<SuggestionGenerator>>()
 const TypeToCategoryMap = new Map<string, Set<NodeCategory>>()
+const BlankFillMap = new Map<NodeCategory, () => SplootNode>()
 
 export function registerNodeCateogry(nodeType: string, category: NodeCategory, autocomplete: SuggestionGenerator) {
   if (!CategoryMap.has(category)) {
@@ -85,4 +87,15 @@ export function getAutocompleteFunctionsForCategory(category: NodeCategory): Set
     return new Set<SuggestionGenerator>()
   }
   return AutocompleteFunctionMap.get(category)
+}
+
+export function getBlankFillForCategory(category: NodeCategory): SplootNode {
+  if (category in BlankFillMap) {
+    return BlankFillMap[category]()
+  }
+  return null
+}
+
+export function registerBlankFillForNodeCategory(category: NodeCategory, generator: () => SplootNode) {
+  BlankFillMap[category] = generator
 }

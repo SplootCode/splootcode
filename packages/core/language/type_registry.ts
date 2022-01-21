@@ -20,15 +20,25 @@ export enum NodeAttachmentLocation {
   TOP,
 }
 
+export enum NodeBoxType {
+  STANDARD_BLOCK = 0,
+  SMALL_BLOCK,
+  INVISIBLE,
+}
+
 export class NodeLayout {
   color: HighlightColorCategory
   components: LayoutComponent[]
-  small: boolean
+  boxType: NodeBoxType
 
-  constructor(color: HighlightColorCategory, layoutComponents: LayoutComponent[], small = false) {
+  constructor(
+    color: HighlightColorCategory,
+    layoutComponents: LayoutComponent[],
+    boxType: NodeBoxType = NodeBoxType.STANDARD_BLOCK
+  ) {
     this.color = color
     this.components = layoutComponents
-    this.small = small
+    this.boxType = boxType
   }
 }
 

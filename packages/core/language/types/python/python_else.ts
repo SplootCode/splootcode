@@ -1,5 +1,11 @@
 import { ChildSetType } from '../../childset'
 import { ElseStatementData, StatementCapture } from '../../capture/runtime_capture'
+import {
+  EmptySuggestionGenerator,
+  NodeCategory,
+  SuggestionGenerator,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -9,8 +15,6 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
@@ -44,20 +48,10 @@ export class PythonElseBlock extends SplootNode {
     return this.getChildSet('block')
   }
 
-  clean() {
-    this.getBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getBlock().removeChild(index)
-        }
-      }
-    })
-  }
-
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -76,6 +70,7 @@ export class PythonElseBlock extends SplootNode {
         blockChildren[i].recursivelyClearRuntimeCapture()
       }
     }
+    return true
   }
 
   recursivelyClearRuntimeCapture() {
@@ -104,6 +99,7 @@ export class PythonElseBlock extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatement, new AppendGenerator())
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatementContents, new AppendGenerator())
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock, new EmptySuggestionGenerator())
   }
 }

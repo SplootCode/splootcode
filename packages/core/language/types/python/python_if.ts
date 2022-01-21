@@ -15,6 +15,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
@@ -68,10 +69,10 @@ export class PythonIfStatement extends SplootNode {
     })
   }
 
-  recursivelyApplyRuntimeCapture(capture: StatementCapture) {
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
-      return
+      return true
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
@@ -94,31 +95,13 @@ export class PythonIfStatement extends SplootNode {
     mutation.annotations = annotations
     this.fireMutation(mutation)
 
-    let i = 0
-    const trueBlockChildren = this.getTrueBlock().children
     if (data.trueblock) {
-      const trueBlockData = data.trueblock
-      for (; i < trueBlockData.length; i++) {
-        trueBlockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
-      }
+      this.getTrueBlock().recursivelyApplyRuntimeCapture(data.trueblock)
     }
-    if (i < trueBlockChildren.length) {
-      for (; i < trueBlockChildren.length; i++) {
-        trueBlockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
-    i = 0
-    const elseBlocks = this.getElseBlocks().children
     if (data.elseblocks) {
-      for (; i < data.elseblocks.length; i++) {
-        elseBlocks[i].recursivelyApplyRuntimeCapture(data.elseblocks[i])
-      }
+      this.getElseBlocks().recursivelyApplyRuntimeCapture(data.elseblocks)
     }
-    if (i < elseBlocks.length) {
-      for (; i < elseBlocks.length; i++) {
-        elseBlocks[i].recursivelyClearRuntimeCapture()
-      }
-    }
+    return true
   }
 
   recursivelyClearRuntimeCapture() {
@@ -147,22 +130,29 @@ export class PythonIfStatement extends SplootNode {
   }
 
   static register() {
-    const ifType = new TypeRegistration()
-    ifType.typeName = PYTHON_IF_STATEMENT
-    ifType.deserializer = PythonIfStatement.deserializer
-    ifType.childSets = {
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_IF_STATEMENT
+    typeRegistration.deserializer = PythonIfStatement.deserializer
+    typeRegistration.childSets = {
       condition: NodeCategory.PythonExpression,
       trueblock: NodeCategory.PythonStatement,
       elseblocks: NodeCategory.PythonElseBlock,
     }
-    ifType.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'if'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'trueblock'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_STACK, 'elseblocks'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
 
-    registerType(ifType)
-    registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatement, new Generator())
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatementContents, new Generator())
   }
 }

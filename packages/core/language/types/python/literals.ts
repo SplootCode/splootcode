@@ -83,11 +83,7 @@ export class PythonBool extends SplootNode {
 
   getNodeLayout() {
     const val = this.getValue() ? 'True' : 'False'
-    return new NodeLayout(
-      HighlightColorCategory.KEYWORD,
-      [new LayoutComponent(LayoutComponentType.KEYWORD, val)],
-      false
-    )
+    return new NodeLayout(HighlightColorCategory.KEYWORD, [new LayoutComponent(LayoutComponentType.KEYWORD, val)])
   }
 
   static register() {

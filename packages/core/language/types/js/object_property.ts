@@ -7,6 +7,7 @@ import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -75,7 +76,7 @@ export class ObjectProperty extends SplootNode {
         new LayoutComponent(LayoutComponentType.PROPERTY, 'key'),
         new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
       ],
-      true
+      NodeBoxType.SMALL_BLOCK
     )
     typeRegistration.pasteAdapters[OBJECT_EXPRESSION] = (node: SplootNode) => {
       const obj = new ObjectExpression(null)
