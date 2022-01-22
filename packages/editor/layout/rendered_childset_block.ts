@@ -50,8 +50,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   selectionState: SelectionState
   @observable
   componentType: LayoutComponentType
-  @observable
-  isLastInlineComponent: boolean
   childSetTreeLabels: string[]
   childSetRightAttachLabel: string
 
@@ -70,8 +68,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     parentRef: RenderedParentRef,
     selection: NodeSelection,
     childSet: ChildSet,
-    layoutComponent: LayoutComponent,
-    isLastInlineComponent: boolean
+    layoutComponent: LayoutComponent
   ) {
     this.parentRef = parentRef
     this.selection = selection
@@ -84,7 +81,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.componentType = layoutComponent.type
     this.width = 0
     this.height = 0
-    this.isLastInlineComponent = isLastInlineComponent
     this.childSet.children.forEach((childNode: SplootNode, i: number) => {
       const isInlineChild = this.componentType === LayoutComponentType.CHILD_SET_INLINE
       const childNodeBlock = new NodeBlock(this, childNode, selection, i, isInlineChild)
@@ -171,10 +167,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       const labels = this.childSetTreeLabels
       const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
-      let topPos = this.isLastInlineComponent ? y : y + NODE_BLOCK_HEIGHT + ROW_SPACING
-      this.height = this.isLastInlineComponent ? 0 : NODE_BLOCK_HEIGHT + ROW_SPACING
-      let indent = this.isLastInlineComponent ? 32 : 18
-      indent += maxLabelWidth
+      let topPos = y
+      this.height = 0
+      const indent = 32 + maxLabelWidth
       if (selection !== null && this.nodes.length === 0) {
         selection.cursorMap.registerCursorStart(this, 0, x, y, true)
       }
@@ -385,9 +380,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       const labels = this.childSetTreeLabels
       const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
-      let topPos = this.isLastInlineComponent ? this.y : this.y + NODE_BLOCK_HEIGHT + ROW_SPACING
-      let indent = this.isLastInlineComponent ? 32 : 18
-      indent += maxLabelWidth
+      let topPos = this.y
+      const indent = 32 + maxLabelWidth
 
       for (let i = 0; i < this.nodes.length; i++) {
         const childNodeBlock = this.nodes[i]

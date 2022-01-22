@@ -114,14 +114,7 @@ export class NodeBlock implements NodeObserver {
     this.rightAttachedChildSet = null
     this.leftBreadcrumbChildSet = null
 
-    const numComponents = this.layout.components.length
-
     this.layout.components.forEach((component: LayoutComponent, idx: number) => {
-      const isLastInlineComponent =
-        !this.isInlineChild &&
-        (idx === numComponents - 1 ||
-          (idx === numComponents - 2 &&
-            this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK))
       if (
         component.type === LayoutComponentType.CHILD_SET_BLOCK ||
         component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
@@ -135,13 +128,7 @@ export class NodeBlock implements NodeObserver {
         const childSet = node.getChildSet(component.identifier)
         this.childSetOrder.push(component.identifier)
         const childSetParentRef = new RenderedParentRef(this, component.identifier)
-        const renderedChildSet = new RenderedChildSetBlock(
-          childSetParentRef,
-          selection,
-          childSet,
-          component,
-          isLastInlineComponent
-        )
+        const renderedChildSet = new RenderedChildSetBlock(childSetParentRef, selection, childSet, component)
         this.renderedChildSets[component.identifier] = renderedChildSet
         if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
           this.rightAttachedChildSet = component.identifier
