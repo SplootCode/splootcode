@@ -239,6 +239,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     if (selection.state === SelectionState.Cursor) {
       if (e.key === 'Enter') {
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation()
         selection.insertNewlineOrUnindent()
       } else if (e.key === 'Backspace') {
         // If the cursor position lands on a selected node after delete

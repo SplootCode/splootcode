@@ -214,24 +214,19 @@ export class NodeSelection {
 
   @action
   unindent() {
-    let postInsertCursor = null
     const newLineCursor = this.cursor.listBlock.getUnindent(this.cursor.index)
     if (newLineCursor) {
       const deleteNode = this.cursor.listBlock.parentRef.node
       deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
-      postInsertCursor = newLineCursor
 
-      this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
       const category = newLineCursor.listBlock.childSet.nodeCategory
       const node = getBlankFillForCategory(category)
       if (node) {
         this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
         this.updateRenderPositions()
-        this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
-        while (!this.cursor.listBlock.allowInsertCursor()) {
-          this.moveCursorToNextInsert()
-        }
-        // Hack! Hacks to get around invalid/overlapping cursor positions
+        this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
+        this.updateCursorXYToCursor()
+        // Hack! To get around invalid/overlapping cursor positions
         this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
         return true
       }
@@ -249,8 +244,6 @@ export class NodeSelection {
     if (!newLineCursor) {
       return
     }
-
-    this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
     const category = newLineCursor.listBlock.childSet.nodeCategory
     const node = getBlankFillForCategory(category)
     if (node) {
@@ -260,7 +253,8 @@ export class NodeSelection {
       while (!this.cursor.listBlock.allowInsertCursor()) {
         this.moveCursorToNextInsert()
       }
-      // Hack! Hacks to get around invalid/overlapping cursor positions
+      this.updateCursorXYToCursor()
+      // Hack! To get around invalid/overlapping cursor positions
       this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
     }
   }
