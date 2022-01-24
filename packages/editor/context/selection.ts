@@ -1,3 +1,4 @@
+import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
@@ -294,16 +295,21 @@ export class NodeSelection {
 
   @action
   insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
-    // Insert node will also update the render positions.
-    listBlock.childSet.insertNode(node, index)
-    // Trigger a clean from the parent upward.
-    listBlock.parentRef.node.node.clean()
+    this.insertNodeByChildSet(listBlock.childSet, index, node)
   }
 
   insertNodeAtCurrentCursor(node: SplootNode) {
     if (this.isCursor()) {
       this.insertNode(this.cursor.listBlock, this.cursor.index, node)
     }
+  }
+
+  @action
+  insertNodeByChildSet(childSet: ChildSet, index: number, node: SplootNode) {
+    // Insert node will also update the render positions
+    childSet.insertNode(node, index)
+    // Trigger a clean from the parent upward.
+    node.parent.node.clean()
   }
 
   @action
@@ -318,13 +324,6 @@ export class NodeSelection {
     }
     // insert node at index.
     listBlock.childSet.insertNode(node, index)
-  }
-
-  @action
-  insertChildNode(listBlock: RenderedChildSetBlock, index: number, childSetId: string, node: SplootNode) {
-    const parentNode = listBlock.childSet.getChild(index)
-    const childset = parentNode.getChildSet(childSetId)
-    childset.addChild(node)
   }
 
   @action

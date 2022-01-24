@@ -16,6 +16,7 @@ import {
   registerType,
 } from '../../type_registry'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
+import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -23,11 +24,25 @@ export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
 class AppendGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    // TODO: This logic could be much cleaner if we had a way of hooking a
+    // an autocompleter into the right place (i.e. overlappting cursors)
+    if (parent.node.type === PYTHON_STATEMENT && parent.node.parent) {
+      const parentStatement = parent.node as PythonStatement
+      parent = parent.node.parent
+      index = parentStatement.parent.getChildSet().getIndexOf(parentStatement)
+    }
     const leftChild = parent.getChildSet().getChild(index - 1)
-    if (leftChild && leftChild.type === PYTHON_IF_STATEMENT) {
-      const node = new PythonElseBlock(null)
-      if ((leftChild as PythonIfStatement).allowAppendElse()) {
-        return [new SuggestedNode(node, `else`, `else`, true, 'Else block', null, 'elseblocks')]
+    if (leftChild && leftChild.type === PYTHON_STATEMENT) {
+      const leftStatement = leftChild as PythonStatement
+      const statementContents = leftStatement.getStatement().getChild(0)
+      if (statementContents && statementContents.type === PYTHON_IF_STATEMENT) {
+        const ifNode = statementContents as PythonIfStatement
+        if (ifNode.allowAppendElse()) {
+          const node = new PythonElseBlock(null)
+          const suggestion = new SuggestedNode(node, `else`, `else`, true, 'Else block')
+          suggestion.setOverrideLocation(ifNode.getElseBlocks(), ifNode.getElseBlocks().getCount())
+          return [suggestion]
+        }
       }
     }
     return []

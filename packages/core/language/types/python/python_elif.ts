@@ -13,9 +13,9 @@ import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '..
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
+import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
-import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
@@ -33,11 +33,25 @@ class InsertGenerator implements SuggestionGenerator {
 
 class AppendGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    // TODO: This logic could be much cleaner if we had a way of hooking a
+    // an autocompleter into the right place (i.e. overlappting cursors)
+    if (parent.node.type === PYTHON_STATEMENT && parent.node.parent) {
+      const parentStatement = parent.node as PythonStatement
+      parent = parent.node.parent
+      index = parentStatement.parent.getChildSet().getIndexOf(parentStatement)
+    }
     const leftChild = parent.getChildSet().getChild(index - 1)
-    if (leftChild && leftChild.type === PYTHON_IF_STATEMENT) {
-      const node = new PythonElifBlock(null)
-      if ((leftChild as PythonIfStatement).allowAppendElse()) {
-        return [new SuggestedNode(node, `elif`, `else elif`, true, 'Else-if block', null, 'elseblocks')]
+    if (leftChild && leftChild.type === PYTHON_STATEMENT) {
+      const leftStatement = leftChild as PythonStatement
+      const statementContents = leftStatement.getStatement().getChild(0)
+      if (statementContents && statementContents.type === PYTHON_IF_STATEMENT) {
+        const ifNode = statementContents as PythonIfStatement
+        if (ifNode.allowAppendElse()) {
+          const node = new PythonElifBlock(null)
+          const suggestion = new SuggestedNode(node, `elif`, `else elif`, true, 'Else-if block')
+          suggestion.setOverrideLocation(ifNode.getElseBlocks(), ifNode.getElseBlocks().getCount())
+          return [suggestion]
+        }
       }
     }
     return []
