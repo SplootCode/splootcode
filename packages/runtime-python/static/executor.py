@@ -309,6 +309,33 @@ def generateElseStatement(else_node):
 
     return statements
 
+
+def generateImportStatement(import_node):
+    aliases = []
+    moduleNames = import_node['childSets']['modules']
+    for moduleName in moduleNames:
+        aliases.append(ast.alias(moduleName['properties']['identifier']))
+
+    statements = [ast.Import(aliases)]
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
+    import_start_frame = ast.Call(
+        func,
+        args=[
+            ast.Constant("PYTHON_IMPORT"),
+            ast.Constant("import"),
+        ],
+        keywords=[],
+    )
+    statements.insert(0, ast.Expr(import_start_frame, lineno=1, col_offset=0))
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+    return statements
+
 def generateIfStatement(if_node):
     condition = generateAstExpression(if_node["childSets"]["condition"][0])
 
@@ -420,6 +447,8 @@ def generateAstStatement(sploot_node):
     elif sploot_node["type"] == "PYTHON_EXPRESSION":
         exp = generateAstExpressionStatement(sploot_node)
         return [exp]
+    elif sploot_node["type"] == "PYTHON_IMPORT":
+        return generateImportStatement(sploot_node)
     elif sploot_node["type"] == "PYTHON_ASSIGNMENT":
         return [generateAssignmentStatement(sploot_node)]
     elif sploot_node["type"] == "PYTHON_IF_STATEMENT":
