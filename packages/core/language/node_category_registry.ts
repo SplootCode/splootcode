@@ -35,6 +35,7 @@ export enum NodeCategory {
   PythonExpressionToken,
   PythonAssignableExpressionToken,
   PythonModuleIdentifier,
+  PythonModuleAttribute,
 }
 
 export interface SuggestionGenerator {

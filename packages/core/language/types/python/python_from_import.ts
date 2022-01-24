@@ -36,7 +36,7 @@ export class PythonFromImport extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FROM_IMPORT)
     this.addChildSet('module', ChildSetType.Single, NodeCategory.PythonModuleIdentifier)
-    this.addChildSet('attrs', ChildSetType.Many, NodeCategory.DeclaredIdentifier)
+    this.addChildSet('attrs', ChildSetType.Many, NodeCategory.PythonModuleAttribute)
   }
 
   getModule() {
