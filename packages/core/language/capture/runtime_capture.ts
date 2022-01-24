@@ -18,6 +18,10 @@ export interface IfStatementData {
   elseblocks?: StatementCapture[]
 }
 
+export interface ImportStatementData {
+  import: StatementCapture[]
+}
+
 export interface ElseIfStatementData {
   condition: StatementCapture[]
   block: StatementCapture[]
@@ -38,7 +42,14 @@ export interface SingleStatementData {
 
 export interface StatementCapture {
   type: string
-  data?: PythonFileData | WhileLoopData | WhileLoopIteration | IfStatementData | SingleStatementData | ElseStatementData
+  data?:
+    | PythonFileData
+    | WhileLoopData
+    | WhileLoopIteration
+    | IfStatementData
+    | SingleStatementData
+    | ElseStatementData
+    | ImportStatementData
   sideEffects?: SideEffect[]
   exceptionType?: string
   exceptionMessage?: string

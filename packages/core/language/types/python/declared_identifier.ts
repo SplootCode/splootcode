@@ -33,6 +33,24 @@ function sanitizeIdentifier(textInput: string): string {
     .join('')
 }
 
+export class ModuleAttributeGenerator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number) {
+    // TODO: Use parent's module name to autocomplete module attributes
+    return []
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+    let varName = sanitizeIdentifier(textInput)
+    if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
+      varName = '_' + varName
+    }
+
+    const newVar = new PythonDeclaredIdentifier(null, varName)
+    const suggestedNode = new SuggestedNode(newVar, `identifier ${varName}`, 'new variable', true, 'new variable')
+    return [suggestedNode]
+  }
+}
+
 export class VariableDeclarationGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
     const scope = parent.node.getScope()
@@ -95,5 +113,6 @@ export class PythonDeclaredIdentifier extends SplootNode {
       NodeCategory.PythonAssignableExpressionToken,
       new VariableDeclarationGenerator()
     )
+    registerNodeCateogry(PYTHON_DECLARED_IDENTIFIER, NodeCategory.PythonModuleAttribute, new ModuleAttributeGenerator())
   }
 }
