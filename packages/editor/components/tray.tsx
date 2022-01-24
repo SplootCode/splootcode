@@ -129,7 +129,7 @@ function getTrayNodeSuggestions(rootNode: SplootNode): [NodeBlock[], number] {
   const renderedNodes = []
   let topPos = 10
   for (const node of nodes) {
-    const nodeBlock = new NodeBlock(null, node, null, 0, false)
+    const nodeBlock = new NodeBlock(null, node, null, 0)
     nodeBlock.calculateDimensions(16, topPos, null)
     topPos += nodeBlock.rowHeight + nodeBlock.indentedBlockHeight + 10
     renderedNodes.push(nodeBlock)

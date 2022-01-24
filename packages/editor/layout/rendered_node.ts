@@ -59,8 +59,6 @@ export class NodeBlock implements NodeObserver {
   rightAttachedChildSet: string
   @observable
   leftBreadcrumbChildSet: string
-  @observable
-  isInlineChild: boolean
 
   @observable
   x: number
@@ -84,13 +82,7 @@ export class NodeBlock implements NodeObserver {
   @observable
   loopAnnotation: LoopAnnotation
 
-  constructor(
-    parentListBlock: RenderedChildSetBlock,
-    node: SplootNode,
-    selection: NodeSelection,
-    index: number,
-    isInlineChild: boolean
-  ) {
+  constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number) {
     this.parentChildSet = parentListBlock
     this.selection = selection
     this.index = index
@@ -105,7 +97,6 @@ export class NodeBlock implements NodeObserver {
       this.node.registerObserver(this)
     }
     this.renderedInlineComponents = []
-    this.isInlineChild = isInlineChild
     this.blockWidth = 0
     this.marginLeft = 0
 
@@ -176,13 +167,7 @@ export class NodeBlock implements NodeObserver {
     let leftPos = this.x + nodeInlineSpacing
     let marginRight = 0
     this.marginLeft = 0
-    const numComponents = this.layout.components.length
     this.layout.components.forEach((component: LayoutComponent, idx) => {
-      const isLastInlineComponent =
-        !this.isInlineChild &&
-        (idx === numComponents - 1 ||
-          (idx === numComponents - 2 &&
-            this.layout.components[numComponents - 1].type === LayoutComponentType.CHILD_SET_BLOCK))
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
@@ -211,14 +196,10 @@ export class NodeBlock implements NodeObserver {
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
 
-        if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-          // This minus 8 here accounts for the distance from the dot to the edge of the node.
-          // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 8, 0)
-        } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-        }
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        // This minus 8 here accounts for the distance from the dot to the edge of the node.
+        // This is dumb tbh.
+        marginRight += Math.max(childSetBlock.width - 8, 0)
       } else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
@@ -226,15 +207,10 @@ export class NodeBlock implements NodeObserver {
         this.blockWidth += width
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-
-        if (isLastInlineComponent) {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-          // This minus 8 here accounts for the distance from the dot to the edge of the node.
-          // This is dumb tbh.
-          marginRight += Math.max(childSetBlock.width - 8, 0)
-        } else {
-          this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-        }
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
+        // This minus 8 here accounts for the distance from the dot to the edge of the node.
+        // This is dumb tbh.
+        marginRight += Math.max(childSetBlock.width - 8, 0)
       } else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)

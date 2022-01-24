@@ -430,7 +430,7 @@ export class NodeSelection {
   }
 
   startDrag(nodeBlock: NodeBlock, offsetX: number, offestY: number) {
-    const tempNodeBlock = new NodeBlock(null, nodeBlock.node, null, 0, false)
+    const tempNodeBlock = new NodeBlock(null, nodeBlock.node, null, 0)
     tempNodeBlock.calculateDimensions(0, 0, null)
     this.dragState = {
       node: tempNodeBlock,

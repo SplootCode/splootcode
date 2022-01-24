@@ -82,8 +82,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.width = 0
     this.height = 0
     this.childSet.children.forEach((childNode: SplootNode, i: number) => {
-      const isInlineChild = this.componentType === LayoutComponentType.CHILD_SET_INLINE
-      const childNodeBlock = new NodeBlock(this, childNode, selection, i, isInlineChild)
+      const childNodeBlock = new NodeBlock(this, childNode, selection, i)
       this.nodes.push(childNodeBlock)
     })
 
@@ -644,8 +643,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   handleChildSetMutation(mutation: ChildSetMutation): void {
     if (mutation.type === ChildSetMutationType.INSERT) {
       mutation.nodes.forEach((node: SplootNode, idx: number) => {
-        const isInlineChild = this.componentType === LayoutComponentType.CHILD_SET_INLINE
-        const nodeBlock = new NodeBlock(this, node, this.selection, mutation.index + idx, isInlineChild)
+        const nodeBlock = new NodeBlock(this, node, this.selection, mutation.index + idx)
         this.nodes.splice(mutation.index + idx, 0, nodeBlock)
       })
       this.renumberChildren()
