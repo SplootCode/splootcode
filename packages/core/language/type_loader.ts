@@ -40,6 +40,7 @@ import { PythonElseBlock } from './types/python/python_else'
 import { PythonExpression } from './types/python/python_expression'
 import { PythonFile } from './types/python/python_file'
 import { PythonForLoop } from './types/python/python_for'
+import { PythonFromImport } from './types/python/python_from_import'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
@@ -127,6 +128,7 @@ export function loadTypes() {
   PythonFile.register()
   PythonStatement.register()
   PythonImport.register()
+  PythonFromImport.register()
   PythonModuleIdentifier.register()
   PythonIfStatement.register()
   PythonElseBlock.register()
