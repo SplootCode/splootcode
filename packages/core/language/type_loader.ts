@@ -41,6 +41,7 @@ import { PythonExpression } from './types/python/python_expression'
 import { PythonFile } from './types/python/python_file'
 import { PythonForLoop } from './types/python/python_for'
 import { PythonFromImport } from './types/python/python_from_import'
+import { PythonFunctionDeclaration } from './types/python/python_function'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
@@ -135,6 +136,7 @@ export function loadTypes() {
   PythonElifBlock.register()
   PythonWhileLoop.register()
   PythonForLoop.register()
+  PythonFunctionDeclaration.register()
   PythonExpression.register()
   PythonBinaryOperator.register()
   PythonCallVariable.register()

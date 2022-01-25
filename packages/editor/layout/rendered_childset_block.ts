@@ -168,7 +168,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
       let topPos = y
       this.height = 0
-      const indent = 32 + maxLabelWidth
+      const indent = 24 + maxLabelWidth
       if (selection !== null && this.nodes.length === 0) {
         selection.cursorMap.registerCursorStart(this, 0, x, y, true)
       }
@@ -182,7 +182,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         childNodeBlock.calculateDimensions(x + indent, topPos, selection)
         topPos += childNodeBlock.rowHeight + ROW_SPACING
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
-        this.width = Math.max(this.width, childNodeBlock.blockWidth + childNodeBlock.rowWidth + indent)
+        this.width = Math.max(this.width, childNodeBlock.rowWidth + indent)
       })
       if (this.nodes.length === insertIndex) {
         const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
@@ -299,20 +299,27 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         leftPos += boxWidth
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-      const labelWidth = labelStringWidth(this.childSetRightAttachLabel) + 4
-      let leftPos = x + 16 + labelWidth
-      this.width += labelWidth
-      if (selection !== null && this.nodes.length === 0) {
-        selection.cursorMap.registerCursorStart(this, 0, x, y, true)
+      let leftPos = x + 16 // starting bracket space
+      this.width += 16
+      this.height = NODE_BLOCK_HEIGHT
+      if (selection !== null && this.allowInsert()) {
+        selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true)
+        leftPos += EXPRESSION_TOKEN_SPACING
+        this.width += EXPRESSION_TOKEN_SPACING
       }
-      // Will only ever be one
-      this.nodes.forEach((childNodeBlock: NodeBlock) => {
+      this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         childNodeBlock.calculateDimensions(leftPos, y, selection)
-        leftPos += childNodeBlock.rowWidth
-        this.width += childNodeBlock.rowWidth
+        if (selection !== null && this.allowInsert()) {
+          selection.cursorMap.registerCursorStart(this, idx + 1, leftPos + childNodeBlock.rowWidth, y, true)
+        }
+        leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
+        this.width += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
         this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight)
       })
-      this.width += 22 // Space for brackets
+      if (!this.allowInsert()) {
+        this.width -= EXPRESSION_TOKEN_SPACING
+      }
+      this.width += 8 // Space for brackets at end
     }
   }
 
@@ -412,9 +419,18 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         return [this.x + indent, topPos]
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
-      // Only ever one child, so this one is easier to calculate.
-      const labelWidth = labelStringWidth(this.childSetRightAttachLabel)
-      return [this.x + 18 + labelWidth, this.y]
+      let leftPos = this.x + 16 + EXPRESSION_TOKEN_SPACING
+      for (let i = 0; i < this.nodes.length; i++) {
+        const childNodeBlock = this.nodes[i]
+        if (i === insertIndex) {
+          return [leftPos, this.y]
+        }
+        leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
+      }
+      if (this.nodes.length === insertIndex) {
+        return [leftPos, this.y]
+      }
+      return [this.x + this.width, this.y]
     }
     console.warn('Insert position not implemented for LayoutComponentType', LayoutComponentType[this.componentType])
     return [100, 100]
