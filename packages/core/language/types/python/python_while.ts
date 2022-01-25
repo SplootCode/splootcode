@@ -98,7 +98,7 @@ export class PythonWhileLoop extends SplootNode {
       const condition = frameData.condition[0]
       const conditionData = condition.data as SingleStatementData
 
-      if (condition.sideEffects.length > 0) {
+      if (condition.sideEffects && condition.sideEffects.length > 0) {
         const stdout = condition.sideEffects
           .filter((sideEffect) => sideEffect.type === 'stdout')
           .map((sideEffect) => sideEffect.value)

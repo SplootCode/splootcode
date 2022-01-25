@@ -107,7 +107,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                 className={connectorClass}
                 x1={leftPos + 8}
                 y1={topPos + 16}
-                x2={nodeBlock.x - 8}
+                x2={nodeBlock.x - 4}
                 y2={topPos + 16}
               />
             )
@@ -125,7 +125,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                   ' ' +
                   (nodeBlock.y + 16) +
                   ' H ' +
-                  (nodeBlock.x - 8)
+                  (nodeBlock.x - 4)
                 }
                 fill="transparent"
               />
@@ -137,7 +137,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
               {label}
               <path
                 className={connectorClass}
-                d={'M ' + (nodeBlock.x - 6) + ' ' + nodeBlock.y + ' a 40 40 45 0 0 0 30'}
+                d={'M ' + nodeBlock.x + ' ' + nodeBlock.y + ' a 40 40 45 0 0 0 30'}
                 fill="transparent"
               ></path>
               <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />

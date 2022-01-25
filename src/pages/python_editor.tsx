@@ -24,7 +24,7 @@ export const PythonEditorPanels = (props: WebEditorProps) => {
     const file = pack.getDefaultFile()
     const selectFile = (pack: SplootPackage, file: SplootFile) => {
       const editorState = new EditorState()
-      const newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0, false)
+      const newRootNode = new NodeBlock(null, file.rootNode, editorState.selection, 0)
       editorState.selection.setRootNode(newRootNode)
       editorState.setRootNode(newRootNode)
       setSelectedFile(editorState)

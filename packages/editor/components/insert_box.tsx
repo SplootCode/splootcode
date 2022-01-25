@@ -23,7 +23,7 @@ interface RenderedSuggestion extends SuggestedNode {
 
 function renderSuggestion(suggestedNode: SuggestedNode): RenderedSuggestion {
   const rendered = suggestedNode as RenderedSuggestion
-  rendered.nodeBlock = new NodeBlock(null, suggestedNode.node, null, 0, false)
+  rendered.nodeBlock = new NodeBlock(null, suggestedNode.node, null, 0)
   rendered.nodeBlock.calculateDimensions(0, 0, null)
   return rendered
 }
