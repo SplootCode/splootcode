@@ -10,8 +10,8 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
 import { ParentReference, SplootNode } from '../../node'
-import { PythonDeclaredIdentifier } from './declared_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -64,6 +64,19 @@ export class PythonFunctionDeclaration extends SplootNode {
         returnType: { type: 'any' },
       },
     } as FunctionDefinition)
+
+    const scope = this.getScope(false)
+    this.getParams().children.forEach((paramNode) => {
+      if (paramNode.type === PYTHON_DECLARED_IDENTIFIER) {
+        const identifier = paramNode as PythonDeclaredIdentifier
+        scope.addVariable({
+          name: identifier.getName(),
+          deprecated: false,
+          type: { type: 'any' },
+          documentation: 'Function parameter',
+        })
+      }
+    })
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFunctionDeclaration {

@@ -5,6 +5,7 @@ import traceback
 
 
 SPLOOT_KEY = "__spt__"
+iterationLimit = None
 
 
 def generateCallMember(node):
@@ -456,6 +457,44 @@ def generateWhileStatement(while_node):
         ast.Expr(while_end_frame, lineno=1, col_offset=0),
     ]
 
+def generateFunctionArguments(arg_list):
+    args = []
+    for param in arg_list:
+        name = param['properties']['identifier']
+        args.append(ast.arg(name))
+    return ast.arguments(
+        posonlyargs=[],
+        args=args,
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[])
+
+def generateFunctionStatement(func_node):
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(
+        value=key, attr="startFrame", ctx=ast.Load()
+    )
+    args = [
+        ast.Constant("PYTHON_FUNCTION_CALL"),
+        ast.Constant("body"),
+    ]
+    call_start_frame = ast.Call(func, args, keywords=[])
+    
+    statements = getStatementsFromBlock(func_node["childSets"]["body"])
+
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+
+    statements.insert(0, ast.Expr(call_start_frame, lineno=1, col_offset=0))
+    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+
+    nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
+
+    funcArgs = generateFunctionArguments(func_node['childSets']['params'])
+    
+    return [ast.FunctionDef(nameIdentifier, funcArgs, statements, [])]
+
 
 def generateForStatement(for_node):
     target = generateAstAssignableExpression(for_node["childSets"]["target"][0])
@@ -484,6 +523,8 @@ def generateAstStatement(sploot_node):
         return generateWhileStatement(sploot_node)
     elif sploot_node["type"] == "PYTHON_FOR_LOOP":
         return [generateForStatement(sploot_node)]
+    elif sploot_node["type"] == "PYTHON_FUNCTION_DECLARATION":
+        return generateFunctionStatement(sploot_node)
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
@@ -501,13 +542,12 @@ class CaptureContext:
             self.blocks[childset] = []
 
     def addStatementResult(self, type, data, sideEffects):
-        self.blocks[self.childset].append(
-            {
-                "type": type,
-                "data": data,
-                "sideEffects": sideEffects,
-            }
-        )
+        res = {"data": data}
+        if type:
+            res["type"] = type
+        if sideEffects:
+            res["sideEffects"] = sideEffects
+        self.blocks[self.childset].append(res)
 
     def addExceptionResult(self, exceptionType, message):
         self.blocks[self.childset].append(
@@ -537,7 +577,7 @@ class SplootCapture:
 
     def logExpressionResultAndStartFrame(self, nodetype, childset, result):
         self.startFrame(nodetype, childset)
-        self.logExpressionResult(nodetype, {}, result)
+        self.logExpressionResult(None, {}, result)
         return result
 
     def startFrame(self, type, childset):
@@ -594,91 +634,14 @@ def executePythonFile(tree):
         return capture.toDict()
 
 
+def wrapStdout(write):
+    def f(s):
+        if capture:
+            capture.logSideEffect({"type": "stdout", "value": str(s)})
+        write(s)
+    return f
+
 if __name__ == "__main__":
-    nodetree = {
-        "type": "PYTHON_FILE",
-        "properties": {},
-        "childSets": {
-            "body": [
-                {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                        "tokens": [
-                            {
-                                "type": "PYTHON_CALL_VARIABLE",
-                                "properties": {"identifier": "print"},
-                                "childSets": {
-                                    "arguments": [
-                                        {
-                                            "type": "SPLOOT_EXPRESSION",
-                                            "properties": {},
-                                            "childSets": {
-                                                "tokens": [
-                                                    {
-                                                        "type": "STRING_LITERAL",
-                                                        "properties": {
-                                                            "value": "Hello, World!"
-                                                        },
-                                                        "childSets": {},
-                                                    }
-                                                ]
-                                            },
-                                        },
-                                        {
-                                            "type": "PYTHON_EXPRESSION",
-                                            "properties": {},
-                                            "childSets": {
-                                                "tokens": [
-                                                    {
-                                                        "type": "NUMERIC_LITERAL",
-                                                        "properties": {"value": 123},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "PYTHON_BINARY_OPERATOR",
-                                                        "properties": {"operator": "*"},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "NUMERIC_LITERAL",
-                                                        "properties": {"value": 1000},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "PYTHON_BINARY_OPERATOR",
-                                                        "properties": {"operator": "+"},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "NUMERIC_LITERAL",
-                                                        "properties": {"value": 12},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "PYTHON_BINARY_OPERATOR",
-                                                        "properties": {"operator": "*"},
-                                                        "childSets": {},
-                                                    },
-                                                    {
-                                                        "type": "NUMERIC_LITERAL",
-                                                        "properties": {"value": 1000},
-                                                        "childSets": {},
-                                                    },
-                                                ]
-                                            },
-                                        },
-                                    ]
-                                },
-                            }
-                        ]
-                    },
-                }
-            ]
-        },
-    }
-    executePythonFile(nodetree)
-else:
     import fakeprint  # pylint: disable=import-error
     import nodetree  # pylint: disable=import-error
     import runtime_capture # pylint: disable=import-error
@@ -686,14 +649,9 @@ else:
     # Only wrap stdout once.
     # Horrifying hack.
     try:
-        wrapStdout
+        wrapStdin
     except NameError:
-        def wrapStdout(write):
-            def f(s):
-                if capture:
-                    capture.logSideEffect({"type": "stdout", "value": str(s)})
-                write(s)
-            return f
+        
 
         def wrapStdin(readline):
             def f():
