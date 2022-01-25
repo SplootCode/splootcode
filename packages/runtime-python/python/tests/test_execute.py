@@ -16,20 +16,22 @@ class ExecuteTest(unittest.TestCase):
             cap = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
-            'type': 'PYTHON_FILE',
-            'data': {
-                'body': [
-                    {
-                        'type': 'PYTHON_EXPRESSION',
-                        'data': {'result': 'None', 'resultType': 'NoneType'},
-                        'sideEffects': [
-                            {"type": "stdout", "value": 'Hello, World!'},
-                            {"type": "stdout", "value": '\n'},
-                        ]
-                    }
-                ]
-            }
-        })
+            'root': {
+                'type': 'PYTHON_FILE',
+                'data': {
+                    'body': [
+                        {
+                            'type': 'PYTHON_EXPRESSION',
+                            'data': {'result': 'None', 'resultType': 'NoneType'},
+                            'sideEffects': [
+                                {"type": "stdout", "value": 'Hello, World!'},
+                                {"type": "stdout", "value": '\n'},
+                            ]
+                        }
+                    ]
+                }
+            },
+            'detached': {}})
         
         self.assertEqual(f.getvalue(), "Hello, World!\n")
     
@@ -43,6 +45,7 @@ while count < 3:
         cap = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
+        'root': {
             'type': 'PYTHON_FILE',
             'data': {
                 'body': [
@@ -84,4 +87,54 @@ while count < 3:
                     }
                 ]
             }
-        })
+        },
+        'detached': {}})
+
+
+    def testFunctionDeclaration(self):
+        self.maxDiff = None
+        splootFile = splootFromPython('''
+def add(a, b):
+    print(a + b)
+add(3, 4)
+add(123, 45)
+''')
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
+
+        self.assertEqual(cap, {
+        'root': {
+            'type': 'PYTHON_FILE',
+            'data': {
+                'body': [
+                    {'type': 'PYTHON_EXPRESSION', 'data': {'result': 'None','resultType': 'NoneType'}},
+                    {'type': 'PYTHON_EXPRESSION', 'data': {'result': 'None','resultType': 'NoneType'}},
+                ]
+            }
+        },
+        'detached': {
+            'add': [
+                {
+                    'type': 'PYTHON_FUNCTION_CALL',
+                    'data': {
+                        'body': [{
+                            'type': 'PYTHON_EXPRESSION',
+                            'data': {'result': 'None','resultType': 'NoneType'},
+                            'sideEffects': [{'type': 'stdout', 'value': '7'}, {'type': 'stdout', 'value': '\n'}],
+                        }]
+                    },
+                },
+                {
+                    'type': 'PYTHON_FUNCTION_CALL',
+                    'data': {
+                        'body': [{
+                            'type': 'PYTHON_EXPRESSION',
+                            'data': {'result': 'None','resultType': 'NoneType'},
+                            'sideEffects': [{'type': 'stdout', 'value': '168'}, {'type': 'stdout', 'value': '\n'}],
+                        }]
+                    },
+                }
+            ]
+        }})

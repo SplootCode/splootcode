@@ -470,13 +470,16 @@ def generateFunctionArguments(arg_list):
         defaults=[])
 
 def generateFunctionStatement(func_node):
+    nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
+
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(
-        value=key, attr="startFrame", ctx=ast.Load()
+        value=key, attr="startDetachedFrame", ctx=ast.Load()
     )
     args = [
         ast.Constant("PYTHON_FUNCTION_CALL"),
         ast.Constant("body"),
+        ast.Constant(nameIdentifier)
     ]
     call_start_frame = ast.Call(func, args, keywords=[])
     
@@ -489,7 +492,6 @@ def generateFunctionStatement(func_node):
     statements.insert(0, ast.Expr(call_start_frame, lineno=1, col_offset=0))
     statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
-    nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
 
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
     
@@ -573,12 +575,19 @@ class SplootCapture:
     def __init__(self):
         self.root = CaptureContext("PYTHON_FILE", "body")
         self.stack = [self.root]
+        self.detachedFrames = {}
         self.sideEffects = []
 
     def logExpressionResultAndStartFrame(self, nodetype, childset, result):
         self.startFrame(nodetype, childset)
         self.logExpressionResult(None, {}, result)
         return result
+
+    def startDetachedFrame(self, type, childset, id):
+        frame = CaptureContext(type, childset)
+        self.detachedFrames.setdefault(id, [])
+        self.detachedFrames[id].append(frame)
+        self.stack.append(frame)
 
     def startFrame(self, type, childset):
         frame = CaptureContext(type, childset)
@@ -606,7 +615,10 @@ class SplootCapture:
         self.stack[-1].addExceptionResult(exceptionType, message)
 
     def toDict(self):
-        return self.root.toDict()
+        cap = {"root": self.root.toDict(), "detached": {}}
+        for id in self.detachedFrames:
+            cap['detached'][id] = [context.toDict() for context in self.detachedFrames[id]]
+        return cap
 
 
 capture = None
@@ -646,13 +658,11 @@ if __name__ == "__main__":
     import nodetree  # pylint: disable=import-error
     import runtime_capture # pylint: disable=import-error
 
-    # Only wrap stdout once.
+    # Only wrap stdin/stdout once.
     # Horrifying hack.
     try:
         wrapStdin
     except NameError:
-        
-
         def wrapStdin(readline):
             def f():
                 runtime_capture.report(json.dumps(capture.toDict()))

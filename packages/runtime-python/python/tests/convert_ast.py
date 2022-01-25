@@ -1,3 +1,4 @@
+from re import S
 from executor import OPERATORS
 import ast
 
@@ -93,6 +94,24 @@ def generateWhile(whileStatement):
     'block': body
   })
 
+def generateArgs(arguments):
+  if len(arguments.posonlyargs) != 0:
+    raise Exception('Unsupported: postion-only arguments')
+  if arguments.vararg or arguments.kwarg:
+    raise Exception('Unsupported: *args and **kwargs function arguments')
+  if len(arguments.kwonlyargs) != 0:
+    raise Exception('Unsupported: Keyword-only arguments')
+  if len(arguments.defaults) != 0:
+    raise Exception('Unsupported: Default values for function arguments')
+  return [SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {'identifier': a.arg}) for a in arguments.args]
+
+def generateFunction(func):
+  return SplootNode('PYTHON_FUNCTION_DECLARATION', {
+    'identifier': [SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {'identifier': func.name})],
+    'params': generateArgs(func.args),
+    'body': [generateSplootStatement(s) for s in func.body]
+  })
+
 def generateSplootStatement(statement):
   if type(statement) == ast.Expr:
     expr = generateExpression(statement.value)
@@ -103,6 +122,9 @@ def generateSplootStatement(statement):
   elif type(statement) == ast.While:
     whileNode = generateWhile(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [whileNode]})
+  elif type(statement) == ast.FunctionDef:
+    func = generateFunction(statement)
+    return SplootNode("PYTHON_STATEMENT", {"statement": [func]})
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   

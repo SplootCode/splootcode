@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
 import { observer } from 'mobx-react'
 
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
@@ -8,6 +7,7 @@ import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './python_frame.css'
+import { CapturePayload } from '@splootcode/core/language/capture/runtime_capture'
 
 export enum FrameState {
   DEAD = 0,
@@ -144,7 +144,7 @@ export class PythonFrame extends Component<ViewPageProps> {
         this.lastHeartbeatTimestamp = new Date()
         break
       case 'runtime_capture':
-        const capture = JSON.parse(event.data.capture) as StatementCapture
+        const capture = JSON.parse(event.data.capture) as CapturePayload
         this.updateRuntimeCapture(capture)
         break
       default:
@@ -152,13 +152,13 @@ export class PythonFrame extends Component<ViewPageProps> {
     }
   }
 
-  updateRuntimeCapture(capture: StatementCapture) {
+  updateRuntimeCapture(capture: CapturePayload) {
     // TODO: handle mutliple python files or different names.
     const filename = 'main.py'
     this.props.pkg
       .getLoadedFile(filename)
       .then((file) => {
-        file.rootNode.recursivelyApplyRuntimeCapture(capture)
+        file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
       })
       .catch((err) => {
         console.warn(err)
