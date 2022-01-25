@@ -1,0 +1,25 @@
+name: Python tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-linters:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Run tests
+        run: cd packages/runtime-python/python && python -m unittest
+      
