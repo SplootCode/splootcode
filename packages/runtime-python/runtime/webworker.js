@@ -55,7 +55,7 @@ let nodetree = null
 
 const run = async () => {
   try {
-    await pyodide.runPythonAsync(executorCode)
+    await pyodide.runPython(executorCode)
   } catch (err) {
     postMessage({
       type: 'stdout',
@@ -98,6 +98,7 @@ const initialise = async () => {
       })
     },
   })
+  pyodide.globals.set('__name__', '__main__')
   postMessage({
     type: 'ready',
   })

@@ -5,9 +5,7 @@ import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annota
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { NodeObserver } from '@splootcode/core/language/observers'
-import { PYTHON_EXPRESSION } from '@splootcode/core/language/types/python/python_expression'
 import { RenderedChildSetBlock, stringWidth } from './rendered_childset_block'
-import { SPLOOT_EXPRESSION } from '@splootcode/core/language/types/js/expression'
 import { SplootNode } from '@splootcode/core/language/node'
 import { getColour } from '@splootcode/core/colors'
 
@@ -129,12 +127,6 @@ export class NodeBlock implements NodeObserver {
         }
       }
     })
-
-    if (node.type === SPLOOT_EXPRESSION || node.type === PYTHON_EXPRESSION) {
-      this.blockWidth = this.renderedChildSets['tokens'].width
-      const childSetBlock = this.renderedChildSets['tokens']
-      this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
-    }
   }
 
   updateLayout() {
@@ -165,6 +157,15 @@ export class NodeBlock implements NodeObserver {
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
     let leftPos = this.x + nodeInlineSpacing
+    if (
+      this.layout.boxType === NodeBoxType.INVISIBLE &&
+      this.parentChildSet &&
+      (this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_BLOCK ||
+        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
+        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_INLINE)
+    ) {
+      leftPos = this.x
+    }
     let marginRight = 0
     this.marginLeft = 0
     this.layout.components.forEach((component: LayoutComponent, idx) => {
@@ -228,14 +229,15 @@ export class NodeBlock implements NodeObserver {
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
-        marginRight = childSetBlock.width
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, childSetBlock.width))
-        this.blockWidth = 0
+        leftPos += childSetBlock.width
+        this.blockWidth += childSetBlock.width
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
       } else {

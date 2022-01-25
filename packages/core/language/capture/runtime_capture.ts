@@ -54,3 +54,8 @@ export interface StatementCapture {
   exceptionType?: string
   exceptionMessage?: string
 }
+
+export interface CapturePayload {
+  root: StatementCapture
+  detached: { [key: string]: StatementCapture[] }
+}

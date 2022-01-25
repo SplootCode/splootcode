@@ -83,6 +83,7 @@ export class SplootNode {
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      return false
     }
     if (capture.type == 'EXCEPTION') {
       this.applyRuntimeError(capture)

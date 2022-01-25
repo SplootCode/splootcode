@@ -1,3 +1,6 @@
+# Python
+__pycache__
+
 # non-dev env files
 production.env
 

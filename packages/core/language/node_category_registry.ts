@@ -34,6 +34,8 @@ export enum NodeCategory {
   PythonExpression,
   PythonExpressionToken,
   PythonAssignableExpressionToken,
+  PythonFunctionName,
+  PythonFunctionArgumentDeclaration,
   PythonModuleIdentifier,
   PythonModuleAttribute,
 }
