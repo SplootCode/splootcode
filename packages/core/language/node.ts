@@ -38,7 +38,7 @@ export class SplootNode {
   enableMutations: boolean
   mutationObservers: NodeObserver[]
   scope: Scope
-  isLoop: boolean
+  isRepeatableBlock: boolean
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
@@ -49,7 +49,7 @@ export class SplootNode {
     this.enableMutations = false
     this.mutationObservers = []
     this.scope = null
-    this.isLoop = false
+    this.isRepeatableBlock = false
   }
 
   get hasChildSets(): boolean {

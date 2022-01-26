@@ -33,7 +33,7 @@ class Generator implements SuggestionGenerator {
 export class PythonForLoop extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FOR_LOOP)
-    this.isLoop = true
+    this.isRepeatableBlock = true
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonAssignableExpressionToken)
     this.addChildSet('iterable', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))

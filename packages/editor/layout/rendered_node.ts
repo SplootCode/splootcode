@@ -144,7 +144,7 @@ export class NodeBlock implements NodeObserver {
 
   calculateDimensions(x: number, y: number, selection: NodeSelection) {
     this.marginTop = 0
-    if (this.node.isLoop) {
+    if (this.node.isRepeatableBlock) {
       this.marginTop = LOOP_ANNOTATION_HEIGHT
     }
     this.x = x

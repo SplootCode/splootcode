@@ -39,7 +39,7 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FUNCTION_DECLARATION)
-    this.isLoop = true
+    this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
@@ -95,7 +95,6 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
-      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
       return false
     }
     if (capture.type === 'EXCEPTION') {
@@ -140,7 +139,7 @@ export class PythonFunctionDeclaration extends SplootNode {
     mutation.node = this
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotation
-    mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    mutation.loopAnnotation = { label: 'Called', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
   }
 
@@ -149,6 +148,11 @@ export class PythonFunctionDeclaration extends SplootNode {
     mutation.node = this
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = []
+    mutation.loopAnnotation = {
+      label: 'Called',
+      currentFrame: 0,
+      iterations: 0,
+    }
     this.fireMutation(mutation)
     this.getBody().recursivelyApplyRuntimeCapture([])
   }
