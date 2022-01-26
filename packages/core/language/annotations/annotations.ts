@@ -15,6 +15,7 @@ export type NodeAnnotation = {
 }
 
 export type LoopAnnotation = {
+  label: string
   iterations: number
   currentFrame: number
 }

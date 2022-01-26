@@ -109,8 +109,8 @@ def generateFunction(func):
   return SplootNode('PYTHON_FUNCTION_DECLARATION', {
     'identifier': [SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {'identifier': func.name})],
     'params': generateArgs(func.args),
-    'body': [generateSplootStatement(s) for s in func.body]
-  })
+    'body': [generateSplootStatement(s) for s in func.body],
+  }, {'id': None})
 
 def generateSplootStatement(statement):
   if type(statement) == ast.Expr:

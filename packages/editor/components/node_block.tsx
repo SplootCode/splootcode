@@ -8,9 +8,9 @@ import { ExpandedListBlockView, InlineListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
-import { LoopAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { TokenListBlockView } from './token_list_block'
 import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
@@ -89,8 +89,8 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     let internalLeftPos = leftPos + 10
 
     let loopAnnotation = null
-    if (block.node.isLoop) {
-      loopAnnotation = <LoopAnnotation nodeBlock={block} />
+    if (block.node.isRepeatableBlock) {
+      loopAnnotation = <RepeatedBlockAnnotation nodeBlock={block} />
     }
 
     let shape: ReactElement

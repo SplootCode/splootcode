@@ -37,7 +37,7 @@ export class PythonWhileLoop extends SplootNode {
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_WHILE_LOOP)
-    this.isLoop = true
+    this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
     this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
@@ -66,7 +66,7 @@ export class PythonWhileLoop extends SplootNode {
         },
       },
     ]
-    mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
   }
 
@@ -112,15 +112,13 @@ export class PythonWhileLoop extends SplootNode {
           type: conditionData.resultType,
         },
       })
-      if (frameData.block) {
-        this.getBlock().recursivelyApplyRuntimeCapture(frameData.block)
-      }
+      this.getBlock().recursivelyApplyRuntimeCapture(frameData.block || [])
     }
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotation
-    mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
   }
 

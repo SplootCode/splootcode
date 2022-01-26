@@ -15,15 +15,15 @@ import {
 import { formatPythonAssingment, formatPythonReturnValue } from '@splootcode/core/language/types/python/utils'
 import { stringWidth } from '../layout/rendered_childset_block'
 
-interface LoopAnnotationProps {
+interface RepeatedBlockAnnotationProps {
   nodeBlock: NodeBlock
 }
 
 @observer
-export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
+export class RepeatedBlockAnnotation extends React.Component<RepeatedBlockAnnotationProps> {
   private sliderRef: React.RefObject<SVGGElement>
 
-  constructor(props: LoopAnnotationProps) {
+  constructor(props: RepeatedBlockAnnotationProps) {
     super(props)
     this.sliderRef = React.createRef()
   }
@@ -35,16 +35,20 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
       return null
     }
     const frames = loopAnnotation.iterations
-    const currentFrame = loopAnnotation.currentFrame
+    const currentFrame = loopAnnotation.currentFrame || 0
 
-    // Loops always have frames, even if it's just to evaluate the condition, and the body is never run.
-    if (frames > 0) {
-      const label = `Ran ${frames - 1} times`
+    const selected = currentFrame > frames - 1 || currentFrame === -1 ? frames - 1 : currentFrame
+    let label = `${loopAnnotation.label} ${frames} times`
+    let numLabel = `${selected + 1}`
+    if (block.node.type === 'PYTHON_WHILE_LOOP') {
+      label = `${loopAnnotation.label} ${frames - 1} times`
+      numLabel = selected == frames - 1 ? 'end' : numLabel
+    }
+
+    if (frames > 1) {
       const dotX = block.x + 6 + stringWidth(label)
-      const selected = currentFrame > frames - 1 || currentFrame === -1 ? frames - 1 : currentFrame
-      const width = Math.min((frames - 1) * 10, 200)
+      const width = Math.min(frames * 10, 200)
       const location = (selected / (frames - 1)) * width
-      const numLabel = `${selected == frames - 1 ? 'end' : selected + 1}`
       const numLabelWidth = Math.max(stringWidth('end'), stringWidth(`${frames}`)) + 24
       return (
         <g>
@@ -95,7 +99,13 @@ export class LoopAnnotation extends React.Component<LoopAnnotationProps> {
         </g>
       )
     }
-    return null
+    return (
+      <g>
+        <text x={block.x + 2} y={block.y + 8} className="annotation" xmlSpace="preserve">
+          {label}
+        </text>
+      </g>
+    )
   }
 
   clickHandler = (event: React.MouseEvent) => {

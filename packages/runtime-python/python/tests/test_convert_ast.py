@@ -86,7 +86,7 @@ add(3, 4)
             "childSets": {
                 "statement": [{
                     "type": "PYTHON_FUNCTION_DECLARATION",
-                    "properties": {},
+                    "properties": {'id': None},
                     "childSets": {
                         "identifier": [{'type': 'PYTHON_DECLARED_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'add'}}],
                         "body": [

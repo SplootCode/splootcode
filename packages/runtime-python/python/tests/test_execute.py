@@ -99,6 +99,10 @@ def add(a, b):
 add(3, 4)
 add(123, 45)
 ''')
+        # Set ID on function node:
+        self.assertIsNone(splootFile['childSets']['body'][0]['childSets']['statement'][0]['properties']['id'])
+        splootFile['childSets']['body'][0]['childSets']['statement'][0]['properties']['id'] = "TEST_FUNC_ID"
+
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
@@ -115,7 +119,7 @@ add(123, 45)
             }
         },
         'detached': {
-            'add': [
+            'TEST_FUNC_ID': [
                 {
                     'type': 'PYTHON_FUNCTION_CALL',
                     'data': {

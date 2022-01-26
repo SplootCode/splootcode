@@ -7,7 +7,12 @@ import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './python_frame.css'
-import { CapturePayload } from '@splootcode/core/language/capture/runtime_capture'
+import {
+  CapturePayload,
+  FunctionDeclarationData,
+  StatementCapture,
+} from '@splootcode/core/language/capture/runtime_capture'
+import { allRegisteredFunctionIDs, getRegisteredFunction } from '@splootcode/core/language/scope/scope'
 
 export enum FrameState {
   DEAD = 0,
@@ -159,6 +164,21 @@ export class PythonFrame extends Component<ViewPageProps> {
       .getLoadedFile(filename)
       .then((file) => {
         file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
+        for (const funcID in capture.detached) {
+          const funcNode = getRegisteredFunction(funcID)
+          const funcDeclarationStatement: StatementCapture = {
+            type: 'PYTHON_FUNCTION_DECLARATION',
+            data: {
+              calls: capture.detached[funcID],
+            } as FunctionDeclarationData,
+          }
+          funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
+        }
+        for (const funcID of allRegisteredFunctionIDs()) {
+          if (!(funcID in capture.detached)) {
+            getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
+          }
+        }
       })
       .catch((err) => {
         console.warn(err)
