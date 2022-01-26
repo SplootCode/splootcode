@@ -32,7 +32,6 @@ export class PythonFile extends SplootNode {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
-    console.log(capture)
     const data = capture.data as PythonFileData
     this.getBody().recursivelyApplyRuntimeCapture(data.body)
     return true
