@@ -134,9 +134,9 @@ export class SplootNode {
   recursivelyBuildScope() {
     if (isScopedNodeType(this.type)) {
       if (this.parent !== null) {
-        this.scope = new Scope(this.parent.node.getScope())
+        this.scope = new Scope(this.parent.node.getScope(), this.type)
       } else {
-        this.scope = new Scope(getGlobalScope())
+        this.scope = new Scope(getGlobalScope(), this.type)
       }
     }
     this.addSelfToScope()

@@ -505,6 +505,15 @@ def generateForStatement(for_node):
     statements = getStatementsFromBlock(for_node["childSets"]["block"])
     return ast.For(target, iterable, statements, [])
 
+def generateReturnStatement(return_node):
+    ret_expr = generateAstExpression(return_node['childSets']['value'][0])
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="logExpressionResultAndEndFrames", ctx=ast.Load())
+    args = [ast.Constant("PYTHON_RETURN"), ast.Constant("PYTHON_FUNCTION_CALL"), ret_expr]
+    wrapped = ast.Call(func, args=args, keywords=[])
+    return [
+        ast.Return(wrapped)
+    ]
 
 def generateAstStatement(sploot_node):
     if sploot_node["type"] == "PYTHON_STATEMENT":
@@ -528,6 +537,8 @@ def generateAstStatement(sploot_node):
         return [generateForStatement(sploot_node)]
     elif sploot_node["type"] == "PYTHON_FUNCTION_DECLARATION":
         return generateFunctionStatement(sploot_node)
+    elif sploot_node["type"] == "PYTHON_RETURN":
+        return generateReturnStatement(sploot_node)
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
@@ -582,6 +593,13 @@ class SplootCapture:
     def logExpressionResultAndStartFrame(self, nodetype, childset, result):
         self.startFrame(nodetype, childset)
         self.logExpressionResult(None, {}, result)
+        return result
+
+    def logExpressionResultAndEndFrames(self, nodetype, frameType, result):
+        self.logExpressionResult(nodetype, {}, result)
+        while frameType != self.stack[-1].type:
+            self.endFrame()
+        self.endFrame()
         return result
 
     def startDetachedFrame(self, type, childset, id):
