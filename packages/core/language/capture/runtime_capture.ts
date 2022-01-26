@@ -35,6 +35,14 @@ export interface PythonFileData {
   body?: StatementCapture[]
 }
 
+export interface FunctionDeclarationData {
+  calls: StatementCapture[]
+}
+
+export interface FunctionCallData {
+  body: StatementCapture[]
+}
+
 export interface SingleStatementData {
   result: string
   resultType: string
@@ -50,6 +58,8 @@ export interface StatementCapture {
     | SingleStatementData
     | ElseStatementData
     | ImportStatementData
+    | FunctionDeclarationData
+    | FunctionCallData
   sideEffects?: SideEffect[]
   exceptionType?: string
   exceptionMessage?: string

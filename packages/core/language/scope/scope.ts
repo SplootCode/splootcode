@@ -64,7 +64,6 @@ export function addPropertyToTypeExpression(originalType: TypeExpression, proper
 
 export class Scope {
   parent: Scope
-  id: string
   isGlobal: boolean
   variables: { [key: string]: VariableDefinition }
   properties: { [key: string]: VariableDefinition }
@@ -187,7 +186,27 @@ export class Scope {
   }
 }
 
+function generateRandomID(): string {
+  const r = (Math.random() + 1).toString(36).substring(7)
+  return r
+}
+
+export function registerFunction(funcNode: SplootNode) {
+  const id = generateRandomID()
+  functionRegistry[id] = funcNode
+  return id
+}
+
+export function getRegisteredFunction(id: string): SplootNode {
+  return functionRegistry[id]
+}
+
+export function allRegisteredFunctionIDs(): string[] {
+  return Object.keys(functionRegistry)
+}
+
 let globalScope
+let functionRegistry
 
 export function getGlobalScope(): Scope {
   return globalScope
@@ -195,7 +214,6 @@ export function getGlobalScope(): Scope {
 
 export async function generateScope(rootNode: SplootNode) {
   const scope = new Scope(null)
-  scope.id = 'global'
   scope.isGlobal = true
   // Must hardcode this string instead of importing, because of bootstrapping issue.
   if (rootNode.type === 'JAVASCRIPT_FILE') {
@@ -217,5 +235,6 @@ export async function generateScope(rootNode: SplootNode) {
     })
   }
   globalScope = scope
+  functionRegistry = {}
   rootNode.recursivelyBuildScope()
 }

@@ -1,4 +1,5 @@
 import { ChildSetType } from '../../childset'
+import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '../../capture/runtime_capture'
 import { FunctionDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -9,11 +10,14 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
+import { registerFunction } from '../../scope/scope'
 
 export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 
@@ -30,11 +34,18 @@ class Generator implements SuggestionGenerator {
 }
 
 export class PythonFunctionDeclaration extends SplootNode {
+  runtimeCapture: FunctionDeclarationData
+  runtimeCaptureFrame: number
+
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FUNCTION_DECLARATION)
+    this.isLoop = true
+    this.runtimeCapture = null
+    this.runtimeCaptureFrame = 0
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
     this.addChildSet('params', ChildSetType.Many, NodeCategory.PythonFunctionArgumentDeclaration)
     this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.setProperty('id', null)
   }
 
   getIdentifier() {
@@ -53,6 +64,9 @@ export class PythonFunctionDeclaration extends SplootNode {
     if (this.getIdentifier().getCount() === 0) {
       // No identifier, we can't be added to the scope.
       return
+    }
+    if (!this.getProperty('id')) {
+      this.setProperty('id', registerFunction(this))
     }
     const identifier = (this.getIdentifier().getChild(0) as PythonDeclaredIdentifier).getName()
     this.getScope(true).addFunction({
@@ -77,6 +91,66 @@ export class PythonFunctionDeclaration extends SplootNode {
         })
       }
     })
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      return false
+    }
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture)
+      this.runtimeCapture = null
+      return true
+    }
+    const data = capture.data as FunctionDeclarationData
+    this.runtimeCapture = data
+    this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    return true
+  }
+
+  selectRuntimeCaptureFrame(index: number) {
+    if (!this.runtimeCapture) {
+      this.recursivelyClearRuntimeCapture()
+      return
+    }
+    this.runtimeCaptureFrame = index
+    index = Math.min(this.runtimeCapture.calls.length - 1, index)
+    if (index == -1) {
+      index = this.runtimeCapture.calls.length - 1
+    }
+    const annotation: NodeAnnotation[] = []
+
+    const frames = this.runtimeCapture.calls
+    const frame = frames[index]
+
+    if (frame.type === 'EXCEPTION') {
+      annotation.push({
+        type: NodeAnnotationType.RuntimeError,
+        value: {
+          errorType: frame.exceptionType,
+          errorMessage: frame.exceptionMessage,
+        },
+      })
+    } else {
+      const frameData = frame.data as FunctionCallData
+      this.getBody().recursivelyApplyRuntimeCapture(frameData.body)
+    }
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = annotation
+    mutation.loopAnnotation = { iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    this.fireMutation(mutation)
+  }
+
+  recursivelyClearRuntimeCapture() {
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = []
+    this.fireMutation(mutation)
+    this.getBody().recursivelyApplyRuntimeCapture([])
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFunctionDeclaration {

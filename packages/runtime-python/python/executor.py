@@ -471,6 +471,7 @@ def generateFunctionArguments(arg_list):
 
 def generateFunctionStatement(func_node):
     nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
+    func_id = func_node['properties']['id']
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(
@@ -479,7 +480,7 @@ def generateFunctionStatement(func_node):
     args = [
         ast.Constant("PYTHON_FUNCTION_CALL"),
         ast.Constant("body"),
-        ast.Constant(nameIdentifier)
+        ast.Constant(func_id)
     ]
     call_start_frame = ast.Call(func, args, keywords=[])
     

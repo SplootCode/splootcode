@@ -76,6 +76,7 @@ export class PythonIfStatement extends SplootNode {
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      return false
     }
     const data = capture.data as IfStatementData
     const condition = data.condition[0]
