@@ -1,0 +1,105 @@
+import { ChildSetType } from '../../childset'
+import { HighlightColorCategory } from '../../../colors'
+import {
+  LayoutComponent,
+  LayoutComponentType,
+  NodeLayout,
+  SerializedNode,
+  TypeRegistration,
+  registerType,
+} from '../../type_registry'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
+import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_FUNCTION_DECLARATION } from './python_function'
+import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
+import { PythonStatement } from './python_statement'
+import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
+import { SuggestedNode } from '../../suggested_node'
+
+export const PYTHON_RETURN = 'PYTHON_RETURN'
+
+class Generator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    if (!parent.node.getScope().isInside(PYTHON_FUNCTION_DECLARATION)) {
+      return []
+    }
+    const sampleNode = new PythonReturn(null)
+    const suggestedNode = new SuggestedNode(sampleNode, 'return', 'return', true)
+    return [suggestedNode]
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    return []
+  }
+}
+
+export class PythonReturn extends SplootNode {
+  constructor(parentReference: ParentReference) {
+    super(parentReference, PYTHON_RETURN)
+    this.addChildSet('value', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.getChildSet('value').addChild(new PythonExpression(null))
+  }
+
+  getValue() {
+    return this.getChildSet('value')
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
+    if (capture.type == 'EXCEPTION') {
+      this.applyRuntimeError(capture)
+      return true
+    }
+    if (capture.type != 'PYTHON_RETURN') {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+    }
+
+    const annotations: NodeAnnotation[] = getSideEffectAnnotations(capture)
+    const data = capture.data as SingleStatementData
+    annotations.push({
+      type: NodeAnnotationType.ReturnValue,
+      value: {
+        type: data.resultType,
+        value: data.result,
+      },
+    })
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = annotations
+    this.fireMutation(mutation)
+    return true
+  }
+
+  static deserializer(serializedNode: SerializedNode): PythonReturn {
+    const node = new PythonReturn(null)
+    node.getValue().removeChild(0)
+    node.deserializeChildSet('value', serializedNode)
+    return node
+  }
+
+  static register() {
+    const typeRegistration = new TypeRegistration()
+    typeRegistration.typeName = PYTHON_RETURN
+    typeRegistration.deserializer = PythonReturn.deserializer
+    typeRegistration.properties = []
+    typeRegistration.childSets = {
+      value: NodeCategory.Expression,
+    }
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'return'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'value'),
+    ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_STATEMENT: (node: SplootNode) => {
+        const statement = new PythonStatement(null)
+        statement.getStatement().addChild(node)
+        return statement
+      },
+    }
+
+    registerType(typeRegistration)
+    registerNodeCateogry(PYTHON_RETURN, NodeCategory.PythonStatementContents, new Generator())
+  }
+}

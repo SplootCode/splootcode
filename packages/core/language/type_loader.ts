@@ -45,6 +45,7 @@ import { PythonFunctionDeclaration } from './types/python/python_function'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
+import { PythonReturn } from './types/python/python_return'
 import { PythonStatement } from './types/python/python_statement'
 import { PythonVariableReference } from './types/python/variable_reference'
 import { PythonWhileLoop } from './types/python/python_while'
@@ -137,6 +138,7 @@ export function loadTypes() {
   PythonWhileLoop.register()
   PythonForLoop.register()
   PythonFunctionDeclaration.register()
+  PythonReturn.register()
   PythonExpression.register()
   PythonBinaryOperator.register()
   PythonCallVariable.register()

@@ -96,12 +96,8 @@ export class PythonIfStatement extends SplootNode {
     mutation.annotations = annotations
     this.fireMutation(mutation)
 
-    if (data.trueblock) {
-      this.getTrueBlock().recursivelyApplyRuntimeCapture(data.trueblock)
-    }
-    if (data.elseblocks) {
-      this.getElseBlocks().recursivelyApplyRuntimeCapture(data.elseblocks)
-    }
+    this.getTrueBlock().recursivelyApplyRuntimeCapture(data.trueblock || [])
+    this.getElseBlocks().recursivelyApplyRuntimeCapture(data.elseblocks || [])
     return true
   }
 

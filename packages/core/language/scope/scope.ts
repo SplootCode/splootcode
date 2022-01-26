@@ -64,14 +64,16 @@ export function addPropertyToTypeExpression(originalType: TypeExpression, proper
 
 export class Scope {
   parent: Scope
+  nodeType: string
   isGlobal: boolean
   variables: { [key: string]: VariableDefinition }
   properties: { [key: string]: VariableDefinition }
   components: { [key: string]: ComponentDefinition }
   functions: { [key: string]: FunctionDefinition }
 
-  constructor(parent: Scope) {
+  constructor(parent: Scope, nodeType: string) {
     this.parent = parent
+    this.nodeType = nodeType
     this.variables = {}
     this.components = {}
     this.properties = {}
@@ -184,6 +186,16 @@ export class Scope {
     }
     return this.parent.getComponentDefinitionByName(name)
   }
+
+  isInside(nodeType: string): boolean {
+    if (this.isGlobal) {
+      return false
+    }
+    if (this.nodeType === nodeType) {
+      return true
+    }
+    return this.parent.isInside(nodeType)
+  }
 }
 
 function generateRandomID(): string {
@@ -213,7 +225,7 @@ export function getGlobalScope(): Scope {
 }
 
 export async function generateScope(rootNode: SplootNode) {
-  const scope = new Scope(null)
+  const scope = new Scope(null, null)
   scope.isGlobal = true
   // Must hardcode this string instead of importing, because of bootstrapping issue.
   if (rootNode.type === 'JAVASCRIPT_FILE') {
