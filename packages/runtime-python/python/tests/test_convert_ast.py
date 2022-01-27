@@ -152,3 +152,63 @@ add(3, 4)
     ]
 }
 })
+
+    def testList(self):
+        self.maxDiff = None
+
+        fileNode = splootFromPython('x = ["hello", 234]')
+        self.assertEqual(fileNode, {
+"type":"PYTHON_FILE",
+"properties":{},
+"childSets":{
+    "body": [
+        {
+            "type": "PYTHON_STATEMENT",
+            "childSets": {
+                "statement": [{
+                    "type": 'PYTHON_ASSIGNMENT',
+                    "childSets": {
+                        "left": [{
+                            "type": "PYTHON_DECLARED_IDENTIFIER",
+                            "childSets": {},
+                            "properties": {"identifier": 'x'}
+                        }],
+                        "right": [{
+                            "type": "PYTHON_EXPRESSION",
+                            "childSets": {
+                                "tokens": [
+                                    {
+                                        "type": "PYTHON_LIST",
+                                        "childSets": {
+                                            "elements": [
+                                                {
+                                                    "type": "PYTHON_EXPRESSION",
+                                                    "childSets": {
+                                                        "tokens": [{"type": "STRING_LITERAL", "childSets": {}, "properties": {"value": "hello"}}]
+                                                    },
+                                                    "properties": {}
+                                                },
+                                                {
+                                                    "type": "PYTHON_EXPRESSION",
+                                                    "childSets": {
+                                                        "tokens": [{"type": "NUMERIC_LITERAL", "childSets": {}, "properties": {"value": 234}}]
+                                                    },
+                                                    "properties": {}
+                                                },
+                                            ]
+                                        },
+                                        "properties": {}
+                                    }
+                                ]
+                            },
+                            "properties": {}
+                        }]
+                    },
+                    "properties": {}
+                }]
+            },
+            "properties": {},
+        }
+    ]
+}})
+
