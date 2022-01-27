@@ -64,6 +64,10 @@ def appendCompareOperatorExpression(comp, tokens):
     generateExpression(comparator, tokens)
 
 
+def appendListToken(list, tokens):
+  elements = [generateExpression(expr) for expr in list.elts]
+  tokens.append(SplootNode('PYTHON_LIST', {'elements': elements}))
+
 def appendVariableReference(name, tokens):
   tokens.append(SplootNode('PYTHON_VARIABLE_REFERENCE', {}, {'identifier': name.id}))
 
@@ -81,6 +85,8 @@ def generateExpression(expr, tokens=None):
     appendBinaryOperatorExpression(expr, tokens)
   elif type(expr) == ast.Compare:
     appendCompareOperatorExpression(expr, tokens)
+  elif type(expr) == ast.List:
+    appendListToken(expr, tokens)
   else:
     raise Exception(f'Unrecognised expression type: {ast.dump(expr)}')
   

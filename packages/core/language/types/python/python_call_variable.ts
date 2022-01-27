@@ -1,10 +1,6 @@
-import * as recast from 'recast'
-
-import { CallExpressionKind, ExpressionKind } from 'ast-types/gen/kinds'
 import { ChildSetType } from '../../childset'
 import { FunctionDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -69,15 +65,6 @@ export class PythonCallVariable extends SplootNode {
 
   setIdentifier(identifier: string) {
     this.properties.identifiter = identifier
-  }
-
-  generateJsAst(): CallExpressionKind {
-    const identifier = recast.types.builders.identifier(this.getIdentifier())
-    const args = this.getArguments().children.map((argNode: JavaScriptSplootNode) => {
-      return argNode.generateJsAst() as ExpressionKind
-    })
-    const call = recast.types.builders.callExpression(identifier, args)
-    return call
   }
 
   getArgumentNames(): string[] {

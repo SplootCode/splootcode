@@ -142,3 +142,27 @@ add(123, 45)
                 }
             ]
         }})
+
+    def testList(self):
+        self.maxDiff = None
+        splootFile = splootFromPython('''x = ['hello', 123]''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
+
+        self.assertEqual(cap, {
+            'root': {
+                'type': 'PYTHON_FILE',
+                'data': {
+                    'body': [
+                        {
+                            'type': 'PYTHON_ASSIGNMENT',
+                            'data': {'result': "['hello', 123]", 'resultType': 'list'}
+                        }
+                    ]
+                }
+            },
+            'detached': {}
+        })
