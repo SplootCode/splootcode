@@ -42,6 +42,7 @@ import { PythonFile } from './types/python/python_file'
 import { PythonForLoop } from './types/python/python_for'
 import { PythonFromImport } from './types/python/python_from_import'
 import { PythonFunctionDeclaration } from './types/python/python_function'
+import { PythonIdentifier } from './types/python/python_identifier'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
 import { PythonList } from './types/python/python_list'
@@ -134,7 +135,6 @@ export function loadTypes() {
   PythonBool.register()
   PythonCallMember.register()
   PythonCallVariable.register()
-  PythonDeclaredIdentifier.register()
   PythonElifBlock.register()
   PythonElseBlock.register()
   PythonExpression.register()
@@ -142,6 +142,7 @@ export function loadTypes() {
   PythonForLoop.register()
   PythonFromImport.register()
   PythonFunctionDeclaration.register()
+  PythonIdentifier.register()
   PythonIfStatement.register()
   PythonImport.register()
   PythonList.register()
@@ -149,10 +150,14 @@ export function loadTypes() {
   PythonReturn.register()
   PythonStatement.register()
   PythonSubscript.register()
-  PythonVariableReference.register()
   PythonWhileLoop.register()
 
   NoneLiteral.register()
+
+  // Register deprecated types to provide paste adapters for deserialisation of legacy files/pastes.
+  // They do not register into any NodeCategory and cannot be inserted.
+  PythonDeclaredIdentifier.register()
+  PythonVariableReference.register()
 
   // Must go at the end
   resolvePasteAdapters()

@@ -11,8 +11,9 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
+import { PYTHON_IDENTIFIER } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonDeclaredIdentifier } from './declared_identifier'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
@@ -36,7 +37,7 @@ class Generator implements SuggestionGenerator {
 export class PythonAssignment extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ASSIGNMENT)
-    this.addChildSet('left', ChildSetType.Single, NodeCategory.PythonAssignableExpressionToken) // Can only ever be one token
+    this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable)
     this.addChildSet('right', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('right').addChild(new PythonExpression(null))
   }
@@ -51,21 +52,24 @@ export class PythonAssignment extends SplootNode {
 
   addSelfToScope() {
     const identifierChildSet = this.getLeft()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
-      this.getScope().addVariable({
-        name: (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName(),
-        deprecated: false,
-        documentation: 'Variable',
-        type: { type: 'any' },
-      } as VariableDefinition)
+    for (const leftChild of identifierChildSet.children) {
+      if (leftChild.type === PYTHON_IDENTIFIER) {
+        this.getScope().addVariable({
+          name: (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName(),
+          deprecated: false,
+          documentation: 'Variable',
+          type: { type: 'any' },
+        } as VariableDefinition)
+      }
     }
   }
 
   getLeftAsString(): string {
     const identifierChildSet = this.getLeft()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
+    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
       return (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName()
     }
+    // TODO: Handle things like subscripts and upacking for annotations
     return ''
   }
 
@@ -110,12 +114,12 @@ export class PythonAssignment extends SplootNode {
     typeRegistration.deserializer = PythonAssignment.deserializer
     typeRegistration.properties = []
     typeRegistration.childSets = {
-      left: NodeCategory.PythonAssignableExpressionToken,
+      left: NodeCategory.PythonAssignable,
       right: NodeCategory.Expression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'left'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'to'),
     ])
     typeRegistration.pasteAdapters = {

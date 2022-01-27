@@ -15,23 +15,17 @@ import { HighlightColorCategory } from '../../../colors'
 import { PYTHON_CALL_MEMBER } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { PYTHON_VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
+import { PYTHON_IDENTIFIER } from './python_identifier'
 import { STRING_LITERAL } from '../literals'
 
 export const PYTHON_SUBSCRIPT = 'PYTHON_SUBSCRIPT'
 
 class Generator implements SuggestionGenerator {
-  variableGenerator: VariableReferenceGenerator
-
-  constructor() {
-    this.variableGenerator = new VariableReferenceGenerator()
-  }
-
   staticSuggestions(parent: ParentReference, index: number) {
     const leftChild = parent.getChildSet().getChild(index - 1)
     if (
       leftChild &&
-      [PYTHON_VARIABLE_REFERENCE, PYTHON_CALL_MEMBER, PYTHON_SUBSCRIPT, STRING_LITERAL, PYTHON_CALL_VARIABLE].indexOf(
+      [PYTHON_IDENTIFIER, PYTHON_CALL_MEMBER, PYTHON_SUBSCRIPT, STRING_LITERAL, PYTHON_CALL_VARIABLE].indexOf(
         leftChild.type
       ) !== -1
     ) {
@@ -83,7 +77,7 @@ export class PythonSubscript extends SplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'target'),
-      new LayoutComponent(LayoutComponentType.KEYWORD, `lookup`),
+      new LayoutComponent(LayoutComponentType.KEYWORD, `item`),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'key'),
     ])
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
@@ -94,5 +88,6 @@ export class PythonSubscript extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonExpressionToken, new Generator())
+    registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonAssignable, new Generator())
   }
 }

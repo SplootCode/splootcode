@@ -25,10 +25,10 @@ def generateList(node):
     els = [generateAstExpression(el) for el in node['childSets']['elements']]
     return ast.List(els, ast.Load())
 
-def generateSubscript(node):
+def generateSubscript(node, context=ast.Load()):
     value = generateAstExpressionToken(node['childSets']['target'][0])
     index = generateAstExpression(node['childSets']['key'][0])
-    return ast.Subscript(value, index, ast.Load())
+    return ast.Subscript(value, index, context)
 
 def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
@@ -43,12 +43,9 @@ def generateAstExpressionToken(node):
         return ast.Constant(node["properties"]["value"])
     elif node["type"] == "PYTHON_NONE":
         return ast.Constant(None)
-    elif node["type"] == "PYTHON_VARIABLE_REFERENCE":
+    elif node["type"] == "PY_IDENTIFIER":
         identifier = node["properties"]["identifier"]
         return ast.Name(identifier, ctx=ast.Load())
-    elif node["type"] == "PYTHON_DECLARED_IDENTIFIER":
-        identifier = node["properties"]["identifier"]
-        return ast.Name(identifier, ctx=ast.Store())
     elif node["type"] == "PYTHON_CALL_MEMBER":
         return generateCallMember(node)
     elif node["type"] == "PYTHON_LIST":
@@ -59,13 +56,19 @@ def generateAstExpressionToken(node):
         raise Exception(f'Unrecognised expression token type: {node["type"]}')
 
 
-def generateAstAssignableExpression(node):
-    if node["type"] == "PYTHON_VARIABLE_REFERENCE":
-        identifier = node["properties"]["identifier"]
-        return ast.Name(identifier, ctx=ast.Store())
-    elif node["type"] == "PYTHON_DECLARED_IDENTIFIER":
-        identifier = node["properties"]["identifier"]
-        return ast.Name(identifier, ctx=ast.Store())
+def generateAstAssignableExpression(nodeList):
+    targets = []
+    for node in nodeList:
+        if node["type"] == "PY_IDENTIFIER":
+            identifier = node["properties"]["identifier"]
+            targets.append(ast.Name(identifier, ctx=ast.Store()))
+        elif node["type"] == "PYTHON_SUBSCRIPT":
+            targets.append(generateSubscript(node, context=ast.Store()))
+        else:
+            raise Exception(f'Unrecognised assignable expression token: {node["type"]}')
+    if len(targets) > 1:
+        return ast.Tuple(targets, ast.Store())
+    return targets[0]
 
 
 def parseLeaf(tokens, currentIndex):
@@ -225,7 +228,7 @@ def generateAstExpressionStatement(exp_node):
 
 
 def generateAssignmentStatement(assign_node):
-    target = generateAstAssignableExpression(assign_node["childSets"]["left"][0])
+    target = generateAstAssignableExpression(assign_node["childSets"]["left"])
     value = generateAstExpression(assign_node["childSets"]["right"][0])
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
@@ -506,14 +509,13 @@ def generateFunctionStatement(func_node):
     statements.insert(0, ast.Expr(call_start_frame, lineno=1, col_offset=0))
     statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
-
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
     
     return [ast.FunctionDef(nameIdentifier, funcArgs, statements, [])]
 
 
 def generateForStatement(for_node):
-    target = generateAstAssignableExpression(for_node["childSets"]["target"][0])
+    target = generateAstAssignableExpression(for_node["childSets"]["target"])
     iterable = generateAstExpression(for_node["childSets"]["iterable"][0])
     statements = getStatementsFromBlock(for_node["childSets"]["block"])
     return ast.For(target, iterable, statements, [])

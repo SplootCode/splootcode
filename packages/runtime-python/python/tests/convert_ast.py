@@ -20,7 +20,7 @@ def generateAssignmentTarget(targets):
     raise Exception("Unsupported: multiple targets for assignment")
   target = targets[0]
   if type(target) == ast.Name:
-    return SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {"identifier": target.id})
+    return SplootNode('PY_IDENTIFIER', {}, {"identifier": target.id})
   
   raise Exception(f"Unsupported target for assignment: {ast.dump(target)}")
 
@@ -68,8 +68,8 @@ def appendListToken(list, tokens):
   elements = [generateExpression(expr) for expr in list.elts]
   tokens.append(SplootNode('PYTHON_LIST', {'elements': elements}))
 
-def appendVariableReference(name, tokens):
-  tokens.append(SplootNode('PYTHON_VARIABLE_REFERENCE', {}, {'identifier': name.id}))
+def appendIdentifier(name, tokens):
+  tokens.append(SplootNode('PY_IDENTIFIER', {}, {'identifier': name.id}))
 
 def generateExpression(expr, tokens=None):
   if tokens is None:
@@ -80,7 +80,7 @@ def generateExpression(expr, tokens=None):
   elif type(expr) == ast.Constant:
     appendConstantToken(expr, tokens)
   elif type(expr) == ast.Name:
-    appendVariableReference(expr, tokens)
+    appendIdentifier(expr, tokens)
   elif type(expr) == ast.BinOp:
     appendBinaryOperatorExpression(expr, tokens)
   elif type(expr) == ast.Compare:
@@ -109,11 +109,11 @@ def generateArgs(arguments):
     raise Exception('Unsupported: Keyword-only arguments')
   if len(arguments.defaults) != 0:
     raise Exception('Unsupported: Default values for function arguments')
-  return [SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {'identifier': a.arg}) for a in arguments.args]
+  return [SplootNode('PY_IDENTIFIER', {}, {'identifier': a.arg}) for a in arguments.args]
 
 def generateFunction(func):
   return SplootNode('PYTHON_FUNCTION_DECLARATION', {
-    'identifier': [SplootNode('PYTHON_DECLARED_IDENTIFIER', {}, {'identifier': func.name})],
+    'identifier': [SplootNode('PY_IDENTIFIER', {}, {'identifier': func.name})],
     'params': generateArgs(func.args),
     'body': [generateSplootStatement(s) for s in func.body],
   }, {'id': None})

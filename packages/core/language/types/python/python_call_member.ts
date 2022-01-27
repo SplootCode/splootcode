@@ -14,8 +14,9 @@ import { SuggestedNode } from '../../suggested_node'
 import { HighlightColorCategory } from '../../../colors'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { PYTHON_VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
+import { PYTHON_IDENTIFIER } from './python_identifier'
 import { STRING_LITERAL } from '../literals'
+import { VariableReferenceGenerator } from '../js/variable_reference'
 
 export const PYTHON_CALL_MEMBER = 'PYTHON_CALL_MEMBER'
 
@@ -36,9 +37,7 @@ class Generator implements SuggestionGenerator {
     if (leftChild && textInput.startsWith('.')) {
       const leftChild = parent.getChildSet().getChild(index - 1)
       if (
-        [PYTHON_VARIABLE_REFERENCE, PYTHON_CALL_MEMBER, STRING_LITERAL, PYTHON_CALL_VARIABLE].indexOf(
-          leftChild.type
-        ) !== -1
+        [PYTHON_IDENTIFIER, PYTHON_CALL_MEMBER, STRING_LITERAL, PYTHON_CALL_VARIABLE].indexOf(leftChild.type) !== -1
       ) {
         const name = textInput.substring(1) // Cut the '.' off
         const node = new PythonCallMember(null, 1)
