@@ -44,6 +44,7 @@ import { PythonFromImport } from './types/python/python_from_import'
 import { PythonFunctionDeclaration } from './types/python/python_function'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
+import { PythonList } from './types/python/python_list'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
 import { PythonReturn } from './types/python/python_return'
 import { PythonStatement } from './types/python/python_statement'
@@ -127,27 +128,29 @@ export function loadTypes() {
   SplootDataRow.register()
   SplootDataStringEntry.register()
 
-  PythonFile.register()
-  PythonStatement.register()
-  PythonImport.register()
-  PythonFromImport.register()
-  PythonModuleIdentifier.register()
-  PythonIfStatement.register()
-  PythonElseBlock.register()
-  PythonElifBlock.register()
-  PythonWhileLoop.register()
-  PythonForLoop.register()
-  PythonFunctionDeclaration.register()
-  PythonReturn.register()
-  PythonExpression.register()
-  PythonBinaryOperator.register()
-  PythonCallVariable.register()
   PythonAssignment.register()
-  PythonDeclaredIdentifier.register()
-  PythonVariableReference.register()
-  PythonCallMember.register()
-  NoneLiteral.register()
+  PythonBinaryOperator.register()
   PythonBool.register()
+  PythonCallMember.register()
+  PythonCallVariable.register()
+  PythonDeclaredIdentifier.register()
+  PythonElifBlock.register()
+  PythonElseBlock.register()
+  PythonExpression.register()
+  PythonFile.register()
+  PythonForLoop.register()
+  PythonFromImport.register()
+  PythonFunctionDeclaration.register()
+  PythonIfStatement.register()
+  PythonImport.register()
+  PythonList.register()
+  PythonModuleIdentifier.register()
+  PythonReturn.register()
+  PythonStatement.register()
+  PythonVariableReference.register()
+  PythonWhileLoop.register()
+
+  NoneLiteral.register()
 
   // Must go at the end
   resolvePasteAdapters()

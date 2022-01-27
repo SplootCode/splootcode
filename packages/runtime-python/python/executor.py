@@ -21,6 +21,10 @@ def generateCallMember(node):
     callExpr = ast.Call(memberExpr, args=args, keywords=[])
     return callExpr
 
+def generateList(node):
+    els = [generateAstExpression(el) for el in node['childSets']['elements']]
+    return ast.List(els, ast.Load())
+
 def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
         args = []
@@ -42,8 +46,10 @@ def generateAstExpressionToken(node):
         return ast.Name(identifier, ctx=ast.Store())
     elif node["type"] == "PYTHON_CALL_MEMBER":
         return generateCallMember(node)
+    elif node["type"] == "PYTHON_LIST":
+        return generateList(node)
     else:
-        raise Exception(f'Unrecognised node type: {node["type"]}')
+        raise Exception(f'Unrecognised expression token type: {node["type"]}')
 
 
 def generateAstAssignableExpression(node):
