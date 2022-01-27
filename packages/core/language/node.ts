@@ -241,13 +241,13 @@ export class SplootNode {
         if (isNodeInCategory(childNode.type, childSet.nodeCategory)) {
           childSet.addChild(childNode)
         } else {
-          console.warn(
-            `Child type ${childNode.type} is not compatible with category ${NodeCategory[childSet.nodeCategory]}`
-          )
           const adaptedNode = adaptNodeToPasteDestination(childNode, childSet.nodeCategory)
           if (adaptedNode) {
             childSet.addChild(adaptedNode)
           } else {
+            console.warn(
+              `Child type ${childNode.type} is not compatible with category ${NodeCategory[childSet.nodeCategory]}`
+            )
             console.warn(`Unable to adapt using paste adapter!`)
           }
         }

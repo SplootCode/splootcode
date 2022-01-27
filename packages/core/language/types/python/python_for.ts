@@ -9,7 +9,7 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
-import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
+import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
@@ -34,7 +34,7 @@ export class PythonForLoop extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FOR_LOOP)
     this.isRepeatableBlock = true
-    this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonAssignableExpressionToken)
+    this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonLoopVariable)
     this.addChildSet('iterable', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
@@ -46,9 +46,9 @@ export class PythonForLoop extends SplootNode {
 
   addSelfToScope() {
     const identifierChildSet = this.getTarget()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_DECLARED_IDENTIFIER) {
+    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
       this.getScope().addVariable({
-        name: (this.getTarget().getChild(0) as PythonDeclaredIdentifier).getName(),
+        name: (this.getTarget().getChild(0) as PythonIdentifier).getName(),
         deprecated: false,
         documentation: 'for-loop variable',
         type: { type: 'any' },
@@ -78,7 +78,7 @@ export class PythonForLoop extends SplootNode {
     typeRegistration.typeName = PYTHON_FOR_LOOP
     typeRegistration.deserializer = PythonForLoop.deserializer
     typeRegistration.childSets = {
-      target: NodeCategory.PythonAssignableExpressionToken,
+      target: NodeCategory.PythonLoopVariable,
       iterable: NodeCategory.PythonExpression,
       block: NodeCategory.PythonStatement,
     }

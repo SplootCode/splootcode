@@ -13,7 +13,7 @@ import {
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_DECLARED_IDENTIFIER, PythonDeclaredIdentifier } from './declared_identifier'
+import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
@@ -68,7 +68,7 @@ export class PythonFunctionDeclaration extends SplootNode {
     if (!this.getProperty('id')) {
       this.setProperty('id', registerFunction(this))
     }
-    const identifier = (this.getIdentifier().getChild(0) as PythonDeclaredIdentifier).getName()
+    const identifier = (this.getIdentifier().getChild(0) as PythonIdentifier).getName()
     this.getScope(true).addFunction({
       name: identifier,
       deprecated: false,
@@ -81,8 +81,8 @@ export class PythonFunctionDeclaration extends SplootNode {
 
     const scope = this.getScope(false)
     this.getParams().children.forEach((paramNode) => {
-      if (paramNode.type === PYTHON_DECLARED_IDENTIFIER) {
-        const identifier = paramNode as PythonDeclaredIdentifier
+      if (paramNode.type === PYTHON_IDENTIFIER) {
+        const identifier = paramNode as PythonIdentifier
         scope.addVariable({
           name: identifier.getName(),
           deprecated: false,

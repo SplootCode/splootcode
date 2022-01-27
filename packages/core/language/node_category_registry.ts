@@ -33,8 +33,9 @@ export enum NodeCategory {
   PythonElseBlock,
   PythonExpression,
   PythonExpressionToken,
-  PythonAssignableExpressionToken,
+  PythonAssignable,
   PythonFunctionName,
+  PythonLoopVariable,
   PythonFunctionArgumentDeclaration,
   PythonModuleIdentifier,
   PythonModuleAttribute,
@@ -75,7 +76,7 @@ export function registerNodeCateogry(nodeType: string, category: NodeCategory, a
 }
 
 export function getNodeCategoriesForType(typeName: string): Set<NodeCategory> {
-  return TypeToCategoryMap.get(typeName)
+  return TypeToCategoryMap.get(typeName) || new Set()
 }
 
 export function getNodesForCategory(category: NodeCategory) {

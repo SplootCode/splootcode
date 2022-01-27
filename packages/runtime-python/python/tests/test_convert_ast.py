@@ -21,7 +21,7 @@ HELLO_NAME_SPLOOT = {
             ]}},
             {"type":"PYTHON_STATEMENT","properties":{},"childSets":{"statement":[
                 {"type":"PYTHON_ASSIGNMENT","properties":{},"childSets":{
-                    "left":[{"type":"PYTHON_DECLARED_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}],
+                    "left":[{"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}],
                     "right":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
                         "tokens":[{"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"input"},"childSets":{
                             "arguments":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
@@ -38,7 +38,7 @@ HELLO_NAME_SPLOOT = {
                             "arguments":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{"tokens":[
                                 {"type":"STRING_LITERAL","properties":{"value":"Hello, "},"childSets":{}},
                                 {"type":"PYTHON_BINARY_OPERATOR","properties":{"operator":"+"},"childSets":{}},
-                                {"type":"PYTHON_VARIABLE_REFERENCE","properties":{"identifier":"name"},"childSets":{}}
+                                {"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}
                             ]}}]
                         }}
                     ]
@@ -88,7 +88,7 @@ add(3, 4)
                     "type": "PYTHON_FUNCTION_DECLARATION",
                     "properties": {'id': None},
                     "childSets": {
-                        "identifier": [{'type': 'PYTHON_DECLARED_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'add'}}],
+                        "identifier": [{'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'add'}}],
                         "body": [
                             {
                                 "type": "PYTHON_STATEMENT",
@@ -103,9 +103,9 @@ add(3, 4)
                                                 "childSets": {
                                                     "arguments": [
                                                         {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {'tokens': [
-                                                            {'type': 'PYTHON_VARIABLE_REFERENCE', 'childSets': {}, 'properties': {'identifier': 'a'}},
+                                                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'a'}},
                                                             {'type': 'PYTHON_BINARY_OPERATOR', 'childSets': {}, 'properties': {'operator': '+'}},
-                                                            {'type': 'PYTHON_VARIABLE_REFERENCE', 'childSets': {}, 'properties': {'identifier': 'b'}},
+                                                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'b'}},
                                                         ]}},
                                                     ]
                                                 }}
@@ -117,8 +117,8 @@ add(3, 4)
                             }
                         ],
                         "params": [
-                            {'type': 'PYTHON_DECLARED_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'a'}},
-                            {'type': 'PYTHON_DECLARED_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'b'}}
+                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'a'}},
+                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'b'}}
                         ]
                     }
                 }]
@@ -169,7 +169,7 @@ add(3, 4)
                     "type": 'PYTHON_ASSIGNMENT',
                     "childSets": {
                         "left": [{
-                            "type": "PYTHON_DECLARED_IDENTIFIER",
+                            "type": "PY_IDENTIFIER",
                             "childSets": {},
                             "properties": {"identifier": 'x'}
                         }],
