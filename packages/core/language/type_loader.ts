@@ -48,6 +48,7 @@ import { PythonList } from './types/python/python_list'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
 import { PythonReturn } from './types/python/python_return'
 import { PythonStatement } from './types/python/python_statement'
+import { PythonSubscript } from './types/python/python_subscript'
 import { PythonVariableReference } from './types/python/variable_reference'
 import { PythonWhileLoop } from './types/python/python_while'
 import { ReactElementNode } from './types/component/react_element'
@@ -147,6 +148,7 @@ export function loadTypes() {
   PythonModuleIdentifier.register()
   PythonReturn.register()
   PythonStatement.register()
+  PythonSubscript.register()
   PythonVariableReference.register()
   PythonWhileLoop.register()
 
