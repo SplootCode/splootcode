@@ -69,7 +69,7 @@ export class PythonCallVariable extends SplootNode {
 
   validateSelf(): void {
     const elements = this.getArguments().children
-    if (elements.length <= 1) {
+    if (elements.length == 1) {
       ;(elements[0] as PythonExpression).allowEmpty()
     } else {
       elements.forEach((expression: PythonExpression, idx) => {

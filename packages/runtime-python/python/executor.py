@@ -23,6 +23,7 @@ def generateCallMember(node):
 
 def generateList(node):
     els = [generateAstExpression(el) for el in node['childSets']['elements']]
+    els = [el for el in els if el is not None]
     return ast.List(els, ast.Load())
 
 def generateSubscript(node, context=ast.Load()):
@@ -517,10 +518,14 @@ def generateForStatement(for_node):
     target = generateAstAssignableExpression(for_node["childSets"]["target"])
     iterable = generateAstExpression(for_node["childSets"]["iterable"][0])
     statements = getStatementsFromBlock(for_node["childSets"]["block"])
+    if len(statements) == 0:
+        statements = [ast.Pass()]
     return ast.For(target, iterable, statements, [])
 
 def generateReturnStatement(return_node):
     ret_expr = generateAstExpression(return_node['childSets']['value'][0])
+    if ret_expr is None:
+        ret_expr = ast.Constant(None)
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="logExpressionResultAndEndFrames", ctx=ast.Load())
     args = [ast.Constant("PYTHON_RETURN"), ast.Constant("PYTHON_FUNCTION_CALL"), ret_expr]
