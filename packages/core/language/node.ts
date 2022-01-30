@@ -38,13 +38,15 @@ export class SplootNode {
   enableMutations: boolean
   mutationObservers: NodeObserver[]
   scope: Scope
-  isRepeatableBlock: boolean
   isValid: boolean
-  isRecursivelyValid: boolean
+  invalidReason: string
+  isRepeatableBlock: boolean
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
     this.type = type
+    this.isValid = true
+    this.invalidReason = ''
     this.childSets = {}
     this.childSetOrder = []
     this.properties = {}
@@ -52,8 +54,6 @@ export class SplootNode {
     this.mutationObservers = []
     this.scope = null
     this.isRepeatableBlock = false
-    this.isValid = true
-    this.isRecursivelyValid = true
   }
 
   get hasChildSets(): boolean {
@@ -82,57 +82,37 @@ export class SplootNode {
 
   validateSelf() {
     // Nodes with validation logic are expected to override this
-    this.isValid = true
+  }
+
+  recursivelyValidate() {
+    this.validateSelf()
+    this.childSetOrder.forEach((childSetID) => {
+      this.getChildSet(childSetID).children.forEach((node) => {
+        node.validateSelf()
+      })
+    })
+  }
+
+  recursivelyClearValidation() {
+    this.setValidity(true, '')
+    this.childSetOrder.forEach((childSetID) => {
+      this.getChildSet(childSetID).children.forEach((node) => {
+        node.recursivelyClearValidation()
+      })
+    })
   }
 
   setValidity(isValid: boolean, reason: string) {
-    console.log(`${this.type} is ${isValid ? 'valid' : 'invalid'}`)
+    if (this.isValid === isValid && this.invalidReason === reason) {
+      return
+    }
     this.isValid = isValid
+    this.invalidReason = reason
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_VALIDITY
     mutation.validity = { valid: isValid, reason: reason }
     this.fireMutation(mutation)
-  }
-
-  propagateValidation(newState: boolean) {
-    if (newState) {
-      this.validateSelf()
-      if (!this.isValid) {
-        this.propagateValidation(false)
-      }
-    }
-
-    // If new state is same as old state, do nothing
-    if (newState === this.isRecursivelyValid) {
-      this.parent?.node.propagateValidation(this.isRecursivelyValid)
-      return
-    }
-
-    if (!newState) {
-      this.isRecursivelyValid = false
-      this.parent?.node.propagateValidation(false)
-      return
-    }
-
-    // If newState is valid, check all the other children are valid.
-    const childrenValid =
-      this.childSetOrder.filter((childSetID) => {
-        return (
-          this.getChildSet(childSetID).children.filter((node) => {
-            return !node.isRecursivelyValid
-          }).length !== 0
-        )
-      }).length === 0
-
-    // If we are valid, and all children are valid:
-    if (childrenValid) {
-      this.validateSelf()
-      if (this.isValid) {
-        this.isRecursivelyValid = true
-        this.parent?.node.propagateValidation(true)
-      }
-    }
   }
 
   selectRuntimeCaptureFrame(index: number) {
@@ -244,9 +224,8 @@ export class SplootNode {
     this.mutationObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation)
     })
-    // Don't fire global mutations for annotation changes,
-    // only for property changes
-    if (mutation.type === NodeMutationType.SET_PROPERTY) {
+    // Don't fire global mutations for annotation changes
+    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
       globalMutationDispatcher.handleNodeMutation(mutation)
     }
   }

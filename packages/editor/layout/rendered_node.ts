@@ -93,8 +93,8 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
     this.node = node
-    this.isValid = true
-    this.invalidReason = ''
+    this.isValid = node.isValid
+    this.invalidReason = node.invalidReason
     this.runtimeAnnotations = []
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
@@ -272,7 +272,6 @@ export class NodeBlock implements NodeObserver {
       this.runtimeAnnotations = nodeMutation.annotations
       this.loopAnnotation = nodeMutation.loopAnnotation
     } else if (nodeMutation.type === NodeMutationType.SET_VALIDITY) {
-      console.log('Setting validity on ', this.node.type)
       this.isValid = nodeMutation.validity.valid
       this.invalidReason = nodeMutation.validity.reason
     }

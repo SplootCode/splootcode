@@ -107,15 +107,13 @@ export class PythonExpression extends SplootNode {
     } else {
       const [valid, tokenIndex] = validateExpressionParse(this.getTokenSet().children)
       if (valid) {
+        this.setValidity(true, '')
         this.getTokenSet().children.forEach((child) => {
           child.setValidity(true, '')
         })
-        this.setValidity(true, '')
       } else {
-        console.log(tokenIndex)
         const blameIndex = Math.min(tokenIndex, tokens.length - 1)
         tokens[blameIndex].setValidity(false, 'Unexpected token')
-        this.isValid = false
       }
     }
   }
