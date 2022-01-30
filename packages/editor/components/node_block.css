@@ -18,6 +18,15 @@
   fill: var(--editor-selected-node-block-fill);
 }
 
+.svgsplootnode.invalid {
+  stroke: var(--editor-invalid-node-block-edge);
+}
+
+.invisible-splootnode-invalid {
+  fill: transparent;
+  stroke: var(--editor-invalid-node-block-edge);
+}
+
 .indented-rule {
   stroke: var(--editor-indented-block-stroke);
   stroke-width: 1.4px;

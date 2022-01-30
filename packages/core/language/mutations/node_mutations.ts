@@ -4,6 +4,7 @@ import { SplootNode } from '../node'
 export enum NodeMutationType {
   SET_PROPERTY,
   SET_RUNTIME_ANNOTATIONS,
+  SET_VALIDITY,
 }
 
 export class NodeMutation {
@@ -12,5 +13,6 @@ export class NodeMutation {
   property: string
   value: string
   annotations: NodeAnnotation[]
+  validity: { valid: boolean; reason: string }
   loopAnnotation: LoopAnnotation
 }

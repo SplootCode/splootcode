@@ -60,6 +60,14 @@ export class PythonFunctionDeclaration extends SplootNode {
     return this.getChildSet('body')
   }
 
+  validateSelf(): void {
+    if (this.getIdentifier().getCount() === 0) {
+      this.setValidity(false, 'Needs a name for the function')
+    } else {
+      this.setValidity(true, '')
+    }
+  }
+
   addSelfToScope() {
     if (this.getIdentifier().getCount() === 0) {
       // No identifier, we can't be added to the scope.

@@ -8,6 +8,7 @@ import {
   AssignmentAnnotation,
   NodeAnnotation,
   NodeAnnotationType,
+  ParseErrorAnnotation,
   ReturnValueAnnotation,
   RuntimeErrorAnnotation,
   SideEffectAnnotation,
@@ -162,6 +163,9 @@ function annotationToString(annotation: NodeAnnotation): string {
         return 'No input, run the program to enter input.'
       }
       return `${val.errorType}: ${val.errorMessage}`
+    case NodeAnnotationType.ParseError:
+      const val2 = annotation.value as ParseErrorAnnotation
+      return val2.message
   }
 }
 
@@ -177,7 +181,10 @@ export class RuntimeAnnotation extends React.Component<RuntimeAnnotationProps> {
         <g>
           {annotations.map((annotation, i) => {
             const text = annotationToString(annotation)
-            const className = annotation.type === NodeAnnotationType.RuntimeError ? 'error-annotation' : 'annotation'
+            const className =
+              annotation.type === NodeAnnotationType.RuntimeError || annotation.type === NodeAnnotationType.ParseError
+                ? 'error-annotation'
+                : 'annotation'
             const entry = (
               <text x={x} y={y} key={i} className={className} xmlSpace="preserve">
                 {text}

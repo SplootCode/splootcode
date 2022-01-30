@@ -74,7 +74,7 @@ export class PythonBinaryOperator extends SplootNode {
     this.setProperty('operator', operator)
   }
 
-  getOperator() {
+  getOperator(): string {
     return this.getProperty('operator')
   }
 

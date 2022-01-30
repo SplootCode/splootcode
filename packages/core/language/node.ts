@@ -85,7 +85,24 @@ export class SplootNode {
     this.isValid = true
   }
 
+  setValidity(isValid: boolean, reason: string) {
+    console.log(`${this.type} is ${isValid ? 'valid' : 'invalid'}`)
+    this.isValid = isValid
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_VALIDITY
+    mutation.validity = { valid: isValid, reason: reason }
+    this.fireMutation(mutation)
+  }
+
   propagateValidation(newState: boolean) {
+    if (newState) {
+      this.validateSelf()
+      if (!this.isValid) {
+        this.propagateValidation(false)
+      }
+    }
+
     // If new state is same as old state, do nothing
     if (newState === this.isRecursivelyValid) {
       this.parent?.node.propagateValidation(this.isRecursivelyValid)
@@ -227,8 +244,9 @@ export class SplootNode {
     this.mutationObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation)
     })
-    // Don't fire global mutations for annotation changes;
-    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
+    // Don't fire global mutations for annotation changes,
+    // only for property changes
+    if (mutation.type === NodeMutationType.SET_PROPERTY) {
       globalMutationDispatcher.handleNodeMutation(mutation)
     }
   }

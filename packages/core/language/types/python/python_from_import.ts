@@ -47,6 +47,16 @@ export class PythonFromImport extends SplootNode {
     return this.getChildSet('attrs')
   }
 
+  validateSelf(): void {
+    if (this.getModule().getCount() === 0) {
+      this.setValidity(false, 'Needs a module name to import from')
+    } else if (this.getAttrs().getCount() === 0) {
+      this.setValidity(false, 'Needs at least one variable to import from that module')
+    } else {
+      this.setValidity(true, '')
+    }
+  }
+
   addSelfToScope() {
     const scope = this.getScope()
     if (this.getModule().getCount() === 0 || this.getAttrs().getCount() === 0) {

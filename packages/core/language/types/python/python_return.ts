@@ -46,6 +46,10 @@ export class PythonReturn extends SplootNode {
     return this.getChildSet('value')
   }
 
+  validateSelf(): void {
+    ;(this.getValue().getChild(0) as PythonExpression).allowEmpty()
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type == 'EXCEPTION') {
       this.applyRuntimeError(capture)

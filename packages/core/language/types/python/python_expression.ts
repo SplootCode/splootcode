@@ -22,6 +22,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
+import { validateExpressionParse } from './utils'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
@@ -84,8 +85,39 @@ export class PythonExpression extends SplootNode {
     }
   }
 
+  allowEmpty() {
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      this.setValidity(true, '')
+    }
+  }
+
+  requireNonEmpty(message: string): void {
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      this.setValidity(false, message)
+    }
+  }
+
   validateSelf(): void {
-    // Check if parse is valid
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      // Empty expressions are valid in some circumstances - let the parent deal with this.
+      this.parent.node.validateSelf()
+    } else {
+      const [valid, tokenIndex] = validateExpressionParse(this.getTokenSet().children)
+      if (valid) {
+        this.getTokenSet().children.forEach((child) => {
+          child.setValidity(true, '')
+        })
+        this.setValidity(true, '')
+      } else {
+        console.log(tokenIndex)
+        const blameIndex = Math.min(tokenIndex, tokens.length - 1)
+        tokens[blameIndex].setValidity(false, 'Unexpected token')
+        this.isValid = false
+      }
+    }
   }
 
   static deserializer(serializedNode: SerializedNode): PythonExpression {

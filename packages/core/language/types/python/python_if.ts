@@ -60,12 +60,7 @@ export class PythonIfStatement extends SplootNode {
   }
 
   validateSelf(): void {
-    let valid = true
-    const conditionExpr = this.getCondition().getChild(0) as PythonExpression
-    if (conditionExpr.isEmptyExpression()) {
-      valid = false
-    }
-    this.isValid = valid
+    ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

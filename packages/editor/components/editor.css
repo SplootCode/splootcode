@@ -49,6 +49,8 @@ text {
   --editor-autcompleted-text-color: #3191ea;
   --editor-autcompleted-highlight-color: #3191ea;
 
+  --editor-invalid-node-block-edge: #d37000;
+
   --editor-selected-node-block-fill: #134777;
   --editor-selected-node-block-edge: #3191ea;
   --editor-selected-node-block-input: #166ab7;

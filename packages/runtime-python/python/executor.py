@@ -114,7 +114,6 @@ OPERATORS = {
     "^": {"precedence": 100, "ast": ast.BitXor()},
     "&": {"precedence": 110, "ast": ast.BitAnd()},
     "<<": {"precedence": 120, "ast": ast.LShift()},
-    "<<": {"precedence": 120, "ast": ast.LShift()},
     ">>": {"precedence": 120, "ast": ast.RShift()},
     "+": {"precedence": 130, "ast": ast.Add()},
     "-": {"precedence": 130, "ast": ast.Sub()},
