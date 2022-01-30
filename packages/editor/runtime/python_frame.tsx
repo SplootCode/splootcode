@@ -191,15 +191,25 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.postMessageToFrame(payload)
   }
 
-  sendNodeTreeToHiddenFrame() {
+  async sendNodeTreeToHiddenFrame() {
     const now = new Date()
     const millis = now.getTime() - this.lastSentNodeTree.getTime()
     const pkg = this.props.pkg
 
+    this.lastSentNodeTree = now
+    this.needsNewNodeTree = false
+
     // Rate limit: Only send if it's been some time since we last sent.
     if (millis > 200) {
-      this.lastSentNodeTree = now
-      this.needsNewNodeTree = false
+      for (const filename of pkg.fileOrder) {
+        const valid = (await pkg.getLoadedFile(filename)).rootNode.isRecursivelyValid
+        if (!valid) {
+          console.warn('File is invalid - not sending')
+          return
+        }
+      }
+      console.log('Files are valid')
+
       pkg.fileOrder.forEach((filename) => {
         pkg.getLoadedFile(filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }

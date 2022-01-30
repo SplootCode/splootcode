@@ -39,6 +39,8 @@ export class SplootNode {
   mutationObservers: NodeObserver[]
   scope: Scope
   isRepeatableBlock: boolean
+  isValid: boolean
+  isRecursivelyValid: boolean
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
@@ -50,6 +52,8 @@ export class SplootNode {
     this.mutationObservers = []
     this.scope = null
     this.isRepeatableBlock = false
+    this.isValid = true
+    this.isRecursivelyValid = true
   }
 
   get hasChildSets(): boolean {
@@ -74,6 +78,44 @@ export class SplootNode {
   addSelfToScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  validateSelf() {
+    // Nodes with validation logic are expected to override this
+    this.isValid = true
+  }
+
+  propagateValidation(newState: boolean) {
+    // If new state is same as old state, do nothing
+    if (newState === this.isRecursivelyValid) {
+      this.parent?.node.propagateValidation(this.isRecursivelyValid)
+      return
+    }
+
+    if (!newState) {
+      this.isRecursivelyValid = false
+      this.parent?.node.propagateValidation(false)
+      return
+    }
+
+    // If newState is valid, check all the other children are valid.
+    const childrenValid =
+      this.childSetOrder.filter((childSetID) => {
+        return (
+          this.getChildSet(childSetID).children.filter((node) => {
+            return !node.isRecursivelyValid
+          }).length !== 0
+        )
+      }).length === 0
+
+    // If we are valid, and all children are valid:
+    if (childrenValid) {
+      this.validateSelf()
+      if (this.isValid) {
+        this.isRecursivelyValid = true
+        this.parent?.node.propagateValidation(true)
+      }
+    }
   }
 
   selectRuntimeCaptureFrame(index: number) {
@@ -179,11 +221,6 @@ export class SplootNode {
   clean() {
     // Called when a child or sub-child is deleted.
     // Default action is no-op
-  }
-
-  validate() {
-    // Called by a background task to detect things like:
-    // Type mismatch, unparseable expression, undefined variable.
   }
 
   fireMutation(mutation: NodeMutation) {

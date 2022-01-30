@@ -72,12 +72,20 @@ export class PythonExpression extends SplootNode {
     return this.getChildSet('tokens')
   }
 
+  isEmptyExpression(): boolean {
+    return this.getTokenSet().getCount() === 0
+  }
+
   clean() {
     // If this expression is now empty, call `clean` on the parent.
     // If the parent doesn't allow empty expressions, it'll delete it.
     if (this.getTokenSet().getCount() === 0) {
       this.parent.node.clean()
     }
+  }
+
+  validateSelf(): void {
+    // Check if parse is valid
   }
 
   static deserializer(serializedNode: SerializedNode): PythonExpression {

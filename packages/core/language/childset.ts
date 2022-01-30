@@ -54,6 +54,8 @@ export class ChildSet {
     this.children.splice(index, 0, node)
     node.parent = this.childParentRef
     if (this.enableMutations) {
+      node.validateSelf()
+      node.propagateValidation(node.isValid)
       const mutation = new ChildSetMutation()
       mutation.type = ChildSetMutationType.INSERT
       mutation.childSet = this
@@ -71,6 +73,8 @@ export class ChildSet {
     child.parent = null
     child.recursivelySetMutations(false)
     if (this.enableMutations) {
+      const parent = this.getParentRef().node
+      parent.propagateValidation(true)
       const mutation = new ChildSetMutation()
       mutation.type = ChildSetMutationType.DELETE
       mutation.childSet = this
