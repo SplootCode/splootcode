@@ -249,4 +249,5 @@ export async function generateScope(rootNode: SplootNode) {
   globalScope = scope
   functionRegistry = {}
   rootNode.recursivelyBuildScope()
+  rootNode.recursivelyValidate()
 }

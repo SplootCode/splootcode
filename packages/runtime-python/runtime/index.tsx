@@ -32,6 +32,7 @@ interface ConsoleState {
   running: boolean
   nodeTree: any
   nodeTreeLoaded: boolean
+  nodeTreeErrors: boolean
   runtimeCapture: boolean
   autoRun: boolean
 }
@@ -59,13 +60,14 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       running: false,
       nodeTree: null,
       nodeTreeLoaded: false,
+      nodeTreeErrors: false,
       runtimeCapture: true,
       autoRun: true,
     }
   }
 
   render() {
-    const { ready, running, nodeTreeLoaded } = this.state
+    const { ready, running, nodeTreeLoaded, nodeTreeErrors } = this.state
     return (
       <div id="terminal-container">
         <ButtonGroup spacing="3" size="sm" m={1}>
@@ -74,7 +76,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
             loadingText="Running"
             colorScheme="blue"
             onClick={this.run}
-            disabled={!(ready && nodeTreeLoaded && !running)}
+            disabled={!(ready && nodeTreeLoaded && !nodeTreeErrors && !running)}
           >
             Run
           </Button>
@@ -372,11 +374,15 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         this.setState({
           nodeTree: data.data.tree,
           nodeTreeLoaded: true,
+          nodeTreeErrors: false,
         })
         sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.state.autoRun && this.state.ready && !this.state.running) {
           this.rerun()
         }
+        break
+      case 'disable':
+        this.setState({ nodeTreeErrors: true })
         break
       default:
         console.warn('Unrecognised message recieved:', event.data)

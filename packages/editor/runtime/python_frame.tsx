@@ -212,6 +212,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     // Rate limit: Only send if it's been some time since we last sent.
     if (millis > 200) {
       if (this.invalidNodes.size > 0) {
+        this.postMessageToFrame({ type: 'disable' })
         return
       }
 

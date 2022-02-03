@@ -88,7 +88,7 @@ export class SplootNode {
     this.validateSelf()
     this.childSetOrder.forEach((childSetID) => {
       this.getChildSet(childSetID).children.forEach((node) => {
-        node.validateSelf()
+        node.recursivelyValidate()
       })
     })
   }
