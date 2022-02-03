@@ -53,6 +53,10 @@ export class PythonWhileLoop extends SplootNode {
     return this.getChildSet('block')
   }
 
+  validateSelf(): void {
+    ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
+  }
+
   applyRuntimeError(capture: StatementCapture) {
     const mutation = new NodeMutation()
     mutation.node = this

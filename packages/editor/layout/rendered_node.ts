@@ -79,6 +79,10 @@ export class NodeBlock implements NodeObserver {
   runtimeAnnotations: NodeAnnotation[]
   @observable
   loopAnnotation: LoopAnnotation
+  @observable
+  isValid: boolean
+  @observable
+  invalidReason: string
 
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number) {
     this.parentChildSet = parentListBlock
@@ -89,6 +93,8 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
     this.node = node
+    this.isValid = node.isValid
+    this.invalidReason = node.invalidReason
     this.runtimeAnnotations = []
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
@@ -265,6 +271,9 @@ export class NodeBlock implements NodeObserver {
     if (nodeMutation.type === NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
       this.runtimeAnnotations = nodeMutation.annotations
       this.loopAnnotation = nodeMutation.loopAnnotation
+    } else if (nodeMutation.type === NodeMutationType.SET_VALIDITY) {
+      this.isValid = nodeMutation.validity.valid
+      this.invalidReason = nodeMutation.validity.reason
     }
   }
 

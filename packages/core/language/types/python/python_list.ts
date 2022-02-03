@@ -43,6 +43,17 @@ export class PythonList extends SplootNode {
     })
   }
 
+  validateSelf(): void {
+    const elements = this.getElements().children
+    if (elements.length == 1) {
+      ;(elements[0] as PythonExpression).allowEmpty()
+    } else {
+      elements.forEach((expression: PythonExpression) => {
+        expression.requireNonEmpty('Cannot have empty list element')
+      })
+    }
+  }
+
   getNodeLayout(): NodeLayout {
     const layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),

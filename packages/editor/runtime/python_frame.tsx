@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
+import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
@@ -12,6 +12,7 @@ import {
   FunctionDeclarationData,
   StatementCapture,
 } from '@splootcode/core/language/capture/runtime_capture'
+import { SplootNode } from '@splootcode/core/language/node'
 import { allRegisteredFunctionIDs, getRegisteredFunction } from '@splootcode/core/language/scope/scope'
 
 export enum FrameState {
@@ -44,6 +45,7 @@ export class PythonFrame extends Component<ViewPageProps> {
   private lastSentNodeTree: Date
   private needsNewNodeTree: boolean
   private frameState: FrameState
+  private invalidNodes: Set<SplootNode>
 
   constructor(props: ViewPageProps) {
     super(props)
@@ -52,6 +54,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.lastHeartbeatTimestamp = new Date()
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000)
     this.needsNewNodeTree = false
+    this.invalidNodes = new Set()
   }
 
   render() {
@@ -112,6 +115,13 @@ export class PythonFrame extends Component<ViewPageProps> {
 
   handleNodeMutation = (mutation: NodeMutation) => {
     // There's a node tree version we've not loaded yet.
+    if (mutation.type === NodeMutationType.SET_VALIDITY) {
+      if (mutation.validity.valid) {
+        this.invalidNodes.delete(mutation.node)
+      } else {
+        this.invalidNodes.add(mutation.node)
+      }
+    }
     this.needsNewNodeTree = true
     this.sendNodeTreeToHiddenFrame()
   }
@@ -191,15 +201,21 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.postMessageToFrame(payload)
   }
 
-  sendNodeTreeToHiddenFrame() {
+  async sendNodeTreeToHiddenFrame() {
     const now = new Date()
     const millis = now.getTime() - this.lastSentNodeTree.getTime()
     const pkg = this.props.pkg
 
+    this.lastSentNodeTree = now
+    this.needsNewNodeTree = false
+
     // Rate limit: Only send if it's been some time since we last sent.
     if (millis > 200) {
-      this.lastSentNodeTree = now
-      this.needsNewNodeTree = false
+      if (this.invalidNodes.size > 0) {
+        this.postMessageToFrame({ type: 'disable' })
+        return
+      }
+
       pkg.fileOrder.forEach((filename) => {
         pkg.getLoadedFile(filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
@@ -227,6 +243,5 @@ export class PythonFrame extends Component<ViewPageProps> {
 
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
-    // mutationDispatcher.deregisterHandler(this.handleMutation);
   }
 }

@@ -59,6 +59,15 @@ export class PythonSubscript extends SplootNode {
     return this.getChildSet('key')
   }
 
+  validateSelf(): void {
+    ;(this.getKey().getChild(0) as PythonExpression).requireNonEmpty('Needs the index or key to look up')
+    if (this.getTarget().getCount() === 0) {
+      this.setValidity(false, 'Needs a collection to get an item from, e.g. list, dictionary')
+    } else {
+      this.setValidity(true, '')
+    }
+  }
+
   static deserializer(serializedNode: SerializedNode): PythonSubscript {
     const node = new PythonSubscript(null)
     node.getKey().removeChild(0)

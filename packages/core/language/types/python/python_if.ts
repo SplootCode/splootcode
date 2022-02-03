@@ -13,8 +13,8 @@ import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '..
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_ELSE_STATEMENT } from './python_else'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -59,14 +59,8 @@ export class PythonIfStatement extends SplootNode {
     return count === 0 || elseBlocks.getChild(count - 1).type !== PYTHON_ELSE_STATEMENT
   }
 
-  clean() {
-    this.getTrueBlock().children.forEach((child: SplootNode, index: number) => {
-      if (child.type === PYTHON_EXPRESSION) {
-        if ((child as PythonExpression).getTokenSet().getCount() === 0) {
-          this.getTrueBlock().removeChild(index)
-        }
-      }
-    })
+  validateSelf(): void {
+    ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

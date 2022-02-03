@@ -22,6 +22,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
+import { validateExpressionParse } from './utils'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
@@ -72,11 +73,48 @@ export class PythonExpression extends SplootNode {
     return this.getChildSet('tokens')
   }
 
+  isEmptyExpression(): boolean {
+    return this.getTokenSet().getCount() === 0
+  }
+
   clean() {
     // If this expression is now empty, call `clean` on the parent.
     // If the parent doesn't allow empty expressions, it'll delete it.
     if (this.getTokenSet().getCount() === 0) {
       this.parent.node.clean()
+    }
+  }
+
+  allowEmpty() {
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      this.setValidity(true, '')
+    }
+  }
+
+  requireNonEmpty(message: string): void {
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      this.setValidity(false, message)
+    }
+  }
+
+  validateSelf(): void {
+    const tokens = this.getTokenSet().children
+    if (tokens.length === 0) {
+      // Empty expressions are valid in some circumstances - let the parent deal with this.
+      this.parent.node.validateSelf()
+    } else {
+      const [valid, tokenIndex] = validateExpressionParse(this.getTokenSet().children)
+      if (valid) {
+        this.setValidity(true, '')
+        this.getTokenSet().children.forEach((child) => {
+          child.setValidity(true, '')
+        })
+      } else {
+        const blameIndex = Math.min(tokenIndex, tokens.length - 1)
+        tokens[blameIndex].setValidity(false, 'Unexpected token')
+      }
     }
   }
 

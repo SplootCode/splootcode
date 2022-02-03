@@ -166,3 +166,52 @@ add(123, 45)
             },
             'detached': {}
         })
+
+    def testExpressionParsing(self):
+        splootFile = splootFromPython('''print(100 + 10 + 10 + 4 * 3 * 2 + 10 + 10)''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), '164\n')
+
+    def testExpressionParsingOrderOfOperations(self):
+        splootFile = splootFromPython('''print(100 * 100 == 10000)''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), 'True\n')
+
+    def testExpressionParsingBooleanOrderOfOperations(self):
+        # If the OR is evaluated first, it'll come out False.
+        splootFile1 = splootFromPython('print(True or True and False)\n'
+                                       'print(1 == 1 or 2 == 3 and 1 == 2)\n'
+                                       'print(False and 5 == 4)\n'
+                                       # 4 Layers of increasing precedence scores
+                                       'print(True and 22 == 12 + 1 * 10)')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile1)
+
+        f.seek(0)
+        self.assertEqual(f.read(), 'True\nTrue\nFalse\nTrue\n')
+
+    def testExpressionParsingDefaultsLeftToRight(self):
+        splootFile = splootFromPython('''print(100 / 10 / 5)\nprint(100 // 10 // 5)''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), '2.0\n2\n')

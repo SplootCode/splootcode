@@ -38,11 +38,15 @@ export class SplootNode {
   enableMutations: boolean
   mutationObservers: NodeObserver[]
   scope: Scope
+  isValid: boolean
+  invalidReason: string
   isRepeatableBlock: boolean
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
     this.type = type
+    this.isValid = true
+    this.invalidReason = ''
     this.childSets = {}
     this.childSetOrder = []
     this.properties = {}
@@ -74,6 +78,41 @@ export class SplootNode {
   addSelfToScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  validateSelf() {
+    // Nodes with validation logic are expected to override this
+  }
+
+  recursivelyValidate() {
+    this.validateSelf()
+    this.childSetOrder.forEach((childSetID) => {
+      this.getChildSet(childSetID).children.forEach((node) => {
+        node.recursivelyValidate()
+      })
+    })
+  }
+
+  recursivelyClearValidation() {
+    this.setValidity(true, '')
+    this.childSetOrder.forEach((childSetID) => {
+      this.getChildSet(childSetID).children.forEach((node) => {
+        node.recursivelyClearValidation()
+      })
+    })
+  }
+
+  setValidity(isValid: boolean, reason: string) {
+    if (this.isValid === isValid && this.invalidReason === reason) {
+      return
+    }
+    this.isValid = isValid
+    this.invalidReason = reason
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_VALIDITY
+    mutation.validity = { valid: isValid, reason: reason }
+    this.fireMutation(mutation)
   }
 
   selectRuntimeCaptureFrame(index: number) {
@@ -181,16 +220,11 @@ export class SplootNode {
     // Default action is no-op
   }
 
-  validate() {
-    // Called by a background task to detect things like:
-    // Type mismatch, unparseable expression, undefined variable.
-  }
-
   fireMutation(mutation: NodeMutation) {
     this.mutationObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation)
     })
-    // Don't fire global mutations for annotation changes;
+    // Don't fire global mutations for annotation changes
     if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
       globalMutationDispatcher.handleNodeMutation(mutation)
     }

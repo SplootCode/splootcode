@@ -11,7 +11,17 @@ export enum NodeAnnotationType {
 
 export type NodeAnnotation = {
   type: NodeAnnotationType
-  value: RuntimeErrorAnnotation | AssignmentAnnotation | SideEffectAnnotation | ReturnValueAnnotation
+  value:
+    | RuntimeErrorAnnotation
+    | AssignmentAnnotation
+    | SideEffectAnnotation
+    | ReturnValueAnnotation
+    | ParseErrorAnnotation
+}
+
+export type ParseErrorAnnotation = {
+  message: string
+  blameChild: number
 }
 
 export type LoopAnnotation = {

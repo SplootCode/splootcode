@@ -50,6 +50,15 @@ export class PythonAssignment extends SplootNode {
     return this.getChildSet('right')
   }
 
+  validateSelf(): void {
+    ;(this.getRight().getChild(0) as PythonExpression).requireNonEmpty('Needs a value for the variable to point to.')
+    if (this.getLeft().getCount() === 0) {
+      this.setValidity(false, 'Needs a name for the variable')
+    } else {
+      this.setValidity(true, '')
+    }
+  }
+
   addSelfToScope() {
     const identifierChildSet = this.getLeft()
     for (const leftChild of identifierChildSet.children) {

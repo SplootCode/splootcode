@@ -67,6 +67,18 @@ export class PythonCallVariable extends SplootNode {
     this.properties.identifiter = identifier
   }
 
+  validateSelf(): void {
+    const elements = this.getArguments().children
+    if (elements.length == 1) {
+      ;(elements[0] as PythonExpression).allowEmpty()
+    } else {
+      elements.forEach((expression: PythonExpression, idx) => {
+        // TODO: Add function argument names when required
+        expression.requireNonEmpty('Cannot have empty function arguments')
+      })
+    }
+  }
+
   getArgumentNames(): string[] {
     const scope = this.getScope()
     if (!scope) {

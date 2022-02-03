@@ -78,6 +78,10 @@ export class PythonElifBlock extends SplootNode {
     return this.getChildSet('block')
   }
 
+  validateSelf(): void {
+    ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)

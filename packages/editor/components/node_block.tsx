@@ -93,57 +93,39 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       loopAnnotation = <RepeatedBlockAnnotation nodeBlock={block} />
     }
 
+    const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (block.isValid ? '' : ' invalid')
+
     let shape: ReactElement
     if (this.props.isInsideBreadcrumbs) {
       if (block.leftBreadcrumbChildSet) {
-        shape = (
-          <path
-            className={'svgsplootnode' + (isSelected ? ' selected' : '')}
-            d={getBreadcrumbMiddleShapePath(leftPos + 1, topPos + 1, width)}
-          />
-        )
+        shape = <path className={classname} d={getBreadcrumbMiddleShapePath(leftPos + 1, topPos + 1, width)} />
       } else {
-        shape = (
-          <path
-            className={'svgsplootnode' + (isSelected ? ' selected' : '')}
-            d={getBreadcrumbStartShapePath(leftPos + 1, topPos + 1, width)}
-          />
-        )
+        shape = <path className={classname} d={getBreadcrumbStartShapePath(leftPos + 1, topPos + 1, width)} />
       }
     } else {
       if (block.leftBreadcrumbChildSet) {
-        shape = (
-          <path
-            className={'svgsplootnode' + (isSelected ? ' selected' : '')}
-            d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)}
-          />
-        )
+        shape = <path className={classname} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} />
       } else {
         if (block.layout.boxType === NodeBoxType.INVISIBLE) {
-          shape = null
+          if (!block.isValid) {
+            shape = (
+              <rect
+                className={'invisible-splootnode-invalid'}
+                x={leftPos + 1}
+                y={topPos + 1}
+                height="28"
+                width={width}
+                rx="4"
+              />
+            )
+          } else {
+            shape = null
+          }
         } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-          shape = (
-            <rect
-              className={'svgsplootnode' + (isSelected ? ' selected' : '')}
-              x={leftPos + 1}
-              y={topPos + 5}
-              height="21"
-              width={width}
-              rx="4"
-            />
-          )
+          shape = <rect className={classname} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4" />
           internalLeftPos = leftPos + 8
         } else {
-          shape = (
-            <rect
-              className={'svgsplootnode' + (isSelected ? ' selected' : '')}
-              x={leftPos + 1}
-              y={topPos + 1}
-              height="28"
-              width={width}
-              rx="4"
-            />
-          )
+          shape = <rect className={classname} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" />
         }
       }
     }

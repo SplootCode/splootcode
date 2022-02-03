@@ -44,6 +44,15 @@ export class PythonForLoop extends SplootNode {
     return this.getChildSet('target')
   }
 
+  validateSelf(): void {
+    if (this.getTarget().getCount() === 0) {
+      this.setValidity(false, 'Needs a variable name')
+    } else {
+      this.setValidity(true, '')
+    }
+    ;(this.getIterable().getChild(0) as PythonExpression).requireNonEmpty('needs a sequence or iterable to loop over')
+  }
+
   addSelfToScope() {
     const identifierChildSet = this.getTarget()
     if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
