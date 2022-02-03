@@ -47,6 +47,8 @@ def appendConstantToken(const, tokens):
     tokens.append(SplootNode("STRING_LITERAL", {}, {"value": const.value}))
   elif type(const.value) == int:
     tokens.append(SplootNode("NUMERIC_LITERAL", {}, {"value": const.value}))
+  elif type(const.value) == bool:
+    tokens.append(SplootNode("PYTHON_BOOL", {}, {"value": const.value}))
   else:
     raise Exception(f'Unsupported constant: {const.value}')
 
@@ -56,6 +58,11 @@ def appendBinaryOperatorExpression(binOp, tokens):
   tokens.append(SplootNode('PYTHON_BINARY_OPERATOR', {}, {'operator': convertOperator(binOp.op)}))
   generateExpression(binOp.right, tokens)
 
+def appendBooleanOperatorExpression(boolOp, tokens):
+  generateExpression(boolOp.values[0], tokens)
+  for value in boolOp.values[1:]:
+    tokens.append(SplootNode('PYTHON_BINARY_OPERATOR', {}, {'operator': convertOperator(boolOp.op)}))
+    generateExpression(value, tokens)
 
 def appendCompareOperatorExpression(comp, tokens):
   generateExpression(comp.left, tokens)
@@ -83,6 +90,8 @@ def generateExpression(expr, tokens=None):
     appendIdentifier(expr, tokens)
   elif type(expr) == ast.BinOp:
     appendBinaryOperatorExpression(expr, tokens)
+  elif type(expr) == ast.BoolOp:
+    appendBooleanOperatorExpression(expr, tokens)
   elif type(expr) == ast.Compare:
     appendCompareOperatorExpression(expr, tokens)
   elif type(expr) == ast.List:

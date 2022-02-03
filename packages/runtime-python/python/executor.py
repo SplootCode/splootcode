@@ -75,7 +75,7 @@ def generateAstAssignableExpression(nodeList):
 def parseLeaf(tokens, currentIndex):
     if currentIndex >= len(tokens):
         print("Index out of bounds, attempting to parse leaf")
-        return
+        return currentIndex
 
     lookahead = tokens[currentIndex]
     if lookahead["type"] == "PYTHON_BINARY_OPERATOR":
@@ -182,8 +182,7 @@ def parseExpression(lhs, tokens, currentIndex, minPrecedence):
             while (
                 lookahead is not None
                 and lookahead["type"] == "PYTHON_BINARY_OPERATOR"
-                and getBinaryPrecedence(lookahead["properties"]["operator"])
-                >= operatorPrecedence
+                and getBinaryPrecedence(lookahead["properties"]["operator"]) > operatorPrecedence
             ):
                 lookaheadOp = lookahead["properties"]["operator"]
                 [rhs, currentIndex] = parseExpression(

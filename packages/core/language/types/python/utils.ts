@@ -107,7 +107,7 @@ function parseExpression(tokens: SplootNode[], currentIndex: number, minPreceden
     while (
       lookahead &&
       lookahead.type === PYTHON_BINARY_OPERATOR &&
-      BinaryOperators[(lookahead as PythonBinaryOperator).getOperator()].precedence >= precedence
+      BinaryOperators[(lookahead as PythonBinaryOperator).getOperator()].precedence > precedence
     ) {
       const secondOp = (lookahead as PythonBinaryOperator).getOperator()
       const secondPrecedence = BinaryOperators[secondOp].precedence
@@ -123,8 +123,6 @@ function parseExpression(tokens: SplootNode[], currentIndex: number, minPreceden
         lookahead = null
       }
     }
-    // Finished second lookahead
-    return [true, currentIndex]
   }
   // Have parsed all valid operators
   return [true, currentIndex]
