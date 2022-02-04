@@ -27,9 +27,6 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
   render() {
     const { isInsideBreadcrumbs, isValid } = this.props
     const block = this.props.block
-    if (block.nodes.length === 0) {
-      console.log('iamhere', block.x, block.y, block.width)
-    }
     const width = Math.max(block.width, 8)
     const classname = 'svgsplootnode gap' + (isValid ? '' : ' invalid')
     return (

@@ -49,9 +49,9 @@ export class PythonFromImport extends SplootNode {
 
   validateSelf(): void {
     if (this.getModule().getCount() === 0) {
-      this.setValidity(false, 'Needs a module name to import from')
+      this.setValidity(false, 'Needs a module name to import from', 'module')
     } else if (this.getAttrs().getCount() === 0) {
-      this.setValidity(false, 'Needs at least one variable to import from that module')
+      this.setValidity(false, 'Needs at least one variable to import from that module', 'attrs')
     } else {
       this.setValidity(true, '')
     }

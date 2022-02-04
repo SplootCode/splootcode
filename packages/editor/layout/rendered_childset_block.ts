@@ -123,6 +123,13 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
     if (this.componentType === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
       let leftPos = x
+      if (this.nodes.length === 0) {
+        leftPos += NODE_INLINE_SPACING * 2
+        this.width += NODE_INLINE_SPACING * 2
+        if (selection !== null) {
+          selection.cursorMap.registerCursorStart(this, 0, x + NODE_INLINE_SPACING, y, true)
+        }
+      }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
@@ -335,6 +342,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         return [leftPos - 3, this.y]
       }
       return [this.x + this.width - 3, this.y]
+    } else if (this.componentType === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+      if (this.nodes.length === 0) {
+        return [this.x + 3, this.y]
+      }
+      return [this.x, this.y]
     } else if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
       let topPos = this.y + ROW_SPACING
       for (let i = 0; i < this.nodes.length; i++) {
@@ -345,7 +357,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       }
       if (this.nodes.length === insertIndex) {
-        return [this.x, topPos]
+        return [this.x - 1, topPos]
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
       let topPos = this.y + ROW_SPACING

@@ -46,7 +46,7 @@ export class PythonForLoop extends SplootNode {
 
   validateSelf(): void {
     if (this.getTarget().getCount() === 0) {
-      this.setValidity(false, 'Needs a variable name')
+      this.setValidity(false, 'Needs a variable name', 'target')
     } else {
       this.setValidity(true, '')
     }

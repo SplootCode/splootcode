@@ -62,7 +62,7 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   validateSelf(): void {
     if (this.getIdentifier().getCount() === 0) {
-      this.setValidity(false, 'Needs a name for the function')
+      this.setValidity(false, 'Needs a name for the function', 'identifier')
     } else {
       this.setValidity(true, '')
     }

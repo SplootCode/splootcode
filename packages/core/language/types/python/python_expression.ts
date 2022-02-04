@@ -109,7 +109,7 @@ export class PythonExpression extends SplootNode {
       if (valid) {
         this.setValidity(true, '')
         this.getTokenSet().children.forEach((child) => {
-          child.setValidity(true, '')
+          child.validateSelf()
         })
       } else {
         const blameIndex = Math.min(tokenIndex, tokens.length - 1)

@@ -63,6 +63,8 @@ export class ActiveCursor extends React.Component<ActiveCursorProps> {
       case LayoutComponentType.CHILD_SET_BLOCK:
         return <line className="active-inline-cursor" x1={x - 3} y1={y + 2} x2={x - 3} y2={y + 28} />
       // return <line className="active-inline-cursor" x1={x + 2} y1={y - 3} x2={x + 200} y2={y - 3}/>;
+      case LayoutComponentType.CHILD_SET_BREADCRUMBS:
+        return <line className="active-inline-cursor" x1={x} y1={y + 2} x2={x} y2={y + 28} />
     }
     return <line className="active-inline-cursor" x1={x} y1={y} x2={x} y2={y + 28} />
   }

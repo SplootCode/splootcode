@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { observer } from 'mobx-react'
 
 import { AttachedChildRightExpressionView } from './attached_child'
-import { ExpandedListBlockView, InlineListBlockView } from './list_block'
+import { ExpandedListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
@@ -197,7 +197,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 key={idx}
                 block={childSetBlock}
                 isSelected={isSelected}
-                isValid={true}
+                isValid={block.invalidChildsetID !== renderedComponent.layoutComponent.identifier}
                 isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
                 selection={this.props.selection}
               />
@@ -255,22 +255,25 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   renderLeftAttachedBreadcrumbsChildSet() {
-    const { block, selection, selectionState } = this.props
+    const { block, selection } = this.props
     if (block.leftBreadcrumbChildSet === null) {
       return null
     }
-    const isSelected = selectionState === NodeSelectionState.SELECTED
     const childSetBlock = block.renderedChildSets[block.leftBreadcrumbChildSet]
-    return (
-      <InlineListBlockView
-        key={'breadcrumbsleft'}
-        isInsideBreadcrumbs={true}
-        block={childSetBlock}
-        isValid={true}
-        isSelected={isSelected}
-        selection={selection}
-      />
-    )
+    if (childSetBlock.nodes.length === 0) {
+      const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
+      const classname = 'svgsplootnode gap' + (invalid ? ' invalid' : '')
+      return <path className={classname} d={getBreadcrumbStartShapePath(block.x, block.y + 1, block.marginLeft)} />
+    } else {
+      return (
+        <EditorNodeBlock
+          block={childSetBlock.nodes[0]}
+          selection={selection}
+          selectionState={childSetBlock.getChildSelectionState(0)}
+          isInsideBreadcrumbs={true}
+        />
+      )
+    }
   }
 
   renderRightAttachedChildSet(): ReactElement {

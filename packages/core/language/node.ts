@@ -40,6 +40,7 @@ export class SplootNode {
   scope: Scope
   isValid: boolean
   invalidReason: string
+  invalidChildSetID: string
   isRepeatableBlock: boolean
 
   constructor(parent: ParentReference, type: string) {
@@ -102,16 +103,17 @@ export class SplootNode {
     })
   }
 
-  setValidity(isValid: boolean, reason: string) {
+  setValidity(isValid: boolean, reason: string, childset?: string) {
     if (this.isValid === isValid && this.invalidReason === reason) {
       return
     }
     this.isValid = isValid
     this.invalidReason = reason
+    this.invalidChildSetID = childset
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_VALIDITY
-    mutation.validity = { valid: isValid, reason: reason }
+    mutation.validity = { valid: isValid, reason: reason, childset: childset }
     this.fireMutation(mutation)
   }
 
