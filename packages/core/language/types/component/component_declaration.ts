@@ -120,7 +120,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
     typeRegistration.childSets = { props: NodeCategory.ComponentPropertyDeclaration, body: NodeCategory.Statement }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'component'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'props'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ])

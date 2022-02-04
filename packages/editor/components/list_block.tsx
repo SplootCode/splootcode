@@ -18,16 +18,24 @@ interface InlineListBlockViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
   selection: NodeSelection
+  isValid: boolean
   isInsideBreadcrumbs?: boolean
 }
 
 @observer
 export class InlineListBlockView extends React.Component<InlineListBlockViewProps> {
   render() {
-    const { isInsideBreadcrumbs } = this.props
+    const { isInsideBreadcrumbs, isValid } = this.props
     const block = this.props.block
+    if (block.nodes.length === 0) {
+      console.log('iamhere', block.x, block.y, block.width)
+    }
+    const width = Math.max(block.width, 8)
+    const classname = 'svgsplootnode gap' + (isValid ? '' : ' invalid')
     return (
       <React.Fragment>
+        <rect className={classname} x={block.x} y={block.y + 1} height="28" width={width} rx="4" />
+
         {block.nodes.map((nodeBlock: NodeBlock, idx: number) => {
           const selectionState = block.getChildSelectionState(idx)
           return (

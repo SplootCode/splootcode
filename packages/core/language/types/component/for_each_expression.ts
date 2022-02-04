@@ -114,7 +114,7 @@ export class ForEachExpression extends SplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'for each'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable', 'in'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'content'),
     ])

@@ -13,6 +13,16 @@
   fill: var(--editor-node-block-fill);
 }
 
+.svgsplootnode.gap {
+  fill: var(--editor-bg-color);
+  stroke: var(--editor-bg-color);
+}
+
+.svgsplootnode.gap.selected {
+  fill: var(--editor-bg-color);
+  stroke: var(--editor-bg-color);
+}
+
 .svgsplootnode.selected {
   stroke: var(--editor-selected-node-block-edge);
   fill: var(--editor-selected-node-block-fill);

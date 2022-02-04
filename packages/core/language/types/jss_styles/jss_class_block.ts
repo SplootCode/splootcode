@@ -92,7 +92,7 @@ export class JssClassBlock extends JavaScriptSplootNode {
     typeRegistration.childSets = { identifier: NodeCategory.DeclaredIdentifier, body: NodeCategory.JssStyleProperties }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'class'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ])
     typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {

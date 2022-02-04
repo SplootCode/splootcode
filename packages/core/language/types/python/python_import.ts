@@ -111,7 +111,7 @@ export class PythonImport extends SplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'import'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'modules'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'modules'),
     ])
     typeRegistration.pasteAdapters = {
       PYTHON_STATEMENT: (node: SplootNode) => {

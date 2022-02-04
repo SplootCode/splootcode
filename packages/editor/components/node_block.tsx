@@ -8,7 +8,7 @@ import { ExpandedListBlockView, InlineListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
-import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
+import { NODE_INLINE_SPACING, NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { TokenListBlockView } from './token_list_block'
@@ -86,7 +86,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     const width = block.blockWidth
     const leftPos = block.x + block.marginLeft
     const topPos = block.y + block.marginTop
-    let internalLeftPos = leftPos + 10
+    let internalLeftPos = leftPos + NODE_INLINE_SPACING
 
     let loopAnnotation = null
     if (block.node.isRepeatableBlock) {
@@ -111,7 +111,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             shape = (
               <rect
                 className={'invisible-splootnode-invalid'}
-                x={leftPos + 1}
+                x={leftPos}
                 y={topPos + 1}
                 height="28"
                 width={width}
@@ -122,10 +122,10 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             shape = null
           }
         } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-          shape = <rect className={classname} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4" />
-          internalLeftPos = leftPos + 8
+          shape = <rect className={classname} x={leftPos} y={topPos + 5} height="21" width={width} rx="4" />
+          internalLeftPos = leftPos + NODE_INLINE_SPACING
         } else {
-          shape = <rect className={classname} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" />
+          shape = <rect className={classname} x={leftPos} y={topPos + 1} height="28" width={width} rx="4" />
         }
       }
     }
@@ -190,17 +190,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
               />
             )
             internalLeftPos += renderedComponent.width
-          } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_INLINE) {
-            const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = (
-              <InlineListBlockView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
-            internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
             result = (
@@ -208,9 +197,12 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 key={idx}
                 block={childSetBlock}
                 isSelected={isSelected}
+                isValid={true}
+                isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
                 selection={this.props.selection}
               />
             )
+            internalLeftPos += renderedComponent.width
           } else {
             // Keywords and child separators left
             result = (
@@ -274,6 +266,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         key={'breadcrumbsleft'}
         isInsideBreadcrumbs={true}
         block={childSetBlock}
+        isValid={true}
         isSelected={isSelected}
         selection={selection}
       />

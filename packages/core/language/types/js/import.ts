@@ -77,7 +77,7 @@ export class ImportStatement extends JavaScriptSplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'import'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'source'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'source'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE, 'specifiers', 'values'),
     ])
 

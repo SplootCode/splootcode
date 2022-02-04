@@ -5,7 +5,7 @@ import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core/languag
 import { ChildSetObserver } from '@splootcode/core/language/observers'
 import { EditBoxData } from '../context/edit_box'
 import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock, RenderedParentRef } from './rendered_node'
+import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NodeBlock, RenderedParentRef } from './rendered_node'
 import { NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { SplootNode } from '@splootcode/core/language/node'
 
@@ -121,31 +121,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       insertIndex = selection.cursor.index
     }
 
-    if (this.componentType === LayoutComponentType.CHILD_SET_INLINE) {
-      let leftPos = x
-      if (selection !== null && this.allowInsertCursor()) {
-        selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true)
-      }
-      this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
-        if (idx === insertIndex) {
-          const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
-          this.width += boxWidth
-          leftPos += boxWidth
-        }
-        childNodeBlock.calculateDimensions(leftPos, y, selection)
-        leftPos += childNodeBlock.rowWidth
-        this.width += childNodeBlock.rowWidth
-        this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight)
-        if (selection !== null && this.allowInsertCursor()) {
-          selection.cursorMap.registerCursorStart(this, idx + 1, leftPos, y, true)
-        }
-      })
-      if (this.nodes.length === insertIndex) {
-        const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
-        this.width += boxWidth
-        leftPos += boxWidth
-      }
-    } else if (this.componentType === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+    if (this.componentType === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
       let leftPos = x
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
@@ -274,9 +250,14 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.width = Math.max(this.width, boxWidth)
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
+      this.width += NODE_INLINE_SPACING
       let leftPos = x
       if (selection !== null) {
-        selection.cursorMap.registerCursorStart(this, 0, x - EXPRESSION_TOKEN_SPACING * 2, y, true)
+        selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true)
+      }
+      leftPos += NODE_INLINE_SPACING
+      if (this.nodes.length === 0) {
+        this.width += NODE_INLINE_SPACING
       }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
@@ -334,31 +315,21 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
   getInsertCoordinates(insertIndex: number, cursorOnly = false): number[] {
     if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
-      let leftPos = this.x
+      let leftPos = this.x + NODE_INLINE_SPACING
       for (let i = 0; i < this.nodes.length; i++) {
         const childNodeBlock = this.nodes[i]
         if (i === insertIndex) {
-          return [leftPos, this.y]
+          return [leftPos - 3, this.y]
         }
         leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
       }
-      if (this.nodes.length === insertIndex) {
+      if (this.nodes.length === 0) {
         return [leftPos, this.y]
       }
-      return [this.x + this.width, this.y]
-    } else if (this.componentType === LayoutComponentType.CHILD_SET_INLINE) {
-      let leftPos = this.x
-      for (let i = 0; i < this.nodes.length; i++) {
-        const childNodeBlock = this.nodes[i]
-        if (i === insertIndex) {
-          return [leftPos, this.y]
-        }
-        leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
-      }
       if (this.nodes.length === insertIndex) {
-        return [leftPos, this.y]
+        return [leftPos - 3, this.y]
       }
-      return [this.x, this.y]
+      return [this.x + this.width - 3, this.y]
     } else if (this.componentType === LayoutComponentType.CHILD_SET_BLOCK) {
       let topPos = this.y + ROW_SPACING
       for (let i = 0; i < this.nodes.length; i++) {
