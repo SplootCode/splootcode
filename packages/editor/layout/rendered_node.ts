@@ -229,14 +229,17 @@ export class NodeBlock implements NodeObserver {
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
-        const shiftLeft = this.layout.boxType === NodeBoxType.INVISIBLE ? NODE_INLINE_SPACING : 0
-        leftPos -= shiftLeft
-        this.blockWidth -= shiftLeft
         const childSetBlock = this.renderedChildSets[component.identifier]
+        let shiftLeft = 0
+        if (childSetBlock.allowInsert() && this.layout.boxType === NodeBoxType.INVISIBLE) {
+          shiftLeft = NODE_INLINE_SPACING
+          leftPos -= shiftLeft
+          this.blockWidth -= shiftLeft
+        }
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         let width = childSetBlock.width
         if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
-          width += nodeInlineSpacing
+          width += NODE_INLINE_SPACING
         }
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         leftPos += width

@@ -250,14 +250,19 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.width = Math.max(this.width, boxWidth)
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
-      this.width += NODE_INLINE_SPACING
+      const allowInsert = this.allowInsert()
       let leftPos = x
       if (selection !== null) {
         selection.cursorMap.registerCursorStart(this, 0, leftPos, y, true)
       }
-      leftPos += NODE_INLINE_SPACING
+      if (allowInsert) {
+        this.width += NODE_INLINE_SPACING
+        leftPos += NODE_INLINE_SPACING
+      }
       if (this.nodes.length === 0) {
         this.width += NODE_INLINE_SPACING
+      } else if (!allowInsert) {
+        this.width -= NODE_INLINE_SPACING
       }
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {

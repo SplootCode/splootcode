@@ -58,6 +58,7 @@
 }
 
 .autocomplete-suggestions {
+  --editor-bg-color: var(--editor-autcompleted-bg-color);
   position: absolute;
   border: 1px solid var(--editor-autcompleted-edge-color);
   border-top-width: 0;
@@ -88,12 +89,14 @@
 
 .autocomplete-suggestions li:hover {
   background-color: var(--editor-autcompleted-highlight-color);
+  --editor-bg-color: var(--editor-autcompleted-highlight-color);
   color: white;
   cursor: pointer;
 }
 
 .autocomplete-suggestion-active, li.suggestion-active:hover {
   background-color: var(--editor-autcompleted-highlight-color);
+  --editor-bg-color: var(--editor-autcompleted-highlight-color);
   color: white;
   cursor: pointer;
   font-weight: 700;
