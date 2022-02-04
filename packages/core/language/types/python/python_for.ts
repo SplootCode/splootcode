@@ -46,7 +46,7 @@ export class PythonForLoop extends SplootNode {
 
   validateSelf(): void {
     if (this.getTarget().getCount() === 0) {
-      this.setValidity(false, 'Needs a variable name')
+      this.setValidity(false, 'Needs a variable name', 'target')
     } else {
       this.setValidity(true, '')
     }
@@ -93,7 +93,7 @@ export class PythonForLoop extends SplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'for'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'target'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'target'),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'in'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),

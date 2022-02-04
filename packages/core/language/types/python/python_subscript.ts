@@ -62,7 +62,7 @@ export class PythonSubscript extends SplootNode {
   validateSelf(): void {
     ;(this.getKey().getChild(0) as PythonExpression).requireNonEmpty('Needs the index or key to look up')
     if (this.getTarget().getCount() === 0) {
-      this.setValidity(false, 'Needs a collection to get an item from, e.g. list, dictionary')
+      this.setValidity(false, 'Needs a collection to get an item from, e.g. list, dictionary', 'target')
     } else {
       this.setValidity(true, '')
     }

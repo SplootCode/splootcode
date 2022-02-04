@@ -4,11 +4,11 @@ import React, { ReactElement } from 'react'
 import { observer } from 'mobx-react'
 
 import { AttachedChildRightExpressionView } from './attached_child'
-import { ExpandedListBlockView, InlineListBlockView } from './list_block'
+import { ExpandedListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
-import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
+import { NODE_INLINE_SPACING, NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { TokenListBlockView } from './token_list_block'
@@ -19,6 +19,7 @@ interface NodeBlockProps {
   selection: NodeSelection
   selectionState: NodeSelectionState
   isInsideBreadcrumbs?: boolean
+  isInvalidBlamed?: boolean
 }
 
 function getBreadcrumbStartShapePath(x: number, y: number, width: number): string {
@@ -76,7 +77,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   render() {
-    const { block, selection, selectionState } = this.props
+    const { block, selection, selectionState, isInvalidBlamed } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
 
     if (block === null) {
@@ -86,14 +87,15 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     const width = block.blockWidth
     const leftPos = block.x + block.marginLeft
     const topPos = block.y + block.marginTop
-    let internalLeftPos = leftPos + 10
+    let internalLeftPos = leftPos + NODE_INLINE_SPACING
 
     let loopAnnotation = null
     if (block.node.isRepeatableBlock) {
       loopAnnotation = <RepeatedBlockAnnotation nodeBlock={block} />
     }
 
-    const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (block.isValid ? '' : ' invalid')
+    const isValid = block.isValid && !isInvalidBlamed
+    const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     let shape: ReactElement
     if (this.props.isInsideBreadcrumbs) {
@@ -107,11 +109,11 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         shape = <path className={classname} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} />
       } else {
         if (block.layout.boxType === NodeBoxType.INVISIBLE) {
-          if (!block.isValid) {
+          if (!isValid) {
             shape = (
               <rect
                 className={'invisible-splootnode-invalid'}
-                x={leftPos + 1}
+                x={leftPos}
                 y={topPos + 1}
                 height="28"
                 width={width}
@@ -122,10 +124,10 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             shape = null
           }
         } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-          shape = <rect className={classname} x={leftPos + 1} y={topPos + 5} height="21" width={width} rx="4" />
-          internalLeftPos = leftPos + 8
+          shape = <rect className={classname} x={leftPos} y={topPos + 5} height="21" width={width} rx="4" />
+          internalLeftPos = leftPos + NODE_INLINE_SPACING
         } else {
-          shape = <rect className={classname} x={leftPos + 1} y={topPos + 1} height="28" width={width} rx="4" />
+          shape = <rect className={classname} x={leftPos} y={topPos + 1} height="28" width={width} rx="4" />
         }
       }
     }
@@ -190,17 +192,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
               />
             )
             internalLeftPos += renderedComponent.width
-          } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_INLINE) {
-            const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = (
-              <InlineListBlockView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
-            internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
             result = (
@@ -208,9 +199,13 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 key={idx}
                 block={childSetBlock}
                 isSelected={isSelected}
+                isValid={block.invalidChildsetID !== renderedComponent.layoutComponent.identifier}
+                isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
                 selection={this.props.selection}
+                invalidIndex={block.invalidChildsetIndex}
               />
             )
+            internalLeftPos += renderedComponent.width
           } else {
             // Keywords and child separators left
             result = (
@@ -263,21 +258,25 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   renderLeftAttachedBreadcrumbsChildSet() {
-    const { block, selection, selectionState } = this.props
+    const { block, selection } = this.props
     if (block.leftBreadcrumbChildSet === null) {
       return null
     }
-    const isSelected = selectionState === NodeSelectionState.SELECTED
     const childSetBlock = block.renderedChildSets[block.leftBreadcrumbChildSet]
-    return (
-      <InlineListBlockView
-        key={'breadcrumbsleft'}
-        isInsideBreadcrumbs={true}
-        block={childSetBlock}
-        isSelected={isSelected}
-        selection={selection}
-      />
-    )
+    if (childSetBlock.nodes.length === 0) {
+      const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
+      const classname = 'svgsplootnode gap' + (invalid ? ' invalid' : '')
+      return <path className={classname} d={getBreadcrumbStartShapePath(block.x, block.y + 1, block.marginLeft)} />
+    } else {
+      return (
+        <EditorNodeBlock
+          block={childSetBlock.nodes[0]}
+          selection={selection}
+          selectionState={childSetBlock.getChildSelectionState(0)}
+          isInsideBreadcrumbs={true}
+        />
+      )
+    }
   }
 
   renderRightAttachedChildSet(): ReactElement {

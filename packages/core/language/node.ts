@@ -40,6 +40,8 @@ export class SplootNode {
   scope: Scope
   isValid: boolean
   invalidReason: string
+  invalidChildSetID: string
+  invalidNode: number
   isRepeatableBlock: boolean
 
   constructor(parent: ParentReference, type: string) {
@@ -81,7 +83,7 @@ export class SplootNode {
   }
 
   validateSelf() {
-    // Nodes with validation logic are expected to override this
+    // Nodes with validation logic are expected to override this.
   }
 
   recursivelyValidate() {
@@ -102,16 +104,17 @@ export class SplootNode {
     })
   }
 
-  setValidity(isValid: boolean, reason: string) {
+  setValidity(isValid: boolean, reason: string, childset?: string, index?: number) {
     if (this.isValid === isValid && this.invalidReason === reason) {
       return
     }
     this.isValid = isValid
     this.invalidReason = reason
+    this.invalidChildSetID = childset
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_VALIDITY
-    mutation.validity = { valid: isValid, reason: reason }
+    mutation.validity = { valid: isValid, reason: reason, childset: childset, index: index }
     this.fireMutation(mutation)
   }
 

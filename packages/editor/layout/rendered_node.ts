@@ -9,7 +9,7 @@ import { RenderedChildSetBlock, stringWidth } from './rendered_childset_block'
 import { SplootNode } from '@splootcode/core/language/node'
 import { getColour } from '@splootcode/core/colors'
 
-export const NODE_INLINE_SPACING = 8
+export const NODE_INLINE_SPACING = 6
 export const NODE_INLINE_SPACING_SMALL = 6
 export const NODE_BLOCK_HEIGHT = 30
 export const LOOP_ANNOTATION_HEIGHT = 12
@@ -83,6 +83,10 @@ export class NodeBlock implements NodeObserver {
   isValid: boolean
   @observable
   invalidReason: string
+  @observable
+  invalidChildsetID: string
+  @observable
+  invalidChildsetIndex: number
 
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number) {
     this.parentChildSet = parentListBlock
@@ -93,8 +97,9 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
     this.node = node
-    this.isValid = node.isValid
+    this.isValid = node.isValid || !!node.invalidChildSetID
     this.invalidReason = node.invalidReason
+    this.invalidChildsetID = node.invalidChildSetID
     this.runtimeAnnotations = []
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
@@ -114,7 +119,6 @@ export class NodeBlock implements NodeObserver {
         component.type === LayoutComponentType.CHILD_SET_BLOCK ||
         component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
         component.type === LayoutComponentType.CHILD_SET_TREE ||
-        component.type === LayoutComponentType.CHILD_SET_INLINE ||
         component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
         component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
         component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS ||
@@ -157,7 +161,7 @@ export class NodeBlock implements NodeObserver {
     this.y = y
     const nodeInlineSpacing =
       this.layout.boxType === NodeBoxType.SMALL_BLOCK ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
-    this.blockWidth = nodeInlineSpacing + 2
+    this.blockWidth = nodeInlineSpacing
     this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
     this.indentedBlockHeight = 0
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
@@ -165,12 +169,12 @@ export class NodeBlock implements NodeObserver {
     let leftPos = this.x + nodeInlineSpacing
     if (
       this.layout.boxType === NodeBoxType.INVISIBLE &&
-      this.parentChildSet &&
-      (this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_BLOCK ||
-        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
-        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_INLINE)
+      (!this.parentChildSet ||
+        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_BLOCK ||
+        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST)
     ) {
       leftPos = this.x
+      this.blockWidth = 0
     }
     let marginRight = 0
     this.marginLeft = 0
@@ -218,15 +222,6 @@ export class NodeBlock implements NodeObserver {
         // This minus 8 here accounts for the distance from the dot to the edge of the node.
         // This is dumb tbh.
         marginRight += Math.max(childSetBlock.width - 8, 0)
-      } else if (component.type === LayoutComponentType.CHILD_SET_INLINE) {
-        const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
-        const width = childSetBlock.width + nodeInlineSpacing
-        leftPos += width
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-        this.blockWidth += width
-        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
@@ -240,10 +235,21 @@ export class NodeBlock implements NodeObserver {
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
+        let shiftLeft = 0
+        if (childSetBlock.allowInsert() && this.layout.boxType === NodeBoxType.INVISIBLE) {
+          shiftLeft = NODE_INLINE_SPACING
+          leftPos -= shiftLeft
+          this.blockWidth -= shiftLeft
+        }
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, childSetBlock.width))
-        leftPos += childSetBlock.width
-        this.blockWidth += childSetBlock.width
+        let width = childSetBlock.width
+        if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
+          width += NODE_INLINE_SPACING
+        }
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
+        leftPos += width
+        this.blockWidth += width
+
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
       } else {
@@ -272,8 +278,10 @@ export class NodeBlock implements NodeObserver {
       this.runtimeAnnotations = nodeMutation.annotations
       this.loopAnnotation = nodeMutation.loopAnnotation
     } else if (nodeMutation.type === NodeMutationType.SET_VALIDITY) {
-      this.isValid = nodeMutation.validity.valid
+      this.isValid = nodeMutation.validity.valid || !!nodeMutation.validity.childset
       this.invalidReason = nodeMutation.validity.reason
+      this.invalidChildsetID = nodeMutation.validity.childset
+      this.invalidChildsetIndex = nodeMutation.validity.index
     }
   }
 

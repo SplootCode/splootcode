@@ -76,9 +76,9 @@ export class ImportDefaultStatement extends JavaScriptSplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'import default'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'source'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'source'),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'as'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier'),
     ])
 
     registerType(typeRegistration)

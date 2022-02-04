@@ -75,6 +75,11 @@ export class PythonCallMember extends SplootNode {
   }
 
   validateSelf(): void {
+    if (this.getObjectExpressionToken().getCount() === 0) {
+      this.setValidity(false, 'Needs object', 'object')
+    } else {
+      this.setValidity(true, '')
+    }
     const elements = this.getArguments().children
     if (elements.length == 1) {
       ;(elements[0] as PythonExpression).allowEmpty()

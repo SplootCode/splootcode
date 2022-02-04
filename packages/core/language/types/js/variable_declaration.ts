@@ -89,7 +89,7 @@ export class VariableDeclaration extends SplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'new variable'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_INLINE, 'identifier'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'init'),
     ])
     typeRegistration.pasteAdapters[HTML_SCRIPT_ElEMENT] = (node: SplootNode) => {
