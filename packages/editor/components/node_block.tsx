@@ -19,6 +19,7 @@ interface NodeBlockProps {
   selection: NodeSelection
   selectionState: NodeSelectionState
   isInsideBreadcrumbs?: boolean
+  isInvalidBlamed?: boolean
 }
 
 function getBreadcrumbStartShapePath(x: number, y: number, width: number): string {
@@ -76,7 +77,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   render() {
-    const { block, selection, selectionState } = this.props
+    const { block, selection, selectionState, isInvalidBlamed } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
 
     if (block === null) {
@@ -93,7 +94,8 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       loopAnnotation = <RepeatedBlockAnnotation nodeBlock={block} />
     }
 
-    const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (block.isValid ? '' : ' invalid')
+    const isValid = block.isValid && !isInvalidBlamed
+    const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     let shape: ReactElement
     if (this.props.isInsideBreadcrumbs) {
@@ -107,7 +109,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         shape = <path className={classname} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} />
       } else {
         if (block.layout.boxType === NodeBoxType.INVISIBLE) {
-          if (!block.isValid) {
+          if (!isValid) {
             shape = (
               <rect
                 className={'invisible-splootnode-invalid'}
@@ -200,6 +202,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 isValid={block.invalidChildsetID !== renderedComponent.layoutComponent.identifier}
                 isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
                 selection={this.props.selection}
+                invalidIndex={block.invalidChildsetIndex}
               />
             )
             internalLeftPos += renderedComponent.width

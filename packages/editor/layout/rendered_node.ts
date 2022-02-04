@@ -85,6 +85,8 @@ export class NodeBlock implements NodeObserver {
   invalidReason: string
   @observable
   invalidChildsetID: string
+  @observable
+  invalidChildsetIndex: number
 
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number) {
     this.parentChildSet = parentListBlock
@@ -279,6 +281,7 @@ export class NodeBlock implements NodeObserver {
       this.isValid = nodeMutation.validity.valid || !!nodeMutation.validity.childset
       this.invalidReason = nodeMutation.validity.reason
       this.invalidChildsetID = nodeMutation.validity.childset
+      this.invalidChildsetIndex = nodeMutation.validity.index
     }
   }
 

@@ -12,6 +12,7 @@ interface TokenListBlockViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
   isValid: boolean
+  invalidIndex: number
   isInline: boolean
   selection: NodeSelection
 }
@@ -19,10 +20,12 @@ interface TokenListBlockViewProps {
 @observer
 export class TokenListBlockView extends React.Component<TokenListBlockViewProps> {
   render() {
-    const { block, isValid, isInline } = this.props
+    const { block, isValid, isInline, invalidIndex } = this.props
     let shape = null
-    const classname = 'svgsplootnode gap' + (isValid ? '' : ' invalid')
-    if (isInline || !isValid) {
+    const childsetInvalid = !isValid && !invalidIndex
+
+    const classname = 'svgsplootnode gap' + (childsetInvalid ? ' invalid' : ' ')
+    if (isInline || childsetInvalid) {
       shape = <rect className={classname} x={block.x} y={block.y + 1} height="28" width={block.width} rx="4" />
     }
     return (
@@ -30,9 +33,15 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
         {shape}
         {block.nodes.map((nodeBlock: NodeBlock, idx: number) => {
           const selectionState = block.getChildSelectionState(idx)
+          const invalidChild = idx == invalidIndex
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
+              <EditorNodeBlock
+                block={nodeBlock}
+                selection={this.props.selection}
+                selectionState={selectionState}
+                isInvalidBlamed={invalidChild}
+              />
             </React.Fragment>
           )
         })}

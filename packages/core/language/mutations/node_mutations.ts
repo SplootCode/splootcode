@@ -13,6 +13,6 @@ export class NodeMutation {
   property: string
   value: string
   annotations: NodeAnnotation[]
-  validity: { valid: boolean; reason: string; childset?: string }
+  validity: { valid: boolean; reason: string; childset?: string; index?: number }
   loopAnnotation: LoopAnnotation
 }
