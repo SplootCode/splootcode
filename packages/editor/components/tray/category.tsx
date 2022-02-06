@@ -15,6 +15,9 @@ export interface CategoryProps {
 }
 
 export function getNodeBlock(node: SerializedNode) {
+  if (!node) {
+    return null
+  }
   const splootNode = deserializeNode(node)
   const nodeBlock = new NodeBlock(null, splootNode, null, 0)
   nodeBlock.calculateDimensions(0, 0, null)
@@ -29,6 +32,10 @@ const MicroNodeInternal = (props: {
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     startDrag(nodeBlock, 0, 0)
+  }
+
+  if (nodeBlock === null) {
+    return null
   }
 
   return (

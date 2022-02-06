@@ -32,6 +32,8 @@ def generateAssignment(assignStatement):
 
 def appendCallToken(callExpr, tokens):
   arguments = [generateExpression(arg) for arg in callExpr.args]
+  if len(arguments) == 0:
+    arguments = [SplootNode("PYTHON_EXPRESSION", {'tokens':[]})]
 
   if type(callExpr.func) == ast.Name:
     name = callExpr.func.id
@@ -45,7 +47,7 @@ def appendCallToken(callExpr, tokens):
 def appendConstantToken(const, tokens):
   if type(const.value) == str:
     tokens.append(SplootNode("STRING_LITERAL", {}, {"value": const.value}))
-  elif type(const.value) == int:
+  elif type(const.value) == int or type(const.value) == float:
     tokens.append(SplootNode("NUMERIC_LITERAL", {}, {"value": const.value}))
   elif type(const.value) == bool:
     tokens.append(SplootNode("PYTHON_BOOL", {}, {"value": const.value}))
@@ -153,3 +155,25 @@ def splootFromPython(codeString):
     fileNode["childSets"]["body"].append(statementNode)
 
   return fileNode
+
+def splootNodeFromPython(codeString):
+  tree = ast.parse(codeString)
+  
+  if len(tree.body) > 1:
+    fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
+  
+    for statement in tree.body:
+      statementNode = generateSplootStatement(statement)
+      fileNode["childSets"]["body"].append(statementNode)
+
+    return fileNode
+
+  statement = tree.body[0]
+  if type(statement) == ast.Expr:
+    expNode = generateExpression(statement.value)
+    if len(expNode['childSets']['tokens']) == 1:
+      return expNode['childSets']['tokens'][0]
+    return expNode
+
+  statementNode = generateSplootStatement(statement)
+  return statementNode['childSets']['statement'][0]

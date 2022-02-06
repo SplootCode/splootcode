@@ -3,7 +3,7 @@ import contextlib
 import unittest
 
 from executor import executePythonFile, wrapStdout
-from .convert_ast import splootFromPython 
+from convert_ast import splootFromPython 
 
 
 class ExecuteTest(unittest.TestCase):

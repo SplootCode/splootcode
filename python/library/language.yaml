@@ -1,0 +1,121 @@
+
+category: Python
+entries:
+  - category: Console
+    entries:
+      - key: print
+        node: print()
+        abstract: 'Outputs infromation to the console.'
+        examples:
+          - ex: "print('Hello!')"
+            desc: Adds a line to the console that says 'Hello!'. The console will start a new line after each print.
+          - ex: "print(10, 'is the number ten')"
+            desc: When given multiple values, print will output all of them with a space between each one.
+      - key: input
+        node: input()
+        abstract: Waits for text to be entered into the console.
+        examples:
+          - ex: "input('Are you sure? ')"
+            desc: 'Optionally pass in a prompt. The prompt text will be output to the console before waiting for the user to enter something.'
+          - ex: "name = input('Name: ')"
+            desc: 'The input function returns the text that the user entered. This example stores what the user typed in in a variable called "name".'
+  - category: Variables
+    entries:
+      - key: assign
+        abstract: 'Assignment'
+        serializedNode:
+          type: 'PYTHON_ASSIGNMENT'
+          childSets:
+            left: []
+            right:
+              - type: 'PYTHON_EXPRESSION'
+                childSets:
+                  tokens: []
+        examples:
+          - ex: 'num = 10'
+            desc: 'Creates a variable called num which refers to the number 10.' 
+
+  - category: Strings
+    entries:
+      - key: string
+        node: '""'
+        title: string
+        abstract: Some text - a sequence of letters or other characters.
+      - key: str
+        node: str()
+        abstract: Creates a string by converting other values into text.
+      - key: concat
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '+'
+        abstract: ''
+
+  - category: Numbers
+    entries:
+      - key: int literal
+        node: '123'
+        title: 'Integer'
+        abstract: 'A whole number, an integer.'
+      - key: int
+        node: int()
+        abstract: 'Creates a new integer by converting another value into an integer.'
+      - key: float literal
+        node: '1.5'
+        title: Float
+        abstract: ''
+      - key: float
+        node: float()
+        abstract: 'Creates a new integer by converting another value into an integer.'
+      - key: add
+        title: Add
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '+'
+        abstract: 'Adds numbers together.'
+      - key: minus
+        title: Subtract
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '-'
+        abstract: 'Subtracts the second value from the first.'
+      - key: multiply
+        title: Multiply
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '*'
+        abstract: 'Multiplies numbers together.'
+      - key: divide
+        title: Divide
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '/'
+        abstract: 'Divides the first number by the second number.'
+      - key: floordivide
+        title: Floor Divide
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '//'
+        abstract: Like division but will round down the result to the nearest whole number.
+      - key: mod
+        title: Modulo
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '%'
+        abstract: 'The remainder when the number on the left is divided by the number on the right.'
+        examples:
+          - ex: '5 % 3'
+            desc: 'When 5 is divided by 3 the remainder is 2.'
+          - ex: '10 % 2 == 0'
+            desc: 'Like all even numbers, 10 divided by 2 has a remainder of 0. This is a useful way to check if a number is odd or even.'
+
+  - category: Logic
+  - category: Control
+  - category: Collections
+  - category: Functions

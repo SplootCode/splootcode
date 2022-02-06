@@ -5,7 +5,7 @@ import React from 'react'
 import { Category } from './category'
 import { NodeBlock } from '../../layout/rendered_node'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
-import { PythonLanugageTray } from '@splootcode/core/language/tray/python/language'
+import { PythonLanguageTray } from '@splootcode/core/language/tray/python/language'
 import { SplootNode } from '@splootcode/core/language/node'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
 
@@ -21,7 +21,7 @@ interface TrayState {
 
 function getTrayListing(rootNode: SplootNode): TrayCategory {
   if (rootNode.type === PYTHON_FILE) {
-    return PythonLanugageTray
+    return PythonLanguageTray
   }
   return {
     category: '',
