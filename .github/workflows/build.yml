@@ -16,7 +16,13 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
       - name: Yarn install
         run: yarn
+      - name: Python setup
+        run: cd python && ./generate.sh && cd ..
       - name: Build
         run: yarn build-prod
