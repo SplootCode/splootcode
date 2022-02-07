@@ -56,31 +56,58 @@ entries:
       - key: int literal
         node: '123'
         title: 'Integer'
-        abstract: 'A whole number, an integer.'
+        abstract: 'An integer, a whole number.'
       - key: int
         node: int()
         abstract: 'Creates a new integer by converting another value into an integer.'
+        examples:
+          - ex: 'int("56")'
+            desc: Convert a string into an integer. Will cause an error if the string is not a valid number.
+          - ex: 'int(4.9)'
+            desc: When converting a float to an int, the number is always rounded down.
+          - ex: "int('0111', 2)"
+            desc: Optionally also accepts a base value for how the number should be interpreted. E.g. 2 for binary numbers.
       - key: float literal
         node: '1.5'
         title: Float
-        abstract: ''
+        abstract: 'A floating-point number, which is a decimal number.'
       - key: float
         node: float()
         abstract: 'Creates a new integer by converting another value into an integer.'
+        examples:
+          - ex: float('2.6')
+            desc: Create a float from a string. Will cause an error if the string is not a valid number.
+          - ex: float(5)
+            desc: Create a float from an integer.
       - key: add
         title: Add
         serializedNode:
           type: PYTHON_BINARY_OPERATOR
           properties:
             operator: '+'
-        abstract: 'Adds numbers together.'
+        abstract: 'Adds numbers together, can also be used with other types (e.g. to join strings).'
+        examples:
+          - ex: '10 + 3 * 3'
+            desc: 'Normal order of operations from mathematics applies, the multiplication will be calculated before the addition.'
+          - ex: '++3'
+            desc: 'It is valid Python to add plus signs before a number but this has no effect.'
       - key: minus
         title: Subtract
         serializedNode:
           type: PYTHON_BINARY_OPERATOR
           properties:
             operator: '-'
-        abstract: 'Subtracts the second value from the first.'
+        examples:
+          - ex: '10 - 4'
+            minus: The result of 100 minus 4 is 6.
+        abstract: 'Subtracts the second value from the first. Can also make a single number negative.'
+        examples:
+          - ex: '10 - 5 - 2'
+            desc: Subtracts 5 and 2 from 10, the result is 3.
+          - ex: '-5'
+            desc: A single minus sign will change a positive number negative. This is the same as multiplying by -1.
+          - ex: '--6'
+            desc: A minus sign will make a negative number postive, so two minus signs together have no effect.
       - key: multiply
         title: Multiply
         serializedNode:
@@ -88,6 +115,12 @@ entries:
           properties:
             operator: '*'
         abstract: 'Multiplies numbers together.'
+        examples:
+          - ex: 6 * 4
+            desc: 6 times 4 is 24
+          - ex: '10 + 3 * 3'
+            desc: 'Normal order of operations from mathematics applies, the multiplication will be calculated before the addition.'
+
       - key: divide
         title: Divide
         serializedNode:
@@ -95,13 +128,23 @@ entries:
           properties:
             operator: '/'
         abstract: 'Divides the first number by the second number.'
+        examples:
+          - ex: 5/2
+            desc: 5 divided by 2 is 2.5. The result is a float, even when both numbers are integers.
       - key: floordivide
         title: Floor Divide
         serializedNode:
           type: PYTHON_BINARY_OPERATOR
           properties:
             operator: '//'
-        abstract: Like division but will round down the result to the nearest whole number.
+        abstract: Like division but will round down the result to the next whole number.
+        examples:
+          - ex: 5//2
+            desc: 5 divided by 2 is 2.5 but with floor division, the result is rounded down to 2.
+          - ex: 99 / 100
+            desc: The result is always rounded down. With normal division this would be 0.99 but the result of the floor division is 0.
+          - ex: 5.1 // 2
+            desc: When used with float numbers the result will be a float too, but still rounded down to a whole number.
       - key: mod
         title: Modulo
         serializedNode:
@@ -116,6 +159,106 @@ entries:
             desc: 'Like all even numbers, 10 divided by 2 has a remainder of 0. This is a useful way to check if a number is odd or even.'
 
   - category: Logic
+    entries:
+      - key: 'true'
+        node: 'True'
+        abstract: 'The boolean (bool) value that indicates something is true.'
+      - key: 'false'
+        node: 'False'
+        abstract: 'The boolean (bool) value for the opposite of True.'
+      - key: 'bool'
+        node: 'bool()'
+        abstract: Create a boolean (True or False) out of another value.
+        examples:
+          - ex: "bool('')"
+            desc: An empty string is considered False.
+          - ex: bool('hi')
+            desc: A string with any characters in it is considered to be True.
+          - ex: bool(0)
+            desc: The number 0 is considered False.
+          - ex: bool(-32)
+            desc: Any non-zero number is considered True.
+      - key: 'and'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: 'and'
+        abstract: ''
+      - key: 'or'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: 'or'
+        abstract: ''
+      - key: 'not'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: 'not'
+        abstract: ''
+      - key: 'equals'
+        title: 'is equal to'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '=='
+        abstract: ''
+      - key: 'inequals'
+        title: 'is not equal to'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '!='
+        abstract: ''
+      - key: 'lt'
+        title: 'less than'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '<'
+        abstract: ''
+      - key: 'lte'
+        title: 'less or equal to'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '<='
+        abstract: ''
+      - key: 'gt'
+        title: 'greater than'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '>'
+        abstract: ''
+      - key: 'gte'
+        title: 'greater or equal to'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: '>='
+        abstract: ''
+      - key: 'is'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: 'is'
+        abstract: 'True if the two sides refer to the same underlying object. Do not use with strings and numbers.'
+        examples:
+          - ex: var is None
+            desc: Can be used to check if a variable is None.
+      - key: 'is not'
+        serializedNode:
+          type: PYTHON_BINARY_OPERATOR
+          properties:
+            operator: 'is not'
+        abstract: 'True if the two sides do not refer to the same underlying object. Do not use with strings and numbers.'
+        examples:
+          - ex: var is not None
+            desc: Can be used to check if a variable is not None.
+
+
+
   - category: Control
   - category: Collections
   - category: Functions

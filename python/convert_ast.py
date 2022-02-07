@@ -1,12 +1,16 @@
 from re import S
-from executor import OPERATORS
+from executor import OPERATORS, UNARY_OPERATORS
 import ast
 
 AST_OPERATORS = {type(value["ast"]): key for key, value in OPERATORS.items()}
+UNARY_AST_OPERATORS = {type(value["ast"]): key for key, value in UNARY_OPERATORS.items()}
 
 
 def convertOperator(astOp):
-  return AST_OPERATORS[type(astOp)]
+  if type(astOp) in AST_OPERATORS:
+    return AST_OPERATORS[type(astOp)]
+  if type(astOp) in UNARY_AST_OPERATORS:
+    return UNARY_AST_OPERATORS[type(astOp)]
 
 def SplootNode(type, childSets={}, properties={}):
   return {
@@ -51,9 +55,10 @@ def appendConstantToken(const, tokens):
     tokens.append(SplootNode("NUMERIC_LITERAL", {}, {"value": const.value}))
   elif type(const.value) == bool:
     tokens.append(SplootNode("PYTHON_BOOL", {}, {"value": const.value}))
+  elif const.value is None:
+    tokens.append(SplootNode("PYTHON_NONE", {}))
   else:
     raise Exception(f'Unsupported constant: {const.value}')
-
 
 def appendBinaryOperatorExpression(binOp, tokens):
   generateExpression(binOp.left, tokens)
@@ -65,6 +70,10 @@ def appendBooleanOperatorExpression(boolOp, tokens):
   for value in boolOp.values[1:]:
     tokens.append(SplootNode('PYTHON_BINARY_OPERATOR', {}, {'operator': convertOperator(boolOp.op)}))
     generateExpression(value, tokens)
+
+def appendUnaryOperatorExpression(unOp, tokens):
+  tokens.append(SplootNode('PYTHON_BINARY_OPERATOR', {}, {'operator': convertOperator(unOp.op)}))
+  generateExpression(unOp.operand, tokens)
 
 def appendCompareOperatorExpression(comp, tokens):
   generateExpression(comp.left, tokens)
@@ -94,6 +103,8 @@ def generateExpression(expr, tokens=None):
     appendBinaryOperatorExpression(expr, tokens)
   elif type(expr) == ast.BoolOp:
     appendBooleanOperatorExpression(expr, tokens)
+  elif type(expr) == ast.UnaryOp:
+    appendUnaryOperatorExpression(expr, tokens)
   elif type(expr) == ast.Compare:
     appendCompareOperatorExpression(expr, tokens)
   elif type(expr) == ast.List:

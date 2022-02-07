@@ -9,7 +9,7 @@
     "build": "yarn webpack --config webpack.dev.ts",
     "build-frame": "yarn webpack --config frameview.webpack.dev.ts",
     "build-prod": "yarn webpack --config webpack.prod.ts && yarn webpack --config ./frameview.webpack.prod.ts",
-    "generate-types": "yarn ts-node scripts/generateLibs.ts"
+    "generate-types": "yarn ts-node scripts/generateLibs.ts && cd python && ./generate.sh && cd .."
   },
   "license": "BUSL-1.1",
   "private": true,
