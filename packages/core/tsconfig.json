@@ -16,5 +16,11 @@
     "paths": {
       "@splootcode/*": ["../*"]
     }
-  }
+  },
+  "include": [
+    "code_io/**/*",
+    "language/**/*",
+    "generated/*.json",
+    "colors.ts",
+  ],
 }

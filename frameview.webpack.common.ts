@@ -70,7 +70,7 @@ export default {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve('node_modules', '@splootcode', 'runtime-python', 'python', 'executor.py'),
+          from: path.resolve('python', 'executor.py'),
           to: 'runtime-python/static',
         },
       ],

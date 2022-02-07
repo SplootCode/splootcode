@@ -1,4 +1,4 @@
-name: Python tests
+name: Build
 
 on:
   push:
@@ -10,15 +10,19 @@ on:
 
 jobs:
   run-linters:
-    name: Run tests
+    name: Build prod
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
-      - name: Set up Python
+      - name: setup python
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - name: Run tests
-        run: cd python && python -m unittest
+      - name: Yarn install
+        run: yarn
+      - name: Run Python generation
+        run: cd python && ./generate.sh && cd ..
+      - name: Build
+        run: yarn build-prod

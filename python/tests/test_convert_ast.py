@@ -1,6 +1,6 @@
 import unittest
 
-from .convert_ast import splootFromPython 
+from convert_ast import splootFromPython 
 
 HELLO_NAME_SPLOOT = {
     "type":"PYTHON_FILE",

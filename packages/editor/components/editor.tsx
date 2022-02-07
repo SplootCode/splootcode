@@ -13,7 +13,7 @@ import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_f
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
-import { Tray } from './tray'
+import { Tray } from './tray/tray'
 import { adaptNodeToPasteDestination, deserializeNode } from '@splootcode/core/language/type_registry'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
