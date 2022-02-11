@@ -34,6 +34,14 @@ entries:
         examples:
           - ex: 'num = 10'
             desc: 'Creates a variable called num which refers to the number 10.' 
+          - ex: 'phrase = "hi" + " " + "there"'
+            desc: 'Any processing is completed first and only the result is stored.'
+      - key: none
+        node: None
+        abstract: 'A special value to represent that there is no value or nothing.'
+        examples:
+          - ex: selection = None
+            desc: None can be used to indicate that the variable has not been filled with a value.
 
   - category: Strings
     entries:
@@ -41,6 +49,13 @@ entries:
         node: '""'
         title: string
         abstract: Some text - a sequence of letters or other characters.
+        examples:
+          - ex: "'Howdy partner!'"
+            desc: An example string, including capital letters, spaces and punctuation.
+          - ex: "'23' + '4'"
+            desc: A string can contain digits, but is always treated as text. This joins two strings together as a new string "234".
+          - ex: "'He said, \"That\\'s cool!\"'"
+            desc: It's ok to include quotes in strings without escaping them.
       - key: str
         node: str()
         abstract: Creates a string by converting other values into text.
@@ -49,7 +64,24 @@ entries:
           type: PYTHON_BINARY_OPERATOR
           properties:
             operator: '+'
+        abstract: 'A plus can be used to join strings together.'
+        examples:
+          - ex: "'Hello, ' + name"
+            desc: 'The two strings are joined together into one new string.'
+      - key: len
+        node: len()
+        abstract: Get the length of the string as a number (also used for lists and other collections).
+        examples:
+          - ex: len('Hello')
+            desc: This string has 5 letters.
+      - key: subscript
+        serializedNode:
+          type: PYTHON_SUBSCRIPT
+          childSets:
+            key:
+              - type: 'PYTHON_EXPRESSION'
         abstract: ''
+
 
   - category: Numbers
     entries:
@@ -256,9 +288,74 @@ entries:
         examples:
           - ex: var is not None
             desc: Can be used to check if a variable is not None.
-
-
-
   - category: Control
+    entries:
+      - key: 'if'
+        serializedNode:
+          type: PYTHON_IF_STATEMENT
+          childSets:
+            condition:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: elif
+        serializedNode:
+          type: PYTHON_ELIF_STATEMENT
+          childSets:
+            condition:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: else
+        serializedNode:
+          type: PYTHON_ELSE_STATEMENT
+        abstract: ''
+      - key: for
+        serializedNode:
+          type: PYTHON_FOR_LOOP
+          childSets:
+            iterable:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: while
+        serializedNode:
+          type: PYTHON_WHILE_LOOP
+          childSets:
+            condition:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+
   - category: Collections
+    entries:
+      - key: listlit
+        node: '[]'
+        abstract: ''
+      - key: list
+        node: 'list()'
+        abstract: ''
+      - key: subscript
+        serializedNode:
+          type: PYTHON_SUBSCRIPT
+          childSets:
+            key:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: len
+        node: len()
+        abstract: Get the length of the string as a number.
+
   - category: Functions
+    entries:
+      - key: def
+        serializedNode:
+          type: PYTHON_FUNCTION_DECLARATION
+        abstract: ''
+  
+  - category: Libraries
+    entries:
+      - key: import
+        serializedNode:
+          type: PYTHON_IMPORT
+        abstract: ''
+      - key: importfrom
+        serializedNode:
+          type: PYTHON_FROM_IMPORT
+        abstract: ''

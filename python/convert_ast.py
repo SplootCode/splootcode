@@ -43,10 +43,12 @@ def appendCallToken(callExpr, tokens):
     name = callExpr.func.id
     tokens.append(SplootNode('PYTHON_CALL_VARIABLE', {"arguments":arguments}, {"identifier": name}))
   elif type(callExpr.func) == ast.Attribute:
-    raise Exception('Call expression on attribute (member) not yet supported.')
+    attr = callExpr.func
+    obj = generateExpressionTokens(attr.value)
+    node = SplootNode('PYTHON_CALL_MEMBER', {'arguments': arguments, 'object': obj}, {'member': attr.attr})
+    tokens.append(node)
   else:
     raise Exception(f'Unsupported Call function expression: {ast.dump(callExpr.func)}')
-  
 
 def appendConstantToken(const, tokens):
   if type(const.value) == str:
@@ -84,12 +86,14 @@ def appendCompareOperatorExpression(comp, tokens):
 
 def appendListToken(list, tokens):
   elements = [generateExpression(expr) for expr in list.elts]
+  if len(elements) == 0:
+    elements = [SplootNode('PYTHON_EXPRESSION', {'tokens': []})]
   tokens.append(SplootNode('PYTHON_LIST', {'elements': elements}))
 
 def appendIdentifier(name, tokens):
   tokens.append(SplootNode('PY_IDENTIFIER', {}, {'identifier': name.id}))
 
-def generateExpression(expr, tokens=None):
+def generateExpressionTokens(expr, tokens=None):
   if tokens is None:
     tokens = []
 
@@ -111,7 +115,10 @@ def generateExpression(expr, tokens=None):
     appendListToken(expr, tokens)
   else:
     raise Exception(f'Unrecognised expression type: {ast.dump(expr)}')
-  
+  return tokens
+
+def generateExpression(expr, tokens=None):
+  tokens = generateExpressionTokens(expr, tokens)
   return SplootNode("PYTHON_EXPRESSION", {"tokens": tokens})
 
 def generateWhile(whileStatement):
