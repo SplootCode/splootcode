@@ -34,61 +34,82 @@ class ExecuteTest(unittest.TestCase):
             'detached': {}})
         
         self.assertEqual(f.getvalue(), "Hello, World!\n")
-    
-    def testWhileLoop(self):
+
+
+    def testIfElse(self):
         self.maxDiff = None
         splootFile = splootFromPython('''
-count = 0
-while count < 3:
-    count = count + 1
+x = 10
+if x == 10:
+    print('hi')
+else:
+    print('bye')
 ''')
-        cap = executePythonFile(splootFile)
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
-        'root': {
-            'type': 'PYTHON_FILE',
-            'data': {
-                'body': [
-                    {
-                        'type': 'PYTHON_ASSIGNMENT',
-                        'data': {'result': '0', 'resultType': 'int'}
-                    },
-                    {
-                        'type': 'PYTHON_WHILE_LOOP',
-                        'data': {'frames': [
-                            {
-                                'type': 'PYTHON_WHILE_LOOP_ITERATION',
-                                'data':{
-                                    'condition': [{'data': {'result': 'True', 'resultType': 'bool'}}],
-                                    'block': [{'type': 'PYTHON_ASSIGNMENT', 'data': {'result': '1', 'resultType': 'int'}}],
-                                },
-                            },
-                            {
-                                'type': 'PYTHON_WHILE_LOOP_ITERATION',
-                                'data':{
-                                    'condition': [{'data': {'result': 'True', 'resultType': 'bool'}}],
-                                    'block': [{'type': 'PYTHON_ASSIGNMENT', 'data': {'result': '2', 'resultType': 'int'}}],
-                                },
-                            },
-                            {
-                                'type': 'PYTHON_WHILE_LOOP_ITERATION',
-                                'data':{
-                                    'condition': [{'data': {'result': 'True', 'resultType': 'bool'}}],
-                                    'block': [{'type': 'PYTHON_ASSIGNMENT', 'data': {'result': '3', 'resultType': 'int'}}],
-                                },
-                            },
-                            {
-                                'type': 'PYTHON_WHILE_LOOP_ITERATION',
-                                'data':{
-                                    'condition': [{'data': {'result': 'False', 'resultType': 'bool'}}],
-                                },
-                            }
-                        ]},
-                    }
-                ]
-            }
-        },
-        'detached': {}})
+            'root': {
+                'type': 'PYTHON_FILE',
+                'data': {
+                    'body': [
+                        {'type': 'PYTHON_ASSIGNMENT', 'data': {'result': '10', 'resultType': 'int'}},
+                        {'type': 'PYTHON_IF_STATEMENT', 'data': {
+                            'condition': [{'data': {'result': 'True', 'resultType': 'bool'}}],
+                            'trueblock': [{
+                                'type': 'PYTHON_EXPRESSION',
+                                'data': {'result': 'None', 'resultType': 'NoneType'},
+                                'sideEffects': [{'type': 'stdout', 'value':'hi'},{'type': 'stdout', 'value':'\n'}]
+                            }]
+                        }},
+                    ]
+                }
+            },
+            'detached': {}})
+
+    def testElse(self):
+        self.maxDiff = None
+        splootFile = splootFromPython('''
+x = 10
+if x != 10:
+    print('hi')
+else:
+    print('bye')
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
+
+        self.assertEqual(cap, {
+            'root': {
+                'type': 'PYTHON_FILE',
+                'data': {
+                    'body': [
+                        {'type': 'PYTHON_ASSIGNMENT', 'data': {'result': '10', 'resultType': 'int'}},
+                        {
+                            'type': 'PYTHON_IF_STATEMENT',
+                            'data': {
+                                'condition': [{'data': {'result': 'False', 'resultType': 'bool'}}],
+                                'elseblocks': [{
+                                    'type': 'PYTHON_ELSE_STATEMENT',
+                                    'data': {
+                                        'block': [
+                                            {'type': 'PYTHON_EXPRESSION',
+                                            'data': {'result': 'None', 'resultType': 'NoneType'},
+                                            'sideEffects': [{'type': 'stdout', 'value':'bye'},{'type': 'stdout', 'value':'\n'}]}
+                                        ]
+                                    }}
+                            ]}
+                        },
+                    ]
+                }
+            },
+            'detached': {}})
 
 
     def testFunctionDeclaration(self):
