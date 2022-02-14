@@ -581,12 +581,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
   getUnindent(index: number): NodeCursor {
     if (this.isInsertableLineChildset() && index != 0) {
-      // Only unindent if it's a cursor at the end of the set
-      if (index === this.nodes.length && index !== 0) {
-        const thisNode = this.parentRef.node
-        const unindentedCursor = thisNode.parentChildSet.getParentLineCursorIfEndNode(thisNode.index)
-        return unindentedCursor
-      }
+      // Rare case and we likely don't want to delete anything.
+      // Would be better to unindent without deletion - needs work.
       return null
     }
 

@@ -597,6 +597,10 @@ def generateAstStatement(sploot_node):
         return generateFunctionStatement(sploot_node)
     elif sploot_node["type"] == "PYTHON_RETURN":
         return generateReturnStatement(sploot_node)
+    elif sploot_node["type"] == "PY_BREAK":
+        return [ast.Break()]
+    elif sploot_node["type"] == "PY_CONTINUE":
+        return [ast.Continue()]
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
