@@ -322,6 +322,14 @@ entries:
             condition:
               - type: 'PYTHON_EXPRESSION'
         abstract: ''
+      - key: break
+        serializedNode:
+          type: PY_BREAK
+        abstract: ''
+      - key: continue
+        serializedNode:
+          type: PY_CONTINUE
+        abstract: ''
 
   - category: Collections
     entries:
