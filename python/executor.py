@@ -444,6 +444,12 @@ def endFrame():
     call_end_frame = ast.Call(func, args=[], keywords=[])
     return ast.Expr(call_end_frame, lineno=1, col_offset=0)
 
+def endLoop():
+    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+    func = ast.Attribute(value=key, attr="endLoop", ctx=ast.Load())
+    call_end_frame = ast.Call(func, args=[], keywords=[])
+    return ast.Expr(call_end_frame, lineno=1, col_offset=0)
+
 
 def startChildSetStatement(childSetName):
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
@@ -517,7 +523,6 @@ def generateWhileStatement(while_node):
         ast.Expr(while_start_frame, lineno=1, col_offset=0),
         ast.While(wrapped_condition, statements, []),
         ast.Expr(while_end_frame, lineno=1, col_offset=0),
-        ast.Expr(while_end_frame, lineno=1, col_offset=0),
     ]
 
 def generateFunctionArguments(arg_list):
@@ -573,6 +578,19 @@ def generateReturnStatement(return_node):
         ast.Return(wrapped)
     ]
 
+def generateBreakStatement(node):
+    return [
+        endLoop(),
+        ast.Break()
+    ]
+
+def generateContinueStatement(node):
+    return [
+        endLoop(),
+        ast.Continue()
+    ]
+
+
 def generateAstStatement(sploot_node):
     if sploot_node["type"] == "PYTHON_STATEMENT":
         if len(sploot_node['childSets']['statement']) != 0:
@@ -598,9 +616,9 @@ def generateAstStatement(sploot_node):
     elif sploot_node["type"] == "PYTHON_RETURN":
         return generateReturnStatement(sploot_node)
     elif sploot_node["type"] == "PY_BREAK":
-        return [ast.Break()]
+        return generateBreakStatement(sploot_node)
     elif sploot_node["type"] == "PY_CONTINUE":
-        return [ast.Continue()]
+        return generateContinueStatement(sploot_node)
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
@@ -681,6 +699,13 @@ class SplootCapture:
 
     def endFrame(self):
         frame = self.stack.pop()
+
+    def endLoop(self):
+        while len(self.stack) != 0:
+            frame = self.stack[-1]
+            if frame.type == 'PYTHON_FOR_LOOP' or frame.type == 'PYTHON_WHILE_LOOP':
+                break
+            self.stack.pop()
 
     def logSideEffect(self, data):
         self.sideEffects.append(data)
