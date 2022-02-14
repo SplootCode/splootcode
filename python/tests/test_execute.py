@@ -236,3 +236,33 @@ add(123, 45)
 
         f.seek(0)
         self.assertEqual(f.read(), '2.0\n2\n')
+
+    def testBreak(self):
+        splootFile = splootFromPython('''
+x = 10
+while x > 0:
+    x = x - 1
+    if x == 8:
+        print('continuing')
+        continue
+    print(x)
+    if x == 5:
+        print('breaking')
+        break
+print('hi')
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), '''9
+continuing
+7
+6
+5
+breaking
+hi
+''')

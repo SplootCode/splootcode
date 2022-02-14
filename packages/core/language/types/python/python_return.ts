@@ -48,6 +48,15 @@ export class PythonReturn extends SplootNode {
 
   validateSelf(): void {
     ;(this.getValue().getChild(0) as PythonExpression).allowEmpty()
+    let parent = this.parent?.node
+    while (parent) {
+      if (parent.type == PYTHON_FUNCTION_DECLARATION) {
+        this.setValidity(true, '')
+        return
+      }
+      parent = parent?.parent?.node
+    }
+    this.setValidity(false, 'return can only be used inside a function')
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

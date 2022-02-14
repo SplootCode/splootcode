@@ -194,6 +194,10 @@ def generateSplootStatement(statement):
   elif type(statement) == ast.FunctionDef:
     func = generateFunction(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [func]})
+  elif type(statement) == ast.Break:
+    return SplootNode('PY_BREAK')
+  elif type(statement) == ast.Continue:
+    return SplootNode('PY_CONTINUE')
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   

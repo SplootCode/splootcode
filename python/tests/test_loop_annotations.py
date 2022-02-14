@@ -145,3 +145,78 @@ for char in 'hello':
         },
         'detached': {}})
 
+
+    def testBreak(self):
+        self.maxDiff = None
+        splootFile = splootFromPython('''
+for char in 'hello':
+    if char == 'l':
+        break
+    print(char)
+print('end')
+''')
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
+
+        self.assertEqual(cap, {
+        'root': {
+            'type': 'PYTHON_FILE',
+            'data': {
+                'body': [
+                    {
+                        'type': 'PYTHON_FOR_LOOP',
+                        'data': {'frames': [
+                            {
+                                'type': 'PYTHON_FOR_LOOP_ITERATION',
+                                'data':{
+                                    'iterable': [{'data': {'result': 'h', 'resultType': 'str'}}],
+                                    'block': [{
+                                        'type': 'PYTHON_IF_STATEMENT',
+                                        'data': {'condition': [{'data': {'result': 'False', 'resultType':'bool'}}]},
+                                    },{
+                                        'type': 'PYTHON_EXPRESSION',
+                                        'data': {'result': 'None', 'resultType': 'NoneType'},
+                                        'sideEffects': [{'type': 'stdout', 'value':'h'}, {'type': 'stdout', 'value':'\n'}]
+                                    }],
+                                },
+                            },
+                            {
+                                'type': 'PYTHON_FOR_LOOP_ITERATION',
+                                'data':{
+                                    'iterable': [{'data': {'result': 'e', 'resultType': 'str'}}],
+                                    'block': [{
+                                        'type': 'PYTHON_IF_STATEMENT',
+                                        'data': {'condition': [{'data': {'result': 'False', 'resultType':'bool'}}]},
+                                    },{
+                                        'type': 'PYTHON_EXPRESSION',
+                                        'data': {'result': 'None', 'resultType': 'NoneType'},
+                                        'sideEffects': [{'type': 'stdout', 'value':'e'}, {'type': 'stdout', 'value':'\n'}]
+                                    }],
+                                },
+                            },
+                            {
+                                'type': 'PYTHON_FOR_LOOP_ITERATION',
+                                'data':{
+                                    'iterable': [{'data': {'result': 'l', 'resultType': 'str'}}],
+                                    'block': [{
+                                        'type': 'PYTHON_IF_STATEMENT',
+                                        'data': {
+                                            'condition': [{'data': {'result': 'True', 'resultType':'bool'}}],
+                                            'trueblock': []},
+                                    }],
+                                },
+                            },
+                        ]},
+                    },
+                    {
+                        'type': 'PYTHON_EXPRESSION',
+                        'data': {'result': 'None', 'resultType': 'NoneType'},
+                        'sideEffects': [{'type': 'stdout', 'value':'end'}, {'type': 'stdout', 'value':'\n'}]
+                    },
+                ]
+            }
+        },
+        'detached': {}})
+
