@@ -590,7 +590,6 @@ def generateContinueStatement(node):
         ast.Continue()
     ]
 
-
 def generateAstStatement(sploot_node):
     if sploot_node["type"] == "PYTHON_STATEMENT":
         if len(sploot_node['childSets']['statement']) != 0:
