@@ -121,11 +121,40 @@ def generateExpression(expr, tokens=None):
   tokens = generateExpressionTokens(expr, tokens)
   return SplootNode("PYTHON_EXPRESSION", {"tokens": tokens})
 
+def generateIf(statement):
+  test = generateExpression(statement.test)
+  body = [generateSplootStatement(s) for s in statement.body]
+  elseblocks = []
+  elsebody = [generateSplootStatement(s) for s in statement.orelse]
+  if len(elsebody) != 0:
+    elseblocks = [SplootNode('PYTHON_ELSE_STATEMENT', {'block': elsebody})]
+
+  return SplootNode("PYTHON_IF_STATEMENT", {
+    'condition': [test],
+    'trueblock': body,
+    'elseblocks': elseblocks
+  })
+
 def generateWhile(whileStatement):
   test = generateExpression(whileStatement.test)
   body = [generateSplootStatement(s) for s in whileStatement.body]
   return SplootNode("PYTHON_WHILE_LOOP", {
     'condition': [test],
+    'block': body
+  })
+
+def generateFor(forStatement):
+  body = [generateSplootStatement(s) for s in forStatement.body]
+  iterable = generateExpression(forStatement.iter)
+
+  if type(forStatement.target) == ast.Name:
+    target = SplootNode('PY_IDENTIFIER', {}, {"identifier": forStatement.target.id})
+  else:
+    raise Exception(f"Unsupported target for assignment: {ast.dump(target)}")
+
+  return SplootNode('PYTHON_FOR_LOOP', {
+    'target': [target],
+    'iterable': [iterable],
     'block': body
   })
 
@@ -154,9 +183,14 @@ def generateSplootStatement(statement):
   elif type(statement) == ast.Assign:
     assign = generateAssignment(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [assign]})
+  elif type(statement) == ast.For:
+    forNode = generateFor(statement)
+    return SplootNode("PYTHON_STATEMENT", {"statement": [forNode]})
   elif type(statement) == ast.While:
     whileNode = generateWhile(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [whileNode]})
+  elif type(statement) == ast.If:
+    return SplootNode("PYTHON_STATEMENT", {"statement": [generateIf(statement)]})
   elif type(statement) == ast.FunctionDef:
     func = generateFunction(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [func]})

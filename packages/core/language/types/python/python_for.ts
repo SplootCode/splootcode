@@ -1,4 +1,5 @@
 import { ChildSetType } from '../../childset'
+import { ForLoopData, ForLoopIteration, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -8,7 +9,9 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
@@ -31,9 +34,14 @@ class Generator implements SuggestionGenerator {
 }
 
 export class PythonForLoop extends SplootNode {
+  runtimeCapture: ForLoopData
+  runtimeCaptureFrame: number
+
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FOR_LOOP)
     this.isRepeatableBlock = true
+    this.runtimeCapture = null
+    this.runtimeCaptureFrame = 0
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonLoopVariable)
     this.addChildSet('iterable', ChildSetType.Single, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
@@ -71,6 +79,86 @@ export class PythonForLoop extends SplootNode {
 
   getBlock() {
     return this.getChildSet('block')
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+    }
+    if (capture.type === 'EXCEPTION') {
+      this.applyRuntimeError(capture)
+      this.runtimeCapture = null
+      return true
+    }
+    const data = capture.data as ForLoopData
+    this.runtimeCapture = data
+    this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    return true
+  }
+
+  selectRuntimeCaptureFrame(index: number) {
+    if (!this.runtimeCapture) {
+      this.recursivelyClearRuntimeCapture()
+      return
+    }
+    this.runtimeCaptureFrame = index
+
+    const frames = this.runtimeCapture.frames
+
+    if (frames.length == 0) {
+      this.getBlock().recursivelyApplyRuntimeCapture([])
+      const mutation = new NodeMutation()
+      mutation.node = this
+      mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+      mutation.annotations = []
+      mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+      this.fireMutation(mutation)
+      return
+    }
+
+    index = Math.min(this.runtimeCapture.frames.length - 1, index)
+    if (index == -1) {
+      index = this.runtimeCapture.frames.length - 1
+    }
+    const annotation: NodeAnnotation[] = []
+
+    const frame = frames[index]
+
+    if (frame.type === 'EXCEPTION') {
+      annotation.push({
+        type: NodeAnnotationType.RuntimeError,
+        value: {
+          errorType: frame.exceptionType,
+          errorMessage: frame.exceptionMessage,
+        },
+      })
+    } else {
+      const frameData = frame.data as ForLoopIteration
+      const iterable = frameData.iterable[0]
+      const iterableData = iterable.data as SingleStatementData
+
+      if (iterable.sideEffects && iterable.sideEffects.length > 0) {
+        const stdout = iterable.sideEffects
+          .filter((sideEffect) => sideEffect.type === 'stdout')
+          .map((sideEffect) => sideEffect.value)
+          .join('')
+        annotation.push({ type: NodeAnnotationType.SideEffect, value: { message: `prints "${stdout}"` } })
+      }
+      annotation.push({
+        type: NodeAnnotationType.ReturnValue,
+        value: {
+          value: iterableData.result,
+          type: iterableData.resultType,
+        },
+      })
+      this.getBlock().recursivelyApplyRuntimeCapture(frameData.block || [])
+    }
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = annotation
+    mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    this.fireMutation(mutation)
   }
 
   static deserializer(serializedNode: SerializedNode): PythonForLoop {

@@ -12,6 +12,15 @@ export interface WhileLoopIteration {
   block?: StatementCapture[]
 }
 
+export interface ForLoopData {
+  frames?: StatementCapture[]
+}
+
+export interface ForLoopIteration {
+  iterable: StatementCapture[]
+  block?: StatementCapture[]
+}
+
 export interface IfStatementData {
   condition: StatementCapture[]
   trueblock?: StatementCapture[]
