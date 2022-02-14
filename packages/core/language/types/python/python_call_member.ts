@@ -74,6 +74,10 @@ export class PythonCallMember extends SplootNode {
     this.setProperty('member', identifier)
   }
 
+  getChildrenToKeepOnDelete(): SplootNode[] {
+    return this.getObjectExpressionToken().children
+  }
+
   validateSelf(): void {
     if (this.getObjectExpressionToken().getCount() === 0) {
       this.setValidity(false, 'Needs object', 'object')

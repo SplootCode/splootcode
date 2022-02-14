@@ -67,6 +67,10 @@ export class SplootNode {
     this.childSetOrder.push(name)
   }
 
+  getChildrenToKeepOnDelete(): SplootNode[] {
+    return []
+  }
+
   getScope(skipSelf = false): Scope {
     if (!skipSelf && isScopedNodeType(this.type)) {
       return this.scope

@@ -157,7 +157,13 @@ export class NodeSelection {
         this.cursor.listBlock.selectionState = SelectionState.Empty
       }
       const listBlock = this.cursor.listBlock
-      listBlock.childSet.removeChild(this.cursor.index)
+      const deletedNode = listBlock.childSet.removeChild(this.cursor.index)
+      const newNodes = deletedNode.getChildrenToKeepOnDelete()
+      let index = this.cursor.index
+      newNodes.forEach((node) => {
+        listBlock.childSet.insertNode(node, index)
+        index++
+      })
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()

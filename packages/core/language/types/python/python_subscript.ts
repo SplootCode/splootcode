@@ -59,6 +59,10 @@ export class PythonSubscript extends SplootNode {
     return this.getChildSet('key')
   }
 
+  getChildrenToKeepOnDelete(): SplootNode[] {
+    return this.getTarget().children
+  }
+
   validateSelf(): void {
     ;(this.getKey().getChild(0) as PythonExpression).requireNonEmpty('Needs the index or key to look up')
     if (this.getTarget().getCount() === 0) {
