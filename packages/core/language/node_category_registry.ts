@@ -39,6 +39,7 @@ export enum NodeCategory {
   PythonFunctionArgumentDeclaration,
   PythonModuleIdentifier,
   PythonModuleAttribute,
+  PythonDictionaryKeyValue,
 }
 
 export interface SuggestionGenerator {

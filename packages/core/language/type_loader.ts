@@ -37,6 +37,7 @@ import { PythonCallMember } from './types/python/python_call_member'
 import { PythonCallVariable } from './types/python/python_call_variable'
 import { PythonContinue } from './types/python/python_continue'
 import { PythonDeclaredIdentifier } from './types/python/declared_identifier'
+import { PythonDictionary } from './types/python/python_dictionary'
 import { PythonElifBlock } from './types/python/python_elif'
 import { PythonElseBlock } from './types/python/python_else'
 import { PythonExpression } from './types/python/python_expression'
@@ -47,6 +48,7 @@ import { PythonFunctionDeclaration } from './types/python/python_function'
 import { PythonIdentifier } from './types/python/python_identifier'
 import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
+import { PythonKeyValue } from './types/python/python_keyvalue'
 import { PythonList } from './types/python/python_list'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
 import { PythonReturn } from './types/python/python_return'
@@ -139,6 +141,7 @@ export function loadTypes() {
   PythonCallMember.register()
   PythonCallVariable.register()
   PythonContinue.register()
+  PythonDictionary.register()
   PythonElifBlock.register()
   PythonElseBlock.register()
   PythonExpression.register()
@@ -149,6 +152,7 @@ export function loadTypes() {
   PythonIdentifier.register()
   PythonIfStatement.register()
   PythonImport.register()
+  PythonKeyValue.register()
   PythonList.register()
   PythonModuleIdentifier.register()
   PythonReturn.register()

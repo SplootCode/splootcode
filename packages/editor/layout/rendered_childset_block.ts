@@ -501,12 +501,13 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getLineNodeIfEmpty(): NodeCursor {
-    if (this.nodes.length !== 0) {
-      return null
-    }
     const thisNode = this.parentRef.node
-    if (thisNode.parentChildSet?.isInsertableLineChildset()) {
+    if (thisNode.node.isEmpty() && thisNode.parentChildSet?.isInsertableLineChildset()) {
       return new NodeCursor(thisNode.parentChildSet, thisNode.index)
+    }
+    const parent = thisNode.parentChildSet.parentRef.node
+    if (parent.node.isEmpty() && parent.parentChildSet?.isInsertableLineChildset()) {
+      return new NodeCursor(parent.parentChildSet, parent.index)
     }
     return null
   }
@@ -579,32 +580,36 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return thisNode.parentChildSet.getParentLineCursorIfStartNode(thisNode.index)
   }
 
-  getUnindent(index: number): NodeCursor {
+  getUnindent(index: number): [NodeBlock, NodeCursor] {
     if (this.isInsertableLineChildset() && index != 0) {
       // Rare case and we likely don't want to delete anything.
       // Would be better to unindent without deletion - needs work.
-      return null
+      return [null, null]
     }
 
-    if (index !== 0 || this.nodes.length !== 0) {
-      return null
+    if (!this.parentRef.node.node.isEmpty()) {
+      return [null, null]
+    }
+
+    if (this.parentRef.node?.parentChildSet?.parentRef.node.node.isEmpty()) {
+      return this.parentRef.node.parentChildSet.getUnindent(this.parentRef.node.index)
     }
 
     // Figure out if we should unindent
     const thisNode = this.parentRef.node
     const parentChildSet = thisNode.parentChildSet
     if (!parentChildSet) {
-      return null
+      return [null, null]
     }
     const isLastNodeInParentChildSet = thisNode.index === parentChildSet.nodes.length - 1
     if (thisNode.index !== 0 && isLastNodeInParentChildSet && parentChildSet.isInsertableLineChildset()) {
       const parentNode = parentChildSet.parentRef.node
       if (parentNode && parentNode.parentChildSet) {
         const [unindentCursor] = parentNode.parentChildSet.getNewLinePosition(parentNode.index + 1)
-        return unindentCursor
+        return [thisNode, unindentCursor]
       }
     }
-    return null
+    return [null, null]
   }
 
   /** Called when Enter is pressed

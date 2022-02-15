@@ -221,11 +221,9 @@ export class NodeSelection {
 
   @action
   unindent() {
-    const newLineCursor = this.cursor.listBlock.getUnindent(this.cursor.index)
+    const [deleteNode, newLineCursor] = this.cursor.listBlock.getUnindent(this.cursor.index)
     if (newLineCursor) {
-      const deleteNode = this.cursor.listBlock.parentRef.node
       deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
-
       const category = newLineCursor.listBlock.childSet.nodeCategory
       const node = getBlankFillForCategory(category)
       if (node) {
@@ -272,6 +270,15 @@ export class NodeSelection {
     if (didUnindent) {
       return
     }
+    const cursor = this.cursor.listBlock.getLineNodeIfEmpty()
+    if (cursor) {
+      cursor.listBlock.childSet.removeChild(cursor.index)
+      this.updateRenderPositions()
+      this.moveCursorLeft()
+      this.updateCursorXYToCursor()
+      return
+    }
+
     this.moveCursorLeft()
     if (this.isSingleNode()) {
       this.deleteSelectedNode()

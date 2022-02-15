@@ -266,3 +266,17 @@ continuing
 breaking
 hi
 ''')
+
+    def testDict(self):
+        splootFile = splootFromPython('''d = {"hello": "hallo"}
+print(d)
+print(d["hello"])
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), "{'hello': 'hallo'}\nhallo\n")

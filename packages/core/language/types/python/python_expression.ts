@@ -85,6 +85,10 @@ export class PythonExpression extends SplootNode {
     }
   }
 
+  isEmpty(): boolean {
+    return this.getTokenSet().children.length === 0
+  }
+
   allowEmpty() {
     const tokens = this.getTokenSet().children
     if (tokens.length === 0) {

@@ -86,6 +86,10 @@ export class SplootNode {
     // Variable declarations and named function declarations will do this.
   }
 
+  isEmpty(): boolean {
+    return false
+  }
+
   validateSelf() {
     // Nodes with validation logic are expected to override this.
   }
