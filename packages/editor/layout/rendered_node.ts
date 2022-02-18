@@ -152,7 +152,7 @@ export class NodeBlock implements NodeObserver {
     }
   }
 
-  calculateDimensions(x: number, y: number, selection: NodeSelection) {
+  calculateDimensions(x: number, y: number, selection: NodeSelection, marginApplied = false) {
     this.marginTop = 0
     if (this.node.isRepeatableBlock) {
       this.marginTop = LOOP_ANNOTATION_HEIGHT
@@ -167,18 +167,16 @@ export class NodeBlock implements NodeObserver {
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
     let leftPos = this.x + nodeInlineSpacing
-    if (
-      this.layout.boxType === NodeBoxType.INVISIBLE &&
-      (!this.parentChildSet ||
-        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_BLOCK ||
-        this.parentChildSet.componentType === LayoutComponentType.CHILD_SET_TOKEN_LIST)
-    ) {
+    if (this.layout.boxType === NodeBoxType.INVISIBLE) {
       leftPos = this.x
       this.blockWidth = 0
     }
+
     let marginRight = 0
     this.marginLeft = 0
     this.layout.components.forEach((component: LayoutComponent, idx) => {
+      const marginAlreadyApplied = marginApplied && idx == 0 && this.layout.boxType === NodeBoxType.INVISIBLE
+
       if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
@@ -235,13 +233,11 @@ export class NodeBlock implements NodeObserver {
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
-        let shiftLeft = 0
-        if (childSetBlock.allowInsert() && this.layout.boxType === NodeBoxType.INVISIBLE) {
-          shiftLeft = NODE_INLINE_SPACING
-          leftPos -= shiftLeft
-          this.blockWidth -= shiftLeft
+        if (marginAlreadyApplied && childSetBlock.allowInsert()) {
+          leftPos -= NODE_INLINE_SPACING
+          this.blockWidth -= NODE_INLINE_SPACING
         }
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection, marginAlreadyApplied)
         let width = childSetBlock.width
         if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
           width += NODE_INLINE_SPACING
@@ -249,7 +245,6 @@ export class NodeBlock implements NodeObserver {
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         leftPos += width
         this.blockWidth += width
-
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
       } else {

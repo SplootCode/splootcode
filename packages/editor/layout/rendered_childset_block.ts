@@ -110,7 +110,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
   }
 
-  calculateDimensions(x: number, y: number, selection: NodeSelection) {
+  calculateDimensions(x: number, y: number, selection: NodeSelection, marginAlreadyApplied = false) {
     this.width = 0
     this.height = 0
     this.marginTop = 0
@@ -218,7 +218,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
           this.width = Math.max(this.width, boxWidth)
         }
-        childNodeBlock.calculateDimensions(x, topPos, selection)
+        childNodeBlock.calculateDimensions(x, topPos, selection, true)
         if (selection !== null) {
           selection.cursorMap.registerLineCursor(this, idx, topPos + childNodeBlock.marginTop)
         }
@@ -277,7 +277,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
           this.width += boxWidth
           leftPos += boxWidth
         }
-        childNodeBlock.calculateDimensions(leftPos, y, selection)
+        childNodeBlock.calculateDimensions(leftPos, y, selection, idx === 0 && (marginAlreadyApplied || allowInsert))
         this.marginTop = Math.max(this.marginTop, childNodeBlock.marginTop)
         if (selection !== null) {
           selection.cursorMap.registerCursorStart(this, idx + 1, leftPos + childNodeBlock.rowWidth, y, true)
@@ -505,8 +505,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     if (thisNode.node.isEmpty() && thisNode.parentChildSet?.isInsertableLineChildset()) {
       return new NodeCursor(thisNode.parentChildSet, thisNode.index)
     }
-    const parent = thisNode.parentChildSet.parentRef.node
-    if (parent.node.isEmpty() && parent.parentChildSet?.isInsertableLineChildset()) {
+    const parent = thisNode.parentChildSet?.parentRef.node
+    if (parent && parent.node.isEmpty() && parent.parentChildSet?.isInsertableLineChildset()) {
       return new NodeCursor(parent.parentChildSet, parent.index)
     }
     return null
