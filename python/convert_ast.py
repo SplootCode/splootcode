@@ -1,4 +1,4 @@
-from re import S
+from re import S, sub
 from executor import OPERATORS, UNARY_OPERATORS
 import ast
 
@@ -90,6 +90,20 @@ def appendListToken(list, tokens):
     elements = [SplootNode('PYTHON_EXPRESSION', {'tokens': []})]
   tokens.append(SplootNode('PYTHON_LIST', {'elements': elements}))
 
+def appendDictToken(dict, tokens):
+  keys = [generateExpression(expr) for expr in dict.keys]
+  values = [generateExpression(expr) for expr in dict.values]
+  els = [SplootNode('PY_KEYVALUE', childSets={'key': [k], 'value': [v]}) for k, v in zip(keys,values)]
+  tokens.append(SplootNode('PY_DICT', {'elements': els}))
+
+def appendSubscriptExpression(subscript, tokens):
+  target = generateExpressionTokens(subscript.value)
+  if type(subscript.slice) == ast.Slice:
+    raise Exception('Slice syntax is not supported')
+  key = generateExpression(subscript.slice)
+  node = SplootNode('PYTHON_SUBSCRIPT', {'target': target, 'key': [key]})
+  tokens.append(node)
+
 def appendIdentifier(name, tokens):
   tokens.append(SplootNode('PY_IDENTIFIER', {}, {'identifier': name.id}))
 
@@ -113,6 +127,10 @@ def generateExpressionTokens(expr, tokens=None):
     appendCompareOperatorExpression(expr, tokens)
   elif type(expr) == ast.List:
     appendListToken(expr, tokens)
+  elif type(expr) == ast.Dict:
+    appendDictToken(expr, tokens)
+  elif type(expr) == ast.Subscript:
+    appendSubscriptExpression(expr, tokens)
   else:
     raise Exception(f'Unrecognised expression type: {ast.dump(expr)}')
   return tokens

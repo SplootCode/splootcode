@@ -77,6 +77,10 @@ export class PythonStatement extends SplootNode {
     }
   }
 
+  isEmpty(): boolean {
+    return this.getStatement().children.length === 0
+  }
+
   static deserializer(serializedNode: SerializedNode): PythonStatement {
     const res = new PythonStatement(null)
     res.deserializeChildSet('statement', serializedNode)

@@ -26,6 +26,12 @@ def generateList(node):
     els = [el for el in els if el is not None]
     return ast.List(els, ast.Load())
 
+def generateDict(node):
+    kv_pairs = node['childSets']['elements']
+    keys = [generateAstExpression(pair['childSets']['key'][0]) for pair in kv_pairs]
+    values = [generateAstExpression(pair['childSets']['value'][0]) for pair in kv_pairs]
+    return ast.Dict(keys, values)
+
 def generateSubscript(node, context=ast.Load()):
     value = generateAstExpressionToken(node['childSets']['target'][0])
     index = generateAstExpression(node['childSets']['key'][0])
@@ -51,6 +57,8 @@ def generateAstExpressionToken(node):
         return generateCallMember(node)
     elif node["type"] == "PYTHON_LIST":
         return generateList(node)
+    elif node["type"] == "PY_DICT":
+        return generateDict(node)
     elif node["type"] == "PYTHON_SUBSCRIPT":
         return generateSubscript(node)
     else:

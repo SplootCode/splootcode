@@ -11,6 +11,7 @@ import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/c
 import { NODE_INLINE_SPACING, NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
+import { Separator } from './separator'
 import { TokenListBlockView } from './token_list_block'
 import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
@@ -203,6 +204,17 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
                 selection={this.props.selection}
                 invalidIndex={block.invalidChildsetIndex}
+              />
+            )
+            internalLeftPos += renderedComponent.width
+          } else if (renderedComponent.layoutComponent.type == LayoutComponentType.SEPARATOR) {
+            result = (
+              <Separator
+                key={idx}
+                x={internalLeftPos}
+                selectorType={renderedComponent.layoutComponent.identifier}
+                y={topPos}
+                isSelected={isSelected}
               />
             )
             internalLeftPos += renderedComponent.width
