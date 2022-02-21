@@ -38,7 +38,7 @@ export class PythonAssignment extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ASSIGNMENT)
     this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable)
-    this.addChildSet('right', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('right', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('right').addChild(new PythonExpression(null))
   }
 

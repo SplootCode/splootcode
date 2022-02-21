@@ -40,7 +40,7 @@ export class PythonWhileLoop extends SplootNode {
     this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
-    this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
   }

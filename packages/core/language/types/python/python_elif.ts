@@ -65,7 +65,7 @@ class AppendGenerator implements SuggestionGenerator {
 export class PythonElifBlock extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELIF_STATEMENT)
-    this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
   }

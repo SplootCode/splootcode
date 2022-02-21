@@ -8,6 +8,7 @@ import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 export enum ChildSetType {
   Single = 0,
   Many,
+  Immutable,
 }
 
 export class ChildSet {

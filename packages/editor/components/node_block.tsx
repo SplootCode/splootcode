@@ -110,6 +110,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         shape = <path className={classname} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} />
       } else {
         if (block.layout.boxType === NodeBoxType.INVISIBLE) {
+          internalLeftPos = leftPos
           if (!isValid) {
             shape = (
               <rect

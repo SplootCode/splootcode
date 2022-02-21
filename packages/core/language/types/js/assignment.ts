@@ -34,9 +34,9 @@ class Generator implements SuggestionGenerator {
 export class Assignment extends JavaScriptSplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, ASSIGNMENT)
-    this.addChildSet('left', ChildSetType.Single, NodeCategory.Expression)
+    this.addChildSet('left', ChildSetType.Immutable, NodeCategory.Expression)
     this.getChildSet('left').addChild(new SplootExpression(null))
-    this.addChildSet('right', ChildSetType.Single, NodeCategory.Expression)
+    this.addChildSet('right', ChildSetType.Immutable, NodeCategory.Expression)
     this.getChildSet('right').addChild(new SplootExpression(null))
   }
 

@@ -47,7 +47,7 @@ export class PythonSubscript extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_SUBSCRIPT)
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonExpressionToken)
-    this.addChildSet('key', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getKey().addChild(new PythonExpression(null))
   }
 
