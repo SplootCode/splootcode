@@ -455,6 +455,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   @observable
+  allowDelete(): boolean {
+    return this.childSet.type !== ChildSetType.Immutable && this.childSet.getCount() !== 0
+  }
+
+  @observable
   isInsert(idx: number): boolean {
     return this.selectedIndex === idx && this.selectionState === SelectionState.Inserting
   }
@@ -500,14 +505,16 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return null
   }
 
-  getLineNodeIfEmpty(): NodeCursor {
+  getDeleteCursorIfEmpty(): NodeCursor {
     const thisNode = this.parentRef.node
-    if (thisNode.node.isEmpty() && thisNode.parentChildSet?.isInsertableLineChildset()) {
-      return new NodeCursor(thisNode.parentChildSet, thisNode.index)
-    }
-    const parent = thisNode.parentChildSet?.parentRef.node
-    if (parent && parent.node.isEmpty() && parent.parentChildSet?.isInsertableLineChildset()) {
-      return new NodeCursor(parent.parentChildSet, parent.index)
+    if (thisNode.node.isEmpty()) {
+      const parent = thisNode.parentChildSet?.parentRef.node
+      if (parent && parent.node.isEmpty() && parent.parentChildSet.allowDelete()) {
+        return new NodeCursor(parent.parentChildSet, parent.index)
+      }
+      if (thisNode.parentChildSet.allowDelete()) {
+        return new NodeCursor(thisNode.parentChildSet, thisNode.index)
+      }
     }
     return null
   }
@@ -681,6 +688,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.selection.placeCursor(this, mutation.index, true)
       }
       this.selection.updateRenderPositions()
+      this.selection.fixCursorToValidPosition()
     }
   }
 }

@@ -35,7 +35,7 @@ class Generator implements SuggestionGenerator {
 export class PythonIfStatement extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_IF_STATEMENT)
-    this.addChildSet('condition', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement)
     this.addChildSet('elseblocks', ChildSetType.Many, NodeCategory.PythonElseBlock)

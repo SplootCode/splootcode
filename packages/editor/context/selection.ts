@@ -200,6 +200,13 @@ export class NodeSelection {
     }
   }
 
+  @action
+  fixCursorToValidPosition() {
+    // Hack! To get around invalid/overlapping cursor positions (ugh)
+    this.updateCursorXYToCursor()
+    this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+  }
+
   updateCursorXYToCursor() {
     const cursor = this.cursor
     const [x, y] = cursor.listBlock.getInsertCoordinates(cursor.index, true)
@@ -228,11 +235,6 @@ export class NodeSelection {
       const node = getBlankFillForCategory(category)
       if (node) {
         this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-        this.updateRenderPositions()
-        this.placeCursor(newLineCursor.listBlock, newLineCursor.index)
-        this.updateCursorXYToCursor()
-        // Hack! To get around invalid/overlapping cursor positions
-        this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
         return true
       }
     }
@@ -253,29 +255,29 @@ export class NodeSelection {
     const node = getBlankFillForCategory(category)
     if (node) {
       this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-      this.updateRenderPositions()
       this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
       while (!this.cursor.listBlock.allowInsertCursor()) {
         this.moveCursorToNextInsert()
       }
-      this.updateCursorXYToCursor()
-      // Hack! To get around invalid/overlapping cursor positions
-      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+      this.fixCursorToValidPosition()
     }
   }
 
   @action
   backspace() {
+    this.updateCursorXYToCursor()
     const didUnindent = this.unindent()
     if (didUnindent) {
       return
     }
-    const cursor = this.cursor.listBlock.getLineNodeIfEmpty()
+    const cursor = this.cursor.listBlock.getDeleteCursorIfEmpty()
     if (cursor) {
       cursor.listBlock.childSet.removeChild(cursor.index)
-      this.updateRenderPositions()
-      this.moveCursorLeft()
-      this.updateCursorXYToCursor()
+      cursor.listBlock.parentRef.node.node.clean()
+      // If we deleted a newline, then move left to end of previous line.
+      if (cursor.listBlock.isInsertableLineChildset()) {
+        this.moveCursorLeft()
+      }
       return
     }
 
@@ -283,12 +285,10 @@ export class NodeSelection {
     if (this.isSingleNode()) {
       this.deleteSelectedNode()
     } else {
-      const cursor = this.cursor.listBlock.getLineNodeIfEmpty()
-      if (cursor) {
+      const cursor = this.cursor.listBlock.getDeleteCursorIfEmpty()
+      if (cursor && cursor.listBlock.isInsertableLineChildset()) {
         cursor.listBlock.childSet.removeChild(cursor.index)
-        this.updateRenderPositions()
       }
-      this.updateCursorXYToCursor()
     }
   }
 

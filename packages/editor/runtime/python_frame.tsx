@@ -121,9 +121,12 @@ export class PythonFrame extends Component<ViewPageProps> {
       } else {
         this.invalidNodes.add(mutation.node)
       }
+    } else {
+      // Only trigger for actual code changes
+      // The validation mutations always get sent before the actual code change.
+      this.needsNewNodeTree = true
+      this.sendNodeTreeToHiddenFrame()
     }
-    this.needsNewNodeTree = true
-    this.sendNodeTreeToHiddenFrame()
   }
 
   handleChildSetMutation = (mutation: ChildSetMutation) => {

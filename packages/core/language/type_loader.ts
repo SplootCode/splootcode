@@ -32,6 +32,7 @@ import { ObjectProperty } from './types/js/object_property'
 import { PropertyReference } from './types/component/property_reference'
 import { PythonAssignment } from './types/python/python_assignment'
 import { PythonBinaryOperator } from './types/python/python_binary_operator'
+import { PythonBrackets } from './types/python/python_brackets'
 import { PythonBreak } from './types/python/python_break'
 import { PythonCallMember } from './types/python/python_call_member'
 import { PythonCallVariable } from './types/python/python_call_variable'
@@ -137,6 +138,7 @@ export function loadTypes() {
   PythonAssignment.register()
   PythonBinaryOperator.register()
   PythonBool.register()
+  PythonBrackets.register()
   PythonBreak.register()
   PythonCallMember.register()
   PythonCallVariable.register()

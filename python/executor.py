@@ -61,6 +61,8 @@ def generateAstExpressionToken(node):
         return generateDict(node)
     elif node["type"] == "PYTHON_SUBSCRIPT":
         return generateSubscript(node)
+    elif node["type"] == "PY_BRACKET":
+        return generateAstExpression(node['childSets']['expr'][0])
     else:
         raise Exception(f'Unrecognised expression token type: {node["type"]}')
 

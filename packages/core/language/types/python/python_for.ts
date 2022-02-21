@@ -43,7 +43,7 @@ export class PythonForLoop extends SplootNode {
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonLoopVariable)
-    this.addChildSet('iterable', ChildSetType.Single, NodeCategory.PythonExpression)
+    this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
   }

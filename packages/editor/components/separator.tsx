@@ -14,8 +14,8 @@ export class Separator extends React.Component<StringLiteralProps> {
     const nodeClassname = 'svgsplootnode' + (isSelected ? ' selected' : '')
     return (
       <g>
-        <rect className={nodeClassname} x={x - 5} y={y + 4} height="23" width={8} rx="4" />
-        <text x={x - 3} y={y + 19} className={className}>
+        <rect className={nodeClassname} x={x + 1} y={y + 4} height="23" width={8} rx="4" />
+        <text x={x + 3} y={y + 19} className={className}>
           {selectorType}
         </text>
       </g>
