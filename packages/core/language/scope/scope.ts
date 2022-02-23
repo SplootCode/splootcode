@@ -79,6 +79,7 @@ interface FunctionScopeEntry {
 
 export class Scope {
   parent: Scope
+  name: string
   childScopes: Set<Scope>
   nodeType: string
   isGlobal: boolean
@@ -90,6 +91,7 @@ export class Scope {
 
   constructor(parent: Scope, nodeType: string) {
     this.parent = parent
+    this.name = ''
     this.childScopes = new Set()
     this.nodeType = nodeType
     this.variables = {}
@@ -97,6 +99,14 @@ export class Scope {
     this.properties = {}
     this.functions = {}
     this.mutationObservers = []
+  }
+
+  hasEntries(): boolean {
+    return Object.keys(this.variables).length !== 0 || Object.keys(this.functions).length !== 0
+  }
+
+  setName(name: string) {
+    this.name = name
   }
 
   addChildScope(nodeType: string): Scope {

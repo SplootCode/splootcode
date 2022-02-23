@@ -1,6 +1,6 @@
 import { ChildSetType } from '../../childset'
 import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '../../capture/runtime_capture'
-import { FunctionDefinition } from '../../definitions/loader'
+import { FunctionDefinition, VariableDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -37,6 +37,7 @@ export class PythonFunctionDeclaration extends SplootNode {
   runtimeCapture: FunctionDeclarationData
   runtimeCaptureFrame: number
   scopedName: string
+  scopedParameters: Set<string>
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FUNCTION_DECLARATION)
@@ -44,6 +45,8 @@ export class PythonFunctionDeclaration extends SplootNode {
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
     this.scopedName = null
+    this.scopedParameters = new Set()
+
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
     this.addChildSet('params', ChildSetType.Many, NodeCategory.PythonFunctionArgumentDeclaration)
     this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement)
@@ -71,44 +74,61 @@ export class PythonFunctionDeclaration extends SplootNode {
   }
 
   addSelfToScope() {
+    let identifier = ''
     if (this.getIdentifier().getCount() === 0) {
       if (this.scopedName) {
         this.getScope(true).removeFunction(this.scopedName, this)
       }
       this.scopedName = null
-      return
+    } else {
+      identifier = (this.getIdentifier().getChild(0) as PythonIdentifier).getName()
+      this.getScope(true).addFunction(
+        {
+          name: identifier,
+          deprecated: false,
+          documentation: 'Local function',
+          type: {
+            parameters: [],
+            returnType: { type: 'any' },
+          },
+        } as FunctionDefinition,
+        this
+      )
+      this.scopedName = identifier
     }
+
     if (!this.getProperty('id')) {
       this.setProperty('id', registerFunction(this))
     }
-    const identifier = (this.getIdentifier().getChild(0) as PythonIdentifier).getName()
-    this.getScope(true).addFunction(
-      {
-        name: identifier,
-        deprecated: false,
-        documentation: 'Local function',
-        type: {
-          parameters: [],
-          returnType: { type: 'any' },
-        },
-      } as FunctionDefinition,
-      this
-    )
-    this.scopedName = identifier
 
     const scope = this.getScope(false)
+    scope.setName(`Function ${identifier}`)
+    const currentParams: Set<string> = new Set()
+
     this.getParams().children.forEach((paramNode) => {
       if (paramNode.type === PYTHON_IDENTIFIER) {
         const identifier = paramNode as PythonIdentifier
+        currentParams.add(identifier.getName())
+      }
+    })
+    currentParams.forEach((name) => {
+      if (!this.scopedParameters.has(name)) {
         scope.addVariable(
           {
-            name: identifier.getName(),
+            name: name,
             deprecated: false,
-            type: { type: 'any' },
             documentation: 'Function parameter',
-          },
+            type: { type: 'any' },
+          } as VariableDefinition,
           this
         )
+        this.scopedParameters.add(name)
+      }
+    })
+    this.scopedParameters.forEach((name) => {
+      if (!currentParams.has(name)) {
+        scope.removeVariable(name, this)
+        this.scopedParameters.delete(name)
       }
     })
   }

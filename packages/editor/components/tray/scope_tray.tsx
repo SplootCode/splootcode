@@ -50,6 +50,7 @@ const ScopeTree = (props: ScopeTreeProps) => {
   const { scope, startDrag } = props
   const varNames = Object.keys(scope.variables)
   const funcNames = Object.keys(scope.functions)
+  const scopes = Array.from(scope.childScopes)
   return (
     <>
       {varNames.map((name, idx) => {
@@ -67,6 +68,19 @@ const ScopeTree = (props: ScopeTreeProps) => {
           childSets: { arguments: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }] },
         })
         return <MicroNode key={name} nodeBlock={nodeBlock} startDrag={startDrag} />
+      })}
+      {scopes.map((childScope: Scope, idx) => {
+        if (!childScope.hasEntries()) {
+          return null
+        }
+        return (
+          <>
+            <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
+              {childScope.name}
+            </Text>
+            <ScopeTree key={idx} scope={childScope} startDrag={startDrag} />
+          </>
+        )
       })}
     </>
   )
