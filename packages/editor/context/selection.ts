@@ -265,7 +265,6 @@ export class NodeSelection {
 
   @action
   backspace() {
-    this.updateCursorXYToCursor()
     const didUnindent = this.unindent()
     if (didUnindent) {
       return

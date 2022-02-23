@@ -19,29 +19,6 @@ entries:
             desc: 'Optionally pass in a prompt. The prompt text will be output to the console before waiting for the user to enter something.'
           - ex: "name = input('Name: ')"
             desc: 'The input function returns the text that the user entered. This example stores what the user typed in in a variable called "name".'
-  - category: Variables
-    entries:
-      - key: assign
-        abstract: 'Assignment'
-        serializedNode:
-          type: 'PYTHON_ASSIGNMENT'
-          childSets:
-            left: []
-            right:
-              - type: 'PYTHON_EXPRESSION'
-                childSets:
-                  tokens: []
-        examples:
-          - ex: 'num = 10'
-            desc: 'Creates a variable called num which refers to the number 10.' 
-          - ex: 'phrase = "hi" + " " + "there"'
-            desc: 'Any processing is completed first and only the result is stored.'
-      - key: none
-        node: None
-        abstract: 'A special value to represent that there is no value or nothing.'
-        examples:
-          - ex: selection = None
-            desc: None can be used to indicate that the variable has not been filled with a value.
 
   - category: Strings
     entries:
@@ -367,3 +344,12 @@ entries:
         serializedNode:
           type: PYTHON_FROM_IMPORT
         abstract: ''
+
+  - category: Misc
+    entries:
+      - key: none
+        node: None
+        abstract: 'A special value to represent that there is no value or nothing.'
+        examples:
+          - ex: selection = None
+            desc: None can be used to indicate that the variable has not been filled with a value.

@@ -17,6 +17,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
+import { VariableDefinition } from '../../definitions/loader'
 
 export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 
@@ -33,10 +34,13 @@ class Generator implements SuggestionGenerator {
 }
 
 export class PythonFromImport extends SplootNode {
+  scopedVariables: Set<string>
+
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FROM_IMPORT)
     this.addChildSet('module', ChildSetType.Single, NodeCategory.PythonModuleIdentifier)
     this.addChildSet('attrs', ChildSetType.Many, NodeCategory.PythonModuleAttribute)
+    this.scopedVariables = new Set()
   }
 
   getModule() {
@@ -58,19 +62,42 @@ export class PythonFromImport extends SplootNode {
   }
 
   addSelfToScope() {
+    const currentNames: Set<string> = new Set()
     const scope = this.getScope()
-    if (this.getModule().getCount() === 0 || this.getAttrs().getCount() === 0) {
-      return
-    }
-    const moduleName = (this.getModule().getChild(0) as PythonModuleIdentifier).getName()
-    this.getAttrs().children.forEach((attr) => {
-      const attrNode = attr as DeclaredIdentifier
-      scope.addVariable({
-        name: attrNode.getName(),
-        deprecated: false,
-        documentation: `imported from ${moduleName}`,
-        type: { type: 'any' },
+    let moduleName = ''
+    if (this.getModule().getCount() !== 0) {
+      moduleName = (this.getModule().getChild(0) as PythonModuleIdentifier).getName()
+      this.getAttrs().children.forEach((attr) => {
+        const attrNode = attr as DeclaredIdentifier
+        currentNames.add(attrNode.getName())
       })
+    }
+    currentNames.forEach((name) => {
+      if (!this.scopedVariables.has(name)) {
+        scope.addVariable(
+          {
+            name: name,
+            deprecated: false,
+            documentation: `imported from ${moduleName}`,
+            type: { type: 'any' },
+          } as VariableDefinition,
+          this
+        )
+        this.scopedVariables.add(name)
+      }
+    })
+    this.scopedVariables.forEach((name) => {
+      if (!currentNames.has(name)) {
+        scope.removeVariable(name, this)
+        this.scopedVariables.delete(name)
+      }
+    })
+  }
+  removeSelfFromScope(): void {
+    const scope = this.getScope()
+    this.scopedVariables.forEach((name) => {
+      scope.removeVariable(name, this)
+      this.scopedVariables.delete(name)
     })
   }
 

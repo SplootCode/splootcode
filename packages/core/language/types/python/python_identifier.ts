@@ -8,6 +8,7 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
@@ -80,13 +81,21 @@ export class PythonIdentifier extends SplootNode {
     this.setProperty('identifier', name)
   }
 
-  getName() {
+  getName(): string {
     return this.getProperty('identifier')
   }
 
   static deserializer(serializedNode: SerializedNode): PythonIdentifier {
     const node = new PythonIdentifier(null, serializedNode.properties.identifier)
     return node
+  }
+
+  addSelfToScope(): void {
+    this.parent?.node.addSelfToScope()
+  }
+
+  removeSelfFromScope(): void {
+    this.parent?.node.addSelfToScope()
   }
 
   static register() {
@@ -97,6 +106,11 @@ export class PythonIdentifier extends SplootNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
     ])
+    typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
+      const exp = new PythonExpression(null)
+      exp.getTokenSet().addChild(node)
+      return exp
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonAssignable, new ExistingVariableGenerator())

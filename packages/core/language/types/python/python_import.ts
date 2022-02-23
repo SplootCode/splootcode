@@ -16,6 +16,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
+import { VariableDefinition } from '../../definitions/loader'
 
 export const PYTHON_IMPORT = 'PYTHON_IMPORT'
 
@@ -32,9 +33,12 @@ class Generator implements SuggestionGenerator {
 }
 
 export class PythonImport extends SplootNode {
+  scopedVariables: Set<string>
+
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_IMPORT)
     this.addChildSet('modules', ChildSetType.Many, NodeCategory.PythonModuleIdentifier)
+    this.scopedVariables = new Set()
   }
 
   getModules() {
@@ -50,17 +54,33 @@ export class PythonImport extends SplootNode {
   }
 
   addSelfToScope() {
+    const currentNames: Set<string> = new Set()
+
     const scope = this.getScope()
     const modules = this.getModules()
     modules.children.forEach((moduleIdentifierNode) => {
       const identfier = moduleIdentifierNode as PythonModuleIdentifier
-      // TODO: Better scope handling
-      scope.addVariable({
-        name: identfier.getName().split('.')[0],
-        deprecated: false,
-        documentation: 'imported module',
-        type: { type: 'any' },
-      })
+      currentNames.add(identfier.getName().split('.')[0])
+    })
+    currentNames.forEach((name) => {
+      if (!this.scopedVariables.has(name)) {
+        scope.addVariable(
+          {
+            name: name,
+            deprecated: false,
+            documentation: 'Imported module',
+            type: { type: 'any' },
+          } as VariableDefinition,
+          this
+        )
+        this.scopedVariables.add(name)
+      }
+    })
+    this.scopedVariables.forEach((name) => {
+      if (!currentNames.has(name)) {
+        scope.removeVariable(name, this)
+        this.scopedVariables.delete(name)
+      }
     })
   }
 
@@ -95,9 +115,16 @@ export class PythonImport extends SplootNode {
     return true
   }
 
+  removeSelfFromScope(): void {
+    this.scopedVariables.forEach((name) => {
+      this.getScope().removeVariable(name, this)
+      this.scopedVariables.delete(name)
+    })
+  }
+
   static deserializer(serializedNode: SerializedNode): PythonImport {
     const node = new PythonImport(null)
-    node.deserializeChildSet('module', serializedNode)
+    node.deserializeChildSet('modules', serializedNode)
     return node
   }
 

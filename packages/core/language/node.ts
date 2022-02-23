@@ -86,6 +86,11 @@ export class SplootNode {
     // Variable declarations and named function declarations will do this.
   }
 
+  removeSelfFromScope() {
+    // No-op default implementation.
+    // Variable declarations and named function declarations will do this.
+  }
+
   isEmpty(): boolean {
     return false
   }
@@ -184,9 +189,9 @@ export class SplootNode {
   recursivelyBuildScope() {
     if (isScopedNodeType(this.type)) {
       if (this.parent !== null) {
-        this.scope = new Scope(this.parent.node.getScope(), this.type)
+        this.scope = this.parent.node.getScope().addChildScope(this.type)
       } else {
-        this.scope = new Scope(getGlobalScope(), this.type)
+        this.scope = getGlobalScope().addChildScope(this.type)
       }
     }
     this.addSelfToScope()
@@ -196,6 +201,24 @@ export class SplootNode {
         node.recursivelyBuildScope()
       })
     })
+  }
+
+  recursivelyClearScope() {
+    this.childSetOrder.forEach((childSetId: string) => {
+      const childSet = this.getChildSet(childSetId)
+      childSet.getChildren().forEach((node: SplootNode) => {
+        node.recursivelyClearScope()
+      })
+    })
+    this.removeSelfFromScope()
+    if (isScopedNodeType(this.type) && this.scope) {
+      if (this.parent !== null) {
+        this.parent.node.getScope().removeChildScope(this.scope)
+      } else {
+        getGlobalScope().removeChildScope(this.scope)
+      }
+      this.scope = null
+    }
   }
 
   getChildSet(name: string) {
