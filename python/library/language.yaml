@@ -1,25 +1,7 @@
 
 category: Python
 entries:
-  - category: Console
-    entries:
-      - key: print
-        node: print()
-        abstract: 'Outputs infromation to the console.'
-        examples:
-          - ex: "print('Hello!')"
-            desc: Adds a line to the console that says 'Hello!'. The console will start a new line after each print.
-          - ex: "print(10, 'is the number ten')"
-            desc: When given multiple values, print will output all of them with a space between each one.
-      - key: input
-        node: input()
-        abstract: Waits for text to be entered into the console.
-        examples:
-          - ex: "input('Are you sure? ')"
-            desc: 'Optionally pass in a prompt. The prompt text will be output to the console before waiting for the user to enter something.'
-          - ex: "name = input('Name: ')"
-            desc: 'The input function returns the text that the user entered. This example stores what the user typed in in a variable called "name".'
-  - category: Variables
+  - category: Basics
     entries:
       - key: assign
         abstract: 'Assignment'
@@ -36,6 +18,22 @@ entries:
             desc: 'Creates a variable called num which refers to the number 10.' 
           - ex: 'phrase = "hi" + " " + "there"'
             desc: 'Any processing is completed first and only the result is stored.'
+      - key: print
+        node: print()
+        abstract: 'Outputs infromation to the console.'
+        examples:
+          - ex: "print('Hello!')"
+            desc: Adds a line to the console that says 'Hello!'. The console will start a new line after each print.
+          - ex: "print(10, 'is the number ten')"
+            desc: When given multiple values, print will output all of them with a space between each one.
+      - key: input
+        node: input()
+        abstract: Waits for text to be entered into the console.
+        examples:
+          - ex: "input('Are you sure? ')"
+            desc: 'Optionally pass in a prompt. The prompt text will be output to the console before waiting for the user to enter something.'
+          - ex: "name = input('Name: ')"
+            desc: 'The input function returns the text that the user entered. This example stores what the user typed in in a variable called "name".'
       - key: none
         node: None
         abstract: 'A special value to represent that there is no value or nothing.'
