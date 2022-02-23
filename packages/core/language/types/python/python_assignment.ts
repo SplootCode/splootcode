@@ -11,9 +11,8 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_IDENTIFIER } from './python_identifier'
+import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
-import { PythonDeclaredIdentifier } from './declared_identifier'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
@@ -35,11 +34,14 @@ class Generator implements SuggestionGenerator {
 }
 
 export class PythonAssignment extends SplootNode {
+  scopedVariables: Set<string>
+
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ASSIGNMENT)
     this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable)
     this.addChildSet('right', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('right').addChild(new PythonExpression(null))
+    this.scopedVariables = new Set()
   }
 
   getLeft() {
@@ -61,22 +63,46 @@ export class PythonAssignment extends SplootNode {
 
   addSelfToScope() {
     const identifierChildSet = this.getLeft()
+    const currentNames: Set<string> = new Set()
     for (const leftChild of identifierChildSet.children) {
       if (leftChild.type === PYTHON_IDENTIFIER) {
-        this.getScope().addVariable({
-          name: (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName(),
-          deprecated: false,
-          documentation: 'Variable',
-          type: { type: 'any' },
-        } as VariableDefinition)
+        const name = (leftChild as PythonIdentifier).getName()
+        currentNames.add(name)
       }
     }
+    currentNames.forEach((name) => {
+      if (!this.scopedVariables.has(name)) {
+        this.getScope().addVariable(
+          {
+            name: name,
+            deprecated: false,
+            documentation: 'Variable',
+            type: { type: 'any' },
+          } as VariableDefinition,
+          this
+        )
+        this.scopedVariables.add(name)
+      }
+    })
+    this.scopedVariables.forEach((name) => {
+      if (!currentNames.has(name)) {
+        this.getScope().removeVariable(name, this)
+        this.scopedVariables.delete(name)
+      }
+    })
+  }
+
+  removeSelfFromScope(): void {
+    this.scopedVariables.forEach((name) => {
+      this.getScope().removeVariable(name, this)
+      this.scopedVariables.delete(name)
+    })
   }
 
   getLeftAsString(): string {
     const identifierChildSet = this.getLeft()
     if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
-      return (this.getLeft().getChild(0) as PythonDeclaredIdentifier).getName()
+      return (this.getLeft().getChild(0) as PythonIdentifier).getName()
     }
     // TODO: Handle things like subscripts and upacking for annotations
     return ''

@@ -61,6 +61,14 @@ export class PythonModuleIdentifier extends SplootNode {
     return this.getProperty('identifier')
   }
 
+  addSelfToScope(): void {
+    this.parent?.node.addSelfToScope()
+  }
+
+  removeSelfFromScope(): void {
+    this.parent?.node.addSelfToScope()
+  }
+
   static deserializer(serializedNode: SerializedNode): PythonModuleIdentifier {
     const node = new PythonModuleIdentifier(null, serializedNode.properties.identifier)
     return node

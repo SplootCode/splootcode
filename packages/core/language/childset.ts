@@ -54,7 +54,9 @@ export class ChildSet {
   insertNode(node: SplootNode, index: number) {
     this.children.splice(index, 0, node)
     node.parent = this.childParentRef
+
     if (this.enableMutations) {
+      node.recursivelyBuildScope()
       node.parent.node.recursivelyValidate()
       const mutation = new ChildSetMutation()
       mutation.type = ChildSetMutationType.INSERT
@@ -70,6 +72,7 @@ export class ChildSet {
       console.warn("Attempting to delete child that doesn't exist!!", index, this.childParentRef.childSetId)
     }
     const child = this.children.splice(index, 1)[0]
+    child.recursivelyClearScope()
     child.parent = null
     child.recursivelyClearValidation()
     child.recursivelySetMutations(false)

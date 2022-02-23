@@ -36,12 +36,14 @@ class Generator implements SuggestionGenerator {
 export class PythonFunctionDeclaration extends SplootNode {
   runtimeCapture: FunctionDeclarationData
   runtimeCaptureFrame: number
+  scopedName: string
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FUNCTION_DECLARATION)
     this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
+    this.scopedName = null
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
     this.addChildSet('params', ChildSetType.Many, NodeCategory.PythonFunctionArgumentDeclaration)
     this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement)
@@ -70,35 +72,54 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   addSelfToScope() {
     if (this.getIdentifier().getCount() === 0) {
-      // No identifier, we can't be added to the scope.
+      if (this.scopedName) {
+        this.getScope(true).removeFunction(this.scopedName, this)
+      }
+      this.scopedName = null
       return
     }
     if (!this.getProperty('id')) {
       this.setProperty('id', registerFunction(this))
     }
     const identifier = (this.getIdentifier().getChild(0) as PythonIdentifier).getName()
-    this.getScope(true).addFunction({
-      name: identifier,
-      deprecated: false,
-      documentation: 'Local function',
-      type: {
-        parameters: [],
-        returnType: { type: 'any' },
-      },
-    } as FunctionDefinition)
+    this.getScope(true).addFunction(
+      {
+        name: identifier,
+        deprecated: false,
+        documentation: 'Local function',
+        type: {
+          parameters: [],
+          returnType: { type: 'any' },
+        },
+      } as FunctionDefinition,
+      this
+    )
+    this.scopedName = identifier
 
     const scope = this.getScope(false)
     this.getParams().children.forEach((paramNode) => {
       if (paramNode.type === PYTHON_IDENTIFIER) {
         const identifier = paramNode as PythonIdentifier
-        scope.addVariable({
-          name: identifier.getName(),
-          deprecated: false,
-          type: { type: 'any' },
-          documentation: 'Function parameter',
-        })
+        scope.addVariable(
+          {
+            name: identifier.getName(),
+            deprecated: false,
+            type: { type: 'any' },
+            documentation: 'Function parameter',
+          },
+          this
+        )
       }
     })
+  }
+
+  removeSelfFromScope(): void {
+    if (this.scopedName) {
+      this.getScope(true).removeFunction(this.scopedName, this)
+    }
+    this.scopedName = null
+    this.getScope(true).removeChildScope(this.scope)
+    this.scope = null
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

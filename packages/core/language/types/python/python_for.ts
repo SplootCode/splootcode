@@ -36,12 +36,14 @@ class Generator implements SuggestionGenerator {
 export class PythonForLoop extends SplootNode {
   runtimeCapture: ForLoopData
   runtimeCaptureFrame: number
+  scopedVariable: string
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FOR_LOOP)
     this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
+    this.scopedVariable = null
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonLoopVariable)
     this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
@@ -64,12 +66,26 @@ export class PythonForLoop extends SplootNode {
   addSelfToScope() {
     const identifierChildSet = this.getTarget()
     if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
-      this.getScope().addVariable({
-        name: (this.getTarget().getChild(0) as PythonIdentifier).getName(),
-        deprecated: false,
-        documentation: 'for-loop variable',
-        type: { type: 'any' },
-      } as VariableDefinition)
+      const name = (this.getTarget().getChild(0) as PythonIdentifier).getName()
+      this.getScope().addVariable(
+        {
+          name: name,
+          deprecated: false,
+          documentation: 'for-loop variable',
+          type: { type: 'any' },
+        } as VariableDefinition,
+        this
+      )
+      this.scopedVariable = name
+    } else if (this.scopedVariable) {
+      this.getScope().removeVariable(this.scopedVariable, this)
+      this.scopedVariable = null
+    }
+  }
+  removeSelfFromScope(): void {
+    if (this.scopedVariable) {
+      this.getScope().removeVariable(this.scopedVariable, this)
+      this.scopedVariable = null
     }
   }
 

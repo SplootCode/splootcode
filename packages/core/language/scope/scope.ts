@@ -9,7 +9,10 @@ import {
   resolvePropertiesFromTypeExpression,
   typeRegistry,
 } from '../definitions/loader'
+import { ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
+import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
+import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 import { loadPythonBuiltinFunctions } from './python'
 
 function cloneType(type: TypeExpression): TypeExpression {
@@ -62,22 +65,63 @@ export function addPropertyToTypeExpression(originalType: TypeExpression, proper
   return typeUnion(originalType, objectType)
 }
 
+interface VariableScopeEntry {
+  definition: VariableDefinition
+  declarers: Set<SplootNode>
+  watchers: Set<SplootNode>
+}
+
+interface FunctionScopeEntry {
+  definition: FunctionDefinition
+  declarers: Set<SplootNode>
+  watchers: Set<SplootNode>
+}
+
 export class Scope {
   parent: Scope
+  childScopes: Set<Scope>
   nodeType: string
   isGlobal: boolean
-  variables: { [key: string]: VariableDefinition }
+  variables: { [key: string]: VariableScopeEntry }
   properties: { [key: string]: VariableDefinition }
   components: { [key: string]: ComponentDefinition }
-  functions: { [key: string]: FunctionDefinition }
+  functions: { [key: string]: FunctionScopeEntry }
+  mutationObservers: ScopeObserver[]
 
   constructor(parent: Scope, nodeType: string) {
     this.parent = parent
+    this.childScopes = new Set()
     this.nodeType = nodeType
     this.variables = {}
     this.components = {}
     this.properties = {}
     this.functions = {}
+    this.mutationObservers = []
+  }
+
+  addChildScope(nodeType: string): Scope {
+    const childScope = new Scope(this, nodeType)
+    this.childScopes.add(childScope)
+    this.fireMutation({
+      type: ScopeMutationType.ADD_CHILD_SCOPE,
+      scope: this,
+    })
+    return childScope
+  }
+
+  removeChildScope(scope: Scope) {
+    this.childScopes.delete(scope)
+    this.fireMutation({
+      type: ScopeMutationType.REMOVE_CHILD_SCOPE,
+      scope: this,
+    })
+  }
+
+  fireMutation(mutation: ScopeMutation) {
+    this.mutationObservers.forEach((observer: ScopeObserver) => {
+      observer.handleScopeMutation(mutation)
+    })
+    globalMutationDispatcher.handleScopeMutation(mutation)
   }
 
   addProperty(property: VariableDefinition) {
@@ -85,18 +129,66 @@ export class Scope {
     this.properties[property.name] = property
   }
 
-  addVariable(variable: VariableDefinition) {
-    // TODO: Check it's not already there?
-    this.variables[variable.name] = variable
+  addVariable(variable: VariableDefinition, source?: SplootNode) {
+    if (!(variable.name in this.variables)) {
+      this.variables[variable.name] = {
+        definition: variable,
+        declarers: new Set(),
+        watchers: new Set(),
+      }
+    }
+    if (source) {
+      this.variables[variable.name].declarers.add(source)
+    }
+    this.fireMutation({
+      type: ScopeMutationType.ADD_ENTRY,
+      scope: this,
+    })
+  }
+
+  removeVariable(name: string, source: SplootNode) {
+    const entry = this.variables[name]
+    entry.declarers.delete(source)
+    if (entry.declarers.size === 0) {
+      delete this.variables[name]
+      this.fireMutation({
+        type: ScopeMutationType.REMOVE_ENTRY,
+        scope: this,
+      })
+    }
   }
 
   addComponent(def: ComponentDefinition) {
     this.components[def.name] = def
   }
 
-  addFunction(func: FunctionDefinition) {
-    // TODO: Check it's not already there?
-    this.functions[func.name] = func
+  addFunction(func: FunctionDefinition, source?: SplootNode) {
+    if (!(func.name in this.functions)) {
+      this.functions[func.name] = {
+        definition: func,
+        declarers: new Set(),
+        watchers: new Set(),
+      }
+    }
+    if (source) {
+      this.functions[func.name].declarers.add(source)
+    }
+    this.fireMutation({
+      type: ScopeMutationType.ADD_ENTRY,
+      scope: this,
+    })
+  }
+
+  removeFunction(name: string, source: SplootNode) {
+    const entry = this.functions[name]
+    entry.declarers.delete(source)
+    if (entry.declarers.size === 0) {
+      delete this.functions[name]
+      this.fireMutation({
+        type: ScopeMutationType.REMOVE_ENTRY,
+        scope: this,
+      })
+    }
   }
 
   getAllComponentDefinitions(): ComponentDefinition[] {
@@ -116,7 +208,7 @@ export class Scope {
   }
 
   getAllVariableDefinitions(): VariableDefinition[] {
-    const locals = Object.keys(this.variables).map((key) => this.variables[key])
+    const locals = Object.keys(this.variables).map((key) => this.variables[key].definition)
     if (this.parent === null) {
       return locals
     }
@@ -124,7 +216,7 @@ export class Scope {
   }
 
   getAllFunctionDefinitions(): FunctionDefinition[] {
-    const locals = Object.keys(this.functions).map((key) => this.functions[key])
+    const locals = Object.keys(this.functions).map((key) => this.functions[key].definition)
     if (this.parent === null) {
       return locals
     }
@@ -133,7 +225,7 @@ export class Scope {
 
   getVariableDefintionByName(name: string): VariableDefinition {
     if (name in this.variables) {
-      return this.variables[name]
+      return this.variables[name].definition
     }
     if (this.isGlobal) {
       return null
@@ -143,7 +235,7 @@ export class Scope {
 
   replaceVariableTypeExpression(name: string, newType: TypeExpression) {
     if (name in this.variables) {
-      this.variables[name].type = newType
+      this.variables[name].definition.type = newType
     }
     if (this.isGlobal) {
       return
@@ -169,7 +261,7 @@ export class Scope {
 
   getFunctionDefinitionByName(name: string): FunctionDefinition {
     if (name in this.functions) {
-      return this.functions[name]
+      return this.functions[name].definition
     }
     if (this.isGlobal) {
       return null

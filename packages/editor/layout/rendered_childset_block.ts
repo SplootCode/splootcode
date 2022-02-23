@@ -155,6 +155,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       if (selection !== null && this.nodes.length === 0) {
         selection.cursorMap.registerCursorStart(this, 0, x, y, true)
       }
+      const bracketWidth = 4
       this.nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
         if (idx === insertIndex) {
           const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
@@ -165,7 +166,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         childNodeBlock.calculateDimensions(x + indent, topPos, selection)
         topPos += childNodeBlock.rowHeight + ROW_SPACING
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
-        this.width = Math.max(this.width, childNodeBlock.rowWidth + indent)
+        this.width = Math.max(this.width, childNodeBlock.rowWidth + indent + bracketWidth)
       })
       if (this.nodes.length === insertIndex) {
         const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
@@ -659,10 +660,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.nodes.splice(mutation.index + idx, 0, nodeBlock)
       })
       this.renumberChildren()
-      // When nodes have been inserted, we need to update the scope.
-      // TODO: this shouldn't be done by the layout engine.
-      // It has to be the parent, since this change might an identifier.
-      this.parentRef.node.node.recursivelyBuildScope()
+
       // We also need to make sure that mutation-firing is enabled/disable according to the parent's setting.
       this.parentRef.node.node.recursivelySetMutations(this.parentRef.node.node.enableMutations)
       // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
