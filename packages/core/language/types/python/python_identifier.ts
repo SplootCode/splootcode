@@ -10,6 +10,7 @@ import {
 import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
@@ -81,6 +82,18 @@ export class PythonIdentifier extends SplootNode {
     this.setProperty('identifier', name)
   }
 
+  getEditableProperty(): string {
+    return 'identifier'
+  }
+
+  setEditablePropertyValue(newValue: string) {
+    const oldValue = this.getName()
+    newValue = sanitizeIdentifier(newValue)
+    if (newValue.length > 0) {
+      this.getScope().renameIdentifier(oldValue, newValue)
+    }
+  }
+
   getName(): string {
     return this.getProperty('identifier')
   }
@@ -90,12 +103,27 @@ export class PythonIdentifier extends SplootNode {
     return node
   }
 
+  handleScopeMutation(mutation: ScopeMutation) {
+    if (mutation.type === ScopeMutationType.RENAME_ENTRY) {
+      const oldName = this.getName()
+      if (mutation.previousName !== oldName) {
+        console.warn(
+          `Rename mutation received ${mutation.previousName} -> ${mutation.newName} but node name is ${oldName}`
+        )
+      }
+      this.setName(mutation.newName)
+      this.parent?.node.addSelfToScope()
+    }
+  }
+
   addSelfToScope(): void {
     this.parent?.node.addSelfToScope()
+    this.getScope().addWatcher(this.getName(), this)
   }
 
   removeSelfFromScope(): void {
     this.parent?.node.addSelfToScope()
+    this.getScope().removeWatcher(this.getName(), this)
   }
 
   static register() {

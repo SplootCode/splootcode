@@ -194,8 +194,7 @@ export class NodeSelection {
   @action
   updatePropertyEdit(newValue: string) {
     if (this.isEditingSingleNode()) {
-      const property = this.editBox.property
-      this.cursor.listBlock.nodes[this.cursor.index].node.setPropertyFromString(property, newValue)
+      this.cursor.listBlock.nodes[this.cursor.index].node.setEditablePropertyValue(newValue)
       this.updateRenderPositions()
     }
   }

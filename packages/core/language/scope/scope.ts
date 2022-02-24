@@ -9,7 +9,7 @@ import {
   resolvePropertiesFromTypeExpression,
   typeRegistry,
 } from '../definitions/loader'
-import { ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
+import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
@@ -68,13 +68,11 @@ export function addPropertyToTypeExpression(originalType: TypeExpression, proper
 interface VariableScopeEntry {
   definition: VariableDefinition
   declarers: Set<SplootNode>
-  watchers: Set<SplootNode>
 }
 
 interface FunctionScopeEntry {
   definition: FunctionDefinition
   declarers: Set<SplootNode>
-  watchers: Set<SplootNode>
 }
 
 export class Scope {
@@ -87,6 +85,7 @@ export class Scope {
   properties: { [key: string]: VariableDefinition }
   components: { [key: string]: ComponentDefinition }
   functions: { [key: string]: FunctionScopeEntry }
+  nameWatchers: { [key: string]: Set<SplootNode> }
   mutationObservers: ScopeObserver[]
 
   constructor(parent: Scope, nodeType: string) {
@@ -99,6 +98,7 @@ export class Scope {
     this.properties = {}
     this.functions = {}
     this.mutationObservers = []
+    this.nameWatchers = {}
   }
 
   hasEntries(): boolean {
@@ -109,12 +109,24 @@ export class Scope {
     this.name = name
   }
 
+  addWatcher(name: string, node: SplootNode) {
+    if (!(name in this.nameWatchers)) {
+      this.nameWatchers[name] = new Set<SplootNode>()
+    }
+    this.nameWatchers[name].add(node)
+  }
+
+  removeWatcher(name: string, node: SplootNode) {
+    this.nameWatchers[name].delete(node)
+  }
+
   addChildScope(nodeType: string): Scope {
     const childScope = new Scope(this, nodeType)
     this.childScopes.add(childScope)
     this.fireMutation({
       type: ScopeMutationType.ADD_CHILD_SCOPE,
       scope: this,
+      childScope: childScope,
     })
     return childScope
   }
@@ -124,6 +136,7 @@ export class Scope {
     this.fireMutation({
       type: ScopeMutationType.REMOVE_CHILD_SCOPE,
       scope: this,
+      childScope: scope,
     })
   }
 
@@ -139,12 +152,73 @@ export class Scope {
     this.properties[property.name] = property
   }
 
+  renameIdentifier(oldName: string, newName: string) {
+    if (oldName === newName) {
+      return
+    }
+    if (!(oldName in this.variables)) {
+      if (this.parent) {
+        this.parent.renameIdentifier(oldName, newName)
+        return
+      }
+    } else {
+      // TODO: What if already there? I guess we just combine them
+      if (newName in this.variables) {
+        // Already exists
+        console.warn('Attempting to rename to variable that already exists in this scope.')
+      } else {
+        // Leave it up to the declarers to remove themselves from the old name and add the new name.
+        this.variables[newName] = {
+          definition: this.variables[oldName].definition,
+          declarers: new Set(),
+        }
+        this.variables[newName].definition.name = newName
+      }
+    }
+
+    // Even if we couldn't find the variable anywhere, we do the rename.
+    // This likely renames the variable everywhere except where it's shadowed.
+    const mutation: RenameScopeMutation = {
+      type: ScopeMutationType.RENAME_ENTRY,
+      scope: this,
+      newName: newName,
+      previousName: oldName,
+    }
+    for (const childScope of this.childScopes) {
+      childScope.propagateRename(oldName, newName, mutation)
+    }
+    if (oldName in this.nameWatchers) {
+      for (const node of this.nameWatchers[oldName]) {
+        node.handleScopeMutation(mutation)
+        this.addWatcher(newName, node)
+        this.nameWatchers[oldName].delete(node)
+      }
+    }
+    this.fireMutation(mutation)
+  }
+
+  propagateRename(oldName: string, newName: string, mutation: RenameScopeMutation) {
+    if (oldName in this.variables) {
+      // We have a shadow of that name so whatevs.
+      return
+    }
+    for (const childScope of this.childScopes) {
+      childScope.propagateRename(oldName, newName, mutation)
+    }
+    if (oldName in this.nameWatchers) {
+      for (const node of this.nameWatchers[oldName]) {
+        node.handleScopeMutation(mutation)
+        this.addWatcher(newName, node)
+        this.nameWatchers[oldName].delete(node)
+      }
+    }
+  }
+
   addVariable(variable: VariableDefinition, source?: SplootNode) {
     if (!(variable.name in this.variables)) {
       this.variables[variable.name] = {
         definition: variable,
         declarers: new Set(),
-        watchers: new Set(),
       }
     }
     if (source) {
@@ -153,6 +227,7 @@ export class Scope {
     this.fireMutation({
       type: ScopeMutationType.ADD_ENTRY,
       scope: this,
+      name: variable.name,
     })
   }
 
@@ -164,6 +239,7 @@ export class Scope {
       this.fireMutation({
         type: ScopeMutationType.REMOVE_ENTRY,
         scope: this,
+        name: name,
       })
     }
   }
@@ -177,7 +253,6 @@ export class Scope {
       this.functions[func.name] = {
         definition: func,
         declarers: new Set(),
-        watchers: new Set(),
       }
     }
     if (source) {
@@ -186,6 +261,7 @@ export class Scope {
     this.fireMutation({
       type: ScopeMutationType.ADD_ENTRY,
       scope: this,
+      name: func.name,
     })
   }
 
@@ -197,6 +273,7 @@ export class Scope {
       this.fireMutation({
         type: ScopeMutationType.REMOVE_ENTRY,
         scope: this,
+        name: name,
       })
     }
   }

@@ -12,6 +12,7 @@ import {
 import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
 import { NodeObserver } from './observers'
 import { Scope, getGlobalScope } from './scope/scope'
+import { ScopeMutation } from './mutations/scope_mutations'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
@@ -89,6 +90,10 @@ export class SplootNode {
   removeSelfFromScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  handleScopeMutation(mutation: ScopeMutation) {
+    // No-op default implementation.
   }
 
   isEmpty(): boolean {
@@ -233,8 +238,10 @@ export class SplootNode {
     return null
   }
 
-  setPropertyFromString(name: string, value: string) {
-    this.setProperty(name, value)
+  setEditablePropertyValue(newValue: string) {
+    const editableProperty = this.getEditableProperty()
+    this.setProperty(editableProperty, newValue)
+    this.validateSelf()
   }
 
   setProperty(name: string, value: any) {

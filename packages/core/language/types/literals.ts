@@ -137,8 +137,8 @@ export class NumericLiteral extends JavaScriptSplootNode {
     return 'value'
   }
 
-  setPropertyFromString(name: string, value: string) {
-    this.setProperty(name, parseStringToNum(value))
+  setEditablePropertyValue(newValue: string): void {
+    this.setProperty('value', parseStringToNum(newValue))
   }
 
   static deserializer(serializedNode: SerializedNode): NumericLiteral {
