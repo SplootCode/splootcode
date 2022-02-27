@@ -3,7 +3,7 @@ import { Scope } from '../scope/scope'
 export enum ScopeMutationType {
   ADD_CHILD_SCOPE,
   REMOVE_CHILD_SCOPE,
-  ADD_ENTRY,
+  ADD_OR_UPDATE_ENTRY,
   REMOVE_ENTRY,
   RENAME_ENTRY,
 }
@@ -18,7 +18,7 @@ export interface ChildScopeScopeMutation {
 
 export interface EntryScopeMutation {
   scope: Scope
-  type: ScopeMutationType.ADD_ENTRY | ScopeMutationType.REMOVE_ENTRY
+  type: ScopeMutationType.ADD_OR_UPDATE_ENTRY | ScopeMutationType.REMOVE_ENTRY
   name: string
 }
 

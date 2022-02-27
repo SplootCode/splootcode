@@ -277,6 +277,8 @@ export class NodeBlock implements NodeObserver {
       this.invalidReason = nodeMutation.validity.reason
       this.invalidChildsetID = nodeMutation.validity.childset
       this.invalidChildsetIndex = nodeMutation.validity.index
+    } else if (nodeMutation.type === NodeMutationType.UPDATE_NODE_LAYOUT) {
+      this.updateLayout()
     }
   }
 

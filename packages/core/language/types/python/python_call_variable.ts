@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { FunctionSignature } from '../../scope/types'
+import { FunctionSignature, TypeCategory } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -10,6 +10,7 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
@@ -41,8 +42,12 @@ export class PythonCallVariable extends SplootNode {
     this.setProperty('identifier', name)
     this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
     if (signature) {
-      for (let i = 0; i < signature.arguments.length; i++) {
+      if (signature.arguments.length === 0) {
         this.getArguments().addChild(new PythonExpression(null))
+      } else {
+        for (let i = 0; i < signature.arguments.length; i++) {
+          this.getArguments().addChild(new PythonExpression(null))
+        }
       }
     }
   }
@@ -84,6 +89,12 @@ export class PythonCallVariable extends SplootNode {
       }
       this.setIdentifier(mutation.newName)
     }
+    if (mutation.type === ScopeMutationType.ADD_OR_UPDATE_ENTRY || mutation.type === ScopeMutationType.REMOVE_ENTRY) {
+      const mutation = new NodeMutation()
+      mutation.type = NodeMutationType.UPDATE_NODE_LAYOUT
+      mutation.node = this
+      this.fireMutation(mutation)
+    }
   }
 
   addSelfToScope(): void {
@@ -111,13 +122,26 @@ export class PythonCallVariable extends SplootNode {
     if (!scope) {
       return []
     }
-    const funcDef = scope.getVariableScopeEntryByName(this.getIdentifier())
-    // TODO
-    if (!funcDef) {
+    const scopeEntry = scope.getVariableScopeEntryByName(this.getIdentifier())
+    if (!scopeEntry) {
       return []
     }
-    // TODO: Get function parameter names here
-    // const res = funcDef.type.parameters.map((param) => param.name)
+
+    if (scopeEntry.builtIn && scopeEntry.builtIn.typeInfo.category === TypeCategory.Function) {
+      return scopeEntry.builtIn.typeInfo.arguments.map((arg) => {
+        return arg.name
+      })
+    }
+
+    for (const meta of scopeEntry.declarers.values()) {
+      if (meta.typeInfo.category === TypeCategory.Function) {
+        const args = meta.typeInfo.arguments.map((arg) => {
+          return arg.name
+        })
+        return args
+      }
+    }
+
     return []
   }
 

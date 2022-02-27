@@ -50,6 +50,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   selectionState: SelectionState
   @observable
   componentType: LayoutComponentType
+  @observable
   childSetTreeLabels: string[]
   childSetRightAttachLabel: string
 
@@ -90,16 +91,19 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   updateLayout(layoutComponent: LayoutComponent) {
-    this.childSetTreeLabels = []
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata
+      } else {
+        this.childSetTreeLabels = []
       }
     }
 
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata
+      } else {
+        this.childSetTreeLabels = []
       }
     }
 

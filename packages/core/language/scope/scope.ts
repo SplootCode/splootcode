@@ -1,7 +1,7 @@
+import { FunctionArgType, TypeCategory, VariableTypeInfo } from './types'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
-import { TypeCategory, VariableTypeInfo } from './types'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 import { loadPythonBuiltinFunctions } from './python'
 
@@ -170,11 +170,18 @@ export class Scope {
     if (source) {
       this.variables.get(name).declarers.set(source, meta)
     }
-    this.fireMutation({
-      type: ScopeMutationType.ADD_ENTRY,
+    const mutation: ScopeMutation = {
+      type: ScopeMutationType.ADD_OR_UPDATE_ENTRY,
       scope: this,
       name: name,
-    })
+    }
+    if (this.nameWatchers.has(name)) {
+      for (const node of this.nameWatchers.get(name)) {
+        node.handleScopeMutation(mutation)
+      }
+    }
+
+    this.fireMutation(mutation)
   }
 
   addBuiltIn(name: string, meta: VariableMetadata) {
@@ -271,7 +278,12 @@ export async function generateScope(rootNode: SplootNode) {
         documentation: func.documentation,
         typeInfo: {
           category: TypeCategory.Function,
-          arguments: [],
+          arguments: func.type.parameters.map((varDef) => {
+            return {
+              name: varDef.name,
+              type: FunctionArgType.PositionalOrKeyword,
+            }
+          }),
         },
       })
     })

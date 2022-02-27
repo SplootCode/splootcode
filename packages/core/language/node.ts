@@ -265,8 +265,8 @@ export class SplootNode {
     this.mutationObservers.forEach((observer: NodeObserver) => {
       observer.handleNodeMutation(mutation)
     })
-    // Don't fire global mutations for annotation changes
-    if (mutation.type !== NodeMutationType.SET_RUNTIME_ANNOTATIONS) {
+    // Only fire global mutations for specific kinds (not annotation/labels)
+    if (mutation.type === NodeMutationType.SET_VALIDITY || mutation.type === NodeMutationType.SET_PROPERTY) {
       globalMutationDispatcher.handleNodeMutation(mutation)
     }
   }
