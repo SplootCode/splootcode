@@ -660,11 +660,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.nodes.splice(mutation.index + idx, 0, nodeBlock)
       })
       this.renumberChildren()
-
-      // We also need to make sure that mutation-firing is enabled/disable according to the parent's setting.
-      this.parentRef.node.node.recursivelySetMutations(this.parentRef.node.node.enableMutations)
-      // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
-      // Update layout refreshes things like list index numbers and function param names.
       this.parentRef.node.updateLayout()
       this.selection.updateRenderPositions()
       if (mutation.nodes.length === 1) {

@@ -82,6 +82,19 @@ export class Scope {
     globalMutationDispatcher.handleScopeMutation(mutation)
   }
 
+  canRename(name: string): boolean {
+    if (this.isGlobal) {
+      // Can't rename globals, but if it's not found at all then allow it.
+      return !this.variables.has(name)
+    }
+    if (this.variables.has(name)) {
+      // TODO: some things can't be renamed like module names
+      // so we need to check this.
+      return true
+    }
+    return this.parent.canRename(name)
+  }
+
   renameIdentifier(oldName: string, newName: string) {
     if (oldName === newName) {
       return
@@ -92,6 +105,10 @@ export class Scope {
         return
       }
     } else {
+      if (this.isGlobal) {
+        // Can't rename globals
+        return
+      }
       // TODO: What if already there? I guess we just combine them
       if (this.variables.has(newName)) {
         // Already exists

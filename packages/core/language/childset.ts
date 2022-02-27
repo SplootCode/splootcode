@@ -58,6 +58,7 @@ export class ChildSet {
     if (this.enableMutations) {
       node.recursivelyBuildScope()
       node.parent.node.recursivelyValidate()
+      node.recursivelySetMutations(true)
       const mutation = new ChildSetMutation()
       mutation.type = ChildSetMutationType.INSERT
       mutation.childSet = this

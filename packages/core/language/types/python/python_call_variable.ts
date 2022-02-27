@@ -16,6 +16,25 @@ import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutation
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 
+function sanitizeIdentifier(textInput: string): string {
+  textInput = textInput.replace(/[^\w\s\d]/g, ' ')
+  // Don't mess with it if there are no spaces or punctuation.
+  if (textInput.indexOf(' ') === -1) {
+    return textInput
+  }
+
+  return textInput
+    .split(' ')
+    .map(function (word, index) {
+      if (index == 0) {
+        // Don't prefix the first word.
+        return word
+      }
+      return '_' + word.toLowerCase()
+    })
+    .join('')
+}
+
 export class PythonCallVariable extends SplootNode {
   constructor(parentReference: ParentReference, name: string, signature?: FunctionSignature) {
     super(parentReference, PYTHON_CALL_VARIABLE)
@@ -33,7 +52,22 @@ export class PythonCallVariable extends SplootNode {
   }
 
   getIdentifier() {
-    return this.properties.identifier
+    return this.getProperty('identifier')
+  }
+
+  getEditableProperty(): string {
+    if (this.getScope().canRename(this.getIdentifier())) {
+      return 'identifier'
+    }
+    return null
+  }
+
+  setEditablePropertyValue(newValue: string) {
+    const oldValue = this.getIdentifier()
+    newValue = sanitizeIdentifier(newValue)
+    if (newValue.length > 0) {
+      this.getScope().renameIdentifier(oldValue, newValue)
+    }
   }
 
   setIdentifier(identifier: string) {
