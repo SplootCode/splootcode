@@ -9,7 +9,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -155,6 +160,7 @@ export class BinaryOperator extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(BINARY_OPERATOR, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

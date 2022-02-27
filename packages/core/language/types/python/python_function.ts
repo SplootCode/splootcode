@@ -1,6 +1,6 @@
 import { ChildSetType } from '../../childset'
+import { FunctionArgType, TypeCategory } from '../../scope/types'
 import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '../../capture/runtime_capture'
-import { FunctionDefinition, VariableDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -11,13 +11,18 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
-import { registerFunction } from '../../scope/scope'
+import { VariableMetadata, registerFunction } from '../../scope/scope'
 
 export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 
@@ -77,21 +82,28 @@ export class PythonFunctionDeclaration extends SplootNode {
     let identifier = ''
     if (this.getIdentifier().getCount() === 0) {
       if (this.scopedName) {
-        this.getScope(true).removeFunction(this.scopedName, this)
+        this.getScope(true).removeVariable(this.scopedName, this)
       }
       this.scopedName = null
     } else {
       identifier = (this.getIdentifier().getChild(0) as PythonIdentifier).getName()
-      this.getScope(true).addFunction(
+      if (this.scopedName && identifier !== this.scopedName) {
+        this.getScope(true).removeVariable(this.scopedName, this)
+      }
+      this.getScope(true).addVariable(
+        identifier,
         {
-          name: identifier,
-          deprecated: false,
           documentation: 'Local function',
-          type: {
-            parameters: [],
-            returnType: { type: 'any' },
+          typeInfo: {
+            category: TypeCategory.Function,
+            arguments: this.getParams().children.map((child) => {
+              return {
+                name: (child as PythonIdentifier).getName(),
+                type: FunctionArgType.PositionalOrKeyword,
+              }
+            }),
           },
-        } as FunctionDefinition,
+        } as VariableMetadata,
         this
       )
       this.scopedName = identifier
@@ -114,12 +126,10 @@ export class PythonFunctionDeclaration extends SplootNode {
     currentParams.forEach((name) => {
       if (!this.scopedParameters.has(name)) {
         scope.addVariable(
+          name,
           {
-            name: name,
-            deprecated: false,
             documentation: 'Function parameter',
-            type: { type: 'any' },
-          } as VariableDefinition,
+          } as VariableMetadata,
           this
         )
         this.scopedParameters.add(name)
@@ -135,7 +145,7 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   removeSelfFromScope(): void {
     if (this.scopedName) {
-      this.getScope(true).removeFunction(this.scopedName, this)
+      this.getScope(true).removeVariable(this.scopedName, this)
     }
     this.scopedName = null
     this.getScope(true).removeChildScope(this.scope)
@@ -236,6 +246,7 @@ export class PythonFunctionDeclaration extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_FUNCTION_DECLARATION, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_FUNCTION_DECLARATION, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

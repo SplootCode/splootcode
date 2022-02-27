@@ -12,7 +12,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
 import { SuggestedNode } from '../../suggested_node'
@@ -79,6 +84,7 @@ export class JssStyleProperty extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(JSS_STYLE_PROPERTY, NodeCategory.JssStyleProperties, new Generator())
+    registerNodeCateogry(JSS_STYLE_PROPERTY, NodeCategory.JssStyleProperties)
+    registerAutocompleter(NodeCategory.JssStyleProperties, new Generator())
   }
 }

@@ -14,6 +14,7 @@ import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteFunctionsForCategory,
+  registerAutocompleter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '../../node_category_registry'
@@ -181,8 +182,10 @@ export class PythonExpression extends SplootNode {
 
     registerType(typeRegistration)
     // When needed create the expression while autocompleting the expresison token.
-    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents, new PythonExpressionGenerator())
-    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression, new PythonExpressionGenerator())
+    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents)
+    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new PythonExpressionGenerator())
+    registerAutocompleter(NodeCategory.PythonExpression, new PythonExpressionGenerator())
 
     registerBlankFillForNodeCategory(NodeCategory.PythonExpression, () => {
       return new PythonExpression(null)

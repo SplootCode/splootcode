@@ -7,7 +7,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
@@ -49,7 +54,8 @@ export class NoneLiteral extends SplootNode {
       return exp
     }
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_NONE, NodeCategory.PythonExpressionToken, new PythonNoneGenerator())
+    registerNodeCateogry(PYTHON_NONE, NodeCategory.PythonExpressionToken)
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new PythonNoneGenerator())
   }
 }
 
@@ -100,6 +106,7 @@ export class PythonBool extends SplootNode {
       return exp
     }
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_BOOL, NodeCategory.PythonExpressionToken, new PythonBoolGenerator())
+    registerNodeCateogry(PYTHON_BOOL, NodeCategory.PythonExpressionToken)
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new PythonBoolGenerator())
   }
 }

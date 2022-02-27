@@ -14,7 +14,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -115,6 +120,7 @@ export class IfStatement extends SplootNode {
     }
 
     registerType(ifType)
-    registerNodeCateogry(IF_STATEMENT, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(IF_STATEMENT, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

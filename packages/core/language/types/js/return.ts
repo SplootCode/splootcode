@@ -13,7 +13,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -69,6 +74,7 @@ export class ReturnStatement extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(RETURN_STATEMENT, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(RETURN_STATEMENT, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

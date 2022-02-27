@@ -1,6 +1,5 @@
 import { ChildSetType } from '../../childset'
 import { DOMParser, XMLSerializer } from 'xmldom'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -11,6 +10,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
 
@@ -61,6 +61,6 @@ export class SplootHtmlDocument extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(HTML_DOCUMENT, NodeCategory.HtmlDocument, new EmptySuggestionGenerator())
+    registerNodeCateogry(HTML_DOCUMENT, NodeCategory.HtmlDocument)
   }
 }

@@ -12,7 +12,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
@@ -74,7 +79,9 @@ export class JssHoverBlock extends JavaScriptSplootNode {
     }
 
     registerType(functionType)
-    registerNodeCateogry(JSS_HOVER_BLOCK, NodeCategory.JssBodyContent, new Generator())
-    registerNodeCateogry(JSS_HOVER_BLOCK, NodeCategory.JssStyleProperties, new Generator())
+    registerNodeCateogry(JSS_HOVER_BLOCK, NodeCategory.JssBodyContent)
+    registerNodeCateogry(JSS_HOVER_BLOCK, NodeCategory.JssStyleProperties)
+    registerAutocompleter(NodeCategory.JssBodyContent, new Generator())
+    registerAutocompleter(NodeCategory.JssStyleProperties, new Generator())
   }
 }

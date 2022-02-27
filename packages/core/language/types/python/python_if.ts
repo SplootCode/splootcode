@@ -10,7 +10,12 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { ParentReference, SplootNode } from '../../node'
@@ -144,6 +149,7 @@ export class PythonIfStatement extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

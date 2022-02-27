@@ -11,13 +11,18 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
+import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 
@@ -75,12 +80,10 @@ export class PythonFromImport extends SplootNode {
     currentNames.forEach((name) => {
       if (!this.scopedVariables.has(name)) {
         scope.addVariable(
+          name,
           {
-            name: name,
-            deprecated: false,
             documentation: `imported from ${moduleName}`,
-            type: { type: 'any' },
-          } as VariableDefinition,
+          } as VariableMetadata,
           this
         )
         this.scopedVariables.add(name)
@@ -162,6 +165,7 @@ export class PythonFromImport extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_FROM_IMPORT, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_FROM_IMPORT, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

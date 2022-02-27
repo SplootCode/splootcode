@@ -37,7 +37,6 @@ def processCategory(data):
 
 def generate_file(data, filename):
   result = {}
-
   result = processCategory(data)
 
 

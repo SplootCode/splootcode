@@ -1,9 +1,6 @@
 import * as recast from 'recast'
 
 import { ChildSetType } from '../../childset'
-import { ComponentDefinition } from '../../definitions/loader'
-import { DeclaredIdentifier } from '../js/declared_identifier'
-import { DeclaredProperty } from './declared_property'
 import { ExportDeclarationKind, ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
 import { HighlightColorCategory } from '../../../colors'
@@ -16,7 +13,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -53,24 +55,6 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
 
   getBody() {
     return this.getChildSet('body')
-  }
-
-  addSelfToScope() {
-    if (this.getIdentifier().getCount() === 0) {
-      // No identifier, we can't be added to the scope.
-      return
-    }
-    const proptypes = this.getProps().children.map((node) => {
-      const prop = node as DeclaredProperty
-      return prop.getVariableDefinition()
-    })
-    const identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName()
-    this.getScope(true).addComponent({
-      name: identifier,
-      deprecated: false,
-      documentation: 'React Component',
-      proptypes: proptypes,
-    } as ComponentDefinition)
   }
 
   clean() {
@@ -131,6 +115,7 @@ export class ComponentDeclaration extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(COMPONENT_DECLARATION, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(COMPONENT_DECLARATION, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

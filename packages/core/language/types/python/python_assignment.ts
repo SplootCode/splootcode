@@ -9,7 +9,12 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
@@ -17,7 +22,7 @@ import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
+import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 
@@ -73,12 +78,10 @@ export class PythonAssignment extends SplootNode {
     currentNames.forEach((name) => {
       if (!this.scopedVariables.has(name)) {
         this.getScope().addVariable(
+          name,
           {
-            name: name,
-            deprecated: false,
             documentation: 'Variable',
-            type: { type: 'any' },
-          } as VariableDefinition,
+          } as VariableMetadata,
           this
         )
         this.scopedVariables.add(name)
@@ -166,6 +169,7 @@ export class PythonAssignment extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

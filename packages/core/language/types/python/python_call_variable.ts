@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { FunctionDefinition } from '../../definitions/loader'
+import { FunctionSignature, TypeCategory } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -9,49 +9,46 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
-import { sanitizeIdentifier } from './../js/variable_reference'
+import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllFunctionDefinitions().map((funcDef: FunctionDefinition) => {
-      const funcName = funcDef.name
-      const argCount = funcDef.type?.parameters?.length || 1
-      const newCall = new PythonCallVariable(null, funcName, argCount)
-      let doc = funcDef.documentation
-      if (!doc) {
-        doc = ''
+function sanitizeIdentifier(textInput: string): string {
+  textInput = textInput.replace(/[^\w\s\d]/g, ' ')
+  // Don't mess with it if there are no spaces or punctuation.
+  if (textInput.indexOf(' ') === -1) {
+    return textInput
+  }
+
+  return textInput
+    .split(' ')
+    .map(function (word, index) {
+      if (index == 0) {
+        // Don't prefix the first word.
+        return word
       }
-      return new SuggestedNode(newCall, `call ${funcName}`, funcName, true, doc)
+      return '_' + word.toLowerCase()
     })
-    return suggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    const varName = sanitizeIdentifier(textInput)
-    const newVar = new PythonCallVariable(null, varName, 1)
-    if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
-      return []
-    }
-
-    const suggestedNode = new SuggestedNode(newVar, `call var ${varName}`, '', false, 'undeclared function')
-    return [suggestedNode]
-  }
+    .join('')
 }
 
 export class PythonCallVariable extends SplootNode {
-  constructor(parentReference: ParentReference, name: string, argCount = 0) {
+  constructor(parentReference: ParentReference, name: string, signature?: FunctionSignature) {
     super(parentReference, PYTHON_CALL_VARIABLE)
     this.setProperty('identifier', name)
     this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
-    for (let i = 0; i < argCount; i++) {
-      this.getArguments().addChild(new PythonExpression(null))
+    if (signature) {
+      if (signature.arguments.length === 0) {
+        this.getArguments().addChild(new PythonExpression(null))
+      } else {
+        for (let i = 0; i < signature.arguments.length; i++) {
+          this.getArguments().addChild(new PythonExpression(null))
+        }
+      }
     }
   }
 
@@ -60,11 +57,52 @@ export class PythonCallVariable extends SplootNode {
   }
 
   getIdentifier() {
-    return this.properties.identifier
+    return this.getProperty('identifier')
+  }
+
+  getEditableProperty(): string {
+    if (this.getScope().canRename(this.getIdentifier())) {
+      return 'identifier'
+    }
+    return null
+  }
+
+  setEditablePropertyValue(newValue: string) {
+    const oldValue = this.getIdentifier()
+    newValue = sanitizeIdentifier(newValue)
+    if (newValue.length > 0) {
+      this.getScope().renameIdentifier(oldValue, newValue)
+    }
   }
 
   setIdentifier(identifier: string) {
-    this.properties.identifiter = identifier
+    this.setProperty('identifier', identifier)
+  }
+
+  handleScopeMutation(mutation: ScopeMutation) {
+    if (mutation.type === ScopeMutationType.RENAME_ENTRY) {
+      const oldName = this.getIdentifier()
+      if (mutation.previousName !== oldName) {
+        console.warn(
+          `Rename mutation received ${mutation.previousName} -> ${mutation.newName} but node name is ${oldName}`
+        )
+      }
+      this.setIdentifier(mutation.newName)
+    }
+    if (mutation.type === ScopeMutationType.ADD_OR_UPDATE_ENTRY || mutation.type === ScopeMutationType.REMOVE_ENTRY) {
+      const mutation = new NodeMutation()
+      mutation.type = NodeMutationType.UPDATE_NODE_LAYOUT
+      mutation.node = this
+      this.fireMutation(mutation)
+    }
+  }
+
+  addSelfToScope(): void {
+    this.getScope().addWatcher(this.getIdentifier(), this)
+  }
+
+  removeSelfFromScope(): void {
+    this.getScope().removeWatcher(this.getIdentifier(), this)
   }
 
   validateSelf(): void {
@@ -84,12 +122,27 @@ export class PythonCallVariable extends SplootNode {
     if (!scope) {
       return []
     }
-    const funcDef = scope.getFunctionDefinitionByName(this.getIdentifier())
-    if (!funcDef) {
+    const scopeEntry = scope.getVariableScopeEntryByName(this.getIdentifier())
+    if (!scopeEntry) {
       return []
     }
-    const res = funcDef.type.parameters.map((param) => param.name)
-    return res
+
+    if (scopeEntry.builtIn && scopeEntry.builtIn.typeInfo.category === TypeCategory.Function) {
+      return scopeEntry.builtIn.typeInfo.arguments.map((arg) => {
+        return arg.name
+      })
+    }
+
+    for (const meta of scopeEntry.declarers.values()) {
+      if (meta.typeInfo.category === TypeCategory.Function) {
+        const args = meta.typeInfo.arguments.map((arg) => {
+          return arg.name
+        })
+        return args
+      }
+    }
+
+    return []
   }
 
   getNodeLayout(): NodeLayout {
@@ -122,6 +175,6 @@ export class PythonCallVariable extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_CALL_VARIABLE, NodeCategory.PythonExpressionToken, new Generator())
+    registerNodeCateogry(PYTHON_CALL_VARIABLE, NodeCategory.PythonExpressionToken)
   }
 }

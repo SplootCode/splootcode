@@ -9,7 +9,12 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_FUNCTION_DECLARATION } from './python_function'
 import { ParentReference, SplootNode } from '../../node'
@@ -113,6 +118,7 @@ export class PythonReturn extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_RETURN, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_RETURN, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

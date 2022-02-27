@@ -10,7 +10,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python/python_expression'
 import { ParentReference, SplootNode } from '../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './js/expression'
@@ -83,12 +88,19 @@ export class StringLiteral extends JavaScriptSplootNode {
       return exp
     }
     registerType(stringLiteral)
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken, new StringGenerator())
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.PythonExpressionToken, new StringGenerator())
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode, new StringGenerator())
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.HtmlAttributeValue, new StringGenerator())
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.ModuleSource, new StringGenerator())
-    registerNodeCateogry(STRING_LITERAL, NodeCategory.StyleSheetPropertyValue, new StringGenerator())
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.ExpressionToken)
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.PythonExpressionToken)
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.DomNode)
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.HtmlAttributeValue)
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.ModuleSource)
+    registerNodeCateogry(STRING_LITERAL, NodeCategory.StyleSheetPropertyValue)
+
+    registerAutocompleter(NodeCategory.ExpressionToken, new StringGenerator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new StringGenerator())
+    registerAutocompleter(NodeCategory.DomNode, new StringGenerator())
+    registerAutocompleter(NodeCategory.HtmlAttributeValue, new StringGenerator())
+    registerAutocompleter(NodeCategory.ModuleSource, new StringGenerator())
+    registerAutocompleter(NodeCategory.StyleSheetPropertyValue, new StringGenerator())
   }
 }
 
@@ -137,8 +149,8 @@ export class NumericLiteral extends JavaScriptSplootNode {
     return 'value'
   }
 
-  setPropertyFromString(name: string, value: string) {
-    this.setProperty(name, parseStringToNum(value))
+  setEditablePropertyValue(newValue: string): void {
+    this.setProperty('value', parseStringToNum(newValue))
   }
 
   static deserializer(serializedNode: SerializedNode): NumericLiteral {
@@ -164,9 +176,12 @@ export class NumericLiteral extends JavaScriptSplootNode {
       return exp
     }
     registerType(numericLiteral)
-    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.ExpressionToken, new NumberGenerator())
-    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.PythonExpressionToken, new NumberGenerator())
-    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.HtmlAttributeValue, new NumberGenerator())
+    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.ExpressionToken)
+    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.PythonExpressionToken)
+    registerNodeCateogry(NUMERIC_LITERAL, NodeCategory.HtmlAttributeValue)
+    registerAutocompleter(NodeCategory.ExpressionToken, new NumberGenerator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new NumberGenerator())
+    registerAutocompleter(NodeCategory.HtmlAttributeValue, new NumberGenerator())
   }
 }
 
@@ -208,6 +223,7 @@ export class NullLiteral extends JavaScriptSplootNode {
       return exp
     }
     registerType(typeRegistration)
-    registerNodeCateogry(NULL_LITERAL, NodeCategory.ExpressionToken, new NullGenerator())
+    registerNodeCateogry(NULL_LITERAL, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new NullGenerator())
   }
 }

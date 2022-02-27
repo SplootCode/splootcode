@@ -12,7 +12,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -20,24 +25,6 @@ export const JSS_CLASS_REFERENCE = 'JSS_CLASS_REFERENCE'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // Find the local styles variable
-    const scope = parent.node.getScope()
-    const varDef = scope.getVariableDefintionByName(LOCAL_STYLES_IDENTIFIER)
-    if (varDef) {
-      const results = []
-      for (const className in varDef.type.objectProperties['classes'].objectProperties) {
-        results.push(
-          new SuggestedNode(
-            new JssClassReference(null, className),
-            `classref ${className}`,
-            `class ${className}`,
-            true,
-            'Local style sheet class'
-          )
-        )
-      }
-      return results
-    }
     return []
   }
 
@@ -81,6 +68,7 @@ export class JssClassReference extends JavaScriptSplootNode {
     ])
 
     registerType(functionType)
-    registerNodeCateogry(JSS_CLASS_REFERENCE, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(JSS_CLASS_REFERENCE, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

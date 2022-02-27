@@ -9,7 +9,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { StyleProperty } from './style_property'
 import { StyleSelector } from './style_selector'
@@ -90,6 +95,7 @@ export class StyleRule extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(STYLE_RULE, NodeCategory.StyleSheetStatement, new Generator())
+    registerNodeCateogry(STYLE_RULE, NodeCategory.StyleSheetStatement)
+    registerAutocompleter(NodeCategory.StyleSheetStatement, new Generator())
   }
 }

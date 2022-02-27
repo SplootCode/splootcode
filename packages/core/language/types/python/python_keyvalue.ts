@@ -1,10 +1,4 @@
 import { ChildSetType } from '../../childset'
-import {
-  EmptySuggestionGenerator,
-  NodeCategory,
-  registerBlankFillForNodeCategory,
-  registerNodeCateogry,
-} from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -15,6 +9,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeCategory, registerBlankFillForNodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 
@@ -76,7 +71,7 @@ export class PythonKeyValue extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_KEYVALUE, NodeCategory.PythonDictionaryKeyValue, new EmptySuggestionGenerator())
+    registerNodeCateogry(PYTHON_KEYVALUE, NodeCategory.PythonDictionaryKeyValue)
     registerBlankFillForNodeCategory(NodeCategory.PythonDictionaryKeyValue, () => {
       return new PythonKeyValue(null)
     })

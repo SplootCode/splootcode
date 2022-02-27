@@ -5,6 +5,7 @@ export enum NodeMutationType {
   SET_PROPERTY,
   SET_RUNTIME_ANNOTATIONS,
   SET_VALIDITY,
+  UPDATE_NODE_LAYOUT,
 }
 
 export class NodeMutation {

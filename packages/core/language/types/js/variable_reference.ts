@@ -11,11 +11,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const VARIABLE_REFERENCE = 'VARIABLE_REFERENCE'
 
@@ -41,17 +45,7 @@ export function sanitizeIdentifier(textInput: string): string {
 
 export class VariableReferenceGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllVariableDefinitions().map((variableDef: VariableDefinition) => {
-      const varName = variableDef.name
-      const newVar = new VariableReference(null, varName)
-      let doc = variableDef.documentation
-      if (!doc) {
-        doc = 'No documentation'
-      }
-      return new SuggestedNode(newVar, `var ${varName}`, varName, true, doc)
-    })
-    return suggestions
+    return []
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
@@ -103,6 +97,7 @@ export class VariableReference extends JavaScriptSplootNode {
     }
 
     registerType(varType)
-    registerNodeCateogry(VARIABLE_REFERENCE, NodeCategory.ExpressionToken, new VariableReferenceGenerator())
+    registerNodeCateogry(VARIABLE_REFERENCE, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new VariableReferenceGenerator())
   }
 }

@@ -11,7 +11,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
 import { SuggestedNode } from '../../suggested_node'
@@ -82,6 +87,7 @@ export class SplootHtmlAttribute extends SplootNode {
     )
 
     registerType(typeRegistration)
-    registerNodeCateogry(HTML_ATTRIBUTE, NodeCategory.HtmlAttribute, new Generator())
+    registerNodeCateogry(HTML_ATTRIBUTE, NodeCategory.HtmlAttribute)
+    registerAutocompleter(NodeCategory.HtmlAttribute, new Generator())
   }
 }

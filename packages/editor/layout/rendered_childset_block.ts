@@ -50,6 +50,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   selectionState: SelectionState
   @observable
   componentType: LayoutComponentType
+  @observable
   childSetTreeLabels: string[]
   childSetRightAttachLabel: string
 
@@ -90,16 +91,19 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   updateLayout(layoutComponent: LayoutComponent) {
-    this.childSetTreeLabels = []
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata
+      } else {
+        this.childSetTreeLabels = []
       }
     }
 
     if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
       if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
         this.childSetTreeLabels = layoutComponent.metadata
+      } else {
+        this.childSetTreeLabels = []
       }
     }
 
@@ -660,11 +664,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.nodes.splice(mutation.index + idx, 0, nodeBlock)
       })
       this.renumberChildren()
-
-      // We also need to make sure that mutation-firing is enabled/disable according to the parent's setting.
-      this.parentRef.node.node.recursivelySetMutations(this.parentRef.node.node.enableMutations)
-      // Instead of having ^ this here, we should have a separate mutation watcher that handles scope.
-      // Update layout refreshes things like list index numbers and function param names.
       this.parentRef.node.updateLayout()
       this.selection.updateRenderPositions()
       if (mutation.nodes.length === 1) {

@@ -13,7 +13,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { OBJECT_EXPRESSION, ObjectExpression } from './object_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { SplootExpression } from './expression'
@@ -85,6 +90,7 @@ export class ObjectProperty extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(OBJECT_PROPERTY, NodeCategory.ObjectPropertyDeclaration, new Generator())
+    registerNodeCateogry(OBJECT_PROPERTY, NodeCategory.ObjectPropertyDeclaration)
+    registerAutocompleter(NodeCategory.ObjectPropertyDeclaration, new Generator())
   }
 }

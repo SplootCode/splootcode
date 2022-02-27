@@ -10,14 +10,19 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeAnnotation, NodeAnnotationType } from '../../annotations/annotations'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
+import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'
 
@@ -68,12 +73,10 @@ export class PythonForLoop extends SplootNode {
     if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
       const name = (this.getTarget().getChild(0) as PythonIdentifier).getName()
       this.getScope().addVariable(
+        name,
         {
-          name: name,
-          deprecated: false,
           documentation: 'for-loop variable',
-          type: { type: 'any' },
-        } as VariableDefinition,
+        } as VariableMetadata,
         this
       )
       this.scopedVariable = name
@@ -211,6 +214,7 @@ export class PythonForLoop extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_FOR_LOOP, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_FOR_LOOP, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

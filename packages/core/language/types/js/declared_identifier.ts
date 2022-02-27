@@ -11,7 +11,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 import { VARIABLE_REFERENCE, VariableReference } from './variable_reference'
@@ -95,6 +100,7 @@ export class DeclaredIdentifier extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(DECLARED_IDENTIFIER, NodeCategory.DeclaredIdentifier, new VariableDeclarationGenerator())
+    registerNodeCateogry(DECLARED_IDENTIFIER, NodeCategory.DeclaredIdentifier)
+    registerAutocompleter(NodeCategory.DeclaredIdentifier, new VariableDeclarationGenerator())
   }
 }

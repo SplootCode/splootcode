@@ -5,7 +5,6 @@ import { DeclaredIdentifier } from '../js/declared_identifier'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import { LOCAL_STYLES_IDENTIFIER } from './jss_style_block'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -14,12 +13,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
-import { TypeExpression } from '../../definitions/loader'
-import { addPropertyToTypeExpression } from '../../scope/scope'
 
 export const JSS_CLASS_BLOCK = 'JSS_CLASS_BLOCK'
 
@@ -48,22 +50,6 @@ export class JssClassBlock extends JavaScriptSplootNode {
 
   getBody() {
     return this.getChildSet('body')
-  }
-
-  addSelfToScope() {
-    if (this.getIdentifier().getCount() === 0) {
-      return
-    }
-    const scope = this.getScope()
-    // TODO: Check parent is a local style block, not a named style block (when we implement that).
-    // Probably should fetch this var name from the parent.
-    const stylesVar = scope.getVariableDefintionByName(LOCAL_STYLES_IDENTIFIER)
-    const typeExpression = stylesVar.type
-    const classesType = stylesVar.type.objectProperties['classes']
-    const classType: TypeExpression = { type: 'any' }
-    const identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName()
-    typeExpression.objectProperties['classes'] = addPropertyToTypeExpression(classesType, identifier, classType)
-    scope.replaceVariableTypeExpression(LOCAL_STYLES_IDENTIFIER, typeExpression)
   }
 
   generateJsAst(): ObjectPropertyKind {
@@ -102,7 +88,9 @@ export class JssClassBlock extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssBodyContent, new Generator())
-    registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssStyleProperties, new Generator())
+    registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssBodyContent)
+    registerNodeCateogry(JSS_CLASS_BLOCK, NodeCategory.JssStyleProperties)
+    registerAutocompleter(NodeCategory.JssBodyContent, new Generator())
+    registerAutocompleter(NodeCategory.JssStyleProperties, new Generator())
   }
 }

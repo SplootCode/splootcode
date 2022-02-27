@@ -8,7 +8,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonKeyValue } from './python_keyvalue'
@@ -61,6 +66,7 @@ export class PythonDictionary extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_DICT, NodeCategory.PythonExpressionToken, new Generator())
+    registerNodeCateogry(PYTHON_DICT, NodeCategory.PythonExpressionToken)
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
   }
 }
