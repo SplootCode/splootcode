@@ -1,7 +1,6 @@
 import * as recast from 'recast'
 
 import { ChildSetType } from '../../childset'
-import { ComponentDefinition, VariableDefinition } from '../../definitions/loader'
 import { ComponentProperty } from './component_property'
 import { ExpressionKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
@@ -14,26 +13,22 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SuggestedNode } from '../../suggested_node'
+import { VariableDefinition } from '../../definitions/loader'
 
 export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllComponentDefinitions().map((componentDef: ComponentDefinition) => {
-      const varName = componentDef.name
-      const newVar = new ComponentInvocation(null, varName)
-      let doc = componentDef.documentation
-      if (!doc) {
-        doc = 'No documentation'
-      }
-      return new SuggestedNode(newVar, `component ${varName}`, varName, true, doc)
-    })
-    return suggestions
+    return []
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
@@ -62,8 +57,7 @@ export class ComponentInvocation extends JavaScriptSplootNode {
     if (!scope) {
       return []
     }
-    const compDef = scope.getComponentDefinitionByName(this.getName())
-    return compDef.proptypes
+    return []
   }
 
   getContent() {
@@ -125,6 +119,7 @@ export class ComponentInvocation extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(COMPONENT_INVOCATION, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(COMPONENT_INVOCATION, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

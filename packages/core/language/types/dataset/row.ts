@@ -1,8 +1,8 @@
 import * as recast from 'recast'
 
 import { ChildSetType } from '../../childset'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ExpressionKind, ObjectExpressionKind } from 'ast-types/gen/kinds'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SerializedNode, TypeRegistration, registerType } from '../../type_registry'
 import { SplootDataStringEntry } from './string_entry'
@@ -83,6 +83,6 @@ export class SplootDataRow extends SplootNode {
     typeRegistration.layout = null
 
     registerType(typeRegistration)
-    registerNodeCateogry(DATA_ROW, NodeCategory.DataSheetFieldDeclaration, new EmptySuggestionGenerator())
+    registerNodeCateogry(DATA_ROW, NodeCategory.DataSheetFieldDeclaration)
   }
 }

@@ -47,33 +47,27 @@ export interface SuggestionGenerator {
   dynamicSuggestions: (parent: ParentReference, index: number, textInput: string) => SuggestedNode[]
 }
 
-export class EmptySuggestionGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    return []
-  }
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
-  }
-}
-
 const CategoryMap = new Map<NodeCategory, Set<string>>()
 const AutocompleteFunctionMap = new Map<NodeCategory, Set<SuggestionGenerator>>()
 const TypeToCategoryMap = new Map<string, Set<NodeCategory>>()
 const BlankFillMap = new Map<NodeCategory, () => SplootNode>()
 
-export function registerNodeCateogry(nodeType: string, category: NodeCategory, autocomplete: SuggestionGenerator) {
+export function registerNodeCateogry(nodeType: string, category: NodeCategory) {
   if (!CategoryMap.has(category)) {
     CategoryMap.set(category, new Set<string>())
   }
-  if (!AutocompleteFunctionMap.has(category)) {
-    AutocompleteFunctionMap.set(category, new Set<SuggestionGenerator>())
-  }
   CategoryMap.get(category).add(nodeType)
-  AutocompleteFunctionMap.get(category).add(autocomplete)
   if (!TypeToCategoryMap.has(nodeType)) {
     TypeToCategoryMap.set(nodeType, new Set<NodeCategory>())
   }
   TypeToCategoryMap.get(nodeType).add(category)
+}
+
+export function registerAutocompleter(category: NodeCategory, autocomplete: SuggestionGenerator) {
+  if (!AutocompleteFunctionMap.has(category)) {
+    AutocompleteFunctionMap.set(category, new Set<SuggestionGenerator>())
+  }
+  AutocompleteFunctionMap.get(category).add(autocomplete)
 }
 
 export function getNodeCategoriesForType(typeName: string): Set<NodeCategory> {

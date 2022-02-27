@@ -18,6 +18,7 @@ import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteFunctionsForCategory,
+  registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
@@ -177,7 +178,9 @@ export class SplootExpression extends JavaScriptSplootNode {
 
     registerType(typeRegistration)
     // When needed create the expression while autocompleting the expresison token.
-    registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Statement, new Generator())
-    registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Expression, new Generator())
+    registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Statement)
+    registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Expression)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
+    registerAutocompleter(NodeCategory.Expression, new Generator())
   }
 }

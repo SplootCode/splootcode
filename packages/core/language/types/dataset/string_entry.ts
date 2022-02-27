@@ -1,4 +1,4 @@
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SerializedNode, TypeRegistration, registerType } from '../../type_registry'
 
@@ -40,6 +40,6 @@ export class SplootDataStringEntry extends SplootNode {
     typeRegistration.layout = null
 
     registerType(typeRegistration)
-    registerNodeCateogry(DATA_STRING_ENTRY, NodeCategory.DataSheetEntry, new EmptySuggestionGenerator())
+    registerNodeCateogry(DATA_STRING_ENTRY, NodeCategory.DataSheetEntry)
   }
 }

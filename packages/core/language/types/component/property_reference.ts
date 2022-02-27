@@ -11,11 +11,14 @@ import {
   registerType,
 } from '../../type_registry'
 import { MemberExpressionKind } from 'ast-types/gen/kinds'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
-import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const PROPERTY_REFERENCE = 'PROPERTY_REFERENCE'
 
@@ -41,17 +44,8 @@ export function sanitizeIdentifier(textInput: string): string {
 
 export class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllPropertyDefinitions().map((variableDef: VariableDefinition) => {
-      const varName = variableDef.name
-      const newVar = new PropertyReference(null, varName)
-      let doc = variableDef.documentation
-      if (!doc) {
-        doc = 'No documentation'
-      }
-      return new SuggestedNode(newVar, `prop ${varName}`, varName, true, doc)
-    })
-    return suggestions
+    // Property autocomplete has been deprecated.
+    return []
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
@@ -100,6 +94,7 @@ export class PropertyReference extends JavaScriptSplootNode {
     }
 
     registerType(varType)
-    registerNodeCateogry(PROPERTY_REFERENCE, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(PROPERTY_REFERENCE, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

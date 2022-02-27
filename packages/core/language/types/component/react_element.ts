@@ -13,7 +13,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -110,6 +115,7 @@ export class ReactElementNode extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(REACT_ELEMENT, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(REACT_ELEMENT, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

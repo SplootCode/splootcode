@@ -3,7 +3,6 @@ import * as recast from 'recast'
 import { ChildSetType } from '../../childset'
 import { DeclaredIdentifier } from './declared_identifier'
 import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from 'ast-types/gen/kinds'
-import { FunctionDefinition } from '../../definitions/loader'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
@@ -15,7 +14,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -52,23 +56,6 @@ export class FunctionDeclaration extends JavaScriptSplootNode {
 
   getBody() {
     return this.getChildSet('body')
-  }
-
-  addSelfToScope() {
-    if (this.getIdentifier().getCount() === 0) {
-      // No identifier, we can't be added to the scope.
-      return
-    }
-    const identifier = (this.getIdentifier().getChild(0) as DeclaredIdentifier).getName()
-    this.getScope(true).addFunction({
-      name: identifier,
-      deprecated: false,
-      documentation: 'Local function',
-      type: {
-        parameters: [],
-        returnType: { type: 'any' },
-      },
-    } as FunctionDefinition)
   }
 
   clean() {
@@ -129,6 +116,7 @@ export class FunctionDeclaration extends JavaScriptSplootNode {
     }
 
     registerType(functionType)
-    registerNodeCateogry(FUNCTION_DECLARATION, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(FUNCTION_DECLARATION, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

@@ -7,7 +7,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 
@@ -100,7 +105,10 @@ export class PythonSubscript extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonExpressionToken, new Generator())
-    registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonAssignable, new Generator())
+    registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonExpressionToken)
+    registerNodeCateogry(PYTHON_SUBSCRIPT, NodeCategory.PythonAssignable)
+
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
+    registerAutocompleter(NodeCategory.PythonAssignable, new Generator())
   }
 }

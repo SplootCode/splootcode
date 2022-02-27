@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Text } from '@chakra-ui/react'
 import { Category, MicroNode, getNodeBlock } from './category'
@@ -8,6 +8,7 @@ import { Scope } from '@splootcode/core/language/scope/scope'
 import { ScopeObserver } from '@splootcode/core/language/observers'
 import { SplootNode } from '@splootcode/core/language/node'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
+import { TypeCategory } from '@splootcode/core/language/scope/types'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 export interface EntryProps {
@@ -109,38 +110,71 @@ interface ScopeTreeProps {
 
 const ScopeTree = (props: ScopeTreeProps) => {
   const { scope, startDrag } = props
-  const varNames = Object.keys(scope.variables)
-  const funcNames = Object.keys(scope.functions)
+
+  const allVars = {}
+  const allFuncs = {}
+
+  for (const [name, entry] of scope.variables.entries()) {
+    let hasVar = false
+    let funcSignature = null
+    for (const metadata of entry.declarers.values()) {
+      if (metadata.typeInfo?.category === TypeCategory.Function) {
+        funcSignature = metadata.typeInfo
+      } else {
+        hasVar = true
+      }
+    }
+    if (hasVar) {
+      const nodeBlock = getNodeBlock({
+        type: 'PY_IDENTIFIER',
+        properties: { identifier: name },
+        childSets: {},
+      })
+      allVars[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+    }
+    if (funcSignature) {
+      const nodeBlock = getNodeBlock({
+        type: 'PYTHON_CALL_VARIABLE',
+        properties: { identifier: name },
+        childSets: {
+          arguments: [
+            {
+              type: 'PYTHON_EXPRESSION',
+              properties: {},
+              childSets: { tokens: [] },
+            },
+          ],
+        },
+      })
+      allFuncs[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+    }
+  }
+
+  const varNames = Object.keys(allVars)
+  varNames.sort()
+  const funcNames = Object.keys(allFuncs)
+  funcNames.sort()
+
   const scopes = Array.from(scope.childScopes)
   return (
     <>
       {varNames.map((name, idx) => {
-        const nodeBlock = getNodeBlock({
-          type: 'PY_IDENTIFIER',
-          properties: { identifier: name },
-          childSets: {},
-        })
-        return <MicroNode key={name} nodeBlock={nodeBlock} startDrag={startDrag} />
+        return <React.Fragment key={name}>{allVars[name]}</React.Fragment>
       })}
       {funcNames.map((name, idx) => {
-        const nodeBlock = getNodeBlock({
-          type: 'PYTHON_CALL_VARIABLE',
-          properties: { identifier: name },
-          childSets: { arguments: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }] },
-        })
-        return <MicroNode key={name} nodeBlock={nodeBlock} startDrag={startDrag} />
+        return <React.Fragment key={name}>{allFuncs[name]}</React.Fragment>
       })}
       {scopes.map((childScope: Scope, idx) => {
         if (!childScope.hasEntries()) {
           return null
         }
         return (
-          <>
+          <Fragment key={idx}>
             <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
               {childScope.name}
             </Text>
-            <ScopeTree key={idx} scope={childScope} startDrag={startDrag} />
-          </>
+            <ScopeTree scope={childScope} startDrag={startDrag} />
+          </Fragment>
         )
       })}
     </>

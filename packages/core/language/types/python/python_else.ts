@@ -1,11 +1,5 @@
 import { ChildSetType } from '../../childset'
 import { ElseStatementData, StatementCapture } from '../../capture/runtime_capture'
-import {
-  EmptySuggestionGenerator,
-  NodeCategory,
-  SuggestionGenerator,
-  registerNodeCateogry,
-} from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -15,6 +9,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
@@ -114,7 +114,9 @@ export class PythonElseBlock extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatementContents, new AppendGenerator())
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock, new EmptySuggestionGenerator())
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatementContents)
+    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock)
+
+    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendGenerator())
   }
 }

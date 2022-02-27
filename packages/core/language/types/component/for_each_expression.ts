@@ -1,7 +1,6 @@
 import * as recast from 'recast'
 
 import { ChildSetType } from '../../childset'
-import { DECLARED_IDENTIFIER, DeclaredIdentifier } from '../js/declared_identifier'
 import { ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
@@ -13,11 +12,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const FOR_EACH_EXPRESSION = 'FOR_EACH_EXPRESSION'
 
@@ -44,18 +47,6 @@ export class ForEachExpression extends SplootNode {
 
   getDeclarationIdentifier() {
     return this.getChildSet('identifier')
-  }
-
-  addSelfToScope() {
-    const identifierChildSet = this.getDeclarationIdentifier()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === DECLARED_IDENTIFIER) {
-      this.getScope().addVariable({
-        name: (this.getDeclarationIdentifier().getChild(0) as DeclaredIdentifier).getName(),
-        deprecated: false,
-        documentation: 'Local for-loop variable',
-        type: { type: 'any' },
-      } as VariableDefinition)
-    }
   }
 
   getIterable() {
@@ -120,6 +111,7 @@ export class ForEachExpression extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(FOR_EACH_EXPRESSION, NodeCategory.Expression, new Generator())
+    registerNodeCateogry(FOR_EACH_EXPRESSION, NodeCategory.Expression)
+    registerAutocompleter(NodeCategory.Expression, new Generator())
   }
 }

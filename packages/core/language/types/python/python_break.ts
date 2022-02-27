@@ -7,7 +7,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_FOR_LOOP } from './python_for'
 import { PYTHON_WHILE_LOOP } from './python_while'
 import { ParentReference, SplootNode } from '../../node'
@@ -87,6 +92,7 @@ export class PythonBreak extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_BREAK, NodeCategory.PythonStatementContents, new Generator())
+    registerNodeCateogry(PYTHON_BREAK, NodeCategory.PythonStatementContents)
+    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
   }
 }

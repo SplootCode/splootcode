@@ -11,7 +11,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ObjectExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
@@ -69,6 +74,7 @@ export class ObjectExpression extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(OBJECT_EXPRESSION, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(OBJECT_EXPRESSION, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

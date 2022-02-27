@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "outDir": "lib",

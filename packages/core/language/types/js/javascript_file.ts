@@ -2,7 +2,6 @@ import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
 import { ChildSetType } from '../../childset'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ExpressionKind, StatementKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
@@ -14,6 +13,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 
@@ -80,6 +80,6 @@ export class JavascriptFile extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.JavascriptFile, new EmptySuggestionGenerator())
+    registerNodeCateogry(JAVASCRIPT_FILE, NodeCategory.JavascriptFile)
   }
 }

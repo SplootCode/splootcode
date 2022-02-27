@@ -14,7 +14,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { REACT_ELEMENT, ReactElementNode } from './react_element'
 import { SplootExpression } from '../js/expression'
@@ -97,6 +102,7 @@ export class ComponentProperty extends JavaScriptSplootNode {
     )
 
     registerType(typeRegistration)
-    registerNodeCateogry(COMPONENT_PROPERTY, NodeCategory.ComponentProperty, new Generator())
+    registerNodeCateogry(COMPONENT_PROPERTY, NodeCategory.ComponentProperty)
+    registerAutocompleter(NodeCategory.ComponentProperty, new Generator())
   }
 }

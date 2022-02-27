@@ -2,7 +2,6 @@ import * as recast from 'recast'
 
 import { CallExpressionKind, ExpressionKind } from 'ast-types/gen/kinds'
 import { ChildSetType } from '../../childset'
-import { FunctionDefinition } from '../../definitions/loader'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import {
@@ -13,7 +12,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
@@ -23,17 +27,7 @@ export const CALL_VARIABLE = 'CALL_VARIABLE'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllFunctionDefinitions().map((funcDef: FunctionDefinition) => {
-      const funcName = funcDef.name
-      const newCall = new CallVariable(null, funcName, funcDef.type.parameters.length)
-      let doc = funcDef.documentation
-      if (!doc) {
-        doc = 'No documentation'
-      }
-      return new SuggestedNode(newCall, `var ${funcName}`, funcName, true, doc)
-    })
-    return suggestions
+    return []
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
@@ -84,12 +78,8 @@ export class CallVariable extends JavaScriptSplootNode {
     if (!scope) {
       return []
     }
-    const funcDef = scope.getFunctionDefinitionByName(this.getIdentifier())
-    if (!funcDef) {
-      return []
-    }
-    const res = funcDef.type.parameters.map((param) => param.name)
-    return res
+    // TODO: Support autocompleting argument names
+    return []
   }
 
   getNodeLayout(): NodeLayout {
@@ -122,6 +112,7 @@ export class CallVariable extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(CALL_VARIABLE, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(CALL_VARIABLE, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

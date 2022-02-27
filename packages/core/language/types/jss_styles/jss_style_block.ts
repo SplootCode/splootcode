@@ -12,11 +12,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ObjectPropertyKind, StatementKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const JSS_STYLE_BLOCK = 'JSS_STYLE_BLOCK'
 export const LOCAL_STYLES_IDENTIFIER = 'jss_local_styles'
@@ -41,26 +45,6 @@ export class JssStyleBlock extends JavaScriptSplootNode {
 
   getBody() {
     return this.getChildSet('body')
-  }
-
-  addSelfToScope() {
-    // Need to add LOCAL_STYLES_IDENTIFIER to scope
-    // TODO: Hide this from autocomplete (?).
-    const varDef: VariableDefinition = {
-      name: LOCAL_STYLES_IDENTIFIER,
-      deprecated: false,
-      type: {
-        type: 'object',
-        objectProperties: {
-          classes: {
-            type: 'object',
-            objectProperties: {},
-          },
-        },
-      },
-      documentation: 'Local style sheet',
-    }
-    this.getScope().addVariable(varDef)
   }
 
   generateJsAst(): StatementKind {
@@ -119,6 +103,7 @@ export class JssStyleBlock extends JavaScriptSplootNode {
     }
 
     registerType(functionType)
-    registerNodeCateogry(JSS_STYLE_BLOCK, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(JSS_STYLE_BLOCK, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

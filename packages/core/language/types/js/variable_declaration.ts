@@ -2,7 +2,6 @@ import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
 import { ChildSetType } from '../../childset'
-import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
 import { ExpressionKind, IdentifierKind } from 'ast-types/gen/kinds'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
 import { HighlightColorCategory } from '../../../colors'
@@ -15,11 +14,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SplootExpression } from './expression'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION'
 
@@ -45,18 +48,6 @@ export class VariableDeclaration extends SplootNode {
 
   getDeclarationIdentifier() {
     return this.getChildSet('identifier')
-  }
-
-  addSelfToScope() {
-    const identifierChildSet = this.getDeclarationIdentifier()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === DECLARED_IDENTIFIER) {
-      this.getScope().addVariable({
-        name: (this.getDeclarationIdentifier().getChild(0) as DeclaredIdentifier).getName(),
-        deprecated: false,
-        documentation: 'Local variable',
-        type: { type: 'any' },
-      } as VariableDefinition)
-    }
   }
 
   getInit() {
@@ -99,6 +90,7 @@ export class VariableDeclaration extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(VARIABLE_DECLARATION, NodeCategory.Statement, new Generator())
+    registerNodeCateogry(VARIABLE_DECLARATION, NodeCategory.Statement)
+    registerAutocompleter(NodeCategory.Statement, new Generator())
   }
 }

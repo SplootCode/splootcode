@@ -7,12 +7,17 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { Scope } from '../../scope/scope'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableDefinition } from '../../definitions/loader'
 
 export const PYTHON_IDENTIFIER = 'PY_IDENTIFIER'
 
@@ -33,26 +38,6 @@ function sanitizeIdentifier(textInput: string): string {
       return '_' + word.toLowerCase()
     })
     .join('')
-}
-
-class ExistingVariableGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllVariableDefinitions().map((variableDef: VariableDefinition) => {
-      const varName = variableDef.name
-      const newVar = new PythonIdentifier(null, varName)
-      let doc = variableDef.documentation
-      if (!doc) {
-        doc = 'No documentation'
-      }
-      return new SuggestedNode(newVar, `var ${varName}`, varName, true, doc)
-    })
-    return suggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
-  }
 }
 
 class NewIdentifierGenerator implements SuggestionGenerator {
@@ -84,6 +69,15 @@ export class PythonIdentifier extends SplootNode {
 
   getEditableProperty(): string {
     return 'identifier'
+  }
+
+  getScope(): Scope {
+    // Horrible hack to put function identifiers in a different scope to the arguments.
+    if (this.parent && this.parent.childSetId == 'identifier') {
+      return this.parent.node.getScope(true)
+    } else {
+      return super.getScope()
+    }
   }
 
   setEditablePropertyValue(newValue: string) {
@@ -141,16 +135,17 @@ export class PythonIdentifier extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonAssignable, new ExistingVariableGenerator())
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonAssignable, new NewIdentifierGenerator())
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonExpressionToken, new ExistingVariableGenerator())
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonLoopVariable, new NewIdentifierGenerator())
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonModuleAttribute, new NewIdentifierGenerator())
-    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonFunctionName, new NewIdentifierGenerator())
-    registerNodeCateogry(
-      PYTHON_IDENTIFIER,
-      NodeCategory.PythonFunctionArgumentDeclaration,
-      new NewIdentifierGenerator()
-    )
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonAssignable)
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonExpressionToken)
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonLoopVariable)
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonModuleAttribute)
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonFunctionName)
+    registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonFunctionArgumentDeclaration)
+
+    registerAutocompleter(NodeCategory.PythonAssignable, new NewIdentifierGenerator())
+    registerAutocompleter(NodeCategory.PythonLoopVariable, new NewIdentifierGenerator())
+    registerAutocompleter(NodeCategory.PythonModuleAttribute, new NewIdentifierGenerator())
+    registerAutocompleter(NodeCategory.PythonFunctionName, new NewIdentifierGenerator())
+    registerAutocompleter(NodeCategory.PythonFunctionArgumentDeclaration, new NewIdentifierGenerator())
   }
 }

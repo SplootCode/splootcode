@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { FunctionDefinition } from '../../definitions/loader'
+import { FunctionSignature } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -9,49 +9,22 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
-import { sanitizeIdentifier } from './../js/variable_reference'
+import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const scope = parent.node.getScope()
-    const suggestions = scope.getAllFunctionDefinitions().map((funcDef: FunctionDefinition) => {
-      const funcName = funcDef.name
-      const argCount = funcDef.type?.parameters?.length || 1
-      const newCall = new PythonCallVariable(null, funcName, argCount)
-      let doc = funcDef.documentation
-      if (!doc) {
-        doc = ''
-      }
-      return new SuggestedNode(newCall, `call ${funcName}`, funcName, true, doc)
-    })
-    return suggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    const varName = sanitizeIdentifier(textInput)
-    const newVar = new PythonCallVariable(null, varName, 1)
-    if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
-      return []
-    }
-
-    const suggestedNode = new SuggestedNode(newVar, `call var ${varName}`, '', false, 'undeclared function')
-    return [suggestedNode]
-  }
-}
-
 export class PythonCallVariable extends SplootNode {
-  constructor(parentReference: ParentReference, name: string, argCount = 0) {
+  constructor(parentReference: ParentReference, name: string, signature?: FunctionSignature) {
     super(parentReference, PYTHON_CALL_VARIABLE)
     this.setProperty('identifier', name)
     this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
-    for (let i = 0; i < argCount; i++) {
-      this.getArguments().addChild(new PythonExpression(null))
+    if (signature) {
+      for (let i = 0; i < signature.arguments.length; i++) {
+        this.getArguments().addChild(new PythonExpression(null))
+      }
     }
   }
 
@@ -64,7 +37,27 @@ export class PythonCallVariable extends SplootNode {
   }
 
   setIdentifier(identifier: string) {
-    this.properties.identifiter = identifier
+    this.setProperty('identifier', identifier)
+  }
+
+  handleScopeMutation(mutation: ScopeMutation) {
+    if (mutation.type === ScopeMutationType.RENAME_ENTRY) {
+      const oldName = this.getIdentifier()
+      if (mutation.previousName !== oldName) {
+        console.warn(
+          `Rename mutation received ${mutation.previousName} -> ${mutation.newName} but node name is ${oldName}`
+        )
+      }
+      this.setIdentifier(mutation.newName)
+    }
+  }
+
+  addSelfToScope(): void {
+    this.getScope().addWatcher(this.getIdentifier(), this)
+  }
+
+  removeSelfFromScope(): void {
+    this.getScope().removeWatcher(this.getIdentifier(), this)
   }
 
   validateSelf(): void {
@@ -84,12 +77,14 @@ export class PythonCallVariable extends SplootNode {
     if (!scope) {
       return []
     }
-    const funcDef = scope.getFunctionDefinitionByName(this.getIdentifier())
+    const funcDef = scope.getVariableScopeEntryByName(this.getIdentifier())
+    // TODO
     if (!funcDef) {
       return []
     }
-    const res = funcDef.type.parameters.map((param) => param.name)
-    return res
+    // TODO: Get function parameter names here
+    // const res = funcDef.type.parameters.map((param) => param.name)
+    return []
   }
 
   getNodeLayout(): NodeLayout {
@@ -122,6 +117,6 @@ export class PythonCallVariable extends SplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_CALL_VARIABLE, NodeCategory.PythonExpressionToken, new Generator())
+    registerNodeCateogry(PYTHON_CALL_VARIABLE, NodeCategory.PythonExpressionToken)
   }
 }

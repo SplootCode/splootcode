@@ -10,10 +10,15 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
-import { VARIABLE_REFERENCE, VariableReference, VariableReferenceGenerator } from './variable_reference'
+import { VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
 
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
@@ -31,28 +36,6 @@ class Generator implements SuggestionGenerator {
   }
 
   staticSuggestions(parent: ParentReference, index: number) {
-    if (index === 0) {
-      return []
-    }
-    const leftChild = parent.getChildSet().getChild(index - 1)
-
-    if (leftChild.type === VARIABLE_REFERENCE) {
-      const variable = leftChild as VariableReference
-      const members = parent.node.getScope().getMethods(variable.getName())
-      return members.map((methodDefinition) => {
-        const name = methodDefinition.name
-        const node = new CallMember(null)
-        node.setMember(methodDefinition.name)
-        return new SuggestedNode(
-          node,
-          `callmember ${name}`,
-          name,
-          true,
-          methodDefinition.documentation ?? 'No documentation',
-          'object'
-        )
-      })
-    }
     return []
   }
 
@@ -156,6 +139,7 @@ export class CallMember extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(CALL_MEMBER, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(CALL_MEMBER, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

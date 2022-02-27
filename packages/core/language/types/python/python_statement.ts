@@ -13,6 +13,7 @@ import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteFunctionsForCategory,
+  registerAutocompleter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '../../node_category_registry'
@@ -114,8 +115,8 @@ export class PythonStatement extends SplootNode {
     )
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement, new PythonStatementGenerator())
-
+    registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement)
+    registerAutocompleter(NodeCategory.PythonStatement, new PythonStatementGenerator())
     registerBlankFillForNodeCategory(NodeCategory.PythonStatement, () => {
       return new PythonStatement(null)
     })

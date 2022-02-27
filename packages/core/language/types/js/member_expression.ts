@@ -13,12 +13,17 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { STRING_LITERAL } from './../literals'
 import { SuggestedNode } from '../../suggested_node'
-import { VARIABLE_REFERENCE, VariableReference, VariableReferenceGenerator } from './variable_reference'
+import { VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION'
 
@@ -30,28 +35,6 @@ class Generator implements SuggestionGenerator {
   }
 
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    if (index === 0) {
-      return []
-    }
-    const leftChild = parent.getChildSet().getChild(index - 1)
-
-    if (leftChild.type === VARIABLE_REFERENCE) {
-      const variable = leftChild as VariableReference
-      const members = parent.node.getScope().getVariableMembers(variable.getName())
-      return members.map((memberDefinition) => {
-        const name = memberDefinition.name
-        const node = new MemberExpression(null)
-        node.setMember(memberDefinition.name)
-        return new SuggestedNode(
-          node,
-          `member ${name}`,
-          name,
-          true,
-          memberDefinition.documentation ?? 'No documentation',
-          'object'
-        )
-      })
-    }
     return []
   }
 
@@ -132,6 +115,7 @@ export class MemberExpression extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(MEMBER_EXPRESSION, NodeCategory.ExpressionToken, new Generator())
+    registerNodeCateogry(MEMBER_EXPRESSION, NodeCategory.ExpressionToken)
+    registerAutocompleter(NodeCategory.ExpressionToken, new Generator())
   }
 }

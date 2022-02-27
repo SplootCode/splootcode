@@ -1,7 +1,6 @@
 import * as recast from 'recast'
 
 import { ChildSet, ChildSetType } from '../../childset'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ExpressionKind } from 'ast-types/gen/kinds'
 import { HighlightColorCategory } from '../../../colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
@@ -13,6 +12,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 
@@ -78,6 +78,6 @@ export class LogicalExpression extends JavaScriptSplootNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(LOGICAL_EXPRESSION, NodeCategory.ExpressionToken, new EmptySuggestionGenerator())
+    registerNodeCateogry(LOGICAL_EXPRESSION, NodeCategory.ExpressionToken)
   }
 }

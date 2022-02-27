@@ -8,7 +8,12 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NodeCategory, SuggestionGenerator, registerNodeCateogry } from '../../node_category_registry'
+import {
+  NodeCategory,
+  SuggestionGenerator,
+  registerAutocompleter,
+  registerNodeCateogry,
+} from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { SuggestedNode } from '../../suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
@@ -67,10 +72,6 @@ export class DeclaredProperty extends JavaScriptSplootNode {
     return this.getProperty('identifier')
   }
 
-  addSelfToScope() {
-    this.getScope().addProperty(this.getVariableDefinition())
-  }
-
   getVariableDefinition(): VariableDefinition {
     return {
       name: this.getName(),
@@ -100,6 +101,7 @@ export class DeclaredProperty extends JavaScriptSplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(DELCARED_PROEPRTY, NodeCategory.ComponentPropertyDeclaration, new Generator())
+    registerNodeCateogry(DELCARED_PROEPRTY, NodeCategory.ComponentPropertyDeclaration)
+    registerAutocompleter(NodeCategory.ComponentPropertyDeclaration, new Generator())
   }
 }

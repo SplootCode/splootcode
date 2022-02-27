@@ -1,5 +1,4 @@
 import { ChildSetType } from '../../childset'
-import { EmptySuggestionGenerator, NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -9,6 +8,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonFileData, StatementCapture } from '../../capture/runtime_capture'
 
@@ -55,6 +55,6 @@ export class PythonFile extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_FILE, NodeCategory.PythonFile, new EmptySuggestionGenerator())
+    registerNodeCateogry(PYTHON_FILE, NodeCategory.PythonFile)
   }
 }
