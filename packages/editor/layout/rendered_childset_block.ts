@@ -606,7 +606,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   isLastChildSetOfParentNode() {
     const thisNode = this.parentRef.node
     const allComponents = thisNode.layout.components
-    const lastInline = allComponents[allComponents.length - 1]
+    let lastInline = allComponents[allComponents.length - 1]
+    // The last component doens't count if it's an empty stack
+    // Needed for IF node that has no else blocks.
+    if (
+      lastInline.type === LayoutComponentType.CHILD_SET_STACK &&
+      thisNode.renderedChildSets[lastInline.identifier].nodes.length === 0
+    ) {
+      lastInline = allComponents[allComponents.length - 2]
+    }
     const res = this.componentType == lastInline.type && this.parentRef.childSetId === lastInline.identifier
     return res
   }
