@@ -30,12 +30,19 @@ export class PythonStatementGenerator implements SuggestionGenerator {
     const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonStatementContents)
     let staticSuggestions = [] as SuggestedNode[]
     suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const allSuggestions = generator.staticSuggestions(parent, index).map((innerSuggestionNode: SuggestedNode) => {
-        const statementNode = new PythonStatement(null)
-        statementNode.getStatement().addChild(innerSuggestionNode.node)
-        innerSuggestionNode.node = statementNode
-        return innerSuggestionNode
-      })
+      const allSuggestions = generator
+        .staticSuggestions(parent, index)
+        .filter((innerSuggestionNode: SuggestedNode) => {
+          // Don't wrap in a statement if it's being specific about its location.
+          // Particularly an issue with elif/else blocks.
+          return !innerSuggestionNode.hasOverrideLocation()
+        })
+        .map((innerSuggestionNode: SuggestedNode) => {
+          const statementNode = new PythonStatement(null)
+          statementNode.getStatement().addChild(innerSuggestionNode.node)
+          innerSuggestionNode.node = statementNode
+          return innerSuggestionNode
+        })
       staticSuggestions = staticSuggestions.concat(allSuggestions)
     })
     return staticSuggestions
@@ -47,6 +54,9 @@ export class PythonStatementGenerator implements SuggestionGenerator {
     suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
       const allSuggestions = generator
         .dynamicSuggestions(parent, index, textInput)
+        .filter((innerSuggestionNode: SuggestedNode) => {
+          return !innerSuggestionNode.hasOverrideLocation()
+        })
         .map((innerSuggestionNode: SuggestedNode) => {
           const statementNode = new PythonStatement(null)
           statementNode.getStatement().addChild(innerSuggestionNode.node)

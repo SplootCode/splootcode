@@ -25,7 +25,7 @@ export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 class AppendGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     // TODO: This logic could be much cleaner if we had a way of hooking a
-    // an autocompleter into the right place (i.e. overlappting cursors)
+    // an autocompleter into the right place (i.e. overlapping cursors)
     if (parent.node.type === PYTHON_STATEMENT && parent.node.parent) {
       const parentStatement = parent.node as PythonStatement
       parent = parent.node.parent
@@ -114,9 +114,9 @@ export class PythonElseBlock extends SplootNode {
     ])
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonStatementContents)
     registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock)
 
     registerAutocompleter(NodeCategory.PythonStatementContents, new AppendGenerator())
+    registerAutocompleter(NodeCategory.PythonStatement, new AppendGenerator())
   }
 }

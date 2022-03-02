@@ -229,12 +229,16 @@ export class NodeSelection {
   unindent() {
     const [deleteNode, newLineCursor] = this.cursor.listBlock.getUnindent(this.cursor.index)
     if (newLineCursor) {
-      deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
+      if (deleteNode) {
+        deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
+      }
       const category = newLineCursor.listBlock.childSet.nodeCategory
       const node = getBlankFillForCategory(category)
       if (node) {
         this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
         return true
+      } else {
+        console.warn('No insertable node for category: ', category)
       }
     }
     return false
@@ -264,10 +268,6 @@ export class NodeSelection {
 
   @action
   backspace() {
-    const didUnindent = this.unindent()
-    if (didUnindent) {
-      return
-    }
     const cursor = this.cursor.listBlock.getDeleteCursorIfEmpty()
     if (cursor) {
       cursor.listBlock.childSet.removeChild(cursor.index)
