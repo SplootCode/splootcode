@@ -4,8 +4,14 @@ import { ChildSet, ChildSetType } from '@splootcode/core/language/childset'
 import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core/language/mutations/child_set_mutations'
 import { ChildSetObserver } from '@splootcode/core/language/observers'
 import { EditBoxData } from '../context/edit_box'
+import {
+  INDENTED_BLOCK_PADDING_BOTTOM,
+  NODE_BLOCK_HEIGHT,
+  NODE_INLINE_SPACING,
+  NodeBlock,
+  RenderedParentRef,
+} from './rendered_node'
 import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NodeBlock, RenderedParentRef } from './rendered_node'
 import { NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { SplootNode } from '@splootcode/core/language/node'
 
@@ -231,9 +237,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
         this.width = Math.max(this.width, childNodeBlock.rowWidth)
       })
-      if (selection !== null && this.nodes.length === 0) {
-        selection.cursorMap.registerLineCursor(this, this.nodes.length, topPos)
+      this.height += INDENTED_BLOCK_PADDING_BOTTOM
+      if (selection !== null) {
+        selection.cursorMap.registerLineCursor(this, this.nodes.length, topPos - ROW_SPACING)
       }
+
       if (this.nodes.length === insertIndex) {
         const boxWidth = getInsertBoxWidth(selection.insertBox.contents)
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
@@ -362,7 +370,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       }
       if (this.nodes.length === insertIndex) {
-        return [this.x - 1, topPos]
+        if (cursorOnly) {
+          return [this.x + 4, topPos - ROW_SPACING]
+        }
+        return [this.x, topPos]
       }
     } else if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
       let topPos = this.y + ROW_SPACING
@@ -592,10 +603,24 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return thisNode.parentChildSet.getParentLineCursorIfStartNode(thisNode.index)
   }
 
+  isLastChildSetOfParentNode() {
+    const thisNode = this.parentRef.node
+    const allComponents = thisNode.layout.components
+    const lastInline = allComponents[allComponents.length - 1]
+    const res = this.componentType == lastInline.type && this.parentRef.childSetId === lastInline.identifier
+    return res
+  }
+
   getUnindent(index: number): [NodeBlock, NodeCursor] {
     if (this.isInsertableLineChildset() && index != 0) {
-      // Rare case and we likely don't want to delete anything.
-      // Would be better to unindent without deletion - needs work.
+      // We don't want to delete anything.
+      if (index === this.nodes.length) {
+        const thisNode = this.parentRef.node
+        if (this.isLastChildSetOfParentNode()) {
+          const [unindentCursor] = thisNode.parentChildSet.getNewLinePosition(thisNode.index + 1)
+          return [null, unindentCursor]
+        }
+      }
       return [null, null]
     }
 
@@ -603,8 +628,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       return [null, null]
     }
 
+    // For dictionaries, if the parent is empty too, we want to unindent from that context.
     if (this.parentRef.node?.parentChildSet?.parentRef.node.node.isEmpty()) {
-      return this.parentRef.node.parentChildSet.getUnindent(this.parentRef.node.index)
+      return this.parentRef.node.parentChildSet.getUnindent(this.parentRef.node.index + 1)
     }
 
     // Figure out if we should unindent
@@ -614,7 +640,12 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       return [null, null]
     }
     const isLastNodeInParentChildSet = thisNode.index === parentChildSet.nodes.length - 1
-    if (thisNode.index !== 0 && isLastNodeInParentChildSet && parentChildSet.isInsertableLineChildset()) {
+    if (
+      thisNode.index !== 0 &&
+      isLastNodeInParentChildSet &&
+      parentChildSet.isLastChildSetOfParentNode() &&
+      parentChildSet.isInsertableLineChildset()
+    ) {
       const parentNode = parentChildSet.parentRef.node
       if (parentNode && parentNode.parentChildSet) {
         const [unindentCursor] = parentNode.parentChildSet.getNewLinePosition(parentNode.index + 1)
@@ -627,7 +658,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   /** Called when Enter is pressed
    Returns: [
     NodeCursor - a cursor position for the newline
-    boolean - whether or not the original cursor position should be removed (unindented)
     NodeCursor - where to place the insert cursor after the new line is added
    ]
   */
@@ -635,6 +665,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     if (this.isInsertableLineChildset()) {
       // TODO: Is this line empty - should that matter?
       return [new NodeCursor(this, index), new NodeCursor(this, index + 1)]
+    }
+
+    if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
+      // This is a stack, are we the last node in the stack?
+      if (index === this.nodes.length) {
+        const parent = this.parentRef.node
+        const nextLineCursor = parent.parentChildSet.getParentLineCursorIfEndNode(parent.index + 1)
+        return [nextLineCursor, nextLineCursor]
+      }
     }
 
     // Calculate end first because empty lines should be considered "end" not "start" of the line

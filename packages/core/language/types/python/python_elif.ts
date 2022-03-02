@@ -171,8 +171,8 @@ export class PythonElifBlock extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock)
-    registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonStatementContents)
     registerAutocompleter(NodeCategory.PythonElseBlock, new InsertGenerator())
     registerAutocompleter(NodeCategory.PythonStatementContents, new AppendGenerator())
+    registerAutocompleter(NodeCategory.PythonStatement, new AppendGenerator())
   }
 }
