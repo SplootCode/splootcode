@@ -11,10 +11,14 @@ import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteFunctionsForCategory,
+  isNodeInCategory,
 } from '@splootcode/core/language/node_category_registry'
 import { NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
+import { PYTHON_EXPRESSION, PythonExpression } from '@splootcode/core/language/types/python/python_expression'
+import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/core/language/types/python/python_statement'
 import { ParentReference } from '@splootcode/core/language/node'
 import { RenderedChildSetBlock, stringWidth } from '../layout/rendered_childset_block'
+import { STRING_LITERAL, StringLiteral } from '@splootcode/core/language/types/literals'
 import { SuggestedNode } from '@splootcode/core/language/suggested_node'
 
 interface RenderedSuggestion extends SuggestedNode {
@@ -33,8 +37,32 @@ function filterSuggestions(
   index: number,
   staticSuggestions: RenderedSuggestion[],
   generators: Set<SuggestionGenerator>,
+  category: NodeCategory,
   userInput: string
 ): RenderedSuggestion[] {
+  if (userInput.startsWith("'") || userInput.startsWith('"')) {
+    let value = userInput.slice(1)
+    if (value.length !== 0 && value[value.length - 1] === userInput[0]) {
+      value = value.slice(0, value.length - 1)
+    }
+    const customString = new StringLiteral(null, value)
+    if (isNodeInCategory(STRING_LITERAL, category)) {
+      const suggestedNode = new SuggestedNode(customString, `string ${value}`, value, true, 'string')
+      return [suggestedNode].map(renderSuggestion)
+    } else {
+      const expressionNode = new PythonExpression(null)
+      expressionNode.getTokenSet().addChild(customString)
+      const suggestedNode = new SuggestedNode(expressionNode, `string ${value}`, value, true, 'string')
+      if (isNodeInCategory(PYTHON_EXPRESSION, category)) {
+        return [suggestedNode].map(renderSuggestion)
+      } else if (isNodeInCategory(PYTHON_STATEMENT, category)) {
+        const statementNode = new PythonStatement(null)
+        statementNode.getStatement().addChild(expressionNode)
+        const suggestedNode = new SuggestedNode(statementNode, `string ${value}`, value, true, 'string')
+        return [suggestedNode].map(renderSuggestion)
+      }
+    }
+  }
   let suggestions = [...staticSuggestions]
   generators.forEach((generator: SuggestionGenerator) => {
     suggestions = suggestions.concat(generator.dynamicSuggestions(parentRef, index, userInput).map(renderSuggestion))
@@ -84,7 +112,14 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
       staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index).map(renderSuggestion))
     })
-    const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, suggestionGeneratorSet, '')
+    const filteredSuggestions = filterSuggestions(
+      parentRef,
+      index,
+      staticSuggestions,
+      suggestionGeneratorSet,
+      category,
+      ''
+    )
 
     this.state = {
       userInput: '',
@@ -118,6 +153,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         index,
         staticSuggestions,
         suggestionGeneratorSet,
+        category,
         state.userInput
       )
       return {
@@ -226,8 +262,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
   }
 
-  isOpenString = () => {
-    const inp = this.state.userInput
+  isOpenString = (inp: string) => {
     if (inp.startsWith("'") || inp.startsWith('"')) {
       return inp[0] !== inp[inp.length - 1]
     }
@@ -262,7 +297,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
 
     // Enter or space key
-    if (e.key === 'Enter' || (e.key === ' ' && !this.isOpenString())) {
+    if (e.key === 'Enter' || (e.key === ' ' && !this.isOpenString(this.state.userInput))) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
       const selectedNode = filteredSuggestions[activeSuggestion]
@@ -322,7 +357,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
     const userInput = e.currentTarget.value
     if (userInput !== '') {
-      const { staticSuggestions, suggestionGenerators } = this.state
+      const { staticSuggestions, suggestionGenerators, category } = this.state
       const childSetBlock = this.props.selection.cursor.listBlock
       const index = this.props.selection.cursor.index
 
@@ -332,6 +367,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         index,
         staticSuggestions,
         suggestionGenerators,
+        category,
         userInput
       )
       this.props.selection.startInsertAtCurrentCursor()
