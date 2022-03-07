@@ -7,7 +7,7 @@ import { loadPythonBuiltinFunctions } from './python'
 
 export interface VariableMetadata {
   documentation: string
-  typeInfo: VariableTypeInfo
+  typeInfo?: VariableTypeInfo
 }
 
 interface VariableScopeEntry {

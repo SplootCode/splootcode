@@ -134,7 +134,7 @@ export class PythonCallVariable extends SplootNode {
     }
 
     for (const meta of scopeEntry.declarers.values()) {
-      if (meta.typeInfo.category === TypeCategory.Function) {
+      if (meta.typeInfo?.category === TypeCategory.Function) {
         const args = meta.typeInfo.arguments.map((arg) => {
           return arg.name
         })

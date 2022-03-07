@@ -22,7 +22,6 @@ import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 
@@ -81,7 +80,7 @@ export class PythonAssignment extends SplootNode {
           name,
           {
             documentation: 'Variable',
-          } as VariableMetadata,
+          },
           this
         )
         this.scopedVariables.add(name)

@@ -13,6 +13,7 @@
     "experimentalDecorators": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
+    "downlevelIteration": true,
     "resolveJsonModule": true,
     "outDir": "lib",
     "baseUrl": ".",
