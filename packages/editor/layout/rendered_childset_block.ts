@@ -624,7 +624,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       // We don't want to delete anything.
       if (index === this.nodes.length) {
         const thisNode = this.parentRef.node
-        if (this.isLastChildSetOfParentNode()) {
+        if (this.isLastChildSetOfParentNode() && thisNode.parentChildSet) {
           const [unindentCursor] = thisNode.parentChildSet.getNewLinePosition(thisNode.index + 1)
           return [null, unindentCursor]
         }
