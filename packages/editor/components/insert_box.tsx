@@ -168,6 +168,10 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     return null
   }
 
+  componentDidUpdate(prevProps: Readonly<InsertBoxProps>, prevState: Readonly<InsertBoxState>, snapshot?: any): void {
+    this.inputRef.current.focus()
+  }
+
   render() {
     const { userInput, autoWidth, filteredSuggestions, activeSuggestion } = this.state
     const { selection, insertBoxData } = this.props
