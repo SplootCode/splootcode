@@ -264,7 +264,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
   isOpenString = (inp: string) => {
     if (inp.startsWith("'") || inp.startsWith('"')) {
-      return inp[0] !== inp[inp.length - 1]
+      return inp.length == 1 || inp[0] !== inp[inp.length - 1]
     }
     return false
   }

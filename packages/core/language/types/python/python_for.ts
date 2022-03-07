@@ -22,7 +22,6 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'
 
@@ -76,7 +75,7 @@ export class PythonForLoop extends SplootNode {
         name,
         {
           documentation: 'for-loop variable',
-        } as VariableMetadata,
+        },
         this
       )
       this.scopedVariable = name

@@ -129,7 +129,7 @@ export class PythonFunctionDeclaration extends SplootNode {
           name,
           {
             documentation: 'Function parameter',
-          } as VariableMetadata,
+          },
           this
         )
         this.scopedParameters.add(name)

@@ -22,7 +22,6 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../suggested_node'
-import { VariableMetadata } from '../../scope/scope'
 
 export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 
@@ -83,7 +82,7 @@ export class PythonFromImport extends SplootNode {
           name,
           {
             documentation: `imported from ${moduleName}`,
-          } as VariableMetadata,
+          },
           this
         )
         this.scopedVariables.add(name)
