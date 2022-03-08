@@ -20,7 +20,7 @@ import {
 } from '../../node_category_registry'
 import { ObjectPropertyKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const JSS_HOVER_BLOCK = 'JSS_HOVER_BLOCK'
 

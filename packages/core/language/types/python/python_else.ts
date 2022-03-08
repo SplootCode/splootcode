@@ -18,11 +18,11 @@ import {
 import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
-class AppendGenerator implements SuggestionGenerator {
+class AppendElseGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     // TODO: This logic could be much cleaner if we had a way of hooking a
     // an autocompleter into the right place (i.e. overlapping cursors)
@@ -45,10 +45,6 @@ class AppendGenerator implements SuggestionGenerator {
         }
       }
     }
-    return []
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
     return []
   }
 }
@@ -116,7 +112,6 @@ export class PythonElseBlock extends SplootNode {
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock)
 
-    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendGenerator())
-    registerAutocompleter(NodeCategory.PythonStatement, new AppendGenerator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendElseGenerator())
   }
 }

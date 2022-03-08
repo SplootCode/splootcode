@@ -13,6 +13,7 @@ import {
 import {
   NodeCategory,
   SuggestionGenerator,
+  getAutocompleRegistry,
   registerAutocompleter,
   registerNodeCateogry,
 } from '../node_category_registry'
@@ -20,7 +21,7 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python/python_expression'
 import { ParentReference, SplootNode } from '../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './js/expression'
 import { StringLiteralKind } from 'ast-types/gen/kinds'
-import { SuggestedNode } from '../suggested_node'
+import { SuggestedNode } from '../autocomplete/suggested_node'
 
 export const STRING_LITERAL = 'STRING_LITERAL'
 export const NUMERIC_LITERAL = 'NUMERIC_LITERAL'
@@ -101,14 +102,14 @@ export class StringLiteral extends JavaScriptSplootNode {
     registerAutocompleter(NodeCategory.HtmlAttributeValue, new StringGenerator())
     registerAutocompleter(NodeCategory.ModuleSource, new StringGenerator())
     registerAutocompleter(NodeCategory.StyleSheetPropertyValue, new StringGenerator())
+
+    const registry = getAutocompleRegistry()
+    registry.registerPrefixOverride('"', NodeCategory.PythonExpressionToken, new StringGenerator())
+    registry.registerPrefixOverride("'", NodeCategory.PythonExpressionToken, new StringGenerator())
   }
 }
 
 class NumberGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
-    return []
-  }
-
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     const val = parseStringToNum(textInput)
     if (!isNaN(val)) {
@@ -186,12 +187,8 @@ export class NumericLiteral extends JavaScriptSplootNode {
 }
 
 class NullGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
+  constantSuggestions() {
     return [new SuggestedNode(new NullLiteral(null), 'null', 'null', true, 'null')]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 

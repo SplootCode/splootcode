@@ -21,19 +21,15 @@ import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class IfGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonIfStatement(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'if', 'if', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -150,6 +146,6 @@ export class PythonIfStatement extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatementContents)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new IfGenerator())
   }
 }

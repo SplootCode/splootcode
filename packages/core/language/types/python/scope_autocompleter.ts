@@ -3,7 +3,7 @@ import { NodeCategory, SuggestionGenerator, registerAutocompleter } from '../../
 import { ParentReference } from '../../node'
 import { PythonCallVariable } from './python_call_variable'
 import { PythonIdentifier } from './python_identifier'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VariableMetadata } from '../../scope/scope'
 
 class ScopeAutocompleter implements SuggestionGenerator {
@@ -45,9 +45,6 @@ class ScopeAutocompleter implements SuggestionGenerator {
 
     return suggestions
   }
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
-  }
 }
 
 class AssignableSopeAutocompleter implements SuggestionGenerator {
@@ -70,10 +67,6 @@ class AssignableSopeAutocompleter implements SuggestionGenerator {
       }
     }
     return suggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 

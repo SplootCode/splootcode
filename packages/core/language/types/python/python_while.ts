@@ -20,19 +20,15 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_WHILE_LOOP = 'PYTHON_WHILE_LOOP'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class WhileGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonWhileLoop(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'while', 'while', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -189,6 +185,6 @@ export class PythonWhileLoop extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_WHILE_LOOP, NodeCategory.PythonStatementContents)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new WhileGenerator())
   }
 }

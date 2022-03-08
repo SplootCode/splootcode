@@ -19,7 +19,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { getValidAttributes } from '../../html/tags'
 
 export const HTML_ATTRIBUTE = 'HTML_ATTRIBUTE'

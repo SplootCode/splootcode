@@ -18,7 +18,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VARIABLE_REFERENCE, VariableReference } from './variable_reference'
 
 export const DECLARED_IDENTIFIER = 'DECLARED_IDENTIFIER'

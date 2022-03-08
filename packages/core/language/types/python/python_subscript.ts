@@ -14,7 +14,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 import { HighlightColorCategory } from '../../../colors'
 import { PYTHON_CALL_MEMBER } from './python_call_member'
@@ -40,10 +40,6 @@ class Generator implements SuggestionGenerator {
       ]
     }
 
-    return []
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     return []
   }
 }

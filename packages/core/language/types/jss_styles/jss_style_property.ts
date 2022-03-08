@@ -20,7 +20,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { getCssProperties } from '../../css/css_properties'
 
 export const JSS_STYLE_PROPERTY = 'JSS_STYLE_PROPERTY'

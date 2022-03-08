@@ -15,7 +15,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
 export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY'

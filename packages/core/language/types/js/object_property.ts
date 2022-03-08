@@ -22,7 +22,7 @@ import {
 import { OBJECT_EXPRESSION, ObjectExpression } from './object_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { SplootExpression } from './expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const OBJECT_PROPERTY = 'OBJECT_PROPERTY'
 

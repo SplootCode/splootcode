@@ -21,7 +21,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_RETURN = 'PYTHON_RETURN'
 
@@ -33,10 +33,6 @@ class Generator implements SuggestionGenerator {
     const sampleNode = new PythonReturn(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'return', 'return', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 

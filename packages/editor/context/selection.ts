@@ -3,11 +3,16 @@ import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory, getBlankFillForCategory } from '@splootcode/core/language/node_category_registry'
+import {
+  NodeCategory,
+  getBlankFillForCategory,
+  isNodeInCategory,
+} from '@splootcode/core/language/node_category_registry'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { SplootExpression } from '@splootcode/core/language/types/js/expression'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
+import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -317,6 +322,19 @@ export class NodeSelection {
 
   @action
   insertNodeByChildSet(childSet: ChildSet, index: number, node: SplootNode) {
+    const valid = isNodeInCategory(node.type, childSet.nodeCategory)
+    if (!valid) {
+      const adapted = adaptNodeToPasteDestination(node, childSet.nodeCategory)
+      if (!adapted) {
+        console.warn(`Node type ${node.type} not valid for category: ${NodeCategory[childSet.nodeCategory]}`)
+        return
+      }
+      // Insert node will also update the render positions
+      childSet.insertNode(adapted, index)
+      // Trigger a clean from the parent upward.
+      adapted.parent.node.clean()
+      return
+    }
     // Insert node will also update the render positions
     childSet.insertNode(node, index)
     // Trigger a clean from the parent upward.

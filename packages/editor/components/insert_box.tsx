@@ -4,22 +4,15 @@ import Fuse from 'fuse.js'
 import React from 'react'
 import { observer } from 'mobx-react'
 
+import { Autocompleter } from '@splootcode/core/language/autocomplete/autocompleter'
 import { EditorNodeBlock } from './node_block'
 import { InsertBoxData } from '../context/insert_box'
 import { NodeBlock } from '../layout/rendered_node'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  getAutocompleteFunctionsForCategory,
-  isNodeInCategory,
-} from '@splootcode/core/language/node_category_registry'
+import { NodeCategory, getAutocompleRegistry } from '@splootcode/core/language/node_category_registry'
 import { NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
-import { PYTHON_EXPRESSION, PythonExpression } from '@splootcode/core/language/types/python/python_expression'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/core/language/types/python/python_statement'
 import { ParentReference } from '@splootcode/core/language/node'
 import { RenderedChildSetBlock, stringWidth } from '../layout/rendered_childset_block'
-import { STRING_LITERAL, StringLiteral } from '@splootcode/core/language/types/literals'
-import { SuggestedNode } from '@splootcode/core/language/suggested_node'
+import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 interface RenderedSuggestion extends SuggestedNode {
   nodeBlock: NodeBlock
@@ -36,37 +29,18 @@ function filterSuggestions(
   parentRef: ParentReference,
   index: number,
   staticSuggestions: RenderedSuggestion[],
-  generators: Set<SuggestionGenerator>,
-  category: NodeCategory,
+  autocompleter: Autocompleter,
   userInput: string
 ): RenderedSuggestion[] {
-  if (userInput.startsWith("'") || userInput.startsWith('"')) {
-    let value = userInput.slice(1)
-    if (value.length !== 0 && value[value.length - 1] === userInput[0]) {
-      value = value.slice(0, value.length - 1)
-    }
-    const customString = new StringLiteral(null, value)
-    if (isNodeInCategory(STRING_LITERAL, category)) {
-      const suggestedNode = new SuggestedNode(customString, `string ${value}`, value, true, 'string')
-      return [suggestedNode].map(renderSuggestion)
-    } else {
-      const expressionNode = new PythonExpression(null)
-      expressionNode.getTokenSet().addChild(customString)
-      const suggestedNode = new SuggestedNode(expressionNode, `string ${value}`, value, true, 'string')
-      if (isNodeInCategory(PYTHON_EXPRESSION, category)) {
-        return [suggestedNode].map(renderSuggestion)
-      } else if (isNodeInCategory(PYTHON_STATEMENT, category)) {
-        const statementNode = new PythonStatement(null)
-        statementNode.getStatement().addChild(expressionNode)
-        const suggestedNode = new SuggestedNode(statementNode, `string ${value}`, value, true, 'string')
-        return [suggestedNode].map(renderSuggestion)
-      }
-    }
+  const prefixSuggestions = autocompleter.getPrefixSuggestions(parentRef, index, userInput)
+  if (prefixSuggestions) {
+    return prefixSuggestions.map(renderSuggestion)
   }
-  let suggestions = [...staticSuggestions]
-  generators.forEach((generator: SuggestionGenerator) => {
-    suggestions = suggestions.concat(generator.dynamicSuggestions(parentRef, index, userInput).map(renderSuggestion))
-  })
+
+  const suggestions = [
+    ...staticSuggestions,
+    ...autocompleter.getDynamicSuggestions(parentRef, index, userInput).map(renderSuggestion),
+  ]
   const options: Fuse.FuseOptions<SuggestedNode> = {
     keys: ['key', 'display', 'searchTerms'],
     caseSensitive: false,
@@ -81,7 +55,7 @@ interface InsertBoxState {
   autoWidth: number
   filteredSuggestions: RenderedSuggestion[]
   staticSuggestions: RenderedSuggestion[]
-  suggestionGenerators: Set<SuggestionGenerator>
+  autocompleter: Autocompleter
   activeSuggestion: number
   category: NodeCategory
   index: number
@@ -107,25 +81,18 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const index = selection.cursor.index
     const category = childSetBlock.childSet.nodeCategory
     const parentRef = childSetBlock.childSet.getParentRef()
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
-    let staticSuggestions: RenderedSuggestion[] = []
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      staticSuggestions = staticSuggestions.concat(generator.staticSuggestions(parentRef, index).map(renderSuggestion))
-    })
-    const filteredSuggestions = filterSuggestions(
-      parentRef,
-      index,
-      staticSuggestions,
-      suggestionGeneratorSet,
-      category,
-      ''
-    )
+    const autocompleter = getAutocompleRegistry().getAutocompleter(category)
+    const staticSuggestions: RenderedSuggestion[] = autocompleter
+      .getStaticSuggestions(parentRef, index)
+      .map(renderSuggestion)
+
+    const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, '')
 
     this.state = {
       userInput: '',
       autoWidth: this.getWidth(''),
       filteredSuggestions: filteredSuggestions,
-      suggestionGenerators: suggestionGeneratorSet,
+      autocompleter: autocompleter,
       staticSuggestions: staticSuggestions,
       activeSuggestion: 0,
       category: category,
@@ -141,25 +108,16 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const category = childSetBlock.childSet.nodeCategory
     if (category !== state.category || index !== state.index || childSetBlock !== state.listBlock) {
       const parentRef = childSetBlock.childSet.getParentRef()
-      const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(category)
-      let staticSuggestions: RenderedSuggestion[] = []
-      suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-        staticSuggestions = staticSuggestions.concat(
-          generator.staticSuggestions(parentRef, index).map(renderSuggestion)
-        )
-      })
-      const filteredSuggestions = filterSuggestions(
-        parentRef,
-        index,
-        staticSuggestions,
-        suggestionGeneratorSet,
-        category,
-        state.userInput
-      )
+      const autocompleter = getAutocompleRegistry().getAutocompleter(category)
+      const staticSuggestions: RenderedSuggestion[] = autocompleter
+        .getStaticSuggestions(parentRef, index)
+        .map(renderSuggestion)
+
+      const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, state.userInput)
       return {
         filteredSuggestions: filteredSuggestions,
-        suggestionGenerators: suggestionGeneratorSet,
         staticSuggestions: staticSuggestions,
+        autocompleter: autocompleter,
         category: category,
         index: index,
         listBlock: childSetBlock,
@@ -361,19 +319,12 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
     const userInput = e.currentTarget.value
     if (userInput !== '') {
-      const { staticSuggestions, suggestionGenerators, category } = this.state
+      const { staticSuggestions, autocompleter } = this.state
       const childSetBlock = this.props.selection.cursor.listBlock
       const index = this.props.selection.cursor.index
 
       const parentRef = childSetBlock.childSet.getParentRef()
-      const filteredSuggestions = filterSuggestions(
-        parentRef,
-        index,
-        staticSuggestions,
-        suggestionGenerators,
-        category,
-        userInput
-      )
+      const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, userInput)
       this.props.selection.startInsertAtCurrentCursor()
       this.setState({
         userInput: e.currentTarget.value,
@@ -393,16 +344,13 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const { selection } = this.props
     const childSetBlock = selection.cursor.listBlock
     const index = selection.cursor.index
+    const node = suggestion.node.clone()
     if (suggestion.wrapChildSetId) {
-      selection.wrapNode(childSetBlock, index - 1, suggestion.node, suggestion.wrapChildSetId)
+      selection.wrapNode(childSetBlock, index - 1, node, suggestion.wrapChildSetId)
     } else if (suggestion.hasOverrideLocation()) {
-      selection.insertNodeByChildSet(
-        suggestion.overrideLocationChildSet,
-        suggestion.overrideLocationIndex,
-        suggestion.node
-      )
+      selection.insertNodeByChildSet(suggestion.overrideLocationChildSet, suggestion.overrideLocationIndex, node)
     } else {
-      selection.insertNode(childSetBlock, index, suggestion.node)
+      selection.insertNode(childSetBlock, index, node)
     }
     this.inputRef.current.value = ''
   }

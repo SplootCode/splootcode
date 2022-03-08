@@ -21,7 +21,7 @@ import {
 import { ParentReference } from '../../node'
 import { SplootHtmlAttribute } from './html_attribute'
 import { StyleRule } from '../styles/style_rule'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { isTagValidWithParent } from '../../html/tags'
 
 export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT'

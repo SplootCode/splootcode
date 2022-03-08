@@ -17,18 +17,14 @@ import {
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonKeyValue } from './python_keyvalue'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_DICT = 'PY_DICT'
 
 class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+  constantSuggestions(): SuggestedNode[] {
     const node = new PythonDictionary(null)
     return [new SuggestedNode(node, 'dict', 'dict dictionary', true, 'Dictionary literal')]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 

@@ -17,7 +17,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
 
 import { HighlightColorCategory } from '../../../colors'

@@ -14,7 +14,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_MODULE_IDENTIFIER = 'PYTHON_MODULE_IDENTIFIER'
 
@@ -38,10 +38,7 @@ function sanitizeIdentifier(textInput: string): string {
 }
 
 export class ModuleSuggestionGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
-    // TODO: Module name autocomplete
-    return []
-  }
+  // TODO: Module name autocomplete
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     const varName = sanitizeIdentifier(textInput)

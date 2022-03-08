@@ -18,11 +18,11 @@ import { PYTHON_WHILE_LOOP } from './python_while'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { StatementCapture } from '../../capture/runtime_capture'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BREAK = 'PY_BREAK'
 
-class Generator implements SuggestionGenerator {
+class BreakGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     let insideLoop = false
     let node = parent.node
@@ -39,10 +39,6 @@ class Generator implements SuggestionGenerator {
     const sampleNode = new PythonBreak(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'break', 'break', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -93,6 +89,6 @@ export class PythonBreak extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_BREAK, NodeCategory.PythonStatementContents)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new BreakGenerator())
   }
 }
