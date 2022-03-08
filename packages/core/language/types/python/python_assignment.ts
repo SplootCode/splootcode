@@ -21,19 +21,15 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class AssignmentGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonAssignment(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'set', 'set', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -169,6 +165,6 @@ export class PythonAssignment extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatementContents)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new AssignmentGenerator())
   }
 }

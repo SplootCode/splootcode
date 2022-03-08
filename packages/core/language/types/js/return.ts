@@ -21,7 +21,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { SplootExpression } from './expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const RETURN_STATEMENT = 'RETURN_STATEMENT'
 

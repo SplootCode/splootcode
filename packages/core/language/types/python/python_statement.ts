@@ -11,63 +11,15 @@ import {
 } from '../../type_registry'
 import {
   NodeCategory,
-  SuggestionGenerator,
-  getAutocompleteFunctionsForCategory,
-  registerAutocompleter,
+  registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { StatementCapture } from '../../capture/runtime_capture'
-import { SuggestedNode } from '@splootcode/core/language/suggested_node'
 
 export const PYTHON_STATEMENT = 'PYTHON_STATEMENT'
-
-export class PythonStatementGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // Get all static expression tokens available and wrap them in an expression node.
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonStatementContents)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const allSuggestions = generator
-        .staticSuggestions(parent, index)
-        .filter((innerSuggestionNode: SuggestedNode) => {
-          // Don't wrap in a statement if it's being specific about its location.
-          // Particularly an issue with elif/else blocks.
-          return !innerSuggestionNode.hasOverrideLocation()
-        })
-        .map((innerSuggestionNode: SuggestedNode) => {
-          const statementNode = new PythonStatement(null)
-          statementNode.getStatement().addChild(innerSuggestionNode.node)
-          innerSuggestionNode.node = statementNode
-          return innerSuggestionNode
-        })
-      staticSuggestions = staticSuggestions.concat(allSuggestions)
-    })
-    return staticSuggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonStatementContents)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const allSuggestions = generator
-        .dynamicSuggestions(parent, index, textInput)
-        .filter((innerSuggestionNode: SuggestedNode) => {
-          return !innerSuggestionNode.hasOverrideLocation()
-        })
-        .map((innerSuggestionNode: SuggestedNode) => {
-          const statementNode = new PythonStatement(null)
-          statementNode.getStatement().addChild(innerSuggestionNode.node)
-          innerSuggestionNode.node = statementNode
-          return innerSuggestionNode
-        })
-      staticSuggestions = staticSuggestions.concat(allSuggestions)
-    })
-    return staticSuggestions
-  }
-}
 
 export class PythonStatement extends SplootNode {
   constructor(parentReference: ParentReference) {
@@ -126,7 +78,9 @@ export class PythonStatement extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement)
-    registerAutocompleter(NodeCategory.PythonStatement, new PythonStatementGenerator())
+
+    registerAutocompleteAdapter(NodeCategory.PythonStatement, NodeCategory.PythonStatementContents)
+
     registerBlankFillForNodeCategory(NodeCategory.PythonStatement, () => {
       return new PythonStatement(null)
     })

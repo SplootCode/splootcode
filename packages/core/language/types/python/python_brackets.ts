@@ -18,19 +18,15 @@ import {
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BRACKETS = 'PY_BRACKET'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class BracketsGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonBrackets(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'bracket', '( bracket', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -87,6 +83,6 @@ export class PythonBrackets extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_BRACKETS, NodeCategory.PythonExpressionToken)
-    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new BracketsGenerator())
   }
 }

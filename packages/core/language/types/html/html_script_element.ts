@@ -23,7 +23,7 @@ import {
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SplootHtmlAttribute } from './html_attribute'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { isTagValidWithParent } from '../../html/tags'
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT'

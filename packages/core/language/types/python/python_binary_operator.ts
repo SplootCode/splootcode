@@ -16,7 +16,7 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BINARY_OPERATOR = 'PYTHON_BINARY_OPERATOR'
 
@@ -53,8 +53,8 @@ const OPERATORS = {
   '>=': { display: '≥', key: '>=', searchTerms: ['greater than equal'], description: 'is greater than or equal to' },
 }
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class BinaryOperatorGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const results = []
     for (const operator in OPERATORS) {
       const info = OPERATORS[operator]
@@ -62,10 +62,6 @@ class Generator implements SuggestionGenerator {
       results.push(new SuggestedNode(node, info.key, info.searchTerms, true, info.description))
     }
     return results
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -115,6 +111,6 @@ export class PythonBinaryOperator extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_BINARY_OPERATOR, NodeCategory.PythonExpressionToken)
-    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new BinaryOperatorGenerator())
   }
 }

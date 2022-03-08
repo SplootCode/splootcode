@@ -12,9 +12,7 @@ import {
 import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '../../annotations/annotations'
 import {
   NodeCategory,
-  SuggestionGenerator,
-  getAutocompleteFunctionsForCategory,
-  registerAutocompleter,
+  registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '../../node_category_registry'
@@ -22,47 +20,9 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
-import { SuggestedNode } from '../../suggested_node'
 import { validateExpressionParse } from './utils'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
-
-class PythonExpressionGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // Get all static expression tokens available and wrap them in an expression node.
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonExpressionToken)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const expressionSuggestions = generator
-        .staticSuggestions(parent, index)
-        .map((tokenNodeSuggestion: SuggestedNode) => {
-          const expressionNode = new PythonExpression(null)
-          expressionNode.getTokenSet().addChild(tokenNodeSuggestion.node)
-          tokenNodeSuggestion.node = expressionNode
-          return tokenNodeSuggestion
-        })
-      staticSuggestions = staticSuggestions.concat(expressionSuggestions)
-    })
-    return staticSuggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.PythonExpressionToken)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const expressionSuggestions = generator
-        .dynamicSuggestions(parent, index, textInput)
-        .map((tokenNodeSuggestion: SuggestedNode) => {
-          const expressionNode = new PythonExpression(null)
-          expressionNode.getTokenSet().addChild(tokenNodeSuggestion.node)
-          tokenNodeSuggestion.node = expressionNode
-          return tokenNodeSuggestion
-        })
-      staticSuggestions = staticSuggestions.concat(expressionSuggestions)
-    })
-    return staticSuggestions
-  }
-}
 
 export class PythonExpression extends SplootNode {
   constructor(parentReference: ParentReference) {
@@ -184,8 +144,9 @@ export class PythonExpression extends SplootNode {
     // When needed create the expression while autocompleting the expresison token.
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents)
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new PythonExpressionGenerator())
-    registerAutocompleter(NodeCategory.PythonExpression, new PythonExpressionGenerator())
+
+    registerAutocompleteAdapter(NodeCategory.PythonStatementContents, NodeCategory.PythonExpressionToken)
+    registerAutocompleteAdapter(NodeCategory.PythonExpression, NodeCategory.PythonExpressionToken)
 
     registerBlankFillForNodeCategory(NodeCategory.PythonExpression, () => {
       return new PythonExpression(null)

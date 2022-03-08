@@ -19,7 +19,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const JSS_CLASS_REFERENCE = 'JSS_CLASS_REFERENCE'
 

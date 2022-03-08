@@ -22,7 +22,7 @@ import {
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { STRING_LITERAL } from './../literals'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
 
 export const MEMBER_EXPRESSION = 'MEMBER_EXPRESSION'

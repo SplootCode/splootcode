@@ -21,22 +21,18 @@ import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 
-class InsertGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class InsertElifGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const node = new PythonElifBlock(null)
     return [new SuggestedNode(node, `elif`, `else elif`, true, 'Else-if block')]
   }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
-  }
 }
 
-class AppendGenerator implements SuggestionGenerator {
+class AppendElifGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     // TODO: This logic could be much cleaner if we had a way of hooking a
     // an autocompleter into the right place (i.e. overlappting cursors)
@@ -59,10 +55,6 @@ class AppendGenerator implements SuggestionGenerator {
         }
       }
     }
-    return []
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
     return []
   }
 }
@@ -171,8 +163,7 @@ export class PythonElifBlock extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock)
-    registerAutocompleter(NodeCategory.PythonElseBlock, new InsertGenerator())
-    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendGenerator())
-    registerAutocompleter(NodeCategory.PythonStatement, new AppendGenerator())
+    registerAutocompleter(NodeCategory.PythonElseBlock, new InsertElifGenerator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendElifGenerator())
   }
 }

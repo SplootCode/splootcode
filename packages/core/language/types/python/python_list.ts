@@ -16,18 +16,14 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_LIST = 'PYTHON_LIST'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class ListLiteralGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const node = new PythonList(null)
     return [new SuggestedNode(node, 'list', 'list', true, 'List literal')]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 
@@ -91,6 +87,6 @@ export class PythonList extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_LIST, NodeCategory.PythonExpressionToken)
-    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new ListLiteralGenerator())
   }
 }

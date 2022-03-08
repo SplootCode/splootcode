@@ -20,7 +20,7 @@ import {
 } from '../../node_category_registry'
 import { ObjectPropertyKind, StatementKind } from 'ast-types/gen/kinds'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const JSS_STYLE_BLOCK = 'JSS_STYLE_BLOCK'
 export const LOCAL_STYLES_IDENTIFIER = 'jss_local_styles'

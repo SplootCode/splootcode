@@ -15,18 +15,14 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_NONE = 'PYTHON_NONE'
 export const PYTHON_BOOL = 'PYTHON_BOOL'
 
 class PythonNoneGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
+  constantSuggestions() {
     return [new SuggestedNode(new NoneLiteral(null), 'none', 'null', true, 'None')]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 
@@ -60,15 +56,11 @@ export class NoneLiteral extends SplootNode {
 }
 
 class PythonBoolGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
+  constantSuggestions() {
     return [
       new SuggestedNode(new PythonBool(null, true), 'True', 'true', true, 'True'),
       new SuggestedNode(new PythonBool(null, false), 'False', 'false', true, 'False'),
     ]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    return []
   }
 }
 

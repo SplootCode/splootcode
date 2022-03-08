@@ -21,19 +21,15 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 
 class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonFromImport(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'from import', 'from import', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 

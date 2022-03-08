@@ -21,7 +21,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VariableDefinition } from '../../definitions/loader'
 
 export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION'

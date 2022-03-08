@@ -19,7 +19,7 @@ import {
 import { ParentReference, SplootNode } from '../../node'
 import { STRING_LITERAL, StringLiteral } from '../literals'
 import { SplootHtmlAttribute } from './html_attribute'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { getValidElements } from '../../html/tags'
 
 export const HTML_ElEMENT = 'HTML_ELEMENT'

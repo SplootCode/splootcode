@@ -14,7 +14,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 import { HighlightColorCategory } from '../../../colors'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
@@ -22,21 +22,10 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
 import { STRING_LITERAL } from '../literals'
-import { VariableReferenceGenerator } from '../js/variable_reference'
 
 export const PYTHON_CALL_MEMBER = 'PYTHON_CALL_MEMBER'
 
-class Generator implements SuggestionGenerator {
-  variableGenerator: VariableReferenceGenerator
-
-  constructor() {
-    this.variableGenerator = new VariableReferenceGenerator()
-  }
-
-  staticSuggestions(parent: ParentReference, index: number) {
-    return []
-  }
-
+class CallMemberGenerator implements SuggestionGenerator {
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
@@ -145,6 +134,6 @@ export class PythonCallMember extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_CALL_MEMBER, NodeCategory.PythonExpressionToken)
-    registerAutocompleter(NodeCategory.PythonExpressionToken, new Generator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new CallMemberGenerator())
   }
 }

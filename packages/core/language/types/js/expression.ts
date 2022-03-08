@@ -14,54 +14,10 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  getAutocompleteFunctionsForCategory,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '../../node_category_registry'
+import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../suggested_node'
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION'
-
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // Get all static expression tokens available and wrap them in an expression node.
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.ExpressionToken)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const expressionSuggestions = generator
-        .staticSuggestions(parent, index)
-        .map((tokenNodeSuggestion: SuggestedNode) => {
-          const expressionNode = new SplootExpression(null)
-          expressionNode.getTokenSet().addChild(tokenNodeSuggestion.node)
-          tokenNodeSuggestion.node = expressionNode
-          return tokenNodeSuggestion
-        })
-      staticSuggestions = staticSuggestions.concat(expressionSuggestions)
-    })
-    return staticSuggestions
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    const suggestionGeneratorSet = getAutocompleteFunctionsForCategory(NodeCategory.ExpressionToken)
-    let staticSuggestions = [] as SuggestedNode[]
-    suggestionGeneratorSet.forEach((generator: SuggestionGenerator) => {
-      const expressionSuggestions = generator
-        .dynamicSuggestions(parent, index, textInput)
-        .map((tokenNodeSuggestion: SuggestedNode) => {
-          const expressionNode = new SplootExpression(null)
-          expressionNode.getTokenSet().addChild(tokenNodeSuggestion.node)
-          tokenNodeSuggestion.node = expressionNode
-          return tokenNodeSuggestion
-        })
-      staticSuggestions = staticSuggestions.concat(expressionSuggestions)
-    })
-    return staticSuggestions
-  }
-}
 
 function parseLeaf(tokens: SplootNode[], current: number): [ExpressionKind, number] {
   if (current >= tokens.length) {
@@ -180,7 +136,5 @@ export class SplootExpression extends JavaScriptSplootNode {
     // When needed create the expression while autocompleting the expresison token.
     registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Statement)
     registerNodeCateogry(SPLOOT_EXPRESSION, NodeCategory.Expression)
-    registerAutocompleter(NodeCategory.Statement, new Generator())
-    registerAutocompleter(NodeCategory.Expression, new Generator())
   }
 }

@@ -18,7 +18,7 @@ import {
 import { ParentReference, SplootNode } from '../../node'
 import { StyleProperty } from './style_property'
 import { StyleSelector } from './style_selector'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const STYLE_RULE = 'STYLE_RULE'
 

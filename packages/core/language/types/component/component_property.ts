@@ -23,7 +23,7 @@ import {
 import { ParentReference } from '../../node'
 import { REACT_ELEMENT, ReactElementNode } from './react_element'
 import { SplootExpression } from '../js/expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { getValidReactAttributes } from '../../html/tags'
 
 export const COMPONENT_PROPERTY = 'COMPONENT_PROPERTY'

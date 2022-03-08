@@ -1,5 +1,5 @@
-import { ChildSet } from './childset'
-import { SplootNode } from './node'
+import { ChildSet } from '../childset'
+import { SplootNode } from '../node'
 
 export class SuggestedNode {
   node: SplootNode

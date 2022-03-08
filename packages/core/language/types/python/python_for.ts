@@ -21,19 +21,15 @@ import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'
 
-class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+class ForGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonForLoop(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'for', 'for', true)
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 
@@ -214,6 +210,6 @@ export class PythonForLoop extends SplootNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_FOR_LOOP, NodeCategory.PythonStatementContents)
-    registerAutocompleter(NodeCategory.PythonStatementContents, new Generator())
+    registerAutocompleter(NodeCategory.PythonStatementContents, new ForGenerator())
   }
 }

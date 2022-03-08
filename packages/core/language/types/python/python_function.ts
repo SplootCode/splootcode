@@ -21,20 +21,16 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VariableMetadata, registerFunction } from '../../scope/scope'
 
 export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 
 class Generator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+  constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonFunctionDeclaration(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'function', 'function def', true, 'Define a new function')
     return [suggestedNode]
-  }
-
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
-    return []
   }
 }
 

@@ -17,7 +17,7 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { Scope } from '../../scope/scope'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_IDENTIFIER = 'PY_IDENTIFIER'
 
@@ -41,10 +41,6 @@ function sanitizeIdentifier(textInput: string): string {
 }
 
 class NewIdentifierGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number) {
-    return []
-  }
-
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     let varName = sanitizeIdentifier(textInput)
     if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {

@@ -22,7 +22,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { SplootExpression } from './expression'
-import { SuggestedNode } from '../../suggested_node'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const VARIABLE_DECLARATION = 'VARIABLE_DECLARATION'
 
