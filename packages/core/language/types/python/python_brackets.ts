@@ -17,7 +17,6 @@ import {
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
-import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BRACKETS = 'PY_BRACKET'
@@ -74,10 +73,10 @@ export class PythonBrackets extends SplootNode {
       NodeBoxType.INVISIBLE
     )
     typeRegistration.pasteAdapters = {
-      PYTHON_STATEMENT: (node: SplootNode) => {
-        const statement = new PythonStatement(null)
-        statement.getStatement().addChild(node)
-        return statement
+      PYTHON_EXPRESSION: (node: SplootNode) => {
+        const exp = new PythonExpression(null)
+        exp.getTokenSet().addChild(node)
+        return exp
       },
     }
 

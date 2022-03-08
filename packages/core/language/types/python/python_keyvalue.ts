@@ -10,8 +10,8 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, registerBlankFillForNodeCategory, registerNodeCateogry } from '../../node_category_registry'
-import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonExpression } from './python_expression'
 
 export const PYTHON_KEYVALUE = 'PY_KEYVALUE'
 
@@ -64,11 +64,6 @@ export class PythonKeyValue extends SplootNode {
       ],
       NodeBoxType.INVISIBLE
     )
-    typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
-      const exp = new PythonExpression(null)
-      exp.getTokenSet().addChild(node)
-      return exp
-    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_KEYVALUE, NodeCategory.PythonDictionaryKeyValue)
