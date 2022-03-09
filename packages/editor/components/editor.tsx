@@ -14,7 +14,7 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
 import { Tray } from './tray/tray'
-import { adaptNodeToPasteDestination, deserializeNode } from '@splootcode/core/language/type_registry'
+import { deserializeNode } from '@splootcode/core/language/type_registry'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -113,19 +113,15 @@ export class Editor extends React.Component<EditorProps> {
     if (event.type === 'paste') {
       const splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE)
       if (splootData) {
-        let node = deserializeNode(JSON.parse(splootData))
-        const destinationCategory = selection.getPasteDestinationCategory()
-        node = adaptNodeToPasteDestination(node, destinationCategory)
-        if (node && selection.isCursor()) {
+        const node = deserializeNode(JSON.parse(splootData))
+        if (selection.isCursor()) {
           selection.insertNodeAtCurrentCursor(node)
-          event.preventDefault()
-        } else if (node && selection.isSingleNode()) {
-          selection.deleteSelectedNode()
-          selection.insertNodeAtCurrentCursor(node)
-          event.preventDefault()
+        } else if (selection.isSingleNode()) {
+          selection.replaceOrWrapSelectedNode(node)
         } else {
           // paste failed :(
         }
+        event.preventDefault()
       }
     }
   }

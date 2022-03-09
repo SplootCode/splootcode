@@ -313,9 +313,53 @@ export class NodeSelection {
     this.insertNodeByChildSet(listBlock.childSet, index, node)
   }
 
+  replaceOrWrapSelectedNode(node: SplootNode) {
+    if (this.isSingleNode()) {
+      this.exitEdit()
+      if (this.cursor) {
+        this.cursor.listBlock.selectionState = SelectionState.Empty
+      }
+
+      let childSet = this.cursor.listBlock.childSet
+      let index = this.cursor.index
+      const nodeToReplace = this.selectedNode
+
+      const destinationCategory = this.getPasteDestinationCategory()
+      let adaptedNode = adaptNodeToPasteDestination(node.clone(), destinationCategory)
+
+      if (!adaptedNode) {
+        // Would the parent be empty without that node?
+        // Can we replace the parent instead?
+        const parentRef = this.selectedNode.parent
+        if (parentRef.node.childSetOrder.length === 1 && parentRef.getChildSet().getCount() === 1) {
+          adaptedNode = adaptNodeToPasteDestination(node.clone(), parentRef.node.parent.getChildSet().nodeCategory)
+          if (!adaptedNode) {
+            return
+          }
+          childSet = parentRef.node.parent.getChildSet()
+          index = childSet.getIndexOf(parentRef.node)
+        } else {
+          return
+        }
+      }
+
+      childSet.removeChild(index)
+      const wrapChildSet = node.getWrapInsertChildSet(nodeToReplace)
+      if (wrapChildSet) {
+        wrapChildSet.insertNode(nodeToReplace, 0)
+      }
+      adaptedNode = adaptNodeToPasteDestination(node, childSet.nodeCategory)
+
+      this.insertNodeByChildSet(childSet, index, adaptedNode)
+    }
+  }
+
   insertNodeAtCurrentCursor(node: SplootNode) {
     if (this.isCursor()) {
-      this.insertNode(this.cursor.listBlock, this.cursor.index, node)
+      const adaptedNode = adaptNodeToPasteDestination(node, this.getPasteDestinationCategory())
+      if (adaptedNode) {
+        this.insertNode(this.cursor.listBlock, this.cursor.index, adaptedNode)
+      }
     }
   }
 
