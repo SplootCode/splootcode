@@ -61,7 +61,7 @@ export class PythonBrackets extends SplootNode {
     typeRegistration.deserializer = PythonBrackets.deserializer
     typeRegistration.properties = []
     typeRegistration.childSets = {
-      value: NodeCategory.Expression,
+      value: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(
       HighlightColorCategory.KEYWORD,

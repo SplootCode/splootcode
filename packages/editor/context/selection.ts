@@ -9,7 +9,6 @@ import {
   isNodeInCategory,
 } from '@splootcode/core/language/node_category_registry'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { SplootExpression } from '@splootcode/core/language/types/js/expression'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
 import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
@@ -342,17 +341,18 @@ export class NodeSelection {
   }
 
   @action
-  wrapNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode, childSetId: string) {
-    // remove child at index
-    const child = listBlock.childSet.removeChild(index)
-    const childSet = node.getChildSet(childSetId)
-    if (childSet.nodeCategory === NodeCategory.Expression) {
-      ;(childSet.getChild(0) as SplootExpression).getTokenSet().addChild(child)
-    } else {
-      childSet.addChild(child)
+  wrapNode(childSet: ChildSet, index: number, node: SplootNode, childSetId: string) {
+    // Remove original child at index (sends mutations)
+    const child = childSet.removeChild(index)
+    const wrapChildSet = node.getChildSet(childSetId)
+    // Clear all children from that childset (this is a detached node so it won't send mutations)
+    while (wrapChildSet.getCount() !== 0) {
+      wrapChildSet.removeChild(0)
     }
-    // insert node at index.
-    listBlock.childSet.insertNode(node, index)
+    wrapChildSet.addChild(child)
+
+    // Insert the completed node
+    childSet.insertNode(node, index)
   }
 
   @action

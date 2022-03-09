@@ -16,10 +16,10 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
+import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
+import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
-import { PythonExpression } from './python_expression'
-import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -28,8 +28,24 @@ export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 class AssignmentGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonAssignment(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'set', 'set', true)
+    const suggestedNode = new SuggestedNode(sampleNode, 'set', 'set =', true, 'assign a value to a variable')
     return [suggestedNode]
+  }
+}
+
+class AssignmentWrapGenerator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    if (parent.node.type === PYTHON_EXPRESSION && index === 0) {
+      // parent of this expression *must* be a statement
+      if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
+        const grandParent = parent.node.parent.node as PythonStatement
+        const node = new PythonAssignment(null)
+        const suggestedNode = new SuggestedNode(node, 'set', 'set =', true, 'assign this expression to a variable')
+        suggestedNode.setOverrideLocation(grandParent.getStatement(), 0, 'right')
+        return [suggestedNode]
+      }
+    }
+    return []
   }
 }
 
@@ -148,7 +164,7 @@ export class PythonAssignment extends SplootNode {
     typeRegistration.properties = []
     typeRegistration.childSets = {
       left: NodeCategory.PythonAssignable,
-      right: NodeCategory.Expression,
+      right: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
@@ -166,5 +182,6 @@ export class PythonAssignment extends SplootNode {
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ASSIGNMENT, NodeCategory.PythonStatementContents)
     registerAutocompleter(NodeCategory.PythonStatementContents, new AssignmentGenerator())
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new AssignmentWrapGenerator())
   }
 }

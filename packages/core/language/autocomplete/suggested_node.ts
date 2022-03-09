@@ -32,8 +32,9 @@ export class SuggestedNode {
     return !!this.overrideLocationChildSet
   }
 
-  setOverrideLocation(childSet: ChildSet, index: number) {
+  setOverrideLocation(childSet: ChildSet, index: number, wrapChildSetId: string = null) {
     this.overrideLocationChildSet = childSet
     this.overrideLocationIndex = index
+    this.wrapChildSetId = wrapChildSetId
   }
 }
