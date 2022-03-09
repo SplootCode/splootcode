@@ -6,7 +6,6 @@ import { observer } from 'mobx-react'
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection, NodeSelectionState } from '../context/selection'
-import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
 
 interface OverlayProps {
   selection: NodeSelection
@@ -91,10 +90,10 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
 
     // TODO: Only allow cursors in positions that make sense.
     selection.placeCursorByXYCoordinate(x, y)
-    const destinationCategory = selection.getPasteDestinationCategory()
-    const node = adaptNodeToPasteDestination(block.node.clone(), destinationCategory)
-    if (node && selection.isCursor()) {
-      selection.insertNodeAtCurrentCursor(node)
+    if (selection.isCursor()) {
+      selection.insertNodeAtCurrentCursor(block.node.clone())
+    } else if (selection.isSingleNode()) {
+      selection.replaceOrWrapSelectedNode(block.node.clone())
     }
     this.props.onEndDrag()
   }

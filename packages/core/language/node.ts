@@ -72,6 +72,26 @@ export class SplootNode {
     return []
   }
 
+  getWrapInsertChildSet(childNode: SplootNode): ChildSet {
+    for (const childSetID of this.childSetOrder) {
+      const childSet = this.getChildSet(childSetID)
+      if (childSet.getCount() === 0) {
+        if (isNodeInCategory(childNode.type, childSet.nodeCategory)) {
+          return childSet
+        }
+      } else {
+        const firstChild = childSet.getChild(0)
+        if (firstChild.isEmpty()) {
+          const childResult = firstChild.getWrapInsertChildSet(childNode)
+          if (childResult) {
+            return childResult
+          }
+        }
+      }
+    }
+    return null
+  }
+
   getScope(skipSelf = false): Scope {
     if (!skipSelf && isScopedNodeType(this.type)) {
       return this.scope
