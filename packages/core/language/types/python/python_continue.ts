@@ -73,9 +73,7 @@ export class PythonContinue extends SplootNode {
     typeRegistration.typeName = PYTHON_CONTINUE
     typeRegistration.deserializer = PythonContinue.deserializer
     typeRegistration.properties = []
-    typeRegistration.childSets = {
-      value: NodeCategory.Expression,
-    }
+    typeRegistration.childSets = {}
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'continue'),
     ])

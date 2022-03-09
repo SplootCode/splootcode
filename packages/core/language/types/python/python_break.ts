@@ -73,9 +73,7 @@ export class PythonBreak extends SplootNode {
     typeRegistration.typeName = PYTHON_BREAK
     typeRegistration.deserializer = PythonBreak.deserializer
     typeRegistration.properties = []
-    typeRegistration.childSets = {
-      value: NodeCategory.Expression,
-    }
+    typeRegistration.childSets = {}
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'break'),
     ])

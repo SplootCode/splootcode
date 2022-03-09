@@ -117,6 +117,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       return {
         filteredSuggestions: filteredSuggestions,
         staticSuggestions: staticSuggestions,
+        activeSuggestion: 0,
         autocompleter: autocompleter,
         category: category,
         index: index,
@@ -328,6 +329,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       this.props.selection.startInsertAtCurrentCursor()
       this.setState({
         userInput: e.currentTarget.value,
+        activeSuggestion: 0,
         autoWidth: this.getWidth(e.currentTarget.value),
         filteredSuggestions: filteredSuggestions,
       })
@@ -336,6 +338,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         userInput: '',
         autoWidth: this.getWidth(e.currentTarget.value),
         filteredSuggestions: [],
+        activeSuggestion: 0,
       })
     }
   }
@@ -345,10 +348,19 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const childSetBlock = selection.cursor.listBlock
     const index = selection.cursor.index
     const node = suggestion.node.clone()
-    if (suggestion.wrapChildSetId) {
-      selection.wrapNode(childSetBlock, index - 1, node, suggestion.wrapChildSetId)
-    } else if (suggestion.hasOverrideLocation()) {
-      selection.insertNodeByChildSet(suggestion.overrideLocationChildSet, suggestion.overrideLocationIndex, node)
+    if (suggestion.hasOverrideLocation()) {
+      if (suggestion.wrapChildSetId) {
+        selection.wrapNode(
+          suggestion.overrideLocationChildSet,
+          suggestion.overrideLocationIndex,
+          node,
+          suggestion.wrapChildSetId
+        )
+      } else {
+        selection.insertNodeByChildSet(suggestion.overrideLocationChildSet, suggestion.overrideLocationIndex, node)
+      }
+    } else if (suggestion.wrapChildSetId) {
+      selection.wrapNode(childSetBlock.childSet, index - 1, node, suggestion.wrapChildSetId)
     } else {
       selection.insertNode(childSetBlock, index, node)
     }

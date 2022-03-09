@@ -99,7 +99,7 @@ export class PythonReturn extends SplootNode {
     typeRegistration.deserializer = PythonReturn.deserializer
     typeRegistration.properties = []
     typeRegistration.childSets = {
-      value: NodeCategory.Expression,
+      value: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'return'),

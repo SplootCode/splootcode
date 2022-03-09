@@ -209,12 +209,11 @@ export class PythonFrame extends Component<ViewPageProps> {
     const millis = now.getTime() - this.lastSentNodeTree.getTime()
     const pkg = this.props.pkg
 
-    this.lastSentNodeTree = now
-    this.needsNewNodeTree = false
-
     // Rate limit: Only send if it's been some time since we last sent.
     if (millis > 200) {
       if (this.invalidNodes.size > 0) {
+        this.lastSentNodeTree = now
+        this.needsNewNodeTree = false
         this.postMessageToFrame({ type: 'disable' })
         return
       }
@@ -222,7 +221,14 @@ export class PythonFrame extends Component<ViewPageProps> {
       pkg.fileOrder.forEach((filename) => {
         pkg.getLoadedFile(filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
-          this.postMessageToFrame(payload)
+          // Check again that the current state is valid - otherwise bail out
+          if (this.invalidNodes.size == 0) {
+            this.postMessageToFrame(payload)
+          } else {
+            this.postMessageToFrame({ type: 'disable' })
+          }
+          this.lastSentNodeTree = now
+          this.needsNewNodeTree = false
           return
         })
       })

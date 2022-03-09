@@ -153,13 +153,6 @@ export class PythonElifBlock extends SplootNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
-    typeRegistration.pasteAdapters = {
-      PYTHON_STATEMENT: (node: SplootNode) => {
-        const statement = new PythonStatement(null)
-        statement.getStatement().addChild(node)
-        return statement
-      },
-    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock)
