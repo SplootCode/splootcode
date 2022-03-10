@@ -48,6 +48,7 @@ export class PythonForLoop extends SplootNode {
     this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.childSetWrapPriorityOrder = ['block', 'target', 'iterable']
   }
 
   getTarget() {

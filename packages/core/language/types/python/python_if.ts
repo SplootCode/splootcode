@@ -40,6 +40,7 @@ export class PythonIfStatement extends SplootNode {
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement)
     this.addChildSet('elseblocks', ChildSetType.Many, NodeCategory.PythonElseBlock)
+    this.childSetWrapPriorityOrder = ['trueblock', 'condition', 'elseblock']
   }
 
   getCondition() {

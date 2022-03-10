@@ -115,6 +115,20 @@ export function resolvePasteAdapters() {
   }
 }
 
+export function isAdaptableToPasteDesintation(node: SplootNode, destCategory: NodeCategory): boolean {
+  if (!destCategory) {
+    return false
+  }
+  if (isNodeInCategory(node.type, destCategory)) {
+    return true
+  }
+  const adapters = pasteAdapaterMapping[node.type]
+  if (destCategory in adapters) {
+    return true
+  }
+  return false
+}
+
 export function adaptNodeToPasteDestination(node: SplootNode, destCategory: NodeCategory): SplootNode {
   if (!destCategory) {
     return null

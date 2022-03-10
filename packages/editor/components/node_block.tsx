@@ -95,7 +95,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       loopAnnotation = <RepeatedBlockAnnotation nodeBlock={block} />
     }
 
-    const isValid = block.isValid && !isInvalidBlamed
+    const isValid = (block.isValid || block.invalidChildsetID) && !isInvalidBlamed
     const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     let shape: ReactElement

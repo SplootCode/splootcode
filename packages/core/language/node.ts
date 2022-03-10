@@ -7,6 +7,7 @@ import {
   adaptNodeToPasteDestination,
   deserializeNode,
   getLayout,
+  isAdaptableToPasteDesintation,
   isScopedNodeType,
 } from './type_registry'
 import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
@@ -36,12 +37,14 @@ export class SplootNode {
   properties: { [key: string]: any } // Depends on the type
   childSets: { [key: string]: ChildSet }
   childSetOrder: string[]
+  childSetWrapPriorityOrder: string[]
   enableMutations: boolean
   mutationObservers: NodeObserver[]
   scope: Scope
   isValid: boolean
   invalidReason: string
   invalidChildSetID: string
+  invalidChildIndex: number
   invalidNode: number
   isRepeatableBlock: boolean
 
@@ -52,6 +55,7 @@ export class SplootNode {
     this.invalidReason = ''
     this.childSets = {}
     this.childSetOrder = []
+    this.childSetWrapPriorityOrder = null
     this.properties = {}
     this.enableMutations = false
     this.mutationObservers = []
@@ -73,15 +77,19 @@ export class SplootNode {
   }
 
   getWrapInsertChildSet(childNode: SplootNode): ChildSet {
-    for (const childSetID of this.childSetOrder) {
+    const order = this.childSetWrapPriorityOrder ? this.childSetWrapPriorityOrder : this.childSetOrder
+    for (const childSetID of order) {
       const childSet = this.getChildSet(childSetID)
       if (childSet.getCount() === 0) {
-        if (isNodeInCategory(childNode.type, childSet.nodeCategory)) {
+        if (isAdaptableToPasteDesintation(childNode, childSet.nodeCategory)) {
           return childSet
         }
       } else {
         const firstChild = childSet.getChild(0)
         if (firstChild.isEmpty()) {
+          if (isAdaptableToPasteDesintation(childNode, childSet.nodeCategory)) {
+            return childSet
+          }
           const childResult = firstChild.getWrapInsertChildSet(childNode)
           if (childResult) {
             return childResult
@@ -142,17 +150,23 @@ export class SplootNode {
     })
   }
 
-  setValidity(isValid: boolean, reason: string, childset?: string, index?: number) {
-    if (this.isValid === isValid && this.invalidReason === reason) {
+  setValidity(isValid: boolean, reason: string, childSet?: string, index?: number) {
+    if (
+      this.isValid === isValid &&
+      this.invalidReason === reason &&
+      childSet === this.invalidChildSetID &&
+      index === this.invalidChildIndex
+    ) {
       return
     }
     this.isValid = isValid
     this.invalidReason = reason
-    this.invalidChildSetID = childset
+    this.invalidChildSetID = childSet
+    this.invalidChildIndex = index
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_VALIDITY
-    mutation.validity = { valid: isValid, reason: reason, childset: childset, index: index }
+    mutation.validity = { valid: isValid, reason: reason, childset: childSet, index: index }
     this.fireMutation(mutation)
   }
 
