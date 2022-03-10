@@ -11,7 +11,7 @@ import {
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
-import { adaptNodeToPasteDestination } from '@splootcode/core/language/type_registry'
+import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -319,39 +319,72 @@ export class NodeSelection {
       if (this.cursor) {
         this.cursor.listBlock.selectionState = SelectionState.Empty
       }
+      const childSet = this.cursor.listBlock.childSet
+      const index = this.cursor.index
 
-      let childSet = this.cursor.listBlock.childSet
-      let index = this.cursor.index
-      const nodeToReplace = this.selectedNode
-
-      const destinationCategory = this.getPasteDestinationCategory()
-      let adaptedNode = adaptNodeToPasteDestination(node.clone(), destinationCategory)
-
-      if (!adaptedNode) {
-        // Would the parent be empty without that node?
-        // Can we replace the parent instead?
-        const parentRef = this.selectedNode.parent
-        if (parentRef.node.childSetOrder.length === 1 && parentRef.getChildSet().getCount() === 1) {
-          adaptedNode = adaptNodeToPasteDestination(node.clone(), parentRef.node.parent.getChildSet().nodeCategory)
-          if (!adaptedNode) {
-            return
-          }
-          childSet = parentRef.node.parent.getChildSet()
-          index = childSet.getIndexOf(parentRef.node)
-        } else {
-          return
-        }
+      const wrapped = this.wrapNodeOnPaste(childSet, index, node)
+      if (!wrapped) {
+        this.replaceNode(childSet, index, node)
       }
-
-      childSet.removeChild(index)
-      const wrapChildSet = node.getWrapInsertChildSet(nodeToReplace)
-      if (wrapChildSet) {
-        wrapChildSet.insertNode(nodeToReplace, 0)
-      }
-      adaptedNode = adaptNodeToPasteDestination(node, childSet.nodeCategory)
-
-      this.insertNodeByChildSet(childSet, index, adaptedNode)
     }
+  }
+
+  wrapNodeOnPaste(childSet: ChildSet, index: number, node: SplootNode): boolean {
+    let nodeToReplace = childSet.getChild(index)
+
+    if (!isAdaptableToPasteDesintation(node, childSet.nodeCategory)) {
+      // Would the parent be empty without that node?
+      // Can we replace the parent instead?
+      const parentRef = nodeToReplace.parent
+      if (parentRef.node.childSetOrder.length === 1 && parentRef.getChildSet().getCount() === 1) {
+        const destCategory = parentRef.node.parent.getChildSet().nodeCategory
+        if (!isAdaptableToPasteDesintation(node, destCategory)) {
+          return false
+        }
+        nodeToReplace = parentRef.node
+        childSet = parentRef.node.parent.getChildSet()
+        index = childSet.getIndexOf(parentRef.node)
+      } else {
+        return false
+      }
+    }
+
+    const wrapChildSet = node.getWrapInsertChildSet(nodeToReplace)
+    if (wrapChildSet) {
+      const deletedNode = childSet.removeChild(index)
+      const newChild = adaptNodeToPasteDestination(deletedNode, wrapChildSet.nodeCategory)
+
+      // Clear all children from that childset (this is a detached node so it won't send mutations)
+      while (wrapChildSet.getCount() !== 0) {
+        wrapChildSet.removeChild(0)
+      }
+      wrapChildSet.insertNode(newChild, 0)
+      this.insertNodeByChildSet(childSet, index, node)
+      return true
+    }
+    return false
+  }
+
+  replaceNode(childSet: ChildSet, index: number, node: SplootNode) {
+    const nodeToReplace = childSet.getChild(index)
+    if (!isAdaptableToPasteDesintation(node, childSet.nodeCategory)) {
+      // Would the parent be empty without that node?
+      // Can we replace the parent instead?
+      const parentRef = nodeToReplace.parent
+      if (parentRef.node.childSetOrder.length === 1 && parentRef.getChildSet().getCount() === 1) {
+        const destCategory = parentRef.node.parent.getChildSet().nodeCategory
+        if (!isAdaptableToPasteDesintation(node, destCategory)) {
+          return false
+        }
+        childSet = parentRef.node.parent.getChildSet()
+        index = childSet.getIndexOf(parentRef.node)
+      } else {
+        return
+      }
+    }
+
+    childSet.removeChild(index)
+    this.insertNodeByChildSet(childSet, index, node)
   }
 
   insertNodeAtCurrentCursor(node: SplootNode) {
@@ -359,6 +392,12 @@ export class NodeSelection {
       const adaptedNode = adaptNodeToPasteDestination(node, this.getPasteDestinationCategory())
       if (adaptedNode) {
         this.insertNode(this.cursor.listBlock, this.cursor.index, adaptedNode)
+      } else {
+        // If it cannot be inserted, and it's the start of a childset, attempt a wrap of the parent.
+        if (this.cursor.index === 0) {
+          const parentNode = this.cursor.listBlock.parentRef.node
+          this.wrapNodeOnPaste(parentNode.node.parent.getChildSet(), parentNode.index, node)
+        }
       }
     }
   }

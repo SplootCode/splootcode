@@ -44,6 +44,7 @@ export class PythonWhileLoop extends SplootNode {
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.childSetWrapPriorityOrder = ['block', 'condition']
   }
 
   getCondition() {

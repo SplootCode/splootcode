@@ -22,7 +22,7 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
   render() {
     const { block, isValid, isInline, invalidIndex } = this.props
     let shape = null
-    const childsetInvalid = !isValid && !invalidIndex
+    const childsetInvalid = !isValid && invalidIndex === undefined
 
     const classname = 'svgsplootnode gap' + (childsetInvalid ? ' invalid' : ' ')
     if (isInline || childsetInvalid) {
@@ -33,7 +33,7 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
         {shape}
         {block.nodes.map((nodeBlock: NodeBlock, idx: number) => {
           const selectionState = block.getChildSelectionState(idx)
-          const invalidChild = idx == invalidIndex
+          const invalidChild = idx === invalidIndex
           return (
             <React.Fragment key={idx}>
               <EditorNodeBlock

@@ -97,9 +97,10 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
     this.node = node
-    this.isValid = node.isValid || !!node.invalidChildSetID
+    this.isValid = node.isValid
     this.invalidReason = node.invalidReason
     this.invalidChildsetID = node.invalidChildSetID
+    this.invalidChildsetIndex = node.invalidChildIndex
     this.runtimeAnnotations = []
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
@@ -273,7 +274,7 @@ export class NodeBlock implements NodeObserver {
       this.runtimeAnnotations = nodeMutation.annotations
       this.loopAnnotation = nodeMutation.loopAnnotation
     } else if (nodeMutation.type === NodeMutationType.SET_VALIDITY) {
-      this.isValid = nodeMutation.validity.valid || !!nodeMutation.validity.childset
+      this.isValid = nodeMutation.validity.valid
       this.invalidReason = nodeMutation.validity.reason
       this.invalidChildsetID = nodeMutation.validity.childset
       this.invalidChildsetIndex = nodeMutation.validity.index
