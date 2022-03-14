@@ -227,7 +227,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
   isOpenString = (inp: string) => {
     if (inp.startsWith("'") || inp.startsWith('"')) {
-      return inp.length == 1 || inp[0] !== inp[inp.length - 1]
+      return true
     }
     return false
   }
@@ -253,7 +253,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const { activeSuggestion, filteredSuggestions } = this.state
 
     // Escape
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' || (e.key == 'Backspace' && this.state.userInput === '')) {
       this.inputRef.current.value = ''
       selection.exitEdit()
       e.stopPropagation()
