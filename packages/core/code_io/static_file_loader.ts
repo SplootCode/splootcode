@@ -30,7 +30,7 @@ export class StaticFileLoader implements FileLoader {
     const fileStr = await (await fetch(this.rootProjectUrl + packageId + '/' + filename + '.sp')).text()
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    generateScope(rootNode)
+    await generateScope(rootNode)
     rootNode.recursivelySetMutations(true)
     return rootNode
   }

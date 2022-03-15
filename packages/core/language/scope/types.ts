@@ -9,7 +9,7 @@ interface ValueType {
 }
 
 export enum FunctionArgType {
-  PostionalOnly,
+  PositionalOnly,
   PositionalOrKeyword,
   Vargs,
   KeywordOnly,

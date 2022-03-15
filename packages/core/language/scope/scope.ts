@@ -1,7 +1,7 @@
-import { FunctionArgType, TypeCategory, VariableTypeInfo } from './types'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
+import { VariableTypeInfo } from './types'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 import { loadPythonBuiltinFunctions } from './python'
 
@@ -272,21 +272,7 @@ export async function generateScope(rootNode: SplootNode) {
   globalScope = scope
   functionRegistry = {}
   if (rootNode.type === 'PYTHON_FILE') {
-    const pythonGlobalFuncs = loadPythonBuiltinFunctions()
-    pythonGlobalFuncs.forEach((func) => {
-      scope.addBuiltIn(func.name, {
-        documentation: func.documentation,
-        typeInfo: {
-          category: TypeCategory.Function,
-          arguments: func.type.parameters.map((varDef) => {
-            return {
-              name: varDef.name,
-              type: FunctionArgType.PositionalOrKeyword,
-            }
-          }),
-        },
-      })
-    })
+    loadPythonBuiltinFunctions(scope)
   }
   rootNode.recursivelyBuildScope()
   rootNode.recursivelyValidate()

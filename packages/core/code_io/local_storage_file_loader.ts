@@ -30,7 +30,7 @@ export class LocalStorageFileLoader implements FileLoader {
     const fileStr = window.localStorage.getItem(fileKey)
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    generateScope(rootNode)
+    await generateScope(rootNode)
     rootNode.recursivelySetMutations(true)
     return rootNode
   }
