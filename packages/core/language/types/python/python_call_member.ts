@@ -37,21 +37,41 @@ class CallMemberGenerator implements SuggestionGenerator {
           leftChild.type
         ) !== -1
       ) {
+        const typeNames = []
+        switch (leftChild.type) {
+          case STRING_LITERAL:
+            typeNames.push('builtins.str')
+            break
+          case PYTHON_LIST:
+            typeNames.push('builtins.list')
+            break
+          default:
+            typeNames.push('builtins.str', 'builtins.list')
+            break
+        }
+
         const inputNmae = textInput.substring(1) // Cut the '.' off
 
         let exactMatch = false
         const allowUnderscore = textInput.startsWith('._')
-        const typeMeta = leftChild.getScope().getTypeDefinition('builtins.str')
         const suggestions = []
-        for (const [name, attr] of typeMeta.attributes.entries()) {
-          if (attr.category === TypeCategory.Function) {
-            if (name === inputNmae) {
-              exactMatch = true
+        const seen = new Set<string>()
+        for (const canonicalTypeName of typeNames) {
+          const typeMeta = leftChild.getScope().getTypeDefinition(canonicalTypeName)
+          for (const [name, attr] of typeMeta.attributes.entries()) {
+            if (seen.has(name)) {
+              continue
             }
-            if (!name.startsWith('_') || allowUnderscore) {
-              const node = new PythonCallMember(null, 1)
-              node.setMember(name)
-              suggestions.push(new SuggestedNode(node, `callmember ${name}`, name, true, attr.shortDoc, 'object'))
+            seen.add(name)
+            if (attr.category === TypeCategory.Function) {
+              if (name === inputNmae) {
+                exactMatch = true
+              }
+              if (!name.startsWith('_') || allowUnderscore) {
+                const node = new PythonCallMember(null, 1)
+                node.setMember(name)
+                suggestions.push(new SuggestedNode(node, `callmember ${name}`, name, true, attr.shortDoc, 'object'))
+              }
             }
           }
         }
