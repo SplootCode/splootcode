@@ -29,7 +29,7 @@ export class FileSystemFileLoader implements FileLoader {
     const fileStr = await (await (await packDirHandle.getFileHandle(filename + '.sp')).getFile()).text()
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    generateScope(rootNode)
+    await generateScope(rootNode)
     rootNode.recursivelySetMutations(true)
     return rootNode
   }

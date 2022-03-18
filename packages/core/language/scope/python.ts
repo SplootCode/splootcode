@@ -1,131 +1,110 @@
-import { FunctionDefinition } from '../definitions/loader'
+import * as builtins from '../../generated/python_builtins.json'
+import { FunctionArgType, FunctionArgument, FunctionSignature, TypeCategory, VariableTypeInfo } from './types'
+import { Scope } from './scope'
 
-/*
->>> dir(__builtins__)
-['ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BlockingIOError',
-'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
-'ConnectionError', 'ConnectionRefusedError', 'ConnectionResetError', 'DeprecationWarning',
-'EOFError', 'Ellipsis', 'EnvironmentError', 'Exception', 'False', 'FileExistsError', 'FileNotFoundError',
-'FloatingPointError', 'FutureWarning', 'GeneratorExit', 'IOError', 'ImportError', 'ImportWarning',
-'IndentationError', 'IndexError', 'InterruptedError', 'IsADirectoryError', 'KeyError', 'KeyboardInterrupt',
-'LookupError', 'MemoryError', 'ModuleNotFoundError', 'NameError', 'None', 'NotADirectoryError',
-'NotImplemented', 'NotImplementedError', 'OSError', 'OverflowError', 'PendingDeprecationWarning',
-'PermissionError', 'ProcessLookupError', 'RecursionError', 'ReferenceError', 'ResourceWarning',
-'RuntimeError', 'RuntimeWarning', 'StopAsyncIteration', 'StopIteration', 'SyntaxError', 'SyntaxWarning',
-'SystemError', 'SystemExit', 'TabError', 'TimeoutError', 'True', 'TypeError', 'UnboundLocalError',
-'UnicodeDecodeError', 'UnicodeEncodeError', 'UnicodeError', 'UnicodeTranslateError',
-'UnicodeWarning', 'UserWarning', 'ValueError', 'Warning', 'ZeroDivisionError',
-'_', '__build_class__', '__debug__', '__doc__', '__import__', '__loader__', '__name__',
-'__package__', '__spec__', 'abs', 'all', 'any', 'ascii', 'bin', 'bool', 'breakpoint', 'bytearray',
-'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex', 'copyright', 'credits', 'delattr',
-'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'exit', 'filter', 'float', 'format', 'frozenset',
-'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass',
-'iter', 'len', 'license', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object',
-'oct', 'open', 'ord', 'pow', 'print', 'property', 'quit', 'range', 'repr', 'reversed', 'round',
-'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip']
-*/
+interface VariableSpec {
+  name: string
+  typeName: string
+  typeModule: string
+  isClass: boolean
+  isCallable: boolean
+  isModule: boolean
+  doc: string
+  shortDoc: string
+  parameters?: { name: string; kind: string; default?: string }[]
+}
 
-const functions: FunctionDefinition[] = [
-  {
-    name: 'print',
-    deprecated: false,
-    type: { parameters: [], returnType: { type: 'void' } },
-    documentation: 'Outputs information to the terminal',
-  },
-  {
-    name: 'input',
-    deprecated: false,
-    type: {
-      parameters: [
-        {
-          name: 'prompt',
-          type: { type: 'literal', literal: 'string' },
-          deprecated: false,
-          documentation: 'The text to prompt the user to type',
-        },
-      ],
-      returnType: { type: 'literal', literal: 'string' },
-    },
-    documentation: 'Asks the user to enter information into the terminal',
-  },
-  {
-    name: 'str',
-    deprecated: false,
-    type: {
-      parameters: [
-        { name: '', type: { type: 'any' }, deprecated: false, documentation: 'The value to convert to a string' },
-      ],
-      returnType: { type: 'literal', literal: 'string' },
-    },
-    documentation: 'Convert to a string (text)',
-  },
-  {
-    name: 'int',
-    deprecated: false,
-    type: {
-      parameters: [
-        { name: '', type: { type: 'any' }, deprecated: false, documentation: 'The value to convert to an integer' },
-      ],
-      returnType: { type: 'literal', literal: 'number' },
-    },
-    documentation: 'Convert to an integer number (whole number)',
-  },
-  {
-    name: 'enumerate',
-    deprecated: false,
-    type: {
-      parameters: [
-        {
-          name: 'iterable',
-          type: { type: 'any' },
-          deprecated: false,
-          documentation: 'A list or other iterable object',
-        },
-      ],
-      returnType: { type: 'literal', literal: 'number' },
-    },
-    documentation: 'Loops over an iterable and returns pairs of the count and the items from the iterable.',
-  },
-  {
-    name: 'len',
-    deprecated: false,
-    type: {
-      parameters: [
-        {
-          name: 'iterable',
-          type: { type: 'any' },
-          deprecated: false,
-          documentation: 'A list or other iterable object',
-        },
-      ],
-      returnType: { type: 'literal', literal: 'number' },
-    },
-    documentation: 'Returns the length of something, how many items are in a list or characters in a string',
-  },
-  {
-    name: 'range',
-    deprecated: false,
-    type: {
-      parameters: [
-        {
-          name: 'start',
-          type: { type: 'any' },
-          deprecated: false,
-          documentation: 'The number to start counting from.',
-        },
-        {
-          name: 'end',
-          type: { type: 'any' },
-          deprecated: false,
-          documentation: 'Stop counting before this number, not including this number.',
-        },
-      ],
-      returnType: { type: 'any' },
-    },
-    documentation: 'Counts from a starting number up to, but not including, the end number.',
-  },
-]
+interface TypeSpec {
+  name: string
+  module: string
+  doc: string
+  shortDoc: string
+  attributes: { [key: string]: VariableSpec }
+}
 
-export function loadPythonBuiltinFunctions(): FunctionDefinition[] {
-  return functions
+interface PythonModuleSpec {
+  moduleName: string
+  values: { [key: string]: VariableSpec }
+  types: { [key: string]: TypeSpec }
+}
+
+const functionArgTypeMapping = {
+  POSITIONAL_ONLY: FunctionArgType.PositionalOnly,
+  POSITIONAL_OR_KEYWORD: FunctionArgType.PositionalOrKeyword,
+  KEYWORD_ONLY: FunctionArgType.KeywordOnly,
+  VAR_POSITIONAL: FunctionArgType.Vargs,
+  VAR_KEYWORD: FunctionArgType.Kwargs,
+}
+
+export function loadPythonBuiltins(scope: Scope) {
+  const builtinsSpec: PythonModuleSpec = builtins
+
+  for (const name in builtinsSpec.values) {
+    const spec = builtinsSpec.values[name]
+    if (spec.isCallable) {
+      const typeInfo: VariableTypeInfo = {
+        category: TypeCategory.Function,
+        shortDoc: spec.shortDoc,
+        arguments: [],
+      }
+      if (spec.parameters) {
+        const args = spec.parameters.map((argInfo) => {
+          const arg: FunctionArgument = {
+            name: argInfo.name,
+            type: functionArgTypeMapping[argInfo.kind],
+          }
+          if (argInfo.default) {
+            arg.defaultValue = argInfo.default
+          }
+          return arg
+        })
+        typeInfo.arguments = args
+      }
+      scope.addBuiltIn(name, { documentation: spec.shortDoc, typeInfo: typeInfo })
+      scope.hasEntries()
+    } else {
+      const typeInfo: VariableTypeInfo = {
+        category: TypeCategory.Value,
+        typeName: spec.typeName,
+      }
+      scope.addBuiltIn(name, { documentation: spec.shortDoc, typeInfo: typeInfo })
+    }
+  }
+  for (const name in builtinsSpec.types) {
+    const spec = builtinsSpec.types[name]
+
+    const attributes: Map<string, VariableTypeInfo> = new Map()
+    Object.values(spec.attributes).forEach((attr) => {
+      if (!attr.isCallable) {
+        attributes.set(attr.name, {
+          category: TypeCategory.Value,
+          typeName: attr.typeName,
+        })
+      } else {
+        const attrInfo: FunctionSignature = {
+          category: TypeCategory.Function,
+          shortDoc: attr.shortDoc,
+          arguments:
+            attr.parameters?.map((argInfo) => {
+              const arg: FunctionArgument = {
+                name: argInfo.name,
+                type: functionArgTypeMapping[argInfo.kind],
+              }
+              if (argInfo.default) {
+                arg.defaultValue = argInfo.default
+              }
+              return arg
+            }) || [],
+        }
+        attributes.set(attr.name, attrInfo)
+      }
+    })
+    scope.addType(name, spec.module, {
+      documentation: spec.shortDoc,
+      typeInfo: {
+        category: TypeCategory.Type,
+        attributes: attributes,
+      },
+    })
+  }
 }

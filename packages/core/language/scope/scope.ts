@@ -1,9 +1,9 @@
-import { FunctionArgType, TypeCategory, VariableTypeInfo } from './types'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
+import { TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
-import { loadPythonBuiltinFunctions } from './python'
+import { loadPythonBuiltins } from './python'
 
 export interface VariableMetadata {
   documentation: string
@@ -16,6 +16,12 @@ interface VariableScopeEntry {
   builtIn?: VariableMetadata
 }
 
+interface TypeScopeEntry {
+  name: string
+  module: string
+  builtIn?: VariableMetadata
+}
+
 export class Scope {
   parent: Scope
   name: string
@@ -23,6 +29,7 @@ export class Scope {
   nodeType: string
   isGlobal: boolean
   variables: Map<string, VariableScopeEntry>
+  types: Map<string, TypeScopeEntry>
   nameWatchers: Map<string, Set<SplootNode>>
   mutationObservers: ScopeObserver[]
 
@@ -32,6 +39,7 @@ export class Scope {
     this.childScopes = new Set()
     this.nodeType = nodeType
     this.variables = new Map()
+    this.types = new Map()
     this.mutationObservers = []
     this.nameWatchers = new Map()
   }
@@ -194,6 +202,35 @@ export class Scope {
     this.variables.get(name).builtIn = meta
   }
 
+  addType(name: string, module: string, meta: VariableMetadata) {
+    const canonicalName = `${module}.${name}`
+    if (!this.types.has(canonicalName)) {
+      this.types.set(canonicalName, {
+        name: name,
+        module: module,
+        builtIn: meta,
+      })
+    } else {
+      throw new Error(`Attempting to add type ${canonicalName}, but it's already registered!`)
+    }
+  }
+
+  getTypeDefinition(canonicalName: string): TypeDefinition {
+    const entry = this.types.get(canonicalName)
+    if (!entry) {
+      if (this.isGlobal) {
+        return null
+      }
+      return this.parent.getTypeDefinition(canonicalName)
+    }
+
+    const meta = entry.builtIn?.typeInfo
+    if (meta && meta.category == TypeCategory.Type) {
+      return meta
+    }
+    return null
+  }
+
   removeVariable(name: string, source: SplootNode) {
     const entry = this.variables.get(name)
     entry.declarers.delete(source)
@@ -272,21 +309,7 @@ export async function generateScope(rootNode: SplootNode) {
   globalScope = scope
   functionRegistry = {}
   if (rootNode.type === 'PYTHON_FILE') {
-    const pythonGlobalFuncs = loadPythonBuiltinFunctions()
-    pythonGlobalFuncs.forEach((func) => {
-      scope.addBuiltIn(func.name, {
-        documentation: func.documentation,
-        typeInfo: {
-          category: TypeCategory.Function,
-          arguments: func.type.parameters.map((varDef) => {
-            return {
-              name: varDef.name,
-              type: FunctionArgType.PositionalOrKeyword,
-            }
-          }),
-        },
-      })
-    })
+    loadPythonBuiltins(scope)
   }
   rootNode.recursivelyBuildScope()
   rootNode.recursivelyValidate()

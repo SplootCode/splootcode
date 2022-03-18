@@ -750,7 +750,7 @@ def executePythonFile(tree):
         # print()
         capture = SplootCapture()
         try:
-            exec(code, {SPLOOT_KEY: capture})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__'})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))

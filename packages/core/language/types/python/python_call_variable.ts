@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { FunctionSignature, TypeCategory } from '../../scope/types'
+import { FunctionArgType, FunctionSignature, TypeCategory } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -42,12 +42,16 @@ export class PythonCallVariable extends SplootNode {
     this.setProperty('identifier', name)
     this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
     if (signature) {
-      if (signature.arguments.length === 0) {
-        this.getArguments().addChild(new PythonExpression(null))
-      } else {
-        for (let i = 0; i < signature.arguments.length; i++) {
+      for (const arg of signature.arguments) {
+        if (
+          (arg.type == FunctionArgType.PositionalOnly || arg.type == FunctionArgType.PositionalOrKeyword) &&
+          !arg.defaultValue
+        ) {
           this.getArguments().addChild(new PythonExpression(null))
         }
+      }
+      if (this.getArguments().getCount() === 0) {
+        this.getArguments().addChild(new PythonExpression(null))
       }
     }
   }
@@ -128,9 +132,13 @@ export class PythonCallVariable extends SplootNode {
     }
 
     if (scopeEntry.builtIn && scopeEntry.builtIn.typeInfo.category === TypeCategory.Function) {
-      return scopeEntry.builtIn.typeInfo.arguments.map((arg) => {
-        return arg.name
-      })
+      return scopeEntry.builtIn.typeInfo.arguments
+        .filter((arg) => {
+          return arg.type === FunctionArgType.PositionalOnly || arg.type === FunctionArgType.PositionalOrKeyword
+        })
+        .map((arg) => {
+          return arg.name
+        })
     }
 
     for (const meta of scopeEntry.declarers.values()) {
