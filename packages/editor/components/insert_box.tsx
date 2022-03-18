@@ -269,10 +269,11 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       e.stopPropagation()
     }
 
-    // Enter or space key
-    if (e.key === 'Enter' || (e.key === ' ' && !this.isOpenString(this.state.userInput))) {
+    // Enter, Tab or space key
+    if (e.key === 'Enter' || e.key === 'Tab' || (e.key === ' ' && !this.isOpenString(this.state.userInput))) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
+      e.preventDefault()
       const selectedNode = filteredSuggestions[activeSuggestion]
       if (selectedNode !== undefined) {
         this.setState({
