@@ -40,7 +40,7 @@ class AssignmentWrapGenerator implements SuggestionGenerator {
       if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
         const grandParent = parent.node.parent.node as PythonStatement
         const node = new PythonAssignment(null)
-        const suggestedNode = new SuggestedNode(node, 'set', 'set =', true, 'assign this expression to a variable')
+        const suggestedNode = new SuggestedNode(node, 'set', '= assign', true, 'assign this expression to a variable')
         suggestedNode.setOverrideLocation(grandParent.getStatement(), 0, 'right')
         return [suggestedNode]
       }
@@ -167,8 +167,9 @@ export class PythonAssignment extends SplootNode {
       right: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'assign'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, '='),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'to'),
     ])
     typeRegistration.pasteAdapters = {
