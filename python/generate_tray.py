@@ -39,7 +39,6 @@ def generate_file(data, filename):
   result = {}
   result = processCategory(data)
 
-
   with open(filename, 'w') as f:
     json.dump(result, f)
 

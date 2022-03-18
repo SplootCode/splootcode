@@ -1,6 +1,7 @@
 export enum TypeCategory {
   Value,
   Function,
+  Type,
 }
 
 interface ValueType {
@@ -25,6 +26,12 @@ export interface FunctionArgument {
 export interface FunctionSignature {
   category: TypeCategory.Function
   arguments: FunctionArgument[]
+  shortDoc: string
 }
 
-export type VariableTypeInfo = ValueType | FunctionSignature
+export interface TypeDefinition {
+  category: TypeCategory.Type
+  attributes: Map<string, VariableTypeInfo>
+}
+
+export type VariableTypeInfo = ValueType | FunctionSignature | TypeDefinition

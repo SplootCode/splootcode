@@ -34,7 +34,17 @@ function filterSuggestions(
 ): RenderedSuggestion[] {
   const prefixSuggestions = autocompleter.getPrefixSuggestions(parentRef, index, userInput)
   if (prefixSuggestions) {
-    return prefixSuggestions.map(renderSuggestion)
+    if (userInput.length <= 1) {
+      return prefixSuggestions.map(renderSuggestion)
+    }
+    const options: Fuse.FuseOptions<SuggestedNode> = {
+      keys: ['key', 'display', 'searchTerms'],
+      caseSensitive: false,
+      threshold: 1.0,
+    }
+    const fuse = new Fuse(prefixSuggestions.map(renderSuggestion), options)
+    const results = fuse.search(userInput) as RenderedSuggestion[]
+    return results
   }
 
   const suggestions = [
