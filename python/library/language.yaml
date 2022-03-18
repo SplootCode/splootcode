@@ -362,7 +362,12 @@ entries:
           childSets:
             condition:
               - type: 'PYTHON_EXPRESSION'
-        abstract: ''
+        abstract: 'Only execute some lines of code if a condition is met.'
+        examples:
+        - ex: |
+            if score > 5:
+              print("That's a good score!")
+          desc: In this example, the program will only run the contained lines of code if the score was greater than 5. Otherwise it will skip everything inside the if.
       - key: elif
         serializedNode:
           type: PYTHON_ELIF_STATEMENT
