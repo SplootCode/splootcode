@@ -34,9 +34,9 @@ entries:
           - ex: "'He said, \"That\\'s cool!\"'"
             desc: It's ok to include quotes in strings without escaping them.
       - key: str
-        node: str()
-        abstract: Creates a string by converting other values into text.
+        scopeEntry: str
       - key: concat
+        title: 'join strings'
         serializedNode:
           type: PYTHON_BINARY_OPERATOR
           properties:
@@ -46,8 +46,7 @@ entries:
           - ex: "'Hello, ' + name"
             desc: 'The two strings are joined together into one new string.'
       - key: len
-        node: len()
-        abstract: Get the length of the string as a number (also used for lists and other collections).
+        scopeEntry: len
         examples:
           - ex: len('Hello')
             desc: This string has 5 letters.
@@ -57,7 +56,97 @@ entries:
           childSets:
             key:
               - type: 'PYTHON_EXPRESSION'
-        abstract: ''
+        abstract: 'Get a single character from the string by index (position in the string).'
+        examples:
+          - ex: "'Hello'[0]"
+            desc: Get the first letter of the string ('H' in this case).
+          - ex: "'Somebody'[1]"
+            desc: Get the second letter of the string ('o' in this case), the numbering starts at 0.
+          - ex: "'Hello'[-2]"
+            desc: "Get the second last letter of the string: 'l'"
+      - category: Contents
+        entries:
+        - key: 'in'
+          serializedNode:
+            type: PYTHON_BINARY_OPERATOR
+            properties:
+              operator: 'in'
+          abstract: 'True if a sequence of characters exists within the string'
+
+        - key: 'notin'
+          serializedNode:
+            type: PYTHON_BINARY_OPERATOR
+            properties:
+              operator: 'not in'
+          abstract: 'True if a sequence of characters does not appear within the string'
+        - key: 'startswith'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'startswith'
+        - key: 'endswith'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'endswith'
+        - key: 'index'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'index'
+        - key: 'count'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'count'
+        - key: 'find'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'find'
+        - key: 'rfind'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rfind'
+        - key: 'rindex'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rindex'   
+
+
+      - category: Capitalization
+        entries:
+        - key: lower
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'lower'
+        - key: upper
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'upper'
+        - key: title
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'title'
+        - key: capitalize
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'capitalize'
+        - key: islower
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'islower'
+        - key: istitle
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'istitle'
+        - key: isupper
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isupper'
+        - key: casefold
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'casefold'
+        - key: swapcase
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'swapcase'
 
 
   - category: Numbers

@@ -1,3 +1,5 @@
+set -eux
+
 if [ -x "$(command -v deactivate)" ]
 then
   deactivate

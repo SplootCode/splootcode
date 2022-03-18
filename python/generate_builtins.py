@@ -1,18 +1,25 @@
 import json
 import yaml
+import builtins
 
 from inspect import signature, isclass, ismodule, Signature, getmembers
 
 def short_doc(doc):
     if not doc:
         return ''
-    if '.' in doc and doc.index('.') < 100:
-        return doc.split('.')[0] + '.'
+    short = doc
+    if '.' in doc and 10 < doc.index('.') < 100:
+        short = doc.split('.')[0] + '.'
     if '\n' in doc and doc.index('\n') < 100:
-        return doc.split('\n')[0]
+        short = doc.split('\n')[0]
     if len(doc) > 100:
-        return doc[:97] + '...'
-    return doc
+        short = doc[:97] + '...'
+
+    lines = doc.split('\n')
+    if '->' in short and len(lines) > 2:
+        short = lines[1] or lines[2]
+
+    return short
 
 def get_method_params(thing):
     params = []
@@ -79,7 +86,6 @@ def get_type_data(typething):
     }
     attributes = {}
     for name, thing in getmembers(typething):
-        print(name, thing)
         attr_data = {
             'name': name,
             'typeName': type(thing).__name__,
@@ -95,7 +101,8 @@ def get_type_data(typething):
             try:
                 params = get_method_params(thing)
             except ValueError:
-                print('No Signature for ', str(thing))
+                pass
+                # print('No Signature for ', str(thing))
         if params is not None:
             attr_data['parameters'] = params
         attributes[name] = attr_data
@@ -104,15 +111,21 @@ def get_type_data(typething):
     return data
 
 
-def generate_builtins_docs(overrides):
-    builtins = {
+def generate_builtins_docs():
+    overrides = {}
+    with open("./library/overrides.yaml", "r") as f:
+        overrides_list = yaml.safe_load(f)['overrides']
+        for override in overrides_list:
+            overrides[override['name']] = override
+
+    builtins_data = {
         'moduleName': 'builtins',
         'values': {},
         'types': {}
     }
-    
-    for name in dir(__builtins__):
-        thing = getattr(__builtins__, name)
+
+    for name in dir(builtins):
+        thing = getattr(builtins, name)
         data = get_value_data(name, thing)
 
         thingKey = f'builtins.{name}'
@@ -121,16 +134,13 @@ def generate_builtins_docs(overrides):
             if 'shortDoc' in overrideData:
                 data['shortDoc'] = overrideData['shortDoc']
 
-        builtins['values'][name] = data
+        builtins_data['values'][name] = data
 
         if (data['typeName'] == 'type'):
-            print(data)
             type_data = get_type_data(thing)
-            builtins['types'][name] = type_data
+            builtins_data['types'][name] = type_data
 
-        json.dumps(data)
-
-    return builtins
+    return builtins_data
 
 if __name__ == '__main__':
     import argparse
@@ -140,21 +150,7 @@ if __name__ == '__main__':
 
     filename = args.outfile
 
-    overrides = {}
-    with open("./library/overrides.yaml", "r") as f:
-        overrides_list = yaml.safe_load(f)['overrides']
-        for override in overrides_list:
-            overrides[override['name']] = override
-
-    builtin_stuff = generate_builtins_docs(overrides)
+    builtin_stuff = generate_builtins_docs()
 
     with open(filename, 'w') as f:
         json.dump(builtin_stuff, f)
-
-    print(builtin_stuff['values'].keys())
-    print(len(builtin_stuff['values']))
-
-    print(builtin_stuff['types'].keys())
-    print(len(builtin_stuff['types']))
-
-    print(builtin_stuff['types']['str'])
