@@ -1,0 +1,16 @@
+
+overrides:
+  - name: builtins.print
+    shortDoc: 'Outputs information to the console.'
+  - name: builtins.input
+    shortDoc: 'Waits for text to be entered into the console.'
+  - name: builtins.str
+    shortDoc: 'Convert something into a string (text).'
+  - name: builtins.int
+    shortDoc: 'Convert to an integer (whole number).'
+  - name: builtins.enumerate
+    shortDoc: 'Iterator over pairs of the count and the items from the iterable.'
+  - name: builtins.len
+    shortDoc: 'Returns the number of items in a container or characters in a string'
+  - name: builtins.range
+    shortDoc: 'Counting iterator, from a starting number up to, but not including, the end number.'
