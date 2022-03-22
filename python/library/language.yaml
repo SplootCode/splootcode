@@ -20,7 +20,7 @@ entries:
           - ex: "name = input('Name: ')"
             desc: 'The input function returns the text that the user entered. This example stores what the user typed in in a variable called "name".'
 
-  - category: Strings
+  - category: Text
     entries:
       - key: string
         node: '""'
@@ -354,10 +354,10 @@ entries:
         examples:
           - ex: var is not None
             desc: Can be used to check if a variable is not None.
-  - category: Control
+  - category: If-else
     entries:
       - key: 'if'
-        serializedNode:
+        serialize dNode:
           type: PYTHON_IF_STATEMENT
           childSets:
             condition:
@@ -379,6 +379,8 @@ entries:
         serializedNode:
           type: PYTHON_ELSE_STATEMENT
         abstract: ''
+  - category: Loops
+    entries:
       - key: for
         serializedNode:
           type: PYTHON_FOR_LOOP
@@ -402,7 +404,7 @@ entries:
           type: PY_CONTINUE
         abstract: ''
 
-  - category: Collections
+  - category: Lists
     entries:
       - key: listlit
         node: '[]'
@@ -418,8 +420,41 @@ entries:
               - type: 'PYTHON_EXPRESSION'
         abstract: ''
       - key: len
-        node: len()
-        abstract: Get the length of the string as a number.
+        scopeEntry: len
+
+  - category: Dictionaries
+    entries:
+      - key: dictlit
+        node: '{}'
+        abstract: ''
+      - key: dict
+        node: 'dict()'
+        abstract: ''
+      - key: subscript
+        serializedNode:
+          type: PYTHON_SUBSCRIPT
+          childSets:
+            key:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: len
+        scopeEntry: len
+
+
+  - category: Sets
+    entries:
+      - key: set
+        node: 'set()'
+        abstract: ''
+      - key: subscript
+        serializedNode:
+          type: PYTHON_SUBSCRIPT
+          childSets:
+            key:
+              - type: 'PYTHON_EXPRESSION'
+        abstract: ''
+      - key: len
+        scopeEntry: len
 
   - category: Functions
     entries:
