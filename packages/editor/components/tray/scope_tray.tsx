@@ -130,7 +130,7 @@ const ScopeTree = (props: ScopeTreeProps) => {
         properties: { identifier: name },
         childSets: {},
       })
-      allVars[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+      allVars[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
     }
     if (funcSignature) {
       const nodeBlock = getNodeBlock({
@@ -146,7 +146,7 @@ const ScopeTree = (props: ScopeTreeProps) => {
           ],
         },
       })
-      allFuncs[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+      allFuncs[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
     }
   }
 

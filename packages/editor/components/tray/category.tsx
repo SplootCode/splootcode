@@ -27,8 +27,9 @@ export function getNodeBlock(node: SerializedNode) {
 const MicroNodeInternal = (props: {
   nodeBlock: NodeBlock
   startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
+  includeBlock: boolean
 }) => {
-  const { nodeBlock, startDrag } = props
+  const { nodeBlock, startDrag, includeBlock } = props
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     startDrag(nodeBlock, 0, 0)
@@ -38,9 +39,12 @@ const MicroNodeInternal = (props: {
     return null
   }
 
+  const height = nodeBlock.rowHeight + (includeBlock ? nodeBlock.indentedBlockHeight : 0)
+  const width = includeBlock ? nodeBlock.width : nodeBlock.rowWidth
+
   return (
     <div draggable={true} onDragStart={onDragStart}>
-      <svg className="autocomplete-inline-svg" height={nodeBlock.rowHeight} width={nodeBlock.rowWidth + 2}>
+      <svg className="autocomplete-inline-svg" height={height} width={width}>
         <EditorNodeBlock block={nodeBlock} selection={null} selectionState={NodeSelectionState.UNSELECTED} />
       </svg>
     </div>
@@ -78,7 +82,7 @@ const CategoryView = (props: CategoryProps) => {
               <>
                 <AccordionButton size={'sm'} border={'none'} px={0} py={1}>
                   {isExpanded ? <ChevronDownIcon mr={1} /> : <ChevronRightIcon mr={1} />}
-                  <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+                  <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
                   <Text pl={1}>{listing.title}</Text>
                 </AccordionButton>
                 <AccordionPanel p={0} mb={2} borderY={'solid 1px'} borderColor={'gray.600'}>

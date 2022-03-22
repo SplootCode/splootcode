@@ -31,7 +31,7 @@ export const Entry = (props: EntryProps) => {
             >
               Example:
             </Text>
-            <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} />
+            <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={true} />
             <Text textColor={'gray.400'} lineHeight={1.1} p={1} py={2} px={1}>
               {example.description}
             </Text>
