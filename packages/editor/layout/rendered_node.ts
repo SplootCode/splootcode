@@ -111,6 +111,7 @@ export class NodeBlock implements NodeObserver {
     this.renderedInlineComponents = []
     this.blockWidth = 0
     this.marginLeft = 0
+    this.width = 0
 
     this.rowHeight = NODE_BLOCK_HEIGHT
     this.indentedBlockHeight = 0
@@ -166,6 +167,7 @@ export class NodeBlock implements NodeObserver {
       this.layout.boxType === NodeBoxType.SMALL_BLOCK ? NODE_INLINE_SPACING_SMALL : NODE_INLINE_SPACING
     this.blockWidth = nodeInlineSpacing
     this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
+    this.rowWidth = 0
     this.indentedBlockHeight = 0
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
@@ -173,6 +175,7 @@ export class NodeBlock implements NodeObserver {
     if (this.layout.boxType === NodeBoxType.INVISIBLE) {
       leftPos = this.x
       this.blockWidth = 0
+      this.width = 0
     }
 
     let marginRight = 0
@@ -184,11 +187,12 @@ export class NodeBlock implements NodeObserver {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
-        this.width = Math.max(this.rowWidth, childSetBlock.width)
+        this.width = Math.max(this.width, childSetBlock.width)
       } else if (component.type === LayoutComponentType.CHILD_SET_STACK) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
+        this.width = Math.max(this.width, childSetBlock.width)
       } else if (component.type === LayoutComponentType.STRING_LITERAL) {
         const val = this.node.getProperty(component.identifier)
         const width = stringWidth('""' + val) + nodeInlineSpacing
@@ -208,7 +212,7 @@ export class NodeBlock implements NodeObserver {
         this.blockWidth += width
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-        this.width = Math.max(this.rowWidth, childSetBlock.width)
+        this.width = Math.max(this.width, childSetBlock.width)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
         // This minus 8 here accounts for the distance from the dot to the edge of the node.
         // This is dumb tbh.
@@ -219,7 +223,7 @@ export class NodeBlock implements NodeObserver {
         const width = 10
         this.blockWidth += width
         leftPos += width
-        this.width = Math.max(this.rowWidth, childSetBlock.width)
+        this.width = Math.max(this.width, childSetBlock.width)
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
         // This minus 8 here accounts for the distance from the dot to the edge of the node.
