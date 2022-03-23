@@ -10,14 +10,15 @@ def short_doc(doc):
     short = doc
     if '.' in doc and 10 < doc.index('.') < 100:
         short = doc.split('.')[0] + '.'
-    if '\n' in doc and doc.index('\n') < 100:
+    elif '\n' in doc and doc.index('\n') < 100:
         short = doc.split('\n')[0]
-    if len(doc) > 100:
+    elif len(doc) > 140:
         short = doc[:97] + '...'
 
     lines = doc.split('\n')
     if '->' in short and len(lines) > 2:
-        short = lines[1] or lines[2]
+        remainder = '\n'.join(lines[1:])
+        return short_doc(remainder.strip())
 
     return short
 

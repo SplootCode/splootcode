@@ -35,6 +35,11 @@ entries:
             desc: It's ok to include quotes in strings without escaping them.
       - key: str
         scopeEntry: str
+        examples:
+          - ex: str(20)
+            desc: Returns '20' as a string (text) instead of a number.
+          - ex: str([1, 2])
+            desc: Returns '[1, 2]' - a string representation of the list.
       - key: concat
         title: 'join strings'
         serializedNode:
@@ -49,7 +54,7 @@ entries:
         scopeEntry: len
         examples:
           - ex: len('Hello')
-            desc: This string has 5 letters.
+            desc: Returns 5 because this string has 5 letters.
       - key: subscript
         serializedNode:
           type: PYTHON_SUBSCRIPT
@@ -64,50 +69,6 @@ entries:
             desc: Get the second letter of the string ('o' in this case), the numbering starts at 0.
           - ex: "'Hello'[-2]"
             desc: "Get the second last letter of the string: 'l'"
-      - category: Contents
-        entries:
-        - key: 'in'
-          serializedNode:
-            type: PYTHON_BINARY_OPERATOR
-            properties:
-              operator: 'in'
-          abstract: 'True if a sequence of characters exists within the string'
-
-        - key: 'notin'
-          serializedNode:
-            type: PYTHON_BINARY_OPERATOR
-            properties:
-              operator: 'not in'
-          abstract: 'True if a sequence of characters does not appear within the string'
-        - key: 'startswith'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'startswith'
-        - key: 'endswith'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'endswith'
-        - key: 'index'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'index'
-        - key: 'count'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'count'
-        - key: 'find'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'find'
-        - key: 'rfind'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'rfind'
-        - key: 'rindex'
-          scopeTypeAttr:
-            type: 'str'
-            attr: 'rindex'   
-
 
       - category: Capitalization
         entries:
@@ -148,6 +109,202 @@ entries:
             type: 'str'
             attr: 'swapcase'
 
+      - category: Characters
+        entries:
+        - key: 'isalnum'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isalnum'
+        - key: 'isascii'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isascii'
+        - key: 'isdecimal'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isdecimal'
+        - key: 'isdigit'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isdigit'
+        - key: 'isidentifier'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isidentifier'
+        - key: 'isnumeric'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isnumeric'
+        - key: 'isprintable'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isprintable'
+        - key: 'isspace'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'isspace'
+
+      - category: Contents
+        entries:
+        - key: 'in'
+          serializedNode:
+            type: PYTHON_BINARY_OPERATOR
+            properties:
+              operator: 'in'
+          abstract: 'True if a sequence of characters exists within the string'
+          examples:
+            - ex: '"lo" in "hello"'
+              desc: This returns True because you can find the letters "lo" somewhere inside "hello"
+            - ex: |
+                  if 'e' in name:
+                    print('Your name contains an e!')
+              desc: If the name variable contains a string with an e in it, then the program will print a message.
+            - ex: '"paper plane" in "paper"'
+              desc: Even though "paper" is inside "paper plan" this example returns False. The string on the right hand side must completely contain the string on the left.
+        - key: 'notin'
+          serializedNode:
+            type: PYTHON_BINARY_OPERATOR
+            properties:
+              operator: 'not in'
+          examples:
+            - ex: '"lo" not in "hello"'
+              desc: This returns False because you can find the letters "lo" somewhere inside "hello"
+            - ex: |
+                  if 'e' not in name:
+                    print('Your name does not contain an e!')
+              desc: If the name variable contains a string with no e's anywhere inside it, then the program will print a message.
+          abstract: 'True if a sequence of characters does not appear within the string'
+        - key: 'startswith'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'startswith'
+          examples:
+            - ex: "if answer.startswith('y'): print('You chose: yes')"
+              desc: If the answer string is a string that starts with the letter 'y', print a message.
+        - key: 'endswith'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'endswith'
+          examples:
+            - ex: "if message.endswith('?'): print('That looks like a question!')"
+              desc: "If the message string ends with a question mark characters '?', print a message."
+        - key: 'index'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'index'
+          examples:
+            - ex: "'hello everyone'.index('o')"
+              desc: Returns 4, which the index number for the first occurrance of the letter 'o'.
+            - ex: "'hello everyone'.index('ev')"
+              desc: Returns 6, which is the index number for the first occurrance of the string 'ev'.
+            - ex: "'hello'.index('z')"
+              desc: Raises an error (ValueError) if the substring cannot be found.
+        - key: 'count'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'count'
+          examples:
+            - ex: "'hello all'.count('l')"
+              desc: Returns 4, which how many times the letter 'l' appears in the string.
+        - key: 'find'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'find'
+          examples:
+            - ex: "'cat on a mat'.find('on')"
+              desc: Returns 4, the index of the first occurance of the given substring, starting from the left.
+            - ex: "'cat on a mat'.find('z')"
+              desc: Returns -1 if the substring cannot be found.
+        - key: 'rfind'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rfind'
+          examples:
+            - ex: "'cat on a mat'.rfind('a')"
+              desc: Returns 10, the index of the last occurance of the given substring (starts looking from the right hand end of the string).
+            - ex: "'cat on a mat'.rfind('z')"
+              desc: Returns -1 if the substring cannot be found.
+        - key: 'rindex'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rindex'
+          examples:
+            - ex: "'hello everyone'.rindex('o')"
+              desc: Returns 11, which the index number for the last occurrance of the letter 'o' (starts looking from the right hand end of the string).
+
+      - category: 'Edits'
+        entries:
+        - key: 'center'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'center'
+        - key: 'expandtabs'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'expandtabs'
+        - key: 'ljust'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'ljust'
+        - key: 'lstrip'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'lstrip'
+        - key: 'replace'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'replace'
+        - key: 'removeprefix'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'removeprefix'
+        - key: 'removesuffix'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'removesuffix'
+        - key: 'rjust'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rjust'
+        - key: 'rstrip'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rstrip'
+        - key: 'strip'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'strip'
+        - key: 'zfill'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'zfill'
+
+      - category: 'Split & Join'
+        entries:
+        - key: 'join'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'join'
+        - key: 'split'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'split'
+        - key: 'splitlines'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'splitlines'
+        - key: 'partition'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'partition'
+        - key: 'rpartition'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rpartition'
+        - key: 'rsplit'
+          scopeTypeAttr:
+            type: 'str'
+            attr: 'rsplit'
 
   - category: Numbers
     entries:
