@@ -514,7 +514,7 @@ entries:
   - category: If-else
     entries:
       - key: 'if'
-        serialize dNode:
+        serializedNode:
           type: PYTHON_IF_STATEMENT
           childSets:
             condition:
@@ -570,7 +570,7 @@ entries:
         node: 'list()'
         abstract: ''
       - key: subscript
-        serializedNode:
+        serializedNode: 
           type: PYTHON_SUBSCRIPT
           childSets:
             key:
@@ -578,6 +578,51 @@ entries:
         abstract: ''
       - key: len
         scopeEntry: len
+      - key: append
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'append'
+      - key: clear
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'clear'
+      - key: copy
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'copy'
+      - key: count
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'count'
+      - key: extend
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'extend'
+      - key: index
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'index'
+      - key: insert
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'insert'
+      - key: pop
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'pop'
+      - key: remove
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'remove'
+      - key: reverse
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'reverse'
+      - key: sort
+        scopeTypeAttr:
+          type: 'list'
+          attr: 'sort'
+
 
   - category: Dictionaries
     entries:
