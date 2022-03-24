@@ -4,6 +4,7 @@ import builtins
 
 from inspect import signature, isclass, ismodule, Signature, getmembers
 
+
 def short_doc(doc):
     if not doc:
         return ''
@@ -78,7 +79,9 @@ def get_value_data(name, thing):
 
     return results
 
-def get_type_data(typething):
+def get_type_data(typething, overrides):
+    from generate_tray import processExample
+
     data = {
         'name': typething.__name__,
         'module': typething.__module__,
@@ -97,6 +100,12 @@ def get_type_data(typething):
             'doc': thing.__doc__,
             'shortDoc': short_doc(thing.__doc__),
         }
+        attr_data['examples'] = []
+        thingKey = f'builtins.{typething.__name__}.{name}'
+        if thingKey in overrides:
+            overrideData = overrides[thingKey]
+            if 'examples' in overrideData:
+                attr_data['examples'] = [processExample(ex) for ex in overrideData['examples']]
         params = None
         if callable(thing) and not isclass(thing):
             try:
@@ -113,11 +122,13 @@ def get_type_data(typething):
 
 
 def generate_builtins_docs():
+    from generate_tray import processExample
+
     overrides = {}
     with open("./library/overrides.yaml", "r") as f:
         overrides_list = yaml.safe_load(f)['overrides']
         for override in overrides_list:
-            overrides[override['name']] = override
+            overrides[override['key']] = override
 
     builtins_data = {
         'moduleName': 'builtins',
@@ -132,13 +143,16 @@ def generate_builtins_docs():
         thingKey = f'builtins.{name}'
         if thingKey in overrides:
             overrideData = overrides[thingKey]
-            if 'shortDoc' in overrideData:
-                data['shortDoc'] = overrideData['shortDoc']
+            if 'abstract' in overrideData:
+                data['shortDoc'] = overrideData['abstract']
+            data['examples'] = []
+            if 'examples' in overrideData:
+                data['examples'] = [processExample(ex) for ex in overrideData['examples']]
 
         builtins_data['values'][name] = data
 
         if (data['typeName'] == 'type'):
-            type_data = get_type_data(thing)
+            type_data = get_type_data(thing, overrides)
             builtins_data['types'][name] = type_data
 
     return builtins_data

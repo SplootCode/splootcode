@@ -1,0 +1,155 @@
+
+category: Python
+entries:
+  - category: Console
+    entries:
+      - builtins.print
+      - builtins.input
+
+  - category: Text
+    entries:
+      - sploot-node.string
+      - builtins.str
+      - sploot-node.string-add
+      - builtins.len
+      - sploot-node.string-subscript
+        
+      - category: Capitalization
+        entries:
+          - builtins.str.lower
+          - builtins.str.upper
+          - builtins.str.title
+          - builtins.str.capitalize
+          - builtins.str.islower
+          - builtins.str.istitle
+          - builtins.str.isupper
+          - builtins.str.casefold
+          - builtins.str.swapcase
+
+      - category: Characters
+        entries:
+          - builtins.str.isalnum
+          - builtins.str.isascii
+          - builtins.str.isdecimal
+          - builtins.str.isdigit
+          - builtins.str.isidentifier
+          - builtins.str.isnumeric
+          - builtins.str.isprintable
+          - builtins.str.isspace
+
+      - category: Contents
+        entries:
+          - sploot-node.binaryop-in
+          - sploot-node.binaryop-notin
+          - builtins.str.startswith
+          - builtins.str.endswith
+          - builtins.str.index
+          - builtins.str.count
+          - builtins.str.find
+          - builtins.str.rfind
+          - builtins.str.rindex
+
+      - category: 'Edits'
+        entries:
+          - builtins.str.center
+          - builtins.str.expandtabs
+          - builtins.str.ljust
+          - builtins.str.lstrip
+          - builtins.str.replace
+          - builtins.str.removeprefix
+          - builtins.str.removesuffix
+          - builtins.str.rjust
+          - builtins.str.rstrip
+          - builtins.str.strip
+          - builtins.str.zfill
+
+      - category: 'Split & Join'
+        entries:
+          - builtins.str.join
+          - builtins.str.split
+          - builtins.str.splitlines
+          - builtins.str.partition
+          - builtins.str.rpartition
+          - builtins.str.rsplit
+
+
+  - category: Numbers
+    entries:
+      - sploot-node.int
+      - builtins.int
+      - sploot-node.float
+      - builtins.float
+      - sploot-node.binaryop-add
+      - sploot-node.binaryop-minus
+      - sploot-node.binaryop-multiply
+      - sploot-node.binaryop-divide
+      - sploot-node.binaryop-floordivide
+      - sploot-node.binaryop-mod
+
+  - category: Logic
+    entries:
+      - sploot-node.literal-true
+      - sploot-node.literal-false
+      - builtins.bool
+      - sploot-node.binaryop-and
+      - sploot-node.binaryop-or
+      - sploot-node.binaryop-not
+      - sploot-node.binaryop-equals
+      - sploot-node.binaryop-inequals
+      - sploot-node.binaryop-lt
+      - sploot-node.binaryop-lte
+      - sploot-node.binaryop-gt
+      - sploot-node.binaryop-gte
+      - sploot-node.binaryop-is
+      - sploot-node.binaryop-isnot
+  
+  - category: If-else
+    entries:
+      - sploot-node.if
+      - sploot-node.elif
+      - sploot-node.else
+
+  - category: Loops
+    entries:
+      - sploot-node.for
+      - sploot-node.while
+      - sploot-node.break
+      - sploot-node.continue
+
+  - category: Lists
+    entries:
+      - sploot-node.list
+      - builtins.list
+      - sploot-node.list-subscript
+      - builtins.len
+      - builtins.list.append
+      - builtins.list.append
+      - builtins.list.clear
+      - builtins.list.copy
+      - builtins.list.count
+      - builtins.list.extend
+      - builtins.list.index
+      - builtins.list.pop
+      - builtins.list.remove
+      - builtins.list.reverse
+      - builtins.list.sort
+
+  - category: Dictionaries
+    entries:
+      - sploot-node.dict
+      - builtins.dict
+      - sploot-node.dict-subscript
+
+  - category: Functions
+    entries:
+      - sploot-node.function
+      - sploot-node.return
+  
+  - category: Libraries
+    entries:
+      - sploot-node.import
+      - sploot-node.import-from
+  
+  - category: Misc
+    entries:
+      - sploot-node.none
