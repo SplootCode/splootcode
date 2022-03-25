@@ -533,29 +533,29 @@ nodes:
 
         desc: The double function returns the number 20, which is stored in the result variable and then printed.
 
-  # - key: import
-  #   serializedNode:
-  #     type: PYTHON_IMPORT
-  #   abstract: 'Imports a module from a Pythonlibrary or another Python file.'
-  #   examples:
-  #     - ex: |
-  #         import random
+  - key: import
+    serializedNode:
+      type: PYTHON_IMPORT
+    abstract: 'Imports a module from a Python library or another Python file.'
+    examples:
+      - ex: |
+          import random
 
-  #         print(random.randint(10))
+          print(random.randint(10))
 
-  #       desc: Imports the built-in random module which is then used to generate a random number up to 10.
+        desc: Imports the built-in random module which is then used to generate a random number up to 10.
 
-  # - key: import-from
-  #   serializedNode:
-  #     type: PYTHON_FROM_IMPORT
-  #   abstract: 'Import specific functions or variables from a module.'
-  #   examples:
-  #     - ex: |
-  #           from random import randint
+  - key: import-from
+    serializedNode:
+      type: PYTHON_FROM_IMPORT
+    abstract: 'Import specific functions or variables from a module.'
+    examples:
+      - ex: |
+            from random import randint
 
-  #           print(randint(10))
+            print(randint(10))
 
-  #       desc: Imports only the randint function from the random module, then uses it to generate a random number up to 10.
+        desc: Imports only the randint function from the random module, then uses it to generate a random number up to 10.
 
   - key: none
     node: None

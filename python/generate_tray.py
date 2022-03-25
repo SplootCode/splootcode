@@ -15,7 +15,7 @@ def processExample(ex):
 
 def get_entry_for_builtin_value(key, scopeName, builtin_docs):
   entry = {
-    key: key
+    'key': key
   }
   if scopeName in builtin_docs['values']:
     scopeInfo = builtin_docs['values'][scopeName]
@@ -39,7 +39,7 @@ def get_entry_for_builtin_value(key, scopeName, builtin_docs):
 
 def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
   entry = {
-    key: key
+    'key': key
   }
 
   scopeInfo = builtin_docs['types'][typeName]['attributes'][attrName]
