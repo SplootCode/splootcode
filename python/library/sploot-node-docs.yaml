@@ -72,11 +72,21 @@ nodes:
     node: '123'
     title: 'Integer'
     abstract: 'An integer, a whole number.'
+    examples:
+      - ex: '7'
+        desc: 'The whole number, 7.'
+      - ex: '-100'
+        desc: 'Negative numbers are ok too!'
+      - ex: age = 23
+        desc: Assign the number to a variable to give it a name.
 
   - key: float
     node: '1.5'
     title: Float
     abstract: 'A floating-point number, also called a decimal number.'
+    examples:
+      - ex: '0.5'
+        desc: 'Represent decimal numbers and fractions using floats.'
 
   - key: binaryop-add
     title: Add
@@ -164,31 +174,52 @@ nodes:
   - key: literal-true
     node: 'True'
     abstract: 'The boolean (bool) value that indicates something is true.'
+    examples:
+      - ex: allowed = True
+        desc: Store True or False in a variable to keep track of information that is a yes/no question.
+      - ex: "if allowed: print('Do something')"
+        desc: True and False values can be used in if conditions.
 
   - key: literal-false
     node: 'False'
     abstract: 'The boolean (bool) value for the opposite of True.'
+    examples:
+      - ex: isLoggedIn = False
+        desc: Store True or False in a variable to keep track of information that is a yes/no question.
 
   - key: binaryop-and
     serializedNode:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: 'and'
-    abstract: ''
+    abstract: 'True if both left and right sides are True. False otherwise.'
+    examples:
+      - ex: '3 == 3 and 3 < 10'
+        desc: 'True because both left and right sides are true.'
+      - ex: 'len(name) != 0 and name[0] == "A"'
+        desc: 'If the left side is False, the right side will be skipped. This can be used to skip code that would otherwise cause an error.'
 
   - key: 'binaryop-or'
     serializedNode:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: 'or'
-    abstract: ''
+    abstract: 'True if either the left or the right side is True. False only if both sides are False.'
+    examples:
+      - ex: '3 == 3 and 3 < 10'
+        desc: 'True because both left and right sides are true.'
+      - ex: 'len(name) == 0 or name[0] == "A"'
+        desc: 'If the left side is True, the right side will be skipped. This can be used to skip code that would otherwise cause an error.'
 
   - key: 'binaryop-not'
     serializedNode:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: 'not'
-    abstract: ''
+    abstract: 'True if the value is False, and False if the value is True'
+    examples:
+      - ex: 'not 3 == 3'
+        desc: Returns False because 3 == 3 is True.
 
   - key: 'binaryop-equals'
     title: 'is equal to'
@@ -196,7 +227,16 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '=='
-    abstract: ''
+    abstract: 'Returns True if the left side is equal to the right side.'
+    examples:
+      - ex: "'hello' == 'hello'"
+        desc: True because the left side and right side are exactly the same.
+      - ex: "'hi' == 'Hi'"
+        desc: False. Even though they are the same word, they are not equal because the capital letters are different.
+      - ex: age == 18
+        desc: True, only if the age variable is the number 18.
+      - ex: "4 == '4'"
+        desc: This returns False because the number 4 is not the same as the string '4' (text).
 
   - key: 'binaryop-inequals'
     title: 'is not equal to'
@@ -204,7 +244,12 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '!='
-    abstract: ''
+    abstract: 'Returns True if the left side is not equal to the right side.'
+    examples:
+      - ex: 3 != 3
+        desc: False, because 3 does equal 3.
+      - ex: "'hello' != 'Hello'"
+        desc: True. The strings are not equal because they have different capital letters.
 
   - key: 'binaryop-lt'
     title: 'less than'
@@ -212,7 +257,12 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '<'
-    abstract: ''
+    abstract: 'Returns True if the left side is less than the right side.'
+    examples:
+      - ex: 3 < 10
+        desc: True, because three is less than 10
+      - ex: 5 < '10'
+        desc: This causes an error. You cannot use it to compare strings and numbers, you must convert the string to a number first.
 
   - key: 'binaryop-lte'
     title: 'less or equal to'
@@ -220,7 +270,14 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '<='
-    abstract: ''
+    abstract: 'Returns True if the left side is less than or equal to the right side.'
+    examples:
+      - ex: 3 <= 10
+        desc: True, because three is less than 10
+      - ex: 5 <= 5.0
+        desc: True because these two numbers are equal.
+      - ex: 5 <= '10'
+        desc: This causes an error. You cannot use it to compare strings and numbers, you must convert the string to a number first.
 
   - key: 'binaryop-gt'
     title: 'greater than'
@@ -228,7 +285,12 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '>'
-    abstract: ''
+    abstract: 'Returns True if the left side is greater than or equal to the right side.'
+    examples:
+      - ex: 5 > 2
+        desc: True, because five is greater than 2.
+      - ex: 5 > '10'
+        desc: This causes an error. You cannot use it to compare strings and numbers, you must convert the string to a number first.
 
   - key: 'binaryop-gte'
     title: 'greater or equal to'
@@ -236,7 +298,14 @@ nodes:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: '>='
-    abstract: ''
+    abstract: 'Returns True if the left side is greater than or equal to the right side.'
+    examples:
+      - ex: 5 >= 2
+        desc: True, because 5 is greater than 2.
+      - ex: 5 >= 5.0
+        desc: True because these two numbers are equal.
+      - ex: 5 >= '10'
+        desc: This causes an error. You cannot use it to compare strings and numbers, you must convert the string to a number first.
 
   - key: 'binaryop-is'
     serializedNode:
@@ -269,6 +338,7 @@ nodes:
     - ex: |
         if score > 5:
           print("That's a good score!")
+
       desc: In this example, the program will only run the contained lines of code if the score was greater than 5. Otherwise it will skip everything inside the if.
 
   - key: elif
@@ -277,14 +347,30 @@ nodes:
       childSets:
         condition:
           - type: 'PYTHON_EXPRESSION'
-    abstract: ''
-    examples: []
+    abstract: 'Added to the end of an if. If the if condition was False, then this if is checked.'
+    examples:
+      - ex: |
+          if age < 5:
+            print('You are younger than 5')
+          elif age < 10:
+            print('You must be older than 5 AND younger than 10!')
+          else:
+            print('You are 10 or older.')
+
+        desc: 'If the first if-condition is False, then the second one will be checked, if that one is also False, then the else block will be run. This code will only ever print one message.'
 
   - key: else
     serializedNode:
       type: PYTHON_ELSE_STATEMENT
-    abstract: ''
-    examples: []
+    abstract: 'When an if-condition is False, the else defines the lines of code to run instead of the code in the if.'
+    examples:
+      - ex: |
+            if age > 10:
+              print('You are older than 10.')
+            else:
+              print('You must be 10 or younger.')
+
+        desc: 'If the age number is 10 or less, then the code in the else block will run instead of the if block.'
 
   - key: for
     serializedNode:
@@ -292,8 +378,26 @@ nodes:
       childSets:
         iterable:
           - type: 'PYTHON_EXPRESSION'
-    abstract: ''
-    examples: []
+    abstract: 'Repeat some code once for each item in an collection.'
+    examples:
+      - ex: |
+          for i in range(10):
+            print(i)
+        desc: The range function counts from 0 up to to 10 (not including 10), this for-loop prints out each number once.
+      - ex: |
+          for letter in "hello":
+            print(letter.upper())
+        desc:  This loop will repeat 5 times, once for each letter in the string. For each letter in the string, it prints the uppercase version of that letter.
+      - ex: |
+          for item in ['one', 'two', 'three']:
+            print(item)
+        desc: This loop will repeat 3 times, once for each element in the list, printing them to the console.
+      # Unpacking not yet supported
+      # - ex: |
+      #     for i, item in enumerate(['one', 'two', 'three']):
+      #       print(i)
+      #       print(item)
+      #   desc: Enumerate will return both the index number (0, 1, 2..) as well as each item in the list.
 
   - key: while
     serializedNode:
@@ -301,25 +405,60 @@ nodes:
       childSets:
         condition:
           - type: 'PYTHON_EXPRESSION'
-    abstract: ''
-    examples: []
+    abstract: 'Repeat some code until the condition is not True anymore.'
+    examples:
+      - ex: |
+            count = 0
+            while count < 10:
+              print(count)
+              count = count + 1
+
+        desc: At the start, the count variable is 0. The loop will repeat the code inside until the count reaches 10.
+      - ex: |
+            answer = input('Enter a word: ')
+            while answer != '':
+              print('You entered: ' + answer)
+              answer = input('Enter another word: ')
+            print('Finished')
+        desc: This loop will repeatedly ask the user to type in a word. The loop will only stop when they answer with nothing.
 
   - key: break
     serializedNode:
       type: PY_BREAK
-    abstract: ''
-    examples: []
+    abstract: 'Causes the nearest loop to stop repeating.'
+    examples:
+      - ex: |
+            for i in range(10):
+              print(i)
+              if i == 3:
+                break
+        desc: Normally this loop would repeat 10 times, counting 0 to 9, but instead it finishes early when it reaches 3.
 
   - key: continue
     serializedNode:
       type: PY_CONTINUE
-    abstract: ''
-    examples: []
+    abstract: 'Continue to the next repeat of the loop, skipping any remaining code inside the loop for this iteration.'
+    examples:
+      - ex: |
+            for i in range(5):
+              if i == 2 or 1 == 4:
+                continue
+              print(i)
+        desc: This loop will print only the numbers 0, 1, 3, 5 because when i is 2 or 3, the continue skips the remaining code in the loop.
 
   - key: list
     node: '[]'
-    abstract: ''
-    examples: []
+    abstract: 'A list of elements'
+    examples:
+      - ex: "['alpha', 'beta', 'gamma']"
+        desc: A new list of three strings.
+      - ex: "[4,5]"
+        desc: A new list of two integers.
+      - ex: "names = ['Fred', 'Sally']"
+        desc: A list of strings, in a variable called names.
+      - ex: "[]"
+        desc: An empty list.
+
 
   - key: list-subscript
     serializedNode:
@@ -327,12 +466,26 @@ nodes:
       childSets:
         key:
           - type: 'PYTHON_EXPRESSION'
-    abstract: ''
-    examples: []
+    abstract: 'Access one element of a list by its index number, counting from 0.'
+    examples:
+      - ex: |
+            names = ['Fred', 'Sally']
+            print(names[0])
+        desc: Prints the first name from the list (Fred). The numbering starts at 0.
+  # TODO: Support assignment to a subscript.
+  #     - ex: |
+  #           names = ['Fred', 'Sally']
+  #           names[1] = 'Bob'
+  #       desc: Changes the names list so that the second element is now Bob instead of Sally.
 
   - key: dict
     node: '{}'
-    abstract: ''
+    abstract: 'A collection of key-value pairs, where the key can be used to look up the value.'
+    examples:
+      - ex: "{'Monday': 'Sunny', 'Tuesday': 'Rain', 'Wednesday': 'Storms'}"
+        desc: A dictionary of weather, so that you can look up the day of the week (the key) and get the weather for that day.
+      - ex: "ages = {'Fred': 23, 'Sally': 89, 'Bob': 10}"
+        desc: A dictionary of ages, so that the name can be used to look up the age of each person.
 
   - key: dict-subscript
     serializedNode:
@@ -340,26 +493,69 @@ nodes:
       childSets:
         key:
           - type: 'PYTHON_EXPRESSION'
+    abstract: 'Access the value from a dictionary, using the key'
+    examples:
+      - ex: |
+            ages = {'Fred': 23, 'Sally': 89, 'Bob': 10}
+            print(ages['Fred'])
+
+        desc: Prints the age of Fred (23) by looking it up in the dictionary.
 
   - key: function
     serializedNode:
       type: PYTHON_FUNCTION_DECLARATION
-    abstract: ''
+    abstract: 'Define a new function.'
+    examples:
+      - ex: |
+            def print_greeting():
+              print('Hello there!')
+
+            print_greeting()
+        desc: Creates a function which prints a message, and then calls that function to run it. Defining a new function doesn't do anything by itself, until the function is called.
+      - ex: |
+            def multiply_two_numbers(num1, num2):
+               return num1 * num2
+
+            print(multiply_two_numbers(4, 5))
+        desc: A function that takes two parameters, and multiplies them together, returing the result.
 
   - key: return
     serializedNode:
       type: PYTHON_RETURN
-    abstract: ''
+    abstract: 'Returns a value back to the code that called the function.'
+    examples:
+      - ex: |
+            def double(num):
+              return num * 2
 
-  - key: import
-    serializedNode:
-      type: PYTHON_IMPORT
-    abstract: ''
+            result = double(10)
+            print(result)
 
-  - key: import-from
-    serializedNode:
-      type: PYTHON_FROM_IMPORT
-    abstract: ''
+        desc: The double function returns the number 20, which is stored in the result variable and then printed.
+
+  # - key: import
+  #   serializedNode:
+  #     type: PYTHON_IMPORT
+  #   abstract: 'Imports a module from a Pythonlibrary or another Python file.'
+  #   examples:
+  #     - ex: |
+  #         import random
+
+  #         print(random.randint(10))
+
+  #       desc: Imports the built-in random module which is then used to generate a random number up to 10.
+
+  # - key: import-from
+  #   serializedNode:
+  #     type: PYTHON_FROM_IMPORT
+  #   abstract: 'Import specific functions or variables from a module.'
+  #   examples:
+  #     - ex: |
+  #           from random import randint
+
+  #           print(randint(10))
+
+  #       desc: Imports only the randint function from the random module, then uses it to generate a random number up to 10.
 
   - key: none
     node: None

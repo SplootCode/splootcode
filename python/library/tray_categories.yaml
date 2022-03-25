@@ -139,16 +139,27 @@ entries:
       - sploot-node.dict
       - builtins.dict
       - sploot-node.dict-subscript
+      - builtins.dict.clear
+      - builtins.dict.copy
+      - builtins.dict.fromkeys
+      - builtins.dict.get
+      - builtins.dict.items
+      - builtins.dict.keys
+      - builtins.dict.pop
+      - builtins.dict.popitem
+      - builtins.dict.setdefault
+      - builtins.dict.update
+      - builtins.dict.values
 
   - category: Functions
     entries:
       - sploot-node.function
       - sploot-node.return
   
-  - category: Libraries
-    entries:
-      - sploot-node.import
-      - sploot-node.import-from
+  # - category: Libraries
+  #   entries:
+  #     - sploot-node.import
+  #     - sploot-node.import-from
   
   - category: Misc
     entries:
