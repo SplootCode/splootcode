@@ -1,9 +1,0 @@
-{
-  "name": "@splootcode/editor",
-  "version": "1.0.0",
-  "dependencies": {
-    "typescript": "^4.5.2"
-  },
-  "type": "module",
-  "main": "lib/index"
-}
