@@ -212,3 +212,48 @@ add(3, 4)
     ]
 }})
 
+    def testImport(self):
+        self.maxDiff = None
+
+        fileNode = splootFromPython('import random')
+        self.assertEqual(fileNode, {
+            'type': 'PYTHON_FILE',
+            'childSets': {
+                'body': [
+                    {
+                        'type': 'PYTHON_IMPORT',
+                        'childSets': {
+                            'modules': [
+                                {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'},}
+                            ]
+                        },
+                        'properties': {},
+                    }
+                ]
+            },
+            'properties': {},
+        })
+
+
+    def testImportFrom(self):
+        self.maxDiff = None
+
+        fileNode = splootFromPython('from random import randint')
+        self.assertEqual(fileNode, {
+            'type': 'PYTHON_FILE',
+            'childSets': {'body': [
+                {
+                    'type': 'PYTHON_FROM_IMPORT',
+                    'childSets': {
+                        'attrs': [
+                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'randint'}}
+                        ],
+                        'module': [
+                            {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'}}
+                        ]
+                    },
+                    'properties': {},
+                }
+            ]},
+            'properties': {},
+        })

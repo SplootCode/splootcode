@@ -176,6 +176,18 @@ def generateFor(forStatement):
     'block': body
   })
 
+
+def generateImport(astImport):
+  names = [SplootNode('PYTHON_MODULE_IDENTIFIER', {}, {'identifier': n.name}) for n in astImport.names]
+  return SplootNode('PYTHON_IMPORT', {'modules': names})
+
+
+def generateImportFrom(astImport):
+  module = SplootNode('PYTHON_MODULE_IDENTIFIER', {}, {'identifier': astImport.module})
+  attrs = [SplootNode('PY_IDENTIFIER', {}, {'identifier': n.name}) for n in astImport.names]
+  return SplootNode('PYTHON_FROM_IMPORT', {'module': [module], 'attrs': attrs})
+
+
 def generateArgs(arguments):
   if len(arguments.posonlyargs) != 0:
     raise Exception('Unsupported: postion-only arguments')
@@ -218,6 +230,10 @@ def generateSplootStatement(statement):
     return SplootNode('PY_CONTINUE')
   elif type(statement) == ast.Return:
     return SplootNode('PYTHON_RETURN')
+  elif type(statement) == ast.Import:
+    return generateImport(statement)
+  elif type(statement) == ast.ImportFrom:
+    return generateImportFrom(statement)
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   

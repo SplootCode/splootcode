@@ -123,7 +123,6 @@ entries:
       - sploot-node.list-subscript
       - builtins.len
       - builtins.list.append
-      - builtins.list.append
       - builtins.list.clear
       - builtins.list.copy
       - builtins.list.count
@@ -156,10 +155,10 @@ entries:
       - sploot-node.function
       - sploot-node.return
   
-  # - category: Libraries
-  #   entries:
-  #     - sploot-node.import
-  #     - sploot-node.import-from
+  - category: Libraries
+    entries:
+      - sploot-node.import
+      - sploot-node.import-from
   
   - category: Misc
     entries:
