@@ -26,7 +26,7 @@ def generateAssignmentTarget(targets):
   if type(target) == ast.Name:
     return SplootNode('PY_IDENTIFIER', {}, {"identifier": target.id})
   
-  raise Exception(f"Unsupported target for assignment: {ast.dump(target)}")
+  raise Exception(f"Unsupported target for assignment: {ast.dump(targets)}")
 
 def generateAssignment(assignStatement):
   return SplootNode("PYTHON_ASSIGNMENT", {
@@ -168,7 +168,7 @@ def generateFor(forStatement):
   if type(forStatement.target) == ast.Name:
     target = SplootNode('PY_IDENTIFIER', {}, {"identifier": forStatement.target.id})
   else:
-    raise Exception(f"Unsupported target for assignment: {ast.dump(target)}")
+    raise Exception(f"Unsupported target for assignment: {ast.dump(forStatement.target)}")
 
   return SplootNode('PYTHON_FOR_LOOP', {
     'target': [target],
@@ -216,6 +216,8 @@ def generateSplootStatement(statement):
     return SplootNode('PY_BREAK')
   elif type(statement) == ast.Continue:
     return SplootNode('PY_CONTINUE')
+  elif type(statement) == ast.Return:
+    return SplootNode('PYTHON_RETURN')
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   
