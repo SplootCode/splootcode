@@ -522,6 +522,9 @@ nodes:
   - key: return
     serializedNode:
       type: PYTHON_RETURN
+      childSets:
+        value:
+          - type: 'PYTHON_EXPRESSION'
     abstract: 'Returns a value back to the code that called the function.'
     examples:
       - ex: |
