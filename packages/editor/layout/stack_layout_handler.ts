@@ -54,9 +54,6 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
       this.width = Math.max(this.width, childNodeBlock.rowWidth)
     })
 
-    // No end cursor for Stack (for now)
-    // this.cursorPositions.push([x, topPos - ROW_SPACING])
-
     if (nodes.length === insertIndex) {
       this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
       this.width = Math.max(this.width, insertBoxWidth)
@@ -64,6 +61,10 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {
+    // Hack to not throw errors when deleting an else statement.
+    if (insertIndex >= this.cursorPositions.length) {
+      return [this.x, this.y + this.height]
+    }
     return this.cursorPositions[insertIndex]
   }
 
