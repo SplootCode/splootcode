@@ -42,7 +42,8 @@ function filterSuggestions(
       caseSensitive: false,
       threshold: 1.0,
     }
-    const fuse = new Fuse(prefixSuggestions.map(renderSuggestion), options)
+    const suggestions = prefixSuggestions.map(renderSuggestion)
+    const fuse = new Fuse(suggestions, options)
     const results = fuse.search(userInput) as RenderedSuggestion[]
     return results
   }
@@ -231,13 +232,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
   }
 
-  isOpenString = (inp: string) => {
-    if (inp.startsWith("'") || inp.startsWith('"')) {
-      return true
-    }
-    return false
-  }
-
   onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { selection } = this.props
 
@@ -265,8 +259,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       e.stopPropagation()
     }
 
-    // Enter, Tab or space key
-    if (e.key === 'Enter' || e.key === 'Tab' || (e.key === ' ' && !this.isOpenString(this.state.userInput))) {
+    // Enter, Tab
+    if (e.key === 'Enter' || e.key === 'Tab') {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
       e.preventDefault()

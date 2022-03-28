@@ -41,7 +41,7 @@ class StringGenerator implements SuggestionGenerator {
         value = value.slice(0, value.length - 1)
       }
       const customString = new StringLiteral(null, value)
-      const suggestedNode = new SuggestedNode(customString, `string ${value}`, value, true, 'string')
+      const suggestedNode = new SuggestedNode(customString, `string ${value}`, textInput, true, 'string')
       return [suggestedNode]
     }
     return []
