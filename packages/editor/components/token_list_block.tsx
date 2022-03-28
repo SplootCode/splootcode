@@ -5,7 +5,6 @@ import { observer } from 'mobx-react'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface TokenListBlockViewProps {
@@ -14,7 +13,6 @@ interface TokenListBlockViewProps {
   isValid: boolean
   invalidIndex: number
   isInline: boolean
-  selection: NodeSelection
 }
 
 @observer
@@ -36,12 +34,7 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
           const invalidChild = idx === invalidIndex
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock
-                block={nodeBlock}
-                selection={this.props.selection}
-                selectionState={selectionState}
-                isInvalidBlamed={invalidChild}
-              />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} isInvalidBlamed={invalidChild} />
             </React.Fragment>
           )
         })}

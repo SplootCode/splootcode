@@ -62,7 +62,7 @@ export class Editor extends React.Component<EditorProps> {
               onClick={this.onClickHandler}
               ref={this.editorSvgRef}
             >
-              <ExpandedListBlockView block={fileBody} selection={this.props.selection} isSelected={false} />
+              <ExpandedListBlockView block={fileBody} isSelected={false} />
               <ActiveCursor selection={selection} />
             </svg>
             {insertBox}

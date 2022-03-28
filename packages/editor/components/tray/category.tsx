@@ -45,7 +45,7 @@ const MicroNodeInternal = (props: {
   return (
     <div draggable={true} onDragStart={onDragStart}>
       <svg className="autocomplete-inline-svg" height={height} width={width}>
-        <EditorNodeBlock block={nodeBlock} selection={null} selectionState={NodeSelectionState.UNSELECTED} />
+        <EditorNodeBlock block={nodeBlock} selectionState={NodeSelectionState.UNSELECTED} />
       </svg>
     </div>
   )

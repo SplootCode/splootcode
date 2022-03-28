@@ -5,13 +5,11 @@ import { observer } from 'mobx-react'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface AttachedChildViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
-  selection: NodeSelection
 }
 
 @observer
@@ -40,7 +38,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
           const selectionState = block.getChildSelectionState(idx)
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
             </React.Fragment>
           )
         })}
