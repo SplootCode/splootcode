@@ -1,4 +1,5 @@
 import { AutoCompleteRegistry } from './autocomplete/registry'
+import { LayoutComponentType } from './type_registry'
 import { ParentReference, SplootNode } from './node'
 import { SuggestedNode } from './autocomplete/suggested_node'
 
@@ -54,6 +55,23 @@ const TypeToCategoryMap = new Map<string, Set<NodeCategory>>()
 const BlankFillMap = new Map<NodeCategory, () => SplootNode>()
 
 const autoCompleteRegistry = new AutoCompleteRegistry()
+
+export function getLayoutComponentForCategory(category: NodeCategory): LayoutComponentType {
+  switch (category) {
+    case NodeCategory.PythonStatement:
+      return LayoutComponentType.CHILD_SET_BLOCK
+    case NodeCategory.PythonElseBlock:
+      return LayoutComponentType.CHILD_SET_STACK
+    case NodeCategory.PythonExpression:
+      return LayoutComponentType.CHILD_SET_TREE_BRACKETS
+    case NodeCategory.PythonExpressionToken:
+    case NodeCategory.PythonAssignable:
+    case NodeCategory.PythonFunctionArgumentDeclaration:
+      return LayoutComponentType.CHILD_SET_TOKEN_LIST
+    default:
+      return LayoutComponentType.CHILD_SET_STACK
+  }
+}
 
 export function registerNodeCateogry(nodeType: string, category: NodeCategory) {
   if (!CategoryMap.has(category)) {

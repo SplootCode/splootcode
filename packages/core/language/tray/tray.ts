@@ -8,7 +8,7 @@ export interface TrayCategory {
 }
 
 export interface TrayExample {
-  serializedNode: SerializedNode
+  serializedNodes: SerializedNode[]
   description: string
 }
 

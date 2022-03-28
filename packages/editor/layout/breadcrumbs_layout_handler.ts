@@ -66,7 +66,6 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
       const [x, y] = this.cursorPositions[0]
       return [x + 3, y]
     }
-    console.log('here')
     return [this.x, this.y]
   }
 

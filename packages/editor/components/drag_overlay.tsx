@@ -3,9 +3,9 @@ import './drag_overlay.css'
 import React from 'react'
 import { observer } from 'mobx-react'
 
-import { EditorNodeBlock } from './node_block'
-import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { FragmentView } from './fragment'
+import { NodeSelection } from '../context/selection'
+import { RenderedFragment } from '../layout/rendered_fragment'
 
 interface OverlayProps {
   selection: NodeSelection
@@ -17,13 +17,13 @@ export class DragOverlay extends React.Component<OverlayProps> {
   render() {
     const { selection, editorRef } = this.props
     const dragState = selection.dragState
-    const block = dragState?.node
-    if (!dragState || block === null) {
+    const fragment = dragState?.node
+    if (!dragState || fragment === null) {
       return <div style={{ display: 'none' }} />
     }
     return (
       <DragOverlayInternal
-        block={block}
+        fragment={fragment}
         initialX={0}
         initialY={0}
         onEndDrag={this.onEndDrag}
@@ -39,7 +39,7 @@ export class DragOverlay extends React.Component<OverlayProps> {
 }
 
 interface DragOverlayInternalProps {
-  block: NodeBlock
+  fragment: RenderedFragment
   onEndDrag: () => any
   initialX: number
   initialY: number
@@ -62,7 +62,7 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
   }
 
   render() {
-    const { block } = this.props
+    const { fragment } = this.props
     const { x, y } = this.state
     return (
       <div onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove}>
@@ -74,7 +74,7 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
           preserveAspectRatio="none"
         >
           <g transform={`translate(${x} ${y})`}>
-            <EditorNodeBlock block={block} selectionState={NodeSelectionState.UNSELECTED} />
+            <FragmentView fragment={fragment} />
           </g>
         </svg>
       </div>
@@ -82,7 +82,7 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
   }
 
   onMouseUp = (event: React.MouseEvent) => {
-    const { selection, block, editorRef } = this.props
+    const { selection, fragment, editorRef } = this.props
 
     const refBox = editorRef.current.getBoundingClientRect()
     const x = event.pageX - refBox.left
@@ -91,9 +91,10 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
     // TODO: Only allow cursors in positions that make sense.
     selection.placeCursorByXYCoordinate(x, y)
     if (selection.isCursor()) {
-      selection.insertNodeAtCurrentCursor(block.node.clone())
-    } else if (selection.isSingleNode()) {
-      selection.replaceOrWrapSelectedNode(block.node.clone())
+      selection.insertFragmentAtCurrentCursor(fragment.fragment)
+    } else if (selection.isSingleNode() && fragment.nodes.length === 1) {
+      const node = fragment.nodes[0]
+      selection.replaceOrWrapSelectedNode(node.node.clone())
     }
     this.props.onEndDrag()
   }
