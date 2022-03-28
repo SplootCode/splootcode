@@ -4,9 +4,9 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { Category } from './category'
-import { NodeBlock } from '../../layout/rendered_node'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
 import { PythonLanguageTray } from '@splootcode/core/language/tray/python/language'
+import { RenderedFragment } from '../../layout/rendered_fragment'
 import { ScopeTray } from './scope_tray'
 import { SplootNode } from '@splootcode/core/language/node'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
@@ -14,7 +14,7 @@ import { TrayCategory } from '@splootcode/core/language/tray/tray'
 interface TrayProps {
   rootNode: SplootNode
   width: number
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
+  startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
 interface TrayState {

@@ -2,13 +2,12 @@ import json
 
 import yaml
 
-from convert_ast import splootNodeFromPython
+from convert_ast import SplootNode, splootNodesFromPython, splootNodeFromPython
 from generate_builtins import generate_builtins_docs
-from convert_ast import SplootNode
 
 def processExample(ex):
   return {
-    'serializedNode': splootNodeFromPython(ex['ex']),
+    'serializedNodes': splootNodesFromPython(ex['ex']),
     'description': ex['desc']
   }
 

@@ -269,3 +269,19 @@ def splootNodeFromPython(codeString):
 
   statementNode = generateSplootStatement(statement)
   return statementNode['childSets']['statement'][0]
+
+def splootNodesFromPython(codeString):
+  tree = ast.parse(codeString)
+
+  if len(tree.body) > 1:
+    return [generateSplootStatement(statement) for statement in tree.body]
+
+  statement = tree.body[0]
+  if type(statement) == ast.Expr:
+    expNode = generateExpression(statement.value)
+    if len(expNode['childSets']['tokens']) == 1:
+      return [expNode['childSets']['tokens'][0]]
+    return [expNode]
+
+  statementNode = generateSplootStatement(statement)
+  return [statementNode['childSets']['statement'][0]]

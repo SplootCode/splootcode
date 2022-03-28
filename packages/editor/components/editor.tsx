@@ -13,6 +13,7 @@ import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_f
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
+import { RenderedFragment } from '../layout/rendered_fragment'
 import { Tray } from './tray/tray'
 import { deserializeNode } from '@splootcode/core/language/type_registry'
 
@@ -74,8 +75,8 @@ export class Editor extends React.Component<EditorProps> {
     )
   }
 
-  startDrag = (nodeBlock: NodeBlock, offsetX: number, offestY: number) => {
-    this.props.selection.startDrag(nodeBlock, offsetX, offestY)
+  startDrag = (fragment: RenderedFragment, offsetX: number, offestY: number) => {
+    this.props.selection.startDrag(fragment, offsetX, offestY)
   }
 
   onClickHandler = (event: React.MouseEvent) => {

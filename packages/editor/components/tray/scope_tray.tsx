@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Text } from '@chakra-ui/react'
-import { Category, MicroNode, getNodeBlock } from './category'
+import { Category, MicroNode, getSingleNodeFragment } from './category'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { NodeBlock } from '../../layout/rendered_node'
+import { RenderedFragment } from '../../layout/rendered_fragment'
 import { Scope } from '@splootcode/core/language/scope/scope'
 import { ScopeObserver } from '@splootcode/core/language/observers'
 import { SplootNode } from '@splootcode/core/language/node'
@@ -13,7 +13,7 @@ import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mu
 
 export interface EntryProps {
   rootNode: SplootNode
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
+  startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
 const AssignmentCategory: TrayCategory = {
@@ -29,28 +29,30 @@ const AssignmentCategory: TrayCategory = {
       },
       examples: [
         {
-          serializedNode: {
-            type: 'PYTHON_ASSIGNMENT',
-            childSets: {
-              left: [{ type: 'PY_IDENTIFIER', properties: { identifier: 'num' }, childSets: {} }],
-              right: [
-                {
-                  type: 'PYTHON_EXPRESSION',
-                  childSets: {
-                    tokens: [
-                      {
-                        type: 'NUMERIC_LITERAL',
-                        properties: { value: '10' },
-                        childSets: {},
-                      },
-                    ],
+          serializedNodes: [
+            {
+              type: 'PYTHON_ASSIGNMENT',
+              childSets: {
+                left: [{ type: 'PY_IDENTIFIER', properties: { identifier: 'num' }, childSets: {} }],
+                right: [
+                  {
+                    type: 'PYTHON_EXPRESSION',
+                    childSets: {
+                      tokens: [
+                        {
+                          type: 'NUMERIC_LITERAL',
+                          properties: { value: '10' },
+                          childSets: {},
+                        },
+                      ],
+                    },
+                    properties: {},
                   },
-                  properties: {},
-                },
-              ],
+                ],
+              },
+              properties: {},
             },
-            properties: {},
-          },
+          ],
           description: '',
         },
       ],
@@ -105,7 +107,7 @@ export const ScopeTray = (props: EntryProps) => {
 
 interface ScopeTreeProps {
   scope: Scope
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
+  startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
 const ScopeTree = (props: ScopeTreeProps) => {
@@ -125,28 +127,34 @@ const ScopeTree = (props: ScopeTreeProps) => {
       }
     }
     if (hasVar) {
-      const nodeBlock = getNodeBlock({
-        type: 'PY_IDENTIFIER',
-        properties: { identifier: name },
-        childSets: {},
-      })
-      allVars[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
+      const nodeBlock = getSingleNodeFragment(
+        {
+          type: 'PY_IDENTIFIER',
+          properties: { identifier: name },
+          childSets: {},
+        },
+        false
+      )
+      allVars[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
     }
     if (funcSignature) {
-      const nodeBlock = getNodeBlock({
-        type: 'PYTHON_CALL_VARIABLE',
-        properties: { identifier: name },
-        childSets: {
-          arguments: [
-            {
-              type: 'PYTHON_EXPRESSION',
-              properties: {},
-              childSets: { tokens: [] },
-            },
-          ],
+      const nodeBlock = getSingleNodeFragment(
+        {
+          type: 'PYTHON_CALL_VARIABLE',
+          properties: { identifier: name },
+          childSets: {
+            arguments: [
+              {
+                type: 'PYTHON_EXPRESSION',
+                properties: {},
+                childSets: { tokens: [] },
+              },
+            ],
+          },
         },
-      })
-      allFuncs[name] = <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
+        false
+      )
+      allFuncs[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
     }
   }
 

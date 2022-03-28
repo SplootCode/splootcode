@@ -2,50 +2,48 @@ import React from 'react'
 
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Text } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { EditorNodeBlock } from '../node_block'
 import { Entry } from './entry'
-import { NodeBlock } from '../../layout/rendered_node'
-import { NodeSelectionState } from '../../context/selection'
+import { FragmentView } from '../fragment'
+import { RenderedFragment } from '../../layout/rendered_fragment'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
+import { SplootFragment } from '@splootcode/core/language/types/fragment'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
 
 export interface CategoryProps {
   category: TrayCategory
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
+  startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
-export function getNodeBlock(node: SerializedNode) {
+export function getSingleNodeFragment(node: SerializedNode, includeBlock: boolean): RenderedFragment {
   if (!node) {
     return null
   }
   const splootNode = deserializeNode(node)
-  const nodeBlock = new NodeBlock(null, splootNode, null, 0)
-  nodeBlock.calculateDimensions(0, 0, null)
-  return nodeBlock
+  const fragment = new SplootFragment([splootNode])
+  return new RenderedFragment(fragment, includeBlock)
 }
 
 const MicroNodeInternal = (props: {
-  nodeBlock: NodeBlock
-  startDrag: (node: NodeBlock, offsetX: number, offsetY: number) => any
-  includeBlock: boolean
+  fragment: RenderedFragment
+  startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }) => {
-  const { nodeBlock, startDrag, includeBlock } = props
+  const { fragment: fragment, startDrag } = props
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    startDrag(nodeBlock, 0, 0)
+    startDrag(fragment, 0, 0)
   }
 
-  if (nodeBlock === null) {
+  if (fragment === null) {
     return null
   }
 
-  const height = nodeBlock.rowHeight + (includeBlock ? nodeBlock.indentedBlockHeight : 0)
-  const width = includeBlock ? nodeBlock.width : nodeBlock.rowWidth
+  const height = fragment.height
+  const width = fragment.width
 
   return (
     <div draggable={true} onDragStart={onDragStart}>
       <svg className="autocomplete-inline-svg" height={height} width={width}>
-        <EditorNodeBlock block={nodeBlock} selectionState={NodeSelectionState.UNSELECTED} />
+        <FragmentView fragment={fragment} />
       </svg>
     </div>
   )
@@ -75,14 +73,14 @@ const CategoryView = (props: CategoryProps) => {
             </AccordionItem>
           )
         }
-        const nodeBlock = getNodeBlock(listing.serializedNode)
+        const fragment = getSingleNodeFragment(listing.serializedNode, false)
         return (
           <AccordionItem key={listing.key} border={'none'}>
             {({ isExpanded }) => (
               <>
                 <AccordionButton size={'sm'} border={'none'} px={0} py={1}>
                   {isExpanded ? <ChevronDownIcon mr={1} /> : <ChevronRightIcon mr={1} />}
-                  <MicroNode nodeBlock={nodeBlock} startDrag={startDrag} includeBlock={false} />
+                  <MicroNode fragment={fragment} startDrag={startDrag} />
                   <Text pl={1}>{listing.title}</Text>
                 </AccordionButton>
                 <AccordionPanel p={0} mb={2} borderY={'solid 1px'} borderColor={'gray.600'}>

@@ -9,6 +9,8 @@ import {
   isNodeInCategory,
 } from '@splootcode/core/language/node_category_registry'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
+import { RenderedFragment } from '../layout/rendered_fragment'
+import { SplootFragment } from '@splootcode/core/language/types/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
 import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
@@ -29,7 +31,7 @@ export enum SelectionState {
 }
 
 export interface DragState {
-  node: NodeBlock
+  node: RenderedFragment
   offsetX: number
   offsetY: number
 }
@@ -387,6 +389,29 @@ export class NodeSelection {
     this.insertNodeByChildSet(childSet, index, node)
   }
 
+  insertFragmentAtCurrentCursor(fragment: SplootFragment) {
+    if (this.isCursor()) {
+      if (fragment.isSingle()) {
+        this.insertNodeAtCurrentCursor(fragment.nodes[0])
+        return
+      }
+
+      const destCategory = this.getPasteDestinationCategory()
+      const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
+      const valid = adaptedNodes.filter((node) => node)
+      if (adaptedNodes.length == valid.length) {
+        const listBlock = this.cursor.listBlock
+        let index = this.cursor.index
+        for (const node of adaptedNodes) {
+          this.insertNode(listBlock, index, node)
+          index++
+        }
+      } else {
+        console.warn('Cannot paste there - not all nodes are compatible')
+      }
+    }
+  }
+
   insertNodeAtCurrentCursor(node: SplootNode) {
     if (this.isCursor()) {
       const adaptedNode = adaptNodeToPasteDestination(node, this.getPasteDestinationCategory())
@@ -541,11 +566,9 @@ export class NodeSelection {
     }
   }
 
-  startDrag(nodeBlock: NodeBlock, offsetX: number, offestY: number) {
-    const tempNodeBlock = new NodeBlock(null, nodeBlock.node, null, 0)
-    tempNodeBlock.calculateDimensions(0, 0, null)
+  startDrag(fragment: RenderedFragment, offsetX: number, offestY: number) {
     this.dragState = {
-      node: tempNodeBlock,
+      node: fragment,
       offsetX: offsetX,
       offsetY: offestY,
     }
