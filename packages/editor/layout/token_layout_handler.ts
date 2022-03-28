@@ -72,7 +72,7 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {
     if (this.cursorPositions.length === 1) {
       const [x, y] = this.cursorPositions[insertIndex]
-      return [x + 6, y]
+      return [x + 5, y]
     }
     const [x, y] = this.cursorPositions[insertIndex]
     return [x + 3, y]

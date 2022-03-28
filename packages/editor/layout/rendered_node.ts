@@ -1,5 +1,6 @@
 import { observable } from 'mobx'
 
+import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
@@ -14,7 +15,6 @@ export const NODE_INLINE_SPACING_SMALL = 6
 export const NODE_BLOCK_HEIGHT = 30
 export const LOOP_ANNOTATION_HEIGHT = 12
 export const INDENTED_BLOCK_PADDING_BOTTOM = 24
-const INDENT = 30
 
 export class RenderedParentRef {
   node: NodeBlock
@@ -148,8 +148,7 @@ export class NodeBlock implements NodeObserver {
     for (const component of nodeLayout.components) {
       if (
         component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS ||
-        component.type === LayoutComponentType.CHILD_SET_TREE ||
-        component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT
+        component.type === LayoutComponentType.CHILD_SET_TREE
       ) {
         this.renderedChildSets[component.identifier].updateLayout(component)
       }
@@ -183,12 +182,10 @@ export class NodeBlock implements NodeObserver {
     this.layout.components.forEach((component: LayoutComponent, idx) => {
       const marginAlreadyApplied = marginApplied && idx == 0 && this.layout.boxType === NodeBoxType.INVISIBLE
 
-      if (component.type === LayoutComponentType.CHILD_SET_BLOCK) {
-        const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(x + INDENT, y + this.rowHeight, selection)
-        this.indentedBlockHeight += childSetBlock.height
-        this.width = Math.max(this.width, childSetBlock.width)
-      } else if (component.type === LayoutComponentType.CHILD_SET_STACK) {
+      if (
+        component.type === LayoutComponentType.CHILD_SET_BLOCK ||
+        component.type === LayoutComponentType.CHILD_SET_STACK
+      ) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
@@ -205,7 +202,10 @@ export class NodeBlock implements NodeObserver {
         this.blockWidth += width
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-      } else if (component.type === LayoutComponentType.CHILD_SET_TREE) {
+      } else if (
+        component.type === LayoutComponentType.CHILD_SET_TREE ||
+        component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
+      ) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         const width = 10
@@ -217,29 +217,17 @@ export class NodeBlock implements NodeObserver {
         // This minus 8 here accounts for the distance from the dot to the edge of the node.
         // This is dumb tbh.
         marginRight += Math.max(childSetBlock.width - 8, 0)
-      } else if (component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
-        const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
-        const width = 10
-        this.blockWidth += width
-        leftPos += width
-        this.width = Math.max(this.width, childSetBlock.width)
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-        // This minus 8 here accounts for the distance from the dot to the edge of the node.
-        // This is dumb tbh.
-        marginRight += Math.max(childSetBlock.width - 8, 0)
-      } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
-        const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
-        this.marginLeft += childSetBlock.width
-        leftPos += childSetBlock.width
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
         marginRight += childSetBlock.width + 8 // Extra for line and brackets
+      } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+        this.marginLeft += childSetBlock.width
+        leftPos += childSetBlock.width
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         if (marginAlreadyApplied && childSetBlock.allowInsert()) {
@@ -264,17 +252,24 @@ export class NodeBlock implements NodeObserver {
       }
     })
 
-    if (selection !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
-      selection.cursorMap.registerCursorStart(
+    this.rowWidth = this.marginLeft + this.blockWidth + marginRight
+    this.width = Math.max(this.rowWidth, this.width)
+
+    if (selection !== null) {
+      this.registerCursorPositions(selection.cursorMap)
+    }
+  }
+
+  registerCursorPositions(cursorMap: CursorMap) {
+    if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
+      cursorMap.registerCursorStart(
         this.parentChildSet,
         this.index,
-        x + this.marginLeft,
-        y + this.marginTop,
+        this.x + this.marginLeft,
+        this.y + this.marginTop,
         false
       )
     }
-    this.rowWidth = this.marginLeft + this.blockWidth + marginRight
-    this.width = Math.max(this.rowWidth, this.width)
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {

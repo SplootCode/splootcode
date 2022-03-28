@@ -13,19 +13,13 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   marginTop: number
 
   cursorPositions: [number, number][]
-  childSetRightAttachLabel: string
 
-  constructor(layoutComponent: LayoutComponent) {
+  constructor() {
     this.cursorPositions = []
-    this.childSetRightAttachLabel = layoutComponent.metadata
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
-    if (layoutComponent.metadata) {
-      this.childSetRightAttachLabel = layoutComponent.metadata as string
-    } else {
-      this.childSetRightAttachLabel = ''
-    }
+    // N/A
   }
 
   calculateDimensions(

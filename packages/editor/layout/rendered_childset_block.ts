@@ -55,7 +55,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   componentType: LayoutComponentType
   @observable
   childSetTreeLabels: string[]
-  childSetRightAttachLabel: string
 
   @observable
   x: number
@@ -110,7 +109,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.layoutHandler = new TreeLayoutHandler(layoutComponent)
         break
       case LayoutComponentType.CHILD_SET_ATTACH_RIGHT:
-        this.layoutHandler = new AttachRightLayoutHandler(layoutComponent)
+        this.layoutHandler = new AttachRightLayoutHandler()
         break
       default:
         console.warn(`Unsupported childset layout type: ${layoutComponent.type}`)
@@ -138,12 +137,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       } else {
         this.childSetTreeLabels = []
       }
-    }
-
-    if (this.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT && layoutComponent.metadata) {
-      this.childSetRightAttachLabel = layoutComponent.metadata as string
-    } else {
-      this.childSetRightAttachLabel = ''
     }
   }
 
@@ -481,10 +474,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (mutation.type === ChildSetMutationType.DELETE) {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
+      this.selection.updateRenderPositions()
       if (this.allowInsertCursor()) {
         this.selection.placeCursor(this, mutation.index, true)
       }
-      this.selection.updateRenderPositions()
       this.selection.fixCursorToValidPosition()
     }
   }
