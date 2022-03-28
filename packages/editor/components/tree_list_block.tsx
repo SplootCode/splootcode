@@ -5,13 +5,11 @@ import { observer } from 'mobx-react'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface TreeListBlockViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
-  selection: NodeSelection
 }
 
 @observer
@@ -67,7 +65,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
             <React.Fragment key={idx}>
               {line}
               {label}
-              <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
             </React.Fragment>
           )
         })}
@@ -140,7 +138,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
                 d={'M ' + nodeBlock.x + ' ' + nodeBlock.y + ' a 40 40 45 0 0 0 30'}
                 fill="transparent"
               ></path>
-              <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
               <path
                 className={connectorClass}
                 d={'M ' + (nodeBlock.x + nodeBlock.rowWidth + 2) + ' ' + nodeBlock.y + ' a 40 40 45 0 1 0 30'}

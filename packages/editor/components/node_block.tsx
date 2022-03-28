@@ -9,7 +9,7 @@ import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
 import { NODE_INLINE_SPACING, NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
-import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { NodeSelectionState } from '../context/selection'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { Separator } from './separator'
 import { TokenListBlockView } from './token_list_block'
@@ -17,7 +17,6 @@ import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
 interface NodeBlockProps {
   block: NodeBlock
-  selection: NodeSelection
   selectionState: NodeSelectionState
   isInsideBreadcrumbs?: boolean
   isInvalidBlamed?: boolean
@@ -78,7 +77,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   render() {
-    const { block, selection, selectionState, isInvalidBlamed } = this.props
+    const { block, selectionState, isInvalidBlamed } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
 
     if (block === null) {
@@ -155,7 +154,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 block={block}
                 propertyName={renderedComponent.layoutComponent.identifier}
                 selectState={selectionState}
-                selection={selection}
               />
             )
             internalLeftPos += renderedComponent.width
@@ -168,31 +166,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 block={block}
                 propertyName={renderedComponent.layoutComponent.identifier}
                 selectState={selectionState}
-                selection={selection}
               />
             )
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = (
-              <TreeListBlockBracketsView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
+            result = <TreeListBlockBracketsView key={idx} block={childSetBlock} isSelected={isSelected} />
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = (
-              <TreeListBlockView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
+            result = <TreeListBlockView key={idx} block={childSetBlock} isSelected={isSelected} />
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
@@ -203,7 +186,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 isSelected={isSelected}
                 isValid={block.invalidChildsetID !== renderedComponent.layoutComponent.identifier}
                 isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
-                selection={this.props.selection}
                 invalidIndex={block.invalidChildsetIndex}
               />
             )
@@ -244,25 +226,11 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         {block.layout.components.map((layoutComponent: LayoutComponent, idx: number) => {
           if (layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {
             const childSetBlock = block.renderedChildSets[layoutComponent.identifier]
-            const result = (
-              <ExpandedListBlockView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
+            const result = <ExpandedListBlockView key={idx} block={childSetBlock} isSelected={isSelected} />
             return result
           } else if (layoutComponent.type === LayoutComponentType.CHILD_SET_STACK) {
             const childSetBlock = block.renderedChildSets[layoutComponent.identifier]
-            const result = (
-              <ExpandedListBlockView
-                key={idx}
-                block={childSetBlock}
-                isSelected={isSelected}
-                selection={this.props.selection}
-              />
-            )
+            const result = <ExpandedListBlockView key={idx} block={childSetBlock} isSelected={isSelected} />
             return result
           }
         })}
@@ -271,7 +239,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   renderLeftAttachedBreadcrumbsChildSet() {
-    const { block, selection } = this.props
+    const { block } = this.props
     if (block.leftBreadcrumbChildSet === null) {
       return null
     }
@@ -284,7 +252,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       return (
         <EditorNodeBlock
           block={childSetBlock.nodes[0]}
-          selection={selection}
           selectionState={childSetBlock.getChildSelectionState(0)}
           isInsideBreadcrumbs={true}
         />
@@ -293,7 +260,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   renderRightAttachedChildSet(): ReactElement {
-    const { block, selection, selectionState } = this.props
+    const { block, selectionState } = this.props
     const isSelected = selectionState === NodeSelectionState.SELECTED
     if (block.rightAttachedChildSet === null) {
       return null
@@ -304,7 +271,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         <AttachedChildRightExpressionView
           block={childSetBlock}
           isSelected={isSelected}
-          selection={selection}
         ></AttachedChildRightExpressionView>
       )
     }

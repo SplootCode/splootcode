@@ -3,7 +3,7 @@ import './string_literal.css'
 import React from 'react'
 
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection, NodeSelectionState } from '../context/selection'
+import { NodeSelectionState } from '../context/selection'
 
 interface StringLiteralProps {
   block: NodeBlock
@@ -11,7 +11,6 @@ interface StringLiteralProps {
   topPos: number
   propertyName: string
   selectState: NodeSelectionState
-  selection: NodeSelection
 }
 
 export class InlineStringLiteral extends React.Component<StringLiteralProps> {

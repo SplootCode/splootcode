@@ -170,11 +170,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
                     height={suggestion.nodeBlock.rowHeight}
                     width={suggestion.nodeBlock.rowWidth + 2}
                   >
-                    <EditorNodeBlock
-                      block={suggestion.nodeBlock}
-                      selection={null}
-                      selectionState={NodeSelectionState.UNSELECTED}
-                    />
+                    <EditorNodeBlock block={suggestion.nodeBlock} selectionState={NodeSelectionState.UNSELECTED} />
                   </svg>
                   <span className="autocomplete-description">{suggestion.description}</span>
                 </li>

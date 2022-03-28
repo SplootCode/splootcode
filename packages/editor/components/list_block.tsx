@@ -5,19 +5,16 @@ import { observer } from 'mobx-react'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface ExpandedListBlockViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
-  selection: NodeSelection
 }
 
 interface InlineListBlockViewProps {
   block: RenderedChildSetBlock
   isSelected: boolean
-  selection: NodeSelection
   isValid: boolean
   isInsideBreadcrumbs?: boolean
 }
@@ -39,7 +36,6 @@ export class InlineListBlockView extends React.Component<InlineListBlockViewProp
             <React.Fragment key={idx}>
               <EditorNodeBlock
                 block={nodeBlock}
-                selection={this.props.selection}
                 selectionState={selectionState}
                 isInsideBreadcrumbs={isInsideBreadcrumbs}
               />
@@ -62,7 +58,7 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
           const selectionState = block.getChildSelectionState(idx)
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selection={this.props.selection} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
             </React.Fragment>
           )
         })}

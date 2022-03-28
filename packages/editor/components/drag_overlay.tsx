@@ -74,7 +74,7 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
           preserveAspectRatio="none"
         >
           <g transform={`translate(${x} ${y})`}>
-            <EditorNodeBlock block={block} selection={null} selectionState={NodeSelectionState.UNSELECTED} />
+            <EditorNodeBlock block={block} selectionState={NodeSelectionState.UNSELECTED} />
           </g>
         </svg>
       </div>
