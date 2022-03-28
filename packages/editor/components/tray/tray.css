@@ -1,10 +1,10 @@
 
 .tray {
-  width: 200px;
+  width: 100%;
   height: calc(99vh - 41px);
   overflow-y: scroll;
   overflow-x: hidden;
-  border-right: 2px solid var(--section-separator-color);
+  border-right: 1px solid var(--section-separator-color);
   box-sizing: border-box;
   padding: 0 4px 0 5px;
 }

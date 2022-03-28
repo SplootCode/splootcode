@@ -1,6 +1,3 @@
 .project-editor-container {
-    display: grid;
-    grid-template-columns: auto 420px;
-    grid-column-gap: 0px;
     height: calc(100vh - 41px);
 }

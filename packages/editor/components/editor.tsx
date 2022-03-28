@@ -1,9 +1,11 @@
 import './editor.css'
+import 'allotment/dist/style.css'
 
 import React from 'react'
 import { observer } from 'mobx-react'
 
 import { ActiveCursor } from './cursor'
+import { Allotment } from 'allotment'
 import { DragOverlay } from './drag_overlay'
 import { EditBox } from './edit_box'
 import { ExpandedListBlockView } from './list_block'
@@ -13,7 +15,9 @@ import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_f
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
+import { PythonFrame } from '../runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
+import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { Tray } from './tray/tray'
 import { deserializeNode } from '@splootcode/core/language/type_registry'
 
@@ -21,6 +25,7 @@ export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
 interface EditorProps {
   block: NodeBlock
+  pkg: SplootPackage
   width: number
   selection: NodeSelection
 }
@@ -35,7 +40,7 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   render() {
-    const { block, selection } = this.props
+    const { block, pkg, selection } = this.props
     let fileBody = null
     if (block.node.type === JAVASCRIPT_FILE || block.node.type === PYTHON_FILE || block.node.type === HTML_DOCUMENT) {
       fileBody = block.renderedChildSets['body']
@@ -50,25 +55,31 @@ export class Editor extends React.Component<EditorProps> {
       // This forces the insertbox to be regenerated and refocused when the insert changes position.
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
+    const startSize = window.outerWidth - 270 - 360
     return (
       <React.Fragment>
         <div className="editor">
-          <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
-          <div className="editor-column">
-            <svg
-              className="editor-svg"
-              xmlns="http://www.w3.org/2000/svg"
-              height={height}
-              preserveAspectRatio="none"
-              onClick={this.onClickHandler}
-              ref={this.editorSvgRef}
-            >
-              <ExpandedListBlockView block={fileBody} isSelected={false} />
-              <ActiveCursor selection={selection} />
-            </svg>
-            {insertBox}
-            {editBox}
-          </div>
+          <Allotment defaultSizes={[270, startSize, 360]} minSize={180} proportionalLayout={false}>
+            <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
+            <div className="editor-column">
+              <svg
+                className="editor-svg"
+                xmlns="http://www.w3.org/2000/svg"
+                height={height}
+                preserveAspectRatio="none"
+                onClick={this.onClickHandler}
+                ref={this.editorSvgRef}
+              >
+                <ExpandedListBlockView block={fileBody} isSelected={false} />
+                <ActiveCursor selection={selection} />
+              </svg>
+              {insertBox}
+              {editBox}
+            </div>
+            <div className="python-preview-panel">
+              <PythonFrame pkg={pkg} />
+            </div>
+          </Allotment>
         </div>
         <DragOverlay selection={selection} editorRef={this.editorSvgRef} />
       </React.Fragment>

@@ -23,6 +23,7 @@
     "@types/uuid": "^3.4.7",
     "@types/wicg-file-system-access": "^2020.9.1",
     "@types/xmldom": "^0.1.30",
+    "allotment": "^1.11.1",
     "ast-types": "^0.13.3",
     "babel": "^6.23.0",
     "babylon": "^6.18.0",
