@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 
 import {
   Button,
@@ -52,7 +52,7 @@ export function SaveProjectModal(props: NewProjectModalProps) {
     onComplete(projectID, projectTitle)
   }
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectTitle(e.target.value)
     setProjectID(convertToURL(e.target.value))
   }
@@ -63,6 +63,13 @@ export function SaveProjectModal(props: NewProjectModalProps) {
     errorMessage = 'This project ID is already taken'
   }
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (projectTitle !== '' && validID) {
+      onComplete(projectID, projectTitle)
+    }
+  }
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -70,19 +77,21 @@ export function SaveProjectModal(props: NewProjectModalProps) {
         <ModalContent>
           <ModalHeader>New Project</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <FormControl isInvalid={!validID}>
-              <FormLabel htmlFor="title">Project Title</FormLabel>
-              <Input id="title" type="text" value={projectTitle} onChange={handleTitleChange} />
-              <FormHelperText>Unique project ID: {projectID}</FormHelperText>
-              <FormErrorMessage>{errorMessage}</FormErrorMessage>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" disabled={projectTitle === '' || !validID} onClick={handleCreate}>
-              Create project
-            </Button>
-          </ModalFooter>
+          <form onSubmit={handleSubmit}>
+            <ModalBody>
+              <FormControl isInvalid={!validID}>
+                <FormLabel htmlFor="title">Project Title</FormLabel>
+                <Input id="title" type="text" value={projectTitle} onChange={handleTitleChange} />
+                <FormHelperText>Unique project ID: {projectID}</FormHelperText>
+                <FormErrorMessage>{errorMessage}</FormErrorMessage>
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" disabled={projectTitle === '' || !validID} onClick={handleCreate}>
+                Create project
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>
