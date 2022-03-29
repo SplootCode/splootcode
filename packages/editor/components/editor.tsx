@@ -19,6 +19,7 @@ import { PythonFrame } from '../runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { Tray } from './tray/tray'
+import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { deserializeNode } from '@splootcode/core/language/type_registry'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
@@ -26,8 +27,8 @@ export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 interface EditorProps {
   block: NodeBlock
   pkg: SplootPackage
-  width: number
   selection: NodeSelection
+  validationWatcher: ValidationWatcher
 }
 
 @observer
@@ -40,7 +41,7 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   render() {
-    const { block, pkg, selection } = this.props
+    const { block, pkg, selection, validationWatcher } = this.props
     let fileBody = null
     if (block.node.type === JAVASCRIPT_FILE || block.node.type === PYTHON_FILE || block.node.type === HTML_DOCUMENT) {
       fileBody = block.renderedChildSets['body']
@@ -77,7 +78,7 @@ export class Editor extends React.Component<EditorProps> {
               {editBox}
             </div>
             <div className="python-preview-panel">
-              <PythonFrame pkg={pkg} />
+              <PythonFrame pkg={pkg} validationWatcher={validationWatcher} />
             </div>
           </Allotment>
         </div>

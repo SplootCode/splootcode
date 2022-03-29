@@ -5,7 +5,6 @@ import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_
 import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootNode } from '@splootcode/core/language/node'
-import { generateScope } from '@splootcode/core/language/scope/scope'
 
 export class LocalStorageFileLoader implements FileLoader {
   projectLoader: LocalStorageProjectLoader
@@ -30,8 +29,6 @@ export class LocalStorageFileLoader implements FileLoader {
     const fileStr = window.localStorage.getItem(fileKey)
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    await generateScope(rootNode)
-    rootNode.recursivelySetMutations(true)
     return rootNode
   }
 

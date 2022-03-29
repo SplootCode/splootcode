@@ -4,7 +4,6 @@ import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_
 import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootNode } from '@splootcode/core/language/node'
-import { generateScope } from '@splootcode/core/language/scope/scope'
 
 export class StaticFileLoader implements FileLoader {
   rootProjectUrl: string
@@ -30,8 +29,6 @@ export class StaticFileLoader implements FileLoader {
     const fileStr = await (await fetch(this.rootProjectUrl + packageId + '/' + filename + '.sp')).text()
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    await generateScope(rootNode)
-    rootNode.recursivelySetMutations(true)
     return rootNode
   }
 

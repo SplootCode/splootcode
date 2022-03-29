@@ -4,7 +4,6 @@ import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_
 import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootNode } from '@splootcode/core/language/node'
-import { generateScope } from '@splootcode/core/language/scope/scope'
 
 export class FileSystemFileLoader implements FileLoader {
   directoryHandle: FileSystemDirectoryHandle
@@ -29,8 +28,6 @@ export class FileSystemFileLoader implements FileLoader {
     const fileStr = await (await (await packDirHandle.getFileHandle(filename + '.sp')).getFile()).text()
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
-    await generateScope(rootNode)
-    rootNode.recursivelySetMutations(true)
     return rootNode
   }
 

@@ -312,5 +312,4 @@ export async function generateScope(rootNode: SplootNode) {
     loadPythonBuiltins(scope)
   }
   rootNode.recursivelyBuildScope()
-  rootNode.recursivelyValidate()
 }
