@@ -68,6 +68,10 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
     return [x + 3, y]
   }
 
+  allowInsertCursor(insertIndex: number): boolean {
+    return insertIndex < this.cursorPositions.length
+  }
+
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
       cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)

@@ -3,7 +3,7 @@ import { action, observable } from 'mobx'
 import { AttachRightLayoutHandler } from './attach_right_layout_handler'
 import { BlockChildSetLayoutHandler } from './block_layout_handler'
 import { BreadcrumbsLayoutHandler } from './breadcrumbs_layout_handler'
-import { ChildSet, ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSet } from '@splootcode/core/language/childset'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core/language/mutations/child_set_mutations'
 import { ChildSetObserver } from '@splootcode/core/language/observers'
@@ -93,7 +93,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
     switch (layoutComponent.type) {
       case LayoutComponentType.CHILD_SET_BLOCK:
-        this.layoutHandler = new BlockChildSetLayoutHandler()
+        this.layoutHandler = new BlockChildSetLayoutHandler(layoutComponent)
         break
       case LayoutComponentType.CHILD_SET_STACK:
         this.layoutHandler = new StackLayoutHandler()
@@ -186,7 +186,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return this.layoutHandler.getInsertCoordinates(insertIndex, cursorOnly)
   }
 
-  @observable
   getChildSelectionState(idx: number): NodeSelectionState {
     if (this.selectionState === SelectionState.Empty || this.selectedIndex !== idx) {
       return NodeSelectionState.UNSELECTED
@@ -200,28 +199,18 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return NodeSelectionState.UNSELECTED
   }
 
-  @observable
-  allowInsertCursor(): boolean {
-    if (
-      this.componentType === LayoutComponentType.CHILD_SET_TREE ||
-      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS
-    ) {
-      return false
-    }
-    return this.childSet.type === ChildSetType.Many || this.childSet.getCount() === 0
+  allowInsertCursor(index: number): boolean {
+    return this.allowInsert() && this.layoutHandler.allowInsertCursor(index)
   }
 
-  @observable
   allowInsert(): boolean {
-    return this.childSet.type === ChildSetType.Many || this.childSet.getCount() === 0
+    return this.childSet.allowInsert()
   }
 
-  @observable
   allowDelete(): boolean {
-    return this.childSet.type !== ChildSetType.Immutable && this.childSet.getCount() !== 0
+    return this.childSet.allowDelete()
   }
 
-  @observable
   isInsert(idx: number): boolean {
     return this.selectedIndex === idx && this.selectionState === SelectionState.Inserting
   }
@@ -233,7 +222,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getNextChildInsert(): NodeCursor {
-    if (this.allowInsertCursor()) {
+    if (this.allowInsertCursor(0)) {
       return new NodeCursor(this, 0)
     }
     for (const node of this.nodes) {
@@ -252,7 +241,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     }
     if (nextChildCursor) {
       return nextChildCursor
-    } else if (this.allowInsertCursor() && index < this.nodes.length) {
+    } else if (this.allowInsertCursor(index + 1) && index < this.nodes.length) {
       return new NodeCursor(this, index + 1)
     } else {
       nextChildCursor = this.parentRef.node.getNextInsertAfterChildSet(this.parentRef.childSetId)
@@ -475,7 +464,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
       this.selection.updateRenderPositions()
-      if (this.allowInsertCursor()) {
+      if (this.allowInsertCursor(mutation.index)) {
         this.selection.placeCursor(this, mutation.index, true)
       }
       this.selection.fixCursorToValidPosition()

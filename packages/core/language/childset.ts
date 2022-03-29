@@ -15,14 +15,16 @@ export class ChildSet {
   childParentRef: ParentReference
   children: SplootNode[]
   type: ChildSetType
+  minChildren: number
   nodeCategory: NodeCategory
   mutationObservers: ChildSetObserver[]
   enableMutations: boolean
 
-  constructor(owner: SplootNode, childSetId: string, type: ChildSetType, nodeCategory: NodeCategory) {
+  constructor(owner: SplootNode, childSetId: string, type: ChildSetType, nodeCategory: NodeCategory, minChildren = 0) {
     this.children = []
     this.childParentRef = new ParentReference(owner, childSetId)
     this.type = type
+    this.minChildren = minChildren
     this.nodeCategory = nodeCategory
     this.mutationObservers = []
     this.enableMutations = false
@@ -51,10 +53,18 @@ export class ChildSet {
     this.mutationObservers.push(observer)
   }
 
+  allowInsert(): boolean {
+    if (this.type === ChildSetType.Single) {
+      return this.children.length === 0
+    } else if (this.type === ChildSetType.Immutable) {
+      return false
+    }
+    return true
+  }
+
   insertNode(node: SplootNode, index: number) {
     this.children.splice(index, 0, node)
     node.parent = this.childParentRef
-
     if (this.enableMutations) {
       node.recursivelyBuildScope()
       node.parent.node.recursivelyValidate()
@@ -68,6 +78,24 @@ export class ChildSet {
     }
   }
 
+  allowDelete(): boolean {
+    if (this.type === ChildSetType.Immutable) {
+      return false
+    }
+    return this.children.length > this.minChildren
+  }
+
+  clearAll() {
+    if (this.enableMutations) {
+      throw new Error('Cannot use clearAll for childset with mutations enabled.')
+    }
+
+    for (const child of this.children) {
+      child.parent = null
+    }
+    this.children = []
+  }
+
   removeChild(index: number): SplootNode {
     if (index >= this.children.length) {
       console.warn("Attempting to delete child that doesn't exist!!", index, this.childParentRef.childSetId)
@@ -76,8 +104,8 @@ export class ChildSet {
     child.recursivelyClearScope()
     child.parent = null
     child.recursivelyClearValidation()
-    child.recursivelySetMutations(false)
     if (this.enableMutations) {
+      child.recursivelySetMutations(false)
       const parent = this.getParentRef().node
       parent.validateSelf()
       const mutation = new ChildSetMutation()

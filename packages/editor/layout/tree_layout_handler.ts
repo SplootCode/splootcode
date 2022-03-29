@@ -77,6 +77,10 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
     return [this.x, this.y]
   }
 
+  allowInsertCursor(insertIndex: number): boolean {
+    return false
+  }
+
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
       cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)

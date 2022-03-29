@@ -30,7 +30,7 @@ export class CursorMap {
       return
     }
     // Don't allow invalid cursors
-    if (!listBlock.allowInsertCursor()) {
+    if (!listBlock.allowInsertCursor(index)) {
       return
     }
     // Check if this is a new line
@@ -62,7 +62,7 @@ export class CursorMap {
     }
 
     // Don't allow invalid cursors
-    if (isCursor && !listBlock.allowInsertCursor()) {
+    if (isCursor && !listBlock.allowInsertCursor(index)) {
       return
     }
 
@@ -114,7 +114,7 @@ export class CursorMap {
 
     const entries = line.entries.slice()
     const isFirstEntryCursor = entries.length > 0 && entries[0].isCursor
-    if (!isFirstEntryCursor && line.parentListBlock.allowInsertCursor()) {
+    if (!isFirstEntryCursor && line.parentListBlock.allowInsertCursor(line.parentIndex)) {
       entries.unshift({
         index: line.parentIndex,
         listBlock: line.parentListBlock,
