@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './python_frame.css'
@@ -12,7 +13,6 @@ import {
   FunctionDeclarationData,
   StatementCapture,
 } from '@splootcode/core/language/capture/runtime_capture'
-import { SplootNode } from '@splootcode/core/language/node'
 import { allRegisteredFunctionIDs, getRegisteredFunction } from '@splootcode/core/language/scope/scope'
 
 export enum FrameState {
@@ -36,6 +36,7 @@ function getFrameSrc() {
 
 type ViewPageProps = {
   pkg: SplootPackage
+  validationWatcher: ValidationWatcher
 }
 
 @observer
@@ -45,7 +46,6 @@ export class PythonFrame extends Component<ViewPageProps> {
   private lastSentNodeTree: Date
   private needsNewNodeTree: boolean
   private frameState: FrameState
-  private invalidNodes: Set<SplootNode>
 
   constructor(props: ViewPageProps) {
     super(props)
@@ -54,7 +54,6 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.lastHeartbeatTimestamp = new Date()
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000)
     this.needsNewNodeTree = false
-    this.invalidNodes = new Set()
   }
 
   render() {
@@ -115,13 +114,7 @@ export class PythonFrame extends Component<ViewPageProps> {
 
   handleNodeMutation = (mutation: NodeMutation) => {
     // There's a node tree version we've not loaded yet.
-    if (mutation.type === NodeMutationType.SET_VALIDITY) {
-      if (mutation.validity.valid) {
-        this.invalidNodes.delete(mutation.node)
-      } else {
-        this.invalidNodes.add(mutation.node)
-      }
-    } else {
+    if (mutation.type !== NodeMutationType.SET_VALIDITY) {
       // Only trigger for actual code changes
       // The validation mutations always get sent before the actual code change.
       this.needsNewNodeTree = true
@@ -211,7 +204,7 @@ export class PythonFrame extends Component<ViewPageProps> {
 
     // Rate limit: Only send if it's been some time since we last sent.
     if (millis > 200) {
-      if (this.invalidNodes.size > 0) {
+      if (!this.props.validationWatcher.isValid()) {
         this.lastSentNodeTree = now
         this.needsNewNodeTree = false
         this.postMessageToFrame({ type: 'disable' })
@@ -222,7 +215,7 @@ export class PythonFrame extends Component<ViewPageProps> {
         pkg.getLoadedFile(filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
           // Check again that the current state is valid - otherwise bail out
-          if (this.invalidNodes.size == 0) {
+          if (this.props.validationWatcher.isValid()) {
             this.postMessageToFrame(payload)
           } else {
             this.postMessageToFrame({ type: 'disable' })

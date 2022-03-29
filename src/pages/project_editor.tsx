@@ -95,9 +95,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>
-          <AutosaveHandler project={loadedProject} />
-        </MenuBarItem>
+        <MenuBarItem>{loadedProject ? <AutosaveHandler project={loadedProject} /> : null}</MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {loadedProject === null ? <div>Loading... </div> : <PythonEditorPanels project={loadedProject} />}
