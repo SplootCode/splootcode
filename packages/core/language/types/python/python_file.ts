@@ -51,7 +51,7 @@ export class PythonFile extends SplootNode {
     typeRegistration.hasScope = true
     typeRegistration.childSets = { body: NodeCategory.PythonStatement }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body', { endCursor: true }),
     ])
 
     registerType(typeRegistration)

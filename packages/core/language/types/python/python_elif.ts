@@ -64,7 +64,8 @@ export class PythonElifBlock extends SplootNode {
     super(parentReference, PYTHON_ELIF_STATEMENT)
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
-    this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
+    this.getChildSet('block').addChild(new PythonStatement(null))
   }
 
   getCondition() {

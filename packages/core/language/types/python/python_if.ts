@@ -38,7 +38,8 @@ export class PythonIfStatement extends SplootNode {
     super(parentReference, PYTHON_IF_STATEMENT)
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getChildSet('condition').addChild(new PythonExpression(null))
-    this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement, 1)
+    this.getTrueBlock().addChild(new PythonStatement(null))
     this.addChildSet('elseblocks', ChildSetType.Many, NodeCategory.PythonElseBlock)
     this.childSetWrapPriorityOrder = ['trueblock', 'condition', 'elseblock']
   }
@@ -115,7 +116,6 @@ export class PythonIfStatement extends SplootNode {
 
   static deserializer(serializedNode: SerializedNode): PythonIfStatement {
     const node = new PythonIfStatement(null)
-    node.getCondition().removeChild(0)
     node.deserializeChildSet('condition', serializedNode)
     node.deserializeChildSet('trueblock', serializedNode)
     node.deserializeChildSet('elseblocks', serializedNode)

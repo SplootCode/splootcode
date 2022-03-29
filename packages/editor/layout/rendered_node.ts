@@ -14,7 +14,6 @@ export const NODE_INLINE_SPACING = 6
 export const NODE_INLINE_SPACING_SMALL = 6
 export const NODE_BLOCK_HEIGHT = 30
 export const LOOP_ANNOTATION_HEIGHT = 12
-export const INDENTED_BLOCK_PADDING_BOTTOM = 24
 
 export class RenderedParentRef {
   node: NodeBlock
@@ -310,7 +309,7 @@ export class NodeBlock implements NodeObserver {
     if (this.parentChildSet === null) {
       return null
     }
-    if (this.parentChildSet.allowInsertCursor() && this.index < this.parentChildSet.nodes.length) {
+    if (this.parentChildSet.allowInsertCursor(this.index + 1) && this.index < this.parentChildSet.nodes.length) {
       return new NodeCursor(this.parentChildSet, this.index + 1)
     }
     return this.parentChildSet.getNextInsertCursorInOrAfterNode(this.index + 1)
@@ -347,7 +346,7 @@ export class NodeBlock implements NodeObserver {
           return cursor
         }
       }
-      if (childSetListBlock.allowInsertCursor()) {
+      if (childSetListBlock.allowInsertCursor(childSetListBlock.nodes.length)) {
         return new NodeCursor(childSetListBlock, childSetListBlock.nodes.length)
       }
     }

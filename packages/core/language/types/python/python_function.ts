@@ -50,7 +50,8 @@ export class PythonFunctionDeclaration extends SplootNode {
 
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
     this.addChildSet('params', ChildSetType.Many, NodeCategory.PythonFunctionArgumentDeclaration)
-    this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement, 1)
+    this.getChildSet('body').addChild(new PythonStatement(null))
     this.setProperty('id', null)
   }
 

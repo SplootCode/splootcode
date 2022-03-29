@@ -67,8 +67,8 @@ export class SplootNode {
     return this.childSetOrder.length !== 0
   }
 
-  addChildSet(name: string, type: ChildSetType, category: NodeCategory) {
-    this.childSets[name] = new ChildSet(this, name, type, category)
+  addChildSet(name: string, type: ChildSetType, category: NodeCategory, minChildren = 0) {
+    this.childSets[name] = new ChildSet(this, name, type, category, minChildren)
     this.childSetOrder.push(name)
   }
 
@@ -343,7 +343,9 @@ export class SplootNode {
     if (!serializedNode.childSets) {
       serializedNode.childSets = {}
     }
-    if (!(childSetId in serializedNode.childSets)) {
+    if (childSetId in serializedNode.childSets && serializedNode.childSets[childSetId].length > 0) {
+      childSet.clearAll()
+    } else {
       serializedNode.childSets[childSetId] = []
     }
     serializedNode.childSets[childSetId].forEach((serializedChildNode: SerializedNode) => {

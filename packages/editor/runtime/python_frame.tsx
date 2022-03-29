@@ -240,6 +240,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
     window.addEventListener('message', this.processMessage, false)
+
     // trigger background process to wait for a response
     setTimeout(() => {
       this.checkHeartbeatFromFrame()

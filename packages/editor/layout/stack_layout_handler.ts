@@ -39,7 +39,7 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.cursorPositions = []
 
-    let topPos = y + ROW_SPACING
+    let topPos = y
     nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
       if (idx === insertIndex) {
         topPos += NODE_BLOCK_HEIGHT + ROW_SPACING
@@ -48,7 +48,6 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
       }
       childNodeBlock.calculateDimensions(x, topPos, selection, true)
       this.cursorPositions.push([x, topPos + childNodeBlock.marginTop])
-      //   selection.cursorMap.registerLineCursor(this, idx, topPos + childNodeBlock.marginTop)
       topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.width = Math.max(this.width, childNodeBlock.rowWidth)
@@ -66,6 +65,10 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
       return [this.x, this.y + this.height]
     }
     return this.cursorPositions[insertIndex]
+  }
+
+  allowInsertCursor(insertIndex: number): boolean {
+    return insertIndex < this.cursorPositions.length
   }
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {

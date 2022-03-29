@@ -52,7 +52,8 @@ class AppendElseGenerator implements SuggestionGenerator {
 export class PythonElseBlock extends SplootNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELSE_STATEMENT)
-    this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement)
+    this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
+    this.getBlock().addChild(new PythonStatement(null))
   }
 
   getBlock() {

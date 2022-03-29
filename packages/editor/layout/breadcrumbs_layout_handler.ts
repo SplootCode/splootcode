@@ -69,6 +69,10 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
     return [this.x, this.y]
   }
 
+  allowInsertCursor(insertIndex: number): boolean {
+    return insertIndex === 0 && this.cursorPositions.length === 1
+  }
+
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
       cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)

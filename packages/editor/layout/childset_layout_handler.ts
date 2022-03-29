@@ -24,6 +24,7 @@ export interface ChildSetLayoutHandler {
   ): void
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number]
+  allowInsertCursor(insertIndex: number): boolean
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void
 }

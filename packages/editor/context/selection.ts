@@ -264,9 +264,11 @@ export class NodeSelection {
     const node = getBlankFillForCategory(category)
     if (node) {
       this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-      this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
-      while (!this.cursor.listBlock.allowInsertCursor()) {
-        this.moveCursorToNextInsert()
+      if (postInsertCursor.listBlock.allowInsertCursor(postInsertCursor.index)) {
+        this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
+      } else {
+        const newCursor = postInsertCursor.listBlock.getNextInsertCursorInOrAfterNode(postInsertCursor.index)
+        this.placeCursor(newCursor.listBlock, newCursor.index)
       }
       this.fixCursorToValidPosition()
     }
