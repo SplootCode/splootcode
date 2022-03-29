@@ -79,7 +79,7 @@ export const ScopeTray = (props: EntryProps) => {
   }, [rootNode])
 
   return (
-    <Accordion allowMultiple defaultIndex={[0]}>
+    <Accordion defaultIndex={[0]} allowToggle>
       <AccordionItem border={'none'}>
         {({ isExpanded }) => (
           <>

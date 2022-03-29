@@ -54,7 +54,7 @@ export const MicroNode = React.memo(MicroNodeInternal)
 const CategoryView = (props: CategoryProps) => {
   const { category, startDrag } = props
   return (
-    <Accordion allowMultiple>
+    <Accordion defaultIndex={[]} allowToggle>
       {category.entries.map((listing) => {
         if ('category' in listing) {
           return (
