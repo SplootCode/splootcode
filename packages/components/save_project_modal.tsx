@@ -81,7 +81,7 @@ export function SaveProjectModal(props: NewProjectModalProps) {
             <ModalBody>
               <FormControl isInvalid={!validID}>
                 <FormLabel htmlFor="title">Project Title</FormLabel>
-                <Input id="title" type="text" value={projectTitle} onChange={handleTitleChange} />
+                <Input id="title" type="text" value={projectTitle} onChange={handleTitleChange} autoFocus />
                 <FormHelperText>Unique project ID: {projectID}</FormHelperText>
                 <FormErrorMessage>{errorMessage}</FormErrorMessage>
               </FormControl>
