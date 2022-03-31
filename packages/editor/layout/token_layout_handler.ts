@@ -74,8 +74,12 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
       const [x, y] = this.cursorPositions[insertIndex]
       return [x + 5, y]
     }
-    const [x, y] = this.cursorPositions[insertIndex]
-    return [x + 3, y]
+    // Work around because invalid cursor positions pop up temporarily during edits.
+    if (insertIndex < this.cursorPositions.length) {
+      const [x, y] = this.cursorPositions[insertIndex]
+      return [x + 3, y]
+    }
+    return [this.x, this.y]
   }
 
   allowInsertCursor(insertIndex: number): boolean {
