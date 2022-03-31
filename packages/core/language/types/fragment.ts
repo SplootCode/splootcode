@@ -13,6 +13,13 @@ export class SplootFragment {
     this.nodes = nodes
   }
 
+  clone(): SplootFragment {
+    return new SplootFragment(
+      this.nodes.map((node) => node.clone()),
+      this.nodeCategory
+    )
+  }
+
   isSingle() {
     return this.nodes.length == 1
   }
