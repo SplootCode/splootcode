@@ -36,7 +36,14 @@ class Generator implements SuggestionGenerator {
     ) {
       const node = new PythonSubscript(null)
       return [
-        new SuggestedNode(node, `subscript`, 'lookup get item', true, 'Call method on object to the left', 'target'),
+        new SuggestedNode(
+          node,
+          `item`,
+          'item lookup get',
+          true,
+          'Access one item from a collection by index or key',
+          'target'
+        ),
       ]
     }
 
