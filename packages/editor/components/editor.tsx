@@ -146,6 +146,8 @@ export class Editor extends React.Component<EditorProps> {
       return
     }
     if (event.key === 'Backspace' || event.key === 'Delete') {
+      // Must stop backspace propagation for people who use 'Go back with backspace' browser extension.
+      event.stopPropagation()
       this.props.selection.deleteSelectedNode()
     }
     if (event.key === 'Tab') {
