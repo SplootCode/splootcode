@@ -1,4 +1,4 @@
-import { NodeCursor } from './selection'
+import { CursorPosition, NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
 interface LineEntry {
@@ -122,6 +122,7 @@ export class CursorMap {
         xCoord: 0,
       })
     }
+
     return entries
   }
 
@@ -137,60 +138,105 @@ export class CursorMap {
     return index
   }
 
-  getCursorByCoordinate(x: number, y: number): [NodeCursor, boolean] {
+  getCursorPositionByCoordinate(x: number, y: number): [CursorPosition, boolean] {
     const lineIndex = this.getLineIndexForYCoord(y)
     const entries = this.getEntryListForLineIndex(lineIndex)
     const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
     const cursorEntry = entries[xIndex]
-    const nodeCursor = new NodeCursor(cursorEntry.listBlock, cursorEntry.index)
-    return [nodeCursor, cursorEntry.isCursor]
+    return [
+      {
+        lineIndex: lineIndex,
+        entryIndex: xIndex,
+      },
+      cursorEntry.isCursor,
+    ]
   }
 
-  getCursorLeftOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
-    const lineIndex = this.getLineIndexForYCoord(y)
+  isValid(position: CursorPosition): boolean {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry) {
+      return true
+    }
+    return false
+  }
+
+  getCoordinates(position: CursorPosition): [number, number] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const line = this.lines[position.lineIndex]
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      return [cursorEntry.xCoord + 3, line.yCoord]
+    }
+    return [cursorEntry.xCoord, line.yCoord]
+  }
+
+  getNodeCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    return [new NodeCursor(cursorEntry.listBlock, cursorEntry.index)]
+  }
+
+  getSingleNodeForCursorPosition(position: CursorPosition): NodeCursor {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      throw new Error("Attempting to get single node for postion that's actually a cursor")
+    }
+    return new NodeCursor(cursorEntry.listBlock, cursorEntry.index)
+  }
+
+  getCursorLeftOfPosition(position: CursorPosition): [CursorPosition, boolean, number, number] {
+    const { lineIndex, entryIndex } = position
+    let line = this.lines[lineIndex]
+
     const entries = this.getEntryListForLineIndex(lineIndex)
+    let entry = entries[entryIndex]
 
-    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
-    let entry = entries[xIndex]
-
-    if (xIndex <= 0) {
+    if (entryIndex <= 0) {
       if (lineIndex > 0) {
         // Get last cursor for previous line.
-        const line = this.lines[lineIndex - 1]
+        line = this.lines[lineIndex - 1]
         const newEntries = this.getEntryListForLineIndex(lineIndex - 1)
         entry = newEntries[newEntries.length - 1]
-        y = line.yCoord
+        return [
+          { lineIndex: lineIndex - 1, entryIndex: newEntries.length - 1 },
+          entry.isCursor,
+          entry.xCoord,
+          line.yCoord,
+        ]
       }
-      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
+      return [{ lineIndex: lineIndex, entryIndex: entryIndex }, entry.isCursor, entry.xCoord, line.yCoord]
     }
 
-    entry = entries[xIndex - 1]
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
+    entry = entries[entryIndex - 1]
+    return [{ lineIndex: lineIndex, entryIndex: entryIndex - 1 }, entry.isCursor, entry.xCoord, line.yCoord]
   }
 
-  getCursorRightOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
-    const lineIndex = this.getLineIndexForYCoord(y)
+  getCursorRightOfPosition(position: CursorPosition): [CursorPosition, boolean, number, number] {
+    const { lineIndex, entryIndex } = position
+    let line = this.lines[lineIndex]
     const entries = this.getEntryListForLineIndex(lineIndex)
+    let entry = entries[entryIndex]
 
-    const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
-    let entry = entries[xIndex]
-
-    if (xIndex >= entries.length - 1) {
+    if (entryIndex >= entries.length - 1) {
       if (lineIndex < this.lines.length - 1) {
         // Get first cursor for next line.
-        const line = this.lines[lineIndex + 1]
+        line = this.lines[lineIndex + 1]
         entry = this.getEntryListForLineIndex(lineIndex + 1)[0]
-        y = line.yCoord
+        return [{ lineIndex: lineIndex + 1, entryIndex: 0 }, entry.isCursor, entry.xCoord, line.yCoord]
       }
-      return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
+      // Return same cursor as before
+      return [{ lineIndex: lineIndex, entryIndex: entryIndex }, entry.isCursor, entry.xCoord, line.yCoord]
     }
 
-    entry = entries[xIndex + 1]
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, entry.xCoord, y]
+    entry = entries[entryIndex + 1]
+    return [{ lineIndex: lineIndex, entryIndex: entryIndex + 1 }, entry.isCursor, entry.xCoord, line.yCoord]
   }
 
-  getCursorUpOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y)
+  getCursorUpOfPosition(x: number, y: number, position: CursorPosition): [CursorPosition, boolean, number, number] {
+    let { lineIndex } = position
+
     if (lineIndex != 0) {
       lineIndex -= 1
       y = this.lines[lineIndex].yCoord
@@ -198,11 +244,11 @@ export class CursorMap {
     const entries = this.getEntryListForLineIndex(lineIndex)
     const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
     const entry = entries[xIndex]
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y]
+    return [{ lineIndex: lineIndex, entryIndex: xIndex }, entry.isCursor, x, y]
   }
 
-  getCursorDownOfCoordinate(x: number, y: number): [NodeCursor, boolean, number, number] {
-    let lineIndex = this.getLineIndexForYCoord(y)
+  getCursorDownOfPosition(x: number, y: number, position: CursorPosition): [CursorPosition, boolean, number, number] {
+    let { lineIndex } = position
     if (lineIndex < this.lines.length - 1) {
       lineIndex += 1
       y = this.lines[lineIndex].yCoord
@@ -210,6 +256,6 @@ export class CursorMap {
     const entries = this.getEntryListForLineIndex(lineIndex)
     const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
     const entry = entries[xIndex]
-    return [new NodeCursor(entry.listBlock, entry.index), entry.isCursor, x, y]
+    return [{ lineIndex: lineIndex, entryIndex: xIndex }, entry.isCursor, x, y]
   }
 }

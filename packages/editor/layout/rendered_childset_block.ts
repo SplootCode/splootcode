@@ -7,10 +7,12 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core/language/mutations/child_set_mutations'
 import { ChildSetObserver } from '@splootcode/core/language/observers'
+import { CursorMap } from '../context/cursor_map'
+import { CursorPosition, NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { EditBoxData } from '../context/edit_box'
 import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
 import { NodeBlock, RenderedParentRef } from './rendered_node'
-import { NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
+import { NodeCategory } from '@splootcode/core/language/node_category_registry'
 import { SplootNode } from '@splootcode/core/language/node'
 import { StackLayoutHandler } from './stack_layout_handler'
 import { TokenLayoutHandler } from './token_layout_handler'
@@ -148,8 +150,8 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.y = y
     let insertIndex = -1 // No insert node here.
     let insertBoxWidth = 0
-    if (selection?.cursor?.listBlock === this && selection?.state === SelectionState.Inserting) {
-      insertIndex = selection.cursor.index
+    if (selection?.selectionStart?.listBlock === this && selection?.state === SelectionState.Inserting) {
+      insertIndex = selection.selectionStart.index
       insertBoxWidth = getInsertBoxWidth(selection.insertBox.contents)
     }
 
@@ -219,6 +221,21 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.nodes.forEach((nodeBlock: NodeBlock, index: number) => {
       nodeBlock.index = index
     })
+  }
+
+  getPasteDestinationCategory(): NodeCategory {
+    return this.childSet.nodeCategory
+  }
+
+  getCursorPosition(cursorMap: CursorMap, index: number): CursorPosition {
+    // TODO: This is a temporary hack to translate an index to a cursor position.
+    // Instead the layout helper should keep track of the actual cursor position for each index.
+    const [x, y] = this.getInsertCoordinates(index, true)
+    const [position, isCursor] = cursorMap.getCursorPositionByCoordinate(x, y)
+    if (!isCursor) {
+      console.warn('Expected cursor position, but got non-cursor', position)
+    }
+    return position
   }
 
   getNextChildInsert(): NodeCursor {

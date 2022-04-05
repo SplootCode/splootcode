@@ -32,6 +32,9 @@ function filterSuggestions(
   autocompleter: Autocompleter,
   userInput: string
 ): RenderedSuggestion[] {
+  if (autocompleter === null) {
+    return []
+  }
   const prefixSuggestions = autocompleter.getPrefixSuggestions(parentRef, index, userInput)
   if (prefixSuggestions) {
     if (userInput.length <= 1) {
@@ -88,16 +91,21 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     super(props)
     this.inputRef = React.createRef()
     const { selection } = props
-    const childSetBlock = selection.cursor.listBlock
-    const index = selection.cursor.index
+
+    const cursors = selection.getCurrentNodeCursors()
+    const childSetBlock = cursors[0].listBlock
+    const index = cursors[0].index
     const category = childSetBlock.childSet.nodeCategory
     const parentRef = childSetBlock.childSet.getParentRef()
-    const autocompleter = getAutocompleRegistry().getAutocompleter(category)
-    const staticSuggestions: RenderedSuggestion[] = autocompleter
-      .getStaticSuggestions(parentRef, index)
-      .map(renderSuggestion)
+    let autocompleter = null
+    let staticSuggestions: RenderedSuggestion[] = []
+    let filteredSuggestions = []
 
-    const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, '')
+    if (childSetBlock.allowInsert()) {
+      autocompleter = getAutocompleRegistry().getAutocompleter(category)
+      staticSuggestions = autocompleter.getStaticSuggestions(parentRef, index).map(renderSuggestion)
+      filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, '')
+    }
 
     this.state = {
       userInput: '',
@@ -114,8 +122,9 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
   static getDerivedStateFromProps(props: InsertBoxProps, state: InsertBoxState) {
     const { selection } = props
-    const childSetBlock = selection.cursor.listBlock
-    const index = selection.cursor.index
+    const cursors = selection.getCurrentNodeCursors()
+    const childSetBlock = cursors[0].listBlock
+    const index = cursors[0].index
     const category = childSetBlock.childSet.nodeCategory
     if (category !== state.category || index !== state.index || childSetBlock !== state.listBlock) {
       const parentRef = childSetBlock.childSet.getParentRef()
@@ -322,8 +331,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const userInput = e.currentTarget.value
     if (userInput !== '') {
       const { staticSuggestions, autocompleter } = this.state
-      const childSetBlock = this.props.selection.cursor.listBlock
-      const index = this.props.selection.cursor.index
+      const childSetBlock = this.state.listBlock
+      const index = this.state.index
 
       const parentRef = childSetBlock.childSet.getParentRef()
       const filteredSuggestions = filterSuggestions(parentRef, index, staticSuggestions, autocompleter, userInput)
@@ -346,8 +355,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
   onSelected(suggestion: SuggestedNode) {
     const { selection } = this.props
-    const childSetBlock = selection.cursor.listBlock
-    const index = selection.cursor.index
+    const childSetBlock = this.state.listBlock
+    const index = this.state.index
     const node = suggestion.node.clone()
     if (suggestion.hasOverrideLocation()) {
       if (suggestion.wrapChildSetId) {
