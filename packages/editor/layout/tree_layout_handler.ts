@@ -16,11 +16,9 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
   height: number
   marginTop: number
 
-  cursorPositions: [number, number][]
   childSetTreeLabels: string[]
 
   constructor(layoutComponent: LayoutComponent) {
-    this.cursorPositions = []
     this.childSetTreeLabels = layoutComponent.metadata
   }
 
@@ -47,7 +45,6 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
     this.width = 0
     this.height = 0
     this.marginTop = 0
-    this.cursorPositions = []
 
     const labels = this.childSetTreeLabels
     const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
@@ -82,8 +79,6 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
   }
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
-    this.cursorPositions.forEach((pos, i) => {
-      cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)
-    })
+    // Tree childsets have no cursor positions (for now)
   }
 }

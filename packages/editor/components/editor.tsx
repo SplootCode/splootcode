@@ -50,7 +50,15 @@ export class Editor extends React.Component<EditorProps> {
     let insertBox = null
     let editBox = null
     if (selection.isCursor() && selection.insertBox !== null) {
-      insertBox = <InsertBox editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
+      insertBox = (
+        <InsertBox
+          editorX={1}
+          editorY={1}
+          selection={selection}
+          cursorPosition={selection.cursor}
+          insertBoxData={selection.insertBox}
+        />
+      )
     } else if (selection.isEditingSingleNode()) {
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }

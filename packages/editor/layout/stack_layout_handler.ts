@@ -1,8 +1,8 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
-import { NodeSelection } from '../context/selection'
+import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NodeBlock } from './rendered_node'
+import { NodeCursor, NodeSelection } from '../context/selection'
 import { ROW_SPACING, RenderedChildSetBlock } from './rendered_childset_block'
 
 export class StackLayoutHandler implements ChildSetLayoutHandler {
@@ -47,7 +47,7 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
         this.width = Math.max(this.width, insertBoxWidth)
       }
       childNodeBlock.calculateDimensions(x, topPos, selection, true)
-      this.cursorPositions.push([x, topPos + childNodeBlock.marginTop])
+      this.cursorPositions.push([x - NODE_INLINE_SPACING, topPos + childNodeBlock.marginTop])
       topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.width = Math.max(this.width, childNodeBlock.rowWidth)
@@ -57,6 +57,7 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
       this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
       this.width = Math.max(this.width, insertBoxWidth)
     }
+    this.cursorPositions.push([x - NODE_INLINE_SPACING, y + this.height + ROW_SPACING])
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {
@@ -73,7 +74,7 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
-      cursorMap.registerLineCursor(renderedChildSet, i, pos[1])
+      cursorMap.registerSupplementaryCursor(new NodeCursor(renderedChildSet, i), pos[0], pos[1])
     })
   }
 }

@@ -231,9 +231,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     // TODO: This is a temporary hack to translate an index to a cursor position.
     // Instead the layout helper should keep track of the actual cursor position for each index.
     const [x, y] = this.getInsertCoordinates(index, true)
-    const [position, isCursor] = cursorMap.getCursorPositionByCoordinate(x, y)
-    if (!isCursor) {
+    let [position, isCursor] = cursorMap.getCursorPositionByCoordinate(x, y)
+    while (!isCursor) {
       console.warn('Expected cursor position, but got non-cursor', position)
+      ;[position, isCursor] = cursorMap.getCursorRightOfPosition(position)
     }
     return position
   }

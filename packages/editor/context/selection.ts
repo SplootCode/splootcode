@@ -94,6 +94,7 @@ export class NodeSelection {
   updateRenderPositions() {
     this.cursorMap = new CursorMap()
     this.rootNode.calculateDimensions(-20, -26, this)
+    this.cursorMap.dedupdeAndSort()
   }
 
   isCursor() {
@@ -146,6 +147,13 @@ export class NodeSelection {
   getCurrentNodeCursors(): NodeCursor[] {
     if (this.isCursor()) {
       return this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)
+    }
+    return []
+  }
+
+  getAutocompleteNodeCursors(): NodeCursor[] {
+    if (this.isCursor()) {
+      return this.cursorMap.getAutocompleteCursorsForCursorPosition(this.cursor)
     }
     return []
   }
@@ -236,10 +244,10 @@ export class NodeSelection {
         const node = getBlankFillForCategory(category)
         if (node) {
           this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-          return true
         } else {
           console.warn('No insertable node for category: ', category)
         }
+        return true
       }
     }
     return false
@@ -269,6 +277,7 @@ export class NodeSelection {
           this.placeCursor(newCursor.listBlock, newCursor.index)
         }
         this.fixCursorToValidPosition()
+        return
       }
     }
   }
@@ -280,17 +289,19 @@ export class NodeSelection {
       return
     }
 
-    const nodeCursors = this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)
-    for (const nodeCursor of nodeCursors) {
-      const cursor = nodeCursor.listBlock.getDeleteCursorIfEmpty()
-      if (cursor) {
-        cursor.listBlock.childSet.removeChild(cursor.index)
-        cursor.listBlock.parentRef.node.node.clean()
-        // If we deleted a newline, then move left to end of previous line.
-        if (cursor.listBlock.isInsertableLineChildset()) {
-          this.moveCursorLeft()
+    if (this.isCursor()) {
+      const nodeCursors = this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)
+      for (const nodeCursor of nodeCursors) {
+        const cursor = nodeCursor.listBlock.getDeleteCursorIfEmpty()
+        if (cursor) {
+          cursor.listBlock.childSet.removeChild(cursor.index)
+          cursor.listBlock.parentRef.node.node.clean()
+          // If we deleted a newline, then move left to end of previous line.
+          if (cursor.listBlock.isInsertableLineChildset()) {
+            this.moveCursorLeft()
+          }
+          return
         }
-        return
       }
     }
 
@@ -383,9 +394,9 @@ export class NodeSelection {
 
       for (const cursor of this.getCurrentNodeCursors()) {
         const destCategory = cursor.listBlock.getPasteDestinationCategory()
-        const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
-        const valid = adaptedNodes.filter((node) => node)
-        if (adaptedNodes.length == valid.length) {
+        const valid = fragment.nodes.filter((node) => isAdaptableToPasteDesintation(node, destCategory))
+        if (fragment.nodes.length == valid.length) {
+          const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
           const listBlock = cursor.listBlock
           let index = cursor.index
           for (const node of adaptedNodes) {
@@ -408,11 +419,13 @@ export class NodeSelection {
           this.insertNode(cursor.listBlock, cursor.index, adaptedNode)
           return
         } else {
+          // TODO: Better wrapping logic with new cursors
           // If it cannot be inserted, and it's the start of a childset, attempt a wrap of the parent.
-          if (cursor.index === 0) {
-            const parentNode = cursor.listBlock.parentRef.node
-            this.wrapNodeOnPaste(parentNode.node.parent.getChildSet(), parentNode.index, node)
-          }
+          // if (cursor.index === 0) {
+          //   const parentNode = cursor.listBlock.parentRef.node
+          //   this.wrapNodeOnPaste(parentNode.node.parent.getChildSet(), parentNode.index, node)
+          //   return
+          // }
         }
       }
     }
@@ -489,7 +502,7 @@ export class NodeSelection {
 
   selectNodeAtPosition(postition: CursorPosition) {
     this.cursor = postition
-    const nodeCursor = this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)[0]
+    const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(postition)
     if (this.selectionStart) {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
@@ -597,9 +610,7 @@ export class NodeSelection {
 }
 
 export class NodeCursor {
-  @observable
   listBlock: RenderedChildSetBlock
-  @observable
   index: number
 
   constructor(listBlock: RenderedChildSetBlock, index: number) {

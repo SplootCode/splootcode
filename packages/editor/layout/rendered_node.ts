@@ -260,13 +260,12 @@ export class NodeBlock implements NodeObserver {
   }
 
   registerCursorPositions(cursorMap: CursorMap) {
-    if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
-      cursorMap.registerCursorStart(
-        this.parentChildSet,
-        this.index,
+    if (this.parentChildSet !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
+      cursorMap.registerNodeStart(
+        new NodeCursor(this.parentChildSet, this.index),
         this.x + this.marginLeft,
-        this.y + this.marginTop,
-        false
+        this.y,
+        this.marginTop
       )
     }
   }

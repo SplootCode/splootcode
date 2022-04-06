@@ -1,100 +1,176 @@
 import { CursorPosition, NodeCursor } from './selection'
-import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
-interface LineEntry {
-  xCoord: number
-  listBlock: RenderedChildSetBlock
-  index: number
-  isCursor: boolean
+type LineEntry = CursorEntry | NodeEntry
+
+export enum CursorType {
+  Primary = 0,
+  LineStart,
+  LineEnd,
 }
 
-interface LineMap {
+interface CursorEntry {
+  isCursor: true
+  xCoord: number
+  nodeCursors: [NodeCursor, CursorType][]
+}
+
+interface NodeEntry {
+  isCursor: false
+  xCoord: number
+  nodeCursor: NodeCursor
+}
+
+interface Line {
   yCoord: number
+  marginTop: number
   entries: LineEntry[]
-  parentListBlock: RenderedChildSetBlock
-  parentIndex: number
 }
 
 export class CursorMap {
-  lines: LineMap[]
-  linesIndex: { [key: number]: LineMap }
+  lines: Line[]
+  linesIndex: { [key: number]: Line }
+  supplimentaryCursors: [number, number, NodeCursor][]
 
   constructor() {
     this.lines = []
     this.linesIndex = {}
+    this.supplimentaryCursors = []
   }
 
-  registerLineCursor(listBlock: RenderedChildSetBlock, index: number, y: number) {
+  registerSupplementaryCursor(nodeCursor: NodeCursor, x: number, y: number) {
+    this.supplimentaryCursors.push([x, y, nodeCursor])
+  }
+
+  registerNodeStart(nodeCursor: NodeCursor, x: number, y: number, marginTop = 0) {
+    // Check if this is a new line
+    let lineMap: Line
+    if (y + marginTop in this.linesIndex) {
+      lineMap = this.linesIndex[y + marginTop]
+      lineMap.yCoord = y
+      lineMap.marginTop = Math.max(lineMap.marginTop, marginTop)
+      this.linesIndex[y] = lineMap
+    } else if (y in this.linesIndex) {
+      lineMap = this.linesIndex[y]
+      lineMap.marginTop = Math.max(lineMap.marginTop, marginTop)
+      this.linesIndex[y + marginTop] = lineMap
+    } else {
+      // new Line
+      lineMap = {
+        yCoord: y,
+        marginTop: marginTop,
+        entries: [],
+      }
+      this.linesIndex[y] = lineMap
+      this.linesIndex[y + marginTop] = lineMap
+      this.lines.push(lineMap)
+    }
+
+    const lineEntry: NodeEntry = {
+      isCursor: false,
+      xCoord: x,
+      nodeCursor: nodeCursor,
+    }
+    lineMap.entries.push(lineEntry)
+  }
+
+  registerCursorStart(nodeCursor: NodeCursor, x: number, y: number, cursorType: CursorType) {
+    // Don't allow invalid cursors
+    if (!nodeCursor.listBlock.allowInsertCursor(nodeCursor.index)) {
+      return
+    }
+
+    // Check if this is a new line
+    let lineMap: Line
+    if (!(y in this.linesIndex)) {
+      // new Line
+      lineMap = {
+        yCoord: y,
+        marginTop: 0,
+        entries: [],
+      }
+      this.linesIndex[y] = lineMap
+      this.lines.push(lineMap)
+    } else {
+      lineMap = this.linesIndex[y]
+    }
+
+    const lineEntry: CursorEntry = {
+      isCursor: true,
+      xCoord: x,
+      nodeCursors: [[nodeCursor, cursorType]],
+    }
+    lineMap.entries.push(lineEntry)
+  }
+
+  registerEndCursor(nodeCursor: NodeCursor, x: number, y: number) {
+    const listBlock = nodeCursor.listBlock
+    const index = nodeCursor.index
     if (listBlock === null) {
       // This is the toplevel node and can't be selected.
       return
     }
+
     // Don't allow invalid cursors
     if (!listBlock.allowInsertCursor(index)) {
       return
     }
-    // Check if this is a new line
-    let lineMap: LineMap
-    if (!(y in this.linesIndex)) {
-      // new Line
-      lineMap = {
-        yCoord: y,
-        entries: [],
-        parentListBlock: null,
-        parentIndex: null,
-      }
-      this.linesIndex[y] = lineMap
-      this.lines.push(lineMap)
-      this.lines.sort((a, b) => {
-        return a.yCoord - b.yCoord
-      })
-    } else {
-      lineMap = this.linesIndex[y]
-    }
-    lineMap.parentListBlock = listBlock
-    lineMap.parentIndex = index
-  }
 
-  registerCursorStart(listBlock: RenderedChildSetBlock, index: number, x: number, y: number, isCursor: boolean) {
-    if (listBlock === null) {
-      // This is the toplevel node and can't be selected.
+    if (!(y in this.linesIndex)) {
+      console.warn("Attempting to add endCursor to line that doesn't exist")
       return
     }
 
-    // Don't allow invalid cursors
-    if (isCursor && !listBlock.allowInsertCursor(index)) {
-      return
-    }
-
-    // Check if this is a new line
-    let lineMap: LineMap
-    if (!(y in this.linesIndex)) {
-      // new Line
-      lineMap = {
-        yCoord: y,
-        entries: [],
-        parentListBlock: null,
-        parentIndex: null,
-      }
-      this.linesIndex[y] = lineMap
-      this.lines.push(lineMap)
-      this.lines.sort((a, b) => {
-        return a.yCoord - b.yCoord
-      })
-    } else {
-      lineMap = this.linesIndex[y]
-    }
-
-    const lineEntry: LineEntry = {
-      index: index,
-      isCursor: isCursor,
-      listBlock: listBlock,
-      xCoord: x,
-    }
-    lineMap.entries.push(lineEntry)
-    lineMap.entries.sort((a, b) => {
+    const line = this.linesIndex[y]
+    line.entries.sort((a, b) => {
       return a.xCoord - b.xCoord
     })
+    const lastEntry = line.entries[line.entries.length - 1]
+    if (lastEntry.isCursor) {
+      // This line already has a last cursor
+    } else {
+      const lineEntry: CursorEntry = {
+        isCursor: true,
+        xCoord: x,
+        nodeCursors: [[nodeCursor, CursorType.LineEnd]],
+      }
+      line.entries.push(lineEntry)
+    }
+  }
+
+  dedupdeAndSort() {
+    this.lines.sort((a, b) => {
+      return a.yCoord - b.yCoord
+    })
+
+    for (const [x, y, nodeCursor] of this.supplimentaryCursors) {
+      if (y in this.linesIndex) {
+        this.linesIndex[y].entries.push({
+          isCursor: true,
+          nodeCursors: [[nodeCursor, CursorType.Primary]],
+          xCoord: x,
+        })
+      } else {
+        console.warn('Unable to find line for cursor: ', x, y, nodeCursor)
+      }
+    }
+
+    for (const line of this.lines) {
+      const entries = line.entries
+      entries.sort((a, b) => {
+        return a.xCoord - b.xCoord
+      })
+      const newEntries = entries.slice(0, 1)
+      let prev = newEntries[0]
+      for (const entry of entries.slice(1)) {
+        if (entry.isCursor && prev.isCursor && entry.xCoord - prev.xCoord < 1) {
+          prev.nodeCursors.push(...entry.nodeCursors)
+        } else {
+          newEntries.push(entry)
+          prev = entry
+        }
+      }
+      line.entries = newEntries
+    }
   }
 
   getLineIndexForYCoord(yCoord: number): number {
@@ -111,19 +187,7 @@ export class CursorMap {
 
   getEntryListForLineIndex(lineIndex: number): LineEntry[] {
     const line = this.lines[lineIndex]
-
-    const entries = line.entries.slice()
-    const isFirstEntryCursor = entries.length > 0 && entries[0].isCursor
-    if (!isFirstEntryCursor && line.parentListBlock.allowInsertCursor(line.parentIndex)) {
-      entries.unshift({
-        index: line.parentIndex,
-        listBlock: line.parentListBlock,
-        isCursor: true,
-        xCoord: 0,
-      })
-    }
-
-    return entries
+    return line.entries
   }
 
   static getEntryIndexForXCoord(entries: LineEntry[], xCoord: number) {
@@ -166,15 +230,32 @@ export class CursorMap {
     const line = this.lines[position.lineIndex]
     const cursorEntry = entries[position.entryIndex]
     if (cursorEntry.isCursor) {
-      return [cursorEntry.xCoord + 3, line.yCoord]
+      return [cursorEntry.xCoord + 3, line.yCoord + line.marginTop]
     }
-    return [cursorEntry.xCoord, line.yCoord]
+    return [cursorEntry.xCoord, line.yCoord + line.marginTop]
   }
 
   getNodeCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
     const entries = this.getEntryListForLineIndex(position.lineIndex)
     const cursorEntry = entries[position.entryIndex]
-    return [new NodeCursor(cursorEntry.listBlock, cursorEntry.index)]
+    if (cursorEntry.isCursor) {
+      return cursorEntry.nodeCursors.map(([cursor, type]) => cursor)
+    }
+    return []
+  }
+
+  getAutocompleteCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      if (cursorEntry.nodeCursors.length === 1) {
+        return cursorEntry.nodeCursors.map(([cursor, type]) => cursor)
+      }
+      return cursorEntry.nodeCursors
+        .filter(([cursor, type]) => type === CursorType.Primary)
+        .map(([cursor, type]) => cursor)
+    }
+    return []
   }
 
   getSingleNodeForCursorPosition(position: CursorPosition): NodeCursor {
@@ -183,7 +264,7 @@ export class CursorMap {
     if (cursorEntry.isCursor) {
       throw new Error("Attempting to get single node for postion that's actually a cursor")
     }
-    return new NodeCursor(cursorEntry.listBlock, cursorEntry.index)
+    return (cursorEntry as NodeEntry).nodeCursor
   }
 
   getCursorLeftOfPosition(position: CursorPosition): [CursorPosition, boolean, number, number] {
@@ -256,6 +337,7 @@ export class CursorMap {
     const entries = this.getEntryListForLineIndex(lineIndex)
     const xIndex = CursorMap.getEntryIndexForXCoord(entries, x)
     const entry = entries[xIndex]
+
     return [{ lineIndex: lineIndex, entryIndex: xIndex }, entry.isCursor, x, y]
   }
 }

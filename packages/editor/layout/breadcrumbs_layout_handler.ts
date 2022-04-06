@@ -1,8 +1,8 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { CursorMap } from '../context/cursor_map'
+import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
 import { NODE_INLINE_SPACING, NodeBlock } from './rendered_node'
-import { NodeSelection } from '../context/selection'
+import { NodeCursor, NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
@@ -75,7 +75,7 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
-      cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)
+      cursorMap.registerCursorStart(new NodeCursor(renderedChildSet, i), pos[0], pos[1], CursorType.Primary)
     })
   }
 }
