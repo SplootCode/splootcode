@@ -50,10 +50,16 @@ export class Editor extends React.Component<EditorProps> {
     let insertBox = null
     let editBox = null
     if (selection.isCursor() && selection.insertBox !== null) {
-      insertBox = <InsertBox editorX={1} editorY={1} selection={selection} insertBoxData={selection.insertBox} />
+      insertBox = (
+        <InsertBox
+          editorX={1}
+          editorY={1}
+          selection={selection}
+          cursorPosition={selection.cursor}
+          insertBoxData={selection.insertBox}
+        />
+      )
     } else if (selection.isEditingSingleNode()) {
-      // Whelp, this is ugly, but hey it works. :shrug:
-      // This forces the insertbox to be regenerated and refocused when the insert changes position.
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
     const startSize = window.outerWidth - 270 - 360
@@ -150,12 +156,7 @@ export class Editor extends React.Component<EditorProps> {
       event.stopPropagation()
       this.props.selection.deleteSelectedNode()
     }
-    if (event.key === 'Tab') {
-      // TODO: If we're in insert mode, handle the insert first.
-      selection.moveCursorToNextInsert()
-      event.preventDefault()
-      event.cancelBubble = true
-    }
+
     if (event.key === 'Enter') {
       if (selection.isSingleNode()) {
         selection.startEditAtCurrentCursor()

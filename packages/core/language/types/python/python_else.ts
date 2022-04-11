@@ -15,37 +15,17 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
-import { PYTHON_IF_STATEMENT, PythonIfStatement } from './python_if'
-import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 
-class AppendElseGenerator implements SuggestionGenerator {
-  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // TODO: This logic could be much cleaner if we had a way of hooking a
-    // an autocompleter into the right place (i.e. overlapping cursors)
-    if (parent.node.type === PYTHON_STATEMENT && parent.node.parent) {
-      const parentStatement = parent.node as PythonStatement
-      parent = parent.node.parent
-      index = parentStatement.parent.getChildSet().getIndexOf(parentStatement)
-    }
-    const leftChild = parent.getChildSet().getChild(index - 1)
-    if (leftChild && leftChild.type === PYTHON_STATEMENT) {
-      const leftStatement = leftChild as PythonStatement
-      const statementContents = leftStatement.getStatement().getChild(0)
-      if (statementContents && statementContents.type === PYTHON_IF_STATEMENT) {
-        const ifNode = statementContents as PythonIfStatement
-        if (ifNode.allowAppendElse()) {
-          const node = new PythonElseBlock(null)
-          const suggestion = new SuggestedNode(node, `else`, `else`, true, 'Else block')
-          suggestion.setOverrideLocation(ifNode.getElseBlocks(), ifNode.getElseBlocks().getCount())
-          return [suggestion]
-        }
-      }
-    }
-    return []
+class ElseGenerator implements SuggestionGenerator {
+  constantSuggestions(): SuggestedNode[] {
+    const node = new PythonElseBlock(null)
+    const suggestion = new SuggestedNode(node, `else`, `else`, true, 'Else block')
+    return [suggestion]
   }
 }
 
@@ -113,6 +93,6 @@ export class PythonElseBlock extends SplootNode {
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock)
 
-    registerAutocompleter(NodeCategory.PythonStatementContents, new AppendElseGenerator())
+    registerAutocompleter(NodeCategory.PythonElseBlock, new ElseGenerator())
   }
 }

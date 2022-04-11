@@ -1,9 +1,9 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { CursorMap } from '../context/cursor_map'
+import { CursorMap, CursorType } from '../context/cursor_map'
 import { EXPRESSION_TOKEN_SPACING, RenderedChildSetBlock } from './rendered_childset_block'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
 import { NODE_INLINE_SPACING, NodeBlock } from './rendered_node'
-import { NodeSelection } from '../context/selection'
+import { NodeCursor, NodeSelection } from '../context/selection'
 
 export class TokenLayoutHandler implements ChildSetLayoutHandler {
   x: number
@@ -72,14 +72,14 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {
     if (this.cursorPositions.length === 1) {
       const [x, y] = this.cursorPositions[insertIndex]
-      return [x + 5, y]
+      return [x + 5, y + this.marginTop]
     }
     // Work around because invalid cursor positions pop up temporarily during edits.
     if (insertIndex < this.cursorPositions.length) {
       const [x, y] = this.cursorPositions[insertIndex]
-      return [x + 3, y]
+      return [x, y + this.marginTop]
     }
-    return [this.x, this.y]
+    return [this.x, this.y + this.marginTop]
   }
 
   allowInsertCursor(insertIndex: number): boolean {
@@ -88,7 +88,12 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
     this.cursorPositions.forEach((pos, i) => {
-      cursorMap.registerCursorStart(renderedChildSet, i, pos[0], pos[1], true)
+      cursorMap.registerCursorStart(
+        new NodeCursor(renderedChildSet, i),
+        pos[0],
+        pos[1] + this.marginTop,
+        CursorType.Primary
+      )
     })
   }
 }

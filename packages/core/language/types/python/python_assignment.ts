@@ -42,7 +42,7 @@ class AssignmentWrapGenerator implements SuggestionGenerator {
         const node = new PythonAssignment(null)
         const suggestedNode = new SuggestedNode(
           node,
-          'assign',
+          'assign wrap',
           '= assign set',
           true,
           'assign this expression to a variable'

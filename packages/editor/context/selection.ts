@@ -36,15 +36,28 @@ export interface DragState {
   offsetY: number
 }
 
+export interface CursorPosition {
+  lineIndex: number
+  entryIndex: number
+}
+
 export class NodeSelection {
   cursorMap: CursorMap
+
   rootNode: NodeBlock
+
   @observable
-  cursor: NodeCursor
+  selectionStart: NodeCursor
+
+  @observable
+  cursor: CursorPosition
+
   @observable
   state: SelectionState
+
   @observable
   insertBox: InsertBoxData
+
   @observable
   editBox: EditBoxData
 
@@ -57,7 +70,7 @@ export class NodeSelection {
   constructor() {
     this.rootNode = null
     this.cursorMap = new CursorMap()
-    this.cursor = null
+    this.selectionStart = null
     this.insertBox = null
     this.editBox = null
     this.state = SelectionState.Empty
@@ -72,18 +85,18 @@ export class NodeSelection {
   }
 
   @computed get selectedNode() {
-    if (!this.cursor || !this.state) {
+    if (!this.selectionStart || !this.state) {
       return null
     }
-    return this.cursor.selectedNode()
+    return this.selectionStart.selectedNode()
   }
 
   updateRenderPositions() {
     this.cursorMap = new CursorMap()
     this.rootNode.calculateDimensions(-20, -26, this)
+    this.cursorMap.dedupdeAndSort()
   }
 
-  @observable
   isCursor() {
     return this.state === SelectionState.Cursor || this.state === SelectionState.Inserting
   }
@@ -94,78 +107,81 @@ export class NodeSelection {
 
   isSelectedNode(listBlock: RenderedChildSetBlock, index: number) {
     if (this.isSingleNode()) {
-      return this.cursor.listBlock == listBlock && this.cursor.index == index
+      return this.selectionStart.listBlock == listBlock && this.selectionStart.index == index
     }
     return false
   }
 
-  @observable
+  isSelectedNodeAtPosition(position: CursorPosition): boolean {
+    return (
+      this.isSingleNode() &&
+      this.cursor.lineIndex === position.lineIndex &&
+      this.cursor.entryIndex === position.entryIndex
+    )
+  }
+
   isEditingSingleNode() {
     return this.state === SelectionState.Editing
   }
 
-  @observable
-  getStateByIndex(index: number) {
-    if (!this.cursor || !this.isSingleNode() || this.cursor.index !== index) {
-      return NodeSelectionState.UNSELECTED
-    }
-    if (this.state === SelectionState.Editing) {
-      return NodeSelectionState.EDITING
-    }
-    return NodeSelectionState.SELECTED
-  }
-
-  @observable
-  getState(node: SplootNode) {
-    if (!this.isSelected(node)) {
-      return NodeSelectionState.UNSELECTED
-    }
-    if (this.state === SelectionState.Editing) {
-      return NodeSelectionState.EDITING
-    }
-    return NodeSelectionState.SELECTED
-  }
-
-  @observable
-  isSelected(node: SplootNode) {
-    if (!this.cursor || this.isCursor()) {
-      return false
-    }
-    return node === this.selectedNode
-  }
-
-  @observable
-  isEditing(node: SplootNode) {
-    return this.isSelected(node) && this.state === SelectionState.Editing
-  }
-
   @action
   placeCursor(listBlock: RenderedChildSetBlock, index: number, updateXY = true) {
-    this.exitEdit()
-    if (this.cursor) {
-      this.cursor.listBlock.selectionState = SelectionState.Empty
+    this.cursor = listBlock.getCursorPosition(this.cursorMap, index)
+    this.placeCursorPosition(this.cursor, true, updateXY)
+  }
+
+  placeCursorPosition(position: CursorPosition, isCursor: boolean, updateXY = true) {
+    if (isCursor) {
+      this.exitEdit()
+      if (this.selectionStart) {
+        this.selectionStart.listBlock.selectionState = SelectionState.Empty
+        this.selectionStart = null
+      }
+      this.cursor = position
+      this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
+      this.state = SelectionState.Cursor
+      if (updateXY) {
+        this.updateCursorXYToCursor()
+      }
+    } else {
+      this.selectNodeAtPosition(position)
     }
-    this.cursor = new NodeCursor(listBlock, index)
-    listBlock.selectedIndex = index
-    listBlock.selectionState = SelectionState.Cursor
-    this.insertBox = new InsertBoxData(listBlock.getInsertCoordinates(index))
-    this.state = SelectionState.Cursor
-    if (updateXY) {
-      this.updateCursorXYToCursor()
+  }
+
+  getCurrentNodeCursors(): NodeCursor[] {
+    if (this.isCursor()) {
+      return this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)
     }
+    return []
+  }
+
+  getAutocompleteNodeCursors(): NodeCursor[] {
+    if (this.isCursor()) {
+      return this.cursorMap.getAutocompleteCursorsForCursorPosition(this.cursor)
+    }
+    return []
+  }
+
+  getCursorXYPosition(): [number, number] {
+    if (this.isCursor()) {
+      return this.cursorMap.getCoordinates(this.cursor)
+    }
+    return [100, 100]
   }
 
   @action
   deleteSelectedNode() {
     if (this.state === SelectionState.SingleNode) {
       this.exitEdit()
-      if (this.cursor) {
-        this.cursor.listBlock.selectionState = SelectionState.Empty
+      if (this.selectionStart) {
+        this.selectionStart.listBlock.selectionState = SelectionState.Empty
       }
-      const listBlock = this.cursor.listBlock
-      const deletedNode = listBlock.childSet.removeChild(this.cursor.index)
+      const listBlock = this.selectionStart.listBlock
+      let index = this.selectionStart.index
+
+      const deletedNode = listBlock.childSet.removeChild(this.selectionStart.index)
       const newNodes = deletedNode.getChildrenToKeepOnDelete()
-      let index = this.cursor.index
+
       newNodes.forEach((node) => {
         listBlock.childSet.insertNode(node, index)
         index++
@@ -186,11 +202,11 @@ export class NodeSelection {
   @action
   startEditAtCurrentCursor() {
     if (this.isSingleNode()) {
-      const index = this.cursor.index
+      const index = this.selectionStart.index
       // Return null if not editable node.
-      this.editBox = this.cursor.listBlock.getEditData(index)
+      this.editBox = this.selectionStart.listBlock.getEditData(index)
       if (this.editBox !== null) {
-        this.cursor.listBlock.selectionState = SelectionState.Editing
+        this.selectionStart.listBlock.selectionState = SelectionState.Editing
         this.setState(SelectionState.Editing)
         this.updateRenderPositions()
       }
@@ -200,51 +216,38 @@ export class NodeSelection {
   @action
   updatePropertyEdit(newValue: string) {
     if (this.isEditingSingleNode()) {
-      this.cursor.listBlock.nodes[this.cursor.index].node.setEditablePropertyValue(newValue)
+      this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
       this.updateRenderPositions()
     }
   }
 
   @action
   fixCursorToValidPosition() {
-    // Hack! To get around invalid/overlapping cursor positions (ugh)
-    this.updateCursorXYToCursor()
-    this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+    if (!this.cursorMap.isValid(this.cursor)) {
+      // Hack! To get around cursor positions that change when the node tree updates
+      this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+    }
   }
 
   updateCursorXYToCursor() {
-    const cursor = this.cursor
-    const [x, y] = cursor.listBlock.getInsertCoordinates(cursor.index, true)
+    const [x, y] = this.cursorMap.getCoordinates(this.cursor)
     this.lastXCoordinate = x
     this.lastYCoordinate = y
   }
 
   @action
-  moveCursorToNextInsert() {
-    if (this.cursor) {
-      const newCursor = this.cursor.listBlock.getNextInsertCursorInOrAfterNode(this.cursor.index)
-      if (newCursor) {
-        this.placeCursor(newCursor.listBlock, newCursor.index)
-      }
-    } else {
-      // Use root node instead
-    }
-  }
-
-  @action
   unindent() {
-    const [deleteNode, newLineCursor] = this.cursor.listBlock.getUnindent(this.cursor.index)
-    if (newLineCursor) {
-      if (deleteNode) {
-        deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
-      }
-      const category = newLineCursor.listBlock.childSet.nodeCategory
-      const node = getBlankFillForCategory(category)
-      if (node) {
-        this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
+    const lineStartCursors = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+
+    for (const startCursor of lineStartCursors) {
+      const unindentTarget = startCursor.listBlock.getUnindentTarget(startCursor.index)
+      if (unindentTarget) {
+        if (startCursor.listBlock.allowDelete()) {
+          startCursor.listBlock.childSet.removeChild(startCursor.index)
+        }
+        const newlineNode = getBlankFillForCategory(unindentTarget.listBlock.childSet.nodeCategory)
+        unindentTarget.listBlock.childSet.insertNode(newlineNode, unindentTarget.index)
         return true
-      } else {
-        console.warn('No insertable node for category: ', category)
       }
     }
     return false
@@ -256,75 +259,83 @@ export class NodeSelection {
     if (didUnindent) {
       return
     }
-    const [newLineCursor, postInsertCursor] = this.cursor.listBlock.getNewLinePosition(this.cursor.index)
-    if (!newLineCursor) {
+
+    const lineStartCursor = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+    if (lineStartCursor.length !== 0) {
+      // Is start of line cursor. Insert empty node at the line cursor position.
+      // There can be multiple newline cursors - take the first one.
+      const insertCursor = lineStartCursor[0]
+      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
+      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
+      this.moveCursorDown()
       return
     }
-    const category = newLineCursor.listBlock.childSet.nodeCategory
-    const node = getBlankFillForCategory(category)
-    if (node) {
-      this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-      if (postInsertCursor.listBlock.allowInsertCursor(postInsertCursor.index)) {
-        this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
-      } else {
-        const newCursor = postInsertCursor.listBlock.getNextInsertCursorInOrAfterNode(postInsertCursor.index)
-        this.placeCursor(newCursor.listBlock, newCursor.index)
-      }
-      this.fixCursorToValidPosition()
+
+    const lineEndCursor = this.cursorMap.getLineEndCursorsForCursorPosition(this.cursor)
+    if (lineEndCursor.length !== 0) {
+      const insertCursor = lineEndCursor[0]
+      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
+      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
+      return
     }
   }
 
   @action
   backspace() {
-    const cursor = this.cursor.listBlock.getDeleteCursorIfEmpty()
-    if (cursor) {
-      cursor.listBlock.childSet.removeChild(cursor.index)
-      cursor.listBlock.parentRef.node.node.clean()
-      // If we deleted a newline, then move left to end of previous line.
-      if (cursor.listBlock.isInsertableLineChildset()) {
-        this.moveCursorLeft()
-      }
+    if (this.isSingleNode()) {
+      this.deleteSelectedNode()
       return
+    }
+
+    const deleteCursor = this.cursor
+    // If there's a line cursor start, and the preceeding line is empty, delete that line (can be tree child)
+    const lineStartCursors = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+
+    for (const startCursor of lineStartCursors) {
+      if (!startCursor.listBlock.allowDelete()) {
+        continue
+      }
+      const unindentTarget = startCursor.listBlock.getUnindentTarget(startCursor.index)
+      if (unindentTarget) {
+        startCursor.listBlock.childSet.removeChild(startCursor.index)
+        const newlineNode = getBlankFillForCategory(unindentTarget.listBlock.childSet.nodeCategory)
+        unindentTarget.listBlock.childSet.insertNode(newlineNode, unindentTarget.index)
+        return
+      }
+
+      if (startCursor.index !== 0 && startCursor.listBlock.allowDelete()) {
+        const prevLine = startCursor.listBlock.nodes[startCursor.index - 1]
+        if (prevLine.node.isEmpty()) {
+          startCursor.listBlock.childSet.removeChild(startCursor.index - 1)
+          return
+        }
+      }
+      if (
+        startCursor.index < startCursor.listBlock.nodes.length &&
+        startCursor.listBlock.nodes[startCursor.index].node.isEmpty() &&
+        startCursor.listBlock.allowDelete()
+      ) {
+        const [leftCursor, isCursor] = this.cursorMap.getCursorLeftOfPosition(deleteCursor)
+        startCursor.listBlock.childSet.removeChild(startCursor.index)
+        this.placeCursorPosition(leftCursor, isCursor, true)
+        return
+      }
     }
 
     this.moveCursorLeft()
     if (this.isSingleNode()) {
       this.deleteSelectedNode()
-    } else {
-      const cursor = this.cursor.listBlock.getDeleteCursorIfEmpty()
-      if (cursor && cursor.listBlock.isInsertableLineChildset()) {
-        cursor.listBlock.childSet.removeChild(cursor.index)
-      }
     }
-  }
-
-  @action
-  startInsertNode(listBlock: RenderedChildSetBlock, index: number) {
-    this.exitEdit()
-    if (this.cursor) {
-      this.cursor.listBlock.selectionState = SelectionState.Empty
-    }
-    this.cursor = new NodeCursor(listBlock, index)
-    listBlock.selectedIndex = index
-    listBlock.selectionState = SelectionState.Inserting
-    this.state = SelectionState.Inserting
-    this.insertBox = new InsertBoxData(listBlock.getInsertCoordinates(index))
-    this.updateRenderPositions()
-  }
-
-  @action
-  insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
-    this.insertNodeByChildSet(listBlock.childSet, index, node)
   }
 
   replaceOrWrapSelectedNode(node: SplootNode) {
     if (this.isSingleNode()) {
       this.exitEdit()
-      if (this.cursor) {
-        this.cursor.listBlock.selectionState = SelectionState.Empty
+      if (this.selectionStart) {
+        this.selectionStart.listBlock.selectionState = SelectionState.Empty
       }
-      const childSet = this.cursor.listBlock.childSet
-      const index = this.cursor.index
+      const childSet = this.selectionStart.listBlock.childSet
+      const index = this.selectionStart.index
 
       const wrapped = this.wrapNodeOnPaste(childSet, index, node)
       if (!wrapped) {
@@ -398,35 +409,42 @@ export class NodeSelection {
         return
       }
 
-      const destCategory = this.getPasteDestinationCategory()
-      const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
-      const valid = adaptedNodes.filter((node) => node)
-      if (adaptedNodes.length == valid.length) {
-        const listBlock = this.cursor.listBlock
-        let index = this.cursor.index
-        for (const node of adaptedNodes) {
-          this.insertNode(listBlock, index, node)
-          index++
+      for (const cursor of this.getCurrentNodeCursors()) {
+        const destCategory = cursor.listBlock.getPasteDestinationCategory()
+        const valid = fragment.nodes.filter((node) => isAdaptableToPasteDesintation(node, destCategory))
+        if (fragment.nodes.length == valid.length) {
+          const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
+          const listBlock = cursor.listBlock
+          let index = cursor.index
+          for (const node of adaptedNodes) {
+            this.insertNode(listBlock, index, node)
+            index++
+          }
+          return
+        } else {
+          console.warn('Cannot paste there - not all nodes are compatible')
         }
-      } else {
-        console.warn('Cannot paste there - not all nodes are compatible')
       }
     }
   }
 
   insertNodeAtCurrentCursor(node: SplootNode) {
     if (this.isCursor()) {
-      const adaptedNode = adaptNodeToPasteDestination(node, this.getPasteDestinationCategory())
-      if (adaptedNode) {
-        this.insertNode(this.cursor.listBlock, this.cursor.index, adaptedNode)
-      } else {
-        // If it cannot be inserted, and it's the start of a childset, attempt a wrap of the parent.
-        if (this.cursor.index === 0) {
-          const parentNode = this.cursor.listBlock.parentRef.node
-          this.wrapNodeOnPaste(parentNode.node.parent.getChildSet(), parentNode.index, node)
+      for (const cursor of this.getCurrentNodeCursors()) {
+        const adaptedNode = adaptNodeToPasteDestination(node, cursor.listBlock.getPasteDestinationCategory())
+        if (adaptedNode) {
+          this.insertNode(cursor.listBlock, cursor.index, adaptedNode)
+          return
+        } else {
+          // TODO: Better wrapping logic with new cursors
         }
       }
     }
+  }
+
+  @action
+  insertNode(listBlock: RenderedChildSetBlock, index: number, node: SplootNode) {
+    this.insertNodeByChildSet(listBlock.childSet, index, node)
   }
 
   @action
@@ -470,7 +488,7 @@ export class NodeSelection {
     if (this.state === SelectionState.Editing) {
       this.editBox = null
       this.setState(SelectionState.SingleNode)
-      this.cursor.listBlock.selectionState = SelectionState.SingleNode
+      this.selectionStart.listBlock.selectionState = SelectionState.SingleNode
       this.updateRenderPositions()
     }
     if (this.state == SelectionState.Inserting) {
@@ -482,90 +500,69 @@ export class NodeSelection {
 
   @action
   clearSelection() {
-    if (this.cursor) {
-      this.cursor.listBlock.selectionState = SelectionState.Empty
+    if (this.selectionStart) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
     this.state = SelectionState.Empty
-    this.cursor = null
+    this.selectionStart = null
   }
 
   setState(newState: SelectionState) {
     this.state = newState
   }
 
-  getPasteDestinationCategory(): NodeCategory {
-    if (this.cursor) {
-      return this.cursor.listBlock.childSet.nodeCategory
+  selectNodeAtPosition(postition: CursorPosition) {
+    this.cursor = postition
+    const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(postition)
+    if (this.selectionStart) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
-  }
-
-  @action
-  selectNodeByIndex(listBlock: RenderedChildSetBlock, index: number) {
-    this.exitEdit()
-    if (this.cursor) {
-      this.cursor.listBlock.selectionState = SelectionState.Empty
-    }
-    this.cursor = new NodeCursor(listBlock, index)
-    listBlock.selectedIndex = index
-    listBlock.selectionState = SelectionState.SingleNode
+    this.selectionStart = nodeCursor
+    nodeCursor.listBlock.selectedIndex = nodeCursor.index
+    nodeCursor.listBlock.selectionState = SelectionState.SingleNode
     this.setState(SelectionState.SingleNode)
   }
 
   @action
   moveCursorRight() {
-    const [cursor, isCursor, x, y] = this.cursorMap.getCursorRightOfCoordinate(
-      this.lastXCoordinate,
-      this.lastYCoordinate
-    )
+    const [cursor, isCursor, x, y] = this.cursorMap.getCursorRightOfPosition(this.cursor)
+
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
-    } else {
-      this.selectNodeByIndex(cursor.listBlock, cursor.index)
-    }
+
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
   moveCursorLeft() {
-    const [cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfCoordinate(
-      this.lastXCoordinate,
-      this.lastYCoordinate
-    )
+    const [cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(this.cursor)
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
-    } else {
-      this.selectNodeByIndex(cursor.listBlock, cursor.index)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
   moveCursorUp() {
-    const [cursor, isCursor, x, y] = this.cursorMap.getCursorUpOfCoordinate(this.lastXCoordinate, this.lastYCoordinate)
+    const [cursor, isCursor, x, y] = this.cursorMap.getCursorUpOfPosition(
+      this.lastXCoordinate,
+      this.lastYCoordinate,
+      this.cursor
+    )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
-    } else {
-      this.selectNodeByIndex(cursor.listBlock, cursor.index)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
   moveCursorDown() {
-    const [cursor, isCursor, x, y] = this.cursorMap.getCursorDownOfCoordinate(
+    const [cursor, isCursor, x, y] = this.cursorMap.getCursorDownOfPosition(
       this.lastXCoordinate,
-      this.lastYCoordinate
+      this.lastYCoordinate,
+      this.cursor
     )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
-    } else {
-      this.selectNodeByIndex(cursor.listBlock, cursor.index)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   startDrag(fragment: RenderedFragment, offsetX: number, offestY: number) {
@@ -577,29 +574,25 @@ export class NodeSelection {
   }
 
   handleClick(x: number, y: number) {
-    const [cursor, isCursor] = this.cursorMap.getCursorByCoordinate(x, y)
+    const [cursor, isCursor] = this.cursorMap.getCursorPositionByCoordinate(x, y)
     this.lastYCoordinate = y
     this.lastXCoordinate = x
     if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
+      this.placeCursorPosition(cursor, isCursor, false)
     } else {
-      if (this.isSelectedNode(cursor.listBlock, cursor.index)) {
+      if (this.isSelectedNodeAtPosition(cursor)) {
         this.startEditAtCurrentCursor()
       } else {
-        this.selectNodeByIndex(cursor.listBlock, cursor.index)
+        this.selectNodeAtPosition(cursor)
       }
     }
   }
 
   placeCursorByXYCoordinate(x: number, y: number) {
-    const [cursor, isCursor] = this.cursorMap.getCursorByCoordinate(x, y)
+    const [cursor, isCursor] = this.cursorMap.getCursorPositionByCoordinate(x, y)
     this.lastYCoordinate = y
     this.lastXCoordinate = x
-    if (isCursor) {
-      this.placeCursor(cursor.listBlock, cursor.index, false)
-    } else {
-      this.selectNodeByIndex(cursor.listBlock, cursor.index)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   endDrag() {
@@ -608,9 +601,7 @@ export class NodeSelection {
 }
 
 export class NodeCursor {
-  @observable
   listBlock: RenderedChildSetBlock
-  @observable
   index: number
 
   constructor(listBlock: RenderedChildSetBlock, index: number) {

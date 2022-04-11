@@ -260,14 +260,20 @@ export class NodeBlock implements NodeObserver {
   }
 
   registerCursorPositions(cursorMap: CursorMap) {
-    if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
-      cursorMap.registerCursorStart(
-        this.parentChildSet,
-        this.index,
+    if (this.parentChildSet !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
+      cursorMap.registerNodeStart(
+        new NodeCursor(this.parentChildSet, this.index),
         this.x + this.marginLeft,
-        this.y + this.marginTop,
-        false
+        this.y,
+        this.marginTop
       )
+      for (const layoutComponent of this.layout.components) {
+        if (layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {
+          // This node has a block. Add a newline cursor after this node for the first line of the block.
+          const renderedChildSet = this.renderedChildSets[layoutComponent.identifier]
+          cursorMap.registerEndCursor(new NodeCursor(renderedChildSet, 0), this.x + this.rowWidth, this.y)
+        }
+      }
     }
   }
 

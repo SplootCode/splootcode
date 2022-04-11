@@ -63,6 +63,9 @@ export class ChildSet {
   }
 
   insertNode(node: SplootNode, index: number) {
+    if (node.parent) {
+      console.warn('Inserting a node which alredy has a parent!')
+    }
     this.children.splice(index, 0, node)
     node.parent = this.childParentRef
     if (this.enableMutations) {

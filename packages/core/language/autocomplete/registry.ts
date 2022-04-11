@@ -71,16 +71,22 @@ export class AutoCompleteRegistry {
     prefixMapping.get(prefix).push(suggestionGenerator)
   }
 
-  getAutocompleter(category: NodeCategory): Autocompleter {
-    const existingAutocomplter = this.autocompleterCache.get(category)
-    if (existingAutocomplter) {
-      return existingAutocomplter
+  getAutocompleter(category: NodeCategory, excludeCategories: Set<NodeCategory>): Autocompleter {
+    if (excludeCategories.size === 0) {
+      const existingAutocomplter = this.autocompleterCache.get(category)
+      if (existingAutocomplter) {
+        return existingAutocomplter
+      }
     }
     const constants = [...(this.constantSuggestions.get(category) || [])]
     const staticFunctions = [...(this.staticFunctionMap.get(category) || [])]
     const dynamicFunctions = [...(this.dynamicFunctionMap.get(category) || [])]
     const prefixOverrides = new Map<string, SuggestionGenerator[]>(this.prefixOverrides.get(category) || [])
+
     for (const wrappedCategory of this.getAdapatableCategories(category)) {
+      if (excludeCategories.has(wrappedCategory)) {
+        continue
+      }
       constants.push(...(this.constantSuggestions.get(wrappedCategory) || []))
       staticFunctions.push(...(this.staticFunctionMap.get(wrappedCategory) || []))
       dynamicFunctions.push(...(this.dynamicFunctionMap.get(wrappedCategory) || []))
@@ -93,7 +99,9 @@ export class AutoCompleteRegistry {
       })
     }
     const autocompleter = new Autocompleter(constants, staticFunctions, dynamicFunctions, prefixOverrides)
-    this.autocompleterCache.set(category, autocompleter)
+    if (excludeCategories.size === 0) {
+      this.autocompleterCache.set(category, autocompleter)
+    }
     return autocompleter
   }
 }
