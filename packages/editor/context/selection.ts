@@ -127,20 +127,24 @@ export class NodeSelection {
   @action
   placeCursor(listBlock: RenderedChildSetBlock, index: number, updateXY = true) {
     this.cursor = listBlock.getCursorPosition(this.cursorMap, index)
-    this.placeCursorPosition(this.cursor, updateXY)
+    this.placeCursorPosition(this.cursor, true, updateXY)
   }
 
-  placeCursorPosition(position: CursorPosition, updateXY = true) {
-    this.exitEdit()
-    if (this.selectionStart) {
-      this.selectionStart.listBlock.selectionState = SelectionState.Empty
-      this.selectionStart = null
-    }
-    this.cursor = position
-    this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
-    this.state = SelectionState.Cursor
-    if (updateXY) {
-      this.updateCursorXYToCursor()
+  placeCursorPosition(position: CursorPosition, isCursor: boolean, updateXY = true) {
+    if (isCursor) {
+      this.exitEdit()
+      if (this.selectionStart) {
+        this.selectionStart.listBlock.selectionState = SelectionState.Empty
+        this.selectionStart = null
+      }
+      this.cursor = position
+      this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
+      this.state = SelectionState.Cursor
+      if (updateXY) {
+        this.updateCursorXYToCursor()
+      }
+    } else {
+      this.selectNodeAtPosition(position)
     }
   }
 
@@ -233,20 +237,16 @@ export class NodeSelection {
 
   @action
   unindent() {
-    const nodeCursors = this.getCurrentNodeCursors()
-    for (const cursor of nodeCursors) {
-      const [deleteNode, newLineCursor] = cursor.listBlock.getUnindent(cursor.index)
-      if (newLineCursor) {
-        if (deleteNode) {
-          deleteNode.parentChildSet.childSet.removeChild(deleteNode.index)
+    const lineStartCursors = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+
+    for (const startCursor of lineStartCursors) {
+      const unindentTarget = startCursor.listBlock.getUnindentTarget(startCursor.index)
+      if (unindentTarget) {
+        if (startCursor.listBlock.allowDelete()) {
+          startCursor.listBlock.childSet.removeChild(startCursor.index)
         }
-        const category = newLineCursor.listBlock.childSet.nodeCategory
-        const node = getBlankFillForCategory(category)
-        if (node) {
-          this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-        } else {
-          console.warn('No insertable node for category: ', category)
-        }
+        const newlineNode = getBlankFillForCategory(unindentTarget.listBlock.childSet.nodeCategory)
+        unindentTarget.listBlock.childSet.insertNode(newlineNode, unindentTarget.index)
         return true
       }
     }
@@ -260,25 +260,23 @@ export class NodeSelection {
       return
     }
 
-    const nodeCursors = this.getCurrentNodeCursors()
-    for (const cursor of nodeCursors) {
-      const [newLineCursor, postInsertCursor] = cursor.listBlock.getNewLinePosition(cursor.index)
-      if (!newLineCursor) {
-        continue
-      }
-      const category = newLineCursor.listBlock.childSet.nodeCategory
-      const node = getBlankFillForCategory(category)
-      if (node) {
-        this.insertNode(newLineCursor.listBlock, newLineCursor.index, node)
-        if (postInsertCursor.listBlock.allowInsertCursor(postInsertCursor.index)) {
-          this.placeCursor(postInsertCursor.listBlock, postInsertCursor.index)
-        } else {
-          const newCursor = postInsertCursor.listBlock.getNextInsertCursorInOrAfterNode(postInsertCursor.index)
-          this.placeCursor(newCursor.listBlock, newCursor.index)
-        }
-        this.fixCursorToValidPosition()
-        return
-      }
+    const lineStartCursor = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+    if (lineStartCursor.length !== 0) {
+      // Is start of line cursor. Insert empty node at the line cursor position.
+      // There can be multiple newline cursors - take the first one.
+      const insertCursor = lineStartCursor[0]
+      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
+      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
+      this.moveCursorDown()
+      return
+    }
+
+    const lineEndCursor = this.cursorMap.getLineEndCursorsForCursorPosition(this.cursor)
+    if (lineEndCursor.length !== 0) {
+      const insertCursor = lineEndCursor[0]
+      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
+      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
+      return
     }
   }
 
@@ -289,19 +287,38 @@ export class NodeSelection {
       return
     }
 
-    if (this.isCursor()) {
-      const nodeCursors = this.cursorMap.getNodeCursorsForCursorPosition(this.cursor)
-      for (const nodeCursor of nodeCursors) {
-        const cursor = nodeCursor.listBlock.getDeleteCursorIfEmpty()
-        if (cursor) {
-          cursor.listBlock.childSet.removeChild(cursor.index)
-          cursor.listBlock.parentRef.node.node.clean()
-          // If we deleted a newline, then move left to end of previous line.
-          if (cursor.listBlock.isInsertableLineChildset()) {
-            this.moveCursorLeft()
-          }
+    const deleteCursor = this.cursor
+    // If there's a line cursor start, and the preceeding line is empty, delete that line (can be tree child)
+    const lineStartCursors = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
+
+    for (const startCursor of lineStartCursors) {
+      if (!startCursor.listBlock.allowDelete()) {
+        continue
+      }
+      const unindentTarget = startCursor.listBlock.getUnindentTarget(startCursor.index)
+      if (unindentTarget) {
+        startCursor.listBlock.childSet.removeChild(startCursor.index)
+        const newlineNode = getBlankFillForCategory(unindentTarget.listBlock.childSet.nodeCategory)
+        unindentTarget.listBlock.childSet.insertNode(newlineNode, unindentTarget.index)
+        return
+      }
+
+      if (startCursor.index !== 0 && startCursor.listBlock.allowDelete()) {
+        const prevLine = startCursor.listBlock.nodes[startCursor.index - 1]
+        if (prevLine.node.isEmpty()) {
+          startCursor.listBlock.childSet.removeChild(startCursor.index - 1)
           return
         }
+      }
+      if (
+        startCursor.index < startCursor.listBlock.nodes.length &&
+        startCursor.listBlock.nodes[startCursor.index].node.isEmpty() &&
+        startCursor.listBlock.allowDelete()
+      ) {
+        const [leftCursor, isCursor] = this.cursorMap.getCursorLeftOfPosition(deleteCursor)
+        startCursor.listBlock.childSet.removeChild(startCursor.index)
+        this.placeCursorPosition(leftCursor, isCursor, true)
+        return
       }
     }
 
@@ -519,11 +536,7 @@ export class NodeSelection {
     this.lastXCoordinate = x
     this.lastYCoordinate = y
 
-    if (isCursor) {
-      this.placeCursorPosition(cursor, false)
-    } else {
-      this.selectNodeAtPosition(cursor)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
@@ -531,11 +544,7 @@ export class NodeSelection {
     const [cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(this.cursor)
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursorPosition(cursor, false)
-    } else {
-      this.selectNodeAtPosition(cursor)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
@@ -547,11 +556,7 @@ export class NodeSelection {
     )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursorPosition(cursor, false)
-    } else {
-      this.selectNodeAtPosition(cursor)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   @action
@@ -563,11 +568,7 @@ export class NodeSelection {
     )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    if (isCursor) {
-      this.placeCursorPosition(cursor, false)
-    } else {
-      this.selectNodeAtPosition(cursor)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   startDrag(fragment: RenderedFragment, offsetX: number, offestY: number) {
@@ -583,7 +584,7 @@ export class NodeSelection {
     this.lastYCoordinate = y
     this.lastXCoordinate = x
     if (isCursor) {
-      this.placeCursorPosition(cursor, false)
+      this.placeCursorPosition(cursor, isCursor, false)
     } else {
       if (this.isSelectedNodeAtPosition(cursor)) {
         this.startEditAtCurrentCursor()
@@ -597,11 +598,7 @@ export class NodeSelection {
     const [cursor, isCursor] = this.cursorMap.getCursorPositionByCoordinate(x, y)
     this.lastYCoordinate = y
     this.lastXCoordinate = x
-    if (isCursor) {
-      this.placeCursorPosition(cursor, false)
-    } else {
-      this.selectNodeAtPosition(cursor)
-    }
+    this.placeCursorPosition(cursor, isCursor, false)
   }
 
   endDrag() {

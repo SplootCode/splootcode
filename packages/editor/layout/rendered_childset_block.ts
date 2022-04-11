@@ -228,15 +228,13 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getCursorPosition(cursorMap: CursorMap, index: number): CursorPosition {
-    // TODO: This is a temporary hack to translate an index to a cursor position.
-    // Instead the layout helper should keep track of the actual cursor position for each index.
-    const [x, y] = this.getInsertCoordinates(index, true)
-    let [position, isCursor] = cursorMap.getCursorPositionByCoordinate(x, y)
-    while (!isCursor) {
-      console.warn('Expected cursor position, but got non-cursor', position)
-      ;[position, isCursor] = cursorMap.getCursorRightOfPosition(position)
+    if (this.allowInsertCursor(index)) {
+      const [x, y] = this.getInsertCoordinates(index, true)
+      const [position] = cursorMap.getCursorPositionByCoordinate(x, y)
+      return position
     }
-    return position
+    const insertCursor = this.getNextInsertCursorInOrAfterNode(index)
+    return insertCursor.listBlock.getCursorPosition(cursorMap, insertCursor.index)
   }
 
   getNextChildInsert(): NodeCursor {
@@ -274,20 +272,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return null
   }
 
-  getDeleteCursorIfEmpty(): NodeCursor {
-    const thisNode = this.parentRef.node
-    if (thisNode.node.isEmpty()) {
-      const parent = thisNode.parentChildSet?.parentRef.node
-      if (parent && parent.node.isEmpty() && parent.parentChildSet.allowDelete()) {
-        return new NodeCursor(parent.parentChildSet, parent.index)
-      }
-      if (thisNode.parentChildSet.allowDelete()) {
-        return new NodeCursor(thisNode.parentChildSet, thisNode.index)
-      }
-    }
-    return null
-  }
-
   isInsertableLineChildset(): boolean {
     return (
       this.allowInsert() &&
@@ -295,65 +279,6 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.componentType === LayoutComponentType.CHILD_SET_TREE ||
         this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS)
     )
-  }
-
-  getParentLineCursorIfEndNode(index: number): NodeCursor {
-    // Found the line, return that.
-    if (this.isInsertableLineChildset()) {
-      return new NodeCursor(this, index + 1)
-    }
-
-    // This isn't the last node in the childset, so it can't be the last node in the line.
-    if (index < this.nodes.length - 1) {
-      return null
-    }
-
-    const thisNode = this.parentRef.node
-    const inlineComponents = thisNode.getInlineLayoutComponents()
-    const lastInline = inlineComponents[inlineComponents.length - 1]
-
-    // If this childset is not the last inline component, it's not at the end of the line.
-    if (this.componentType !== lastInline.type || this.parentRef.childSetId !== lastInline.identifier) {
-      return null
-    }
-
-    let after = false
-    // If there's an insertable line childset after this one in the same node:
-    for (const childSetID of thisNode.childSetOrder) {
-      const childSet = thisNode.renderedChildSets[childSetID]
-      if (after && childSet.isInsertableLineChildset()) {
-        return new NodeCursor(childSet, 0)
-      }
-      if (childSetID === this.parentRef.childSetId) {
-        after = true
-      }
-    }
-
-    // That index is the last inline node of this node, so check if
-    // this node is also the last inline node going up to the nearst line parent.
-    return thisNode.parentChildSet.getParentLineCursorIfEndNode(thisNode.index)
-  }
-
-  getParentLineCursorIfStartNode(index: number): NodeCursor {
-    if (this.isInsertableLineChildset()) {
-      return new NodeCursor(this, index)
-    }
-
-    // This isn't the first node in the childset, so it can't be the first node in the line.
-    if (index !== 0) {
-      return null
-    }
-
-    const thisNode = this.parentRef.node
-    const firstLayoutComponent = thisNode.layout.components[0]
-    // If this childset is not the first inline component, it's not at the start of the line.
-    if (
-      this.componentType !== firstLayoutComponent.type ||
-      this.parentRef.childSetId !== firstLayoutComponent.identifier
-    ) {
-      return null
-    }
-    return thisNode.parentChildSet.getParentLineCursorIfStartNode(thisNode.index)
   }
 
   isLastChildSetOfParentNode() {
@@ -372,88 +297,42 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return res
   }
 
-  getUnindent(index: number): [NodeBlock, NodeCursor] {
-    if (this.isInsertableLineChildset() && index != 0) {
-      // We don't want to delete anything.
-      if (index === this.nodes.length) {
-        const thisNode = this.parentRef.node
-        if (this.isLastChildSetOfParentNode() && thisNode.parentChildSet) {
-          const [unindentCursor] = thisNode.parentChildSet.getNewLinePosition(thisNode.index + 1)
-          return [null, unindentCursor]
-        }
-      }
-      return [null, null]
-    }
-
-    if (!this.parentRef.node.node.isEmpty()) {
-      return [null, null]
-    }
-
-    // For dictionaries, if the parent is empty too, we want to unindent from that context.
-    if (this.parentRef.node?.parentChildSet?.parentRef.node.node.isEmpty()) {
-      return this.parentRef.node.parentChildSet.getUnindent(this.parentRef.node.index + 1)
-    }
-
-    // Figure out if we should unindent
-    const thisNode = this.parentRef.node
-    const parentChildSet = thisNode.parentChildSet
-    if (!parentChildSet) {
-      return [null, null]
-    }
-    const isLastNodeInParentChildSet = thisNode.index === parentChildSet.nodes.length - 1
+  isLastLineOfParentNode(index: number): boolean {
     if (
-      thisNode.index !== 0 &&
-      isLastNodeInParentChildSet &&
-      parentChildSet.isLastChildSetOfParentNode() &&
-      parentChildSet.isInsertableLineChildset()
+      this.componentType === LayoutComponentType.CHILD_SET_BLOCK ||
+      this.componentType === LayoutComponentType.CHILD_SET_STACK ||
+      this.componentType === LayoutComponentType.CHILD_SET_TREE ||
+      this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS
     ) {
-      const parentNode = parentChildSet.parentRef.node
-      if (parentNode && parentNode.parentChildSet) {
-        const [unindentCursor] = parentNode.parentChildSet.getNewLinePosition(parentNode.index + 1)
-        return [thisNode, unindentCursor]
-      }
+      return index == this.nodes.length - 1 && this.isLastChildSetOfParentNode()
     }
-    return [null, null]
+    return this.isLastChildSetOfParentNode()
   }
 
-  /** Called when Enter is pressed
-   Returns: [
-    NodeCursor - a cursor position for the newline
-    NodeCursor - where to place the insert cursor after the new line is added
-   ]
-  */
-  getNewLinePosition(index: number): [NodeCursor, NodeCursor] {
-    if (this.isInsertableLineChildset()) {
-      // TODO: Is this line empty - should that matter?
-      return [new NodeCursor(this, index), new NodeCursor(this, index + 1)]
+  getUnindentTarget(index: number): NodeCursor {
+    if (index === 0 || index === this.nodes.length) {
+      return null
     }
-
-    if (this.componentType === LayoutComponentType.CHILD_SET_STACK) {
-      // This is a stack, are we the last node in the stack?
-      if (index === this.nodes.length) {
-        const parent = this.parentRef.node
-        const nextLineCursor = parent.parentChildSet.getParentLineCursorIfEndNode(parent.index + 1)
-        return [nextLineCursor, nextLineCursor]
+    if (!this.nodes[index].node.isEmpty()) {
+      return null
+    }
+    if (this.isLastLineOfParentNode(index)) {
+      let parentChildSet = this.parentRef.node.parentChildSet
+      let parentIndex = this.parentRef.node.index
+      while (
+        parentChildSet &&
+        !parentChildSet.isInsertableLineChildset() &&
+        parentChildSet.isLastLineOfParentNode(parentIndex)
+      ) {
+        const parentNode = parentChildSet.parentRef.node
+        parentChildSet = parentNode.parentChildSet
+        parentIndex = parentNode.index
+      }
+      if (parentChildSet?.isInsertableLineChildset()) {
+        return new NodeCursor(parentChildSet, parentIndex + 1)
       }
     }
-
-    // Calculate end first because empty lines should be considered "end" not "start" of the line
-    // We are at the end of this childset
-    if (index === this.nodes.length) {
-      const endOfLineInsertCursor = this.getParentLineCursorIfEndNode(index)
-      if (endOfLineInsertCursor) {
-        // Place cursor into new line
-        return [endOfLineInsertCursor, endOfLineInsertCursor]
-      }
-    }
-
-    // Are we at the start of a line?
-    const startOfLineInsertCursor = this.getParentLineCursorIfStartNode(index)
-    if (startOfLineInsertCursor) {
-      return [startOfLineInsertCursor, new NodeCursor(this, index)]
-    }
-
-    return [null, null]
+    return null
   }
 
   @action
@@ -481,10 +360,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     } else if (mutation.type === ChildSetMutationType.DELETE) {
       this.nodes.splice(mutation.index, 1)
       this.renumberChildren()
+      this.parentRef.node.updateLayout()
       this.selection.updateRenderPositions()
-      if (this.allowInsertCursor(mutation.index)) {
-        this.selection.placeCursor(this, mutation.index, true)
-      }
+      this.selection.placeCursor(this, mutation.index, true)
       this.selection.fixCursorToValidPosition()
     }
   }

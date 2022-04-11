@@ -74,8 +74,8 @@ export class CursorMap {
   }
 
   registerCursorStart(nodeCursor: NodeCursor, x: number, y: number, cursorType: CursorType) {
-    // Don't allow invalid cursors
-    if (!nodeCursor.listBlock.allowInsertCursor(nodeCursor.index)) {
+    // Don't allow invalid primary cursors
+    if (cursorType == CursorType.Primary && !nodeCursor.listBlock.allowInsertCursor(nodeCursor.index)) {
       return
     }
 
@@ -104,14 +104,8 @@ export class CursorMap {
 
   registerEndCursor(nodeCursor: NodeCursor, x: number, y: number) {
     const listBlock = nodeCursor.listBlock
-    const index = nodeCursor.index
     if (listBlock === null) {
       // This is the toplevel node and can't be selected.
-      return
-    }
-
-    // Don't allow invalid cursors
-    if (!listBlock.allowInsertCursor(index)) {
       return
     }
 
@@ -126,7 +120,7 @@ export class CursorMap {
     })
     const lastEntry = line.entries[line.entries.length - 1]
     if (lastEntry.isCursor) {
-      // This line already has a last cursor
+      lastEntry.nodeCursors.push([nodeCursor, CursorType.LineEnd])
     } else {
       const lineEntry: CursorEntry = {
         isCursor: true,
@@ -149,8 +143,6 @@ export class CursorMap {
           nodeCursors: [[nodeCursor, CursorType.Primary]],
           xCoord: x,
         })
-      } else {
-        console.warn('Unable to find line for cursor: ', x, y, nodeCursor)
       }
     }
 
@@ -244,12 +236,36 @@ export class CursorMap {
     return []
   }
 
+  getLineEndCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      return cursorEntry.nodeCursors
+        .filter(([cursor, type]) => type === CursorType.LineEnd)
+        .map(([cursor, type]) => cursor)
+    }
+    return []
+  }
+
+  getLineStartCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      return cursorEntry.nodeCursors
+        .filter(([cursor, type]) => type === CursorType.LineStart)
+        .map(([cursor, type]) => cursor)
+    }
+    return []
+  }
+
   getAutocompleteCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {
     const entries = this.getEntryListForLineIndex(position.lineIndex)
     const cursorEntry = entries[position.entryIndex]
     if (cursorEntry.isCursor) {
       if (cursorEntry.nodeCursors.length === 1) {
-        return cursorEntry.nodeCursors.map(([cursor, type]) => cursor)
+        return cursorEntry.nodeCursors
+          .filter(([cursor, type]) => type !== CursorType.LineEnd)
+          .map(([cursor, type]) => cursor)
       }
       return cursorEntry.nodeCursors
         .filter(([cursor, type]) => type === CursorType.Primary)

@@ -94,7 +94,6 @@ export class BlockChildSetLayoutHandler implements ChildSetLayoutHandler {
     this.cursorPositions.forEach((pos, i) => {
       if (this.includeEndCursorPosition && i === this.cursorPositions.length - 1) {
         cursorMap.registerCursorStart(new NodeCursor(renderedChildSet, i), pos[0], pos[1], CursorType.Primary)
-        return
       }
       cursorMap.registerCursorStart(new NodeCursor(renderedChildSet, i), pos[0], pos[1], CursorType.LineStart)
     })

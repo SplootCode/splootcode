@@ -1,8 +1,8 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { CursorMap } from '../context/cursor_map'
+import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
 import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
-import { NodeSelection } from '../context/selection'
+import { NodeCursor, NodeSelection } from '../context/selection'
 import { ROW_SPACING, RenderedChildSetBlock, getTextWidth } from './rendered_childset_block'
 
 function labelStringWidth(s: string) {
@@ -18,8 +18,13 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
 
   childSetTreeLabels: string[]
 
+  lineStartCursorPositions: [number, number][]
+  lineEndCursorPositions: [number, number][]
+
   constructor(layoutComponent: LayoutComponent) {
     this.childSetTreeLabels = layoutComponent.metadata
+    this.lineStartCursorPositions = []
+    this.lineEndCursorPositions = []
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
@@ -45,6 +50,8 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
     this.width = 0
     this.height = 0
     this.marginTop = 0
+    this.lineStartCursorPositions = []
+    this.lineEndCursorPositions = []
 
     const labels = this.childSetTreeLabels
     const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
@@ -57,7 +64,9 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
         this.width = Math.max(this.width, insertBoxWidth)
       }
+      this.lineStartCursorPositions.push([x + indent, topPos])
       childNodeBlock.calculateDimensions(x + indent, topPos, selection)
+      this.lineEndCursorPositions.push([x + indent + childNodeBlock.rowWidth, topPos])
       topPos += childNodeBlock.rowHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.width = Math.max(this.width, childNodeBlock.rowWidth + indent + 4) // 4 = Bracket at end.
@@ -79,6 +88,11 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
   }
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
-    // Tree childsets have no cursor positions (for now)
+    this.lineStartCursorPositions.forEach((pos, i) => {
+      cursorMap.registerCursorStart(new NodeCursor(renderedChildSet, i), pos[0], pos[1], CursorType.LineStart)
+    })
+    this.lineEndCursorPositions.forEach((pos, i) => {
+      cursorMap.registerEndCursor(new NodeCursor(renderedChildSet, i + 1), pos[0], pos[1])
+    })
   }
 }
