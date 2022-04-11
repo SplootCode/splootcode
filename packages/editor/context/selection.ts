@@ -437,12 +437,6 @@ export class NodeSelection {
           return
         } else {
           // TODO: Better wrapping logic with new cursors
-          // If it cannot be inserted, and it's the start of a childset, attempt a wrap of the parent.
-          // if (cursor.index === 0) {
-          //   const parentNode = cursor.listBlock.parentRef.node
-          //   this.wrapNodeOnPaste(parentNode.node.parent.getChildSet(), parentNode.index, node)
-          //   return
-          // }
         }
       }
     }

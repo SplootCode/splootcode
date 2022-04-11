@@ -122,38 +122,14 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   constructor(props: InsertBoxProps) {
     super(props)
     this.inputRef = React.createRef()
-    const { selection } = props
-
-    const staticSuggestions: RenderedSuggestion[] = []
-    const autocompleters: CursorAutocompleter[] = []
-    const categorySet = new Set<NodeCategory>()
-
-    const cursors = selection.getAutocompleteNodeCursors()
-    for (const cursor of cursors) {
-      const childSetBlock = cursor.listBlock
-      const category = childSetBlock.childSet.nodeCategory
-      if (!childSetBlock.allowInsert() || category in categorySet) {
-        continue
-      }
-      const autocompleter = new CursorAutocompleter(cursor, categorySet)
-      categorySet.add(category)
-      getAutocompleRegistry()
-        .getAdapatableCategories(category)
-        .forEach((cat) => categorySet.add(cat))
-
-      autocompleters.push(autocompleter)
-      staticSuggestions.push(...autocompleter.getStaticSuggestions())
-    }
-
-    const filteredSuggestions = filterSuggestions(staticSuggestions, autocompleters, '')
 
     this.state = {
       userInput: '',
       autoWidth: this.getWidth(''),
-      cursorPosition: props.cursorPosition,
-      filteredSuggestions: filteredSuggestions,
-      autocompleters: autocompleters,
-      staticSuggestions: staticSuggestions,
+      cursorPosition: null,
+      filteredSuggestions: [],
+      autocompleters: [],
+      staticSuggestions: [],
       activeSuggestion: 0,
     }
   }
