@@ -310,6 +310,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     else if (e.key === 'ArrowUp' && filteredSuggestions.length > 0) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
+      e.preventDefault()
       if (activeSuggestion === 0) {
         return
       }
@@ -319,17 +320,15 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     else if (e.key === 'ArrowDown' && filteredSuggestions.length > 0) {
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
+      e.preventDefault()
       if (activeSuggestion === filteredSuggestions.length - 1) {
         return
       }
       this.setState({ activeSuggestion: activeSuggestion + 1 })
     }
 
-    // Don't move the node cursor, just let the text box do its thing for left/right arrows.
-    if (['ArrowLeft', 'ArrowRight'].includes(e.key)) {
-      e.stopPropagation()
-      e.nativeEvent.stopImmediatePropagation()
-    }
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
   }
 
   onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
