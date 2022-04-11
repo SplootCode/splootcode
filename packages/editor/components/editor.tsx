@@ -179,6 +179,14 @@ export class Editor extends React.Component<EditorProps> {
         selection.moveCursorDown()
         event.preventDefault()
         break
+      case 'Home':
+        selection.moveCursorToStartOfLine()
+        event.preventDefault()
+        break
+      case 'End':
+        selection.moveCursorToEndOfLine()
+        event.preventDefault()
+        break
     }
   }
 

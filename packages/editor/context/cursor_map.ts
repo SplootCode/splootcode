@@ -356,4 +356,19 @@ export class CursorMap {
 
     return [{ lineIndex: lineIndex, entryIndex: xIndex }, entry.isCursor, x, y]
   }
+
+  getCursorAtStartOfLine(position: CursorPosition): [CursorPosition, boolean, number] {
+    const { lineIndex } = position
+    const entries = this.getEntryListForLineIndex(lineIndex)
+    const entry = entries[0]
+    return [{ lineIndex: lineIndex, entryIndex: 0 }, entry.isCursor, entry.xCoord]
+  }
+
+  getCursorAtEndOfLine(position: CursorPosition): [CursorPosition, boolean, number] {
+    const { lineIndex } = position
+    const entries = this.getEntryListForLineIndex(lineIndex)
+    const xIndex = entries.length - 1
+    const entry = entries[xIndex]
+    return [{ lineIndex: lineIndex, entryIndex: xIndex }, entry.isCursor, entry.xCoord]
+  }
 }

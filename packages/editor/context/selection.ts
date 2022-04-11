@@ -565,6 +565,18 @@ export class NodeSelection {
     this.placeCursorPosition(cursor, isCursor, false)
   }
 
+  moveCursorToStartOfLine() {
+    const [cursor, isCursor, x] = this.cursorMap.getCursorAtStartOfLine(this.cursor)
+    this.lastXCoordinate = x
+    this.placeCursorPosition(cursor, isCursor, false)
+  }
+
+  moveCursorToEndOfLine() {
+    const [cursor, isCursor, x] = this.cursorMap.getCursorAtEndOfLine(this.cursor)
+    this.lastXCoordinate = x
+    this.placeCursorPosition(cursor, isCursor, false)
+  }
+
   startDrag(fragment: RenderedFragment, offsetX: number, offestY: number) {
     this.dragState = {
       node: fragment,
