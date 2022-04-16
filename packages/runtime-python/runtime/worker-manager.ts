@@ -26,6 +26,7 @@ export class WorkerManager {
     this.workerURL = workerURL
     this.worker = null
     this.standardIO = standardIO
+    this.inputPlayback = []
     this.stateCallBack = stateCallback
 
     this.initialiseWorker()
@@ -61,7 +62,13 @@ export class WorkerManager {
   async provideStdin() {
     let inputValue = this.leftoverInput
     if (!inputValue) {
-      inputValue = await this.standardIO.stdin()
+      try {
+        inputValue = await this.standardIO.stdin()
+      } catch {
+        // TODO: In future we can send a signal to the worker to
+        // exit cleanly rather than killing the worker.
+        this.stop()
+      }
     }
 
     let data = new TextEncoder().encode(inputValue)
@@ -90,10 +97,12 @@ export class WorkerManager {
   }
 
   stop() {
+    this.standardIO.stderr('\r\nProgram Stopped.\r\n')
     this.stateCallBack(WorkerState.DISABLED)
     this.worker.removeEventListener('message', this.handleMessageFromWorker)
     this.worker.terminate()
     this.worker = null
+    this.initialiseWorker()
   }
 
   handleMessageFromWorker = (event) => {

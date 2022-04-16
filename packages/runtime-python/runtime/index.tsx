@@ -91,9 +91,6 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   run = async () => {
-    if (this.rejectActiveInput) {
-      this.rejectActiveInput()
-    }
     this.term.clear()
     this.wasmTty.clearTty()
     this.setState({ running: true })
@@ -101,9 +98,6 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   rerun = async () => {
-    if (this.rejectActiveInput) {
-      this.rejectActiveInput()
-    }
     this.wasmTty.clearTty()
     this.term.clear()
     this.setState({ running: true })
@@ -113,10 +107,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   stop = () => {
     if (this.rejectActiveInput) {
       this.rejectActiveInput()
+    } else {
+      this.workerManager.stop()
     }
-    this.workerManager.stop()
-    this.term.write('\r\nProgram Stopped.\r\n')
-    this.workerManager.initialiseWorker()
   }
 
   handleTermData = (data: string) => {
@@ -219,6 +212,8 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           // If we are prompting, then we want to cancel the current read
           if (this.rejectActiveInput) {
             this.rejectActiveInput()
+          } else {
+            this.stop()
           }
           break
 
