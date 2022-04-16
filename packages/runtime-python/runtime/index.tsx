@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { AppProviders } from './providers'
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import { WorkerManager, WorkerState } from './worker-manager'
 
 const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN
 export enum FrameState {
@@ -41,20 +42,20 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   private termRef: React.RefObject<HTMLDivElement>
   private term: Terminal
   private terminalFitAddon: FitAddon
-  private worker: Worker
-  private stdinbuffer: SharedArrayBuffer
-  private stdinbufferInt: Int32Array
-  private _activeInput: boolean
+  private workerManager: WorkerManager
+  private resolveActiveInput?: (s: string) => void
+  private rejectActiveInput?: () => void
   private wasmTty: WasmTTY
-  private inputRecord: string[]
+  private pasteLinesBuffer: string[]
 
   constructor(props) {
     super(props)
     this.termRef = React.createRef()
-    this.worker = null
-    this._activeInput = false
+    this.resolveActiveInput = null
+    this.rejectActiveInput = null
     this.wasmTty = null
-    this.inputRecord = []
+    this.pasteLinesBuffer = []
+
     this.state = {
       ready: false,
       running: false,
@@ -90,134 +91,67 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 
   run = async () => {
-    this.resolveActiveRead()
+    if (this.rejectActiveInput) {
+      this.rejectActiveInput()
+    }
     this.term.clear()
     this.wasmTty.clearTty()
-    this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT)
-    this.stdinbufferInt = new Int32Array(this.stdinbuffer)
-    this.stdinbufferInt[0] = -1
-    this.inputRecord = []
-    this.worker.postMessage({
-      type: 'run',
-      nodetree: this.state.nodeTree,
-      buffer: this.stdinbuffer,
-    })
     this.setState({ running: true })
+    this.workerManager.run(this.state.nodeTree)
   }
 
   rerun = async () => {
-    this.resolveActiveRead()
+    if (this.rejectActiveInput) {
+      this.rejectActiveInput()
+    }
     this.wasmTty.clearTty()
     this.term.clear()
-    this.stdinbuffer = new SharedArrayBuffer(100 * Int32Array.BYTES_PER_ELEMENT)
-    this.stdinbufferInt = new Int32Array(this.stdinbuffer)
-    this.stdinbufferInt[0] = -1
-    this.worker.postMessage({
-      type: 'rerun',
-      nodetree: this.state.nodeTree,
-      buffer: this.stdinbuffer,
-      readlines: this.inputRecord,
-    })
     this.setState({ running: true })
+    this.workerManager.rerun(this.state.nodeTree)
   }
 
   stop = () => {
-    this.resolveActiveRead()
-    this.term.write('\r\nProgram Stopped.\r\n')
-    this.worker.removeEventListener('message', this.handleMessageFromWorker)
-    this.worker.terminate()
-    this.worker = null
-    this.setState({ running: false, ready: false })
-    this.initialiseWorker()
-  }
-
-  handleMessageFromWorker = (event: MessageEvent) => {
-    const type = event.data.type
-    if (type === 'ready') {
-      this.setState({ ready: true })
-    } else if (type === 'stdout') {
-      this.wasmTty.print(event.data.stdout)
-    } else if (type === 'inputMode') {
-      this.activateInputMode()
-    } else if (type === 'inputValue') {
-      this.recordInput(event.data.value)
-    } else if (type === 'finished') {
-      this.setState({ running: false })
-    } else if (type === 'runtime_capture') {
-      // Pass on capture info to the parent window.
-      if (this.state.runtimeCapture) {
-        sendToParent(event.data)
-      }
+    if (this.rejectActiveInput) {
+      this.rejectActiveInput()
     }
-  }
-
-  activateInputMode = () => {
-    this._activeInput = true
-    this.wasmTty.read()
-  }
-
-  recordInput = (s: string) => {
-    this.inputRecord.push(s)
+    this.workerManager.stop()
+    this.term.write('\r\nProgram Stopped.\r\n')
+    this.workerManager.initialiseWorker()
   }
 
   handleTermData = (data: string) => {
     // Only Allow CTRL+C Through when not inputting
-    if (!this._activeInput && data !== '\x03') {
+    if (!this.resolveActiveInput && data !== '\x03') {
       // Ignore
       return
     }
 
     // If this looks like a pasted input, expand it
     if (data.length > 3 && data.charCodeAt(0) !== 0x1b) {
-      const normData = data.replace(/[\r\n]+/g, '\r')
-      Array.from(normData).forEach((c) => this.handleData(c))
+      const normData = data.replace(/(\r\n)/g, '\r').replace(/(\n)/g, '\r')
+      if (normData.includes('\r')) {
+        const lines = normData.split('\r')
+        this.pasteLinesBuffer = lines.slice(1)
+        Array.from(lines[0]).forEach((c) => this.handleData(c))
+        this.handleData('\r')
+      } else {
+        Array.from(data).forEach((c) => this.handleData(c))
+      }
     } else {
       this.handleData(data)
     }
   }
 
-  /**
-   * Handle input completion
-   */
-  handleReadComplete = async (): Promise<any> => {
-    if (this._activeInput) {
-      const input = this.wasmTty.getInput() + '\n'
-      if (this.stdinbuffer && this.stdinbufferInt) {
-        let startingIndex = 1
-        if (this.stdinbufferInt[0] > 0) {
-          startingIndex = this.stdinbufferInt[0]
-        }
-        const data = new TextEncoder().encode(input)
-        data.forEach((value, index) => {
-          this.stdinbufferInt[startingIndex + index] = value
-        })
-
-        this.stdinbufferInt[0] = startingIndex + data.length - 1
-        Atomics.notify(this.stdinbufferInt, 0, 1)
-      }
-      this.term.write('\r\n')
-      this._activeInput = false
-    }
-  }
-
-  resolveActiveRead() {
-    // Abort the read if we were reading
-    if (this._activeInput) {
-      this.term.write('\r\n')
-    }
-    this._activeInput = false
-  }
-
   handleData = (data: string) => {
     // Only Allow CTRL+C Through
-    if (!this._activeInput && data !== '\x03') {
+    if (!this.resolveActiveInput && data !== '\x03') {
       return
     }
 
     const ord = data.charCodeAt(0)
     // Handle ANSI escape sequences
     if (ord === 0x1b) {
-      switch (data.substr(1)) {
+      switch (data.substring(1)) {
         case '[A': // Up arrow
           break
 
@@ -257,7 +191,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         case '\r': // ENTER
         case '\x0a': // CTRL+J
         case '\x0d': // CTRL+M
-          this.handleReadComplete()
+          this.resolveActiveInput(this.wasmTty.getInput())
           break
 
         case '\x7F': // BACKSPACE
@@ -267,7 +201,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           break
 
         case '\t': // TAB
-          this.wasmTty.handleCursorInsert('    ')
+          this.wasmTty.handleCursorInsert('\t')
           break
 
         case '\x01': // CTRL+A
@@ -283,7 +217,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           // TODO: Handle CTRL-C
 
           // If we are prompting, then we want to cancel the current read
-          this.resolveActiveRead()
+          if (this.rejectActiveInput) {
+            this.rejectActiveInput()
+          }
           break
 
         case '\x05': // CTRL+E
@@ -335,19 +271,62 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
 
     window.addEventListener('resize', this.handleResize, false)
-    this.initialiseWorker()
+    this.initialiseWorkerManager()
   }
 
-  initialiseWorker = () => {
-    if (!this.worker) {
-      this.worker = new Worker(process.env.RUNTIME_PYTHON_WEBWORKER_PATH)
-      this.worker.addEventListener('message', this.handleMessageFromWorker)
+  getTerminalInput: () => Promise<string> = async () => {
+    await this.wasmTty.read()
+    const inputPromise: Promise<string> = new Promise((resolve, reject) => {
+      this.resolveActiveInput = (s: string) => {
+        this.term.write('\r\n')
+        resolve(s + '\n')
+        this.resolveActiveInput = null
+        this.rejectActiveInput = null
+      }
+      this.rejectActiveInput = () => {
+        reject()
+        this.resolveActiveInput = null
+        this.rejectActiveInput = null
+      }
+    })
+
+    if (this.pasteLinesBuffer.length !== 0) {
+      const line = this.pasteLinesBuffer.pop()
+      Array.from(line).forEach((c) => this.handleData(c))
+      if (this.pasteLinesBuffer.length !== 0) {
+        this.handleData('\r')
+      }
     }
+
+    return inputPromise
+  }
+
+  initialiseWorkerManager = () => {
+    this.workerManager = new WorkerManager(
+      process.env.RUNTIME_PYTHON_WEBWORKER_PATH,
+      {
+        stdin: this.getTerminalInput,
+        stdout: (s: string) => {
+          this.wasmTty.print(s)
+        },
+        stderr: (s: string) => {
+          this.wasmTty.print(s)
+        },
+      },
+      (state: WorkerState) => {
+        if (state === WorkerState.READY) {
+          this.setState({ ready: true, running: false })
+        } else if (state === WorkerState.DISABLED) {
+          this.setState({ ready: false, running: false })
+        }
+      }
+    )
   }
 
   handleResize = (event) => {
     if (this.terminalFitAddon) {
       this.terminalFitAddon.fit()
+      this.wasmTty.reflowInput()
     }
   }
 

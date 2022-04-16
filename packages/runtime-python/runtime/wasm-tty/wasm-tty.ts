@@ -1,93 +1,72 @@
 import { Terminal } from 'xterm'
 
-export interface ActivePrompt {
-  promise: Promise<any>
-  resolve?: (what: string) => any
-  reject?: (error: Error) => any
-}
-
 /**
  * A tty is a particular device file, that sits between the shell and the terminal.
  * It acts an an interface for the shell and terminal to read/write from,
  * and communicate with one another
  */
 export default class WasmTTY {
-  xterm: Terminal
+  private xterm: Terminal
 
-  _termSize: {
-    cols: number
-    rows: number
-  }
-  _cursor: number
-  _inputStartCursor: number
-  _input: string
+  private inputCursorX: number
+  private inputCursorY: number
+  private inputStartCursorX: number
+  private inputStartCursorY: number
+  private input: string[]
+  private inputSplit: string[][]
 
   constructor(xterm: Terminal) {
     this.xterm = xterm
-
-    this._termSize = {
-      cols: this.xterm.cols,
-      rows: this.xterm.rows,
-    }
-    this._input = ''
-    this._cursor = 0
+    this.input = []
+    this.inputSplit = []
+    this.inputCursorX = 0
+    this.inputCursorY = 0
   }
 
-  /**
-   * Function to return a deconstructed readPromise
-   */
-  _getAsyncRead() {
-    let readResolve
-    let readReject
-    const readPromise = new Promise((resolve, reject) => {
-      readResolve = (response: string) => {
-        resolve(response)
-      }
-      readReject = reject
+  async read() {
+    this.input = []
+    this.inputSplit = []
+
+    const promise = new Promise((resolve) => {
+      this.xterm.write('\x00', () => resolve(true))
+    }).then(() => {
+      const buf = this.xterm.buffer.active
+      this.inputStartCursorX = buf.cursorX
+      this.inputStartCursorY = buf.cursorY + buf.baseY
+      this.inputCursorX = this.inputStartCursorX
+      this.inputCursorY = 0
+      this.xterm.focus()
     })
 
-    return {
-      promise: readPromise,
-      resolve: readResolve,
-      reject: readReject,
-    }
+    return promise
   }
 
-  /**
-   * Return a promise that will resolve when the user has completed
-   * typing a single line
-   */
-  read(): ActivePrompt {
-    this._input = ''
-    this._inputStartCursor = this._cursor
+  reflowInput() {
+    const cols = this.xterm.cols
+    const lines: string[][] = []
 
-    return {
-      ...this._getAsyncRead(),
+    const inputChars = Array.from(this.input)
+
+    const firstLine = inputChars.slice(0, cols - this.inputStartCursorX)
+    lines.push(firstLine)
+    let index = firstLine.length
+    let lastLineFull = firstLine.length === cols - this.inputStartCursorX
+    while (index < inputChars.length) {
+      const line = inputChars.slice(index, index + cols)
+      lines.push(line)
+      index += line.length
+      lastLineFull = line.length == cols
     }
+    if (lastLineFull) {
+      lines.push([''])
+    }
+
+    // TODO: Redraw relevant lines
+    this.inputSplit = lines
   }
 
-  /**
-   * Return a promise that will be resolved when the user types a single
-   * character.
-   *
-   * This can be active in addition to `.read()` and will be resolved in
-   * priority before it.
-   */
-  readChar(promptPrefix: string): ActivePrompt {
-    if (promptPrefix.length > 0) {
-      this.print(promptPrefix)
-    }
-
-    return {
-      ...this._getAsyncRead(),
-    }
-  }
-
-  /**
-   * Prints a message and changes line
-   */
-  println(message: string) {
-    this.print(message + '\n')
+  getInput(): string {
+    return this.input.join('')
   }
 
   /**
@@ -95,48 +74,11 @@ export default class WasmTTY {
    */
   print(message: string) {
     const normInput = message.replace(/[\r\n]+/g, '\n').replace(/\n/g, '\r\n')
-    if (normInput.length === 0 || normInput[normInput.length - 1] === '\n') {
+    if (normInput.length === 0) {
       this.xterm.write(normInput)
-      this._cursor = 0
       return
     }
-
-    if (normInput.includes('\r\n')) {
-      const split = normInput.split('\r\n')
-      const last = split[split.length - 1]
-      this._cursor = last.length
-    } else {
-      this._cursor += normInput.length
-    }
     this.xterm.write(normInput)
-  }
-
-  /**
-   * Prints a list of items using a wide-format
-   */
-  printWide(items: Array<string>, padding = 2) {
-    if (items.length === 0) return this.println('')
-
-    // Compute item sizes and matrix row/cols
-    const itemWidth = items.reduce((width, item) => Math.max(width, item.length), 0) + padding
-    const wideCols = Math.floor(this._termSize.cols / itemWidth)
-    const wideRows = Math.ceil(items.length / wideCols)
-
-    // Print matrix
-    let i = 0
-    for (let row = 0; row < wideRows; ++row) {
-      let rowStr = ''
-
-      // Prepare columns
-      for (let col = 0; col < wideCols; ++col) {
-        if (i < items.length) {
-          let item = items[i++]
-          item += ' '.repeat(itemWidth - item.length)
-          rowStr += item
-        }
-      }
-      this.println(rowStr)
-    }
   }
 
   /**
@@ -144,33 +86,51 @@ export default class WasmTTY {
    */
   handleCursorErase = (backspace: boolean) => {
     if (backspace) {
-      if (this._cursor <= 0 || this._cursor <= this._inputStartCursor) {
+      const lineOffset = this.getLineOffset()
+      if (lineOffset === 0) {
         return
       }
-      const inputCursor = this._cursor - this._inputStartCursor
-      const newInput = this.getInput().substr(0, inputCursor - 1) + this.getInput().substr(inputCursor)
-      this._writeCursorPosition(this.getCursor() - 1)
-      this._input = newInput
+      const inputCursor = this.getCurrentInputOffset()
+      const newInput = [...this.input.slice(0, inputCursor - 1), ...this.input.slice(inputCursor)]
+      this.writeCursorXPosition(this.inputCursorX - 1)
+      this.input = newInput
+      this.reflowInput()
       this.xterm.write('\x1B[P')
     } else {
-      const inputCursor = this._cursor - this._inputStartCursor
-      const newInput = this.getInput().substr(0, inputCursor) + this.getInput().substr(inputCursor + 1)
-      this._input = newInput
+      const inputCursor = this.inputCursorX - this.inputStartCursorX
+      const newInput = [...this.input.slice(0, inputCursor), ...this.input.slice(inputCursor + 1)]
+      this.input = newInput
+      this.reflowInput()
       this.xterm.write('\x1B[P')
     }
+  }
+
+  addInputLine() {
+    this.xterm.write('\r\n')
+    this.inputCursorY += 1
+    this.inputCursorX = 0
   }
 
   /**
    * Insert character at cursor location
    */
   handleCursorInsert = (data: string) => {
-    const inputCursor = this.getInputCursor()
-    const newInput = this._input.substr(0, inputCursor) + data + this._input.substr(inputCursor)
+    const arrData = Array.from(data)
+    const inputCursor = this.getCurrentInputOffset()
+    this.input.splice(inputCursor, 0, ...arrData)
+    // const newInput = this._input.slice(0, inputCursor) + data + this._input.substring(inputCursor)
 
     // Make space for the data (pushes other chars to the right)
-    this.xterm.write(`\x1B[${data.length}@`)
-    this.print(data)
-    this._input = newInput
+    this.xterm.write(`\x1B[${arrData.length}@`)
+    this.xterm.write(data)
+
+    this.inputCursorX += arrData.length
+
+    if (this.xterm.cols - this.inputCursorX <= 0) {
+      this.addInputLine()
+    }
+
+    this.reflowInput()
   }
 
   /**
@@ -184,81 +144,66 @@ export default class WasmTTY {
     this.xterm.write('\u001b[2J')
     // Set the cursor to 0, 0
     this.xterm.write('\u001b[0;0H')
-    this._cursor = 0
+    this.inputCursorX = 0
   }
 
-  /**
-   * Function to get the terminal size
-   */
-  getTermSize(): { rows: number; cols: number } {
-    return this._termSize
+  getCurrentInputOffset(): number {
+    return this.inputCursorY * this.xterm.cols + this.inputCursorX - this.inputStartCursorX
   }
 
-  /**
-   * Function to get the current input in the line
-   */
-  getInput(): string {
-    return this._input
-  }
-
-  /**
-   * Function to get the current cursor
-   */
-  getCursor(): number {
-    return this._cursor
-  }
-
-  /**
-   * Function to get the size (columns and rows)
-   */
-  getSize(): { cols: number; rows: number } {
-    return this._termSize
-  }
-
-  getInputCursor(): number {
-    return this._cursor - this._inputStartCursor
+  getLineOffset(): number {
+    if (this.inputCursorY === 0) {
+      return this.inputCursorX - this.inputStartCursorX
+    }
+    return this.inputCursorX
   }
 
   // CTRL+K, returns clipboard contents
   cutInputRight(): string {
-    const inputCursor = this.getInputCursor()
-    const newInput = this._input.substring(0, inputCursor)
-    const cutNum = this._input.length - newInput.length
+    const inputCursor = this.getCurrentInputOffset()
+    const newInput = this.input.slice(0, inputCursor)
+    const cutNum = this.input.length - newInput.length
     if (cutNum > 0) {
       this.xterm.write(`\x1B[${cutNum}P`)
     }
-    const res = this._input.substring(inputCursor)
-    this._input = newInput
-    return res
+    const res = this.input.slice(inputCursor)
+    this.input = newInput
+    return res.join('')
   }
 
   cutInputLeft(): string {
-    const inputCursor = this.getInputCursor()
-    const newInput = this._input.substring(inputCursor)
-    const cutNum = this._input.length - newInput.length
-    this._writeCursorPosition(this._inputStartCursor)
+    const inputCursor = this.getCurrentInputOffset()
+    const newInput = this.input.slice(inputCursor)
+    const cutNum = this.input.length - newInput.length
+    this.writeCursorXPosition(this.inputStartCursorX)
     if (cutNum > 0) {
       this.xterm.write(`\x1B[${cutNum}P`)
     }
-    const res = this._input.substring(0, inputCursor)
-    this._input = newInput
-    return res
+    const res = this.input.slice(0, inputCursor)
+    this.input = newInput
+    return res.join('')
   }
 
   handleCursorMove(dir: number) {
-    this._writeCursorPosition(this._cursor + dir)
+    this.writeCursorXPosition(this.inputCursorX + dir)
   }
 
-  _writeCursorPosition(newCursor: number) {
+  private writeCursorXPosition(newCursor: number) {
     let newCol = newCursor
-    const prevCol = this._cursor
+    const prevCol = this.inputCursorX
 
-    if (newCol < this._inputStartCursor) {
-      newCol = this._inputStartCursor
+    const min = this.inputCursorY === 0 ? this.inputStartCursorX : 0
+    const max = min + this.inputSplit[this.inputCursorY].length
+
+    if (newCol < min) {
+      newCol = min
+    }
+    if (newCol > max) {
+      newCol = max
     }
 
-    if (newCol > this._inputStartCursor + this._input.length) {
-      newCol = this._inputStartCursor + this._input.length
+    if (newCol > this.inputStartCursorX + this.input.length) {
+      newCol = this.inputStartCursorX + this.input.length
     }
 
     // Adjust horizontally
@@ -269,53 +214,17 @@ export default class WasmTTY {
     }
 
     // Set new offset
-    this._cursor = newCol
-  }
-
-  setTermSize(cols: number, rows: number) {
-    this._termSize = { cols, rows }
+    this.inputCursorX = newCol
   }
 
   moveCursorToEnd() {
-    const end = this._inputStartCursor + this._input.length
-    this._writeCursorPosition(end)
+    const end = this.inputStartCursorX + this.input.length
+    this.writeCursorXPosition(end)
   }
 
   moveCursorToStart() {
-    this._writeCursorPosition(this._inputStartCursor)
-  }
-}
-
-/**
- * Convert offset at the given input to col/row location
- *
- * This function is not optimized and practically emulates via brute-force
- * the navigation on the terminal, wrapping when they reach the column width.
- */
-export function offsetToColRow(input: string, offset: number, maxCols: number) {
-  let row = 0
-  let col = 0
-
-  for (let i = 0; i < offset; ++i) {
-    const chr = input.charAt(i)
-    if (chr === '\n') {
-      col = 0
-      row += 1
-    } else {
-      col += 1
-      if (col > maxCols) {
-        col = 0
-        row += 1
-      }
+    if (this.inputCursorY == 0) {
+      this.writeCursorXPosition(this.inputStartCursorX)
     }
   }
-
-  return { row, col }
-}
-
-/**
- * Counts the lines in the given input
- */
-export function countLines(input: string, maxCols: number) {
-  return offsetToColRow(input, input.length, maxCols).row + 1
 }
