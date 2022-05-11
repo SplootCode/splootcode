@@ -51,6 +51,7 @@ import { PythonIfStatement } from './types/python/python_if'
 import { PythonImport } from './types/python/python_import'
 import { PythonKeyValue } from './types/python/python_keyvalue'
 import { PythonList } from './types/python/python_list'
+import { PythonMember } from './types/python/python_member'
 import { PythonModuleIdentifier } from './types/python/python_module_identifier'
 import { PythonReturn } from './types/python/python_return'
 import { PythonStatement } from './types/python/python_statement'
@@ -158,6 +159,7 @@ export function loadTypes() {
   PythonImport.register()
   PythonKeyValue.register()
   PythonList.register()
+  PythonMember.register()
   PythonModuleIdentifier.register()
   PythonReturn.register()
   PythonStatement.register()

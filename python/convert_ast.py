@@ -50,6 +50,11 @@ def appendCallToken(callExpr, tokens):
   else:
     raise Exception(f'Unsupported Call function expression: {ast.dump(callExpr.func)}')
 
+def appendAttribute(attrExpr, tokens):
+  obj = generateExpressionTokens(attrExpr.value)
+  node = SplootNode('PYTHON_MEMBER', {'object': obj}, {'member': attrExpr.attr})
+  tokens.append(node)
+
 def appendConstantToken(const, tokens):
   if type(const.value) == str:
     tokens.append(SplootNode("STRING_LITERAL", {}, {"value": const.value}))
@@ -117,6 +122,8 @@ def generateExpressionTokens(expr, tokens=None):
     appendConstantToken(expr, tokens)
   elif type(expr) == ast.Name:
     appendIdentifier(expr, tokens)
+  elif type(expr) == ast.Attribute:
+    appendAttribute(expr, tokens)
   elif type(expr) == ast.BinOp:
     appendBinaryOperatorExpression(expr, tokens)
   elif type(expr) == ast.BoolOp:

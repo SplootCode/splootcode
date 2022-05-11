@@ -21,6 +21,12 @@ def generateCallMember(node):
     callExpr = ast.Call(memberExpr, args=args, keywords=[])
     return callExpr
 
+def generateMember(node):
+    object = generateAstExpressionToken(node["childSets"]["object"][0])
+    member = node["properties"]["member"]
+    memberExpr = ast.Attribute(object, member, ctx=ast.Load())
+    return memberExpr
+
 def generateList(node):
     els = [generateAstExpression(el) for el in node['childSets']['elements']]
     els = [el for el in els if el is not None]
@@ -55,6 +61,8 @@ def generateAstExpressionToken(node):
         return ast.Name(identifier, ctx=ast.Load())
     elif node["type"] == "PYTHON_CALL_MEMBER":
         return generateCallMember(node)
+    elif node["type"] == "PYTHON_MEMBER":
+        return generateMember(node)
     elif node["type"] == "PYTHON_LIST":
         return generateList(node)
     elif node["type"] == "PY_DICT":

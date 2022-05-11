@@ -8,6 +8,7 @@ import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '../../node'
+import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { TypeCategory, VariableTypeInfo } from '../../scope/types'
@@ -101,7 +102,9 @@ class MemberGenerator implements SuggestionGenerator {
       } else if (attr.category === TypeCategory.Value)
         if (!name.startsWith('_') || allowUnderscore) {
           {
-            // TODO: Support member expressions that aren't function calls...
+            const node = new PythonMember(null)
+            node.setMember(name)
+            suggestions.push(new SuggestedNode(node, `member ${name}`, name, true, attr.shortDoc, 'object'))
           }
         }
     }
