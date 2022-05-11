@@ -170,7 +170,7 @@ export class NodeBlock implements NodeObserver {
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
     let leftPos = this.x + nodeInlineSpacing
-    if (this.layout.boxType === NodeBoxType.INVISIBLE) {
+    if (this.layout.boxType === NodeBoxType.INVISIBLE || this.layout.boxType === NodeBoxType.BRACKETS) {
       leftPos = this.x
       this.blockWidth = 0
       this.width = 0
@@ -235,7 +235,7 @@ export class NodeBlock implements NodeObserver {
         }
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection, marginAlreadyApplied)
         let width = childSetBlock.width
-        if (this.layout.boxType !== NodeBoxType.INVISIBLE) {
+        if (this.layout.boxType !== NodeBoxType.INVISIBLE && this.layout.boxType !== NodeBoxType.BRACKETS) {
           width += NODE_INLINE_SPACING
         }
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))

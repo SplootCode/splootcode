@@ -70,7 +70,7 @@ export class PythonBrackets extends SplootNode {
         new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'expr'),
         new LayoutComponent(LayoutComponentType.SEPARATOR, ')'),
       ],
-      NodeBoxType.INVISIBLE
+      NodeBoxType.BRACKETS
     )
     typeRegistration.pasteAdapters = {
       PYTHON_EXPRESSION: (node: SplootNode) => {
