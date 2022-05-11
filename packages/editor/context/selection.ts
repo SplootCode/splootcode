@@ -577,6 +577,25 @@ export class NodeSelection {
     this.placeCursorPosition(cursor, isCursor, false)
   }
 
+  moveCursorToNextInsert(backwards: boolean) {
+    let [cursor, isCursor, x, y] = [this.cursor, false, 0, 0]
+    if (backwards) {
+      ;[cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(cursor)
+      while (!isCursor) {
+        ;[cursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(cursor)
+      }
+    } else {
+      ;[cursor, isCursor, x, y] = this.cursorMap.getCursorRightOfPosition(cursor)
+      while (!isCursor) {
+        ;[cursor, isCursor, x, y] = this.cursorMap.getCursorRightOfPosition(cursor)
+      }
+    }
+
+    this.lastXCoordinate = x
+    this.lastYCoordinate = y
+    this.placeCursorPosition(cursor, isCursor, false)
+  }
+
   startDrag(fragment: RenderedFragment, offsetX: number, offestY: number) {
     this.dragState = {
       node: fragment,
