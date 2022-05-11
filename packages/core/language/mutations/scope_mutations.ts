@@ -6,9 +6,10 @@ export enum ScopeMutationType {
   ADD_OR_UPDATE_ENTRY,
   REMOVE_ENTRY,
   RENAME_ENTRY,
+  IMPORT_MODULE,
 }
 
-export type ScopeMutation = ChildScopeScopeMutation | RenameScopeMutation | EntryScopeMutation
+export type ScopeMutation = ChildScopeScopeMutation | RenameScopeMutation | EntryScopeMutation | ImportModuleMutation
 
 export interface ChildScopeScopeMutation {
   scope: Scope
@@ -27,4 +28,10 @@ export interface RenameScopeMutation {
   scope: Scope
   previousName: string
   newName: string
+}
+
+export interface ImportModuleMutation {
+  type: ScopeMutationType.IMPORT_MODULE
+  scope: Scope
+  moduleName: string
 }

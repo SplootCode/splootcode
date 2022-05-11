@@ -311,6 +311,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       (state: WorkerState) => {
         if (state === WorkerState.READY) {
           this.setState({ ready: true, running: false })
+          sendToParent({ type: 'ready' })
         } else if (state === WorkerState.DISABLED) {
           this.setState({ ready: false, running: false })
         }
@@ -357,6 +358,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         break
       case 'disable':
         this.setState({ nodeTreeErrors: true })
+        break
+      case 'module_info':
+        this.workerManager.loadModule(data.moduleName)
         break
       default:
         console.warn('Unrecognised message recieved:', event.data)

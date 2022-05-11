@@ -65,6 +65,7 @@ const stdin = {
 }
 
 let executorCode = null
+let moduleLoaderCode = null
 let nodetree = null
 
 const run = async () => {
@@ -81,12 +82,32 @@ const run = async () => {
   })
 }
 
+const loadModule = async (moduleName) => {
+  try {
+    const res = pyodide.runPython(`generate_module_info("${moduleName}")`)
+    if (!res) {
+      // Returns None if module does not exist or cannot be imported.
+      return
+    }
+    const jsResult = res.toJs({ dict_converter: Object.fromEntries })
+    if (jsResult) {
+      postMessage({
+        type: 'module_info',
+        info: jsResult,
+      })
+    }
+  } catch (err) {
+    console.warn(err)
+  }
+}
+
 const getNodeTree = () => {
   return nodetree
 }
 
 const initialise = async () => {
   executorCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/executor.py')).text()
+  moduleLoaderCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/module_loader.py')).text()
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/' })
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
@@ -113,6 +134,7 @@ const initialise = async () => {
     },
   })
   pyodide.globals.set('__name__', '__main__')
+  pyodide.runPython(moduleLoaderCode)
   postMessage({
     type: 'ready',
   })
@@ -135,5 +157,10 @@ onmessage = function (e) {
       rerun = true
       run()
       break
+    case 'loadModule':
+      loadModule(e.data.moduleName)
+      break
+    default:
+      console.warn(`Worker recieved unrecognised message type: ${e.data.type}`)
   }
 }

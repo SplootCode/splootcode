@@ -39,6 +39,7 @@ export const PythonEditorPanels = (props: WebEditorProps) => {
       file.rootNode.recursivelySetMutations(true)
       // Validate all nodes, firing validation mutations when invalid.
       file.rootNode.recursivelyValidate()
+
       // And finally... make the whole thing load.
       setEditorState(editorState)
     }
