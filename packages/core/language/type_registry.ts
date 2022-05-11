@@ -24,6 +24,7 @@ export enum NodeBoxType {
   STANDARD_BLOCK = 0,
   SMALL_BLOCK,
   INVISIBLE,
+  BRACKETS,
 }
 
 export class NodeLayout {
