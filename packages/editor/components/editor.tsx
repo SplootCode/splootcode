@@ -187,6 +187,9 @@ export class Editor extends React.Component<EditorProps> {
         selection.moveCursorToEndOfLine()
         event.preventDefault()
         break
+      case 'Tab':
+        selection.moveCursorToNextInsert(event.shiftKey)
+        event.preventDefault()
     }
   }
 
