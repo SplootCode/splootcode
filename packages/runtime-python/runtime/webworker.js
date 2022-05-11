@@ -55,11 +55,11 @@ const stdin = {
       }
       responseStdin = new TextDecoder('utf-8').decode(newStdinData)
       text += responseStdin
-      postMessage({
-        type: 'inputValue',
-        value: text,
-      })
     }
+    postMessage({
+      type: 'inputValue',
+      value: text,
+    })
     return text
   },
 }

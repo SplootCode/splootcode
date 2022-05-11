@@ -311,6 +311,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       (state: WorkerState) => {
         if (state === WorkerState.READY) {
           this.setState({ ready: true, running: false })
+          this.pasteLinesBuffer = []
           sendToParent({ type: 'ready' })
         } else if (state === WorkerState.DISABLED) {
           this.setState({ ready: false, running: false })
