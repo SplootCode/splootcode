@@ -199,12 +199,29 @@ export class Scope {
     if (this.modules.has(name)) {
       return
     }
-    this.modules.set(name, { category: TypeCategory.Module, attributes: new Map() })
+    this.modules.set(name, { category: TypeCategory.Module, attributes: new Map(), loaded: false })
     this.fireMutation({
       type: ScopeMutationType.IMPORT_MODULE,
       scope: this,
       moduleName: name,
     })
+  }
+
+  loadAllImportedModules() {
+    if (!this.isGlobal) {
+      this.parent.loadAllImportedModules()
+      return
+    }
+    for (const [name, def] of this.modules.entries()) {
+      if (!def.loaded) {
+        console.log('Firing mutation for module import ', name)
+        this.fireMutation({
+          type: ScopeMutationType.IMPORT_MODULE,
+          scope: this,
+          moduleName: name,
+        })
+      }
+    }
   }
 
   addBuiltIn(name: string, meta: VariableMetadata) {

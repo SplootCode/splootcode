@@ -131,6 +131,11 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.sendNodeTreeToHiddenFrame()
   }
 
+  onPythonRuntimeIsReady = async () => {
+    const file = await this.props.pkg.getLoadedFile('main.py')
+    file.rootNode.getScope().loadAllImportedModules()
+  }
+
   handleScopeMutation = (mutation: ScopeMutation) => {
     if (mutation.type === ScopeMutationType.IMPORT_MODULE) {
       this.postMessageToFrame({
@@ -169,8 +174,8 @@ export class PythonFrame extends Component<ViewPageProps> {
         this.frameState = event.data.data['state']
         this.lastHeartbeatTimestamp = new Date()
         break
-      case 'loaded':
-        this.lastHeartbeatTimestamp = new Date()
+      case 'ready':
+        this.onPythonRuntimeIsReady()
         break
       case 'runtime_capture':
         const capture = JSON.parse(event.data.capture) as CapturePayload

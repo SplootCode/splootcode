@@ -40,6 +40,7 @@ export interface TypeDefinition {
 export interface ModuleDefinition {
   category: TypeCategory.Module
   attributes: Map<string, VariableTypeInfo>
+  loaded: boolean
 }
 
 export interface ModuleAttribute {

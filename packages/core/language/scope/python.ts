@@ -47,6 +47,7 @@ export function loadPythonModule(scope: Scope, moduleSpec: PythonModuleSpec) {
   const moduleDefinition: ModuleDefinition = {
     category: TypeCategory.Module,
     attributes: new Map(),
+    loaded: true,
   }
   for (const name in moduleSpec.values) {
     const spec = moduleSpec.values[name]
