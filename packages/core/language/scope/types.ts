@@ -2,11 +2,14 @@ export enum TypeCategory {
   Value,
   Function,
   Type,
+  Module,
+  ModuleAttribute,
 }
 
 interface ValueType {
   category: TypeCategory.Value
   typeName: string
+  shortDoc?: string
 }
 
 export enum FunctionArgType {
@@ -34,4 +37,15 @@ export interface TypeDefinition {
   attributes: Map<string, VariableTypeInfo>
 }
 
-export type VariableTypeInfo = ValueType | FunctionSignature | TypeDefinition
+export interface ModuleDefinition {
+  category: TypeCategory.Module
+  attributes: Map<string, VariableTypeInfo>
+}
+
+export interface ModuleAttribute {
+  category: TypeCategory.ModuleAttribute
+  module: string
+  attribute: string
+}
+
+export type VariableTypeInfo = ValueType | FunctionSignature | TypeDefinition | ModuleDefinition | ModuleAttribute

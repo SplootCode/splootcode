@@ -22,6 +22,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
+import { TypeCategory } from '../../scope/types'
 
 export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 
@@ -61,12 +62,20 @@ export class PythonFromImport extends SplootNode {
     }
   }
 
+  getModuleName(): string {
+    if (this.getModule().getCount() !== 0) {
+      return (this.getModule().getChild(0) as PythonModuleIdentifier).getName()
+    }
+    return null
+  }
+
   addSelfToScope() {
     const currentNames: Set<string> = new Set()
     const scope = this.getScope()
     let moduleName = ''
     if (this.getModule().getCount() !== 0) {
       moduleName = (this.getModule().getChild(0) as PythonModuleIdentifier).getName()
+      scope.loadModule(moduleName)
       this.getAttrs().children.forEach((attr) => {
         const attrNode = attr as DeclaredIdentifier
         currentNames.add(attrNode.getName())
@@ -78,6 +87,11 @@ export class PythonFromImport extends SplootNode {
           name,
           {
             documentation: `imported from ${moduleName}`,
+            typeInfo: {
+              category: TypeCategory.ModuleAttribute,
+              module: moduleName,
+              attribute: name,
+            },
           },
           this
         )
@@ -91,6 +105,7 @@ export class PythonFromImport extends SplootNode {
       }
     })
   }
+
   removeSelfFromScope(): void {
     const scope = this.getScope()
     this.scopedVariables.forEach((name) => {

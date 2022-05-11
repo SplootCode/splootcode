@@ -74,6 +74,7 @@ import { StyleRule } from './types/styles/style_rule'
 import { StyleSelector } from './types/styles/style_selector'
 import { VariableDeclaration } from './types/js/variable_declaration'
 import { VariableReference } from './types/js/variable_reference'
+import { registerMemberAutocompleters } from './types/python/scope_member_autocompleter'
 import { registerPythonAutocompleters } from './types/python/scope_autocompleter'
 import { resolvePasteAdapters } from './type_registry'
 
@@ -163,6 +164,7 @@ export function loadTypes() {
   PythonSubscript.register()
   PythonWhileLoop.register()
   registerPythonAutocompleters()
+  registerMemberAutocompleters()
 
   NoneLiteral.register()
 

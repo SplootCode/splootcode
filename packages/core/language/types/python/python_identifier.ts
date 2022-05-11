@@ -41,6 +41,10 @@ function sanitizeIdentifier(textInput: string): string {
 }
 
 class NewIdentifierGenerator implements SuggestionGenerator {
+  description: string
+  constructor(description: string) {
+    this.description = description
+  }
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     let varName = sanitizeIdentifier(textInput)
     if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
@@ -48,7 +52,7 @@ class NewIdentifierGenerator implements SuggestionGenerator {
     }
 
     const newVar = new PythonIdentifier(null, varName)
-    const suggestedNode = new SuggestedNode(newVar, `identifier ${varName}`, 'new variable', true, 'new variable')
+    const suggestedNode = new SuggestedNode(newVar, `identifier ${varName}`, varName, true, this.description)
     return [suggestedNode]
   }
 }
@@ -138,10 +142,12 @@ export class PythonIdentifier extends SplootNode {
     registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonFunctionName)
     registerNodeCateogry(PYTHON_IDENTIFIER, NodeCategory.PythonFunctionArgumentDeclaration)
 
-    registerAutocompleter(NodeCategory.PythonAssignable, new NewIdentifierGenerator())
-    registerAutocompleter(NodeCategory.PythonLoopVariable, new NewIdentifierGenerator())
-    registerAutocompleter(NodeCategory.PythonModuleAttribute, new NewIdentifierGenerator())
-    registerAutocompleter(NodeCategory.PythonFunctionName, new NewIdentifierGenerator())
-    registerAutocompleter(NodeCategory.PythonFunctionArgumentDeclaration, new NewIdentifierGenerator())
+    registerAutocompleter(NodeCategory.PythonAssignable, new NewIdentifierGenerator('new variable'))
+    registerAutocompleter(NodeCategory.PythonLoopVariable, new NewIdentifierGenerator('loop variable'))
+    registerAutocompleter(NodeCategory.PythonFunctionName, new NewIdentifierGenerator('function name'))
+    registerAutocompleter(
+      NodeCategory.PythonFunctionArgumentDeclaration,
+      new NewIdentifierGenerator('function argument')
+    )
   }
 }

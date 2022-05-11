@@ -13,6 +13,9 @@ import {
   FunctionDeclarationData,
   StatementCapture,
 } from '@splootcode/core/language/capture/runtime_capture'
+import { PythonFile } from '@splootcode/core/language/types/python/python_file'
+import { PythonModuleSpec } from '@splootcode/core/language/scope/python'
+import { ScopeMutation, ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
 import { allRegisteredFunctionIDs, getRegisteredFunction } from '@splootcode/core/language/scope/scope'
 
 export enum FrameState {
@@ -128,6 +131,21 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.sendNodeTreeToHiddenFrame()
   }
 
+  handleScopeMutation = (mutation: ScopeMutation) => {
+    if (mutation.type === ScopeMutationType.IMPORT_MODULE) {
+      this.postMessageToFrame({
+        type: 'module_info',
+        moduleName: mutation.moduleName,
+      })
+    }
+  }
+
+  async recievedModuleInfo(payload: PythonModuleSpec) {
+    const file = await this.props.pkg.getLoadedFile('main.py')
+    const pythonFile = file.rootNode as PythonFile
+    pythonFile.getScope(false).processPythonModuleSpec(payload)
+  }
+
   processMessage = (event: MessageEvent) => {
     if (event.origin === getFrameDomain()) {
       this.handleMessageFromFrame(event)
@@ -157,6 +175,9 @@ export class PythonFrame extends Component<ViewPageProps> {
       case 'runtime_capture':
         const capture = JSON.parse(event.data.capture) as CapturePayload
         this.updateRuntimeCapture(capture)
+        break
+      case 'module_info':
+        this.recievedModuleInfo(event.data.info)
         break
       default:
         console.warn('Unknown event from frame: ', event)
@@ -232,6 +253,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     this.frameState = FrameState.LOADING
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
+    globalMutationDispatcher.registerScopeObserver(this)
     window.addEventListener('message', this.processMessage, false)
 
     // trigger background process to wait for a response
@@ -246,5 +268,6 @@ export class PythonFrame extends Component<ViewPageProps> {
 
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
+    globalMutationDispatcher.deregisterScopeObserver(this)
   }
 }

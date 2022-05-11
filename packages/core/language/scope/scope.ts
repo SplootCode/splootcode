@@ -1,9 +1,9 @@
+import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
+import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
-import { TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
-import { loadPythonBuiltins } from './python'
 
 export interface VariableMetadata {
   documentation: string
@@ -11,7 +11,6 @@ export interface VariableMetadata {
 }
 
 interface VariableScopeEntry {
-  detectedTypes: VariableTypeInfo[]
   declarers: Map<SplootNode, VariableMetadata>
   builtIn?: VariableMetadata
 }
@@ -29,6 +28,7 @@ export class Scope {
   nodeType: string
   isGlobal: boolean
   variables: Map<string, VariableScopeEntry>
+  modules: Map<string, ModuleDefinition>
   types: Map<string, TypeScopeEntry>
   nameWatchers: Map<string, Set<SplootNode>>
   mutationObservers: ScopeObserver[]
@@ -39,6 +39,7 @@ export class Scope {
     this.childScopes = new Set()
     this.nodeType = nodeType
     this.variables = new Map()
+    this.modules = new Map()
     this.types = new Map()
     this.mutationObservers = []
     this.nameWatchers = new Map()
@@ -124,7 +125,6 @@ export class Scope {
       } else {
         // Leave it up to the declarers to remove themselves from the old name and add the new name.
         this.variables.set(newName, {
-          detectedTypes: this.variables.get(oldName).detectedTypes,
           declarers: new Map(),
         })
       }
@@ -171,7 +171,6 @@ export class Scope {
   addVariable(name: string, meta: VariableMetadata, source?: SplootNode) {
     if (!this.variables.has(name)) {
       this.variables.set(name, {
-        detectedTypes: [],
         declarers: new Map(),
       })
     }
@@ -192,10 +191,25 @@ export class Scope {
     this.fireMutation(mutation)
   }
 
+  loadModule(name: string) {
+    if (!this.isGlobal) {
+      this.parent.loadModule(name)
+      return
+    }
+    if (this.modules.has(name)) {
+      return
+    }
+    this.modules.set(name, { category: TypeCategory.Module, attributes: new Map() })
+    this.fireMutation({
+      type: ScopeMutationType.IMPORT_MODULE,
+      scope: this,
+      moduleName: name,
+    })
+  }
+
   addBuiltIn(name: string, meta: VariableMetadata) {
     if (!this.variables.has(name)) {
       this.variables.set(name, {
-        detectedTypes: [],
         declarers: new Map(),
       })
     }
@@ -210,9 +224,35 @@ export class Scope {
         module: module,
         builtIn: meta,
       })
-    } else {
-      throw new Error(`Attempting to add type ${canonicalName}, but it's already registered!`)
     }
+  }
+
+  processPythonModuleSpec(spec: PythonModuleSpec) {
+    if (!this.isGlobal) {
+      this.parent.processPythonModuleSpec(spec)
+      return
+    }
+
+    loadPythonModule(this, spec)
+  }
+
+  addModuleDefinition(moduleName: string, definition: ModuleDefinition) {
+    this.modules.set(moduleName, definition)
+  }
+
+  getModuleDefinition(moduleName: string): ModuleDefinition {
+    if (this.modules.has(moduleName)) {
+      return this.modules.get(moduleName)
+    }
+    if (this.parent) {
+      return this.parent.getModuleDefinition(moduleName)
+    }
+    return null
+  }
+
+  getModuleAttributeTypeInfo(moduleName: string, attribute: string): VariableTypeInfo {
+    const module = this.getModuleDefinition(moduleName)
+    return module.attributes.get(attribute)
   }
 
   getTypeDefinition(canonicalName: string): TypeDefinition {
@@ -264,6 +304,27 @@ export class Scope {
       return null
     }
     return this.parent.getVariableScopeEntryByName(name)
+  }
+
+  getAttributesForName(name: string): [string, VariableTypeInfo][] {
+    const scopeEntry = this.getVariableScopeEntryByName(name)
+    const attrs = []
+
+    for (const variableMeta of scopeEntry.declarers.values()) {
+      if (variableMeta.typeInfo) {
+        const typeInfo = variableMeta.typeInfo
+        if (typeInfo.category == TypeCategory.Value) {
+          if (typeInfo.typeName === 'module') {
+            const moduleDef = this.getModuleDefinition(name)
+            attrs.push(...moduleDef.attributes.entries())
+          } else {
+            const typeMeta = this.getTypeDefinition(typeInfo.typeName)
+            attrs.push(...typeMeta.attributes.entries())
+          }
+        }
+      }
+    }
+    return attrs
   }
 
   isInside(nodeType: string): boolean {

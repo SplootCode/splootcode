@@ -21,6 +21,7 @@ import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
+import { TypeCategory } from '../../scope/types'
 
 export const PYTHON_IMPORT = 'PYTHON_IMPORT'
 
@@ -68,10 +69,12 @@ export class PythonImport extends SplootNode {
           name,
           {
             documentation: 'Imported module',
+            typeInfo: { category: TypeCategory.Value, typeName: 'module' },
           },
           this
         )
         this.scopedVariables.add(name)
+        scope.loadModule(name)
       }
     })
     this.scopedVariables.forEach((name) => {

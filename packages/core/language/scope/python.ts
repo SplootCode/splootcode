@@ -1,5 +1,12 @@
 import * as builtins from '../../generated/python_builtins.json'
-import { FunctionArgType, FunctionArgument, FunctionSignature, TypeCategory, VariableTypeInfo } from './types'
+import {
+  FunctionArgType,
+  FunctionArgument,
+  FunctionSignature,
+  ModuleDefinition,
+  TypeCategory,
+  VariableTypeInfo,
+} from './types'
 import { Scope } from './scope'
 
 interface VariableSpec {
@@ -22,7 +29,7 @@ interface TypeSpec {
   attributes: { [key: string]: VariableSpec }
 }
 
-interface PythonModuleSpec {
+export interface PythonModuleSpec {
   moduleName: string
   values: { [key: string]: VariableSpec }
   types: { [key: string]: TypeSpec }
@@ -34,6 +41,82 @@ const functionArgTypeMapping = {
   KEYWORD_ONLY: FunctionArgType.KeywordOnly,
   VAR_POSITIONAL: FunctionArgType.Vargs,
   VAR_KEYWORD: FunctionArgType.Kwargs,
+}
+
+export function loadPythonModule(scope: Scope, moduleSpec: PythonModuleSpec) {
+  const moduleDefinition: ModuleDefinition = {
+    category: TypeCategory.Module,
+    attributes: new Map(),
+  }
+  for (const name in moduleSpec.values) {
+    const spec = moduleSpec.values[name]
+    if (spec.isCallable) {
+      const typeInfo: VariableTypeInfo = {
+        category: TypeCategory.Function,
+        shortDoc: spec.shortDoc,
+        arguments: [],
+      }
+      if (spec.parameters) {
+        const args = spec.parameters.map((argInfo) => {
+          const arg: FunctionArgument = {
+            name: argInfo.name,
+            type: functionArgTypeMapping[argInfo.kind],
+          }
+          if (argInfo.default) {
+            arg.defaultValue = argInfo.default
+          }
+          return arg
+        })
+        typeInfo.arguments = args
+      }
+      moduleDefinition.attributes.set(name, typeInfo)
+    } else {
+      const typeInfo: VariableTypeInfo = {
+        category: TypeCategory.Value,
+        typeName: spec.typeName,
+        shortDoc: spec.shortDoc,
+      }
+      moduleDefinition.attributes.set(name, typeInfo)
+    }
+  }
+  scope.addModuleDefinition(moduleSpec.moduleName, moduleDefinition)
+  for (const name in moduleSpec.types) {
+    const spec = moduleSpec.types[name]
+
+    const attributes: Map<string, VariableTypeInfo> = new Map()
+    Object.values(spec.attributes).forEach((attr) => {
+      if (!attr.isCallable) {
+        attributes.set(attr.name, {
+          category: TypeCategory.Value,
+          typeName: attr.typeName,
+        })
+      } else {
+        const attrInfo: FunctionSignature = {
+          category: TypeCategory.Function,
+          shortDoc: attr.shortDoc,
+          arguments:
+            attr.parameters?.map((argInfo) => {
+              const arg: FunctionArgument = {
+                name: argInfo.name,
+                type: functionArgTypeMapping[argInfo.kind],
+              }
+              if (argInfo.default) {
+                arg.defaultValue = argInfo.default
+              }
+              return arg
+            }) || [],
+        }
+        attributes.set(attr.name, attrInfo)
+      }
+    })
+    scope.addType(name, spec.module, {
+      documentation: spec.shortDoc,
+      typeInfo: {
+        category: TypeCategory.Type,
+        attributes: attributes,
+      },
+    })
+  }
 }
 
 export function loadPythonBuiltins(scope: Scope) {
@@ -61,7 +144,6 @@ export function loadPythonBuiltins(scope: Scope) {
         typeInfo.arguments = args
       }
       scope.addBuiltIn(name, { documentation: spec.shortDoc, typeInfo: typeInfo })
-      scope.hasEntries()
     } else {
       const typeInfo: VariableTypeInfo = {
         category: TypeCategory.Value,

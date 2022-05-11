@@ -358,6 +358,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       case 'disable':
         this.setState({ nodeTreeErrors: true })
         break
+      case 'module_info':
+        this.workerManager.loadModule(data.moduleName)
+        break
       default:
         console.warn('Unrecognised message recieved:', event.data)
     }

@@ -59,6 +59,13 @@ export class WorkerManager {
     })
   }
 
+  loadModule(moduleName: string) {
+    this.worker.postMessage({
+      type: 'loadModule',
+      moduleName: moduleName,
+    })
+  }
+
   async provideStdin() {
     let inputValue = this.leftoverInput
     if (!inputValue) {
@@ -117,10 +124,12 @@ export class WorkerManager {
       this.provideStdin()
     } else if (type === 'inputValue') {
       this.inputPlayback.push(event.data.value)
-    } else if (type === 'runtime_capture') {
+    } else if (type === 'runtime_capture' || type === 'module_info') {
       parent.postMessage(event.data, process.env.EDITOR_DOMAIN)
     } else if (type === 'finished') {
       this.stateCallBack(WorkerState.READY)
+    } else {
+      console.warn(`Unrecognised message from worker: ${type}`)
     }
   }
 }

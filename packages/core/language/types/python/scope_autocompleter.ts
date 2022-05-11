@@ -2,9 +2,9 @@ import { FunctionSignature, TypeCategory } from '../../scope/types'
 import { NodeCategory, SuggestionGenerator, registerAutocompleter } from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { PythonCallVariable } from './python_call_variable'
+import { PythonFromImport } from './python_from_import'
 import { PythonIdentifier } from './python_identifier'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
-import { VariableMetadata } from '../../scope/scope'
 
 class ScopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
@@ -15,18 +15,25 @@ class ScopeAutocompleter implements SuggestionGenerator {
     for (const [name, entry] of inScopeVars.entries()) {
       const varName = name
       let varDoc = ''
-      let funcMeta: VariableMetadata = null
+      let funcMeta: FunctionSignature = null
 
       for (const varMetadata of entry.declarers.values()) {
         if (varMetadata.typeInfo?.category === TypeCategory.Function) {
-          funcMeta = varMetadata
+          funcMeta = varMetadata.typeInfo
+        } else if (varMetadata.typeInfo?.category === TypeCategory.ModuleAttribute) {
+          const typeInfo = scope.getModuleAttributeTypeInfo(varMetadata.typeInfo.module, varMetadata.typeInfo.attribute)
+          if (typeInfo?.category === TypeCategory.Function) {
+            funcMeta = typeInfo
+          } else if (typeInfo?.category === TypeCategory.Value) {
+            varDoc = typeInfo.shortDoc || 'No documentation'
+          }
         } else {
           varDoc = varMetadata.documentation || 'No documentation'
         }
       }
       if (entry.builtIn) {
         if (entry.builtIn.typeInfo?.category === TypeCategory.Function) {
-          funcMeta = entry.builtIn
+          funcMeta = entry.builtIn.typeInfo
         } else {
           varDoc = entry.builtIn.documentation || 'No documentation'
         }
@@ -36,9 +43,8 @@ class ScopeAutocompleter implements SuggestionGenerator {
         suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, varDoc))
       }
       if (funcMeta) {
-        const signature = funcMeta.typeInfo as FunctionSignature
-        const newCall = new PythonCallVariable(null, varName, signature)
-        const doc = funcMeta.documentation || 'No documentation'
+        const newCall = new PythonCallVariable(null, varName, funcMeta)
+        const doc = funcMeta.shortDoc || 'No documentation'
         suggestions.push(new SuggestedNode(newCall, `call ${varName}`, varName, true, doc))
       }
     }
@@ -70,7 +76,34 @@ class AssignableSopeAutocompleter implements SuggestionGenerator {
   }
 }
 
+class ModuleAttributeAutocompleter implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number) {
+    const importNode = parent.node as PythonFromImport
+    const moduleName = importNode.getModuleName()
+    if (moduleName) {
+      const suggestions = []
+      const scope = importNode.getScope()
+      const moduleDef = scope.getModuleDefinition(moduleName)
+      if (moduleDef) {
+        for (const [varName, typeInfo] of moduleDef.attributes.entries()) {
+          if (typeInfo.category === TypeCategory.Function) {
+            // TODO: Add system for color-coding/tagging identifiers that are callable
+            const newVar = new PythonIdentifier(null, varName)
+            suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, typeInfo.shortDoc))
+          } else if (typeInfo.category === TypeCategory.Value) {
+            const newVar = new PythonIdentifier(null, varName)
+            suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, typeInfo.shortDoc))
+          }
+        }
+      }
+      return suggestions
+    }
+    return []
+  }
+}
+
 export function registerPythonAutocompleters() {
   registerAutocompleter(NodeCategory.PythonExpressionToken, new ScopeAutocompleter())
   registerAutocompleter(NodeCategory.PythonAssignable, new AssignableSopeAutocompleter())
+  registerAutocompleter(NodeCategory.PythonModuleAttribute, new ModuleAttributeAutocompleter())
 }

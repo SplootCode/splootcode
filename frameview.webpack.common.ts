@@ -73,6 +73,10 @@ export default {
           from: path.resolve('python', 'executor.py'),
           to: 'runtime-python/static',
         },
+        {
+          from: path.resolve('python', 'module_loader.py'),
+          to: 'runtime-python/static',
+        },
       ],
     }),
     new HtmlWebpackPlugin({
