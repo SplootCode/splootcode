@@ -47,6 +47,7 @@ export class SplootNode {
   invalidChildIndex: number
   invalidNode: number
   isRepeatableBlock: boolean
+  metadata: Map<string, any>
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
@@ -61,6 +62,7 @@ export class SplootNode {
     this.mutationObservers = []
     this.scope = null
     this.isRepeatableBlock = false
+    this.metadata = new Map()
   }
 
   get hasChildSets(): boolean {
@@ -326,6 +328,9 @@ export class SplootNode {
     } as SerializedNode
     for (const property in this.properties) {
       result.properties[property] = this.properties[property]
+    }
+    if (this.metadata.size !== 0) {
+      result.meta = Object.fromEntries(this.metadata)
     }
 
     this.childSetOrder.forEach((childSetId: string) => {

@@ -1,3 +1,4 @@
+import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../../scope/types'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../literals'
 import { NodeCategory, SuggestionGenerator, getAutocompleRegistry } from '../../node_category_registry'
 import { PYTHON_BOOL } from './literals'
@@ -11,7 +12,6 @@ import { ParentReference } from '../../node'
 import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
-import { TypeCategory, VariableTypeInfo } from '../../scope/types'
 
 function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -27,7 +27,7 @@ class MemberGenerator implements SuggestionGenerator {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
     const scope = parent.node.getScope(false)
-    let attributes = []
+    let attributes: [string, VariableTypeInfo][] = []
     let allowWrap = false
 
     if (
@@ -71,7 +71,11 @@ class MemberGenerator implements SuggestionGenerator {
     const inputName = textInput.substring(1) // Cut the '.' off
 
     if (attributes.length === 0) {
-      const node = new PythonCallMember(null, 1)
+      const node = new PythonCallMember(null, {
+        category: TypeCategory.Function,
+        arguments: [{ name: '', type: FunctionArgType.PositionalOrKeyword }],
+        shortDoc: '',
+      })
       node.setMember(inputName)
       return [
         new SuggestedNode(
@@ -95,7 +99,7 @@ class MemberGenerator implements SuggestionGenerator {
       seen.add(name)
       if (attr.category === TypeCategory.Function) {
         if (!name.startsWith('_') || allowUnderscore) {
-          const node = new PythonCallMember(null, 1)
+          const node = new PythonCallMember(null, attr)
           node.setMember(name)
           suggestions.push(new SuggestedNode(node, `callmember ${name}`, name, true, attr.shortDoc, 'object'))
         }
