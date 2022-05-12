@@ -101,11 +101,6 @@ def get_type_data(typething, overrides):
             'shortDoc': short_doc(thing.__doc__),
         }
         attr_data['examples'] = []
-        thingKey = f'builtins.{typething.__name__}.{name}'
-        if thingKey in overrides:
-            overrideData = overrides[thingKey]
-            if 'examples' in overrideData:
-                attr_data['examples'] = [processExample(ex) for ex in overrideData['examples']]
         params = None
         if callable(thing) and not isclass(thing):
             try:
@@ -115,6 +110,14 @@ def get_type_data(typething, overrides):
                 # print('No Signature for ', str(thing))
         if params is not None:
             attr_data['parameters'] = params
+
+        thingKey = f'builtins.{typething.__name__}.{name}'
+        if thingKey in overrides:
+            overrideData = overrides[thingKey]
+            if 'examples' in overrideData:
+                attr_data['examples'] = [processExample(ex) for ex in overrideData['examples']]
+            if 'parameters' in overrideData:
+                attr_data['parameters'] = overrideData['parameters']
         attributes[name] = attr_data
 
     data['attributes'] = attributes

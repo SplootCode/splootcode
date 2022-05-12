@@ -157,6 +157,7 @@ export interface SerializedNode {
   type: string
   properties: { [key: string]: string }
   childSets: { [key: string]: SerializedNode[] }
+  meta?: { [key: string]: any }
 }
 
 export function deserializeNode(serialisedNode: SerializedNode): SplootNode {

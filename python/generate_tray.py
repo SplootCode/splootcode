@@ -35,6 +35,8 @@ def get_entry_for_builtin_value(key, scopeName, builtin_docs):
     raise Exception(f'ScopeEntry {scopeName} not found')
   return entry
 
+def is_required_param(param):
+  return (param['kind'] == 'POSITIONAL_ONLY' or param['kind'] == 'POSITIONAL_OR_KEYWORD') and 'default' not in param
 
 def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
   entry = {
@@ -43,9 +45,14 @@ def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
 
   scopeInfo = builtin_docs['types'][typeName]['attributes'][attrName]
   if scopeInfo['isCallable']:
-    serNode = SplootNode('PYTHON_CALL_MEMBER', {"object": [], "arguments": [
-      SplootNode('PYTHON_EXPRESSION', {'tokens': []})
-    ]}, {"member": attrName})
+    labels = [param['name'] for param in scopeInfo['parameters']]
+    required_count = len([param for param in scopeInfo['parameters'] if is_required_param(param)])
+
+    serNode = SplootNode('PYTHON_CALL_MEMBER', {
+      "object": [],
+      "arguments": [SplootNode('PYTHON_EXPRESSION', {'tokens': []}) for i in range(required_count)]
+    }, {"member": attrName})
+    serNode['meta'] = {'params': labels}
     entry['serializedNode'] = serNode
   else:
     raise Exception(f'Non-callable type attributes not yet supported: {key}')

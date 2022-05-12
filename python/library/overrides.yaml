@@ -28,11 +28,29 @@ overrides:
     examples:
       - ex: "if answer.startswith('y'): print('You chose: yes')"
         desc: If the answer string is a string that starts with the letter 'y', print a message.
+    parameters:
+      - name: 'prefix'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.endswith
     examples:
       - ex: "if message.endswith('?'): print('That looks like a question!')"
         desc: "If the message string ends with a question mark characters '?', print a message."
+    parameters:
+      - name: 'suffix'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.index
     examples:
@@ -42,11 +60,29 @@ overrides:
         desc: Returns 6, which is the index number for the first occurrance of the string 'ev'.
       - ex: "'hello'.index('z')"
         desc: Raises an error (ValueError) if the substring cannot be found.
+    parameters:
+      - name: 'substring'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.count
     examples:
       - ex: "'hello all'.count('l')"
         desc: Returns 4, which how many times the letter 'l' appears in the string.
+    parameters:
+      - name: 'substring'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.find
     examples:
@@ -54,6 +90,15 @@ overrides:
         desc: Returns 4, the index of the first occurance of the given substring, starting from the left.
       - ex: "'cat on a mat'.find('z')"
         desc: Returns -1 if the substring cannot be found.
+    parameters:
+      - name: 'substring'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.rfind
     examples:
@@ -61,11 +106,29 @@ overrides:
         desc: Returns 10, the index of the last occurance of the given substring (starts looking from the right hand end of the string).
       - ex: "'cat on a mat'.rfind('z')"
         desc: Returns -1 if the substring cannot be found.
+    parameters:
+      - name: 'substring'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.str.rindex
     examples:
       - ex: "'hello everyone'.rindex('o')"
         desc: Returns 11, which the index number for the last occurrance of the letter 'o' (starts looking from the right hand end of the string).
+    parameters:
+      - name: 'substring'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'start'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
 
   - key: builtins.int
     abstract: 'Create a new integer by converting another value into an integer.'
@@ -110,3 +173,33 @@ overrides:
 
   - key: builtins.range
     abstract: 'Counting iterator, from a starting number up to, but not including, the end number.'
+
+  - key: builtins.dict.clear
+    parameters: []
+
+  - key: builtins.dict.copy
+    parameters: []
+
+  - key: builtins.dict.items
+    parameters: []
+
+  - key: builtins.dict.keys
+    parameters: []
+
+  - key: builtins.dict.pop
+    parameters:
+      - name: 'key'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'default'
+        kind: 'POSITIONAL_ONLY'
+        default: 'None'
+
+  - key: builtins.dict.update
+    parameters:
+      - name: 'entries'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'keywords'
+        kind: 'VAR_KEYWORD'
+
+  - key: builtins.dict.values
+    parameters: []
