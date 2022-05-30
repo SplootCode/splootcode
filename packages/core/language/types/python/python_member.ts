@@ -11,10 +11,11 @@ import {
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonNode } from './python_node'
 
 export const PYTHON_MEMBER = 'PYTHON_MEMBER'
 
-export class PythonMember extends SplootNode {
+export class PythonMember extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_MEMBER)
     this.addChildSet('object', ChildSetType.Single, NodeCategory.PythonExpressionToken)

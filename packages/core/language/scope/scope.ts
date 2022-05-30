@@ -1,4 +1,5 @@
 import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
+import { PythonAnalyzer } from '../analyzer/python_analyzer'
 import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
@@ -24,6 +25,7 @@ interface TypeScopeEntry {
 export class Scope {
   parent: Scope
   name: string
+  analyzer: PythonAnalyzer
   childScopes: Set<Scope>
   nodeType: string
   isGlobal: boolean
@@ -353,6 +355,13 @@ export class Scope {
     }
     return this.parent.isInside(nodeType)
   }
+
+  getAnalyzer(): PythonAnalyzer {
+    if (this.isGlobal) {
+      return this.analyzer
+    }
+    return this.parent.getAnalyzer()
+  }
 }
 
 function generateRandomID(): string {
@@ -381,9 +390,10 @@ export function getGlobalScope(): Scope {
   return globalScope
 }
 
-export async function generateScope(rootNode: SplootNode) {
+export async function generateScope(rootNode: SplootNode, analyzer: PythonAnalyzer) {
   const scope = new Scope(null, null)
   scope.isGlobal = true
+  scope.analyzer = analyzer
   globalScope = scope
   functionRegistry = {}
   if (rootNode.type === 'PYTHON_FILE') {

@@ -1,4 +1,5 @@
 import { ChildSetType } from '../../childset'
+import { ExpressionNode } from '@splootcode/../../pyright/packages/sploot-checker/dist/sploot-checker'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -18,13 +19,15 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
-import { validateExpressionParse } from './utils'
+import { parseToPyright, validateExpressionParse } from './utils'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
-export class PythonExpression extends SplootNode {
+export class PythonExpression extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_EXPRESSION)
     this.addChildSet('tokens', ChildSetType.Many, NodeCategory.PythonExpressionToken)
@@ -84,6 +87,11 @@ export class PythonExpression extends SplootNode {
     const res = new PythonExpression(null)
     res.deserializeChildSet('tokens', serializedNode)
     return res
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ExpressionNode {
+    const exprNode = parseToPyright(parseMapper, this.getTokenSet().children)
+    return exprNode
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

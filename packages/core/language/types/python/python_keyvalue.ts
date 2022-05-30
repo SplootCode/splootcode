@@ -10,12 +10,13 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, registerBlankFillForNodeCategory, registerNodeCateogry } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 
 export const PYTHON_KEYVALUE = 'PY_KEYVALUE'
 
-export class PythonKeyValue extends SplootNode {
+export class PythonKeyValue extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_KEYVALUE)
     this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression)

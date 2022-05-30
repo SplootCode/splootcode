@@ -15,7 +15,8 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -29,7 +30,7 @@ class ElseGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonElseBlock extends SplootNode {
+export class PythonElseBlock extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELSE_STATEMENT)
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)

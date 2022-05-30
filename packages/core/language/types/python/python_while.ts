@@ -18,6 +18,7 @@ import {
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture, WhileLoopData, WhileLoopIteration } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -32,7 +33,7 @@ class WhileGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonWhileLoop extends SplootNode {
+export class PythonWhileLoop extends PythonNode {
   runtimeCapture: WhileLoopData
   runtimeCaptureFrame: number
 

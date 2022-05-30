@@ -19,6 +19,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_FUNCTION_DECLARATION } from './python_function'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -36,7 +37,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonReturn extends SplootNode {
+export class PythonReturn extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_RETURN)
     this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression)

@@ -16,6 +16,7 @@ import {
 import { PYTHON_FOR_LOOP } from './python_for'
 import { PYTHON_WHILE_LOOP } from './python_while'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -42,7 +43,7 @@ class BreakGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonBreak extends SplootNode {
+export class PythonBreak extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_BREAK)
   }

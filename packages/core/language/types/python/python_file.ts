@@ -8,13 +8,17 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { ModuleNode, ParseNodeType } from 'sploot-checker'
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonFileData, StatementCapture } from '../../capture/runtime_capture'
+import { PythonNode } from './python_node'
+import { PythonStatement } from './python_statement'
 
 export const PYTHON_FILE = 'PYTHON_FILE'
 
-export class PythonFile extends SplootNode {
+export class PythonFile extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FILE)
     this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement)
@@ -26,6 +30,27 @@ export class PythonFile extends SplootNode {
 
   generateCodeString(): string {
     return 'print("Hello, World!")\n'
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ModuleNode {
+    const moduleNode: ModuleNode = {
+      start: 0,
+      length: 0,
+      nodeType: ParseNodeType.Module,
+      id: parseMapper.getNextId(),
+      statements: [],
+    }
+    for (const node of this.getBody().children) {
+      const statement = node as PythonStatement
+      if (!statement.isEmpty()) {
+        const statementNode = statement.generateParseTree(parseMapper)
+        if (statementNode !== null) {
+          moduleNode.statements.push(statementNode)
+          statementNode.parent = moduleNode
+        }
+      }
+    }
+    return moduleNode
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

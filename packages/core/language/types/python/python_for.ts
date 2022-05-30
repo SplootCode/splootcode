@@ -20,6 +20,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -33,7 +34,7 @@ class ForGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonForLoop extends SplootNode {
+export class PythonForLoop extends PythonNode {
   runtimeCapture: ForLoopData
   runtimeCaptureFrame: number
   scopedVariable: string

@@ -17,6 +17,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BRACKETS = 'PY_BRACKET'
@@ -29,7 +30,7 @@ class BracketsGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonBrackets extends SplootNode {
+export class PythonBrackets extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_BRACKETS)
     this.addChildSet('expr', ChildSetType.Immutable, NodeCategory.PythonExpression)

@@ -17,6 +17,7 @@ import {
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonKeyValue } from './python_keyvalue'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_DICT = 'PY_DICT'
@@ -28,7 +29,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonDictionary extends SplootNode {
+export class PythonDictionary extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_DICT)
     this.addChildSet('elements', ChildSetType.Many, NodeCategory.PythonDictionaryKeyValue)

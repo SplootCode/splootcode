@@ -15,6 +15,7 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_NONE = 'PYTHON_NONE'
@@ -26,7 +27,7 @@ class PythonNoneGenerator implements SuggestionGenerator {
   }
 }
 
-export class NoneLiteral extends SplootNode {
+export class NoneLiteral extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_NONE)
     this.properties = {}
@@ -64,7 +65,7 @@ class PythonBoolGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonBool extends SplootNode {
+export class PythonBool extends PythonNode {
   constructor(parentReference: ParentReference, value: boolean) {
     super(parentReference, PYTHON_BOOL)
     this.setProperty('value', value)

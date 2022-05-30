@@ -21,6 +21,7 @@ import { PYTHON_CALL_MEMBER } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER } from './python_identifier'
+import { PythonNode } from './python_node'
 import { STRING_LITERAL } from '../literals'
 
 export const PYTHON_SUBSCRIPT = 'PYTHON_SUBSCRIPT'
@@ -51,7 +52,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonSubscript extends SplootNode {
+export class PythonSubscript extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_SUBSCRIPT)
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonExpressionToken)

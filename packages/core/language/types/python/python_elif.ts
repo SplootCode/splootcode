@@ -17,8 +17,9 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -31,7 +32,7 @@ class InsertElifGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonElifBlock extends SplootNode {
+export class PythonElifBlock extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELIF_STATEMENT)
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)

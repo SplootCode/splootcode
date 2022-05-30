@@ -19,6 +19,7 @@ import {
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonModuleIdentifier } from './python_module_identifier'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { TypeCategory } from '../../scope/types'
@@ -33,7 +34,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonImport extends SplootNode {
+export class PythonImport extends PythonNode {
   scopedVariables: Set<string>
 
   constructor(parentReference: ParentReference) {

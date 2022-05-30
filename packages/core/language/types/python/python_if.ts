@@ -20,6 +20,7 @@ import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_ELSE_STATEMENT } from './python_else'
 import { ParentReference, SplootNode } from '../../node'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -33,7 +34,7 @@ class IfGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonIfStatement extends SplootNode {
+export class PythonIfStatement extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_IF_STATEMENT)
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)

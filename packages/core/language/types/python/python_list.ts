@@ -16,6 +16,7 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_LIST = 'PYTHON_LIST'
@@ -27,7 +28,7 @@ class ListLiteralGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonList extends SplootNode {
+export class PythonList extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_LIST)
     this.addChildSet('elements', ChildSetType.Many, NodeCategory.PythonExpression)

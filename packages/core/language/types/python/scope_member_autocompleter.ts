@@ -5,13 +5,14 @@ import { PYTHON_BOOL } from './literals'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_DICT } from './python_dictionary'
-import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
+import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '../../node'
 import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
+import { TypeCategory as TC, TypeResult } from 'sploot-checker'
 
 function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -22,6 +23,18 @@ function getAttributesForType(scope: Scope, typeName: string): [string, Variable
   return []
 }
 
+function getAttributeFromTypeResult(scope: Scope, typeResult: TypeResult): [string, VariableTypeInfo][] {
+  if (!typeResult) {
+    return []
+  }
+  const t = typeResult.type
+  switch (t.category) {
+    case TC.Class:
+      return getAttributesForType(scope, t.details.fullName)
+  }
+  return []
+}
+
 class MemberGenerator implements SuggestionGenerator {
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     // need dynamic suggestions for when we can't infer the type.
@@ -29,6 +42,8 @@ class MemberGenerator implements SuggestionGenerator {
     const scope = parent.node.getScope(false)
     let attributes: [string, VariableTypeInfo][] = []
     let allowWrap = false
+
+    const analyzer = scope.getAnalyzer()
 
     if (
       leftChild &&
@@ -59,8 +74,14 @@ class MemberGenerator implements SuggestionGenerator {
           attributes = getAttributesForType(scope, 'builtins.int')
           break
         case PYTHON_IDENTIFIER:
-          const identifier = (leftChild as PythonIdentifier).getName()
-          attributes = scope.getAttributesForName(identifier)
+        case PYTHON_CALL_MEMBER:
+        case PYTHON_CALL_VARIABLE:
+          const typeResult = analyzer.getPyrightTypeForExpression(leftChild)
+          if (typeResult) {
+            attributes = getAttributeFromTypeResult(scope, typeResult)
+          } else {
+            attributes = []
+          }
           break
         default:
           // TODO: Detect type for subscript, call var, call member

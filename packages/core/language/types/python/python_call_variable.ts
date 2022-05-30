@@ -1,3 +1,4 @@
+import { ArgumentCategory, ArgumentNode, CallNode, ParseNode, ParseNodeType, TokenType } from 'sploot-checker'
 import { ChildSetType } from '../../childset'
 import { FunctionArgType, FunctionSignature, TypeCategory } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
@@ -13,7 +14,10 @@ import { NodeCategory, registerNodeCateogry } from '../../node_category_registry
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
+import { parseToPyright } from './utils'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 
@@ -36,7 +40,7 @@ function sanitizeIdentifier(textInput: string): string {
     .join('')
 }
 
-export class PythonCallVariable extends SplootNode {
+export class PythonCallVariable extends PythonNode {
   constructor(parentReference: ParentReference, name: string, signature?: FunctionSignature) {
     super(parentReference, PYTHON_CALL_VARIABLE)
     this.setProperty('identifier', name)
@@ -60,7 +64,7 @@ export class PythonCallVariable extends SplootNode {
     return this.getChildSet('arguments')
   }
 
-  getIdentifier() {
+  getIdentifier(): string {
     return this.getProperty('identifier')
   }
 
@@ -81,6 +85,46 @@ export class PythonCallVariable extends SplootNode {
 
   setIdentifier(identifier: string) {
     this.setProperty('identifier', identifier)
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const funcName = this.getIdentifier()
+
+    const callVarExpr: CallNode = {
+      nodeType: ParseNodeType.Call,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      arguments: this.getArguments().children.map((argNode) => {
+        const ret: ArgumentNode = {
+          nodeType: ParseNodeType.Argument,
+          argumentCategory: ArgumentCategory.Simple,
+          id: parseMapper.getNextId(),
+          start: 0,
+          length: 0,
+          valueExpression: null,
+        }
+        const valueExpression = parseToPyright(parseMapper, (argNode as PythonExpression).getTokenSet().children)
+        if (valueExpression) {
+          ret.valueExpression = valueExpression
+          ret.valueExpression.parent = ret
+        }
+        return ret
+      }),
+      leftExpression: {
+        nodeType: ParseNodeType.Name,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        token: { type: TokenType.Identifier, value: funcName, start: 0, length: 0 },
+        value: funcName,
+      },
+      trailingComma: false,
+    }
+    callVarExpr.leftExpression.parent = callVarExpr
+    callVarExpr.arguments.forEach((arg) => (arg.parent = callVarExpr))
+    parseMapper.addNode(this, callVarExpr)
+    return callVarExpr
   }
 
   handleScopeMutation(mutation: ScopeMutation) {

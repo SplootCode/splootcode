@@ -7,6 +7,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
+import { NameNode, ParseNode, ParseNodeType, TokenType } from 'sploot-checker'
 import {
   NodeCategory,
   SuggestionGenerator,
@@ -15,6 +16,8 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { Scope } from '../../scope/scope'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -57,7 +60,7 @@ class NewIdentifierGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonIdentifier extends SplootNode {
+export class PythonIdentifier extends PythonNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, PYTHON_IDENTIFIER)
     this.setProperty('identifier', name)
@@ -90,6 +93,19 @@ export class PythonIdentifier extends SplootNode {
 
   getName(): string {
     return this.getProperty('identifier')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const nameNode: NameNode = {
+      nodeType: ParseNodeType.Name,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      token: { type: TokenType.Identifier, start: 0, length: 0, value: this.getName() },
+      value: this.getName(),
+    }
+    parseMapper.addNode(this, nameNode)
+    return nameNode
   }
 
   static deserializer(serializedNode: SerializedNode): PythonIdentifier {
