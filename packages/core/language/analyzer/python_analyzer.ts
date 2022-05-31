@@ -1,6 +1,6 @@
 import { ChildSetMutation } from '../mutations/child_set_mutations'
 import { ChildSetObserver, NodeObserver } from '../observers'
-import { ExpressionNode, ParseNode, SplootProgram, TypeResult, setupProgram } from 'sploot-checker'
+import { ExpressionNode, ModuleImport, ParseNode, SplootProgram, Type, setupProgram } from 'sploot-checker'
 import { NodeMutation } from '../mutations/node_mutations'
 import { Project } from '../projects/project'
 import { PythonFile } from '../types/python/python_file'
@@ -12,6 +12,7 @@ import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 export interface ParseMapper {
   getNextId(): number
   addNode(splootNode: SplootNode, parseNode: ParseNode): void
+  addModuleImport(moduleImport: ModuleImport): void
 }
 
 export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
@@ -33,11 +34,11 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     await this.updateParse()
   }
 
-  getPyrightTypeForExpression(node: SplootNode): TypeResult {
+  getPyrightTypeForExpression(node: SplootNode): Type {
     const exprNode = this.nodeMap.get(node)
     if (exprNode) {
-      // TODO: Enforce that this node is actually an expression node
-      return this.splootProgram.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
+      const typeResult = this.splootProgram.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
+      return typeResult.type
     }
     return null
   }
@@ -56,6 +57,7 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     const mainPath = '/fake/main.py'
     const newNodeMap = new Map<SplootNode, ParseNode>()
     let id = 1
+    const modules: ModuleImport[] = []
     const parseMapper: ParseMapper = {
       addNode: (splootNode: SplootNode, parseNode: ParseNode) => {
         newNodeMap.set(splootNode, parseNode)
@@ -63,8 +65,12 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       getNextId: () => {
         return id++
       },
+      addModuleImport: (moduleImport: ModuleImport) => {
+        modules.push(moduleImport)
+      },
     }
-    this.splootProgram.updateSplootFile(mainPath, this.rootNode.generateParseTree(parseMapper))
+    const moduleNode = this.rootNode.generateParseTree(parseMapper)
+    this.splootProgram.updateSplootFile(mainPath, moduleNode, modules)
     await this.splootProgram.parseRecursively(mainPath)
     this.splootProgram.getBoundSourceFile(mainPath)
     this.nodeMap = newNodeMap

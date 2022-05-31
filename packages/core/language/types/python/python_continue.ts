@@ -1,3 +1,4 @@
+import { ContinueNode, ParseNodeType } from 'sploot-checker'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -16,6 +17,7 @@ import {
 import { PYTHON_FOR_LOOP } from './python_for'
 import { PYTHON_WHILE_LOOP } from './python_while'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { StatementCapture } from '../../capture/runtime_capture'
@@ -46,6 +48,15 @@ class ContinueGenerator implements SuggestionGenerator {
 export class PythonContinue extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_CONTINUE)
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ContinueNode {
+    return {
+      nodeType: ParseNodeType.Continue,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+    }
   }
 
   validateSelf(): void {

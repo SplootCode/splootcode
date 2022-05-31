@@ -1,3 +1,5 @@
+import { ParseNodeType, ReturnNode } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -18,6 +20,7 @@ import {
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_FUNCTION_DECLARATION } from './python_function'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
@@ -46,6 +49,20 @@ export class PythonReturn extends PythonNode {
 
   getValue() {
     return this.getChildSet('value')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ReturnNode {
+    const retNode: ReturnNode = {
+      nodeType: ParseNodeType.Return,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      returnExpression: (this.getValue().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+    }
+    if (retNode.returnExpression) {
+      retNode.returnExpression.parent = retNode
+    }
+    return retNode
   }
 
   validateSelf(): void {

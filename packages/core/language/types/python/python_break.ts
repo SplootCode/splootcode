@@ -1,3 +1,5 @@
+import { BreakNode, ParseNodeType } from 'sploot-checker'
+
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -16,6 +18,7 @@ import {
 import { PYTHON_FOR_LOOP } from './python_for'
 import { PYTHON_WHILE_LOOP } from './python_while'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { StatementCapture } from '../../capture/runtime_capture'
@@ -46,6 +49,15 @@ class BreakGenerator implements SuggestionGenerator {
 export class PythonBreak extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_BREAK)
+  }
+
+  generateParseTree(parseMapper: ParseMapper): BreakNode {
+    return {
+      nodeType: ParseNodeType.Break,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+    }
   }
 
   validateSelf(): void {

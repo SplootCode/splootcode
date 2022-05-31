@@ -1,10 +1,12 @@
 import {
   AssignmentNode,
+  ErrorExpressionCategory,
   ExpressionNode,
   ParseNode,
   ParseNodeType,
   TokenType,
-} from '@splootcode/../../pyright/packages/sploot-checker/dist/sploot-checker'
+} from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -42,23 +44,29 @@ class AssignmentGenerator implements SuggestionGenerator {
   }
 }
 
-function generateAssignableExpression(splootNode: PythonAssignment): ExpressionNode {
+function generateAssignableExpression(parseMapper: ParseMapper, splootNode: PythonAssignment): ExpressionNode {
   if (splootNode.getLeft().getCount() === 1) {
     const node = splootNode.getLeft().getChild(0)
     if (node.type === 'PY_IDENTIFIER') {
       const id = node as PythonIdentifier
       return {
         nodeType: ParseNodeType.Name,
-        id: 3,
+        id: parseMapper.getNextId(),
         length: 0,
         start: 0,
         value: id.getName(),
         token: { type: TokenType.Identifier, value: id.getName(), start: 0, length: 0 },
       }
     }
+    console.warn('Unrecognised assignment token')
   }
-  console.warn('Unrecognised assignment token')
-  return null
+  return {
+    nodeType: ParseNodeType.Error,
+    category: ErrorExpressionCategory.MissingExpression,
+    id: parseMapper.getNextId(),
+    start: 0,
+    length: 0,
+  }
 }
 
 class AssignmentWrapGenerator implements SuggestionGenerator {
@@ -114,14 +122,18 @@ export class PythonAssignment extends PythonNode {
   generateParseTree(parseMapper: ParseMapper): ParseNode {
     const assignNode: AssignmentNode = {
       nodeType: ParseNodeType.Assignment,
-      id: 2,
+      id: parseMapper.getNextId(),
       start: 0,
       length: 0,
-      leftExpression: generateAssignableExpression(this),
+      leftExpression: generateAssignableExpression(parseMapper, this),
       rightExpression: (this.getRight().getChild(0) as PythonExpression).generateParseTree(parseMapper),
     }
-    assignNode.leftExpression.parent = assignNode
-    assignNode.rightExpression.parent = assignNode
+    if (assignNode.leftExpression) {
+      assignNode.leftExpression.parent = assignNode
+    }
+    if (assignNode.rightExpression) {
+      assignNode.rightExpression.parent = assignNode
+    }
     return assignNode
   }
 

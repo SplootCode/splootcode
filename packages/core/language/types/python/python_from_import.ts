@@ -1,3 +1,5 @@
+import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType, TokenType } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { DeclaredIdentifier } from '../js/declared_identifier'
 import { HighlightColorCategory } from '../../../colors'
@@ -19,6 +21,8 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonIdentifier } from './python_identifier'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
@@ -51,6 +55,79 @@ export class PythonFromImport extends PythonNode {
 
   getAttrs() {
     return this.getChildSet('attrs')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ImportFromNode {
+    const moduleNameNode: ModuleNameNode = {
+      nodeType: ParseNodeType.ModuleName,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      leadingDots: 0,
+      nameParts: [],
+    }
+    const moduleName = this.getModuleName()
+    if (moduleName) {
+      const moduleNameParts = (this.getModuleName() || '').split('.')
+      moduleNameNode.nameParts = moduleNameParts.map((namePart: string) => ({
+        nodeType: ParseNodeType.Name,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        value: namePart,
+        parent: moduleNameNode,
+        token: {
+          type: TokenType.Identifier,
+          start: 0,
+          length: 0,
+          value: namePart,
+        },
+      }))
+    }
+
+    const importFromNode: ImportFromNode = {
+      nodeType: ParseNodeType.ImportFrom,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      module: moduleNameNode,
+      imports: [],
+      isWildcardImport: false,
+      usesParens: false,
+    }
+    moduleNameNode.parent = importFromNode
+    importFromNode.imports = this.getAttrs().children.map((attrNode: PythonIdentifier) => {
+      const attrName = attrNode.getName()
+      const importFromAsNode: ImportFromAsNode = {
+        nodeType: ParseNodeType.ImportFromAs,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        name: {
+          nodeType: ParseNodeType.Name,
+          id: parseMapper.getNextId(),
+          start: 0,
+          length: 0,
+          token: {
+            type: TokenType.Identifier,
+            start: 0,
+            length: 0,
+            value: attrName,
+          },
+          value: attrName,
+        },
+        parent: importFromNode,
+      }
+      importFromAsNode.name.parent = importFromAsNode
+      return importFromAsNode
+    })
+    parseMapper.addModuleImport({
+      nameNode: importFromNode.module,
+      leadingDots: importFromNode.module.leadingDots,
+      nameParts: importFromNode.module.nameParts.map((p) => p.value),
+      importedSymbols: importFromNode.imports.map((imp) => imp.name.value),
+    })
+    return importFromNode
   }
 
   validateSelf(): void {

@@ -8,7 +8,7 @@ import {
   ParseNode,
   ParseNodeType,
   TokenType,
-} from '@splootcode/../../pyright/packages/sploot-checker/dist/sploot-checker'
+} from 'sploot-checker'
 import { ChildSetType } from '../../childset'
 import { FunctionArgType, FunctionSignature } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'

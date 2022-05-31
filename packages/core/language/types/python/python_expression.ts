@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { ExpressionNode } from '@splootcode/../../pyright/packages/sploot-checker/dist/sploot-checker'
+import { ExpressionNode } from 'sploot-checker'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,

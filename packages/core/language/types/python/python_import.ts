@@ -1,3 +1,5 @@
+import { ImportAsNode, ImportNode, ParseNodeType, TokenType } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import { ImportStatementData, StatementCapture } from '../../capture/runtime_capture'
@@ -18,6 +20,7 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
@@ -45,6 +48,57 @@ export class PythonImport extends PythonNode {
 
   getModules() {
     return this.getChildSet('modules')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ImportNode {
+    const importNode: ImportNode = {
+      nodeType: ParseNodeType.Import,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      list: [],
+    }
+    importNode.list = this.getModules().children.map((moduleIdentifier: PythonModuleIdentifier): ImportAsNode => {
+      const moduleNameParts = moduleIdentifier.getName().split('.')
+      const importAsNode: ImportAsNode = {
+        nodeType: ParseNodeType.ImportAs,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        parent: importNode,
+        module: {
+          nodeType: ParseNodeType.ModuleName,
+          id: parseMapper.getNextId(),
+          start: 0,
+          length: 0,
+          leadingDots: 0,
+          nameParts: [],
+        },
+      }
+      importAsNode.module.parent = importAsNode
+      importAsNode.module.nameParts = moduleNameParts.map((namePart: string) => ({
+        nodeType: ParseNodeType.Name,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        value: namePart,
+        parent: importAsNode,
+        token: {
+          type: TokenType.Identifier,
+          start: 0,
+          length: 0,
+          value: namePart,
+        },
+      }))
+      parseMapper.addModuleImport({
+        nameNode: importAsNode.module,
+        leadingDots: importAsNode.module.leadingDots,
+        nameParts: importAsNode.module.nameParts.map((p) => p.value),
+        importedSymbols: undefined,
+      })
+      return importAsNode
+    })
+    return importNode
   }
 
   validateSelf(): void {

@@ -1,7 +1,7 @@
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../../scope/types'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../literals'
 import { NodeCategory, SuggestionGenerator, getAutocompleRegistry } from '../../node_category_registry'
-import { PYTHON_BOOL } from './literals'
+import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_DICT } from './python_dictionary'
@@ -12,7 +12,7 @@ import { ParentReference } from '../../node'
 import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
-import { TypeCategory as TC, TypeResult } from 'sploot-checker'
+import { TypeCategory as TC, Type } from 'sploot-checker'
 
 function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -23,14 +23,25 @@ function getAttributesForType(scope: Scope, typeName: string): [string, Variable
   return []
 }
 
-function getAttributeFromTypeResult(scope: Scope, typeResult: TypeResult): [string, VariableTypeInfo][] {
-  if (!typeResult) {
+function getAttributesForModule(scope: Scope, moduleName: string): [string, VariableTypeInfo][] {
+  const typeMeta = scope.getModuleDefinition(moduleName)
+  if (typeMeta) {
+    return Array.from(typeMeta.attributes.entries())
+  }
+  console.warn('No definition found for module name: ', moduleName)
+  return []
+}
+
+function getAttributeFromType(scope: Scope, type: Type): [string, VariableTypeInfo][] {
+  if (!type) {
     return []
   }
-  const t = typeResult.type
-  switch (t.category) {
+
+  switch (type.category) {
     case TC.Class:
-      return getAttributesForType(scope, t.details.fullName)
+      return getAttributesForType(scope, type.details.fullName)
+    case TC.Module:
+      return getAttributesForModule(scope, type.moduleName)
   }
   return []
 }
@@ -45,20 +56,7 @@ class MemberGenerator implements SuggestionGenerator {
 
     const analyzer = scope.getAnalyzer()
 
-    if (
-      leftChild &&
-      [
-        PYTHON_IDENTIFIER,
-        PYTHON_CALL_MEMBER,
-        STRING_LITERAL,
-        PYTHON_BOOL,
-        NUMERIC_LITERAL,
-        PYTHON_CALL_VARIABLE,
-        PYTHON_LIST,
-        PYTHON_SUBSCRIPT,
-        PYTHON_DICT,
-      ].indexOf(leftChild.type) !== -1
-    ) {
+    if (leftChild) {
       allowWrap = true
       switch (leftChild.type) {
         case STRING_LITERAL:
@@ -76,15 +74,16 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_IDENTIFIER:
         case PYTHON_CALL_MEMBER:
         case PYTHON_CALL_VARIABLE:
+        case PYTHON_SUBSCRIPT:
+        case PYTHON_BRACKETS:
           const typeResult = analyzer.getPyrightTypeForExpression(leftChild)
           if (typeResult) {
-            attributes = getAttributeFromTypeResult(scope, typeResult)
+            attributes = getAttributeFromType(scope, typeResult)
           } else {
             attributes = []
           }
           break
         default:
-          // TODO: Detect type for subscript, call var, call member
           break
       }
     }

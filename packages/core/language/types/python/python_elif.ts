@@ -1,6 +1,7 @@
 import { ChildSetType } from '../../childset'
 import { ElseIfStatementData, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { HighlightColorCategory } from '../../../colors'
+import { IfNode, ParseNode, ParseNodeType } from 'sploot-checker'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -18,6 +19,7 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
@@ -47,6 +49,35 @@ export class PythonElifBlock extends PythonNode {
 
   getBlock() {
     return this.getChildSet('block')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const ifNode: IfNode = {
+      nodeType: ParseNodeType.If,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      testExpression: (this.getCondition().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+      ifSuite: {
+        nodeType: ParseNodeType.Suite,
+        id: parseMapper.getNextId(),
+        length: 0,
+        start: 0,
+        statements: [],
+      },
+    }
+    if (ifNode.testExpression) {
+      ifNode.testExpression.parent = ifNode
+    }
+    ifNode.ifSuite.parent = ifNode
+    this.getBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        ifNode.ifSuite.statements.push(statement)
+        statement.parent = ifNode.ifSuite
+      }
+    })
+    return ifNode
   }
 
   validateSelf(): void {

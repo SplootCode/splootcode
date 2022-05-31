@@ -1,6 +1,8 @@
 import { AssignmentAnnotation, ReturnValueAnnotation } from '../../annotations/annotations'
 import {
   BinaryOperationNode,
+  ErrorExpressionCategory,
+  ErrorNode,
   ExpressionNode,
   OperatorType,
   ParseNodeType,
@@ -112,16 +114,21 @@ function parseLeafToPyright(
 ): [boolean, number, ExpressionNode] {
   if (currentIndex >= tokens.length) {
     // No tokens left when a leaf was expected
-    return [false, currentIndex, null]
+    const errorExpr: ErrorNode = {
+      nodeType: ParseNodeType.Error,
+      category: ErrorExpressionCategory.MissingExpression,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+    }
+    return [false, currentIndex, errorExpr]
   }
   const lookahead = tokens[currentIndex]
   if (lookahead.type === 'PYTHON_BINARY_OPERATOR') {
     const op = (lookahead as PythonBinaryOperator).getOperator()
     if (op in UnaryOperators) {
-      const [valid, leafIndex, operandNode] = parseLeafToPyright(parseMapper, tokens, currentIndex + 1)
-      if (!valid) {
-        return [false, leafIndex, operandNode]
-      }
+      // Don't care if it's invalid, it'll return an error node if needed
+      const [, leafIndex, operandNode] = parseLeafToPyright(parseMapper, tokens, currentIndex + 1)
       const lhs: UnaryOperationNode = {
         nodeType: ParseNodeType.UnaryOperation,
         expression: operandNode,
@@ -134,7 +141,14 @@ function parseLeafToPyright(
       operandNode.parent = lhs
       return parseExpressionToPyright(parseMapper, tokens, lhs, leafIndex, UnaryOperators[op]['precedence'])
     }
-    return [false, currentIndex, null]
+    const errorExpr: ErrorNode = {
+      nodeType: ParseNodeType.Error,
+      category: ErrorExpressionCategory.MissingExpression,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+    }
+    return [false, currentIndex, errorExpr]
   }
   // Consume one token - whatever it was it wasn't an operator
   const leafNode = parseTokenToPyright(parseMapper, lookahead)
@@ -163,13 +177,8 @@ function parseExpressionToPyright(
     const operator = (lookahead as PythonBinaryOperator).getOperator()
     const precedence = BinaryOperators[operator].precedence
     currentIndex += 1
-    let valid = false
     let rhs = null
-    ;[valid, currentIndex, rhs] = parseLeafToPyright(parseMapper, tokens, currentIndex)
-    if (!valid) {
-      // Leaf RHS was invalid
-      return [false, currentIndex, null]
-    }
+    ;[, currentIndex, rhs] = parseLeafToPyright(parseMapper, tokens, currentIndex)
 
     if (currentIndex === tokens.length) {
       // TODO: lhs + op + rhs
@@ -213,8 +222,12 @@ function parseExpressionToPyright(
       operator: BinaryOperators[operator].type,
       operatorToken: { length: 0, start: 0, type: BinaryOperators[operator].tokenType },
     }
-    expr.leftExpression.parent = expr
-    expr.rightExpression.parent = expr
+    if (expr.leftExpression) {
+      expr.leftExpression.parent = expr
+    }
+    if (expr.rightExpression) {
+      expr.rightExpression.parent = expr
+    }
     lhs = expr
   }
   // Have parsed all valid operators
@@ -222,10 +235,25 @@ function parseExpressionToPyright(
 }
 
 export function parseToPyright(parseMapper: ParseMapper, tokens: SplootNode[]): ExpressionNode {
+  if (tokens.length === 0) {
+    return {
+      nodeType: ParseNodeType.Error,
+      category: ErrorExpressionCategory.MissingExpression,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+    }
+  }
   const [valid, index, leftNode] = parseLeafToPyright(parseMapper, tokens, 0)
   if (!valid) {
     // No valid leaf at the start
-    return null
+    return {
+      nodeType: ParseNodeType.Error,
+      category: ErrorExpressionCategory.MissingExpression,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+    }
   }
   const [, , overallNode] = parseExpressionToPyright(parseMapper, tokens, leftNode, index, 0)
   return overallNode

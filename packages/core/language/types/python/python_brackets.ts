@@ -1,3 +1,5 @@
+import { ParseNode } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -16,6 +18,7 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -39,6 +42,12 @@ export class PythonBrackets extends PythonNode {
 
   getExpr() {
     return this.getChildSet('expr')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const exprNode = (this.getExpr().getChild(0) as PythonExpression).generateParseTree(parseMapper)
+    parseMapper.addNode(this, exprNode)
+    return exprNode
   }
 
   validateSelf(): void {

@@ -16,6 +16,8 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { ParseNode, ParseNodeType, SuiteNode } from 'sploot-checker'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
@@ -39,6 +41,24 @@ export class PythonElseBlock extends PythonNode {
 
   getBlock() {
     return this.getChildSet('block')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const elseSuite: SuiteNode = {
+      nodeType: ParseNodeType.Suite,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      statements: [],
+    }
+    this.getBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        elseSuite.statements.push(statement)
+        statement.parent = elseSuite
+      }
+    })
+    return elseSuite
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
