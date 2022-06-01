@@ -1,3 +1,5 @@
+import { DictionaryKeyEntryNode, ExpressionNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -10,18 +12,38 @@ import {
   registerType,
 } from '../../type_registry'
 import { NodeCategory, registerBlankFillForNodeCategory, registerNodeCateogry } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 
 export const PYTHON_KEYVALUE = 'PY_KEYVALUE'
 
-export class PythonKeyValue extends SplootNode {
+export class PythonKeyValue extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_KEYVALUE)
     this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression)
     this.getKey().addChild(new PythonExpression(null))
     this.getValue().addChild(new PythonExpression(null))
+  }
+
+  generateParseTree(parseMapper: ParseMapper): DictionaryKeyEntryNode {
+    const entryNode: DictionaryKeyEntryNode = {
+      nodeType: ParseNodeType.DictionaryKeyEntry,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      keyExpression: (this.getKey().getChild(0) as PythonExpression).generateParseTree(parseMapper) as ExpressionNode,
+      valueExpression: (this.getKey().getChild(0) as PythonExpression).generateParseTree(parseMapper) as ExpressionNode,
+    }
+    if (entryNode.keyExpression) {
+      entryNode.keyExpression.parent = entryNode
+    }
+    if (entryNode.valueExpression) {
+      entryNode.valueExpression.parent = entryNode
+    }
+    return entryNode
   }
 
   getKey() {

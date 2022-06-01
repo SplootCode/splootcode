@@ -1,3 +1,5 @@
+import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { DeclaredIdentifier } from '../js/declared_identifier'
 import { HighlightColorCategory } from '../../../colors'
@@ -19,7 +21,10 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonIdentifier } from './python_identifier'
 import { PythonModuleIdentifier } from './python_module_identifier'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { TypeCategory } from '../../scope/types'
@@ -34,7 +39,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonFromImport extends SplootNode {
+export class PythonFromImport extends PythonNode {
   scopedVariables: Set<string>
 
   constructor(parentReference: ParentReference) {
@@ -50,6 +55,55 @@ export class PythonFromImport extends SplootNode {
 
   getAttrs() {
     return this.getChildSet('attrs')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ImportFromNode {
+    let moduleNameNode: ModuleNameNode
+    if (this.getModule().getCount() === 0) {
+      // Empty module name node instead
+      moduleNameNode = {
+        nodeType: ParseNodeType.ModuleName,
+        id: parseMapper.getNextId(),
+        leadingDots: 0,
+        start: 0,
+        length: 0,
+        nameParts: [],
+      }
+    } else {
+      moduleNameNode = (this.getModule().getChild(0) as PythonModuleIdentifier).generateParseTree(parseMapper)
+    }
+
+    const importFromNode: ImportFromNode = {
+      nodeType: ParseNodeType.ImportFrom,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      module: moduleNameNode,
+      imports: [],
+      isWildcardImport: false,
+      usesParens: false,
+    }
+    moduleNameNode.parent = importFromNode
+
+    importFromNode.imports = this.getAttrs().children.map((attrNode: PythonIdentifier) => {
+      const importFromAsNode: ImportFromAsNode = {
+        nodeType: ParseNodeType.ImportFromAs,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        name: attrNode.generateParseTree(parseMapper),
+        parent: importFromNode,
+      }
+      importFromAsNode.name.parent = importFromAsNode
+      return importFromAsNode
+    })
+    parseMapper.addModuleImport({
+      nameNode: importFromNode.module,
+      leadingDots: importFromNode.module.leadingDots,
+      nameParts: importFromNode.module.nameParts.map((p) => p.value),
+      importedSymbols: importFromNode.imports.map((imp) => imp.name.value),
+    })
+    return importFromNode
   }
 
   validateSelf(): void {

@@ -1,3 +1,14 @@
+import {
+  ErrorExpressionCategory,
+  ErrorNode,
+  FunctionNode,
+  NameNode,
+  ParameterCategory,
+  ParameterNode,
+  ParseNode,
+  ParseNodeType,
+} from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { FunctionArgType, TypeCategory } from '../../scope/types'
 import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '../../capture/runtime_capture'
@@ -20,6 +31,8 @@ import {
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { VariableMetadata, registerFunction } from '../../scope/scope'
@@ -34,7 +47,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonFunctionDeclaration extends SplootNode {
+export class PythonFunctionDeclaration extends PythonNode {
   runtimeCapture: FunctionDeclarationData
   runtimeCaptureFrame: number
   scopedName: string
@@ -65,6 +78,60 @@ export class PythonFunctionDeclaration extends SplootNode {
 
   getBody() {
     return this.getChildSet('body')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    if (this.getIdentifier().getCount() === 0) {
+      const errNode: ErrorNode = {
+        nodeType: ParseNodeType.Error,
+        category: ErrorExpressionCategory.MissingFunctionParameterList,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+      }
+      return errNode
+    }
+    const nameNode: NameNode = (this.getIdentifier().getChild(0) as PythonIdentifier).generateParseTree(parseMapper)
+
+    const funcNode: FunctionNode = {
+      nodeType: ParseNodeType.Function,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      decorators: [],
+      name: nameNode,
+      parameters: [],
+      suite: {
+        nodeType: ParseNodeType.Suite,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        statements: [],
+      },
+    }
+    nameNode.parent = funcNode
+    funcNode.suite.parent = funcNode
+
+    funcNode.parameters = this.getParams().children.map((node: PythonIdentifier) => {
+      const paramNode: ParameterNode = {
+        nodeType: ParseNodeType.Parameter,
+        category: ParameterCategory.Simple,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        name: node.generateParseTree(parseMapper),
+        parent: funcNode,
+      }
+      return paramNode
+    })
+    this.getBody().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        funcNode.suite.statements.push(statement)
+        statement.parent = funcNode.suite
+      }
+    })
+    return funcNode
   }
 
   validateSelf(): void {

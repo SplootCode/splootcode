@@ -1,4 +1,5 @@
 import { ChildSetType } from '../../childset'
+import { DictionaryNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -16,7 +17,9 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonKeyValue } from './python_keyvalue'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_DICT = 'PY_DICT'
@@ -28,11 +31,27 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonDictionary extends SplootNode {
+export class PythonDictionary extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_DICT)
     this.addChildSet('elements', ChildSetType.Many, NodeCategory.PythonDictionaryKeyValue)
     this.getElements().addChild(new PythonKeyValue(null))
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const dictNode: DictionaryNode = {
+      nodeType: ParseNodeType.Dictionary,
+      id: parseMapper.getNextId(),
+      entries: [],
+      length: 0,
+      start: 0,
+    }
+    dictNode.entries = this.getElements().children.map((element: PythonKeyValue) => {
+      const node = element.generateParseTree(parseMapper)
+      node.parent = dictNode
+      return node
+    })
+    return dictNode
   }
 
   getElements() {

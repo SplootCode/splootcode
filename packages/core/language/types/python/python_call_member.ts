@@ -1,3 +1,14 @@
+import {
+  ArgumentCategory,
+  ArgumentNode,
+  CallNode,
+  ExpressionNode,
+  MemberAccessNode,
+  NameNode,
+  ParseNode,
+  ParseNodeType,
+  TokenType,
+} from 'structured-pyright'
 import { ChildSetType } from '../../childset'
 import { FunctionArgType, FunctionSignature } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
@@ -12,10 +23,13 @@ import {
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
+import { parseToPyright } from './utils'
 
 export const PYTHON_CALL_MEMBER = 'PYTHON_CALL_MEMBER'
 
-export class PythonCallMember extends SplootNode {
+export class PythonCallMember extends PythonNode {
   constructor(parentReference: ParentReference, signature: FunctionSignature = null) {
     super(parentReference, PYTHON_CALL_MEMBER)
     this.addChildSet('object', ChildSetType.Single, NodeCategory.PythonExpressionToken)
@@ -74,6 +88,62 @@ export class PythonCallMember extends SplootNode {
 
   getArguments() {
     return this.getChildSet('arguments')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const objectExpr: ExpressionNode = parseToPyright(parseMapper, this.getObjectExpressionToken().children)
+    const memberName: NameNode = {
+      nodeType: ParseNodeType.Name,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      token: { type: TokenType.Identifier, start: 0, length: 0, value: this.getMember() },
+      value: this.getMember(),
+    }
+    const memberExpr: MemberAccessNode = {
+      nodeType: ParseNodeType.MemberAccess,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      leftExpression: objectExpr,
+      memberName: memberName,
+    }
+    memberName.parent = memberExpr
+    objectExpr.parent = memberExpr
+
+    const callVarExpr: CallNode = {
+      nodeType: ParseNodeType.Call,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      arguments: this.getArguments().children.map((argNode) => {
+        const ret: ArgumentNode = {
+          nodeType: ParseNodeType.Argument,
+          argumentCategory: ArgumentCategory.Simple,
+          id: parseMapper.getNextId(),
+          start: 0,
+          length: 0,
+          valueExpression: null,
+        }
+        const valueExpression = parseToPyright(parseMapper, (argNode as PythonExpression).getTokenSet().children)
+        if (valueExpression) {
+          ret.valueExpression = valueExpression
+          ret.valueExpression.parent = ret
+        }
+        return ret
+      }),
+      leftExpression: memberExpr,
+      trailingComma: false,
+    }
+    if (memberExpr) {
+      memberExpr.parent = callVarExpr
+    }
+    if (objectExpr) {
+      callVarExpr.leftExpression.parent = callVarExpr
+    }
+    callVarExpr.arguments.forEach((arg) => (arg.parent = callVarExpr))
+    parseMapper.addNode(this, callVarExpr)
+    return callVarExpr
   }
 
   getNodeLayout(): NodeLayout {

@@ -1,3 +1,5 @@
+import { AssignmentNode, ErrorExpressionCategory, ExpressionNode, ParseNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -20,6 +22,8 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -30,6 +34,24 @@ class AssignmentGenerator implements SuggestionGenerator {
     const sampleNode = new PythonAssignment(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'assign', '= assign set', true, 'assign a value to a variable')
     return [suggestedNode]
+  }
+}
+
+function generateAssignableExpression(parseMapper: ParseMapper, splootNode: PythonAssignment): ExpressionNode {
+  if (splootNode.getLeft().getCount() === 1) {
+    const node = splootNode.getLeft().getChild(0)
+    if (node.type === 'PY_IDENTIFIER') {
+      const id = node as PythonIdentifier
+      return id.generateParseTree(parseMapper)
+    }
+    console.warn('Unrecognised assignment token')
+  }
+  return {
+    nodeType: ParseNodeType.Error,
+    category: ErrorExpressionCategory.MissingExpression,
+    id: parseMapper.getNextId(),
+    start: 0,
+    length: 0,
   }
 }
 
@@ -55,7 +77,7 @@ class AssignmentWrapGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonAssignment extends SplootNode {
+export class PythonAssignment extends PythonNode {
   scopedVariables: Set<string>
 
   constructor(parentReference: ParentReference) {
@@ -81,6 +103,24 @@ export class PythonAssignment extends SplootNode {
     } else {
       this.setValidity(true, '')
     }
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const assignNode: AssignmentNode = {
+      nodeType: ParseNodeType.Assignment,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      leftExpression: generateAssignableExpression(parseMapper, this),
+      rightExpression: (this.getRight().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+    }
+    if (assignNode.leftExpression) {
+      assignNode.leftExpression.parent = assignNode
+    }
+    if (assignNode.rightExpression) {
+      assignNode.rightExpression.parent = assignNode
+    }
+    return assignNode
   }
 
   addSelfToScope() {

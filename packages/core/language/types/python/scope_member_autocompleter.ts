@@ -1,17 +1,18 @@
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../../scope/types'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../literals'
 import { NodeCategory, SuggestionGenerator, getAutocompleRegistry } from '../../node_category_registry'
-import { PYTHON_BOOL } from './literals'
+import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_DICT } from './python_dictionary'
-import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
+import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
+import { PYTHON_MEMBER, PythonMember } from './python_member'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '../../node'
-import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
+import { TypeCategory as TC, Type } from 'structured-pyright'
 
 function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -19,6 +20,31 @@ function getAttributesForType(scope: Scope, typeName: string): [string, Variable
     return Array.from(typeMeta.attributes.entries())
   }
   console.warn('No type found for type name: ', typeName)
+  return []
+}
+
+function getAttributesForModule(scope: Scope, moduleName: string): [string, VariableTypeInfo][] {
+  const typeMeta = scope.getModuleDefinition(moduleName)
+  if (typeMeta) {
+    return Array.from(typeMeta.attributes.entries())
+  }
+  console.warn('No definition found for module name: ', moduleName)
+  return []
+}
+
+function getAttributesFromType(scope: Scope, type: Type): [string, VariableTypeInfo][] {
+  if (!type) {
+    return []
+  }
+
+  switch (type.category) {
+    case TC.Class:
+      return getAttributesForType(scope, type.details.fullName)
+    case TC.Module:
+      return getAttributesForModule(scope, type.moduleName)
+    case TC.Union:
+      return type.subtypes.map((subtype) => getAttributesFromType(scope, subtype)).flat()
+  }
   return []
 }
 
@@ -30,20 +56,9 @@ class MemberGenerator implements SuggestionGenerator {
     let attributes: [string, VariableTypeInfo][] = []
     let allowWrap = false
 
-    if (
-      leftChild &&
-      [
-        PYTHON_IDENTIFIER,
-        PYTHON_CALL_MEMBER,
-        STRING_LITERAL,
-        PYTHON_BOOL,
-        NUMERIC_LITERAL,
-        PYTHON_CALL_VARIABLE,
-        PYTHON_LIST,
-        PYTHON_SUBSCRIPT,
-        PYTHON_DICT,
-      ].indexOf(leftChild.type) !== -1
-    ) {
+    const analyzer = scope.getAnalyzer()
+
+    if (leftChild) {
       allowWrap = true
       switch (leftChild.type) {
         case STRING_LITERAL:
@@ -59,11 +74,19 @@ class MemberGenerator implements SuggestionGenerator {
           attributes = getAttributesForType(scope, 'builtins.int')
           break
         case PYTHON_IDENTIFIER:
-          const identifier = (leftChild as PythonIdentifier).getName()
-          attributes = scope.getAttributesForName(identifier)
+        case PYTHON_CALL_MEMBER:
+        case PYTHON_CALL_VARIABLE:
+        case PYTHON_SUBSCRIPT:
+        case PYTHON_BRACKETS:
+        case PYTHON_MEMBER:
+          const typeResult = analyzer.getPyrightTypeForExpression(leftChild)
+          if (typeResult) {
+            attributes = getAttributesFromType(scope, typeResult)
+          } else {
+            attributes = []
+          }
           break
         default:
-          // TODO: Detect type for subscript, call var, call member
           break
       }
     }

@@ -1,3 +1,5 @@
+import { ExpressionNode, ForNode, ParseNodeType, SuiteNode } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { ForLoopData, ForLoopIteration, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { HighlightColorCategory } from '../../../colors'
@@ -19,9 +21,12 @@ import {
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
+import { parseToPyright } from './utils'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'
 
@@ -33,7 +38,7 @@ class ForGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonForLoop extends SplootNode {
+export class PythonForLoop extends PythonNode {
   runtimeCapture: ForLoopData
   runtimeCaptureFrame: number
   scopedVariable: string
@@ -54,6 +59,40 @@ export class PythonForLoop extends SplootNode {
 
   getTarget() {
     return this.getChildSet('target')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ForNode {
+    const forSuite: SuiteNode = {
+      nodeType: ParseNodeType.Suite,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      statements: [],
+    }
+    this.getBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        forSuite.statements.push(statement)
+        statement.parent = forSuite
+      }
+    })
+    const iterableExpression: ExpressionNode = (this.getIterable().getChild(0) as PythonExpression).generateParseTree(
+      parseMapper
+    )
+    const targetExpression: ExpressionNode = parseToPyright(parseMapper, this.getTarget().children)
+    const forNode: ForNode = {
+      nodeType: ParseNodeType.For,
+      forSuite: forSuite,
+      id: parseMapper.getNextId(),
+      iterableExpression: iterableExpression,
+      targetExpression: targetExpression,
+      start: 0,
+      length: 0,
+    }
+    targetExpression.parent = forNode
+    iterableExpression.parent = forNode
+    forSuite.parent = forNode
+    return forNode
   }
 
   validateSelf(): void {

@@ -15,7 +15,10 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -29,7 +32,7 @@ class ElseGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonElseBlock extends SplootNode {
+export class PythonElseBlock extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELSE_STATEMENT)
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
@@ -38,6 +41,24 @@ export class PythonElseBlock extends SplootNode {
 
   getBlock() {
     return this.getChildSet('block')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const elseSuite: SuiteNode = {
+      nodeType: ParseNodeType.Suite,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      statements: [],
+    }
+    this.getBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        elseSuite.statements.push(statement)
+        statement.parent = elseSuite
+      }
+    })
+    return elseSuite
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

@@ -1,4 +1,7 @@
+import { ArgumentCategory, ArgumentNode, ExpressionNode, IndexNode, ParseNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
+import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -13,15 +16,15 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
-import { SuggestedNode } from '../../autocomplete/suggested_node'
-
-import { HighlightColorCategory } from '../../../colors'
 import { PYTHON_CALL_MEMBER } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER } from './python_identifier'
+import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { STRING_LITERAL } from '../literals'
+import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_SUBSCRIPT = 'PYTHON_SUBSCRIPT'
 
@@ -51,7 +54,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonSubscript extends SplootNode {
+export class PythonSubscript extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_SUBSCRIPT)
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonExpressionToken)
@@ -69,6 +72,38 @@ export class PythonSubscript extends SplootNode {
 
   getChildrenToKeepOnDelete(): SplootNode[] {
     return this.getTarget().children
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    if (this.getTarget().getCount() === 0) {
+      return null
+    }
+    const argNode: ArgumentNode = {
+      nodeType: ParseNodeType.Argument,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      argumentCategory: ArgumentCategory.Simple,
+      valueExpression: (this.getKey().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+    }
+    if (argNode.valueExpression) {
+      argNode.valueExpression.parent = argNode
+    }
+    const indexNode: IndexNode = {
+      nodeType: ParseNodeType.Index,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      baseExpression: (this.getTarget().getChild(0) as PythonNode).generateParseTree(parseMapper) as ExpressionNode,
+      items: [argNode],
+      trailingComma: false,
+    }
+    argNode.parent = indexNode
+    if (indexNode.baseExpression) {
+      indexNode.baseExpression.parent = indexNode
+    }
+    parseMapper.addNode(this, indexNode)
+    return indexNode
   }
 
   validateSelf(): void {

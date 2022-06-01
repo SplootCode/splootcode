@@ -1,3 +1,5 @@
+import { ImportAsNode, ImportNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import { ImportStatementData, StatementCapture } from '../../capture/runtime_capture'
@@ -18,7 +20,9 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonModuleIdentifier } from './python_module_identifier'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { TypeCategory } from '../../scope/types'
@@ -33,7 +37,7 @@ class Generator implements SuggestionGenerator {
   }
 }
 
-export class PythonImport extends SplootNode {
+export class PythonImport extends PythonNode {
   scopedVariables: Set<string>
 
   constructor(parentReference: ParentReference) {
@@ -44,6 +48,37 @@ export class PythonImport extends SplootNode {
 
   getModules() {
     return this.getChildSet('modules')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ImportNode {
+    const importNode: ImportNode = {
+      nodeType: ParseNodeType.Import,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      list: [],
+    }
+    importNode.list = this.getModules().children.map((moduleIdentifier: PythonModuleIdentifier): ImportAsNode => {
+      const moduleNameNode = moduleIdentifier.generateParseTree(parseMapper)
+      const importAsNode: ImportAsNode = {
+        nodeType: ParseNodeType.ImportAs,
+        id: parseMapper.getNextId(),
+        start: 0,
+        length: 0,
+        parent: importNode,
+        module: moduleNameNode,
+      }
+      moduleNameNode.parent = importAsNode
+
+      parseMapper.addModuleImport({
+        nameNode: importAsNode.module,
+        leadingDots: importAsNode.module.leadingDots,
+        nameParts: importAsNode.module.nameParts.map((p) => p.value),
+        importedSymbols: undefined,
+      })
+      return importAsNode
+    })
+    return importNode
   }
 
   validateSelf(): void {

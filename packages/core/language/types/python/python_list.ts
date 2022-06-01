@@ -1,3 +1,5 @@
+import { ListNode, ParseNodeType } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -16,6 +18,8 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_LIST = 'PYTHON_LIST'
@@ -27,7 +31,7 @@ class ListLiteralGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonList extends SplootNode {
+export class PythonList extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_LIST)
     this.addChildSet('elements', ChildSetType.Many, NodeCategory.PythonExpression)
@@ -42,6 +46,20 @@ export class PythonList extends SplootNode {
     return this.getElements().children.map((val, idx) => {
       return idx
     })
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ListNode {
+    const listNode: ListNode = {
+      nodeType: ParseNodeType.List,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      entries: [],
+    }
+    this.getElements().children.map((exprNode: PythonExpression) => {
+      return exprNode.generateParseTree(parseMapper)
+    })
+    return listNode
   }
 
   validateSelf(): void {

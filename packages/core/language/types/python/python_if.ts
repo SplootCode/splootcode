@@ -1,3 +1,5 @@
+import { IfNode, ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import { IfStatementData, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
@@ -17,9 +19,12 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
-import { PYTHON_ELSE_STATEMENT } from './python_else'
+import { PYTHON_ELSE_STATEMENT, PythonElseBlock } from './python_else'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonElifBlock } from './python_elif'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -33,7 +38,7 @@ class IfGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonIfStatement extends SplootNode {
+export class PythonIfStatement extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_IF_STATEMENT)
     this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
@@ -42,6 +47,44 @@ export class PythonIfStatement extends SplootNode {
     this.getTrueBlock().addChild(new PythonStatement(null))
     this.addChildSet('elseblocks', ChildSetType.Many, NodeCategory.PythonElseBlock)
     this.childSetWrapPriorityOrder = ['trueblock', 'condition', 'elseblock']
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const ifNode: IfNode = {
+      nodeType: ParseNodeType.If,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      testExpression: (this.getCondition().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+      ifSuite: {
+        nodeType: ParseNodeType.Suite,
+        id: parseMapper.getNextId(),
+        length: 0,
+        start: 0,
+        statements: [],
+      },
+    }
+    if (ifNode.testExpression) {
+      ifNode.testExpression.parent = ifNode
+    }
+    ifNode.ifSuite.parent = ifNode
+    this.getTrueBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        ifNode.ifSuite.statements.push(statement)
+        statement.parent = ifNode.ifSuite
+      }
+    })
+    let currentIf: IfNode = ifNode
+    this.getElseBlocks().children.forEach((elseOrElseIf: PythonElseBlock | PythonElifBlock) => {
+      const elseSuite = elseOrElseIf.generateParseTree(parseMapper) as IfNode | SuiteNode
+      currentIf.elseSuite = elseSuite
+      elseSuite.parent = currentIf
+      if (elseSuite.nodeType === ParseNodeType.If) {
+        currentIf = elseSuite
+      }
+    })
+    return ifNode
   }
 
   getCondition() {

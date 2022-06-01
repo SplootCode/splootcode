@@ -1,3 +1,5 @@
+import { ModuleNameNode, ParseNodeType, TokenType } from 'structured-pyright'
+
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -13,7 +15,9 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '../../node_category_registry'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_MODULE_IDENTIFIER = 'PYTHON_MODULE_IDENTIFIER'
@@ -275,7 +279,7 @@ export class ModuleSuggestionGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonModuleIdentifier extends SplootNode {
+export class PythonModuleIdentifier extends PythonNode {
   constructor(parentReference: ParentReference, name: string) {
     super(parentReference, PYTHON_MODULE_IDENTIFIER)
     this.setProperty('identifier', name)
@@ -295,6 +299,35 @@ export class PythonModuleIdentifier extends SplootNode {
 
   removeSelfFromScope(): void {
     this.parent?.node.addSelfToScope()
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ModuleNameNode {
+    const moduleNameParts = this.getName().split('.')
+
+    const moduleNameNode: ModuleNameNode = {
+      nodeType: ParseNodeType.ModuleName,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      leadingDots: 0,
+      nameParts: [],
+    }
+
+    moduleNameNode.nameParts = moduleNameParts.map((namePart: string) => ({
+      nodeType: ParseNodeType.Name,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      value: namePart,
+      parent: moduleNameNode,
+      token: {
+        type: TokenType.Identifier,
+        start: 0,
+        length: 0,
+        value: namePart,
+      },
+    }))
+    return moduleNameNode
   }
 
   static deserializer(serializedNode: SerializedNode): PythonModuleIdentifier {

@@ -16,12 +16,23 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '../../node'
+import { ParentReference } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { ParseNodeType, StatementListNode, StatementNode } from 'structured-pyright'
+import { PythonNode } from './python_node'
 import { StatementCapture } from '../../capture/runtime_capture'
 
 export const PYTHON_STATEMENT = 'PYTHON_STATEMENT'
 
-export class PythonStatement extends SplootNode {
+const statementNodes = [
+  ParseNodeType.If,
+  ParseNodeType.While,
+  ParseNodeType.For,
+  ParseNodeType.Try,
+  ParseNodeType.Function,
+]
+
+export class PythonStatement extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_STATEMENT)
     this.addChildSet('statement', ChildSetType.Single, NodeCategory.PythonStatementContents)
@@ -38,6 +49,31 @@ export class PythonStatement extends SplootNode {
         this.getStatement().removeChild(0)
       }
     }
+  }
+
+  generateParseTree(parseMapper: ParseMapper): StatementNode {
+    if (this.isEmpty()) {
+      return null
+    }
+    const child = this.getStatement().getChild(0)
+    const childParseNode = (child as PythonNode).generateParseTree(parseMapper)
+    if (!childParseNode) {
+      console.warn(`No parse for child node type, ${child.type}`)
+      return null
+    }
+    if (childParseNode && statementNodes.includes(childParseNode.nodeType)) {
+      return childParseNode as StatementNode
+    }
+    const statementList: StatementListNode = {
+      nodeType: ParseNodeType.StatementList,
+      statements: [],
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+    }
+    statementList.statements.push(childParseNode)
+    childParseNode.parent = statementList
+    return statementList
   }
 
   isEmpty(): boolean {

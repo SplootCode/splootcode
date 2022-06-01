@@ -1,3 +1,5 @@
+import { ParseNode } from 'structured-pyright'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -16,7 +18,9 @@ import {
   registerNodeCateogry,
 } from '../../node_category_registry'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_BRACKETS = 'PY_BRACKET'
@@ -29,7 +33,7 @@ class BracketsGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonBrackets extends SplootNode {
+export class PythonBrackets extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_BRACKETS)
     this.addChildSet('expr', ChildSetType.Immutable, NodeCategory.PythonExpression)
@@ -38,6 +42,12 @@ export class PythonBrackets extends SplootNode {
 
   getExpr() {
     return this.getChildSet('expr')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const exprNode = (this.getExpr().getChild(0) as PythonExpression).generateParseTree(parseMapper)
+    parseMapper.addNode(this, exprNode)
+    return exprNode
   }
 
   validateSelf(): void {

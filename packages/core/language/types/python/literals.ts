@@ -1,3 +1,5 @@
+import { ConstantNode, KeywordType, ParseNodeType } from 'structured-pyright'
+
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -15,6 +17,8 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
 export const PYTHON_NONE = 'PYTHON_NONE'
@@ -26,10 +30,21 @@ class PythonNoneGenerator implements SuggestionGenerator {
   }
 }
 
-export class NoneLiteral extends SplootNode {
+export class NoneLiteral extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_NONE)
     this.properties = {}
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ConstantNode {
+    const noneNode: ConstantNode = {
+      nodeType: ParseNodeType.Constant,
+      id: parseMapper.getNextId(),
+      constType: KeywordType.None,
+      length: 0,
+      start: 0,
+    }
+    return noneNode
   }
 
   static deserializer(serializedNode: SerializedNode): NoneLiteral {
@@ -64,10 +79,21 @@ class PythonBoolGenerator implements SuggestionGenerator {
   }
 }
 
-export class PythonBool extends SplootNode {
+export class PythonBool extends PythonNode {
   constructor(parentReference: ParentReference, value: boolean) {
     super(parentReference, PYTHON_BOOL)
     this.setProperty('value', value)
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ConstantNode {
+    const boolNode: ConstantNode = {
+      nodeType: ParseNodeType.Constant,
+      id: parseMapper.getNextId(),
+      length: 0,
+      start: 0,
+      constType: this.getValue() ? KeywordType.True : KeywordType.False,
+    }
+    return boolNode
   }
 
   static deserializer(serializedNode: SerializedNode): NoneLiteral {

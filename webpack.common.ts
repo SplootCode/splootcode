@@ -51,7 +51,16 @@ export default {
 
   plugins: [
     new NodePolyfillPlugin(),
-    new CopyWebpackPlugin({ patterns: [path.resolve('./static/**')] }),
+    new CopyWebpackPlugin({
+      patterns: [
+        path.resolve(__dirname, 'static/**'),
+        {
+          from: '**/*',
+          context: path.resolve(__dirname, 'node_modules', 'structured-pyright', 'dist', 'static'),
+          to: 'static',
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: './static/index.html',
     }),
