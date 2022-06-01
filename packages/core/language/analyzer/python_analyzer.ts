@@ -25,13 +25,13 @@ export interface ParseMapper {
 export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   project: Project
   rootNode: PythonFile
-  splootProgram: StructuredEditorProgram
+  program: StructuredEditorProgram
   nodeMap: Map<SplootNode, ParseNode>
 
   constructor(project: Project) {
     this.project = project
     this.rootNode = null
-    this.splootProgram = createStructuredProgram(process.env.TYPESHED_PATH)
+    this.program = createStructuredProgram(process.env.TYPESHED_PATH)
     this.nodeMap = new Map()
   }
 
@@ -44,7 +44,7 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   getPyrightTypeForExpression(node: SplootNode): Type {
     const exprNode = this.nodeMap.get(node)
     if (exprNode) {
-      const typeResult = this.splootProgram.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
+      const typeResult = this.program.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
       return typeResult.type
     }
     return null
@@ -77,9 +77,9 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       },
     }
     const moduleNode = this.rootNode.generateParseTree(parseMapper)
-    this.splootProgram.updateStructuredFile(mainPath, moduleNode, modules)
-    await this.splootProgram.parseRecursively(mainPath)
-    this.splootProgram.getBoundSourceFile(mainPath)
+    this.program.updateStructuredFile(mainPath, moduleNode, modules)
+    await this.program.parseRecursively(mainPath)
+    this.program.getBoundSourceFile(mainPath)
     this.nodeMap = newNodeMap
   }
 
