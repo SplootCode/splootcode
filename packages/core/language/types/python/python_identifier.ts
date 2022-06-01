@@ -7,7 +7,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NameNode, ParseNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { NameNode, ParseNodeType, TokenType } from 'sploot-checker'
 import {
   NodeCategory,
   SuggestionGenerator,
@@ -95,7 +95,7 @@ export class PythonIdentifier extends PythonNode {
     return this.getProperty('identifier')
   }
 
-  generateParseTree(parseMapper: ParseMapper): ParseNode {
+  generateParseTree(parseMapper: ParseMapper): NameNode {
     const nameNode: NameNode = {
       nodeType: ParseNodeType.Name,
       id: parseMapper.getNextId(),

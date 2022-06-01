@@ -1,4 +1,4 @@
-import { ImportAsNode, ImportNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { ImportAsNode, ImportNode, ParseNodeType } from 'sploot-checker'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
@@ -59,37 +59,17 @@ export class PythonImport extends PythonNode {
       list: [],
     }
     importNode.list = this.getModules().children.map((moduleIdentifier: PythonModuleIdentifier): ImportAsNode => {
-      const moduleNameParts = moduleIdentifier.getName().split('.')
+      const moduleNameNode = moduleIdentifier.generateParseTree(parseMapper)
       const importAsNode: ImportAsNode = {
         nodeType: ParseNodeType.ImportAs,
         id: parseMapper.getNextId(),
         start: 0,
         length: 0,
         parent: importNode,
-        module: {
-          nodeType: ParseNodeType.ModuleName,
-          id: parseMapper.getNextId(),
-          start: 0,
-          length: 0,
-          leadingDots: 0,
-          nameParts: [],
-        },
+        module: moduleNameNode,
       }
-      importAsNode.module.parent = importAsNode
-      importAsNode.module.nameParts = moduleNameParts.map((namePart: string) => ({
-        nodeType: ParseNodeType.Name,
-        id: parseMapper.getNextId(),
-        start: 0,
-        length: 0,
-        value: namePart,
-        parent: importAsNode,
-        token: {
-          type: TokenType.Identifier,
-          start: 0,
-          length: 0,
-          value: namePart,
-        },
-      }))
+      moduleNameNode.parent = importAsNode
+
       parseMapper.addModuleImport({
         nameNode: importAsNode.module,
         leadingDots: importAsNode.module.leadingDots,

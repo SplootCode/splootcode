@@ -1,3 +1,5 @@
+import { ParseNodeType, WhileNode } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -17,6 +19,7 @@ import {
 } from '../../node_category_registry'
 import { NodeMutation, NodeMutationType } from '../../mutations/node_mutations'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
@@ -55,6 +58,34 @@ export class PythonWhileLoop extends PythonNode {
 
   getBlock() {
     return this.getChildSet('block')
+  }
+
+  generateParseTree(parseMapper: ParseMapper): WhileNode {
+    const whileNode: WhileNode = {
+      nodeType: ParseNodeType.While,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      testExpression: (this.getCondition().getChild(0) as PythonExpression).generateParseTree(parseMapper),
+      whileSuite: {
+        nodeType: ParseNodeType.Suite,
+        id: parseMapper.getNextId(),
+        length: 0,
+        start: 0,
+        statements: [],
+      },
+    }
+
+    whileNode.testExpression.parent = whileNode
+    whileNode.whileSuite.parent = whileNode
+    this.getBlock().children.forEach((statementNode: PythonStatement) => {
+      const statement = statementNode.generateParseTree(parseMapper)
+      if (statement) {
+        whileNode.whileSuite.statements.push(statement)
+        statement.parent = whileNode.whileSuite
+      }
+    })
+    return whileNode
   }
 
   validateSelf(): void {

@@ -1,4 +1,4 @@
-import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType } from 'sploot-checker'
 
 import { ChildSetType } from '../../childset'
 import { DeclaredIdentifier } from '../js/declared_identifier'
@@ -58,31 +58,19 @@ export class PythonFromImport extends PythonNode {
   }
 
   generateParseTree(parseMapper: ParseMapper): ImportFromNode {
-    const moduleNameNode: ModuleNameNode = {
-      nodeType: ParseNodeType.ModuleName,
-      id: parseMapper.getNextId(),
-      start: 0,
-      length: 0,
-      leadingDots: 0,
-      nameParts: [],
-    }
-    const moduleName = this.getModuleName()
-    if (moduleName) {
-      const moduleNameParts = (this.getModuleName() || '').split('.')
-      moduleNameNode.nameParts = moduleNameParts.map((namePart: string) => ({
-        nodeType: ParseNodeType.Name,
+    let moduleNameNode: ModuleNameNode
+    if (this.getModule().getCount() === 0) {
+      // Empty module name node instead
+      moduleNameNode = {
+        nodeType: ParseNodeType.ModuleName,
         id: parseMapper.getNextId(),
+        leadingDots: 0,
         start: 0,
         length: 0,
-        value: namePart,
-        parent: moduleNameNode,
-        token: {
-          type: TokenType.Identifier,
-          start: 0,
-          length: 0,
-          value: namePart,
-        },
-      }))
+        nameParts: [],
+      }
+    } else {
+      moduleNameNode = (this.getModule().getChild(0) as PythonModuleIdentifier).generateParseTree(parseMapper)
     }
 
     const importFromNode: ImportFromNode = {
@@ -96,26 +84,14 @@ export class PythonFromImport extends PythonNode {
       usesParens: false,
     }
     moduleNameNode.parent = importFromNode
+
     importFromNode.imports = this.getAttrs().children.map((attrNode: PythonIdentifier) => {
-      const attrName = attrNode.getName()
       const importFromAsNode: ImportFromAsNode = {
         nodeType: ParseNodeType.ImportFromAs,
         id: parseMapper.getNextId(),
         start: 0,
         length: 0,
-        name: {
-          nodeType: ParseNodeType.Name,
-          id: parseMapper.getNextId(),
-          start: 0,
-          length: 0,
-          token: {
-            type: TokenType.Identifier,
-            start: 0,
-            length: 0,
-            value: attrName,
-          },
-          value: attrName,
-        },
+        name: attrNode.generateParseTree(parseMapper),
         parent: importFromNode,
       }
       importFromAsNode.name.parent = importFromAsNode

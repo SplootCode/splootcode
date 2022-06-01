@@ -1,3 +1,5 @@
+import { ListNode, ParseNodeType } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -16,6 +18,7 @@ import {
 } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 
@@ -43,6 +46,20 @@ export class PythonList extends PythonNode {
     return this.getElements().children.map((val, idx) => {
       return idx
     })
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ListNode {
+    const listNode: ListNode = {
+      nodeType: ParseNodeType.List,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      entries: [],
+    }
+    this.getElements().children.map((exprNode: PythonExpression) => {
+      return exprNode.generateParseTree(parseMapper)
+    })
+    return listNode
   }
 
   validateSelf(): void {
