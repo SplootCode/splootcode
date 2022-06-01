@@ -17,7 +17,6 @@ import { ParentReference, SplootNode } from '../../node'
 import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { ScopeMutation, ScopeMutationType } from '../../mutations/scope_mutations'
-import { parseToPyright } from './utils'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 
@@ -89,13 +88,17 @@ export class PythonCallVariable extends PythonNode {
 
   generateParseTree(parseMapper: ParseMapper): ParseNode {
     const funcName = this.getIdentifier()
+    let args = this.getArguments().children
+    if (args.length === 1 && args[0].isEmpty()) {
+      args = []
+    }
 
     const callVarExpr: CallNode = {
       nodeType: ParseNodeType.Call,
       id: parseMapper.getNextId(),
       length: 0,
       start: 0,
-      arguments: this.getArguments().children.map((argNode) => {
+      arguments: args.map((argNode) => {
         const ret: ArgumentNode = {
           nodeType: ParseNodeType.Argument,
           argumentCategory: ArgumentCategory.Simple,
@@ -104,11 +107,9 @@ export class PythonCallVariable extends PythonNode {
           length: 0,
           valueExpression: null,
         }
-        const valueExpression = parseToPyright(parseMapper, (argNode as PythonExpression).getTokenSet().children)
-        if (valueExpression) {
-          ret.valueExpression = valueExpression
-          ret.valueExpression.parent = ret
-        }
+        const valueExpression = (argNode as PythonExpression).generateParseTree(parseMapper)
+        ret.valueExpression = valueExpression
+        ret.valueExpression.parent = ret
         return ret
       }),
       leftExpression: {

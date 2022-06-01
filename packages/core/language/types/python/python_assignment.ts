@@ -1,11 +1,4 @@
-import {
-  AssignmentNode,
-  ErrorExpressionCategory,
-  ExpressionNode,
-  ParseNode,
-  ParseNodeType,
-  TokenType,
-} from 'sploot-checker'
+import { AssignmentNode, ErrorExpressionCategory, ExpressionNode, ParseNode, ParseNodeType } from 'sploot-checker'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
@@ -49,14 +42,7 @@ function generateAssignableExpression(parseMapper: ParseMapper, splootNode: Pyth
     const node = splootNode.getLeft().getChild(0)
     if (node.type === 'PY_IDENTIFIER') {
       const id = node as PythonIdentifier
-      return {
-        nodeType: ParseNodeType.Name,
-        id: parseMapper.getNextId(),
-        length: 0,
-        start: 0,
-        value: id.getName(),
-        token: { type: TokenType.Identifier, value: id.getName(), start: 0, length: 0 },
-      }
+      return id.generateParseTree(parseMapper)
     }
     console.warn('Unrecognised assignment token')
   }
