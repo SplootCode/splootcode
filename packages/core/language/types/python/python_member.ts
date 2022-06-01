@@ -1,3 +1,5 @@
+import { MemberAccessNode, ParseNode, ParseNodeType, TokenType } from 'sploot-checker'
+
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'
 import {
@@ -11,7 +13,9 @@ import {
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '../../node'
+import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
+import { parseToPyright } from './utils'
 
 export const PYTHON_MEMBER = 'PYTHON_MEMBER'
 
@@ -36,6 +40,29 @@ export class PythonMember extends PythonNode {
 
   getChildrenToKeepOnDelete(): SplootNode[] {
     return this.getObjectExpressionToken().children
+  }
+
+  generateParseTree(parseMapper: ParseMapper): ParseNode {
+    const memberName = this.getMember()
+    const memberAccessNode: MemberAccessNode = {
+      nodeType: ParseNodeType.MemberAccess,
+      id: parseMapper.getNextId(),
+      start: 0,
+      length: 0,
+      leftExpression: parseToPyright(parseMapper, this.getObjectExpressionToken().children),
+      memberName: {
+        nodeType: ParseNodeType.Name,
+        id: parseMapper.getNextId(),
+        length: 0,
+        start: 0,
+        token: { type: TokenType.Identifier, start: 0, length: 0, value: memberName },
+        value: memberName,
+      },
+    }
+    memberAccessNode.leftExpression.parent = memberAccessNode
+    memberAccessNode.memberName.parent = memberAccessNode
+    parseMapper.addNode(this, memberAccessNode)
+    return memberAccessNode
   }
 
   validateSelf(): void {

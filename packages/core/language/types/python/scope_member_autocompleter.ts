@@ -7,9 +7,9 @@ import { PYTHON_CALL_VARIABLE } from './python_call_variable'
 import { PYTHON_DICT } from './python_dictionary'
 import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
+import { PYTHON_MEMBER, PythonMember } from './python_member'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '../../node'
-import { PythonMember } from './python_member'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
 import { TypeCategory as TC, Type } from 'sploot-checker'
@@ -32,7 +32,7 @@ function getAttributesForModule(scope: Scope, moduleName: string): [string, Vari
   return []
 }
 
-function getAttributeFromType(scope: Scope, type: Type): [string, VariableTypeInfo][] {
+function getAttributesFromType(scope: Scope, type: Type): [string, VariableTypeInfo][] {
   if (!type) {
     return []
   }
@@ -42,6 +42,8 @@ function getAttributeFromType(scope: Scope, type: Type): [string, VariableTypeIn
       return getAttributesForType(scope, type.details.fullName)
     case TC.Module:
       return getAttributesForModule(scope, type.moduleName)
+    case TC.Union:
+      return type.subtypes.map((subtype) => getAttributesFromType(scope, subtype)).flat()
   }
   return []
 }
@@ -76,9 +78,10 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_CALL_VARIABLE:
         case PYTHON_SUBSCRIPT:
         case PYTHON_BRACKETS:
+        case PYTHON_MEMBER:
           const typeResult = analyzer.getPyrightTypeForExpression(leftChild)
           if (typeResult) {
-            attributes = getAttributeFromType(scope, typeResult)
+            attributes = getAttributesFromType(scope, typeResult)
           } else {
             attributes = []
           }
