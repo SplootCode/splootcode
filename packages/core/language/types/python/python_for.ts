@@ -1,4 +1,4 @@
-import { ExpressionNode, ForNode, ParseNodeType, SuiteNode } from 'sploot-checker'
+import { ExpressionNode, ForNode, ParseNodeType, SuiteNode } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { ForLoopData, ForLoopIteration, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'

@@ -7,7 +7,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { NameNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { NameNode, ParseNodeType, TokenType } from 'structured-pyright'
 import {
   NodeCategory,
   SuggestionGenerator,

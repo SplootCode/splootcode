@@ -1,4 +1,4 @@
-import { ParseNodeType, WhileNode } from 'sploot-checker'
+import { ParseNodeType, WhileNode } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'

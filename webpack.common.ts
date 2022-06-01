@@ -56,7 +56,7 @@ export default {
         path.resolve(__dirname, 'static/**'),
         {
           from: '**/*',
-          context: path.resolve(__dirname, 'node_modules', 'sploot-checker', 'dist', 'static'),
+          context: path.resolve(__dirname, 'node_modules', 'structured-pyright', 'dist', 'static'),
           to: 'static',
         },
       ],

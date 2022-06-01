@@ -1,4 +1,4 @@
-import { ConstantNode, KeywordType, ParseNodeType } from 'sploot-checker'
+import { ConstantNode, KeywordType, ParseNodeType } from 'structured-pyright'
 
 import { HighlightColorCategory } from '../../../colors'
 import {

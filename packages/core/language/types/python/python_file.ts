@@ -8,7 +8,7 @@ import {
   TypeRegistration,
   registerType,
 } from '../../type_registry'
-import { ModuleNode, ParseNodeType } from 'sploot-checker'
+import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { NodeCategory, registerNodeCateogry } from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { ParseMapper } from '../../analyzer/python_analyzer'

@@ -12,7 +12,7 @@ import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '../../node'
 import { Scope } from '../../scope/scope'
 import { SuggestedNode } from '../../autocomplete/suggested_node'
-import { TypeCategory as TC, Type } from 'sploot-checker'
+import { TypeCategory as TC, Type } from 'structured-pyright'
 
 function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)

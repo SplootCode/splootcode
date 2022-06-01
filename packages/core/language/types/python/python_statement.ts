@@ -18,7 +18,7 @@ import {
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference } from '../../node'
 import { ParseMapper } from '../../analyzer/python_analyzer'
-import { ParseNodeType, StatementListNode, StatementNode } from 'sploot-checker'
+import { ParseNodeType, StatementListNode, StatementNode } from 'structured-pyright'
 import { PythonNode } from './python_node'
 import { StatementCapture } from '../../capture/runtime_capture'
 

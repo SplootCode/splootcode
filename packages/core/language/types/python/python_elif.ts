@@ -1,7 +1,7 @@
 import { ChildSetType } from '../../childset'
 import { ElseIfStatementData, SingleStatementData, StatementCapture } from '../../capture/runtime_capture'
 import { HighlightColorCategory } from '../../../colors'
-import { IfNode, ParseNode, ParseNodeType } from 'sploot-checker'
+import { IfNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import {
   LayoutComponent,
   LayoutComponentType,

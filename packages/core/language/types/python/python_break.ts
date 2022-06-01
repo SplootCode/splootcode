@@ -1,4 +1,4 @@
-import { BreakNode, ParseNodeType } from 'sploot-checker'
+import { BreakNode, ParseNodeType } from 'structured-pyright'
 
 import { HighlightColorCategory } from '../../../colors'
 import {

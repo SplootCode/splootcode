@@ -1,4 +1,4 @@
-import { MemberAccessNode, ParseNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { MemberAccessNode, ParseNode, ParseNodeType, TokenType } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'

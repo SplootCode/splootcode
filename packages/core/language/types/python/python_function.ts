@@ -7,7 +7,7 @@ import {
   ParameterNode,
   ParseNode,
   ParseNodeType,
-} from 'sploot-checker'
+} from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { FunctionArgType, TypeCategory } from '../../scope/types'

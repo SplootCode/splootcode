@@ -1,4 +1,4 @@
-import { ModuleNameNode, ParseNodeType, TokenType } from 'sploot-checker'
+import { ModuleNameNode, ParseNodeType, TokenType } from 'structured-pyright'
 
 import { HighlightColorCategory } from '../../../colors'
 import {

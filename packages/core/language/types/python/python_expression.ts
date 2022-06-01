@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { ExpressionNode } from 'sploot-checker'
+import { ExpressionNode } from 'structured-pyright'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,

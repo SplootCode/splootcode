@@ -1,4 +1,4 @@
-import { ContinueNode, ParseNodeType } from 'sploot-checker'
+import { ContinueNode, ParseNodeType } from 'structured-pyright'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,

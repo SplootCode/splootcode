@@ -9,7 +9,7 @@ import {
   StringTokenFlags,
   TokenType,
   UnaryOperationNode,
-} from 'sploot-checker'
+} from 'structured-pyright'
 import { NumericLiteral, StringLiteral } from '../literals'
 import { ParseMapper } from '../../analyzer/python_analyzer'
 import { PythonBinaryOperator } from './python_binary_operator'

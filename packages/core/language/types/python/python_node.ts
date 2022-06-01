@@ -1,4 +1,4 @@
-import { ParseNode } from 'sploot-checker'
+import { ParseNode } from 'structured-pyright'
 
 import { ParseMapper } from '../../analyzer/python_analyzer'
 import { SplootNode } from '../../node'

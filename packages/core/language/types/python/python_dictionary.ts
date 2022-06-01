@@ -1,5 +1,5 @@
 import { ChildSetType } from '../../childset'
-import { DictionaryNode, ParseNode, ParseNodeType } from 'sploot-checker'
+import { DictionaryNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,

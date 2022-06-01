@@ -1,4 +1,4 @@
-import { DictionaryKeyEntryNode, ExpressionNode, ParseNodeType } from 'sploot-checker'
+import { DictionaryKeyEntryNode, ExpressionNode, ParseNodeType } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'

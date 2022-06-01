@@ -1,4 +1,4 @@
-import { ArgumentCategory, ArgumentNode, ExpressionNode, IndexNode, ParseNode, ParseNodeType } from 'sploot-checker'
+import { ArgumentCategory, ArgumentNode, ExpressionNode, IndexNode, ParseNode, ParseNodeType } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { HighlightColorCategory } from '../../../colors'

@@ -1,6 +1,13 @@
 import { ChildSetMutation } from '../mutations/child_set_mutations'
 import { ChildSetObserver, NodeObserver } from '../observers'
-import { ExpressionNode, ModuleImport, ParseNode, SplootProgram, Type, setupProgram } from 'sploot-checker'
+import {
+  ExpressionNode,
+  ModuleImport,
+  ParseNode,
+  StructuredEditorProgram,
+  Type,
+  createStructuredProgram,
+} from 'structured-pyright'
 import { NodeMutation } from '../mutations/node_mutations'
 import { Project } from '../projects/project'
 import { PythonFile } from '../types/python/python_file'
@@ -18,13 +25,13 @@ export interface ParseMapper {
 export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   project: Project
   rootNode: PythonFile
-  splootProgram: SplootProgram
+  splootProgram: StructuredEditorProgram
   nodeMap: Map<SplootNode, ParseNode>
 
   constructor(project: Project) {
     this.project = project
     this.rootNode = null
-    this.splootProgram = setupProgram(process.env.TYPESHED_PATH)
+    this.splootProgram = createStructuredProgram(process.env.TYPESHED_PATH)
     this.nodeMap = new Map()
   }
 
@@ -54,7 +61,7 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   }
 
   async updateParse() {
-    const mainPath = '/fake/main.py'
+    const mainPath = '/main.py'
     const newNodeMap = new Map<SplootNode, ParseNode>()
     let id = 1
     const modules: ModuleImport[] = []
@@ -70,7 +77,7 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       },
     }
     const moduleNode = this.rootNode.generateParseTree(parseMapper)
-    this.splootProgram.updateSplootFile(mainPath, moduleNode, modules)
+    this.splootProgram.updateStructuredFile(mainPath, moduleNode, modules)
     await this.splootProgram.parseRecursively(mainPath)
     this.splootProgram.getBoundSourceFile(mainPath)
     this.nodeMap = newNodeMap

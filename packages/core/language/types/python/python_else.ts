@@ -17,7 +17,7 @@ import {
 } from '../../node_category_registry'
 import { ParentReference } from '../../node'
 import { ParseMapper } from '../../analyzer/python_analyzer'
-import { ParseNode, ParseNodeType, SuiteNode } from 'sploot-checker'
+import { ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '../../autocomplete/suggested_node'

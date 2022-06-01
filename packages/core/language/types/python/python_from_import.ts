@@ -1,4 +1,4 @@
-import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType } from 'sploot-checker'
+import { ImportFromAsNode, ImportFromNode, ModuleNameNode, ParseNodeType } from 'structured-pyright'
 
 import { ChildSetType } from '../../childset'
 import { DeclaredIdentifier } from '../js/declared_identifier'
