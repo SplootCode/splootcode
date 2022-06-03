@@ -30,7 +30,7 @@ function filterSuggestions(
     return []
   }
 
-  const suggestions = [...staticSuggestions]
+  const dynamicSuggestions = []
   for (const autocompleter of autocompleters) {
     const prefixSuggestions = autocompleter.getPrefixSuggestions(userInput)
     if (prefixSuggestions) {
@@ -48,16 +48,18 @@ function filterSuggestions(
       return results
     }
 
-    suggestions.push(...autocompleter.getDynamicSuggestions(userInput))
+    dynamicSuggestions.push(...autocompleter.getDynamicSuggestions(userInput))
   }
 
   const options: Fuse.FuseOptions<SuggestedNode> = {
     keys: ['key', 'display', 'searchTerms'],
     caseSensitive: false,
   }
-  const fuse = new Fuse(suggestions, options)
+  const fuse = new Fuse(staticSuggestions, options)
   const results = fuse.search(userInput) as RenderedSuggestion[]
-  return results
+  const dynamicFuse = new Fuse(dynamicSuggestions, options)
+  const dynamicResults = dynamicFuse.search(userInput) as RenderedSuggestion[]
+  return [...dynamicResults, ...results]
 }
 
 class CursorAutocompleter {
