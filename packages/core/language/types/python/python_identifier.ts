@@ -84,10 +84,15 @@ export class PythonIdentifier extends PythonNode {
   }
 
   setEditablePropertyValue(newValue: string) {
-    const oldValue = this.getName()
+    // const oldValue = this.getName()
     newValue = sanitizeIdentifier(newValue)
     if (newValue.length > 0) {
-      this.getScope().renameIdentifier(oldValue, newValue)
+      this.removeSelfFromScope()
+      this.setName(newValue)
+      this.addSelfToScope()
+
+      // TODO - also allow rename everywhere
+      // this.getScope().renameIdentifier(oldValue, newValue)
     }
   }
 

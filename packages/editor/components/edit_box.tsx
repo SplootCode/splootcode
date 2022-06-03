@@ -75,6 +75,8 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
 
     // Enter key or Space
     if (e.key === 'Enter' || e.key === 'Space') {
+      const userInput = e.currentTarget.value
+      this.props.selection.updatePropertyEdit(userInput)
       selection.exitEdit()
     }
 
@@ -97,6 +99,5 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
       userInput: userInput,
       autoWidth: this.getWidth(userInput),
     })
-    this.props.selection.updatePropertyEdit(userInput)
   }
 }
