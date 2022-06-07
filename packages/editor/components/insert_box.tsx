@@ -436,11 +436,11 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         return alphaMatch[2].trim()
       }
       // Keywords and identifiers with spaces (does not apply to methods)
-      const alphaMatch2 = userInput.match(/^(\?[\p{L}_][\p{L}_0-9\s]*)\(?([^\(]*)/iu)
+      const alphaMatch2 = userInput.match(/^([\p{L}_][\p{L}_0-9\s]*)\(?([^\(]*)/iu)
       if (alphaMatch2) {
         const matchingSuggestion = this.prefixMatch(userInput, alphaMatch2[1], alphaMatch2[2])
         if (matchingSuggestion) {
-          this.onSelected(matchingSuggestion, alphaMatch[2].trim())
+          this.onSelected(matchingSuggestion, alphaMatch2[2].trim())
           return alphaMatch2[2].trim()
         }
       }
