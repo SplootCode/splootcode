@@ -55,7 +55,7 @@ class NewIdentifierGenerator implements SuggestionGenerator {
     }
 
     const newVar = new PythonIdentifier(null, varName)
-    const suggestedNode = new SuggestedNode(newVar, `identifier ${varName}`, varName, true, this.description)
+    const suggestedNode = new SuggestedNode(newVar, `${varName}`, '', true, this.description)
     return [suggestedNode]
   }
 }

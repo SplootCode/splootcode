@@ -23,6 +23,7 @@ interface RenderedSuggestion extends SuggestedNode {
 
 function filterSuggestions(
   staticSuggestions: RenderedSuggestion[],
+  staticSuggestionsKeys: Set<string>,
   autocompleters: CursorAutocompleter[],
   userInput: string
 ): RenderedSuggestion[] {
@@ -31,6 +32,7 @@ function filterSuggestions(
   }
 
   const dynamicSuggestions = []
+  const dynamicSuggestionsKeys: Set<string> = new Set()
   for (const autocompleter of autocompleters) {
     const prefixSuggestions = autocompleter.getPrefixSuggestions(userInput)
     if (prefixSuggestions) {
@@ -38,8 +40,12 @@ function filterSuggestions(
         return prefixSuggestions
       }
       const options: Fuse.FuseOptions<SuggestedNode> = {
-        keys: ['key', 'display', 'searchTerms'],
-        caseSensitive: false,
+        keys: [
+          { name: 'exactMatch', weight: 0.8 },
+          { name: 'searchTerms', weight: 0.1 },
+          { name: 'display', weight: 0.1 },
+        ],
+        caseSensitive: true,
         threshold: 1.0,
       }
       const suggestions = prefixSuggestions
@@ -47,13 +53,21 @@ function filterSuggestions(
       const results = fuse.search(userInput) as RenderedSuggestion[]
       return results
     }
-
-    dynamicSuggestions.push(...autocompleter.getDynamicSuggestions(userInput))
+    const newDynamicSuggestions = autocompleter.getDynamicSuggestions(userInput).filter((suggestion) => {
+      const isNew = !staticSuggestionsKeys.has(suggestion.key) && !dynamicSuggestionsKeys.has(suggestion.key)
+      dynamicSuggestionsKeys.add(suggestion.key)
+      return isNew
+    })
+    dynamicSuggestions.push(...newDynamicSuggestions)
   }
 
   const options: Fuse.FuseOptions<SuggestedNode> = {
-    keys: ['key', 'display', 'searchTerms'],
-    caseSensitive: false,
+    keys: [
+      { name: 'exactMatch', weight: 0.8 },
+      { name: 'searchTerms', weight: 0.1 },
+      { name: 'display', weight: 0.1 },
+    ],
+    caseSensitive: true,
   }
   const fuse = new Fuse(staticSuggestions, options)
   const results = fuse.search(userInput) as RenderedSuggestion[]
@@ -104,6 +118,7 @@ interface InsertBoxState {
   autoWidth: number
   filteredSuggestions: RenderedSuggestion[]
   staticSuggestions: RenderedSuggestion[]
+  staticSuggestionKeys: Set<string>
   cursorPosition: CursorPosition
   autocompleters: CursorAutocompleter[]
   activeSuggestion: number
@@ -132,6 +147,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       filteredSuggestions: [],
       autocompleters: [],
       staticSuggestions: [],
+      staticSuggestionKeys: new Set(),
       activeSuggestion: 0,
     }
   }
@@ -161,12 +177,23 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         staticSuggestions.push(...autocompleter.getStaticSuggestions())
       }
 
-      const filteredSuggestions = filterSuggestions(staticSuggestions, autocompleters, state.userInput)
+      const staticSuggestionKeys: Set<string> = new Set()
+      staticSuggestions.forEach((suggestion) => {
+        staticSuggestionKeys.add(suggestion.key)
+      })
+
+      const filteredSuggestions = filterSuggestions(
+        staticSuggestions,
+        staticSuggestionKeys,
+        autocompleters,
+        state.userInput
+      )
+
       return {
-        currentCursors: cursors,
         filteredSuggestions: filteredSuggestions,
         cursorPosition: cursorPosition,
         staticSuggestions: staticSuggestions,
+        staticSuggestionKeys: staticSuggestionKeys,
         activeSuggestion: 0,
         autocompleters: autocompleters,
       }
@@ -348,14 +375,112 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // e.stopPropagation();
   }
 
+  prefixMatch(userInput: string, prefix: string, remainder: string): RenderedSuggestion {
+    prefix = prefix.trim()
+    if (prefix.length === userInput.length) {
+      return null
+    }
+    userInput = userInput.trim()
+
+    const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
+    const suggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, prefix)
+    if (suggestions.length === 0) {
+      return null
+    }
+    // Check this isn't the prefix of any of the next 3 suggestions
+    const lim = Math.min(3, suggestions.length)
+    let exactMatch = null
+    let prefixMatch = false
+    for (let i = 0; i < lim; i++) {
+      const suggestion = suggestions[i]
+      if (!exactMatch && suggestion.isExactMatch(prefix)) {
+        exactMatch = suggestion
+      } else if (suggestion.isPrefixMatch(userInput)) {
+        prefixMatch = true
+      }
+    }
+    if (exactMatch && !prefixMatch) {
+      return exactMatch
+    }
+
+    return null
+  }
+
+  handleEarlyInsert(userInput: string): string {
+    if (userInput.length < 2) {
+      return userInput
+    }
+
+    // Ignore strings for early exit, otherwise escaping is necessary
+    if (userInput.match(/^"'/)) {
+      return userInput
+    }
+
+    // Numbers
+    const numericMatch = userInput.match(/^([0-9][0-9.]+)(.*)/)
+    if (numericMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, numericMatch[1], numericMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, numericMatch[2].trim())
+        return numericMatch[2].trim()
+      }
+      return userInput
+    }
+
+    // Keywords and identifiers
+    const alphaMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9]*)\(?([^\(]*)/iu)
+    if (alphaMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, alphaMatch[1], alphaMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, alphaMatch[2].trim())
+        return alphaMatch[2].trim()
+      }
+      // Keywords and identifiers with spaces (does not apply to methods)
+      const alphaMatch2 = userInput.match(/^(\?[\p{L}_][\p{L}_0-9\s]*)\(?([^\(]*)/iu)
+      if (alphaMatch2) {
+        const matchingSuggestion = this.prefixMatch(userInput, alphaMatch2[1], alphaMatch2[2])
+        if (matchingSuggestion) {
+          this.onSelected(matchingSuggestion, alphaMatch[2].trim())
+          return alphaMatch2[2].trim()
+        }
+      }
+      return userInput
+    }
+
+    // operators
+    const operatorMatch = userInput.match(/^([+\-*\/><%^~!=]+)(.*)/)
+    if (operatorMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, operatorMatch[1], operatorMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, operatorMatch[2].trim())
+        return operatorMatch[2].trim()
+      }
+      return userInput
+    }
+
+    // Specifically brackets
+    const bracketMatch = userInput.match(/^(\()(.*)/)
+    if (bracketMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, bracketMatch[1], bracketMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, bracketMatch[2])
+        return bracketMatch[2].trim()
+      }
+      return userInput
+    }
+
+    return userInput
+  }
+
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value === ' ') {
       e.currentTarget.value = ''
     }
-    const userInput = e.currentTarget.value
+    const userInput = this.handleEarlyInsert(e.currentTarget.value)
     if (userInput !== '') {
-      const { staticSuggestions, autocompleters } = this.state
-      const filteredSuggestions = filterSuggestions(staticSuggestions, autocompleters, userInput)
+      const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
+      const filteredSuggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, userInput)
+
       this.props.selection.startInsertAtCurrentCursor()
       this.setState({
         userInput: e.currentTarget.value,
@@ -364,6 +489,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         filteredSuggestions: filteredSuggestions,
       })
     } else {
+      const { selection } = this.props
+      selection.exitEdit()
       this.setState({
         userInput: '',
         autoWidth: this.getWidth(e.currentTarget.value),
@@ -373,7 +500,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
   }
 
-  onSelected(suggestion: RenderedSuggestion) {
+  onSelected(suggestion: RenderedSuggestion, leftoverText = '') {
     const { selection } = this.props
     const node = suggestion.node.clone()
     if (suggestion.hasOverrideLocation()) {
@@ -392,7 +519,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     } else {
       selection.insertNodeByChildSet(suggestion.childSet, suggestion.index, node)
     }
-    this.inputRef.current.value = ''
+    this.inputRef.current.value = leftoverText
   }
 
   // Event fired when the user clicks on a suggestion

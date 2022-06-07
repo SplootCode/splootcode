@@ -264,7 +264,7 @@ export class ModuleSuggestionGenerator implements SuggestionGenerator {
   constantSuggestions() {
     return allowedModules.map((moduleName) => {
       const newVar = new PythonModuleIdentifier(null, moduleName)
-      return new SuggestedNode(newVar, `module ${moduleName}`, 'module', true, 'module')
+      return new SuggestedNode(newVar, `${moduleName}`, 'module', true, 'module')
     })
   }
 
@@ -274,7 +274,7 @@ export class ModuleSuggestionGenerator implements SuggestionGenerator {
       return []
     }
     const newVar = new PythonModuleIdentifier(null, varName)
-    const suggestedNode = new SuggestedNode(newVar, `module ${varName}`, 'module', true, 'module')
+    const suggestedNode = new SuggestedNode(newVar, `${varName}`, 'module', true, 'module')
     return [suggestedNode]
   }
 }

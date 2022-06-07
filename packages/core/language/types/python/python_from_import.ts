@@ -34,7 +34,7 @@ export const PYTHON_FROM_IMPORT = 'PYTHON_FROM_IMPORT'
 class Generator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonFromImport(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'from import', 'from import', true)
+    const suggestedNode = new SuggestedNode(sampleNode, 'from', 'from import', true)
     return [suggestedNode]
   }
 }
