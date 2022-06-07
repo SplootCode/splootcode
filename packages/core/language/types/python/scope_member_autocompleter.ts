@@ -103,7 +103,7 @@ class MemberGenerator implements SuggestionGenerator {
       return [
         new SuggestedNode(
           node,
-          `callmember ${inputName}`,
+          `.${inputName}`,
           inputName,
           true,
           'Missing type information, cannot autocomplete methods',
@@ -124,16 +124,15 @@ class MemberGenerator implements SuggestionGenerator {
         if (!name.startsWith('_') || allowUnderscore) {
           const node = new PythonCallMember(null, attr)
           node.setMember(name)
-          suggestions.push(new SuggestedNode(node, `callmember ${name}`, name, true, attr.shortDoc, 'object'))
+          suggestions.push(new SuggestedNode(node, `.${name}`, name, true, attr.shortDoc, 'object'))
         }
-      } else if (attr.category === TypeCategory.Value)
+      } else if (attr.category === TypeCategory.Value) {
         if (!name.startsWith('_') || allowUnderscore) {
-          {
-            const node = new PythonMember(null)
-            node.setMember(name)
-            suggestions.push(new SuggestedNode(node, `member ${name}`, name, true, attr.shortDoc, 'object'))
-          }
+          const node = new PythonMember(null)
+          node.setMember(name)
+          suggestions.push(new SuggestedNode(node, `.${name}`, name, true, attr.shortDoc, 'object'))
         }
+      }
     }
 
     return suggestions

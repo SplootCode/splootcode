@@ -28,7 +28,7 @@ export const PYTHON_BRACKETS = 'PY_BRACKET'
 class BracketsGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonBrackets(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'bracket', '( bracket', true)
+    const suggestedNode = new SuggestedNode(sampleNode, '(', '( bracket', true)
     return [suggestedNode]
   }
 }

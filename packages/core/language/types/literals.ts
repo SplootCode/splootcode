@@ -114,7 +114,7 @@ class NumberGenerator implements SuggestionGenerator {
     const val = parseStringToNum(textInput)
     if (!isNaN(val)) {
       const num = new NumericLiteral(null, val)
-      const suggestedNode = new SuggestedNode(num, `number ${val}`, '', true, 'number')
+      const suggestedNode = new SuggestedNode(num, `${val}`, '', true, 'number')
       return [suggestedNode]
     }
     return []

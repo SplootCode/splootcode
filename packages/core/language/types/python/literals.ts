@@ -26,7 +26,7 @@ export const PYTHON_BOOL = 'PYTHON_BOOL'
 
 class PythonNoneGenerator implements SuggestionGenerator {
   constantSuggestions() {
-    return [new SuggestedNode(new NoneLiteral(null), 'none', 'null', true, 'None')]
+    return [new SuggestedNode(new NoneLiteral(null), 'None', 'null', true, 'None')]
   }
 }
 

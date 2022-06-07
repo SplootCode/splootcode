@@ -40,12 +40,12 @@ class ScopeAutocompleter implements SuggestionGenerator {
       }
       if (varDoc) {
         const newVar = new PythonIdentifier(null, varName)
-        suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, varDoc))
+        suggestions.push(new SuggestedNode(newVar, `${varName}`, varName, true, varDoc))
       }
       if (funcMeta) {
         const newCall = new PythonCallVariable(null, varName, funcMeta)
         const doc = funcMeta.shortDoc || 'No documentation'
-        suggestions.push(new SuggestedNode(newCall, `call ${varName}`, varName, true, doc))
+        suggestions.push(new SuggestedNode(newCall, `${varName}`, varName, true, doc))
       }
     }
 
@@ -69,7 +69,7 @@ class AssignableSopeAutocompleter implements SuggestionGenerator {
       }
       if (varDoc) {
         const newVar = new PythonIdentifier(null, varName)
-        suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, varDoc))
+        suggestions.push(new SuggestedNode(newVar, `${varName}`, varName, true, varDoc))
       }
     }
     return suggestions
@@ -89,10 +89,10 @@ class ModuleAttributeAutocompleter implements SuggestionGenerator {
           if (typeInfo.category === TypeCategory.Function) {
             // TODO: Add system for color-coding/tagging identifiers that are callable
             const newVar = new PythonIdentifier(null, varName)
-            suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, typeInfo.shortDoc))
+            suggestions.push(new SuggestedNode(newVar, `${varName}`, varName, true, typeInfo.shortDoc))
           } else if (typeInfo.category === TypeCategory.Value) {
             const newVar = new PythonIdentifier(null, varName)
-            suggestions.push(new SuggestedNode(newVar, `var ${varName}`, varName, true, typeInfo.shortDoc))
+            suggestions.push(new SuggestedNode(newVar, `${varName}`, varName, true, typeInfo.shortDoc))
           }
         }
       }

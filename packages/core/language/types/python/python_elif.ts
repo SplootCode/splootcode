@@ -30,7 +30,7 @@ export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 class InsertElifGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const node = new PythonElifBlock(null)
-    return [new SuggestedNode(node, `elif`, `else elif`, true, 'Else-if block')]
+    return [new SuggestedNode(node, `else if`, `elif`, true, 'Else-if block')]
   }
 }
 

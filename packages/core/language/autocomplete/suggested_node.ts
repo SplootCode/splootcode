@@ -4,6 +4,7 @@ import { SplootNode } from '../node'
 export class SuggestedNode {
   node: SplootNode
   key: string
+  exactMatch: string
   searchTerms: string
   valid: boolean
   description: string
@@ -21,11 +22,24 @@ export class SuggestedNode {
     wrapChildSetId: string = null
   ) {
     this.node = node
-    this.key = key
+    this.key = `${node.type}_${key}`
+    this.exactMatch = key
     this.searchTerms = searchTerms
     this.description = description
     this.valid = valid
     this.wrapChildSetId = wrapChildSetId
+  }
+
+  isExactMatch(text: string) {
+    // Allow exact matches to be case insensitive
+    return text.toLowerCase() === this.exactMatch.toLowerCase()
+  }
+
+  isPrefixMatch(text: string) {
+    // But prefixes only come into play when there's conflicting suggestions
+    // e.g. "is" and "is not", "else" and "else if" so we'll be a little stricter
+    // so we don't unnecessarily reject a match.
+    return this.exactMatch.startsWith(text)
   }
 
   hasOverrideLocation(): boolean {
