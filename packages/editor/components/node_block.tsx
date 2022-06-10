@@ -8,7 +8,8 @@ import { ExpandedListBlockView } from './list_block'
 import { InlineProperty } from './property'
 import { InlineStringLiteral } from './string_literal'
 import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
+import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NODE_TEXT_OFFSET } from '../layout/layout_constants'
+import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelectionState } from '../context/selection'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { Separator } from './separator'
@@ -115,8 +116,8 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
               <rect
                 className={'invisible-splootnode-invalid'}
                 x={leftPos}
-                y={topPos + 1}
-                height="28"
+                y={topPos}
+                height={NODE_BLOCK_HEIGHT}
                 width={width}
                 rx="4"
               />
@@ -125,10 +126,10 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             shape = null
           }
         } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-          shape = <rect className={classname} x={leftPos} y={topPos + 5} height="21" width={width} rx="4" />
+          shape = <rect className={classname} x={leftPos} y={topPos} height={NODE_BLOCK_HEIGHT} width={width} rx="4" />
           internalLeftPos = leftPos + NODE_INLINE_SPACING
         } else {
-          shape = <rect className={classname} x={leftPos} y={topPos + 1} height="28" width={width} rx="4" />
+          shape = <rect className={classname} x={leftPos} y={topPos} height={NODE_BLOCK_HEIGHT} width={width} rx="4" />
         }
       }
     }
@@ -204,7 +205,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
           } else {
             // Keywords and child separators left
             result = (
-              <text x={internalLeftPos} y={topPos + 20} key={idx} style={{ fill: block.textColor }}>
+              <text x={internalLeftPos} y={topPos + NODE_TEXT_OFFSET} key={idx} style={{ fill: block.textColor }}>
                 {renderedComponent.layoutComponent.identifier}
               </text>
             )

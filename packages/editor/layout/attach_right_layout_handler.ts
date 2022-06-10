@@ -1,9 +1,10 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
-import { EXPRESSION_TOKEN_SPACING, RenderedChildSetBlock } from './rendered_childset_block'
+import { EXPRESSION_TOKEN_SPACING, NODE_BLOCK_HEIGHT } from './layout_constants'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
+import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
+import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   x: number

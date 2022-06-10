@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import { App } from './app'
 import { AppProviders } from './providers'
 import { loadTypes } from '@splootcode/core/language/type_loader'
-import { stringWidth } from '@splootcode/editor/layout/rendered_childset_block'
+import { stringWidth } from '@splootcode/editor/layout/layout_constants'
 
 const root = document.getElementById('app-root')
 

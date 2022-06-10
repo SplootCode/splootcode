@@ -1,13 +1,10 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
+import { NODE_BLOCK_HEIGHT, ROW_SPACING, labelStringWidth } from './layout_constants'
+import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
-import { ROW_SPACING, RenderedChildSetBlock, getTextWidth } from './rendered_childset_block'
-
-function labelStringWidth(s: string) {
-  return getTextWidth(s, "9pt 'Source Sans Pro'")
-}
+import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class TreeLayoutHandler implements ChildSetLayoutHandler {
   x: number

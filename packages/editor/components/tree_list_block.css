@@ -16,7 +16,6 @@
 }
 
 .tree-label {
-    font-size: 9pt;
     fill: var(--editor-connector-label);
 }
 

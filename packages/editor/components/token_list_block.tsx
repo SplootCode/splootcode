@@ -4,6 +4,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { EditorNodeBlock } from './node_block'
+import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 
@@ -24,7 +25,9 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
 
     const classname = 'svgsplootnode gap' + (childsetInvalid ? ' invalid' : ' ')
     if (isInline || childsetInvalid) {
-      shape = <rect className={classname} x={block.x} y={block.y + 1} height="28" width={block.width} rx="4" />
+      shape = (
+        <rect className={classname} x={block.x} y={block.y} height={NODE_BLOCK_HEIGHT} width={block.width} rx="4" />
+      )
     }
     return (
       <React.Fragment>

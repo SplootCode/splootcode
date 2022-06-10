@@ -14,7 +14,7 @@ import {
   SideEffectAnnotation,
 } from '@splootcode/core/language/annotations/annotations'
 import { formatPythonAssingment, formatPythonReturnValue } from '@splootcode/core/language/types/python/utils'
-import { stringWidth } from '../layout/rendered_childset_block'
+import { stringWidth } from '../layout/layout_constants'
 
 interface RepeatedBlockAnnotationProps {
   nodeBlock: NodeBlock

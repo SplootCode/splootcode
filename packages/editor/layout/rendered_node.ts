@@ -1,19 +1,21 @@
 import { observable } from 'mobx'
 
 import { CursorMap } from '../context/cursor_map'
+import {
+  LOOP_ANNOTATION_HEIGHT,
+  NODE_BLOCK_HEIGHT,
+  NODE_INLINE_SPACING,
+  NODE_INLINE_SPACING_SMALL,
+  stringWidth,
+} from './layout_constants'
 import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { NodeObserver } from '@splootcode/core/language/observers'
-import { RenderedChildSetBlock, stringWidth } from './rendered_childset_block'
+import { RenderedChildSetBlock } from './rendered_childset_block'
 import { SplootNode } from '@splootcode/core/language/node'
 import { getColour } from '@splootcode/core/colors'
-
-export const NODE_INLINE_SPACING = 6
-export const NODE_INLINE_SPACING_SMALL = 6
-export const NODE_BLOCK_HEIGHT = 30
-export const LOOP_ANNOTATION_HEIGHT = 12
 
 export class RenderedParentRef {
   node: NodeBlock

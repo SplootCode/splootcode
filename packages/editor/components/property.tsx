@@ -2,6 +2,7 @@ import './property.css'
 
 import React from 'react'
 
+import { NODE_TEXT_OFFSET } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelectionState } from '../context/selection'
 
@@ -19,7 +20,7 @@ export class InlineProperty extends React.Component<PropertyProps> {
     const { node } = this.props.block
 
     return (
-      <text x={leftPos} y={topPos + 20} style={{ fill: block.textColor }}>
+      <text x={leftPos} y={topPos + NODE_TEXT_OFFSET} style={{ fill: block.textColor }}>
         {node.getProperty(propertyName)}
       </text>
     )

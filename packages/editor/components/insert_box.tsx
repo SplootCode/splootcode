@@ -13,7 +13,7 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory, getAutocompleRegistry } from '@splootcode/core/language/node_category_registry'
 import { ParentReference } from '@splootcode/core/language/node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { stringWidth } from '../layout/rendered_childset_block'
+import { stringWidth } from '../layout/layout_constants'
 
 interface RenderedSuggestion extends SuggestedNode {
   nodeBlock: NodeBlock

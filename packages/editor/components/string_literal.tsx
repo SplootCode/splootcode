@@ -2,6 +2,7 @@ import './string_literal.css'
 
 import React from 'react'
 
+import { NODE_TEXT_OFFSET } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelectionState } from '../context/selection'
 
@@ -24,7 +25,7 @@ export class InlineStringLiteral extends React.Component<StringLiteralProps> {
       <text
         className={'string-literal ' + className}
         x={leftPos}
-        y={topPos + 20}
+        y={topPos + NODE_TEXT_OFFSET}
         style={{ fill: block.textColor }}
         xmlSpace="preserve"
       >
