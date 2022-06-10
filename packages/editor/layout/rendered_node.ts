@@ -1,13 +1,14 @@
 import { observable } from 'mobx'
 
-import { CursorMap } from '../context/cursor_map'
 import {
+  BRACKET_WIDTH,
   LOOP_ANNOTATION_HEIGHT,
   NODE_BLOCK_HEIGHT,
   NODE_INLINE_SPACING,
   NODE_INLINE_SPACING_SMALL,
   stringWidth,
 } from './layout_constants'
+import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
@@ -209,21 +210,17 @@ export class NodeBlock implements NodeObserver {
       ) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
-        const width = 10
-        this.blockWidth += width
-        leftPos += width
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-        this.width = Math.max(this.width, childSetBlock.width)
+        this.blockWidth += BRACKET_WIDTH
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, BRACKET_WIDTH))
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-        // This minus 8 here accounts for the distance from the dot to the edge of the node.
-        // This is dumb tbh.
-        marginRight += Math.max(childSetBlock.width - 8, 0)
+        marginRight = Math.max(childSetBlock.width - BRACKET_WIDTH, marginRight)
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
+        this.blockWidth += BRACKET_WIDTH
         const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
-        marginRight += childSetBlock.width + 8 // Extra for line and brackets
+        marginRight += childSetBlock.width - BRACKET_WIDTH
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.marginTop, selection)

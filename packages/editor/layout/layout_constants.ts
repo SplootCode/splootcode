@@ -3,8 +3,8 @@ export const NODE_INLINE_SPACING = 4
 export const NODE_INLINE_SPACING_SMALL = 4
 
 /* Node block row size and spacing */
-export const NODE_BLOCK_HEIGHT = 19
-export const NODE_TEXT_OFFSET = 14
+export const NODE_BLOCK_HEIGHT = 20
+export const NODE_TEXT_OFFSET = 15
 export const ROW_SPACING = 8
 
 /* Expressions */
@@ -12,6 +12,8 @@ export const EXPRESSION_TOKEN_SPACING = 6
 
 /* Annotations */
 export const LOOP_ANNOTATION_HEIGHT = 12
+
+export const BRACKET_WIDTH = 4
 
 /**
  * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.

@@ -172,11 +172,11 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = <TreeListBlockBracketsView key={idx} block={childSetBlock} isSelected={isSelected} />
+            result = <TreeListBlockBracketsView key={idx} childSetBlock={childSetBlock} isSelected={isSelected} />
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TREE) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
-            result = <TreeListBlockView key={idx} block={childSetBlock} isSelected={isSelected} />
+            result = <TreeListBlockView key={idx} childSetBlock={childSetBlock} isSelected={isSelected} />
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
@@ -270,7 +270,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     if (childSetBlock.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       return (
         <AttachedChildRightExpressionView
-          block={childSetBlock}
+          childSetBlock={childSetBlock}
           isSelected={isSelected}
         ></AttachedChildRightExpressionView>
       )
