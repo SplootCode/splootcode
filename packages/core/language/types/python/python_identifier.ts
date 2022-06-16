@@ -147,6 +147,7 @@ export class PythonIdentifier extends PythonNode {
     typeRegistration.deserializer = PythonIdentifier.deserializer
     typeRegistration.properties = ['identifier']
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
+      new LayoutComponent(LayoutComponentType.CAP, 'v'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
     ])
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {

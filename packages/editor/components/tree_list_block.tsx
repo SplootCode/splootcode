@@ -80,7 +80,26 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
   render() {
     const { isSelected, childSetBlock } = this.props
     const connectorClass = 'tree-connector ' + (isSelected ? 'selected' : '')
+    if (childSetBlock.nodes.length === 0) {
+      return (
+        <>
+          <path
+            className={connectorClass}
+            d={`M ${childSetBlock.x + BRACKET_WIDTH} ${childSetBlock.y} v 0.4 a 20 20 0 0 0 0 20 v 0.4`}
+            fill="transparent"
+          ></path>
+          <path
+            className={connectorClass}
+            d={`M ${childSetBlock.x + childSetBlock.width - BRACKET_WIDTH} ${
+              childSetBlock.y
+            } v 0.4 a 20 20 0 0 1 0 20 v 0.4`}
+            fill="transparent"
+          ></path>
+        </>
+      )
+    }
     const width = childSetBlock.width - 2 * BRACKET_WIDTH
+
     return (
       <React.Fragment>
         {childSetBlock.nodes.map((nodeBlock: NodeBlock, idx: number) => {

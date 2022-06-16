@@ -23,49 +23,43 @@ interface NodeBlockProps {
   isInvalidBlamed?: boolean
 }
 
-function getBreadcrumbStartShapePath(x: number, y: number, width: number): string {
-  return `M ${x + 3} ${y}
-  h ${width - 12}
-  c 1, 0, 4, 0, 5, 3
-  l 6, 11
-  l -6, 11
-  c -2, 3, -4, 3, -5, 3
-  h -${width - 12}
-  c -1.5, 0, -3, -1.5, -3, -3
-  v -22
-  c 0, -1.5, 1.5, -3, 3, -3
-  z`
+function getCapShape(className: string, x: number, y: number, width: number, leftCurve: boolean) {
+  let leftSide: string
+  if (leftCurve) {
+    leftSide = `a 20 20 0 0 1 0 ${NODE_BLOCK_HEIGHT}`
+  } else {
+    leftSide = `q -4,0 -4,4 v ${NODE_BLOCK_HEIGHT - 8} q 0,4 4,4`
+    width -= 4
+    x += 4
+  }
+
+  return (
+    <>
+      <path className={className} d={`M ${x} ${y} ${leftSide} h ${width} v ${-NODE_BLOCK_HEIGHT} z`} />
+      <line className={className + ' cap-line'} x1={x + width} y1={y} x2={x + width} y2={y + NODE_BLOCK_HEIGHT} />
+    </>
+  )
 }
 
-function getBreadcrumbEndShapePath(x: number, y: number, width: number): string {
-  return `
-  M ${x + 3} ${y}
-  h ${width - 8}
-  c 1.5, 0, 3, 1.5, 3, 3
-  v 22
-  c 0, 1.5, -1.5, 3, -3, 3
-  h -${width - 8}
-  c -4, 0, -6.5, -0.5, -5, -3
-  l 6 -11
-  l -6 -11
-  c -1.5, -2.5, -1, -3, 5, -3
-  z`
-}
+function getNodeShape(className: string, x: number, y: number, width: number, leftCurve: boolean, rightCurve: boolean) {
+  let leftSide: string
+  let rightSide: string
+  if (leftCurve) {
+    leftSide = `a 20 20 0 0 1 0 ${NODE_BLOCK_HEIGHT}`
+  } else {
+    leftSide = `q -4,0 -4,4 v ${NODE_BLOCK_HEIGHT - 8} q 0,4 4,4`
+    width -= 4
+    x += 4
+  }
 
-function getBreadcrumbMiddleShapePath(x: number, y: number, width: number): string {
-  return `
-  M ${x + 3} ${y}
-  h ${width - 12}
-  c 1, 0, 4, 0, 5, 3
-  l 6, 11
-  l -6, 11
-  c -2, 3, -4, 3, -5, 3
-  h -${width - 12}
-  c -4, 0, -6.5, -0.5, -5, -3
-  l 6 -11
-  l -6 -11
-  c -1.5, -2.5, -1, -3, 5, -3
-  z`
+  if (rightCurve) {
+    rightSide = `a 20 20 0 0 1 0 ${-NODE_BLOCK_HEIGHT}`
+  } else {
+    rightSide = `q 4,0 4,-4 v ${-NODE_BLOCK_HEIGHT + 8} q 0,-4 -4,-4`
+    width -= 4
+  }
+
+  return <path className={className} d={`M ${x} ${y} ${leftSide} h ${width} ${rightSide} z`} />
 }
 
 @observer
@@ -99,39 +93,28 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     let shape: ReactElement
-    if (this.props.isInsideBreadcrumbs) {
-      if (block.leftBreadcrumbChildSet) {
-        shape = <path className={classname} d={getBreadcrumbMiddleShapePath(leftPos + 1, topPos + 1, width)} />
+
+    if (block.layout.boxType === NodeBoxType.INVISIBLE || block.layout.boxType === NodeBoxType.BRACKETS) {
+      internalLeftPos = leftPos
+      if (!isValid) {
+        shape = (
+          <rect
+            className={'invisible-splootnode-invalid'}
+            x={leftPos}
+            y={topPos}
+            height={NODE_BLOCK_HEIGHT}
+            width={width}
+            rx="4"
+          />
+        )
       } else {
-        shape = <path className={classname} d={getBreadcrumbStartShapePath(leftPos + 1, topPos + 1, width)} />
+        shape = null
       }
+    } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
+      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve)
+      internalLeftPos = leftPos + NODE_INLINE_SPACING
     } else {
-      if (block.leftBreadcrumbChildSet) {
-        shape = <path className={classname} d={getBreadcrumbEndShapePath(leftPos + 1, topPos + 1, width)} />
-      } else {
-        if (block.layout.boxType === NodeBoxType.INVISIBLE || block.layout.boxType === NodeBoxType.BRACKETS) {
-          internalLeftPos = leftPos
-          if (!isValid) {
-            shape = (
-              <rect
-                className={'invisible-splootnode-invalid'}
-                x={leftPos}
-                y={topPos}
-                height={NODE_BLOCK_HEIGHT}
-                width={width}
-                rx="4"
-              />
-            )
-          } else {
-            shape = null
-          }
-        } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-          shape = <rect className={classname} x={leftPos} y={topPos} height={NODE_BLOCK_HEIGHT} width={width} rx="4" />
-          internalLeftPos = leftPos + NODE_INLINE_SPACING
-        } else {
-          shape = <rect className={classname} x={leftPos} y={topPos} height={NODE_BLOCK_HEIGHT} width={width} rx="4" />
-        }
-      }
+      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve)
     }
 
     return (
@@ -146,6 +129,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_STACK
           ) {
             // pass
+          } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CAP) {
+            result = (
+              <>
+                {getCapShape(classname, leftPos, topPos, renderedComponent.width, block.leftCurve)}
+                <text x={internalLeftPos} y={topPos + NODE_TEXT_OFFSET} style={{ fill: block.textColor }}>
+                  {renderedComponent.layoutComponent.identifier}
+                </text>
+              </>
+            )
+            internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.STRING_LITERAL) {
             result = (
               <InlineStringLiteral
@@ -248,7 +241,8 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     if (childSetBlock.nodes.length === 0) {
       const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
       const classname = 'svgsplootnode gap' + (invalid ? ' invalid' : '')
-      return <path className={classname} d={getBreadcrumbStartShapePath(block.x, block.y + 1, block.marginLeft)} />
+      return <rect className={classname} x={block.x} y={block.y} height={NODE_BLOCK_HEIGHT} width={20} rx="4" />
+      // return <path className={classname} d={getBreadcrumbStartShapePath(block.x, block.y, block.marginLeft)} />
     } else {
       return (
         <EditorNodeBlock

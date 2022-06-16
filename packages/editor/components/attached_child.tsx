@@ -19,7 +19,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
     const { isSelected, childSetBlock } = this.props
 
     const bracketLeftPos = childSetBlock.x + BRACKET_WIDTH
-    const childWidth = childSetBlock.width - BRACKET_WIDTH
+    const childWidth = childSetBlock.width - BRACKET_WIDTH * 2
 
     const connectorClass = 'tree-connector ' + (isSelected ? 'selected' : '')
 

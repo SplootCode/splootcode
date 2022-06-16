@@ -149,7 +149,8 @@ export class PythonCallMember extends PythonNode {
   getNodeLayout(): NodeLayout {
     const layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
-      new LayoutComponent(LayoutComponentType.KEYWORD, `.${this.getMember()}`),
+      new LayoutComponent(LayoutComponentType.CAP, '.'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, this.getMember()),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments', this.getArgumentNames()),
     ])
     return layout
@@ -178,6 +179,7 @@ export class PythonCallMember extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.CAP, '.'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ])

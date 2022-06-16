@@ -1,4 +1,4 @@
-import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT, ROW_SPACING } from './layout_constants'
+import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, ROW_SPACING } from './layout_constants'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
@@ -49,6 +49,10 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.lineStartCursorPositions = []
     this.lineEndCursorPositions = []
+
+    if (nodes.length === 0) {
+      this.width = BRACKET_WIDTH * 2 + NODE_INLINE_SPACING
+    }
 
     // TODO: Allow space for labels as placeholders
     // const labels = this.childSetTreeLabels

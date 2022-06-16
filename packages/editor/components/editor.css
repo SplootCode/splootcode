@@ -37,7 +37,7 @@ text {
 
 :root {
   --sploot-neutral-900: #0A0E16;
-  --sploot-neutral-800: #182134;
+  --sploot-neutral-800: #1e2730; /* #182134; */
   --sploot-neutral-700: #2F3848;
   --sploot-neutral-600: #3E4A60;
   --sploot-neutral-500: #5E6C86;
@@ -47,7 +47,7 @@ text {
 }
 
 :root {
-  --editor-bg-color: #000000;
+  --editor-bg-color: var(--sploot-neutral-900);
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: var(--sploot-neutral-800);
   --editor-node-block-edge: var(--editor-node-block-fill);
@@ -55,6 +55,7 @@ text {
   --editor-connector-label: #767e8a;
   --editor-indented-block-stroke: #545c67;
   --editor-anchor-dot: #545c67;
+  --editor-cap-line: var(--sploot-neutral-700);
 
   --editor-annotation-label: #767e8a;
   --editor-annotation-error: #fa8039;

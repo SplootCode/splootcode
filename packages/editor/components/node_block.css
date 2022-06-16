@@ -13,6 +13,10 @@
   fill: var(--editor-node-block-fill);
 }
 
+.svgsplootnode.cap-line {
+  stroke: var(--editor-cap-line);
+}
+
 .svgsplootnode.gap {
   fill: var(--editor-bg-color);
   stroke: var(--editor-bg-color);

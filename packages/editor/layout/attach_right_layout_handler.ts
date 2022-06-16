@@ -61,7 +61,7 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
     if (!allowInsert) {
       this.width -= EXPRESSION_TOKEN_SPACING
     }
-    this.width += BRACKET_WIDTH // Space for brackets at end
+    this.width += BRACKET_WIDTH * 2 // Space for brackets at start and end
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {
