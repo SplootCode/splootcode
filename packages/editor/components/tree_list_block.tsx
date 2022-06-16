@@ -3,7 +3,7 @@ import './tree_list_block.css'
 import React from 'react'
 import { observer } from 'mobx-react'
 
-import { BRACKET_WIDTH, ROW_SPACING } from '../layout/layout_constants'
+import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
@@ -100,6 +100,8 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
     }
     const width = childSetBlock.width - 2 * BRACKET_WIDTH
 
+    let prevRowBottom = 0
+
     return (
       <React.Fragment>
         {childSetBlock.nodes.map((nodeBlock: NodeBlock, idx: number) => {
@@ -125,18 +127,20 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
             leftBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x} ${nodeBlock.y - ROW_SPACING} v ${ROW_SPACING} a 20 20 0 0 0 0 20 v 0.4`}
+                d={`M ${nodeBlock.x} ${prevRowBottom} V ${nodeBlock.y} a 20 20 0 0 0 0 20 v 0.4`}
                 fill="transparent"
               ></path>
             )
             rightBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x + width} ${nodeBlock.y - ROW_SPACING} v ${ROW_SPACING} a 20 20 0 0 1 0 20 v 0.4`}
+                d={`M ${nodeBlock.x + width} ${prevRowBottom} V ${nodeBlock.y} a 20 20 0 0 1 0 20 v 0.4`}
                 fill="transparent"
               ></path>
             )
           }
+          prevRowBottom = nodeBlock.y + NODE_BLOCK_HEIGHT
+
           return (
             <React.Fragment key={idx}>
               {leftBracket}
