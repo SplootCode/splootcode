@@ -242,7 +242,6 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
       const classname = 'svgsplootnode gap' + (invalid ? ' invalid' : '')
       return <rect className={classname} x={block.x} y={block.y} height={NODE_BLOCK_HEIGHT} width={20} rx="4" />
-      // return <path className={classname} d={getBreadcrumbStartShapePath(block.x, block.y, block.marginLeft)} />
     } else {
       return (
         <EditorNodeBlock
