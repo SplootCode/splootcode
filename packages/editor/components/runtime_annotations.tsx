@@ -13,8 +13,8 @@ import {
   RuntimeErrorAnnotation,
   SideEffectAnnotation,
 } from '@splootcode/core/language/annotations/annotations'
+import { NODE_TEXT_OFFSET, stringWidth } from '../layout/layout_constants'
 import { formatPythonAssingment, formatPythonReturnValue } from '@splootcode/core/language/types/python/utils'
-import { stringWidth } from '../layout/layout_constants'
 
 interface RepeatedBlockAnnotationProps {
   nodeBlock: NodeBlock
@@ -175,8 +175,8 @@ export class RuntimeAnnotation extends React.Component<RuntimeAnnotationProps> {
     const block = this.props.nodeBlock
     const annotations = block.runtimeAnnotations
     if (annotations.length != 0) {
-      const x = block.x + block.rowWidth + 8
-      let y = block.y + block.marginTop + 20 - (annotations.length - 1) * 8
+      const x = block.x + block.rowWidth + 12
+      let y = block.y + block.marginTop + NODE_TEXT_OFFSET - (annotations.length - 1) * 8
       return (
         <g>
           {annotations.map((annotation, i) => {

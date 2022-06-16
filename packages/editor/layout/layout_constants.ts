@@ -11,7 +11,7 @@ export const ROW_SPACING = 8
 export const EXPRESSION_TOKEN_SPACING = 6
 
 /* Annotations */
-export const LOOP_ANNOTATION_HEIGHT = 12
+export const LOOP_ANNOTATION_HEIGHT = 14
 
 export const BRACKET_WIDTH = 4
 
