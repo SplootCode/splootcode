@@ -11,6 +11,8 @@ import { TrayCategory } from '@splootcode/core/language/tray/tray'
 import { TypeCategory } from '@splootcode/core/language/scope/types'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
+import './scope_tray.css'
+
 export interface EntryProps {
   rootNode: SplootNode
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
@@ -135,7 +137,11 @@ const ScopeTree = (props: ScopeTreeProps) => {
         },
         false
       )
-      allVars[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+      allVars[name] = (
+        <div className="scope-tray-entry">
+          <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+        </div>
+      )
     }
     if (funcSignature) {
       const nodeBlock = getSingleNodeFragment(
@@ -154,7 +160,11 @@ const ScopeTree = (props: ScopeTreeProps) => {
         },
         false
       )
-      allFuncs[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+      allFuncs[name] = (
+        <div className="scope-tray-entry">
+          <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+        </div>
+      )
     }
   }
 
