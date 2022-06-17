@@ -52,8 +52,8 @@ export class Editor extends React.Component<EditorProps> {
     if (selection.isCursor() && selection.insertBox !== null) {
       insertBox = (
         <InsertBox
-          editorX={1}
-          editorY={1}
+          editorX={0}
+          editorY={0}
           selection={selection}
           cursorPosition={selection.cursor}
           insertBoxData={selection.insertBox}
