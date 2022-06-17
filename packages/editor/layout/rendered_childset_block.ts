@@ -17,27 +17,7 @@ import { SplootNode } from '@splootcode/core/language/node'
 import { StackLayoutHandler } from './stack_layout_handler'
 import { TokenLayoutHandler } from './token_layout_handler'
 import { TreeLayoutHandler } from './tree_layout_handler'
-
-export const EXPRESSION_TOKEN_SPACING = 6
-export const ROW_SPACING = 6
-
-/**
- * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
- *
- * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
- */
-export function getTextWidth(text: string, font: string) {
-  // re-use canvas object for better performance
-  const canvas = getTextWidth['canvas'] || (getTextWidth['canvas'] = document.createElement('canvas'))
-  const context = canvas.getContext('2d')
-  context.font = font
-  const metrics = context.measureText(text)
-  return metrics.width
-}
-
-export function stringWidth(s: string) {
-  return getTextWidth(s, "11pt 'Source Sans Pro'")
-}
+import { stringWidth } from './layout_constants'
 
 function getInsertBoxWidth(s: string): number {
   return Math.max(stringWidth(s) + 6, 30)

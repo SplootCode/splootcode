@@ -11,6 +11,8 @@ import { TrayCategory } from '@splootcode/core/language/tray/tray'
 import { TypeCategory } from '@splootcode/core/language/scope/types'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
+import './scope_tray.css'
+
 export interface EntryProps {
   rootNode: SplootNode
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
@@ -89,7 +91,7 @@ export const ScopeTray = (props: EntryProps) => {
             </AccordionButton>
             <AccordionPanel py={0} pl={2} pr={0}>
               {rootScope.hasEntries() ? (
-                <Box borderY={'solid 1px'} borderColor={'gray.600'} py={1}>
+                <Box borderY={'solid 1px'} borderColor={'gray.700'} py={1}>
                   <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
                     Global
                   </Text>
@@ -135,7 +137,11 @@ const ScopeTree = (props: ScopeTreeProps) => {
         },
         false
       )
-      allVars[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+      allVars[name] = (
+        <div className="scope-tray-entry">
+          <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+        </div>
+      )
     }
     if (funcSignature) {
       const nodeBlock = getSingleNodeFragment(
@@ -154,7 +160,11 @@ const ScopeTree = (props: ScopeTreeProps) => {
         },
         false
       )
-      allFuncs[name] = <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+      allFuncs[name] = (
+        <div className="scope-tray-entry">
+          <MicroNode fragment={nodeBlock} startDrag={startDrag} />
+        </div>
+      )
     }
   }
 

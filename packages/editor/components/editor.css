@@ -2,7 +2,7 @@
   padding-left: 0px;
   padding: 0px;
   background-color: var(--editor-bg-color);
-  font-family: 'Source Sans Pro', 'monospace';
+  font-family: 'Karla', 'monospace';
   width: 100%;
   height: 100%;
   --separator-border: var(--section-separator-color)
@@ -30,20 +30,21 @@
 
 text {
   fill: var(--editor-text-color);
-  font-family: 'Source Sans Pro', 'monospace';
-  font-size: 11pt;
+  font-family: 'Karla', 'monospace';
+  font-size: 16px;
   pointer-events: none;
 }
 
 :root {
-  --editor-bg-color: var(--chakra-colors-gray-900);
+  --editor-bg-color: #000000;
   --editor-text-color: #FFFFFF;
-  --editor-node-block-fill: #2d343e;
-  --editor-node-block-edge: var(--editor-bg-color);
+  --editor-node-block-fill: #1e2730;
+  --editor-node-block-edge: var(--editor-node-block-fill);
   --editor-connector-stroke: #545c67;
   --editor-connector-label: #767e8a;
   --editor-indented-block-stroke: #545c67;
   --editor-anchor-dot: #545c67;
+  --editor-cap-line: var(--chakra-colors-gray-700);
 
   --editor-annotation-label: #767e8a;
   --editor-annotation-error: #fa8039;

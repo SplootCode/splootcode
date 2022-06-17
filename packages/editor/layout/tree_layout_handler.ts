@@ -1,13 +1,10 @@
+import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, ROW_SPACING } from './layout_constants'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
+import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
-import { ROW_SPACING, RenderedChildSetBlock, getTextWidth } from './rendered_childset_block'
-
-function labelStringWidth(s: string) {
-  return getTextWidth(s, "9pt 'Source Sans Pro'")
-}
+import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class TreeLayoutHandler implements ChildSetLayoutHandler {
   x: number
@@ -53,23 +50,25 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
     this.lineStartCursorPositions = []
     this.lineEndCursorPositions = []
 
-    const labels = this.childSetTreeLabels
-    const maxLabelWidth = Math.max(0, ...labels.map((label) => labelStringWidth(label)))
+    if (nodes.length === 0) {
+      this.width = BRACKET_WIDTH * 2 + NODE_INLINE_SPACING
+    }
+
+    // TODO: Allow space for labels as placeholders
+    // const labels = this.childSetTreeLabels
     let topPos = y
-    let indent = 24
-    indent += maxLabelWidth
     nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
       if (idx === insertIndex) {
         topPos += NODE_BLOCK_HEIGHT + ROW_SPACING
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
         this.width = Math.max(this.width, insertBoxWidth)
       }
-      this.lineStartCursorPositions.push([x + indent, topPos])
-      childNodeBlock.calculateDimensions(x + indent, topPos, selection)
-      this.lineEndCursorPositions.push([x + indent + childNodeBlock.rowWidth, topPos])
+      this.lineStartCursorPositions.push([x + BRACKET_WIDTH, topPos])
+      childNodeBlock.calculateDimensions(x + BRACKET_WIDTH, topPos, selection)
+      this.lineEndCursorPositions.push([x + BRACKET_WIDTH + childNodeBlock.rowWidth, topPos])
       topPos += childNodeBlock.rowHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
-      this.width = Math.max(this.width, childNodeBlock.rowWidth + indent + 4) // 4 = Bracket at end.
+      this.width = Math.max(this.width, childNodeBlock.rowWidth + BRACKET_WIDTH * 2)
     })
     if (nodes.length === insertIndex) {
       this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING

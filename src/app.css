@@ -8,12 +8,9 @@ pre {
 }
 
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 10pt;
-    background-color: #13171b;
-    color: gray;
+    font-size: 12pt;
 }
 
 :root {
-    --section-separator-color: var(--chakra-colors-gray-700);
+    --section-separator-color: var(--chakra-colors-gray-800);
 }

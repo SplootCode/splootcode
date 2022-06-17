@@ -77,14 +77,6 @@ export class PythonMember extends PythonNode {
     return this.getChildSet('arguments')
   }
 
-  getNodeLayout(): NodeLayout {
-    const layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
-      new LayoutComponent(LayoutComponentType.KEYWORD, `.${this.getMember()}`),
-    ])
-    return layout
-  }
-
   static deserializer(serializedNode: SerializedNode): PythonMember {
     const node = new PythonMember(null)
     node.setMember(serializedNode.properties['member'])
@@ -102,6 +94,7 @@ export class PythonMember extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.CAP, '.'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
     ])
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {

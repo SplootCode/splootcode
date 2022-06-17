@@ -83,7 +83,7 @@ const CategoryView = (props: CategoryProps) => {
                   <MicroNode fragment={fragment} startDrag={startDrag} />
                   <Text pl={1}>{listing.title}</Text>
                 </AccordionButton>
-                <AccordionPanel p={0} mb={2} borderY={'solid 1px'} borderColor={'gray.600'}>
+                <AccordionPanel p={0} mb={2} borderY={'solid 1px'} borderColor={'gray.700'}>
                   <Entry entry={listing} startDrag={startDrag} />
                 </AccordionPanel>
               </>

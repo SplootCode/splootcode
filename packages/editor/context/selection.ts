@@ -2,6 +2,7 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import {
   NodeCategory,
@@ -93,7 +94,7 @@ export class NodeSelection {
 
   updateRenderPositions() {
     this.cursorMap = new CursorMap()
-    this.rootNode.calculateDimensions(-20, -26, this)
+    this.rootNode.calculateDimensions(-20, -NODE_BLOCK_HEIGHT, this)
     this.cursorMap.dedupdeAndSort()
   }
 

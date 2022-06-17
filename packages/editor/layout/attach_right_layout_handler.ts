@@ -1,9 +1,10 @@
+import { BRACKET_WIDTH, EXPRESSION_TOKEN_SPACING, NODE_BLOCK_HEIGHT } from './layout_constants'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
-import { EXPRESSION_TOKEN_SPACING, RenderedChildSetBlock } from './rendered_childset_block'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NodeBlock } from './rendered_node'
+import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
+import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   x: number
@@ -39,8 +40,8 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.cursorPositions = []
 
-    let leftPos = x + 16 // starting bracket space
-    this.width += 16
+    let leftPos = x + BRACKET_WIDTH // starting bracket space
+    this.width += 0
     this.height = NODE_BLOCK_HEIGHT
     if (allowInsert) {
       this.cursorPositions.push([leftPos, y])
@@ -60,7 +61,7 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
     if (!allowInsert) {
       this.width -= EXPRESSION_TOKEN_SPACING
     }
-    this.width += 8 // Space for brackets at end
+    this.width += BRACKET_WIDTH * 2 // Space for brackets at start and end
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { NODE_BLOCK_HEIGHT, NODE_TEXT_OFFSET } from '../layout/layout_constants'
 
 interface StringLiteralProps {
   x: number
@@ -14,8 +15,8 @@ export class Separator extends React.Component<StringLiteralProps> {
     const nodeClassname = 'svgsplootnode' + (isSelected ? ' selected' : '')
     return (
       <g>
-        <rect className={nodeClassname} x={x + 1} y={y + 4} height="23" width={8} rx="4" />
-        <text x={x + 3} y={y + 19} className={className}>
+        <rect className={nodeClassname} x={x} y={y} height={NODE_BLOCK_HEIGHT} width={8} rx="4" />
+        <text x={x + 1.2} y={y + NODE_TEXT_OFFSET} className={className}>
           {selectorType}
         </text>
       </g>

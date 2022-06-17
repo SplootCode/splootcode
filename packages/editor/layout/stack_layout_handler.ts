@@ -1,9 +1,10 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NodeBlock } from './rendered_node'
+import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, ROW_SPACING } from './layout_constants'
+import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
-import { ROW_SPACING, RenderedChildSetBlock } from './rendered_childset_block'
+import { RenderedChildSetBlock } from './rendered_childset_block'
 
 export class StackLayoutHandler implements ChildSetLayoutHandler {
   x: number

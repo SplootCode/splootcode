@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Flex, Grid, Heading, Spacer, VStack } from '@chakra-ui/layout'
+import { Box, Container, Flex, HStack, Heading, Spacer, Text, VStack } from '@chakra-ui/layout'
 import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
@@ -11,6 +11,67 @@ import { loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 
 interface UserHomePageProps {
   projectLoader: ProjectLoader
+}
+
+const ExampleCard = (props: { linkTo: string; title: string; description: string }) => {
+  const { linkTo, title, description } = props
+  return (
+    <Box borderWidth="1px" borderRadius="md" bg="gray.800" borderColor="gray.500">
+      <Link to={linkTo}>
+        <Box py={2} px={2}>
+          <Heading as="h4" size="sm" pb={1}>
+            {title}
+          </Heading>
+          <Text lineHeight={1.2} color={'gray.300'}>
+            {description}
+          </Text>
+        </Box>
+      </Link>
+    </Box>
+  )
+}
+
+const ProjectCard = (props: {
+  projectID: string
+  title: string
+  description: string
+  onDelete: (id: string) => void
+}) => {
+  const { projectID, title, description, onDelete } = props
+  return (
+    <Flex borderWidth="1px" borderRadius="md" bg="gray.800" borderColor="gray.500">
+      <Link to={`/p/local/${projectID}`}>
+        <Box py={2} px={2}>
+          <Heading as="h4" size="sm" pb={1}>
+            {title}
+          </Heading>
+          {description ? (
+            <Text lineHeight={1.2} color={'gray.300'}>
+              {description}
+            </Text>
+          ) : null}
+        </Box>
+      </Link>
+      <Spacer />
+      <IconButton
+        size="sm"
+        aria-label="Delete project"
+        variant={'ghost'}
+        m={1}
+        color={'gray.500'}
+        icon={<DeleteIcon />}
+        onClick={(event) => {
+          event.stopPropagation()
+          event.preventDefault()
+          const result = window.confirm(`Are you sure you want to delete ${title}?`)
+          if (result) {
+            onDelete(projectID)
+          }
+          return false
+        }}
+      ></IconButton>
+    </Flex>
+  )
 }
 
 export const UserHomePage = (props: UserHomePageProps) => {
@@ -68,72 +129,69 @@ export const UserHomePage = (props: UserHomePageProps) => {
       />
       <MenuBar menuItems={menuItems}></MenuBar>
       <Container maxW="container.md" paddingTop={8}>
-        <VStack align="stretch" spacing={8}>
-          <Box>
-            <Heading as="h2" size="md" marginBottom={2}>
-              Examples
-            </Heading>
-            <Grid templateColumns="repeat(3, 1fr)" gap={4} mb={4}>
-              <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                <Link to="/p/examples/helloname">
-                  <Box p="6">Hello Name</Box>
-                </Link>
-              </Box>
-              <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                <Link to="/p/examples/temperature_conversion">
-                  <Box p="6">Temperature Conversion</Box>
-                </Link>
-              </Box>
-              <Box borderWidth="1px" borderRadius="md" bg="gray.700">
-                <Link to="/p/examples/secret_password">
-                  <Box p="6">Secret password</Box>
-                </Link>
-              </Box>
-            </Grid>
-          </Box>
+        <VStack align="stretch" spacing={10}>
           <Box>
             <Flex justifyContent="space-between" marginBottom={2} alignItems="flex-end">
-              <Heading as="h2" size="md">
+              <Heading as="h2" size="md" fontSize={'20pt'} py={2}>
                 Your projects
               </Heading>
-              <Button size="sm" colorScheme="blue" onClick={() => newProject()}>
+              <Button size="lg" colorScheme="blue" height={8} my={2} onClick={() => newProject()}>
                 New Project
               </Button>
             </Flex>
-            <VStack align="stretch">
+            <VStack align="stretch" gridGap={1}>
               {projects.length === 0 ? (
-                <Box borderRadius="md" bg="gray.700" p="2">
+                <Box borderRadius="md" bg="gray.800" p="2">
                   You do not have any projects yet.
                 </Box>
               ) : null}
               {projects.map((projectMeta) => {
                 return (
-                  <Link key={projectMeta.id} to={`/p/local/${projectMeta.id}`}>
-                    <Flex borderRadius="md" bg="gray.700" p="2" alignItems={'center'}>
-                      {projectMeta.title}
-                      <Spacer />
-                      <IconButton
-                        size="sm"
-                        aria-label="Delete project"
-                        icon={<DeleteIcon />}
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          event.preventDefault()
-                          const result = window.confirm(`Are you sure you want to delete ${projectMeta.title}?`)
-                          if (result) {
-                            props.projectLoader.deleteProject(projectMeta.id).then(() => {
-                              setProjects(props.projectLoader.listProjectMetadata())
-                            })
-                          }
-                          return false
-                        }}
-                      ></IconButton>
-                    </Flex>
-                  </Link>
+                  <ProjectCard
+                    key={projectMeta.id}
+                    projectID={projectMeta.id}
+                    title={projectMeta.title}
+                    description={''}
+                    onDelete={(id) => {
+                      props.projectLoader.deleteProject(id).then(() => {
+                        setProjects(props.projectLoader.listProjectMetadata())
+                      })
+                    }}
+                  />
                 )
               })}
             </VStack>
           </Box>
+          <HStack gridGap={3} alignItems="flex-start">
+            <VStack align="stretch" flex={1} gridGap={1}>
+              <Heading as="h2" size="lg" fontSize={'20pt'}>
+                Examples
+              </Heading>
+              <ExampleCard
+                linkTo="/p/examples/helloname"
+                title="Hello Name"
+                description="First program for beginners to start with variables and console input."
+              />
+              <ExampleCard
+                linkTo="/p/examples/temperature_conversion"
+                title="Temperature Conversion"
+                description="Convert temperatures in Fahrenheit to Celcius."
+              />
+              <ExampleCard
+                linkTo="/p/examples/secret_password"
+                title="Secret password"
+                description="Guess the password and learn about Python while-loops."
+              />
+            </VStack>
+            <VStack align="stretch" flex={1} gridGap={1}>
+              <Heading as="h2" size="lg" fontSize={'20pt'}>
+                Challenges
+              </Heading>
+              <Box borderRadius="md" bg="gray.800" p="2">
+                Coming soon!
+              </Box>
+            </VStack>
+          </HStack>
         </VStack>
       </Container>
     </React.Fragment>

@@ -1,10 +1,11 @@
 #menubar {
   display: flex;
   justify-content: space-between;
-  height: 41px;
-  padding: 4px 8px;
-  background-color: var(--chakra-colors-gray-700);
+  height: 36px;
+  padding: 2px 4px;
+  background-color: var(--chakra-colors-gray-800);
   box-sizing: border-box;
+  border-bottom: 1px solid var(--chakra-colors-gray-900);
 }
   
 .menubar-left {
@@ -13,5 +14,5 @@
   
 .menubar-item {
   margin-right: 8px;
-  padding: 7px 5px;
+  padding: 5px 3px;
 }

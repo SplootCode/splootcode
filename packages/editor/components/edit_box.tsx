@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 
 import { EditBoxData } from '../context/edit_box'
 import { NodeSelection } from '../context/selection'
-import { stringWidth } from '../layout/rendered_childset_block'
+import { stringWidth } from '../layout/layout_constants'
 
 interface EditBoxState {
   userInput: string

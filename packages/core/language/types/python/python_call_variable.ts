@@ -209,6 +209,7 @@ export class PythonCallVariable extends PythonNode {
 
   getNodeLayout(): NodeLayout {
     const layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
+      new LayoutComponent(LayoutComponentType.CAP, 'f'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments', this.getArgumentNames()),
     ])
@@ -227,6 +228,7 @@ export class PythonCallVariable extends PythonNode {
     typeRegistration.deserializer = PythonCallVariable.deserializer
     typeRegistration.childSets = { arguments: NodeCategory.PythonExpression }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
+      new LayoutComponent(LayoutComponentType.CAP, 'f'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),
     ])

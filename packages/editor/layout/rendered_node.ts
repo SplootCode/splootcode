@@ -1,19 +1,22 @@
 import { observable } from 'mobx'
 
+import {
+  BRACKET_WIDTH,
+  LOOP_ANNOTATION_HEIGHT,
+  NODE_BLOCK_HEIGHT,
+  NODE_INLINE_SPACING,
+  NODE_INLINE_SPACING_SMALL,
+  stringWidth,
+} from './layout_constants'
 import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { NodeObserver } from '@splootcode/core/language/observers'
-import { RenderedChildSetBlock, stringWidth } from './rendered_childset_block'
+import { RenderedChildSetBlock } from './rendered_childset_block'
 import { SplootNode } from '@splootcode/core/language/node'
 import { getColour } from '@splootcode/core/colors'
-
-export const NODE_INLINE_SPACING = 6
-export const NODE_INLINE_SPACING_SMALL = 6
-export const NODE_BLOCK_HEIGHT = 30
-export const LOOP_ANNOTATION_HEIGHT = 12
 
 export class RenderedParentRef {
   node: NodeBlock
@@ -41,6 +44,8 @@ export class NodeBlock implements NodeObserver {
   selection: NodeSelection
   index: number
   parentChildSet: RenderedChildSetBlock
+  leftCurve: boolean
+  rightCurve: boolean
 
   @observable
   layout: NodeLayout
@@ -98,6 +103,8 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColour(this.layout.color)
     this.node = node
+    this.leftCurve = false
+    this.rightCurve = false
     this.isValid = node.isValid
     this.invalidReason = node.invalidReason
     this.invalidChildsetID = node.invalidChildSetID
@@ -189,6 +196,11 @@ export class NodeBlock implements NodeObserver {
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
         this.width = Math.max(this.width, childSetBlock.width)
+      } else if (component.type === LayoutComponentType.CAP) {
+        const width = stringWidth(component.identifier) + nodeInlineSpacing * 2
+        this.blockWidth += width
+        leftPos += width
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       } else if (component.type === LayoutComponentType.STRING_LITERAL) {
         const val = this.node.getProperty(component.identifier)
         const width = stringWidth('""' + val) + nodeInlineSpacing
@@ -205,28 +217,27 @@ export class NodeBlock implements NodeObserver {
         component.type === LayoutComponentType.CHILD_SET_TREE ||
         component.type === LayoutComponentType.CHILD_SET_TREE_BRACKETS
       ) {
+        this.rightCurve = true
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
-        const width = 10
-        this.blockWidth += width
-        leftPos += width
-        this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
-        this.width = Math.max(this.width, childSetBlock.width)
+        this.blockWidth += BRACKET_WIDTH
+        this.renderedInlineComponents.push(new RenderedInlineComponent(component, BRACKET_WIDTH))
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
-        // This minus 8 here accounts for the distance from the dot to the edge of the node.
-        // This is dumb tbh.
-        marginRight += Math.max(childSetBlock.width - 8, 0)
+        marginRight = Math.max(childSetBlock.width - BRACKET_WIDTH, marginRight)
       } else if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
+        this.rightCurve = true
+        this.blockWidth += BRACKET_WIDTH
         const childSetBlock = this.renderedChildSets[component.identifier]
-        childSetBlock.calculateDimensions(leftPos + 2, y + this.marginTop, selection)
+        childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
         this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
-        marginRight += childSetBlock.width + 8 // Extra for line and brackets
+        marginRight += childSetBlock.width - BRACKET_WIDTH
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+        this.leftCurve = true
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
-        this.marginLeft += childSetBlock.width
-        leftPos += childSetBlock.width
+        this.marginLeft += childSetBlock.width + 2 // Tiny gap
+        leftPos += childSetBlock.width + 2
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         if (marginAlreadyApplied && childSetBlock.allowInsert()) {
