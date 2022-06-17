@@ -35,12 +35,12 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     const { userInput, autoWidth } = this.state
     const { editorX, editorY, editBoxData } = this.props
     const { x, y } = editBoxData
-    const adjustX = 15
-    const adjustY = 2
+    const adjustX = 12
+    const adjustY = -0.5
     const positionStyles: React.CSSProperties = {
       position: 'absolute',
-      left: x + editorX - 2 + adjustX + 'px',
-      top: y + editorY + 1 + adjustY + 'px',
+      left: x + editorX + adjustX + 'px',
+      top: y + editorY + adjustY + 'px',
     }
 
     return (

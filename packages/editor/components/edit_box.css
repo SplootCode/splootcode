@@ -1,19 +1,20 @@
 .edit-box {
+  box-sizing: border-box;
   background-color: var(--editor-selected-node-block-fill);
-  display: inline-block;
+  display: block;
   padding: 0;
   border-width: 0;
   border: none;
+  line-height: 1;
 }
 
 .edit-box input[type=text] {
   background-color: rgba(0, 0, 0, 0);
   font-family: inherit;
-  font-size: 11pt;
   border-style: none;
   color:white;
-  height: 20px;
-  padding: 0px 2px;
+  padding: 0px;
+  line-height: 1;
 }
 
 .edit-box input[type=text]:focus {

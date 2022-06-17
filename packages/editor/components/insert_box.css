@@ -1,19 +1,21 @@
 .input-box {
+  box-sizing: border-box;
   background-color: var(--editor-selected-node-block-fill);
   border: 1px solid var(--editor-selected-node-block-edge);
-  display: inline-block;
-  padding: 4px 6px 2px 6px;
-  border-radius: 3px;
+  display: block;
+  padding: 1px;
+  border-radius: 4px;
+  line-height: 1;
 }
 
 .input-box input[type=text] {
   background-color: var(--editor-selected-node-block-input);
   font-family: inherit;
-  font-size: 11pt;
   border-style: none;
   color:white;
-  height: 20px;
-  padding: 0px 2px;
+  height: 100%;
+  padding: 0px 1px 0 2px;
+  line-height: 1;
 }
 
 .input-box input[type=text]:focus {

@@ -9,11 +9,11 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorPosition, NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { EditorNodeBlock } from './node_block'
 import { InsertBoxData } from '../context/insert_box'
+import { NODE_BLOCK_HEIGHT, stringWidth } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory, getAutocompleRegistry } from '@splootcode/core/language/node_category_registry'
 import { ParentReference } from '@splootcode/core/language/node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { stringWidth } from '../layout/layout_constants'
 
 interface RenderedSuggestion extends SuggestedNode {
   nodeBlock: NodeBlock
@@ -254,7 +254,8 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       positionStyles = {
         position: 'absolute',
         left: x + editorX + 'px',
-        top: y + editorY + 1 + 'px',
+        top: y + editorY - 1 + 'px',
+        height: NODE_BLOCK_HEIGHT + 2 + 'px',
       }
     } else {
       positionStyles = {
@@ -417,7 +418,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     }
 
     // Numbers
-    const numericMatch = userInput.match(/^([0-9][0-9.]+)(.*)/)
+    const numericMatch = userInput.match(/^([0-9][0-9.]*)(.*)/)
     if (numericMatch) {
       const matchingSuggestion = this.prefixMatch(userInput, numericMatch[1], numericMatch[2])
       if (matchingSuggestion) {

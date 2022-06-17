@@ -4,7 +4,7 @@ export class InsertBoxData {
   contents: string
 
   constructor(coordindates: number[]) {
-    this.x = coordindates[0]
+    this.x = coordindates[0] + 3
     this.y = coordindates[1]
     this.contents = ''
   }
