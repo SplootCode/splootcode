@@ -31,7 +31,7 @@ export const MenuBar = ({ children, menuItems }: MenuBarProps): React.ReactEleme
             variant="ghost"
             size={'sm'}
             fontSize={'md'}
-            p={1}
+            p={2}
           ></MenuButton>
           <MenuList>
             {menuItems.map((menuItem) => {

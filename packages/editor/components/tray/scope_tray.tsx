@@ -91,7 +91,7 @@ export const ScopeTray = (props: EntryProps) => {
             </AccordionButton>
             <AccordionPanel py={0} pl={2} pr={0}>
               {rootScope.hasEntries() ? (
-                <Box borderY={'solid 1px'} borderColor={'gray.600'} py={1}>
+                <Box borderY={'solid 1px'} borderColor={'gray.700'} py={1}>
                   <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
                     Global
                   </Text>

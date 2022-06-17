@@ -71,20 +71,23 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     const { ready, running, nodeTreeLoaded, nodeTreeErrors } = this.state
     return (
       <div id="terminal-container">
-        <ButtonGroup spacing="3" size="sm" m={1}>
-          <Button
-            isLoading={running}
-            loadingText="Running"
-            colorScheme="blue"
-            onClick={this.run}
-            disabled={!(ready && nodeTreeLoaded && !nodeTreeErrors && !running)}
-          >
-            Run
-          </Button>
-          <Button disabled={!running} onClick={this.stop}>
-            Stop
-          </Button>
-        </ButtonGroup>
+        <div className="terminal-menu">
+          <ButtonGroup size="md" m={1} height={8}>
+            <Button
+              isLoading={running}
+              loadingText="Running"
+              colorScheme="blue"
+              onClick={this.run}
+              disabled={!(ready && nodeTreeLoaded && !nodeTreeErrors && !running)}
+              height={8}
+            >
+              Run
+            </Button>
+            <Button disabled={!running} onClick={this.stop} height={8}>
+              Stop
+            </Button>
+          </ButtonGroup>
+        </div>
         <div id="terminal" ref={this.termRef} />
       </div>
     )
@@ -255,7 +258,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   componentDidMount() {
     this.terminalFitAddon = new FitAddon()
-    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#1a1c1f' } })
+    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#0A0E16' } })
     this.term.loadAddon(this.terminalFitAddon)
     this.wasmTty = new WasmTTY(this.term)
     this.term.open(this.termRef.current)

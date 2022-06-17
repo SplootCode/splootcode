@@ -36,26 +36,15 @@ text {
 }
 
 :root {
-  --sploot-neutral-900: #0A0E16;
-  --sploot-neutral-800: #1e2730; /* #182134; */
-  --sploot-neutral-700: #2F3848;
-  --sploot-neutral-600: #3E4A60;
-  --sploot-neutral-500: #5E6C86;
-  --sploot-neutral-400: #9DAAC1;
-  --sploot-neutral-300: #C8D3E9;
-  --sploot-neutral-200: #F3F5F9;
-}
-
-:root {
-  --editor-bg-color: var(--sploot-neutral-900);
+  --editor-bg-color: #000000;
   --editor-text-color: #FFFFFF;
-  --editor-node-block-fill: var(--sploot-neutral-800);
+  --editor-node-block-fill: #1e2730;
   --editor-node-block-edge: var(--editor-node-block-fill);
   --editor-connector-stroke: #545c67;
   --editor-connector-label: #767e8a;
   --editor-indented-block-stroke: #545c67;
   --editor-anchor-dot: #545c67;
-  --editor-cap-line: var(--sploot-neutral-700);
+  --editor-cap-line: var(--chakra-colors-gray-700);
 
   --editor-annotation-label: #767e8a;
   --editor-annotation-error: #fa8039;

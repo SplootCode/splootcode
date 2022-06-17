@@ -35,7 +35,7 @@ export const Entry = (props: EntryProps) => {
               py={2}
               px={1}
               borderTop={'1px solid'}
-              borderColor={'gray.600'}
+              borderColor={'gray.700'}
             >
               Example:
             </Text>
