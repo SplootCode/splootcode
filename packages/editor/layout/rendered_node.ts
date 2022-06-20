@@ -8,6 +8,7 @@ import {
   NODE_INLINE_SPACING_SMALL,
   stringWidth,
 } from './layout_constants'
+import { ColorUsageType, getColor } from '@splootcode/core/colors'
 import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
 import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
@@ -16,7 +17,6 @@ import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutati
 import { NodeObserver } from '@splootcode/core/language/observers'
 import { RenderedChildSetBlock } from './rendered_childset_block'
 import { SplootNode } from '@splootcode/core/language/node'
-import { getColour } from '@splootcode/core/colors'
 
 export class RenderedParentRef {
   node: NodeBlock
@@ -50,6 +50,7 @@ export class NodeBlock implements NodeObserver {
   @observable
   layout: NodeLayout
   textColor: string
+  capColor: string
 
   @observable
   renderedInlineComponents: RenderedInlineComponent[]
@@ -101,7 +102,8 @@ export class NodeBlock implements NodeObserver {
     this.renderedChildSets = {}
     this.childSetOrder = []
     this.layout = node.getNodeLayout()
-    this.textColor = getColour(this.layout.color)
+    this.textColor = getColor(this.layout.color, ColorUsageType.NODE_TEXT)
+    this.capColor = getColor(this.layout.color, ColorUsageType.CAP_TEXT)
     this.node = node
     this.leftCurve = false
     this.rightCurve = false

@@ -16,40 +16,40 @@ export enum HighlightColorCategory {
   STYLE_PROPERTY,
 }
 
-const keywordColor = 'rgb(199, 166, 255)'
+export enum ColorUsageType {
+  NODE_TEXT = 0,
+  CAP_TEXT,
+}
 
-export function getColour(category: HighlightColorCategory): string {
-  // Hardcode for now, but could be configurable in the future
+function colorBase(category: HighlightColorCategory): string {
   switch (category) {
-    case HighlightColorCategory.NONE:
-      return 'rgb(0, 0, 0)'
     case HighlightColorCategory.FUNCTION:
-      return 'rgb(255 254 196)'
+      return 'code-yellow'
     case HighlightColorCategory.FUNCTION_DEFINITION:
-      return keywordColor
+      return 'code-purple'
     case HighlightColorCategory.VARIABLE_DECLARATION:
-      return keywordColor
+      return 'code-purple'
     case HighlightColorCategory.VARIABLE:
-      return 'rgb(149, 217, 255)'
+      return 'code-lightblue'
     case HighlightColorCategory.LITERAL_NUMBER:
-      return 'rgb(124 179 253)'
+      return 'code-blue'
     case HighlightColorCategory.LITERAL_STRING:
-      return 'rgb(123 216 188)'
+      return 'code-green'
     case HighlightColorCategory.LITERAL_LIST:
-      return keywordColor
+      return 'code-purple'
     case HighlightColorCategory.KEYWORD:
-      return keywordColor
+      return 'code-purple'
     case HighlightColorCategory.CONTROL:
-      return keywordColor
-    case HighlightColorCategory.HTML_ELEMENT:
-      return '#F3ABFF'
-    case HighlightColorCategory.HTML_ATTRIBUTE:
-      return 'rgb(149, 217, 255)'
-    case HighlightColorCategory.STYLE_RULE:
-      return 'rgb(199, 166, 255)'
-    case HighlightColorCategory.STYLE_PROPERTY:
-      return 'rgb(255 254 196)'
-    default:
-      return 'rgb(255, 255, 255)'
+      return 'code-purple'
   }
+  return 'code-neutral'
+}
+
+export function getColor(category: HighlightColorCategory, usage: ColorUsageType): string {
+  // Hardcode for now, but could be configurable in the future
+  const base = colorBase(category)
+  if (usage == ColorUsageType.CAP_TEXT) {
+    return `var(--${base}-700)`
+  }
+  return `var(--${base}-200)`
 }

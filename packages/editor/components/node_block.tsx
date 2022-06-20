@@ -133,7 +133,11 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             result = (
               <>
                 {getCapShape(classname, leftPos, topPos, renderedComponent.width, block.leftCurve)}
-                <text x={internalLeftPos} y={topPos + NODE_TEXT_OFFSET} style={{ fill: block.textColor }}>
+                <text
+                  x={internalLeftPos}
+                  y={topPos + NODE_TEXT_OFFSET}
+                  style={{ fill: block.capColor, fontStyle: 'italic' }}
+                >
                   {renderedComponent.layoutComponent.identifier}
                 </text>
               </>
