@@ -1,5 +1,6 @@
 
 .tray {
+  --editor-bg-color: var(--chakra-colors-gray-900);
   width: 100%;
   height: calc(99vh - 41px);
   overflow-y: scroll;

@@ -15,6 +15,8 @@ export class RenderedFragment {
   y: number
   height: number
   width: number
+  translateX: number
+  translateY: number
 
   layoutHandler: ChildSetLayoutHandler
 
@@ -22,6 +24,8 @@ export class RenderedFragment {
     this.fragment = splootFragment
     this.x = 0
     this.y = 0
+    this.translateX = 0
+    this.translateY = 0
 
     this.nodes = splootFragment.nodes.map((node, idx) => {
       return new NodeBlock(null, node, null, idx)
@@ -54,8 +58,10 @@ export class RenderedFragment {
     } else {
       const singleNode = this.nodes[0]
       singleNode.calculateDimensions(0, 0, null)
-      this.height = singleNode.rowHeight + (includeBlock ? singleNode.indentedBlockHeight : 0)
-      this.width = includeBlock ? singleNode.width : singleNode.rowWidth
+      this.translateX = -singleNode.marginLeft
+      this.translateY = -singleNode.marginTop
+      this.height = singleNode.rowHeight - singleNode.marginTop + (includeBlock ? singleNode.indentedBlockHeight : 0)
+      this.width = (includeBlock ? singleNode.width : singleNode.rowWidth) - singleNode.marginLeft
     }
   }
 }

@@ -14,7 +14,7 @@ export class FragmentView extends React.Component<FragmentViewProps> {
     const fragment = this.props.fragment
 
     return (
-      <React.Fragment>
+      <g transform={`translate(${fragment.translateX}, ${fragment.translateY})`}>
         {fragment.nodes.map((nodeBlock: NodeBlock, idx: number) => {
           return (
             <React.Fragment key={idx}>
@@ -22,7 +22,7 @@ export class FragmentView extends React.Component<FragmentViewProps> {
             </React.Fragment>
           )
         })}
-      </React.Fragment>
+      </g>
     )
   }
 }
