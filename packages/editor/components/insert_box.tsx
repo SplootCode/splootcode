@@ -135,10 +135,12 @@ interface InsertBoxProps {
 @observer
 export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   private inputRef: React.RefObject<HTMLInputElement>
+  private suggestionsRef: React.RefObject<HTMLUListElement>
 
   constructor(props: InsertBoxProps) {
     super(props)
     this.inputRef = React.createRef()
+    this.suggestionsRef = React.createRef()
 
     this.state = {
       userInput: '',
@@ -202,7 +204,17 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   }
 
   componentDidUpdate(prevProps: Readonly<InsertBoxProps>, prevState: Readonly<InsertBoxState>, snapshot?: any): void {
-    this.inputRef.current.focus()
+    if (
+      prevState.activeSuggestion !== this.state.activeSuggestion &&
+      this.suggestionsRef &&
+      this.suggestionsRef.current
+    ) {
+      ;(this.suggestionsRef.current.children[this.state.activeSuggestion] as HTMLElement).scrollIntoView({
+        block: 'nearest',
+      })
+    } else {
+      this.inputRef.current.focus()
+    }
   }
 
   render() {
@@ -214,7 +226,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     if (selection.state === SelectionState.Inserting) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
-          <ul className="autocomplete-suggestions">
+          <ul className="autocomplete-suggestions" ref={this.suggestionsRef}>
             {filteredSuggestions.map((suggestion, index) => {
               let className = ''
 
@@ -228,7 +240,12 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
               }
 
               return (
-                <li className={className} key={suggestion.key} onClick={this.onClickSuggestion(suggestion)}>
+                <li
+                  className={className}
+                  key={suggestion.key}
+                  onClick={this.onClickSuggestion(suggestion)}
+                  tabIndex={-1}
+                >
                   <svg
                     className="autocomplete-inline-svg"
                     height={suggestion.nodeBlock.rowHeight}

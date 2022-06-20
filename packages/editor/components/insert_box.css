@@ -60,19 +60,20 @@
 }
 
 .autocomplete-suggestions {
-  --editor-bg-color: var(--editor-autcompleted-bg-color);
+  --editor-bg-color: var(--editor-autocomplete-bg-color);
   position: absolute;
-  border: 1px solid var(--editor-autcompleted-edge-color);
+  border: 1px solid var(--editor-autocomplete-edge-color);
   border-top-width: 0;
   list-style: none;
   margin-top: 0;
   max-height: 250px;
+  max-width: 600px;
   overflow-y: auto;
   padding-left: 0;
   width: max-content;
   z-index: 100;
-  background-color: var(--editor-autcompleted-bg-color);
-  color: var(--editor-autcompleted-text-color);
+  background-color: var(--editor-autocomplete-bg-color);
+  color: var(--editor-autocomplete-text-color);
 }
 
 .autocomplete-suggestions svg {
@@ -81,27 +82,25 @@
 
 .autocomplete-description {
   display: inline-block;
-  padding: 9px 6px 4px;
+  padding: 1px 8px;
   vertical-align: top;
 }
 
 .autocomplete-suggestions li {
-  padding: 3px 4px 0px 4px;
+  padding: 3px 4px 2px 4px;
 }
 
 .autocomplete-suggestions li:hover {
-  background-color: var(--editor-autcompleted-highlight-color);
-  --editor-bg-color: var(--editor-autcompleted-highlight-color);
-  color: white;
+  background-color: var(--editor-autocomplete-hover-color);
+  --editor-bg-color: var(--editor-autocomplete-hover-color);
   cursor: pointer;
 }
 
-.autocomplete-suggestion-active, li.suggestion-active:hover {
-  background-color: var(--editor-autcompleted-highlight-color);
-  --editor-bg-color: var(--editor-autcompleted-highlight-color);
+.autocomplete-suggestion-active, li.autocomplete-suggestion-active:hover {
+  background-color: var(--editor-autocomplete-highlight-color);
+  --editor-bg-color: var(--editor-autocomplete-highlight-color);
   color: white;
   cursor: pointer;
-  font-weight: 700;
 }
 
 .autocomplete-suggestions li:not(:last-of-type) {
