@@ -62,10 +62,11 @@ text {
   --editor-annotation-label: #767e8a;
   --editor-annotation-error: #fa8039;
 
-  --editor-autcompleted-bg-color: #134777;
-  --editor-autcompleted-edge-color: #3191ea;
-  --editor-autcompleted-text-color: #3191ea;
-  --editor-autcompleted-highlight-color: #3191ea;
+  --editor-autocomplete-bg-color: #123d65;
+  --editor-autocomplete-edge-color: #1a70c0;
+  --editor-autocomplete-text-color: #1a70c0;
+  --editor-autocomplete-hover-color: #0e4b84;
+  --editor-autocomplete-highlight-color: #1a70c0;
 
   --editor-invalid-node-block-edge: #d37000;
 

@@ -20,6 +20,9 @@ def generate_builtins_docs():
     }
 
     for name in dir(builtins):
+        if name == 'None':
+            continue
+
         thing = getattr(builtins, name)
         data = get_value_data(name, thing)
 
