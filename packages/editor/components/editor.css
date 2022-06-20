@@ -36,6 +36,19 @@ text {
 }
 
 :root {
+  --code-neutral-200: rgb(226, 226, 226);
+  --code-neutral-700: rgb(97, 97, 96);
+  --code-yellow-200: rgb(255 254 196);
+  --code-yellow-700: rgb(139 139 109);
+  --code-purple-200: rgb(199, 166, 255);
+  --code-purple-700: rgb(95, 58, 158);
+  --code-lightblue-200: rgb(149, 217, 255);
+  --code-lightblue-700: rgb(77 118 141);
+  --code-blue-200: rgb(124 179 253);
+  --code-blue-700: rgb(60 110 174);
+  --code-green-200: rgb(123 216 188);
+  --code-green-700: rgb(24, 126, 95);
+
   --editor-bg-color: #000000;
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: #1e2730;
