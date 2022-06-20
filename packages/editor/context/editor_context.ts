@@ -40,8 +40,10 @@ export class EditorState {
     // Build scope
     await generateScope(loadedFile.rootNode, this.analyser)
 
-    // Start up the analyzer but don't wait for it to finish
-    this.analyser.loadFile(pack, file)
+    // Start up the analyzer
+    // We don't technically need to wait for it, but it helps give time for
+    // fonts to load correctly before render calculations happen.
+    await this.analyser.loadFile(pack, file)
 
     // Prep NodeBlocks for rendering
     const newRootNode = new NodeBlock(null, loadedFile.rootNode, this.selection, 0)
