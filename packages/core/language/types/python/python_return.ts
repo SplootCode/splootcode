@@ -57,9 +57,9 @@ export class PythonReturn extends PythonNode {
       id: parseMapper.getNextId(),
       length: 0,
       start: 0,
-      returnExpression: (this.getValue().getChild(0) as PythonExpression).generateParseTree(parseMapper),
     }
-    if (retNode.returnExpression) {
+    if (this.getValue().getCount() !== 0) {
+      retNode.returnExpression = (this.getValue().getChild(0) as PythonExpression).generateParseTree(parseMapper)
       retNode.returnExpression.parent = retNode
     }
     return retNode
@@ -106,7 +106,6 @@ export class PythonReturn extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonReturn {
     const node = new PythonReturn(null)
-    node.getValue().removeChild(0)
     node.deserializeChildSet('value', serializedNode)
     return node
   }
