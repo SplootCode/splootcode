@@ -6,6 +6,7 @@ import {
   NODE_BLOCK_HEIGHT,
   NODE_INLINE_SPACING,
   NODE_INLINE_SPACING_SMALL,
+  placeholderWidth,
   stringWidth,
 } from './layout_constants'
 import { ColorUsageType, getColor } from '@splootcode/core/colors'
@@ -163,7 +164,7 @@ export class NodeBlock implements NodeObserver {
     }
   }
 
-  calculateDimensions(x: number, y: number, selection: NodeSelection, marginApplied = false) {
+  calculateDimensions(x: number, y: number, selection: NodeSelection, marginApplied = false, label?: string) {
     this.marginTop = 0
     if (this.node.isRepeatableBlock) {
       this.marginTop = LOOP_ANNOTATION_HEIGHT
@@ -263,6 +264,10 @@ export class NodeBlock implements NodeObserver {
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       }
     })
+
+    if (label && this.node.isEmpty()) {
+      this.blockWidth = Math.max(this.blockWidth, placeholderWidth(label))
+    }
 
     this.rowWidth = this.marginLeft + this.blockWidth + marginRight
     this.width = Math.max(this.rowWidth, this.width)

@@ -61,11 +61,13 @@ export enum LayoutComponentType {
 export class LayoutComponent {
   type: LayoutComponentType
   identifier: string
+  labels: string[]
   metadata: any
 
-  constructor(type: LayoutComponentType, identifier: string, metadata?: any) {
+  constructor(type: LayoutComponentType, identifier: string, labels?: string[], metadata?: any) {
     this.type = type
     this.identifier = identifier
+    this.labels = labels
     this.metadata = metadata
   }
 }

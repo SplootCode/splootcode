@@ -23,7 +23,7 @@ export class TreeListBlockView extends React.Component<TreeListBlockViewProps> {
     const connectorClass = 'tree-connector ' + (isSelected ? 'selected' : '')
     const labelClass = 'tree-label ' + (isSelected ? 'selected' : '')
     const anchorClass = 'svg-anchor-dot ' + (isSelected ? 'selected' : '')
-    const labels = childSetBlock.childSetTreeLabels
+    const labels = childSetBlock.labels
     return (
       <React.Fragment>
         <circle cx={leftPos + 4} cy={topPos + 16} r="5" className={anchorClass}></circle>
@@ -101,6 +101,7 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
     const width = childSetBlock.width - 2 * BRACKET_WIDTH
 
     let prevRowBottom = 0
+    const labels = childSetBlock.labels
 
     return (
       <React.Fragment>
@@ -141,10 +142,12 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
           }
           prevRowBottom = nodeBlock.y + NODE_BLOCK_HEIGHT
 
+          const label = labels.length > idx ? labels[idx] : undefined
+
           return (
             <React.Fragment key={idx}>
               {leftBracket}
-              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} placeholder={label} />
               {rightBracket}
             </React.Fragment>
           )

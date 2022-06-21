@@ -81,8 +81,9 @@ export class Assignment extends JavaScriptSplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'set'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'set to'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left', ['variable']),
+      new LayoutComponent(LayoutComponentType.KEYWORD, '='),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', ['value']),
     ])
     typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
       const exp = new SplootExpression(null)

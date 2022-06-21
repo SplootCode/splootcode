@@ -42,9 +42,9 @@ export class PythonList extends PythonNode {
     return this.getChildSet('elements')
   }
 
-  getLabels() {
+  getLabels(): string[] {
     return this.getElements().children.map((val, idx) => {
-      return idx
+      return idx.toString()
     })
   }
 

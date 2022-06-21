@@ -1,6 +1,6 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
-import { EXPRESSION_TOKEN_SPACING, NODE_INLINE_SPACING } from './layout_constants'
+import { EXPRESSION_TOKEN_SPACING, NODE_INLINE_SPACING, placeholderWidth } from './layout_constants'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
 import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
@@ -12,6 +12,7 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
   width: number
   height: number
   marginTop: number
+  labels: string[]
 
   cursorPositions: [number, number][]
 
@@ -20,7 +21,11 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
-    // N/A
+    if (layoutComponent.labels) {
+      this.labels = layoutComponent.labels
+    } else {
+      this.labels = []
+    }
   }
 
   calculateDimensions(
@@ -40,6 +45,11 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.cursorPositions = []
 
+    let label = undefined
+    if (this.labels.length > 0) {
+      label = this.labels[0]
+    }
+
     let leftPos = x
     this.cursorPositions.push([leftPos, y])
     if (allowInsert) {
@@ -47,7 +57,11 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
       leftPos += NODE_INLINE_SPACING
     }
     if (nodes.length === 0) {
-      this.width += NODE_INLINE_SPACING
+      if (label) {
+        this.width = placeholderWidth(label)
+      } else {
+        this.width += NODE_INLINE_SPACING
+      }
     } else if (!allowInsert) {
       this.width -= NODE_INLINE_SPACING
     }

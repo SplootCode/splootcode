@@ -13,22 +13,22 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
   height: number
   marginTop: number
 
-  childSetTreeLabels: string[]
+  labels: string[]
 
   lineStartCursorPositions: [number, number][]
   lineEndCursorPositions: [number, number][]
 
   constructor(layoutComponent: LayoutComponent) {
-    this.childSetTreeLabels = layoutComponent.metadata
+    this.labels = layoutComponent.metadata
     this.lineStartCursorPositions = []
     this.lineEndCursorPositions = []
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
-    if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
-      this.childSetTreeLabels = layoutComponent.metadata
+    if (layoutComponent.labels) {
+      this.labels = layoutComponent.labels
     } else {
-      this.childSetTreeLabels = []
+      this.labels = []
     }
   }
 
@@ -54,8 +54,6 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
       this.width = BRACKET_WIDTH * 2 + NODE_INLINE_SPACING
     }
 
-    // TODO: Allow space for labels as placeholders
-    // const labels = this.childSetTreeLabels
     let topPos = y
     nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
       if (idx === insertIndex) {
@@ -63,8 +61,13 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
         this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
         this.width = Math.max(this.width, insertBoxWidth)
       }
+      let label = undefined
+      // If node (likely an expression) is empty, make enough space for the placeholder text.
+      if (this.labels.length > idx && childNodeBlock.node.isEmpty()) {
+        label = this.labels[idx]
+      }
       this.lineStartCursorPositions.push([x + BRACKET_WIDTH, topPos])
-      childNodeBlock.calculateDimensions(x + BRACKET_WIDTH, topPos, selection)
+      childNodeBlock.calculateDimensions(x + BRACKET_WIDTH, topPos, selection, false, label)
       this.lineEndCursorPositions.push([x + BRACKET_WIDTH + childNodeBlock.rowWidth, topPos])
       topPos += childNodeBlock.rowHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING

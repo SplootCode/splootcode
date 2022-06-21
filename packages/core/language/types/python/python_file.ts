@@ -76,7 +76,7 @@ export class PythonFile extends PythonNode {
     typeRegistration.hasScope = true
     typeRegistration.childSets = { body: NodeCategory.PythonStatement }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.NONE, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body', { endCursor: true }),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body', [], { endCursor: true }),
     ])
 
     registerType(typeRegistration)

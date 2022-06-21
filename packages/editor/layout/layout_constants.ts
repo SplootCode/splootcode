@@ -33,6 +33,15 @@ export function stringWidth(s: string) {
   return getTextWidth(s, "16px 'Karla'")
 }
 
+export function placeholderWidth(s: string) {
+  return getTextWidth(s, "italic 16px 'Karla'") + EXPRESSION_TOKEN_SPACING * 2
+}
+
 export function labelStringWidth(s: string) {
   return getTextWidth(s, "16px 'Karla'")
+}
+
+export function preloadFonts() {
+  stringWidth('loadfontplz')
+  placeholderWidth('loadfontplz')
 }

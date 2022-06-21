@@ -79,7 +79,7 @@ export class LookupExpression extends JavaScriptSplootNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'object'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'property', 'item'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'property', ['item']),
     ])
     typeRegistration.pasteAdapters[SPLOOT_EXPRESSION] = (node: SplootNode) => {
       const exp = new SplootExpression(null)

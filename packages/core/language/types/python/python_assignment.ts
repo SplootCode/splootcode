@@ -214,9 +214,9 @@ export class PythonAssignment extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'assign'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left', ['variable']),
       new LayoutComponent(LayoutComponentType.KEYWORD, '='),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', 'to'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', ['value']),
     ])
     typeRegistration.pasteAdapters = {
       PYTHON_STATEMENT: (node: SplootNode) => {

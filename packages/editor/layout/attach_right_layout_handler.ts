@@ -13,6 +13,8 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   height: number
   marginTop: number
 
+  labels: string[]
+
   cursorPositions: [number, number][]
 
   constructor() {
@@ -20,7 +22,11 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
-    // N/A
+    if (layoutComponent.labels) {
+      this.labels = layoutComponent.labels
+    } else {
+      this.labels = []
+    }
   }
 
   calculateDimensions(
@@ -40,6 +46,11 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.cursorPositions = []
 
+    let label = undefined
+    if (this.labels.length > 0) {
+      label = this.labels[0]
+    }
+
     let leftPos = x + BRACKET_WIDTH // starting bracket space
     this.width += 0
     this.height = NODE_BLOCK_HEIGHT
@@ -49,7 +60,7 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
       this.width += EXPRESSION_TOKEN_SPACING
     }
     nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {
-      childNodeBlock.calculateDimensions(leftPos, y, selection)
+      childNodeBlock.calculateDimensions(leftPos, y, selection, false, label)
       if (allowInsert) {
         this.cursorPositions.push([leftPos + childNodeBlock.rowWidth, y])
       }
