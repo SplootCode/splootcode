@@ -43,9 +43,15 @@ export class TokenListBlockView extends React.Component<TokenListBlockViewProps>
         {block.nodes.map((nodeBlock: NodeBlock, idx: number) => {
           const selectionState = block.getChildSelectionState(idx)
           const invalidChild = idx === invalidIndex
+          const label = block.labels.length > idx ? block.labels[idx] : undefined
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} isInvalidBlamed={invalidChild} />
+              <EditorNodeBlock
+                block={nodeBlock}
+                selectionState={selectionState}
+                isInvalidBlamed={invalidChild}
+                placeholder={label}
+              />
             </React.Fragment>
           )
         })}

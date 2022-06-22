@@ -77,7 +77,9 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
       this.height = this.height + NODE_BLOCK_HEIGHT + ROW_SPACING
       this.width = Math.max(this.width, insertBoxWidth)
     }
-    this.height -= ROW_SPACING // Remove extra space at the end
+    if (nodes.length > 0) {
+      this.height -= ROW_SPACING // Remove extra space at the end
+    }
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly?: boolean): [number, number] {

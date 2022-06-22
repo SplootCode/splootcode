@@ -70,7 +70,17 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
         this.width += insertBoxWidth
         leftPos += insertBoxWidth
       }
-      childNodeBlock.calculateDimensions(leftPos, y, selection, idx === 0 && (marginAlreadyApplied || allowInsert))
+      let nodeLabel = undefined
+      if (this.labels.length > idx) {
+        nodeLabel = this.labels[idx]
+      }
+      childNodeBlock.calculateDimensions(
+        leftPos,
+        y,
+        selection,
+        idx === 0 && (marginAlreadyApplied || allowInsert),
+        nodeLabel
+      )
       this.marginTop = Math.max(this.marginTop, childNodeBlock.marginTop)
       this.cursorPositions.push([leftPos + childNodeBlock.rowWidth, y])
 

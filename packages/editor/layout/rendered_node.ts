@@ -233,7 +233,7 @@ export class NodeBlock implements NodeObserver {
         const childSetBlock = this.renderedChildSets[component.identifier]
         childSetBlock.calculateDimensions(leftPos, y + this.marginTop, selection)
         this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
         marginRight += childSetBlock.width - BRACKET_WIDTH
       } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
         this.leftCurve = true
@@ -255,8 +255,7 @@ export class NodeBlock implements NodeObserver {
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
         leftPos += width
         this.blockWidth += width
-        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
-        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else {
         const width = stringWidth(component.identifier) + nodeInlineSpacing
         leftPos += width
