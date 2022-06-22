@@ -38,6 +38,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
       ></path>
     )
 
+    const label = childSetBlock.labels.length > 0 ? childSetBlock.labels[0] : undefined
     return (
       <React.Fragment>
         {leftBracket}
@@ -45,7 +46,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
           const selectionState = childSetBlock.getChildSelectionState(idx)
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} />
+              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} placeholder={label} />
             </React.Fragment>
           )
         })}

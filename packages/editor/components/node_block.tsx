@@ -11,6 +11,7 @@ import { LayoutComponent, LayoutComponentType, NodeBoxType } from '@splootcode/c
 import { NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, NODE_TEXT_OFFSET } from '../layout/layout_constants'
 import { NodeBlock, RenderedInlineComponent } from '../layout/rendered_node'
 import { NodeSelectionState } from '../context/selection'
+import { PlaceholderLabel } from './placeholder_label'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { Separator } from './separator'
 import { TokenListBlockView } from './token_list_block'
@@ -21,6 +22,7 @@ interface NodeBlockProps {
   selectionState: NodeSelectionState
   isInsideBreadcrumbs?: boolean
   isInvalidBlamed?: boolean
+  placeholder?: string
 }
 
 function getCapShape(className: string, x: number, y: number, width: number, leftCurve: boolean) {
@@ -72,7 +74,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
   }
 
   render() {
-    const { block, selectionState, isInvalidBlamed } = this.props
+    const { block, selectionState, isInvalidBlamed, placeholder } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
 
     if (block === null) {
@@ -93,9 +95,13 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     const classname = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     let shape: ReactElement
+    let placeholderLabel: ReactElement
 
     if (block.layout.boxType === NodeBoxType.INVISIBLE || block.layout.boxType === NodeBoxType.BRACKETS) {
       internalLeftPos = leftPos
+      if (block.node.isEmpty()) {
+        placeholderLabel = <PlaceholderLabel x={block.x} y={block.y} label={placeholder} />
+      }
       if (!isValid) {
         shape = (
           <rect
@@ -122,6 +128,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         {this.renderLeftAttachedBreadcrumbsChildSet()}
         {loopAnnotation}
         {shape}
+        {placeholderLabel}
         {block.renderedInlineComponents.map((renderedComponent: RenderedInlineComponent, idx: number) => {
           let result = null
           if (

@@ -216,9 +216,9 @@ export class PythonFromImport extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'from'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'module'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'module', ['module']),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'import'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'attrs'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'attrs', ['values']),
     ])
     typeRegistration.pasteAdapters = {
       PYTHON_STATEMENT: (node: SplootNode) => {

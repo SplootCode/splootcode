@@ -134,7 +134,7 @@ export class PythonSubscript extends PythonNode {
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'target'),
       new LayoutComponent(LayoutComponentType.KEYWORD, `item`),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'key'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'key', ['index or key']),
     ])
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
       const exp = new PythonExpression(null)

@@ -1,6 +1,6 @@
 import { ArgumentCategory, ArgumentNode, CallNode, ParseNode, ParseNodeType, TokenType } from 'structured-pyright'
 import { ChildSetType } from '../../childset'
-import { FunctionArgType, FunctionSignature, TypeCategory } from '../../scope/types'
+import { FunctionArgType, FunctionSignature } from '../../scope/types'
 import { HighlightColorCategory } from '../../../colors'
 import {
   LayoutComponent,
@@ -44,8 +44,12 @@ export class PythonCallVariable extends PythonNode {
     super(parentReference, PYTHON_CALL_VARIABLE)
     this.setProperty('identifier', name)
     this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
+    const paramNames = []
+
     if (signature) {
       for (const arg of signature.arguments) {
+        paramNames.push(arg.name)
+
         if (
           (arg.type == FunctionArgType.PositionalOnly || arg.type == FunctionArgType.PositionalOrKeyword) &&
           !arg.defaultValue
@@ -57,6 +61,7 @@ export class PythonCallVariable extends PythonNode {
         this.getArguments().addChild(new PythonExpression(null))
       }
     }
+    this.metadata.set('params', paramNames)
   }
 
   getArguments() {
@@ -166,45 +171,10 @@ export class PythonCallVariable extends PythonNode {
     }
   }
 
-  getArgumentNames(): string[] {
-    const scope = this.getScope()
-    if (!scope) {
-      return []
-    }
-    const scopeEntry = scope.getVariableScopeEntryByName(this.getIdentifier())
-    if (!scopeEntry) {
-      return []
-    }
-
-    if (scopeEntry.builtIn && scopeEntry.builtIn.typeInfo.category === TypeCategory.Function) {
-      return scopeEntry.builtIn.typeInfo.arguments
-        .filter((arg) => {
-          return arg.type === FunctionArgType.PositionalOnly || arg.type === FunctionArgType.PositionalOrKeyword
-        })
-        .map((arg) => {
-          return arg.name
-        })
-    }
-
-    for (const meta of scopeEntry.declarers.values()) {
-      if (meta.typeInfo?.category === TypeCategory.Function) {
-        const args = meta.typeInfo.arguments.map((arg) => {
-          return arg.name
-        })
-        return args
-      }
-      if (meta.typeInfo?.category === TypeCategory.ModuleAttribute) {
-        const typeInfo = scope.getModuleAttributeTypeInfo(meta.typeInfo.module, meta.typeInfo.attribute)
-        if (typeInfo?.category === TypeCategory.Function) {
-          const args = typeInfo.arguments.map((arg) => {
-            return arg.name
-          })
-          return args
-        }
-      }
-    }
-
-    return []
+  getArgumentNames() {
+    // TODO: We need to update the metadata when the function signature changes
+    // This will likely need a scope mutation of some kind.
+    return this.metadata.get('params') || []
   }
 
   getNodeLayout(): NodeLayout {
@@ -219,6 +189,11 @@ export class PythonCallVariable extends PythonNode {
   static deserializer(serializedNode: SerializedNode): PythonCallVariable {
     const node = new PythonCallVariable(null, serializedNode.properties['identifier'])
     node.deserializeChildSet('arguments', serializedNode)
+    if (serializedNode.meta) {
+      for (const metakey in serializedNode.meta) {
+        node.metadata.set(metakey, serializedNode.meta[metakey])
+      }
+    }
     return node
   }
 

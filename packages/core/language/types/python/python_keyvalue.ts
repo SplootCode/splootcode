@@ -80,9 +80,9 @@ export class PythonKeyValue extends PythonNode {
     typeRegistration.layout = new NodeLayout(
       HighlightColorCategory.KEYWORD,
       [
-        new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'key'),
+        new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'key', ['key']),
         new LayoutComponent(LayoutComponentType.SEPARATOR, ':'),
-        new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'value'),
+        new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'value', ['value']),
       ],
       NodeBoxType.INVISIBLE
     )

@@ -236,9 +236,9 @@ export class PythonForLoop extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
       new LayoutComponent(LayoutComponentType.KEYWORD, 'for'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'target'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'target', ['item']),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'in'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable', ['iterable']),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
     typeRegistration.pasteAdapters = {

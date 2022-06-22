@@ -36,7 +36,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   @observable
   componentType: LayoutComponentType
   @observable
-  childSetTreeLabels: string[]
+  labels: string[]
 
   @observable
   x: number
@@ -60,6 +60,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.parentRef = parentRef
     this.selection = selection
     this.nodes = []
+    this.labels = []
     this.childSet = childSet
     if (selection) {
       // Using selection as a proxy for whether this is a real node or a autcomplete
@@ -105,20 +106,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       this.layoutHandler.updateLayout(layoutComponent)
     }
 
-    if (this.componentType === LayoutComponentType.CHILD_SET_TREE_BRACKETS) {
-      if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
-        this.childSetTreeLabels = layoutComponent.metadata
-      } else {
-        this.childSetTreeLabels = []
-      }
-    }
-
-    if (this.componentType === LayoutComponentType.CHILD_SET_TREE) {
-      if (layoutComponent.metadata && Array.isArray(layoutComponent.metadata)) {
-        this.childSetTreeLabels = layoutComponent.metadata
-      } else {
-        this.childSetTreeLabels = []
-      }
+    if (layoutComponent.labels) {
+      this.labels = layoutComponent.labels
+    } else {
+      this.labels = []
     }
   }
 
