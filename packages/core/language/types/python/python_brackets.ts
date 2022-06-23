@@ -36,7 +36,7 @@ class BracketsGenerator implements SuggestionGenerator {
 export class PythonBrackets extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_BRACKETS)
-    this.addChildSet('expr', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('expr', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('expr').addChild(new PythonExpression(null))
   }
 

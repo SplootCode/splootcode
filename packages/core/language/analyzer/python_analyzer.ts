@@ -16,10 +16,28 @@ import { SplootNode } from '../node'
 import { SplootPackage } from '../projects/package'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 
-export interface ParseMapper {
-  getNextId(): number
-  addNode(splootNode: SplootNode, parseNode: ParseNode): void
-  addModuleImport(moduleImport: ModuleImport): void
+export class ParseMapper {
+  nodeMap: Map<SplootNode, ParseNode>
+  id: number
+  modules: ModuleImport[]
+
+  constructor() {
+    this.nodeMap = new Map<SplootNode, ParseNode>()
+    this.id = 1
+    this.modules = []
+  }
+
+  addNode(splootNode: SplootNode, parseNode: ParseNode) {
+    this.nodeMap.set(splootNode, parseNode)
+  }
+
+  getNextId() {
+    return this.id++
+  }
+
+  addModuleImport(moduleImport: ModuleImport) {
+    this.modules.push(moduleImport)
+  }
 }
 
 export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
@@ -62,25 +80,13 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
 
   async updateParse() {
     const mainPath = '/main.py'
-    const newNodeMap = new Map<SplootNode, ParseNode>()
-    let id = 1
-    const modules: ModuleImport[] = []
-    const parseMapper: ParseMapper = {
-      addNode: (splootNode: SplootNode, parseNode: ParseNode) => {
-        newNodeMap.set(splootNode, parseNode)
-      },
-      getNextId: () => {
-        return id++
-      },
-      addModuleImport: (moduleImport: ModuleImport) => {
-        modules.push(moduleImport)
-      },
-    }
+
+    const parseMapper = new ParseMapper()
     const moduleNode = this.rootNode.generateParseTree(parseMapper)
-    this.program.updateStructuredFile(mainPath, moduleNode, modules)
+    this.program.updateStructuredFile(mainPath, moduleNode, parseMapper.modules)
     await this.program.parseRecursively(mainPath)
     this.program.getBoundSourceFile(mainPath)
-    this.nodeMap = newNodeMap
+    this.nodeMap = parseMapper.nodeMap
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
