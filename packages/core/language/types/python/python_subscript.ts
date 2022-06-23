@@ -58,7 +58,7 @@ export class PythonSubscript extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_SUBSCRIPT)
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonExpressionToken)
-    this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getKey().addChild(new PythonExpression(null))
   }
 

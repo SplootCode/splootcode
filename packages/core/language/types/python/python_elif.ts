@@ -37,7 +37,7 @@ class InsertElifGenerator implements SuggestionGenerator {
 export class PythonElifBlock extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ELIF_STATEMENT)
-    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
     this.getChildSet('block').addChild(new PythonStatement(null))

@@ -69,8 +69,8 @@ export class SplootNode {
     return this.childSetOrder.length !== 0
   }
 
-  addChildSet(name: string, type: ChildSetType, category: NodeCategory, minChildren = 0) {
-    this.childSets[name] = new ChildSet(this, name, type, category, minChildren)
+  addChildSet(name: string, type: ChildSetType, category: NodeCategory, minChildren = 0, maxChildren = -1) {
+    this.childSets[name] = new ChildSet(this, name, type, category, minChildren, maxChildren)
     this.childSetOrder.push(name)
   }
 

@@ -16,15 +16,31 @@ export class ChildSet {
   children: SplootNode[]
   type: ChildSetType
   minChildren: number
+  maxChildren: number
   nodeCategory: NodeCategory
   mutationObservers: ChildSetObserver[]
   enableMutations: boolean
 
-  constructor(owner: SplootNode, childSetId: string, type: ChildSetType, nodeCategory: NodeCategory, minChildren = 0) {
+  constructor(
+    owner: SplootNode,
+    childSetId: string,
+    type: ChildSetType,
+    nodeCategory: NodeCategory,
+    minChildren: number,
+    maxChildren: number
+  ) {
     this.children = []
     this.childParentRef = new ParentReference(owner, childSetId)
     this.type = type
     this.minChildren = minChildren
+    if (this.type === ChildSetType.Single) {
+      this.maxChildren = 1
+    } else if (this.type === ChildSetType.Immutable) {
+      this.maxChildren = minChildren
+    } else {
+      this.maxChildren = maxChildren
+    }
+
     this.nodeCategory = nodeCategory
     this.mutationObservers = []
     this.enableMutations = false

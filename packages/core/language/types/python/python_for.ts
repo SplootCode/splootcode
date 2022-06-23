@@ -50,7 +50,7 @@ export class PythonForLoop extends PythonNode {
     this.runtimeCaptureFrame = 0
     this.scopedVariable = null
     this.addChildSet('target', ChildSetType.Single, NodeCategory.PythonLoopVariable)
-    this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
     this.getChildSet('block').addChild(new PythonStatement(null))

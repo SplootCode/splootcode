@@ -41,7 +41,7 @@ class IfGenerator implements SuggestionGenerator {
 export class PythonIfStatement extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_IF_STATEMENT)
-    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('trueblock', ChildSetType.Many, NodeCategory.PythonStatement, 1)
     this.getTrueBlock().addChild(new PythonStatement(null))

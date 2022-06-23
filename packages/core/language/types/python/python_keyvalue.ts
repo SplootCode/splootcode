@@ -22,8 +22,8 @@ export const PYTHON_KEYVALUE = 'PY_KEYVALUE'
 export class PythonKeyValue extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_KEYVALUE)
-    this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression)
-    this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('key', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
+    this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getKey().addChild(new PythonExpression(null))
     this.getValue().addChild(new PythonExpression(null))
   }

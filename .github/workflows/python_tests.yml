@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  run-linters:
+  run-python-tests:
     name: Run tests
     runs-on: ubuntu-latest
 

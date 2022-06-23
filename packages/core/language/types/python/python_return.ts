@@ -43,7 +43,7 @@ class Generator implements SuggestionGenerator {
 export class PythonReturn extends PythonNode {
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_RETURN)
-    this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('value', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('value').addChild(new PythonExpression(null))
   }
 

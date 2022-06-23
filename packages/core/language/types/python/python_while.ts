@@ -45,7 +45,7 @@ export class PythonWhileLoop extends PythonNode {
     this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
-    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression)
+    this.addChildSet('condition', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('condition').addChild(new PythonExpression(null))
     this.addChildSet('block', ChildSetType.Many, NodeCategory.PythonStatement, 1)
     this.getChildSet('block').addChild(new PythonStatement(null))
