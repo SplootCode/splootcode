@@ -3,7 +3,6 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core/language/projects/project'
 import { PythonAnalyzer } from '@splootcode/language-python/analyzer/python_analyzer'
-import { SplootDataSheet } from '@splootcode/language-web/types/dataset/datasheet'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
@@ -68,20 +67,6 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
-  }
-}
-
-export class DataSheetState {
-  @observable
-  dataSheetNode: SplootDataSheet
-
-  constructor() {
-    this.dataSheetNode = null
-  }
-
-  @action
-  setDataSheetNode(dataSheetNode: SplootDataSheet) {
-    this.dataSheetNode = dataSheetNode
   }
 }
 

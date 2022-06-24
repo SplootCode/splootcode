@@ -1,4 +1,7 @@
 import React, { MutableRefObject } from 'react'
+import { action, observable } from 'mobx'
+import { observer } from 'mobx-react'
+
 import { AddIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -18,10 +21,23 @@ import {
 } from '@chakra-ui/react'
 import { DataEditor, Spreadsheet } from 'react-spreadsheet'
 
-import { DataSheetState } from '../../context/editor_context'
 import { SplootDataFieldDeclaration } from '@splootcode/language-web/types/dataset/field_declaration'
 import { SplootDataRow } from '@splootcode/language-web/types/dataset/row'
-import { observer } from 'mobx-react'
+import { SplootDataSheet } from '../../types/dataset/datasheet'
+
+export class DataSheetState {
+  @observable
+  dataSheetNode: SplootDataSheet
+
+  constructor() {
+    this.dataSheetNode = null
+  }
+
+  @action
+  setDataSheetNode(dataSheetNode: SplootDataSheet) {
+    this.dataSheetNode = dataSheetNode
+  }
+}
 
 interface TextInputProps {
   id: string

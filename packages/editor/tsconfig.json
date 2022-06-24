@@ -3,14 +3,14 @@
     "declaration": true,
     "declarationMap": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "esnext",
     "lib": ["dom", "es2019"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "composite": true,
+    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "jsx": "react",
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "skipDefaultLibCheck": true,
@@ -27,9 +27,6 @@
     },
     {
       "path": "../language-python"
-    },
-    {
-      "path": "../language-web"
     },
   ]
 }
