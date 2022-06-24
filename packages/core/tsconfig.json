@@ -21,8 +21,6 @@
   "include": [
     "code_io/**/*",
     "language/**/*",
-    "tests/**/*",
-    "generated/*.json",
     "colors.ts",
   ],
 }

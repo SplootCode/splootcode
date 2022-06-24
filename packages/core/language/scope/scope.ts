@@ -1,6 +1,4 @@
 import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
-import { PythonAnalyzer } from '../analyzer/python_analyzer'
-import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '../mutations/scope_mutations'
 import { ScopeObserver } from '../observers'
 import { SplootNode } from '../node'
@@ -11,12 +9,12 @@ export interface VariableMetadata {
   typeInfo?: VariableTypeInfo
 }
 
-interface VariableScopeEntry {
+export interface VariableScopeEntry {
   declarers: Map<SplootNode, VariableMetadata>
   builtIn?: VariableMetadata
 }
 
-interface TypeScopeEntry {
+export interface TypeScopeEntry {
   name: string
   module: string
   builtIn?: VariableMetadata
@@ -25,7 +23,6 @@ interface TypeScopeEntry {
 export class Scope {
   parent: Scope
   name: string
-  analyzer: PythonAnalyzer
   childScopes: Set<Scope>
   nodeType: string
   isGlobal: boolean
@@ -75,6 +72,13 @@ export class Scope {
       childScope: childScope,
     })
     return childScope
+  }
+
+  getGlobalScope(): Scope {
+    if (this.isGlobal) {
+      return this
+    }
+    return this.parent.getGlobalScope()
   }
 
   removeChildScope(scope: Scope) {
@@ -246,15 +250,6 @@ export class Scope {
     }
   }
 
-  processPythonModuleSpec(spec: PythonModuleSpec) {
-    if (!this.isGlobal) {
-      this.parent.processPythonModuleSpec(spec)
-      return
-    }
-
-    loadPythonModule(this, spec)
-  }
-
   addModuleDefinition(moduleName: string, definition: ModuleDefinition) {
     this.modules.set(moduleName, definition)
   }
@@ -355,49 +350,4 @@ export class Scope {
     }
     return this.parent.isInside(nodeType)
   }
-
-  getAnalyzer(): PythonAnalyzer {
-    if (this.isGlobal) {
-      return this.analyzer
-    }
-    return this.parent.getAnalyzer()
-  }
-}
-
-function generateRandomID(): string {
-  const r = (Math.random() + 1).toString(36).substring(7)
-  return r
-}
-
-export function registerFunction(funcNode: SplootNode) {
-  const id = generateRandomID()
-  functionRegistry[id] = funcNode
-  return id
-}
-
-export function getRegisteredFunction(id: string): SplootNode {
-  return functionRegistry[id]
-}
-
-export function allRegisteredFunctionIDs(): string[] {
-  return Object.keys(functionRegistry)
-}
-
-let globalScope
-let functionRegistry
-
-export function getGlobalScope(): Scope {
-  return globalScope
-}
-
-export async function generateScope(rootNode: SplootNode, analyzer: PythonAnalyzer) {
-  const scope = new Scope(null, null)
-  scope.isGlobal = true
-  scope.analyzer = analyzer
-  globalScope = scope
-  functionRegistry = {}
-  if (rootNode.type === 'PYTHON_FILE') {
-    loadPythonBuiltins(scope)
-  }
-  rootNode.recursivelyBuildScope()
 }

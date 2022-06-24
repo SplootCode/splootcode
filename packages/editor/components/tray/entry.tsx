@@ -3,7 +3,7 @@ import React from 'react'
 import { MicroNode } from './category'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
-import { SplootFragment } from '@splootcode/core/language/types/fragment'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { Text } from '@chakra-ui/react'
 import { TrayEntry } from '@splootcode/core/language/tray/tray'
 

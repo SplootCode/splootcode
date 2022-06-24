@@ -6,7 +6,7 @@ import { Entry } from './entry'
 import { FragmentView } from '../fragment'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
-import { SplootFragment } from '@splootcode/core/language/types/fragment'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
 
 export interface CategoryProps {

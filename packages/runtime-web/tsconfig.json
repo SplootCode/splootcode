@@ -25,6 +25,9 @@
       "path": "../core"
     },
     {
+      "path": "../language-web"
+    },
+    {
       "path": "../runtime-python"
     }
   ]

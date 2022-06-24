@@ -12,7 +12,7 @@ import {
 } from './type_registry'
 import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
 import { NodeObserver } from './observers'
-import { Scope, getGlobalScope } from './scope/scope'
+import { Scope } from './scope/scope'
 import { ScopeMutation } from './mutations/scope_mutations'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
@@ -107,7 +107,7 @@ export class SplootNode {
       return this.scope
     }
     if (this.parent === null) {
-      return getGlobalScope()
+      return null
     }
     return this.parent.node.getScope()
   }
@@ -227,19 +227,19 @@ export class SplootNode {
     })
   }
 
-  recursivelyBuildScope() {
+  recursivelyBuildScope(globalScope?: Scope) {
     if (isScopedNodeType(this.type)) {
       if (this.parent !== null) {
         this.scope = this.parent.node.getScope().addChildScope(this.type)
       } else {
-        this.scope = getGlobalScope().addChildScope(this.type)
+        this.scope = globalScope.addChildScope(this.type)
       }
     }
     this.addSelfToScope()
     this.childSetOrder.forEach((childSetId: string) => {
       const childSet = this.getChildSet(childSetId)
       childSet.getChildren().forEach((node: SplootNode) => {
-        node.recursivelyBuildScope()
+        node.recursivelyBuildScope(globalScope)
       })
     })
   }
@@ -256,7 +256,7 @@ export class SplootNode {
       if (this.parent !== null) {
         this.parent.node.getScope().removeChildScope(this.scope)
       } else {
-        getGlobalScope().removeChildScope(this.scope)
+        this.scope.getGlobalScope().removeChildScope(this.scope)
       }
       this.scope = null
     }

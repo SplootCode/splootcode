@@ -4,7 +4,7 @@ import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Text } 
 import { Category, MicroNode, getSingleNodeFragment } from './category'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { FunctionSignature, TypeCategory } from '@splootcode/core/language/scope/types'
-import { PythonCallVariable } from '@splootcode/core/language/types/python/python_call_variable'
+import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { Scope } from '@splootcode/core/language/scope/scope'
 import { ScopeObserver } from '@splootcode/core/language/observers'

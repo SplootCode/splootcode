@@ -19,8 +19,8 @@ import {
 import { DataEditor, Spreadsheet } from 'react-spreadsheet'
 
 import { DataSheetState } from '../../context/editor_context'
-import { SplootDataFieldDeclaration } from '@splootcode/core/language/types/dataset/field_declaration'
-import { SplootDataRow } from '@splootcode/core/language/types/dataset/row'
+import { SplootDataFieldDeclaration } from '@splootcode/language-web/types/dataset/field_declaration'
+import { SplootDataRow } from '@splootcode/language-web/types/dataset/row'
 import { observer } from 'mobx-react'
 
 interface TextInputProps {

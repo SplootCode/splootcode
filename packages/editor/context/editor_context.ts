@@ -2,13 +2,13 @@ import React from 'react'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core/language/projects/project'
-import { PythonAnalyzer } from '@splootcode/core/language/analyzer/python_analyzer'
-import { SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
+import { PythonAnalyzer } from '@splootcode/language-python/analyzer/python_analyzer'
+import { SplootDataSheet } from '@splootcode/language-web/types/dataset/datasheet'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { action, observable } from 'mobx'
-import { generateScope } from '@splootcode/core/language/scope/scope'
+import { generateScope } from '@splootcode/language-python/scope/scope'
 
 export class EditorState {
   project: Project

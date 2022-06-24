@@ -11,7 +11,7 @@ import {
 } from '@splootcode/core/language/node_category_registry'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedFragment } from '../layout/rendered_fragment'
-import { SplootFragment } from '@splootcode/core/language/types/fragment'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
 import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'

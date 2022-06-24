@@ -33,6 +33,12 @@
       "path": "./packages/editor"
     },
     {
+      "path": "./packages/language-python"
+    },
+    {
+      "path": "./packages/language-web"
+    },
+    {
       "path": "./packages/runtime-python"
     },
     {

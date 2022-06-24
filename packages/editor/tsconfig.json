@@ -25,5 +25,11 @@
     {
       "path": "../core"
     },
+    {
+      "path": "../language-python"
+    },
+    {
+      "path": "../language-web"
+    },
   ]
 }

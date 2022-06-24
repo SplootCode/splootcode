@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "target": "es6",
+    "module": "esnext",
+    "lib": ["es2019"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "outDir": "lib",
+    "baseUrl": ".",
+    "paths": {
+      "@splootcode/*": ["../*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../core"
+    },
+  ],
+  "exclude": [
+    "node_modules",
+  ],
+  "include": [
+    "analyzer/**/*",
+    "generated/*.json",
+    "nodes/**/*",
+    "scope/**/*",
+    "tray/**/*",
+    "type_loader.ts",
+  ],
+}
