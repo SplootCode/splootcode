@@ -294,11 +294,11 @@ export class PythonModuleIdentifier extends PythonNode {
   }
 
   addSelfToScope(): void {
-    this.parent?.node.addSelfToScope()
+    ;(this.parent?.node as PythonNode).addSelfToScope()
   }
 
   removeSelfFromScope(): void {
-    this.parent?.node.addSelfToScope()
+    ;(this.parent?.node as PythonNode).addSelfToScope()
   }
 
   generateParseTree(parseMapper: ParseMapper): ModuleNameNode {

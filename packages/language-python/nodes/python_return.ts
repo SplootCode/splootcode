@@ -35,7 +35,7 @@ export const PYTHON_RETURN = 'PYTHON_RETURN'
 
 class Generator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    if (!parent.node.getScope().isInside(PYTHON_FUNCTION_DECLARATION)) {
+    if (!(parent.node as PythonNode).getScope().isInside(PYTHON_FUNCTION_DECLARATION)) {
       return []
     }
     const sampleNode = new PythonReturn(null)

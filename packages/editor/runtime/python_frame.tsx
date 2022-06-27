@@ -133,7 +133,7 @@ export class PythonFrame extends Component<ViewPageProps> {
 
   onPythonRuntimeIsReady = async () => {
     const file = await this.props.pkg.getLoadedFile('main.py')
-    file.rootNode.getScope().loadAllImportedModules()
+    ;(file.rootNode as PythonFile).getScope().loadAllImportedModules()
   }
 
   handleScopeMutation = (mutation: ScopeMutation) => {
@@ -196,7 +196,7 @@ export class PythonFrame extends Component<ViewPageProps> {
       .getLoadedFile(filename)
       .then((file) => {
         file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
-        const scope = file.rootNode.getScope() as PythonScope
+        const scope = (file.rootNode as PythonFile).getScope()
         for (const funcID in capture.detached) {
           const funcNode = scope.getRegisteredFunction(funcID)
           const funcDeclarationStatement: StatementCapture = {

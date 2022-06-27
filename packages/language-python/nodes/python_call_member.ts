@@ -10,7 +10,7 @@ import {
   TokenType,
 } from 'structured-pyright'
 import { ChildSetType } from '@splootcode/core/language/childset'
-import { FunctionArgType, FunctionSignature } from '@splootcode/core/language/scope/types'
+import { FunctionArgType, FunctionSignature } from '@splootcode/language-python/scope/types'
 import { HighlightColorCategory } from '@splootcode/core/colors'
 import {
   LayoutComponent,

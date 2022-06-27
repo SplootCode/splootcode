@@ -10,7 +10,7 @@ import {
 } from 'structured-pyright'
 
 import { ChildSetType } from '@splootcode/core/language/childset'
-import { FunctionArgType, TypeCategory } from '@splootcode/core/language/scope/types'
+import { FunctionArgType, TypeCategory } from '@splootcode/language-python/scope/types'
 import {
   FunctionCallData,
   FunctionDeclarationData,
@@ -37,10 +37,9 @@ import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { PythonScope } from '../scope/python_scope'
+import { PythonScope, VariableMetadata } from '../scope/python_scope'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { VariableMetadata } from '@splootcode/core/language/scope/scope'
 
 export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 

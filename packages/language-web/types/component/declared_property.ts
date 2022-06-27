@@ -16,7 +16,7 @@ import {
 } from '@splootcode/core/language/node_category_registry'
 import { ParentReference } from '@splootcode/core/language/node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { VariableDefinition } from '@splootcode/core/language/definitions/loader'
+import { VariableDefinition } from '@splootcode/language-web/definitions/loader'
 
 export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY'
 

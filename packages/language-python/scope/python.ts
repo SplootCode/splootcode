@@ -6,8 +6,8 @@ import {
   ModuleDefinition,
   TypeCategory,
   VariableTypeInfo,
-} from '@splootcode/core/language/scope/types'
-import { Scope } from '@splootcode/core/language/scope/scope'
+} from '@splootcode/language-python/scope/types'
+import { PythonScope } from './python_scope'
 
 interface VariableSpec {
   name: string
@@ -43,7 +43,7 @@ const functionArgTypeMapping = {
   VAR_KEYWORD: FunctionArgType.Kwargs,
 }
 
-export function loadPythonModule(scope: Scope, moduleSpec: PythonModuleSpec) {
+export function loadPythonModule(scope: PythonScope, moduleSpec: PythonModuleSpec) {
   const moduleDefinition: ModuleDefinition = {
     category: TypeCategory.Module,
     attributes: new Map(),
@@ -120,7 +120,7 @@ export function loadPythonModule(scope: Scope, moduleSpec: PythonModuleSpec) {
   }
 }
 
-export function loadPythonBuiltins(scope: Scope) {
+export function loadPythonBuiltins(scope: PythonScope) {
   const builtinsSpec: PythonModuleSpec = builtins
 
   for (const name in builtinsSpec.values) {

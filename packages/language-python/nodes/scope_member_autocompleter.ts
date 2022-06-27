@@ -1,4 +1,4 @@
-import { FunctionArgType, TypeCategory, VariableTypeInfo } from '@splootcode/core/language/scope/types'
+import { FunctionArgType, TypeCategory, VariableTypeInfo } from '@splootcode/language-python/scope/types'
 import {
   NodeCategory,
   SuggestionGenerator,
@@ -14,12 +14,12 @@ import { PYTHON_MEMBER, PythonMember } from './python_member'
 import { PYTHON_NUMBER_LITERAL, PYTHON_STRING } from './literals'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { ParentReference } from '@splootcode/core/language/node'
+import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
-import { Scope } from '@splootcode/core/language/scope/scope'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 import { TypeCategory as TC, Type } from 'structured-pyright'
 
-function getAttributesForType(scope: Scope, typeName: string): [string, VariableTypeInfo][] {
+function getAttributesForType(scope: PythonScope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
   if (typeMeta) {
     return Array.from(typeMeta.attributes.entries())
@@ -28,7 +28,7 @@ function getAttributesForType(scope: Scope, typeName: string): [string, Variable
   return []
 }
 
-function getAttributesForModule(scope: Scope, moduleName: string): [string, VariableTypeInfo][] {
+function getAttributesForModule(scope: PythonScope, moduleName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getModuleDefinition(moduleName)
   if (typeMeta) {
     return Array.from(typeMeta.attributes.entries())
@@ -37,7 +37,7 @@ function getAttributesForModule(scope: Scope, moduleName: string): [string, Vari
   return []
 }
 
-function getAttributesFromType(scope: Scope, type: Type): [string, VariableTypeInfo][] {
+function getAttributesFromType(scope: PythonScope, type: Type): [string, VariableTypeInfo][] {
   if (!type) {
     return []
   }
@@ -57,7 +57,7 @@ class MemberGenerator implements SuggestionGenerator {
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
-    const scope = parent.node.getScope(false) as PythonScope
+    const scope = (parent.node as PythonNode).getScope(false)
     let attributes: [string, VariableTypeInfo][] = []
     let allowWrap = false
 

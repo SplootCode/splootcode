@@ -1,4 +1,4 @@
-import { FunctionSignature, TypeCategory } from '@splootcode/core/language/scope/types'
+import { FunctionSignature, TypeCategory } from '@splootcode/language-python/scope/types'
 import {
   NodeCategory,
   SuggestionGenerator,
@@ -8,11 +8,12 @@ import { ParentReference } from '@splootcode/core/language/node'
 import { PythonCallVariable } from './python_call_variable'
 import { PythonFromImport } from './python_from_import'
 import { PythonIdentifier } from './python_identifier'
+import { PythonNode } from './python_node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 class ScopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    const scope = parent.node.getScope()
+    const scope = (parent.node as PythonNode).getScope()
     const inScopeVars = scope.getAllInScopeVariables()
 
     const suggestions = []
@@ -59,7 +60,7 @@ class ScopeAutocompleter implements SuggestionGenerator {
 
 class AssignableSopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    const scope = parent.node.getScope()
+    const scope = (parent.node as PythonNode).getScope()
     const inScopeVars = scope.getAllInScopeVariables()
     const suggestions = []
 

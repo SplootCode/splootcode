@@ -18,7 +18,7 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { Scope } from '@splootcode/core/language/scope/scope'
+import { PythonScope } from '../scope/python_scope'
 import { ScopeMutation, ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
@@ -74,10 +74,10 @@ export class PythonIdentifier extends PythonNode {
     return 'identifier'
   }
 
-  getScope(): Scope {
+  getScope(): PythonScope {
     // Horrible hack to put function identifiers in a different scope to the arguments.
     if (this.parent && this.parent.childSetId == 'identifier') {
-      return this.parent.node.getScope(true)
+      return (this.parent.node as PythonNode).getScope(true)
     } else {
       return super.getScope()
     }
@@ -127,17 +127,17 @@ export class PythonIdentifier extends PythonNode {
         )
       }
       this.setName(mutation.newName)
-      this.parent?.node.addSelfToScope()
+      ;(this.parent?.node as PythonNode).addSelfToScope()
     }
   }
 
   addSelfToScope(): void {
-    this.parent?.node.addSelfToScope()
+    ;(this.parent?.node as PythonNode).addSelfToScope()
     this.getScope().addWatcher(this.getName(), this)
   }
 
   removeSelfFromScope(): void {
-    this.parent?.node.addSelfToScope()
+    ;(this.parent?.node as PythonNode).addSelfToScope()
     this.getScope().removeWatcher(this.getName(), this)
   }
 

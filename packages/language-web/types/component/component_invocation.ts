@@ -22,7 +22,7 @@ import {
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { VariableDefinition } from '@splootcode/core/language/definitions/loader'
+import { VariableDefinition } from '@splootcode/language-web/definitions/loader'
 
 export const COMPONENT_INVOCATION = 'COMPONENT_INVOCATION'
 
@@ -53,10 +53,6 @@ export class ComponentInvocation extends JavaScriptSplootNode {
   }
 
   getPropertyDefinitions(): VariableDefinition[] {
-    const scope = this.getScope()
-    if (!scope) {
-      return []
-    }
     return []
   }
 

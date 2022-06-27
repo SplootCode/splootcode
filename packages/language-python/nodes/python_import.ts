@@ -29,7 +29,7 @@ import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { TypeCategory } from '@splootcode/core/language/scope/types'
+import { TypeCategory } from '@splootcode/language-python/scope/types'
 
 export const PYTHON_IMPORT = 'PYTHON_IMPORT'
 

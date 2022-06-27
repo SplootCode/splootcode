@@ -74,10 +74,6 @@ export class CallVariable extends JavaScriptSplootNode {
   }
 
   getArgumentNames(): string[] {
-    const scope = this.getScope()
-    if (!scope) {
-      return []
-    }
     // TODO: Support autocompleting argument names
     return []
   }
