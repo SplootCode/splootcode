@@ -1,6 +1,6 @@
 import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from '@splootcode/core/language/scope/types'
 import { PythonAnalyzer } from '../analyzer/python_analyzer'
-import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from '../scope/python'
+import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { Scope, VariableScopeEntry } from '@splootcode/core/language/scope/scope'
 import { ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
 import { SplootNode } from '@splootcode/core/language/node'

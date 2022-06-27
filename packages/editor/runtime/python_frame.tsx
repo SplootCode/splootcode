@@ -15,7 +15,7 @@ import {
 } from '@splootcode/core/language/capture/runtime_capture'
 import { PythonFile } from '@splootcode/language-python/nodes/python_file'
 import { PythonModuleSpec } from '@splootcode/language-python/scope/python'
-import { PythonScope } from '@splootcode/language-python/scope/scope'
+import { PythonScope } from '@splootcode/language-python/scope/python_scope'
 import { ScopeMutation, ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
 
 export enum FrameState {

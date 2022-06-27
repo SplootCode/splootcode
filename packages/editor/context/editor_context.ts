@@ -7,7 +7,7 @@ import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { action, observable } from 'mobx'
-import { generateScope } from '@splootcode/language-python/scope/scope'
+import { generateScope } from '@splootcode/language-python/scope/python_scope'
 
 export class EditorState {
   project: Project

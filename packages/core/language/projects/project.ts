@@ -55,8 +55,8 @@ export class Project {
 
   addNewPackage(name: string, buildType: PackageBuildType): SplootPackage {
     const serialisedPackage: SerializedSplootPackage = {
-      name: 'main',
-      buildType: PackageBuildType.PYTHON,
+      name: name,
+      buildType: buildType,
       files: [],
     }
     const pack = new SplootPackage(this.name, serialisedPackage, this.fileLoader)
