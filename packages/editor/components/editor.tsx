@@ -9,12 +9,9 @@ import { Allotment } from 'allotment'
 import { DragOverlay } from './drag_overlay'
 import { EditBox } from './edit_box'
 import { ExpandedListBlockView } from './list_block'
-import { HTML_DOCUMENT } from '@splootcode/core/language/types/html/html_document'
 import { InsertBox } from './insert_box'
-import { JAVASCRIPT_FILE } from '@splootcode/core/language/types/js/javascript_file'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
-import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
 import { PythonFrame } from '../runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
@@ -43,9 +40,9 @@ export class Editor extends React.Component<EditorProps> {
   render() {
     const { block, pkg, selection, validationWatcher } = this.props
     let fileBody = null
-    if (block.node.type === JAVASCRIPT_FILE || block.node.type === PYTHON_FILE || block.node.type === HTML_DOCUMENT) {
-      fileBody = block.renderedChildSets['body']
-    }
+
+    fileBody = block.renderedChildSets['body']
+
     const height = block.rowHeight + block.indentedBlockHeight
     let insertBox = null
     let editBox = null

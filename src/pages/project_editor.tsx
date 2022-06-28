@@ -9,6 +9,7 @@ import { PythonEditorPanels } from './python_editor'
 import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 import { loadExampleProject } from '../code_io/static_projects'
+import { populateNewPythonProject } from '@splootcode/language-python/project'
 import { useHistory, useParams } from 'react-router-dom'
 
 interface ProjectEditorProps {
@@ -86,10 +87,15 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
               setSaveProjectModalState({ open: false, clonedFrom: null })
             })
           } else {
-            props.projectLoader.newProject(projectID, title).then((proj) => {
-              history.push(`/p/local/${projectID}`)
-              setSaveProjectModalState({ open: false, clonedFrom: null })
-            })
+            props.projectLoader
+              .newProject(projectID, title, 'PYTHON_CLI')
+              .then((proj) => {
+                return populateNewPythonProject(proj)
+              })
+              .then(() => {
+                history.push(`/p/local/${projectID}`)
+                setSaveProjectModalState({ open: false, clonedFrom: null })
+              })
           }
         }}
       />

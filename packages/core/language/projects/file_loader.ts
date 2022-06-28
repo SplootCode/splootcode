@@ -22,7 +22,7 @@ export interface ProjectLoader {
   listProjectMetadata: () => ProjectMetadata[]
   isValidProjectId: (projectId: string) => boolean
   loadProject: (projectId: string) => Promise<Project>
-  newProject: (projectId: string, title: string) => Promise<Project>
+  newProject: (projectId: string, title: string, layoutType: string) => Promise<Project>
   deleteProject: (projectId: string) => Promise<boolean>
   cloneProject: (newProjectId: string, title: string, existingProject: Project) => Promise<Project>
   updateProjectMetadata: (project: Project) => Promise<boolean>

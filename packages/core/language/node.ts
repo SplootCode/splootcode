@@ -8,11 +8,9 @@ import {
   deserializeNode,
   getLayout,
   isAdaptableToPasteDesintation,
-  isScopedNodeType,
 } from './type_registry'
 import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
 import { NodeObserver } from './observers'
-import { Scope, getGlobalScope } from './scope/scope'
 import { ScopeMutation } from './mutations/scope_mutations'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
@@ -40,7 +38,6 @@ export class SplootNode {
   childSetWrapPriorityOrder: string[]
   enableMutations: boolean
   mutationObservers: NodeObserver[]
-  scope: Scope
   isValid: boolean
   invalidReason: string
   invalidChildSetID: string
@@ -60,7 +57,6 @@ export class SplootNode {
     this.properties = {}
     this.enableMutations = false
     this.mutationObservers = []
-    this.scope = null
     this.isRepeatableBlock = false
     this.metadata = new Map()
   }
@@ -102,26 +98,6 @@ export class SplootNode {
     return null
   }
 
-  getScope(skipSelf = false): Scope {
-    if (!skipSelf && isScopedNodeType(this.type)) {
-      return this.scope
-    }
-    if (this.parent === null) {
-      return getGlobalScope()
-    }
-    return this.parent.node.getScope()
-  }
-
-  addSelfToScope() {
-    // No-op default implementation.
-    // Variable declarations and named function declarations will do this.
-  }
-
-  removeSelfFromScope() {
-    // No-op default implementation.
-    // Variable declarations and named function declarations will do this.
-  }
-
   handleScopeMutation(mutation: ScopeMutation) {
     // No-op default implementation.
   }
@@ -132,6 +108,16 @@ export class SplootNode {
 
   validateSelf() {
     // Nodes with validation logic are expected to override this.
+  }
+
+  afterInsert() {
+    // Called after a node is inserted (only top level inserted node)
+    // Can be overridden
+  }
+
+  beforeRemoval() {
+    // Called before a node is removed (only top level inserted node)
+    // Can be overridden
   }
 
   recursivelyValidate() {
@@ -225,41 +211,6 @@ export class SplootNode {
         node.recursivelySetMutations(enable)
       })
     })
-  }
-
-  recursivelyBuildScope() {
-    if (isScopedNodeType(this.type)) {
-      if (this.parent !== null) {
-        this.scope = this.parent.node.getScope().addChildScope(this.type)
-      } else {
-        this.scope = getGlobalScope().addChildScope(this.type)
-      }
-    }
-    this.addSelfToScope()
-    this.childSetOrder.forEach((childSetId: string) => {
-      const childSet = this.getChildSet(childSetId)
-      childSet.getChildren().forEach((node: SplootNode) => {
-        node.recursivelyBuildScope()
-      })
-    })
-  }
-
-  recursivelyClearScope() {
-    this.childSetOrder.forEach((childSetId: string) => {
-      const childSet = this.getChildSet(childSetId)
-      childSet.getChildren().forEach((node: SplootNode) => {
-        node.recursivelyClearScope()
-      })
-    })
-    this.removeSelfFromScope()
-    if (isScopedNodeType(this.type) && this.scope) {
-      if (this.parent !== null) {
-        this.parent.node.getScope().removeChildScope(this.scope)
-      } else {
-        getGlobalScope().removeChildScope(this.scope)
-      }
-      this.scope = null
-    }
   }
 
   getChildSet(name: string) {

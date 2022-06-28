@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationMap": true,
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["es2019"],
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -21,8 +21,6 @@
   "include": [
     "code_io/**/*",
     "language/**/*",
-    "tests/**/*",
-    "generated/*.json",
     "colors.ts",
   ],
 }

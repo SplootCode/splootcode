@@ -53,7 +53,7 @@ const stdin = {
       for (let i = 0; i < numberOfElements; i++) {
         newStdinData[i] = stdinbuffer[1 + i]
       }
-      responseStdin = new TextDecoder('utf-8').decode(newStdinData)
+      const responseStdin = new TextDecoder('utf-8').decode(newStdinData)
       text += responseStdin
     }
     postMessage({

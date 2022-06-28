@@ -1,10 +1,10 @@
-import { FileLoader } from '@splootcode/core/language/projects/file_loader'
+import { FileLoader } from '../language/projects/file_loader'
 import { LocalStorageProjectLoader } from './local_storage_project_loader'
-import { Project } from '@splootcode/core/language/projects/project'
-import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
-import { SerializedSplootPackage, SplootPackage } from '@splootcode/core/language/projects/package'
-import { SplootFile } from '@splootcode/core/language/projects/file'
-import { SplootNode } from '@splootcode/core/language/node'
+import { Project } from '../language/projects/project'
+import { SerializedNode, deserializeNode } from '../language/type_registry'
+import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
+import { SplootFile } from '../language/projects/file'
+import { SplootNode } from '../language/node'
 
 export class LocalStorageFileLoader implements FileLoader {
   projectLoader: LocalStorageProjectLoader

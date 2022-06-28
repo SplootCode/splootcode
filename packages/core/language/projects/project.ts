@@ -1,5 +1,5 @@
 import { FileLoader } from './file_loader'
-import { SerializedSplootPackageRef, SplootPackage } from './package'
+import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
 
 export interface SerializedProject {
   name: string
@@ -51,6 +51,17 @@ export class Project {
 
   getDefaultPackage(): SplootPackage {
     return this.packages[0]
+  }
+
+  addNewPackage(name: string, buildType: PackageBuildType): SplootPackage {
+    const serialisedPackage: SerializedSplootPackage = {
+      name: name,
+      buildType: buildType,
+      files: [],
+    }
+    const pack = new SplootPackage(this.name, serialisedPackage, this.fileLoader)
+    this.packages.push(pack)
+    return pack
   }
 
   serialize(): string {

@@ -28,13 +28,14 @@ export default {
       import: './packages/runtime-python/runtime/webworker.js',
       filename: 'runtime-python/webworker.js',
     },
-    splootframewebclient: {
-      import: './packages/runtime-web/index.ts',
-    },
-    web_serviceworker: {
-      import: './packages/runtime-web/serviceworker.ts',
-      filename: 'sw.js', // Service worker needs a consistent file name.
-    },
+    // // Disable web bundles to maybe revive them one day.
+    // splootframewebclient: {
+    //   import: './packages/runtime-web/index.ts',
+    // },
+    // web_serviceworker: {
+    //   import: './packages/runtime-web/serviceworker.ts',
+    //   filename: 'sw.js', // Service worker needs a consistent file name.
+    // },
   },
 
   optimization: {

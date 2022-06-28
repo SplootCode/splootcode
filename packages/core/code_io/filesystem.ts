@@ -1,6 +1,6 @@
 import { FileSystemFileLoader } from './filesystem_file_loader'
-import { Project, SerializedProject } from '@splootcode/core/language/projects/project'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { Project, SerializedProject } from '../language/projects/project'
+import { SplootPackage } from '../language/projects/package'
 
 async function savePackage(directoryHandle: FileSystemDirectoryHandle, project: Project, pack: SplootPackage) {
   const packDir = await directoryHandle.getDirectoryHandle(pack.name, { create: true })

@@ -2,13 +2,13 @@ import React from 'react'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core/language/projects/project'
-import { PythonAnalyzer } from '@splootcode/core/language/analyzer/python_analyzer'
-import { SplootDataSheet } from '@splootcode/core/language/types/dataset/datasheet'
+import { PythonAnalyzer } from '@splootcode/language-python/analyzer/python_analyzer'
 import { SplootFile } from '@splootcode/core/language/projects/file'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { action, observable } from 'mobx'
-import { generateScope } from '@splootcode/core/language/scope/scope'
+import { generatePythonScope } from '@splootcode/language-python/scope/python_scope'
+import { isPythonNode } from '@splootcode/language-python/nodes/python_node'
 
 export class EditorState {
   project: Project
@@ -37,8 +37,11 @@ export class EditorState {
 
   async openFile(pack: SplootPackage, file: SplootFile) {
     const loadedFile = await pack.getLoadedFile(file.name)
+
     // Build scope
-    await generateScope(loadedFile.rootNode, this.analyser)
+    if (isPythonNode(loadedFile.rootNode)) {
+      await generatePythonScope(loadedFile.rootNode, this.analyser)
+    }
 
     // Start up the analyzer
     // We don't technically need to wait for it, but it helps give time for
@@ -68,20 +71,6 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
-  }
-}
-
-export class DataSheetState {
-  @observable
-  dataSheetNode: SplootDataSheet
-
-  constructor() {
-    this.dataSheetNode = null
-  }
-
-  @action
-  setDataSheetNode(dataSheetNode: SplootDataSheet) {
-    this.dataSheetNode = dataSheetNode
   }
 }
 

@@ -1,8 +1,7 @@
 import { LocalStorageFileLoader } from './local_storage_file_loader'
-import { PYTHON_FILE, PythonFile } from '../language/types/python/python_file'
-import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata } from '../language/projects/file_loader'
+import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 
 export class LocalStorageProjectLoader implements ProjectLoader {
   listProjectMetadata(): ProjectMetadata[] {
@@ -38,29 +37,17 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return new Project(proj, await Promise.all(packages), fileLoader)
   }
 
-  async newProject(projectId: string, title: string): Promise<Project> {
+  async newProject(projectId: string, title: string, layoutType: string): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
-    const serialisedPackage: SerializedSplootPackage = {
-      name: 'main',
-      buildType: PackageBuildType.PYTHON,
-      files: [],
-    }
 
-    const mainPackage = new SplootPackage(projectId, serialisedPackage, fileLoader)
-    mainPackage.addFile('main.py', PYTHON_FILE, new PythonFile(null))
     const serialisedProj: SerializedProject = {
       name: projectId,
-      layouttype: 'PYTHON_CLI',
+      layouttype: layoutType,
       splootversion: '1.0.0',
       title: title,
-      packages: [
-        {
-          name: 'main',
-          buildType: PackageBuildType.PYTHON,
-        },
-      ],
+      packages: [],
     }
-    const proj = new Project(serialisedProj, [mainPackage], fileLoader)
+    const proj = new Project(serialisedProj, [], fileLoader)
     fileLoader.saveProject(proj)
     this.updateProjectMetadata(proj)
     return proj

@@ -13,10 +13,10 @@ import {
   FunctionDeclarationData,
   StatementCapture,
 } from '@splootcode/core/language/capture/runtime_capture'
-import { PythonFile } from '@splootcode/core/language/types/python/python_file'
-import { PythonModuleSpec } from '@splootcode/core/language/scope/python'
+import { PythonFile } from '@splootcode/language-python/nodes/python_file'
+import { PythonModuleSpec } from '@splootcode/language-python/scope/python'
+import { PythonScope } from '@splootcode/language-python/scope/python_scope'
 import { ScopeMutation, ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
-import { allRegisteredFunctionIDs, getRegisteredFunction } from '@splootcode/core/language/scope/scope'
 
 export enum FrameState {
   DEAD = 0,
@@ -133,7 +133,7 @@ export class PythonFrame extends Component<ViewPageProps> {
 
   onPythonRuntimeIsReady = async () => {
     const file = await this.props.pkg.getLoadedFile('main.py')
-    file.rootNode.getScope().loadAllImportedModules()
+    ;(file.rootNode as PythonFile).getScope().loadAllImportedModules()
   }
 
   handleScopeMutation = (mutation: ScopeMutation) => {
@@ -148,7 +148,7 @@ export class PythonFrame extends Component<ViewPageProps> {
   async recievedModuleInfo(payload: PythonModuleSpec) {
     const file = await this.props.pkg.getLoadedFile('main.py')
     const pythonFile = file.rootNode as PythonFile
-    pythonFile.getScope(false).processPythonModuleSpec(payload)
+    ;(pythonFile.getScope(false) as PythonScope).processPythonModuleSpec(payload)
   }
 
   processMessage = (event: MessageEvent) => {
@@ -196,8 +196,9 @@ export class PythonFrame extends Component<ViewPageProps> {
       .getLoadedFile(filename)
       .then((file) => {
         file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
+        const scope = (file.rootNode as PythonFile).getScope()
         for (const funcID in capture.detached) {
-          const funcNode = getRegisteredFunction(funcID)
+          const funcNode = scope.getRegisteredFunction(funcID)
           const funcDeclarationStatement: StatementCapture = {
             type: 'PYTHON_FUNCTION_DECLARATION',
             data: {
@@ -206,9 +207,9 @@ export class PythonFrame extends Component<ViewPageProps> {
           }
           funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
         }
-        for (const funcID of allRegisteredFunctionIDs()) {
+        for (const funcID of scope.allRegisteredFunctionIDs()) {
           if (!(funcID in capture.detached)) {
-            getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
+            scope.getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
           }
         }
       })

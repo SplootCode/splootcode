@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["dom", "es2019"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "composite": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "outDir": "lib",
+    "baseUrl": ".",
+    "paths": {
+      "@splootcode/*": ["../*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../core"
+    },
+  ],
+  "include": [
+    "code_io/**/*",
+    "types/**/*",
+    "javascript_node.ts",
+    "type_loader.ts"
+  ],
+}

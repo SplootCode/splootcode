@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationMap": true,
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["dom", "es2019", "webworker"],
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -23,6 +23,9 @@
   "references": [
     {
       "path": "../core"
+    },
+    {
+      "path": "../language-web"
     },
     {
       "path": "../runtime-python"

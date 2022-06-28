@@ -85,7 +85,7 @@ export class ChildSet {
     this.children.splice(index, 0, node)
     node.parent = this.childParentRef
     if (this.enableMutations) {
-      node.recursivelyBuildScope()
+      node.afterInsert()
       node.parent.node.recursivelyValidate()
       node.recursivelySetMutations(true)
       const mutation = new ChildSetMutation()
@@ -120,7 +120,7 @@ export class ChildSet {
       console.warn("Attempting to delete child that doesn't exist!!", index, this.childParentRef.childSetId)
     }
     const child = this.children.splice(index, 1)[0]
-    child.recursivelyClearScope()
+    child.beforeRemoval()
     child.parent = null
     child.recursivelyClearValidation()
     if (this.enableMutations) {

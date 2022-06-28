@@ -3,19 +3,19 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Text } from '@chakra-ui/react'
 import { Category, MicroNode, getSingleNodeFragment } from './category'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { FunctionSignature, TypeCategory } from '@splootcode/core/language/scope/types'
-import { PythonCallVariable } from '@splootcode/core/language/types/python/python_call_variable'
+import { FunctionSignature, TypeCategory } from '@splootcode/language-python/scope/types'
+import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
 import { RenderedFragment } from '../../layout/rendered_fragment'
-import { Scope } from '@splootcode/core/language/scope/scope'
 import { ScopeObserver } from '@splootcode/core/language/observers'
-import { SplootNode } from '@splootcode/core/language/node'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './scope_tray.css'
+import { PythonNode } from '@splootcode/language-python/nodes/python_node'
+import { PythonScope } from '@splootcode/language-python/scope/python_scope'
 
 export interface EntryProps {
-  rootNode: SplootNode
+  rootNode: PythonNode
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
@@ -109,7 +109,7 @@ export const ScopeTray = (props: EntryProps) => {
 }
 
 interface ScopeTreeProps {
-  scope: Scope
+  scope: PythonScope
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
@@ -169,7 +169,7 @@ const ScopeTree = (props: ScopeTreeProps) => {
       {funcNames.map((name, idx) => {
         return <React.Fragment key={name}>{allFuncs[name]}</React.Fragment>
       })}
-      {scopes.map((childScope: Scope, idx) => {
+      {scopes.map((childScope: PythonScope, idx) => {
         if (!childScope.hasEntries()) {
           return null
         }

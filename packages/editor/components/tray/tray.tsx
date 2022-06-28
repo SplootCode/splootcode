@@ -4,8 +4,9 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { Category } from './category'
-import { PYTHON_FILE } from '@splootcode/core/language/types/python/python_file'
-import { PythonLanguageTray } from '@splootcode/core/language/tray/python/language'
+import { PYTHON_FILE } from '@splootcode/language-python/nodes/python_file'
+import { PythonLanguageTray } from '@splootcode/language-python/tray/language'
+import { PythonNode } from '@splootcode/language-python/nodes/python_node'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { ScopeTray } from './scope_tray'
 import { SplootNode } from '@splootcode/core/language/node'
@@ -44,7 +45,7 @@ export class Tray extends React.Component<TrayProps, TrayState> {
     const { rootNode, startDrag } = this.props
     return (
       <div className="tray">
-        <ScopeTray rootNode={rootNode} startDrag={startDrag} />
+        <ScopeTray rootNode={rootNode as PythonNode} startDrag={startDrag} />
         <Category category={this.state.listing} startDrag={startDrag} />
       </div>
     )
