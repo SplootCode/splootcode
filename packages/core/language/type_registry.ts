@@ -163,16 +163,27 @@ export interface SerializedNode {
   meta?: { [key: string]: any }
 }
 
+export class DeserializationError extends Error {
+  nodeType: string
+
+  constructor(nodeType: string, message: string) {
+    super(`Failed to deserialize node type: ${nodeType}. Reason: ${message}`)
+    this.nodeType = nodeType
+  }
+}
+
 export function deserializeNode(serialisedNode: SerializedNode): SplootNode {
   const typeName = serialisedNode.type
   const registry = typeRegistry[typeName]
   if (!registry) {
-    console.warn('Could not find type registration for: ', typeName)
-    return null
+    throw new DeserializationError(typeName, `No type registration found.`)
   }
   if (!registry.deserializer) {
-    console.warn('Missing deserializer for type: ', typeName)
-    return null
+    throw new DeserializationError(typeName, `Type is registered but does not have a deserializer function.`)
   }
-  return typeRegistry[typeName].deserializer(serialisedNode)
+  const node = typeRegistry[typeName].deserializer(serialisedNode)
+  if (!node) {
+    throw new DeserializationError(typeName, `Deserializer function returned an invalid result: ${node}`)
+  }
+  return node
 }

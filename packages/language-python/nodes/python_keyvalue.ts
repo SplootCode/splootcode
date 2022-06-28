@@ -69,9 +69,7 @@ export class PythonKeyValue extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonKeyValue {
     const node = new PythonKeyValue(null)
-    node.getKey().removeChild(0)
     node.deserializeChildSet('key', serializedNode)
-    node.getValue().removeChild(0)
     node.deserializeChildSet('value', serializedNode)
     return node
   }

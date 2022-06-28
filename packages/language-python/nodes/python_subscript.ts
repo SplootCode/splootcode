@@ -1,4 +1,12 @@
-import { ArgumentCategory, ArgumentNode, ExpressionNode, IndexNode, ParseNode, ParseNodeType } from 'structured-pyright'
+import {
+  ArgumentCategory,
+  ArgumentNode,
+  ErrorExpressionCategory,
+  ExpressionNode,
+  IndexNode,
+  ParseNode,
+  ParseNodeType,
+} from 'structured-pyright'
 
 import { ChildSetType } from '@splootcode/core/language/childset'
 import { HighlightColorCategory } from '@splootcode/core/colors'
@@ -75,8 +83,17 @@ export class PythonSubscript extends PythonNode {
   }
 
   generateParseTree(parseMapper: ParseMapper): ParseNode {
+    let targetExpression: ExpressionNode
     if (this.getTarget().getCount() === 0) {
-      return null
+      targetExpression = {
+        nodeType: ParseNodeType.Error,
+        category: ErrorExpressionCategory.MissingExpression,
+        id: parseMapper.getNextId(),
+        length: 0,
+        start: 0,
+      }
+    } else {
+      targetExpression = (this.getTarget().getChild(0) as PythonNode).generateParseTree(parseMapper) as ExpressionNode
     }
     const argNode: ArgumentNode = {
       nodeType: ParseNodeType.Argument,
@@ -94,7 +111,7 @@ export class PythonSubscript extends PythonNode {
       id: parseMapper.getNextId(),
       start: 0,
       length: 0,
-      baseExpression: (this.getTarget().getChild(0) as PythonNode).generateParseTree(parseMapper) as ExpressionNode,
+      baseExpression: targetExpression,
       items: [argNode],
       trailingComma: false,
     }
@@ -117,7 +134,6 @@ export class PythonSubscript extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonSubscript {
     const node = new PythonSubscript(null)
-    node.getKey().removeChild(0)
     node.deserializeChildSet('target', serializedNode)
     node.deserializeChildSet('key', serializedNode)
     return node

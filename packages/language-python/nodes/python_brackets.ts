@@ -60,7 +60,6 @@ export class PythonBrackets extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonBrackets {
     const node = new PythonBrackets(null)
-    node.getExpr().removeChild(0)
     node.deserializeChildSet('expr', serializedNode)
     return node
   }

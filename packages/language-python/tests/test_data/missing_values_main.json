@@ -1,0 +1,23 @@
+{"type":"PYTHON_FILE","properties":{},"childSets":{
+  "body":[
+    {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
+      "tokens":[
+        {"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"print"},"childSets":{}}
+      ]
+    }},
+    {"type":"PYTHON_EXPRESSION","childSets":{"tokens":[]}},
+    {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
+      "tokens":[]
+    }},
+    {"type":"PYTHON_EXPRESSION"},
+    {"type":"PYTHON_STATEMENT","properties":{},"childSets":{
+      "statement":[]
+    }},
+    {"type":"PYTHON_STATEMENT","childSets":{
+      "statement":[]
+    }},
+    {"type":"PYTHON_STATEMENT","properties":{},"childSets":{}},
+    {"type":"PYTHON_STATEMENT","properties":{}},
+    {"type":"PYTHON_STATEMENT"}
+  ]
+}}
