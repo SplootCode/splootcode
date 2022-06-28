@@ -223,7 +223,6 @@ export class PythonForLoop extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonForLoop {
     const node = new PythonForLoop(null)
-    node.getIterable().removeChild(0)
     node.deserializeChildSet('target', serializedNode)
     node.deserializeChildSet('iterable', serializedNode)
     node.deserializeChildSet('block', serializedNode)

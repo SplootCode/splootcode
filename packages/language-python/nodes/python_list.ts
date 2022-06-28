@@ -83,7 +83,6 @@ export class PythonList extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonList {
     const node = new PythonList(null)
-    node.getElements().removeChild(0)
     node.deserializeChildSet('elements', serializedNode)
     return node
   }

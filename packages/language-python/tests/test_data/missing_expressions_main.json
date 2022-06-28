@@ -1,0 +1,38 @@
+{"type":"PYTHON_FILE","properties":{},"childSets":{
+  "body":[
+    {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
+      "tokens":[
+        {"type":"PY_BRACKET"},
+        {"type":"PYTHON_LIST"},
+        {"type":"PY_DICT"},
+        {"type":"PY_DICT", "childSets": {
+          "elements": [{"type": "PY_KEYVALUE"}]
+        }}
+      ]
+    }},
+    {"type":"PYTHON_ASSIGNMENT","properties":{},"childSets":{
+      "left":[{"type":"PYTHON_DECLARED_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}],
+      "right":[]
+    }},
+    {"type":"PYTHON_IF_STATEMENT","properties":{},"childSets":{
+      "condition":[],
+      "trueblock":[],
+      "elseblocks": []
+    }},
+    {"type":"PYTHON_IF_STATEMENT","properties":{},"childSets":{
+      "condition":[],
+      "trueblock":[],
+      "elseblocks": [
+        {"type": "PYTHON_ELIF_STATEMENT","properties":{}}
+      ]
+    }},
+    {"type":"PYTHON_FOR_LOOP","properties":{},"childSets":{}},
+    {"type":"PYTHON_SUBSCRIPT"},
+    {"type":"PYTHON_WHILE_LOOP","properties":{},"childSets":{}},
+    {"type":"PYTHON_FUNCTION_DECLARATION","properties":{},"childSets":{
+      "body": [
+        {"type": "PYTHON_RETURN"}
+      ]
+    }}
+  ]
+}}

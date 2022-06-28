@@ -1,7 +1,6 @@
 import { ChildSet, ChildSetType } from './childset'
-import { NodeAnnotationType } from './annotations/annotations'
-import { NodeCategory, isNodeInCategory } from './node_category_registry'
 import {
+  DeserializationError,
   NodeLayout,
   SerializedNode,
   adaptNodeToPasteDestination,
@@ -9,6 +8,8 @@ import {
   getLayout,
   isAdaptableToPasteDesintation,
 } from './type_registry'
+import { NodeAnnotationType } from './annotations/annotations'
+import { NodeCategory, isNodeInCategory } from './node_category_registry'
 import { NodeMutation, NodeMutationType } from './mutations/node_mutations'
 import { NodeObserver } from './observers'
 import { ScopeMutation } from './mutations/scope_mutations'
@@ -306,19 +307,17 @@ export class SplootNode {
     }
     serializedNode.childSets[childSetId].forEach((serializedChildNode: SerializedNode) => {
       const childNode = deserializeNode(serializedChildNode)
-      if (childNode !== null) {
-        if (isNodeInCategory(childNode.type, childSet.nodeCategory)) {
-          childSet.addChild(childNode)
+      if (isNodeInCategory(childNode.type, childSet.nodeCategory)) {
+        childSet.addChild(childNode)
+      } else {
+        const adaptedNode = adaptNodeToPasteDestination(childNode, childSet.nodeCategory)
+        if (adaptedNode) {
+          childSet.addChild(adaptedNode)
         } else {
-          const adaptedNode = adaptNodeToPasteDestination(childNode, childSet.nodeCategory)
-          if (adaptedNode) {
-            childSet.addChild(adaptedNode)
-          } else {
-            console.warn(
-              `Child type ${childNode.type} is not compatible with category ${NodeCategory[childSet.nodeCategory]}`
-            )
-            console.warn(`Unable to adapt using paste adapter!`)
-          }
+          throw new DeserializationError(
+            childNode.type,
+            `Node type is incompatible with childset category ${childSet.nodeCategory}`
+          )
         }
       }
     })

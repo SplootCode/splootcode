@@ -195,7 +195,6 @@ export class PythonWhileLoop extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonWhileLoop {
     const node = new PythonWhileLoop(null)
-    node.getCondition().removeChild(0)
     node.deserializeChildSet('condition', serializedNode)
     node.deserializeChildSet('block', serializedNode)
     return node

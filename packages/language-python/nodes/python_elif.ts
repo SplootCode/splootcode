@@ -148,7 +148,6 @@ export class PythonElifBlock extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonElifBlock {
     const node = new PythonElifBlock(null)
-    node.getCondition().removeChild(0)
     node.deserializeChildSet('condition', serializedNode)
     node.deserializeChildSet('block', serializedNode)
     return node

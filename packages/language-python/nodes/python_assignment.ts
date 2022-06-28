@@ -202,7 +202,6 @@ export class PythonAssignment extends PythonNode {
   static deserializer(serializedNode: SerializedNode): PythonAssignment {
     const node = new PythonAssignment(null)
     node.deserializeChildSet('left', serializedNode)
-    node.getRight().removeChild(0)
     node.deserializeChildSet('right', serializedNode)
     return node
   }
