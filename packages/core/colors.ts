@@ -34,7 +34,7 @@ function colorBase(category: HighlightColorCategory): string {
     case HighlightColorCategory.LITERAL_NUMBER:
       return 'code-blue'
     case HighlightColorCategory.LITERAL_STRING:
-      return 'code-green'
+      return 'code-neutral'
     case HighlightColorCategory.LITERAL_LIST:
       return 'code-purple'
     case HighlightColorCategory.KEYWORD:

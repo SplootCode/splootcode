@@ -25,6 +25,7 @@ export enum NodeBoxType {
   SMALL_BLOCK,
   INVISIBLE,
   BRACKETS,
+  STRING,
 }
 
 export class NodeLayout {

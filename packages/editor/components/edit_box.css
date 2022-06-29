@@ -8,6 +8,10 @@
   line-height: 1;
 }
 
+.edit-box-string {
+  font-family: var(--string-font);
+}
+
 .edit-box input[type=text] {
   background-color: rgba(0, 0, 0, 0);
   font-family: inherit;

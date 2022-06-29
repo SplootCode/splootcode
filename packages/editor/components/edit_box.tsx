@@ -4,8 +4,9 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { EditBoxData } from '../context/edit_box'
+import { NodeBoxType } from '@splootcode/core/language/type_registry'
 import { NodeSelection } from '../context/selection'
-import { stringWidth } from '../layout/layout_constants'
+import { stringLiteralWidth, stringWidth } from '../layout/layout_constants'
 
 interface EditBoxState {
   userInput: string
@@ -35,17 +36,19 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     const { userInput, autoWidth } = this.state
     const { editorX, editorY, editBoxData } = this.props
     const { x, y } = editBoxData
-    const adjustX = 12
-    const adjustY = -0.5
     const positionStyles: React.CSSProperties = {
       position: 'absolute',
-      left: x + editorX + adjustX + 'px',
-      top: y + editorY + adjustY + 'px',
+      left: x + editorX + 'px',
+      top: y + editorY + 'px',
+    }
+    let className = 'edit-box'
+    if (editBoxData.node.layout.boxType === NodeBoxType.STRING) {
+      className = 'edit-box edit-box-string'
     }
 
     return (
       <div style={positionStyles}>
-        <div className={'edit-box'}>
+        <div className={className}>
           <input
             autoFocus
             type="text"
@@ -90,6 +93,10 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
   }
 
   getWidth = (input: string) => {
+    if (this.props.editBoxData.node.layout.boxType === NodeBoxType.STRING) {
+      return stringLiteralWidth(input) + 5
+    }
+
     return stringWidth(input) + 5
   }
 

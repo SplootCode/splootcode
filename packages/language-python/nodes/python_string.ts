@@ -4,6 +4,7 @@ import { HighlightColorCategory } from '@splootcode/core/colors'
 import {
   LayoutComponent,
   LayoutComponentType,
+  NodeBoxType,
   NodeLayout,
   SerializedNode,
   TypeRegistration,
@@ -89,9 +90,11 @@ export class PythonStringLiteral extends PythonNode {
     stringLiteral.typeName = PYTHON_STRING
     stringLiteral.deserializer = PythonStringLiteral.deserializer
     stringLiteral.properties = ['value']
-    stringLiteral.layout = new NodeLayout(HighlightColorCategory.LITERAL_STRING, [
-      new LayoutComponent(LayoutComponentType.STRING_LITERAL, 'value'),
-    ])
+    stringLiteral.layout = new NodeLayout(
+      HighlightColorCategory.LITERAL_STRING,
+      [new LayoutComponent(LayoutComponentType.STRING_LITERAL, 'value')],
+      NodeBoxType.STRING
+    )
     stringLiteral.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
       const exp = new PythonExpression(null)
       exp.getTokenSet().addChild(node)
