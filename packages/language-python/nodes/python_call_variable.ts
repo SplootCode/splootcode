@@ -73,7 +73,7 @@ export class PythonCallVariable extends PythonNode {
   }
 
   getEditableProperty(): string {
-    if (this.getScope().canRename(this.getIdentifier())) {
+    if (this.getScope()?.canRename(this.getIdentifier())) {
       return 'identifier'
     }
     return null

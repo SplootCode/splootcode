@@ -6,6 +6,7 @@ export const NODE_INLINE_SPACING_SMALL = 4
 export const NODE_BLOCK_HEIGHT = 20
 export const NODE_TEXT_OFFSET = 15
 export const ROW_SPACING = 8
+export const STRING_CAP_WIDTH = 16
 
 /* Expressions */
 export const EXPRESSION_TOKEN_SPACING = 6
@@ -33,6 +34,10 @@ export function stringWidth(s: string) {
   return getTextWidth(s, "16px 'Karla'")
 }
 
+export function stringLiteralWidth(s: string) {
+  return getTextWidth(s, "16px 'Inconsolata'")
+}
+
 export function placeholderWidth(s: string) {
   return getTextWidth(s, "italic 16px 'Karla'") + EXPRESSION_TOKEN_SPACING * 2
 }
@@ -43,5 +48,6 @@ export function labelStringWidth(s: string) {
 
 export function preloadFonts() {
   stringWidth('loadfontplz')
+  stringLiteralWidth('loadfontplz')
   placeholderWidth('loadfontplz')
 }

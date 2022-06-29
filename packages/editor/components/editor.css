@@ -36,6 +36,7 @@ text {
 }
 
 :root {
+  --string-font: 'Inconsolata', monospace;
   --code-neutral-200: rgb(226, 226, 226);
   --code-neutral-700: rgb(97, 97, 96);
   --code-yellow-200: rgb(255 254 196);

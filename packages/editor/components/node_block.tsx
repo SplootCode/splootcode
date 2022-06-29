@@ -14,6 +14,7 @@ import { NodeSelectionState } from '../context/selection'
 import { PlaceholderLabel } from './placeholder_label'
 import { RepeatedBlockAnnotation, RuntimeAnnotation } from './runtime_annotations'
 import { Separator } from './separator'
+import { StringNode } from './string_node'
 import { TokenListBlockView } from './token_list_block'
 import { TreeListBlockBracketsView, TreeListBlockView } from './tree_list_block'
 
@@ -43,7 +44,14 @@ function getCapShape(className: string, x: number, y: number, width: number, lef
   )
 }
 
-function getNodeShape(className: string, x: number, y: number, width: number, leftCurve: boolean, rightCurve: boolean) {
+export function getNodeShape(
+  className: string,
+  x: number,
+  y: number,
+  width: number,
+  leftCurve: boolean,
+  rightCurve: boolean
+) {
   let leftSide: string
   let rightSide: string
   if (leftCurve) {
@@ -66,15 +74,12 @@ function getNodeShape(className: string, x: number, y: number, width: number, le
 
 @observer
 export class EditorNodeBlock extends React.Component<NodeBlockProps> {
-  private draggableRef: React.RefObject<SVGGElement>
-
   constructor(props) {
     super(props)
-    this.draggableRef = React.createRef()
   }
 
   render() {
-    const { block, selectionState, isInvalidBlamed, placeholder } = this.props
+    const { block, selectionState, isInvalidBlamed, placeholder, isInsideBreadcrumbs } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
 
     if (block === null) {
@@ -96,6 +101,17 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
 
     let shape: ReactElement
     let placeholderLabel: ReactElement
+
+    if (block.layout.boxType === NodeBoxType.STRING) {
+      return (
+        <StringNode
+          block={block}
+          selectionState={selectionState}
+          isInsideBreadcrumbs={isInsideBreadcrumbs}
+          isInvalidBlamed={isInvalidBlamed}
+        />
+      )
+    }
 
     if (block.layout.boxType === NodeBoxType.INVISIBLE || block.layout.boxType === NodeBoxType.BRACKETS) {
       internalLeftPos = leftPos

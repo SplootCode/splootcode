@@ -1,0 +1,23 @@
+
+.string-node {
+  font-family: var(--string-font);
+}
+
+.editing.string-node {
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+.string-node > input {
+  font-family: inherit;
+  border: none;
+}
+
+.string-node > input:focus {
+  outline: none;
+}
+
+.string-node-selected-background {
+  fill: var(--editor-selected-node-block-fill);
+  stroke: transparent
+}

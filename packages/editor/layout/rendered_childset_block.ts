@@ -152,7 +152,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     if (property === null) {
       return null
     }
-    return new EditBoxData(node, property, this.getInsertCoordinates(editIndex))
+    return new EditBoxData(node, property, node.getEditCoordinates())
   }
 
   getInsertCoordinates(insertIndex: number, cursorOnly = false): number[] {

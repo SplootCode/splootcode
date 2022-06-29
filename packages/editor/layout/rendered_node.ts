@@ -6,7 +6,9 @@ import {
   NODE_BLOCK_HEIGHT,
   NODE_INLINE_SPACING,
   NODE_INLINE_SPACING_SMALL,
+  STRING_CAP_WIDTH,
   placeholderWidth,
+  stringLiteralWidth,
   stringWidth,
 } from './layout_constants'
 import { ColorUsageType, getColor } from '@splootcode/core/colors'
@@ -96,6 +98,8 @@ export class NodeBlock implements NodeObserver {
   @observable
   invalidChildsetIndex: number
 
+  editCoordinates: [number, number]
+
   constructor(parentListBlock: RenderedChildSetBlock, node: SplootNode, selection: NodeSelection, index: number) {
     this.parentChildSet = parentListBlock
     this.selection = selection
@@ -121,6 +125,7 @@ export class NodeBlock implements NodeObserver {
     this.blockWidth = 0
     this.marginLeft = 0
     this.width = 0
+    this.editCoordinates = [0, 0]
 
     this.rowHeight = NODE_BLOCK_HEIGHT
     this.indentedBlockHeight = 0
@@ -179,11 +184,17 @@ export class NodeBlock implements NodeObserver {
     this.indentedBlockHeight = 0
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 
+    const editableProperty = this.node.getEditableProperty()
+
     let leftPos = this.x + nodeInlineSpacing
     if (this.layout.boxType === NodeBoxType.INVISIBLE || this.layout.boxType === NodeBoxType.BRACKETS) {
       leftPos = this.x
       this.blockWidth = 0
       this.width = 0
+    } else if (this.layout.boxType === NodeBoxType.STRING) {
+      this.blockWidth = STRING_CAP_WIDTH * 2
+      this.width = STRING_CAP_WIDTH * 2
+      leftPos = this.x + STRING_CAP_WIDTH
     }
 
     let marginRight = 0
@@ -205,12 +216,18 @@ export class NodeBlock implements NodeObserver {
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       } else if (component.type === LayoutComponentType.STRING_LITERAL) {
+        if (editableProperty === component.identifier) {
+          this.editCoordinates = [leftPos, y]
+        }
         const val = this.node.getProperty(component.identifier)
-        const width = stringWidth('""' + val) + nodeInlineSpacing
+        const width = stringLiteralWidth(val)
         this.blockWidth += width
         leftPos += width
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       } else if (component.type === LayoutComponentType.PROPERTY) {
+        if (editableProperty === component.identifier) {
+          this.editCoordinates = [leftPos, y]
+        }
         const val = this.node.getProperty(component.identifier)
         const width = stringWidth(val.toString()) + nodeInlineSpacing
         this.blockWidth += width
@@ -292,6 +309,10 @@ export class NodeBlock implements NodeObserver {
         }
       }
     }
+  }
+
+  getEditCoordinates(): [number, number] {
+    return this.editCoordinates
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
