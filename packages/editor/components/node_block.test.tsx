@@ -7,7 +7,7 @@ import pretty from 'pretty'
 import { act } from 'react-dom/test-utils'
 import { render, unmountComponentAtNode } from 'react-dom'
 
-import { PythonStringLiteral } from '@splootcode/language-python/nodes/literals'
+import { PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
 import { loadTypes } from '@splootcode/language-python/type_loader'
 
 import { EditorNodeBlock } from './node_block'
@@ -21,13 +21,11 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  // setup a DOM element as a render target
   container = document.createElement('div')
   document.body.appendChild(container)
 })
 
 afterEach(() => {
-  // cleanup on exiting
   unmountComponentAtNode(container)
   container.remove()
   container = null
