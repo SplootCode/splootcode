@@ -122,7 +122,6 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
   adjustDimensionsToContent = () => {
     if (this.editTextArea.current) {
       const textArea = this.editTextArea.current
-      // textArea.style.height = textArea.scrollHeight + 'px'
       const [width, height] = stringLiteralDimensions(this.state.userInput)
       textArea.style.width = width + 'px'
       textArea.style.height = height + 'px'
