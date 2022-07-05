@@ -1,6 +1,15 @@
 
 .string-node {
   font-family: var(--string-font);
+  font-size: 16px;
+  line-height: 20px;
+  white-space: pre-wrap;
+}
+
+.string-node.measurement {
+  position: absolute;
+  left: -1000px;
+  top: 0;
 }
 
 .editing.string-node {

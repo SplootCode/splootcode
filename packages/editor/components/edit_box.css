@@ -10,6 +10,29 @@
 
 .edit-box-string {
   font-family: var(--string-font);
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.edit-box textarea {
+  background-color: rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+  font-family: inherit;
+  border: none;
+  color: white;
+  padding: 0px;
+  line-height: 20px;
+  resize: none;
+  margin: 0;
+}
+
+.edit-box textarea::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.edit-box textarea:focus {
+  outline: none;
 }
 
 .edit-box input[type=text] {

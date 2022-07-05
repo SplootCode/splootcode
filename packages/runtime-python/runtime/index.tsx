@@ -289,7 +289,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     })
 
     if (this.pasteLinesBuffer.length !== 0) {
-      const line = this.pasteLinesBuffer.pop()
+      const line = this.pasteLinesBuffer.shift()
       Array.from(line).forEach((c) => this.handleData(c))
       if (this.pasteLinesBuffer.length !== 0) {
         this.handleData('\r')
