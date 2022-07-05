@@ -1,9 +1,9 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 
-import { NODE_BLOCK_HEIGHT, NODE_TEXT_OFFSET, STRING_CAP_WIDTH } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelectionState } from '../context/selection'
+import { STRING_CAP_WIDTH } from '../layout/layout_constants'
 
 import './string_node.css'
 
@@ -14,14 +14,12 @@ interface StringNodeProps {
   isInvalidBlamed?: boolean
 }
 
-export function getLeftCapShape(className: string, x: number, y: number) {
+export function getLeftCapShape(className: string, x: number, y: number, height: number) {
   return (
     <>
       <path
         className={className}
-        d={`M ${x + 4} ${y} q -4,0 -4,4 v ${NODE_BLOCK_HEIGHT - 8} q 0,4 4,4 h ${
-          STRING_CAP_WIDTH - 6
-        } v ${-NODE_BLOCK_HEIGHT} z`}
+        d={`M ${x + 4} ${y} q -4,0 -4,4 v ${height - 8} q 0,4 4,4 h ${STRING_CAP_WIDTH - 6} v ${-height} z`}
       />
       <g transform={`translate(${x + 4} ${y + 6})`}>
         <path
@@ -33,14 +31,12 @@ export function getLeftCapShape(className: string, x: number, y: number) {
   )
 }
 
-function getRightCapShape(className: string, x: number, y: number) {
+function getRightCapShape(className: string, x: number, y: number, height: number) {
   return (
     <>
       <path
         className={className}
-        d={`M ${x} ${y} v ${NODE_BLOCK_HEIGHT} h ${STRING_CAP_WIDTH - 6} q 4,0 4,-4 v ${
-          -NODE_BLOCK_HEIGHT + 8
-        } q 0,-4 -4,-4 z`}
+        d={`M ${x} ${y} v ${height} h ${STRING_CAP_WIDTH - 6} q 4,0 4,-4 v ${-height + 8} q 0,-4 -4,-4 z`}
       />
       <g transform={`translate(${x + 3} ${y + 6})`}>
         <path
@@ -63,7 +59,7 @@ export class StringNode extends React.Component<StringNodeProps> {
     const isValid = (block.isValid || block.invalidChildsetID) && !isInvalidBlamed
     const className = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
-    const internalWidth = block.blockWidth - STRING_CAP_WIDTH * 2 + 4
+    const internalWidth = block.blockWidth - STRING_CAP_WIDTH * 2
 
     let rectangle = null
     if (isSelected) {
@@ -72,14 +68,14 @@ export class StringNode extends React.Component<StringNodeProps> {
           className="string-node-selected-background"
           x={leftPos + STRING_CAP_WIDTH - 2}
           y={topPos}
-          width={internalWidth}
-          height={NODE_BLOCK_HEIGHT}
+          width={internalWidth + 4}
+          height={block.rowHeight}
         />
       )
     }
 
-    const startCap = getLeftCapShape(className, leftPos, topPos)
-    const endCap = getRightCapShape(className, leftPos + STRING_CAP_WIDTH + internalWidth, topPos)
+    const startCap = getLeftCapShape(className, leftPos, topPos, block.rowHeight)
+    const endCap = getRightCapShape(className, leftPos + STRING_CAP_WIDTH + internalWidth + 2, topPos, block.rowHeight)
 
     const textContent = block.node.getProperty('value')
 
@@ -87,15 +83,9 @@ export class StringNode extends React.Component<StringNodeProps> {
       <>
         {rectangle}
         {startCap}
-        <text
-          className={'string-node'}
-          x={leftPos + STRING_CAP_WIDTH + 2}
-          y={topPos + NODE_TEXT_OFFSET}
-          style={{ fill: block.textColor }}
-          xmlSpace="preserve"
-        >
-          {textContent}
-        </text>
+        <foreignObject x={leftPos + STRING_CAP_WIDTH} y={topPos} width={internalWidth} height={block.rowHeight}>
+          <pre className="string-node">{textContent}</pre>
+        </foreignObject>
         {endCap}
       </>
     )

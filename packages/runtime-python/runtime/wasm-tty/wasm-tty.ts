@@ -73,11 +73,7 @@ export default class WasmTTY {
    * Prints a message and properly handles new-lines
    */
   print(message: string) {
-    const normInput = message.replace(/[\r\n]+/g, '\n').replace(/\n/g, '\r\n')
-    if (normInput.length === 0) {
-      this.xterm.write(normInput)
-      return
-    }
+    const normInput = message.replace(/\n/g, '\r\n')
     this.xterm.write(normInput)
   }
 

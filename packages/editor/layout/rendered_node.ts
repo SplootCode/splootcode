@@ -8,7 +8,7 @@ import {
   NODE_INLINE_SPACING_SMALL,
   STRING_CAP_WIDTH,
   placeholderWidth,
-  stringLiteralWidth,
+  stringLiteralDimensions,
   stringWidth,
 } from './layout_constants'
 import { ColorUsageType, getColor } from '@splootcode/core/colors'
@@ -220,9 +220,10 @@ export class NodeBlock implements NodeObserver {
           this.editCoordinates = [leftPos, y]
         }
         const val = this.node.getProperty(component.identifier)
-        const width = stringLiteralWidth(val)
+        const [width, height] = stringLiteralDimensions(val)
         this.blockWidth += width
         leftPos += width
+        this.rowHeight = Math.max(this.rowHeight, height)
         this.renderedInlineComponents.push(new RenderedInlineComponent(component, width))
       } else if (component.type === LayoutComponentType.PROPERTY) {
         if (editableProperty === component.identifier) {

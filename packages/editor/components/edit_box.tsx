@@ -6,11 +6,10 @@ import { observer } from 'mobx-react'
 import { EditBoxData } from '../context/edit_box'
 import { NodeBoxType } from '@splootcode/core/language/type_registry'
 import { NodeSelection } from '../context/selection'
-import { stringLiteralWidth, stringWidth } from '../layout/layout_constants'
+import { stringLiteralDimensions, stringWidth } from '../layout/layout_constants'
 
 interface EditBoxState {
   userInput: string
-  autoWidth: number
 }
 
 interface EditBoxProps {
@@ -22,18 +21,22 @@ interface EditBoxProps {
 
 @observer
 export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
+  editTextArea: React.RefObject<HTMLTextAreaElement>
+  inputBox: React.RefObject<HTMLInputElement>
+
   constructor(props: EditBoxProps) {
     super(props)
     const editBoxData = this.props.editBoxData
+    this.editTextArea = React.createRef()
+    this.inputBox = React.createRef()
 
     this.state = {
       userInput: editBoxData.contents, // Get current edit value
-      autoWidth: this.getWidth(editBoxData.contents),
     }
   }
 
   render() {
-    const { userInput, autoWidth } = this.state
+    const { userInput } = this.state
     const { editorX, editorY, editBoxData } = this.props
     const { x, y } = editBoxData
     const positionStyles: React.CSSProperties = {
@@ -41,29 +44,41 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
       left: x + editorX + 'px',
       top: y + editorY + 'px',
     }
-    let className = 'edit-box'
     if (editBoxData.node.layout.boxType === NodeBoxType.STRING) {
-      className = 'edit-box edit-box-string'
+      return (
+        <div style={positionStyles}>
+          <div className="edit-box edit-box-string">
+            <textarea
+              ref={this.editTextArea}
+              autoFocus
+              defaultValue={userInput}
+              onChange={this.onChange}
+              onKeyDown={this.onKeyDown}
+              onBlur={this.onBlur}
+            />
+          </div>
+        </div>
+      )
     }
 
     return (
       <div style={positionStyles}>
-        <div className={className}>
+        <div className="edit-box">
           <input
+            ref={this.inputBox}
             autoFocus
             type="text"
             defaultValue={userInput}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
             onBlur={this.onBlur}
-            style={{ width: autoWidth }}
           />
         </div>
       </div>
     )
   }
 
-  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { selection } = this.props
 
     // Escape
@@ -76,35 +91,52 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
       selection.deleteSelectedNode()
     }
 
-    // Enter key or Space
-    if (e.key === 'Enter' || e.key === 'Space') {
-      const userInput = e.currentTarget.value
-      this.props.selection.updatePropertyEdit(userInput)
-      selection.exitEdit()
+    if (e.key === 'Enter' && e.shiftKey && this.props.editBoxData.node.layout.boxType === NodeBoxType.STRING) {
+      // Let it through
+    } else {
+      // Enter key or Space
+      if (e.key === 'Enter' || e.key === 'Space') {
+        e.preventDefault()
+        const userInput = e.currentTarget.value
+        this.props.selection.updatePropertyEdit(userInput)
+        selection.exitEdit()
+      }
     }
 
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
   }
 
-  onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const selection = this.props.selection
     selection.exitEdit()
   }
 
-  getWidth = (input: string) => {
-    if (this.props.editBoxData.node.layout.boxType === NodeBoxType.STRING) {
-      return stringLiteralWidth(input) + 5
-    }
-
-    return stringWidth(input) + 5
-  }
-
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const userInput = e.currentTarget.value
     this.setState({
       userInput: userInput,
-      autoWidth: this.getWidth(userInput),
     })
+  }
+
+  adjustDimensionsToContent = () => {
+    if (this.editTextArea.current) {
+      const textArea = this.editTextArea.current
+      // textArea.style.height = textArea.scrollHeight + 'px'
+      const [width, height] = stringLiteralDimensions(this.state.userInput)
+      textArea.style.width = width + 'px'
+      textArea.style.height = height + 'px'
+    } else if (this.inputBox.current) {
+      const inp = this.inputBox.current
+      inp.style.width = stringWidth(this.state.userInput) + 2 + 'px'
+    }
+  }
+
+  componentDidMount(): void {
+    this.adjustDimensionsToContent()
+  }
+
+  componentDidUpdate(prevProps: Readonly<EditBoxProps>, prevState: Readonly<EditBoxState>, snapshot?: any): void {
+    this.adjustDimensionsToContent()
   }
 }

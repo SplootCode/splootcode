@@ -156,7 +156,10 @@ export class Editor extends React.Component<EditorProps> {
 
     if (event.key === 'Enter') {
       if (selection.isSingleNode()) {
-        selection.startEditAtCurrentCursor()
+        // Need to wait until key press is finished before creating the edit box.
+        setTimeout(() => {
+          selection.startEditAtCurrentCursor()
+        }, 0)
       }
     }
     switch (event.key) {
