@@ -258,7 +258,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   componentDidMount() {
     this.terminalFitAddon = new FitAddon()
-    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#0A0E16' } })
+    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#040810' } })
     this.term.loadAddon(this.terminalFitAddon)
     this.wasmTty = new WasmTTY(this.term)
     this.term.open(this.termRef.current)

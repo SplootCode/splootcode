@@ -54,20 +54,24 @@ text {
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: #1e2730;
   --editor-node-block-edge: var(--editor-node-block-fill);
-  --editor-connector-stroke: #545c67;
-  --editor-connector-label: #767e8a;
+  --editor-connector-stroke: #6d737c;
+  --editor-connector-label: #87909d;
+  --editor-placeholder-stroke: #6d737c;
+  --editor-placeholder-label: #87909d;
   --editor-indented-block-stroke: #545c67;
   --editor-anchor-dot: #545c67;
   --editor-cap-line: var(--chakra-colors-gray-700);
 
-  --editor-annotation-label: #767e8a;
+  --editor-annotation-label: #87909d;
   --editor-annotation-error: #fa8039;
 
-  --editor-autocomplete-bg-color: #123d65;
-  --editor-autocomplete-edge-color: #1a70c0;
-  --editor-autocomplete-text-color: #1a70c0;
-  --editor-autocomplete-hover-color: #0e4b84;
-  --editor-autocomplete-highlight-color: #1a70c0;
+  --editor-autocomplete-bg-color: var(--chakra-colors-gray-900);
+  --editor-autocomplete-edge-color: var(--chakra-colors-gray-700);
+  --editor-autocomplete-text-color: var(--chakra-colors-gray-500);
+  --editor-autocomplete-hover-color: rgb(103, 154, 242, 0.1);
+  --editor-autocomplete-highlight-color: #034581;
+  --editor-autocomplete-highlight-text-color: var(--chakra-colors-gray-200);
+  --editor-autocomplete-highlight-placeholder-label: var(--chakra-colors-gray-300);
 
   --editor-invalid-node-block-edge: #d37000;
 

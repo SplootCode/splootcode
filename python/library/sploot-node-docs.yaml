@@ -483,7 +483,13 @@ nodes:
         desc: This loop will print only the numbers 0, 1, 3, 5 because when i is 2 or 3, the continue skips the remaining code in the loop.
 
   - key: list
-    node: '[]'
+    serializedNode:
+      type: PYTHON_LIST
+      childSets:
+        elements:
+          - type: 'PYTHON_EXPRESSION'
+          - type: 'PYTHON_EXPRESSION'
+          - type: 'PYTHON_EXPRESSION'
     abstract: 'A list of elements'
     examples:
       - ex: "['alpha', 'beta', 'gamma']"

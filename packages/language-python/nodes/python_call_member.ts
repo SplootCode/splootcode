@@ -46,6 +46,9 @@ export class PythonCallMember extends PythonNode {
           this.getArguments().addChild(new PythonExpression(null))
         }
       })
+      if (signature.typeIfMethod) {
+        this.metadata.set('objectType', signature.typeIfMethod)
+      }
     }
     this.metadata.set('params', paramNames)
   }
@@ -84,6 +87,10 @@ export class PythonCallMember extends PythonNode {
 
   getArgumentNames() {
     return this.metadata.get('params') || []
+  }
+
+  getObjectType() {
+    return this.metadata.get('objectType') || ''
   }
 
   getArguments() {
@@ -148,9 +155,9 @@ export class PythonCallMember extends PythonNode {
 
   getNodeLayout(): NodeLayout {
     const layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object', [this.getObjectType()]),
       new LayoutComponent(LayoutComponentType.CAP, '.'),
-      new LayoutComponent(LayoutComponentType.KEYWORD, this.getMember()),
+      new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments', this.getArgumentNames()),
     ])
     return layout
@@ -178,7 +185,7 @@ export class PythonCallMember extends PythonNode {
       arguments: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object', ['object']),
       new LayoutComponent(LayoutComponentType.CAP, '.'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'member'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'arguments'),

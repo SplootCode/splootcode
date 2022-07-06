@@ -27,6 +27,15 @@
   stroke: var(--editor-bg-color);
 }
 
+.svgsplootnode.gap.placeholder-outline {
+  stroke-dasharray: 3px 3px;
+  stroke: var(--editor-placeholder-stroke);
+}
+
+.svgsplootnode.gap.selected.placeholder-outline {
+  stroke: var(--editor-placeholder-stroke);
+}
+
 .svgsplootnode.selected {
   stroke: var(--editor-selected-node-block-edge);
   fill: var(--editor-selected-node-block-fill);

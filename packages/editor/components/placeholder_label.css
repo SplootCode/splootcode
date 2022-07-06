@@ -1,5 +1,5 @@
 
 .placeholder-label {
-  fill: var(--editor-connector-label);
+  fill: var(--editor-placeholder-label);
   font-style: italic;
 }

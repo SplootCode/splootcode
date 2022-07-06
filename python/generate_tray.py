@@ -52,7 +52,7 @@ def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
       "object": [],
       "arguments": [SplootNode('PYTHON_EXPRESSION', {'tokens': []}) for i in range(required_count)]
     }, {"member": attrName})
-    serNode['meta'] = {'params': labels}
+    serNode['meta'] = {'params': labels, 'objectType': typeName}
     entry['serializedNode'] = serNode
   else:
     raise Exception(f'Non-callable type attributes not yet supported: {key}')

@@ -6,10 +6,11 @@ export enum TypeCategory {
   ModuleAttribute,
 }
 
-interface ValueType {
+export interface ValueType {
   category: TypeCategory.Value
   typeName: string
   shortDoc?: string
+  typeIfAttr?: string
 }
 
 export enum FunctionArgType {
@@ -30,6 +31,7 @@ export interface FunctionSignature {
   category: TypeCategory.Function
   arguments: FunctionArgument[]
   shortDoc: string
+  typeIfMethod?: string
 }
 
 export interface TypeDefinition {
