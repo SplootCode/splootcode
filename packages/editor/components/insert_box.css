@@ -60,10 +60,11 @@
 }
 
 .autocomplete-suggestions {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   --editor-bg-color: var(--editor-autocomplete-bg-color);
   position: absolute;
   border: 1px solid var(--editor-autocomplete-edge-color);
-  border-top-width: 0;
   list-style: none;
   margin-top: 0;
   max-height: 250px;
@@ -76,18 +77,24 @@
   color: var(--editor-autocomplete-text-color);
 }
 
+.autocomplete-suggestions::-webkit-scrollbar {
+  width: 0;
+}
+
 .autocomplete-suggestions svg {
   display: inline-block;
 }
 
 .autocomplete-description {
-  display: inline-block;
   padding: 1px 8px;
   vertical-align: top;
 }
 
 .autocomplete-suggestions li {
-  padding: 3px 4px 2px 4px;
+  padding: 4px 4px 4px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .autocomplete-suggestions li:hover {
@@ -96,13 +103,10 @@
   cursor: pointer;
 }
 
-.autocomplete-suggestion-active, li.autocomplete-suggestion-active:hover {
+li.autocomplete-suggestion-active, li.autocomplete-suggestion-active:hover {
   background-color: var(--editor-autocomplete-highlight-color);
   --editor-bg-color: var(--editor-autocomplete-highlight-color);
-  color: white;
+  color: var(--editor-autocomplete-highlight-text-color);
   cursor: pointer;
-}
-
-.autocomplete-suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid var(--editor-selected-node-block-edge);
+  --editor-placeholder-label: var(--editor-autocomplete-highlight-placeholder-label);
 }

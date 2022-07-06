@@ -266,9 +266,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     }
     const childSetBlock = block.renderedChildSets[block.leftBreadcrumbChildSet]
     if (childSetBlock.nodes.length === 0) {
+      const placeholder = childSetBlock.labels.length !== 0 ? childSetBlock.labels[0] : ''
       const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
-      const classname = 'svgsplootnode gap' + (invalid ? ' invalid' : '')
-      return <rect className={classname} x={block.x} y={block.y} height={NODE_BLOCK_HEIGHT} width={20} rx="4" />
+      const classname = 'svgsplootnode gap placeholder-outline ' + (invalid ? ' invalid' : '')
+      const shape = getNodeShape(classname, block.x, block.y, childSetBlock.width, false, false)
+      return (
+        <>
+          {shape}
+          <PlaceholderLabel label={placeholder} x={block.x} y={block.y} />
+        </>
+      )
     } else {
       return (
         <EditorNodeBlock

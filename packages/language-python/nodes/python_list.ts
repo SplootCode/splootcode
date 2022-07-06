@@ -44,7 +44,7 @@ export class PythonList extends PythonNode {
 
   getLabels(): string[] {
     return this.getElements().children.map((val, idx) => {
-      return idx.toString()
+      return `item ${idx}`
     })
   }
 

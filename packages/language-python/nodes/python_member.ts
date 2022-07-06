@@ -15,15 +15,19 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
+import { ValueType } from '../scope/types'
 import { parseToPyright } from './utils'
 
 export const PYTHON_MEMBER = 'PYTHON_MEMBER'
 
 export class PythonMember extends PythonNode {
-  constructor(parentReference: ParentReference) {
+  constructor(parentReference: ParentReference, typeInfo?: ValueType) {
     super(parentReference, PYTHON_MEMBER)
     this.addChildSet('object', ChildSetType.Single, NodeCategory.PythonExpressionToken)
     this.setProperty('member', '')
+    if (typeInfo?.typeIfAttr) {
+      this.metadata.set('objectType', typeInfo.typeIfAttr)
+    }
   }
 
   getObjectExpressionToken() {
@@ -40,6 +44,10 @@ export class PythonMember extends PythonNode {
 
   getChildrenToKeepOnDelete(): SplootNode[] {
     return this.getObjectExpressionToken().children
+  }
+
+  getObjectType() {
+    return this.metadata.get('objectType') || ''
   }
 
   generateParseTree(parseMapper: ParseMapper): ParseNode {
@@ -73,14 +81,24 @@ export class PythonMember extends PythonNode {
     }
   }
 
-  getArguments() {
-    return this.getChildSet('arguments')
+  getNodeLayout(): NodeLayout {
+    const layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object', [this.getObjectType()]),
+      new LayoutComponent(LayoutComponentType.CAP, '.'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, this.getMember()),
+    ])
+    return layout
   }
 
   static deserializer(serializedNode: SerializedNode): PythonMember {
     const node = new PythonMember(null)
     node.setMember(serializedNode.properties['member'])
     node.deserializeChildSet('object', serializedNode)
+    if (serializedNode.meta) {
+      for (const metakey in serializedNode.meta) {
+        node.metadata.set(metakey, serializedNode.meta[metakey])
+      }
+    }
     return node
   }
 

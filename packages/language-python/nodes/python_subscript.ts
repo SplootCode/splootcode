@@ -148,7 +148,7 @@ export class PythonSubscript extends PythonNode {
       arguments: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
-      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'target'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'target', ['collection']),
       new LayoutComponent(LayoutComponentType.KEYWORD, `item`),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'key', ['index or key']),
     ])

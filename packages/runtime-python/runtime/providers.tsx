@@ -17,7 +17,7 @@ const colors = {
     600: '#3E4A60', // Sploot neutral 600
     700: '#2F3848', // Sploot neutral 700
     800: '#182134', // Sploot neutral 800
-    900: '#0A0E16', // Sploot neutral 900
+    900: '#040810', // Sploot neutral 900
   },
 }
 

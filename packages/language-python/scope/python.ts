@@ -90,6 +90,7 @@ export function loadPythonModule(scope: PythonScope, moduleSpec: PythonModuleSpe
         attributes.set(attr.name, {
           category: TypeCategory.Value,
           typeName: attr.typeName,
+          typeIfAttr: name,
         })
       } else {
         const attrInfo: FunctionSignature = {
@@ -106,6 +107,7 @@ export function loadPythonModule(scope: PythonScope, moduleSpec: PythonModuleSpe
               }
               return arg
             }) || [],
+          typeIfMethod: spec.name,
         }
         attributes.set(attr.name, attrInfo)
       }
@@ -162,6 +164,7 @@ export function loadPythonBuiltins(scope: PythonScope) {
         attributes.set(attr.name, {
           category: TypeCategory.Value,
           typeName: attr.typeName,
+          typeIfAttr: spec.name,
         })
       } else {
         const attrInfo: FunctionSignature = {
@@ -178,6 +181,7 @@ export function loadPythonBuiltins(scope: PythonScope) {
               }
               return arg
             }) || [],
+          typeIfMethod: spec.name,
         }
         attributes.set(attr.name, attrInfo)
       }

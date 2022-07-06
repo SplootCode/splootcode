@@ -1,7 +1,7 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
-import { NODE_INLINE_SPACING } from './layout_constants'
+import { NODE_INLINE_SPACING, placeholderWidth } from './layout_constants'
 import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from './rendered_childset_block'
@@ -13,6 +13,8 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
   height: number
   marginTop: number
 
+  labels: string[]
+
   cursorPositions: [number, number][]
 
   constructor() {
@@ -20,7 +22,11 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
-    // N/A
+    if (layoutComponent.labels) {
+      this.labels = layoutComponent.labels
+    } else {
+      this.labels = []
+    }
   }
 
   calculateDimensions(
@@ -40,10 +46,19 @@ export class BreadcrumbsLayoutHandler implements ChildSetLayoutHandler {
     this.marginTop = 0
     this.cursorPositions = []
 
+    let label = undefined
+    if (this.labels.length > 0) {
+      label = this.labels[0]
+    }
+
     let leftPos = x
     if (nodes.length === 0) {
-      leftPos += NODE_INLINE_SPACING * 2
-      this.width += NODE_INLINE_SPACING * 2
+      if (label) {
+        this.width = placeholderWidth(label)
+      } else {
+        this.width += NODE_INLINE_SPACING * 2
+      }
+      leftPos += NODE_INLINE_SPACING
       this.cursorPositions.push([x, y])
     }
     nodes.forEach((childNodeBlock: NodeBlock, idx: number) => {

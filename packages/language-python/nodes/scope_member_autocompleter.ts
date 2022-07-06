@@ -134,7 +134,7 @@ class MemberGenerator implements SuggestionGenerator {
         }
       } else if (attr.category === TypeCategory.Value) {
         if (!name.startsWith('_') || allowUnderscore) {
-          const node = new PythonMember(null)
+          const node = new PythonMember(null, attr)
           node.setMember(name)
           suggestions.push(new SuggestedNode(node, `.${name}`, name, true, attr.shortDoc, 'object'))
         }
