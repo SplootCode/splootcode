@@ -85,7 +85,7 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
       this.cursorPositions.push([leftPos + childNodeBlock.rowWidth, y])
 
       leftPos += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
-      this.width += childNodeBlock.rowWidth + EXPRESSION_TOKEN_SPACING
+      this.width += childNodeBlock.width + EXPRESSION_TOKEN_SPACING
       this.height = Math.max(this.height, childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight)
     })
     if (nodes.length === insertIndex) {

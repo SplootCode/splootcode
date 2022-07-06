@@ -65,7 +65,7 @@ export class BlockChildSetLayoutHandler implements ChildSetLayoutHandler {
 
       topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
-      this.width = Math.max(this.width, childNodeBlock.width)
+      this.width = Math.max(this.width, INDENT + childNodeBlock.width)
     })
 
     if (this.includeEndCursorPosition) {

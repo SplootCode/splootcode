@@ -51,7 +51,7 @@ export class StackLayoutHandler implements ChildSetLayoutHandler {
       this.cursorPositions.push([x - NODE_INLINE_SPACING, topPos + childNodeBlock.marginTop])
       topPos += childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
       this.height = this.height + childNodeBlock.rowHeight + childNodeBlock.indentedBlockHeight + ROW_SPACING
-      this.width = Math.max(this.width, childNodeBlock.rowWidth)
+      this.width = Math.max(this.width, childNodeBlock.width)
     })
 
     if (nodes.length === insertIndex) {
