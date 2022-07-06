@@ -38,12 +38,12 @@ nodes:
       - ex: "'Hello'[-2]"
         desc: "Get the second last letter of the string: 'l'"
 
-  - key: binaryop-in
+  - key: binaryop-in-str
     serializedNode:
       type: PYTHON_BINARY_OPERATOR
       properties:
         operator: 'in'
-    abstract: 'True if a sequence of characters exists within the string'
+    abstract: 'True if the given sequence of characters exists within the string.'
     examples:
       - ex: '"lo" in "hello"'
         desc: This returns True because you can find the letters "lo" somewhere inside "hello"
@@ -54,7 +54,7 @@ nodes:
       - ex: '"paper plane" in "paper"'
         desc: Even though "paper" is inside "paper plan" this example returns False. The string on the right hand side must completely contain the string on the left.
 
-  - key: 'binaryop-notin'
+  - key: 'binaryop-notin-str'
     serializedNode:
       type: PYTHON_BINARY_OPERATOR
       properties:
@@ -66,7 +66,43 @@ nodes:
             if 'e' not in name:
               print('Your name does not contain an e!')
         desc: If the name variable contains a string with no e's anywhere inside it, then the program will print a message.
-    abstract: 'True if a sequence of characters does not appear within the string'
+    abstract: 'True if the given sequence of characters does not appear within the string.'
+
+  - key: binaryop-in
+    serializedNode:
+      type: PYTHON_BINARY_OPERATOR
+      properties:
+        operator: 'in'
+    abstract: 'True if the given value is contained within the collection on the right.'
+    examples:
+      - ex: |
+            days = ['Monday', 'Tuesday', 'Wednesday']
+            'Tuesday' in days
+        desc: The second line returns True because the given string exists within the list.
+      - ex: |
+            'day' in ['Monday', 'Tuesday']
+        desc: "With lists, only an exact match counts. This would return False because 'day' does not exactly match any element in the list."
+      - ex: '"lo" in "hello"'
+        desc: This returns True because you can find the letters "lo" somewhere inside "hello"
+
+  - key: 'binaryop-notin'
+    serializedNode:
+      type: PYTHON_BINARY_OPERATOR
+      properties:
+        operator: 'not in'
+    abstract: 'True if the given value cannot be found in the collection on the right.'
+    examples:
+      - ex: |
+            days = ['Monday', 'Tuesday']
+            'Wednesday' not in days
+        desc: The second line returns True because the given string does not exist within the list.
+      - ex: |
+            'day' not in ['Monday', 'Tuesday']
+        desc: "With lists, only an exact match counts. This would return True because 'day' does not exactly match any element in the list."
+      - ex: '"lo" in "hello"'
+        desc: This returns True because you can find the letters "lo" somewhere inside "hello"
+      - ex: '"lo" not in "hello"'
+        desc: This returns False because you can find the letters "lo" somewhere inside "hello"
 
   - key: int
     node: '123'

@@ -82,18 +82,30 @@ export const ScopeTray = (props: EntryProps) => {
   }, [rootNode])
 
   return (
-    <Accordion defaultIndex={[0]} allowToggle>
+    <Accordion defaultIndex={[0]} allowToggle fontSize={'14px'}>
       <AccordionItem border={'none'}>
         {({ isExpanded }) => (
           <>
-            <AccordionButton size={'sm'} border={'none'} px={0} py={1}>
-              {isExpanded ? <ChevronDownIcon mr={1} /> : <ChevronRightIcon mr={1} />}
+            <AccordionButton
+              size={'sm'}
+              border={'none'}
+              px={0}
+              py={1}
+              mb={1}
+              fontSize={'14px'}
+              _hover={{ bg: 'gray.700' }}
+            >
+              {isExpanded ? (
+                <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+              ) : (
+                <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+              )}{' '}
               <Text>Variables</Text>
             </AccordionButton>
-            <AccordionPanel py={0} pl={2} pr={0}>
+            <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
               {rootScope.hasEntries() ? (
-                <Box borderY={'solid 1px'} borderColor={'gray.700'} py={1}>
-                  <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
+                <Box borderY={'solid 1px'} borderColor={'gray.700'} py={2} mb={2}>
+                  <Text textColor={'gray.400'} lineHeight={1.1} py={1} px={1}>
                     Global
                   </Text>
                   <ScopeTree scope={rootScope} startDrag={startDrag} />
@@ -174,12 +186,12 @@ const ScopeTree = (props: ScopeTreeProps) => {
           return null
         }
         return (
-          <Fragment key={idx}>
-            <Text textColor={'gray.400'} lineHeight={1.1} py={2} px={1}>
+          <Box py={2} key={idx}>
+            <Text textColor={'gray.400'} lineHeight={1.1} py={1} px={1}>
               {childScope.name}
             </Text>
             <ScopeTree scope={childScope} startDrag={startDrag} />
-          </Fragment>
+          </Box>
         )
       })}
     </>

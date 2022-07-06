@@ -130,6 +130,20 @@ overrides:
         kind: 'POSITIONAL_ONLY'
         default: 'None'
 
+  - key: builtins.str.split
+    examples:
+      - ex: "'a cat  on  a mat'.split()"
+        desc: Returns a list of 5 words. When no separator is given, the string is split where there are spaces.
+      - ex: "'one,two,three'.split(',')"
+        desc: Returns a list of three words, broken up wherever there is a comma.
+
+  - key: builtins.str.join
+    examples:
+      - ex: "','.join(['one', 'two', 'three'])"
+        desc: Returns a new string with each of the three words joined together with commas.
+      - ex: "' '.join(['the', 'cat', 'sat'])"
+        desc: Returns a string with a space between each word.
+
   - key: builtins.int
     abstract: 'Create a new integer by converting another value into an integer.'
     examples:
