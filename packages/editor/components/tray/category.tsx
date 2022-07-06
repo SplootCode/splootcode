@@ -58,14 +58,26 @@ const CategoryView = (props: CategoryProps) => {
       {category.entries.map((listing) => {
         if ('category' in listing) {
           return (
-            <AccordionItem key={listing.category} border={'none'} isDisabled={listing.entries.length === 0}>
+            <AccordionItem key={listing.category} border={'none'} isDisabled={listing.entries.length === 0} py={0}>
               {({ isExpanded }) => (
                 <>
-                  <AccordionButton size={'sm'} border={'none'} px={0} py={1}>
-                    {isExpanded ? <ChevronDownIcon mr={1} /> : <ChevronRightIcon mr={1} />}
+                  <AccordionButton
+                    size={'sm'}
+                    border={'none'}
+                    px={0}
+                    py={1}
+                    mb={1}
+                    fontSize={'14px'}
+                    _hover={{ bg: 'gray.700' }}
+                  >
+                    {isExpanded ? (
+                      <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                    ) : (
+                      <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                    )}
                     {listing.category}
                   </AccordionButton>
-                  <AccordionPanel py={0} pl={2} pr={0}>
+                  <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
                     <Category category={listing} startDrag={startDrag} />
                   </AccordionPanel>
                 </>
@@ -78,12 +90,24 @@ const CategoryView = (props: CategoryProps) => {
           <AccordionItem key={listing.key} border={'none'}>
             {({ isExpanded }) => (
               <>
-                <AccordionButton size={'sm'} border={'none'} px={0} py={1}>
-                  {isExpanded ? <ChevronDownIcon mr={1} /> : <ChevronRightIcon mr={1} />}
+                <AccordionButton
+                  size={'sm'}
+                  border={'none'}
+                  px={0}
+                  py={1}
+                  mb={1}
+                  fontSize={'14px'}
+                  _hover={{ bg: 'gray.700' }}
+                >
+                  {isExpanded ? (
+                    <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                  ) : (
+                    <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                  )}
                   <MicroNode fragment={fragment} startDrag={startDrag} />
                   <Text pl={1}>{listing.title}</Text>
                 </AccordionButton>
-                <AccordionPanel p={0} mb={2} borderY={'solid 1px'} borderColor={'gray.700'}>
+                <AccordionPanel p={0} pl={0} ml={1} pb={1} mt={0} mb={3} className={'tray-expanded-entry'}>
                   <Entry entry={listing} startDrag={startDrag} />
                 </AccordionPanel>
               </>

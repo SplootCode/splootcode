@@ -39,8 +39,8 @@ entries:
 
       - category: Contents
         entries:
-          - sploot-node.binaryop-in
-          - sploot-node.binaryop-notin
+          - sploot-node.binaryop-in-str
+          - sploot-node.binaryop-notin-str
           - builtins.str.startswith
           - builtins.str.endswith
           - builtins.str.index
@@ -86,28 +86,31 @@ entries:
       - sploot-node.binaryop-floordivide
       - sploot-node.binaryop-mod
 
-  - category: Logic
-    entries:
-      - sploot-node.literal-true
-      - sploot-node.literal-false
-      - builtins.bool
-      - sploot-node.binaryop-and
-      - sploot-node.binaryop-or
-      - sploot-node.binaryop-not
-      - sploot-node.binaryop-equals
-      - sploot-node.binaryop-inequals
-      - sploot-node.binaryop-lt
-      - sploot-node.binaryop-lte
-      - sploot-node.binaryop-gt
-      - sploot-node.binaryop-gte
-      - sploot-node.binaryop-is
-      - sploot-node.binaryop-isnot
-  
-  - category: If-else
+  - category: Ifs & decisions
     entries:
       - sploot-node.if
       - sploot-node.elif
       - sploot-node.else
+      - category: Comparing values
+        entries:
+          - sploot-node.binaryop-equals
+          - sploot-node.binaryop-inequals
+          - sploot-node.binaryop-in
+          - sploot-node.binaryop-notin
+          - sploot-node.binaryop-lt
+          - sploot-node.binaryop-lte
+          - sploot-node.binaryop-gt
+          - sploot-node.binaryop-gte
+          - sploot-node.binaryop-is
+          - sploot-node.binaryop-isnot
+      - category: Boolean logic
+        entries:
+          - sploot-node.literal-true
+          - sploot-node.literal-false
+          - builtins.bool
+          - sploot-node.binaryop-and
+          - sploot-node.binaryop-or
+          - sploot-node.binaryop-not
 
   - category: Loops
     entries:
@@ -122,6 +125,8 @@ entries:
       - builtins.list
       - sploot-node.list-subscript
       - builtins.len
+      - sploot-node.binaryop-in
+      - sploot-node.binaryop-notin
       - builtins.list.append
       - builtins.list.clear
       - builtins.list.copy

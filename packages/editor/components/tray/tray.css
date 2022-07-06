@@ -9,9 +9,30 @@
   box-sizing: border-box;
   padding: 0 4px 0 5px;
   background-color: var(--chakra-colors-gray-900);
+  color: var(--chakra-colors-gray-300)
 }
 
 .tray::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */
   background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.tray-expanded-category {
+  border-left: 1px solid var(--chakra-colors-gray-600);
+}
+
+.tray-expanded-entry {
+  border-top: 1px solid var(--chakra-colors-gray-500);
+  border-bottom: 1px solid var(--chakra-colors-gray-500);
+  font-size: 14px;
+}
+
+.tray-entry-abstract {
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.tray-entry-example-label {
+  font-style: italic;
+  line-height: 1.1;
 }
