@@ -95,6 +95,18 @@ def appendListToken(list, tokens):
     elements = [SplootNode('PYTHON_EXPRESSION', {'tokens': []})]
   tokens.append(SplootNode('PYTHON_LIST', {'elements': elements}))
 
+def appendTupleToken(tuple, tokens):
+  elements = [generateExpression(expr) for expr in tuple.elts]
+  if len(elements) == 0:
+    elements = [SplootNode('PYTHON_EXPRESSION', {'tokens': []})]
+  tokens.append(SplootNode('PY_TUPLE', {'elements': elements}))
+
+def appendSetToken(set, tokens):
+  elements = [generateExpression(expr) for expr in set.elts]
+  if len(elements) == 0:
+    elements = [SplootNode('PYTHON_EXPRESSION', {'tokens': []})]
+  tokens.append(SplootNode('PY_SET', {'elements': elements}))
+
 def appendDictToken(dict, tokens):
   keys = [generateExpression(expr) for expr in dict.keys]
   values = [generateExpression(expr) for expr in dict.values]
@@ -134,6 +146,10 @@ def generateExpressionTokens(expr, tokens=None):
     appendCompareOperatorExpression(expr, tokens)
   elif type(expr) == ast.List:
     appendListToken(expr, tokens)
+  elif type(expr) == ast.Set:
+    appendSetToken(expr, tokens)
+  elif type(expr) == ast.Tuple:
+    appendTupleToken(expr, tokens)
   elif type(expr) == ast.Dict:
     appendDictToken(expr, tokens)
   elif type(expr) == ast.Subscript:

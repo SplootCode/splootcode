@@ -207,6 +207,7 @@ overrides:
       - name: 'default'
         kind: 'POSITIONAL_ONLY'
         default: 'None'
+    abstract: 'Remove specified key and return the corresponding value.'
 
   - key: builtins.dict.update
     parameters:
@@ -217,3 +218,82 @@ overrides:
 
   - key: builtins.dict.values
     parameters: []
+
+  - key: builtins.set.add
+    parameters:
+      - name: 'item'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.clear
+    parameters: []
+
+  - key: builtins.set.copy
+    parameters: []
+
+  - key: builtins.set.difference
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'
+
+  - key: builtins.set.difference_update
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'
+
+  - key: builtins.set.discard
+    parameters:
+      - name: 'item'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.intersection
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'
+
+  - key: builtins.set.intersection_update
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'
+
+  - key: builtins.set.isdisjoint
+    parameters:
+      - name: 'iterable'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.issubset
+    parameters:
+      - name: 'iterable'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.issuperset
+    parameters:
+      - name: 'iterable'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.pop
+    parameters: []
+
+  - key: builtins.set.remove
+    parameters:
+      - name: 'item'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.symmetric_difference
+    parameters:
+      - name: 'iterable'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.symmetric_difference_update
+    parameters:
+      - name: 'iterable'
+        kind: 'POSITIONAL_ONLY'
+
+  - key: builtins.set.union
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'
+
+  - key: builtins.set.update
+    parameters:
+      - name: 'iterables'
+        kind: 'VAR_POSITIONAL'

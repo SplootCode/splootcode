@@ -226,7 +226,6 @@ export class PythonScope {
     }
     for (const [name, def] of this.modules.entries()) {
       if (!def.loaded) {
-        console.log('Firing mutation for module import ', name)
         this.fireMutation({
           type: ScopeMutationType.IMPORT_MODULE,
           moduleName: name,

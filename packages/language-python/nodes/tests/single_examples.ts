@@ -18,8 +18,10 @@ import { PythonList } from '../python_list'
 import { PythonMember } from '../python_member'
 import { PythonNode } from '../python_node'
 import { PythonReturn } from '../python_return'
+import { PythonSet } from '../python_set'
 import { PythonStringLiteral } from '../python_string'
 import { PythonSubscript } from '../python_subscript'
+import { PythonTuple } from '../python_tuple'
 import { PythonWhileLoop } from '../python_while'
 import { SplootNode } from '@splootcode/core/language/node'
 
@@ -69,6 +71,8 @@ export function getExpressionTokenNodes(): SplootNode[] {
     new PythonCallVariable(null, 'print'),
     new PythonMember(null),
     new PythonList(null),
+    new PythonTuple(null),
+    new PythonSet(null),
     new PythonDictionary(null),
     new PythonSubscript(null),
   ]

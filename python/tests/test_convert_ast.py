@@ -257,3 +257,99 @@ add(3, 4)
             ]},
             'properties': {},
         })
+
+    def testTuple(self):
+        self.maxDiff = None
+        fileNode = splootFromPython('x = ()\n("hi",)\n("a", "b")')
+        self.assertEqual(fileNode, {
+            'type': 'PYTHON_FILE',
+            'childSets': {'body': [
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {'statement': [
+                            {'type': 'PYTHON_ASSIGNMENT', 'childSets': {
+                                'left': [
+                                    {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'x'}}
+                                ],
+                                'right': [
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'PY_TUPLE', 'childSets': {'elements': [
+                                            {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': []}, 'properties': {}}
+                                        ]}, 'properties': {}}
+                                    ]}, 'properties': {}}
+                                ],
+                            }, 'properties': {}}
+                    ]},
+                    'properties': {},
+                },
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {'statement': [
+                            {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                {'type': 'PY_TUPLE', 'childSets': {'elements': [
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'hi'}, 'childSets': {}}
+                                    ]}, 'properties': {}}
+                                ]}, 'properties': {}}
+                            ]}, 'properties': {}}
+                    ]},
+                    'properties': {},
+                },
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {'statement': [
+                            {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                {'type': 'PY_TUPLE', 'childSets': {'elements': [
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'a'}, 'childSets': {}}
+                                    ]}, 'properties': {}},
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'b'}, 'childSets': {}}
+                                    ]}, 'properties': {}}
+                                ]}, 'properties': {}}
+                            ]}, 'properties': {}}
+                    ]},
+                    'properties': {},
+                },
+            ]},
+            'properties': {},
+        })
+
+    def testSet(self):
+        self.maxDiff = None
+        fileNode = splootFromPython('{"hi"}\n{"a", "b"}')
+        self.assertEqual(fileNode, {
+            'type': 'PYTHON_FILE',
+            'childSets': {'body': [
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {'statement': [
+                            {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                {'type': 'PY_SET', 'childSets': {'elements': [
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'hi'}, 'childSets': {}}
+                                    ]}, 'properties': {}}
+                                ]}, 'properties': {}}
+                            ]}, 'properties': {}}
+                    ]},
+                    'properties': {},
+                },
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {'statement': [
+                            {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                {'type': 'PY_SET', 'childSets': {'elements': [
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'a'}, 'childSets': {}}
+                                    ]}, 'properties': {}},
+                                    {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
+                                        {'type': 'STRING_LITERAL', 'properties': {'value': 'b'}, 'childSets': {}}
+                                    ]}, 'properties': {}}
+                                ]}, 'properties': {}}
+                            ]}, 'properties': {}}
+                    ]},
+                    'properties': {},
+                },
+            ]},
+            'properties': {},
+        })

@@ -293,3 +293,39 @@ print(str(d.numerator) + '/' + str(d.denominator))
 
         f.seek(0)
         self.assertEqual(f.read(), "12/1\n")
+
+    def testTuples(self):
+        splootFile = splootFromPython('''x = ()
+y = ('hi',)
+z = ("a", 'b')
+print(x, y, z)
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), "() ('hi',) ('a', 'b')\n")
+
+    def testSets(self):
+        splootFile = splootFromPython('''x = {1, 2, 1, 1}
+y = set()
+z = {"a", 'b'}
+print(x, y, z)
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        # Order is not guaranteed for a set
+        self.assertIn(f.read(), [
+            "{1, 2} set() {'a', 'b'}\n",
+            "{1, 2} set() {'b', 'a'}\n",
+            "{2, 1} set() {'a', 'b'}\n",
+            "{2, 1} set() {'b', 'a'}\n",
+        ])
