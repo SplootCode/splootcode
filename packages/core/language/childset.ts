@@ -134,7 +134,15 @@ export class ChildSet {
       mutation.index = index
       this.fireMutation(mutation)
     }
+    child.recursivelyClearObservers()
     return child
+  }
+
+  recursivelyClearObservers() {
+    this.mutationObservers = []
+    this.children.forEach((node) => {
+      node.recursivelyClearObservers()
+    })
   }
 
   recursivelyApplyRuntimeCapture(captureList: StatementCapture[]) {

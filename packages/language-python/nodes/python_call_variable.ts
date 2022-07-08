@@ -57,9 +57,8 @@ export class PythonCallVariable extends PythonNode {
           this.getArguments().addChild(new PythonExpression(null))
         }
       }
-      if (this.getArguments().getCount() === 0) {
-        this.getArguments().addChild(new PythonExpression(null))
-      }
+    } else if (this.getArguments().getCount() === 0) {
+      this.getArguments().addChild(new PythonExpression(null))
     }
     this.metadata.set('params', paramNames)
   }
@@ -152,11 +151,11 @@ export class PythonCallVariable extends PythonNode {
   }
 
   addSelfToScope(): void {
-    this.getScope().addWatcher(this.getIdentifier(), this)
+    this.getScope()?.addWatcher(this.getIdentifier(), this)
   }
 
   removeSelfFromScope(): void {
-    this.getScope().removeWatcher(this.getIdentifier(), this)
+    this.getScope()?.removeWatcher(this.getIdentifier(), this)
   }
 
   validateSelf(): void {
