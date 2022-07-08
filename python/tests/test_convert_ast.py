@@ -353,3 +353,49 @@ add(3, 4)
             ]},
             'properties': {},
         })
+
+
+    def testElif(self):
+        self.maxDiff = None
+
+        fileNode = splootFromPython('''
+if True:
+    'hi'
+elif False:
+    'hi'
+else:
+    'hi'
+''')
+        self.assertEqual(fileNode, {
+            'type': 'PYTHON_FILE',
+            'childSets': {'body': [
+                {
+                    'type': 'PYTHON_STATEMENT',
+                    'childSets': {
+                        'statement': [
+                            {'type': 'PYTHON_IF_STATEMENT', 'childSets': {
+                                'condition': [{'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'PYTHON_BOOL', 'childSets': {}, 'properties': {'value': True}, }]}, 'properties': {}}],
+                                'trueblock': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                    {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
+                                ]}, 'properties': {}}],
+                                'elseblocks': [
+                                    {'type': 'PYTHON_ELIF_STATEMENT', 'childSets': {
+                                        'condition': [{'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'PYTHON_BOOL', 'childSets': {}, 'properties': {'value': False}, }]}, 'properties': {}}],
+                                        'block': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                            {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
+                                ]}, 'properties': {}}]
+                                    }, 'properties': {}},
+                                    {'type': 'PYTHON_ELSE_STATEMENT', 'childSets': {
+                                        'block': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                    {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
+                                ]}, 'properties': {}}]
+                                    }, 'properties': {}},
+                                ]
+                            }, 'properties': {}}
+                        ],
+                    },
+                    'properties': {},
+                }
+            ]},
+            'properties': {},
+        })

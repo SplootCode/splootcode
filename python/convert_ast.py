@@ -170,9 +170,19 @@ def generateIf(statement):
   test = generateExpression(statement.test)
   body = [generateSplootStatement(s) for s in statement.body]
   elseblocks = []
-  elsebody = [generateSplootStatement(s) for s in statement.orelse]
-  if len(elsebody) != 0:
-    elseblocks = [SplootNode('PYTHON_ELSE_STATEMENT', {'block': elsebody})]
+
+  orelse = statement.orelse
+  while len(orelse) == 1 and type(orelse[0]) == ast.If:
+    # It's one if in an else, make it an elif.
+    ifstatement = orelse[0]
+    elifbody = [generateSplootStatement(s) for s in ifstatement.body]
+    elifcondition = generateExpression(ifstatement.test)
+    elseblocks.append(SplootNode('PYTHON_ELIF_STATEMENT', {'block': elifbody, 'condition': [elifcondition]}))
+    orelse = ifstatement.orelse
+
+  if len(orelse) != 0:
+    elsebody = [generateSplootStatement(s) for s in orelse]
+    elseblocks.append(SplootNode('PYTHON_ELSE_STATEMENT', {'block': elsebody}))
 
   return SplootNode("PYTHON_IF_STATEMENT", {
     'condition': [test],
