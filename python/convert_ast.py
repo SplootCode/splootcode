@@ -25,8 +25,12 @@ def generateAssignmentTarget(targets):
   target = targets[0]
   if type(target) == ast.Name:
     return SplootNode('PY_IDENTIFIER', {}, {"identifier": target.id})
+  elif type(target) == ast.Subscript:
+    toks = []
+    appendSubscriptExpression(target, toks)
+    return toks[0]
   
-  raise Exception(f"Unsupported target for assignment: {ast.dump(targets)}")
+  raise Exception(f"Unsupported target for assignment: {targets}")
 
 def generateAssignment(assignStatement):
   return SplootNode("PYTHON_ASSIGNMENT", {

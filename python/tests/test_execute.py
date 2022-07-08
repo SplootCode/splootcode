@@ -329,3 +329,18 @@ print(x, y, z)
             "{2, 1} set() {'a', 'b'}\n",
             "{2, 1} set() {'b', 'a'}\n",
         ])
+
+    def testDictionaryAssignment(self):
+        splootFile = splootFromPython('''x = {}
+x['fred'] = 'blogs'
+x[('foo', 'bar')] = ['list', 'of', 'things']
+print(x)
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), "{'fred': 'blogs', ('foo', 'bar'): ['list', 'of', 'things']}\n")

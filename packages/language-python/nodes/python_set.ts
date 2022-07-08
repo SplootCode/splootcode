@@ -50,8 +50,10 @@ export class PythonSet extends PythonNode {
       length: 0,
       entries: [],
     }
-    this.getElements().children.map((exprNode: PythonExpression) => {
-      return exprNode.generateParseTree(parseMapper)
+    setNode.entries = this.getElements().children.map((expr: PythonExpression) => {
+      const exprNode = expr.generateParseTree(parseMapper)
+      exprNode.parent = setNode
+      return exprNode
     })
     return setNode
   }

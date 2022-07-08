@@ -536,6 +536,25 @@ nodes:
   #           names[1] = 'Bob'
   #       desc: Changes the names list so that the second element is now Bob instead of Sally.
 
+  - key: dict-assign
+    serializedNode:
+      type: PYTHON_ASSIGNMENT
+      childSets:
+        left:
+          - type: PYTHON_SUBSCRIPT
+            childSets:
+              key:
+                - type: 'PYTHON_EXPRESSION'
+    abstract: 'Assign to the specific item of the dictionary to set a specific key and value.'
+    examples:
+      - ex: |
+            ages = {
+              'Fred': 10,
+              'Sally': 39
+            }
+            ages['Bob'] = 28
+        desc: Adds a new key 'Bob' to the dictionary, with a value of 28.
+
   - key: set
     serializedNode:
       type: PY_SET

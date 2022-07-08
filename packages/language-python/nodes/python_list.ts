@@ -56,8 +56,10 @@ export class PythonList extends PythonNode {
       length: 0,
       entries: [],
     }
-    listNode.entries = this.getElements().children.map((exprNode: PythonExpression) => {
-      return exprNode.generateParseTree(parseMapper)
+    listNode.entries = this.getElements().children.map((expr: PythonExpression) => {
+      const exprNode = expr.generateParseTree(parseMapper)
+      exprNode.parent = listNode
+      return exprNode
     })
     return listNode
   }

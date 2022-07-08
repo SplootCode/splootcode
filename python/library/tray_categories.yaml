@@ -184,7 +184,6 @@ entries:
       - category: Add or remove entries
         entries:
           - sploot-node.dict-assign
-          - sploot-node.dict-del
           - builtins.dict.clear
           - builtins.dict.pop
           - builtins.dict.popitem
