@@ -1,0 +1,454 @@
+{
+  "type": "PYTHON_FILE",
+  "properties": {},
+  "childSets": {
+    "body": [
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      {
+        "type": "PYTHON_STATEMENT",
+        "properties": {},
+        "childSets": {
+          "statement": [
+            {
+              "type": "PYTHON_ASSIGNMENT",
+              "properties": {},
+              "childSets": {
+                "left": [{ "type": "PY_IDENTIFIER", "properties": { "identifier": "some_list" }, "childSets": {} }],
+                "right": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": [
+                        {
+                          "type": "PYTHON_LIST",
+                          "properties": {},
+                          "childSets": {
+                            "elements": [
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Monday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Tuesday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    {
+                                      "type": "STRING_LITERAL",
+                                      "properties": { "value": "Wednesday" },
+                                      "childSets": {}
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Thursday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Friday" }, "childSets": {} }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      {
+        "type": "PYTHON_STATEMENT",
+        "properties": {},
+        "childSets": {
+          "statement": [
+            {
+              "type": "PYTHON_ASSIGNMENT",
+              "properties": {},
+              "childSets": {
+                "left": [{ "type": "PY_IDENTIFIER", "properties": { "identifier": "some_tuple" }, "childSets": {} }],
+                "right": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": [
+                        {
+                          "type": "PY_TUPLE",
+                          "properties": {},
+                          "childSets": {
+                            "elements": [
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Monday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Tuesday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    {
+                                      "type": "STRING_LITERAL",
+                                      "properties": { "value": "Wednesday" },
+                                      "childSets": {}
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Thursday" }, "childSets": {} }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      {
+        "type": "PYTHON_STATEMENT",
+        "properties": {},
+        "childSets": {
+          "statement": [
+            {
+              "type": "PYTHON_ASSIGNMENT",
+              "properties": {},
+              "childSets": {
+                "left": [{ "type": "PY_IDENTIFIER", "properties": { "identifier": "weekdays" }, "childSets": {} }],
+                "right": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": [
+                        {
+                          "type": "PY_SET",
+                          "properties": {},
+                          "childSets": {
+                            "elements": [
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Monday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Tuesday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    {
+                                      "type": "STRING_LITERAL",
+                                      "properties": { "value": "Wednesday" },
+                                      "childSets": {}
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Thursday" }, "childSets": {} }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PYTHON_EXPRESSION",
+                                "properties": {},
+                                "childSets": {
+                                  "tokens": [
+                                    { "type": "STRING_LITERAL", "properties": { "value": "Friday" }, "childSets": {} }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      {
+        "type": "PYTHON_STATEMENT",
+        "properties": {},
+        "childSets": {
+          "statement": [
+            {
+              "type": "PYTHON_ASSIGNMENT",
+              "properties": {},
+              "childSets": {
+                "left": [{ "type": "PY_IDENTIFIER", "properties": { "identifier": "some_dict" }, "childSets": {} }],
+                "right": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": [
+                        {
+                          "type": "PY_DICT",
+                          "properties": {},
+                          "childSets": {
+                            "elements": [
+                              {
+                                "type": "PY_KEYVALUE",
+                                "properties": {},
+                                "childSets": {
+                                  "key": [
+                                    {
+                                      "type": "PYTHON_EXPRESSION",
+                                      "properties": {},
+                                      "childSets": {
+                                        "tokens": [
+                                          {
+                                            "type": "STRING_LITERAL",
+                                            "properties": { "value": "weekend" },
+                                            "childSets": {}
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "value": [
+                                    {
+                                      "type": "PYTHON_EXPRESSION",
+                                      "properties": {},
+                                      "childSets": {
+                                        "tokens": [
+                                          {
+                                            "type": "PYTHON_LIST",
+                                            "properties": {},
+                                            "childSets": {
+                                              "elements": [
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Saturday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Sunday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "PY_KEYVALUE",
+                                "properties": {},
+                                "childSets": {
+                                  "key": [
+                                    {
+                                      "type": "PYTHON_EXPRESSION",
+                                      "properties": {},
+                                      "childSets": {
+                                        "tokens": [
+                                          {
+                                            "type": "STRING_LITERAL",
+                                            "properties": { "value": "weekdays" },
+                                            "childSets": {}
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "value": [
+                                    {
+                                      "type": "PYTHON_EXPRESSION",
+                                      "properties": {},
+                                      "childSets": {
+                                        "tokens": [
+                                          {
+                                            "type": "PYTHON_LIST",
+                                            "properties": {},
+                                            "childSets": {
+                                              "elements": [
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Monday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Tuesday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Wednesday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Thursday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "PYTHON_EXPRESSION",
+                                                  "properties": {},
+                                                  "childSets": {
+                                                    "tokens": [
+                                                      {
+                                                        "type": "STRING_LITERAL",
+                                                        "properties": { "value": "Friday" },
+                                                        "childSets": {}
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } },
+      { "type": "PYTHON_STATEMENT", "properties": {}, "childSets": { "statement": [] } }
+    ]
+  }
+}

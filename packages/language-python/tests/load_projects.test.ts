@@ -79,4 +79,20 @@ describe('python whole file loading', () => {
     const testWalker = new TestWalker()
     testWalker.walk(parseTree)
   })
+
+  test('load collections literals', async () => {
+    const proj = await loadTestProject('test_collections', 'collections')
+    const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+
+    expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
+    const rootNode = pythonFile.rootNode as PythonFile
+    nodeSanityCheck(rootNode)
+
+    const parseTree = rootNode.generateParseTree(new ParseMapper())
+    expect(parseTree).not.toBe(null)
+    expect(parseTree).toBeDefined()
+
+    const testWalker = new TestWalker()
+    testWalker.walk(parseTree)
+  })
 })

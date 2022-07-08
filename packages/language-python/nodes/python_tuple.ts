@@ -1,4 +1,4 @@
-import { ListNode, ParseNodeType } from 'structured-pyright'
+import { ParseNodeType, TupleNode } from 'structured-pyright'
 
 import { ChildSetType } from '@splootcode/core/language/childset'
 import { HighlightColorCategory } from '@splootcode/core/colors'
@@ -22,18 +22,18 @@ import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
-export const PYTHON_LIST = 'PYTHON_LIST'
+export const PYTHON_TUPLE = 'PY_TUPLE'
 
-class ListLiteralGenerator implements SuggestionGenerator {
+class TupleLiteralGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
-    const node = new PythonList(null)
-    return [new SuggestedNode(node, 'list', 'list', true, 'List literal')]
+    const node = new PythonTuple(null)
+    return [new SuggestedNode(node, 'tuple', 'tuple', true, 'Tuple literal')]
   }
 }
 
-export class PythonList extends PythonNode {
+export class PythonTuple extends PythonNode {
   constructor(parentReference: ParentReference) {
-    super(parentReference, PYTHON_LIST)
+    super(parentReference, PYTHON_TUPLE)
     this.addChildSet('elements', ChildSetType.Many, NodeCategory.PythonExpression)
     this.getElements().addChild(new PythonExpression(null))
   }
@@ -48,20 +48,21 @@ export class PythonList extends PythonNode {
     })
   }
 
-  generateParseTree(parseMapper: ParseMapper): ListNode {
-    const listNode: ListNode = {
-      nodeType: ParseNodeType.List,
+  generateParseTree(parseMapper: ParseMapper): TupleNode {
+    const tupleNode: TupleNode = {
+      nodeType: ParseNodeType.Tuple,
       id: parseMapper.getNextId(),
       start: 0,
       length: 0,
-      entries: [],
+      enclosedInParens: true,
+      expressions: [],
     }
-    listNode.entries = this.getElements().children.map((expr: PythonExpression) => {
+    tupleNode.expressions = this.getElements().children.map((expr: PythonExpression) => {
       const exprNode = expr.generateParseTree(parseMapper)
-      exprNode.parent = listNode
+      exprNode.parent = tupleNode
       return exprNode
     })
-    return listNode
+    return tupleNode
   }
 
   validateSelf(): void {
@@ -70,32 +71,32 @@ export class PythonList extends PythonNode {
       ;(elements[0] as PythonExpression).allowEmpty()
     } else {
       elements.forEach((expression: PythonExpression) => {
-        expression.requireNonEmpty('Cannot have empty list element')
+        expression.requireNonEmpty('Cannot have empty tuple element')
       })
     }
   }
 
   getNodeLayout(): NodeLayout {
     const layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'tuple'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'elements', this.getLabels()),
     ])
     return layout
   }
 
-  static deserializer(serializedNode: SerializedNode): PythonList {
-    const node = new PythonList(null)
+  static deserializer(serializedNode: SerializedNode): PythonTuple {
+    const node = new PythonTuple(null)
     node.deserializeChildSet('elements', serializedNode)
     return node
   }
 
   static register() {
     const typeRegistration = new TypeRegistration()
-    typeRegistration.typeName = PYTHON_LIST
-    typeRegistration.deserializer = PythonList.deserializer
+    typeRegistration.typeName = PYTHON_TUPLE
+    typeRegistration.deserializer = PythonTuple.deserializer
     typeRegistration.childSets = { arguments: NodeCategory.PythonExpression }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.KEYWORD, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'list'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'tuple'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TREE_BRACKETS, 'elements'),
     ])
     typeRegistration.pasteAdapters[PYTHON_EXPRESSION] = (node: SplootNode) => {
@@ -105,7 +106,7 @@ export class PythonList extends PythonNode {
     }
 
     registerType(typeRegistration)
-    registerNodeCateogry(PYTHON_LIST, NodeCategory.PythonExpressionToken)
-    registerAutocompleter(NodeCategory.PythonExpressionToken, new ListLiteralGenerator())
+    registerNodeCateogry(PYTHON_TUPLE, NodeCategory.PythonExpressionToken)
+    registerAutocompleter(NodeCategory.PythonExpressionToken, new TupleLiteralGenerator())
   }
 }

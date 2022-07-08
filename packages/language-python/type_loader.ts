@@ -24,9 +24,11 @@ import { PythonMember } from './nodes/python_member'
 import { PythonModuleIdentifier } from './nodes/python_module_identifier'
 import { PythonNumberLiteral } from './nodes/literals'
 import { PythonReturn } from './nodes/python_return'
+import { PythonSet } from './nodes/python_set'
 import { PythonStatement } from './nodes/python_statement'
 import { PythonStringLiteral } from './nodes/python_string'
 import { PythonSubscript } from './nodes/python_subscript'
+import { PythonTuple } from './nodes/python_tuple'
 import { PythonVariableReference } from './nodes/variable_reference'
 import { PythonWhileLoop } from './nodes/python_while'
 import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter'
@@ -60,8 +62,10 @@ export function loadTypes() {
   PythonMember.register()
   PythonModuleIdentifier.register()
   PythonReturn.register()
+  PythonSet.register()
   PythonStatement.register()
   PythonSubscript.register()
+  PythonTuple.register()
   PythonWhileLoop.register()
   registerPythonAutocompleters()
   registerMemberAutocompleters()

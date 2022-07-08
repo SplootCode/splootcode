@@ -29,7 +29,6 @@ describe('python node serialization', () => {
     const statementTypes = getNodesForCategory(NodeCategory.PythonStatementContents)
     statementTypes.forEach((statementNodeType) => {
       if (!testedTypes.has(statementNodeType)) {
-        console.log(testedTypes)
         throw new Error(`Node type ${statementNodeType} was not tested for serialization roundtripping.`)
       }
     })
@@ -54,7 +53,6 @@ describe('python node serialization', () => {
     const tokenTypes = getNodesForCategory(NodeCategory.PythonExpressionToken)
     tokenTypes.forEach((nodeType) => {
       if (!testedTypes.has(nodeType)) {
-        console.log(testedTypes)
         throw new Error(`Node type ${nodeType} was not tested for serialization roundtripping.`)
       }
     })

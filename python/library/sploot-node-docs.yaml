@@ -501,6 +501,22 @@ nodes:
       - ex: "[]"
         desc: An empty list.
 
+  - key: tuple
+    abstract: "A read-only sequence of elements. Similar to a list, but cannot be modified once it's created."
+    serializedNode:
+      type: PY_TUPLE
+      childSets:
+        elements:
+          - type: 'PYTHON_EXPRESSION'
+          - type: 'PYTHON_EXPRESSION'
+          - type: 'PYTHON_EXPRESSION'
+    examples:
+      - ex: "('alpha', 'beta', 'gamma')"
+        desc: A tuple of three strings.
+      - ex: "names = ('Fred', 'Sally')"
+        desc: A tuple of strings, in a variable called names.
+      - ex: "()"
+        desc: An empty tuple.
 
   - key: list-subscript
     serializedNode:
@@ -519,6 +535,41 @@ nodes:
   #           names = ['Fred', 'Sally']
   #           names[1] = 'Bob'
   #       desc: Changes the names list so that the second element is now Bob instead of Sally.
+
+  - key: dict-assign
+    serializedNode:
+      type: PYTHON_ASSIGNMENT
+      childSets:
+        left:
+          - type: PYTHON_SUBSCRIPT
+            childSets:
+              key:
+                - type: 'PYTHON_EXPRESSION'
+    abstract: 'Assign to the specific item of the dictionary to set a specific key and value.'
+    examples:
+      - ex: |
+            ages = {
+              'Fred': 10,
+              'Sally': 39
+            }
+            ages['Bob'] = 28
+        desc: Adds a new key 'Bob' to the dictionary, with a value of 28.
+
+  - key: set
+    serializedNode:
+      type: PY_SET
+      childSets:
+        elements:
+          - type: 'PYTHON_EXPRESSION'
+          - type: 'PYTHON_EXPRESSION'
+    abstract: 'A collection of unique elements. Sets have no order, but if you add the same value twice it will only keep one copy of it.'
+    examples:
+      - ex: "{'a', 'b', 'a', 'a'}"
+        desc: This set will only have two elements 'a' and 'b'. A set removes any duplicate values that are added.
+      - ex: |
+            names = {'Alice', 'Bob', 'Charlie', 'David'}
+            print(names)
+        desc: When looping over a set, the elements can appear in any order.
 
   - key: dict
     node: '{}'

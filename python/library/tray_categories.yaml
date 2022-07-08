@@ -85,6 +85,15 @@ entries:
       - sploot-node.binaryop-divide
       - sploot-node.binaryop-floordivide
       - sploot-node.binaryop-mod
+      - category: More...
+        entries:
+          - builtins.abs
+          - builtins.max
+          - builtins.min
+          - builtins.pow
+          - builtins.round
+          - builtins.sum
+
 
   - category: Ifs & decisions
     entries:
@@ -111,6 +120,9 @@ entries:
           - sploot-node.binaryop-and
           - sploot-node.binaryop-or
           - sploot-node.binaryop-not
+          - builtins.all
+          - builtins.any
+
 
   - category: Loops
     entries:
@@ -118,53 +130,121 @@ entries:
       - sploot-node.while
       - sploot-node.break
       - sploot-node.continue
+      - builtins.range
+      - builtins.enumerate
+
 
   - category: Lists
     entries:
       - sploot-node.list
       - builtins.list
-      - sploot-node.list-subscript
       - builtins.len
-      - sploot-node.binaryop-in
-      - sploot-node.binaryop-notin
-      - builtins.list.append
-      - builtins.list.clear
-      - builtins.list.copy
-      - builtins.list.count
-      - builtins.list.extend
-      - builtins.list.index
-      - builtins.list.pop
-      - builtins.list.remove
-      - builtins.list.reverse
-      - builtins.list.sort
+      - category: Lookup & search
+        entries:
+          - sploot-node.list-subscript
+          - sploot-node.binaryop-in
+          - sploot-node.binaryop-notin
+          - builtins.list.count
+          - builtins.list.index
+      - category: Modify
+        entries:
+          - builtins.list.append
+          - builtins.list.clear
+          - builtins.list.extend
+          - builtins.list.pop
+          - builtins.list.remove
+          - builtins.list.reverse
+          - builtins.list.sort
+      - category: Copy & transform
+        entries:
+          - builtins.list.copy
+          - builtins.filter
+          - builtins.map
+          - builtins.slice
+          - builtins.sorted
+          - builtins.reversed
+          - builtins.zip
+      - category: Tuples
+        entries:
+          - sploot-node.tuple
+          - builtins.tuple
+          - builtins.tuple.count
+          - builtins.tuple.index
+
 
   - category: Dictionaries
     entries:
       - sploot-node.dict
       - builtins.dict
-      - sploot-node.dict-subscript
-      - builtins.dict.clear
       - builtins.dict.copy
-      - builtins.dict.fromkeys
-      - builtins.dict.get
-      - builtins.dict.items
-      - builtins.dict.keys
-      - builtins.dict.pop
-      - builtins.dict.popitem
-      - builtins.dict.setdefault
-      - builtins.dict.update
-      - builtins.dict.values
+      - category: Lookup
+        entries:
+          - sploot-node.dict-subscript
+          - builtins.dict.get
+      - category: Add or remove entries
+        entries:
+          - sploot-node.dict-assign
+          - builtins.dict.clear
+          - builtins.dict.pop
+          - builtins.dict.popitem
+          - builtins.dict.setdefault
+          - builtins.dict.update
+      - category: Iterate over
+        entries:
+          - builtins.dict.items
+          - builtins.dict.keys
+          - builtins.dict.values
+
+
+  - category: Sets
+    entries:
+      - sploot-node.set
+      - builtins.set
+      - builtins.set.copy
+      - category: Add or remove items
+        entries:
+          - builtins.set.add
+          - builtins.set.clear
+          - builtins.set.discard
+          - builtins.set.pop
+          - builtins.set.remove
+      - category: Compare sets
+        entries:
+          - builtins.set.isdisjoint
+          - builtins.set.issubset
+          - builtins.set.issuperset
+      - category: Union
+        entries:
+          - builtins.set.union
+          - builtins.set.update
+      - category: Intersection
+        entries:
+          - builtins.set.intersection
+          - builtins.set.intersection_update
+      - category: Difference
+        entries:
+          - builtins.set.difference
+          - builtins.set.difference_update
+          - builtins.set.symmetric_difference
+          - builtins.set.symmetric_difference_update
+
 
   - category: Functions
     entries:
       - sploot-node.function
       - sploot-node.return
-  
+
+
   - category: Libraries
     entries:
       - sploot-node.import
       - sploot-node.import-from
-  
+
+
   - category: Misc
     entries:
       - sploot-node.none
+      - builtins.dir
+      - builtins.type
+      - builtins.eval
+      - builtins.exec

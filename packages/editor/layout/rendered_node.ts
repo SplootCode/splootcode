@@ -181,6 +181,7 @@ export class NodeBlock implements NodeObserver {
     this.blockWidth = nodeInlineSpacing
     this.rowHeight = NODE_BLOCK_HEIGHT + this.marginTop
     this.rowWidth = 0
+    this.width = 0
     this.indentedBlockHeight = 0
     this.renderedInlineComponents = [] // TODO: Find a way to avoid recreating this every time.
 

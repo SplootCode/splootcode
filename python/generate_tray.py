@@ -45,6 +45,8 @@ def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
 
   scopeInfo = builtin_docs['types'][typeName]['attributes'][attrName]
   if scopeInfo['isCallable']:
+    if 'parameters' not in scopeInfo:
+      print(scopeInfo)
     labels = [param['name'] for param in scopeInfo['parameters']]
     required_count = len([param for param in scopeInfo['parameters'] if is_required_param(param)])
 
