@@ -138,7 +138,7 @@ export class PythonIdentifier extends PythonNode {
 
   removeSelfFromScope(): void {
     ;(this.parent?.node as PythonNode).addSelfToScope()
-    this.getScope().removeWatcher(this.getName(), this)
+    this.getScope()?.removeWatcher(this.getName(), this)
   }
 
   static register() {

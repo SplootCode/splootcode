@@ -139,6 +139,14 @@ export class SplootNode {
     })
   }
 
+  recursivelyClearObservers() {
+    this.mutationObservers = []
+    this.childSetOrder.forEach((childSetId) => {
+      const childSet = this.getChildSet(childSetId)
+      childSet.recursivelyClearObservers()
+    })
+  }
+
   setValidity(isValid: boolean, reason: string, childSet?: string, index?: number) {
     if (
       this.isValid === isValid &&

@@ -59,7 +59,7 @@ function generateAssignableExpression(parseMapper: ParseMapper, splootNode: Pyth
   }
 }
 
-class AssignmentWrapGenerator implements SuggestionGenerator {
+export class AssignmentWrapGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
     if (parent.node.type === PYTHON_EXPRESSION && index === 0) {
       // parent of this expression *must* be a statement
