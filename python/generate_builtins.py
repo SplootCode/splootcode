@@ -20,7 +20,7 @@ def generate_builtins_docs():
     }
 
     for name in dir(builtins):
-        if name == 'None':
+        if name in ['None', 'True', 'False']:
             continue
 
         thing = getattr(builtins, name)
@@ -34,6 +34,8 @@ def generate_builtins_docs():
             data['examples'] = []
             if 'examples' in overrideData:
                 data['examples'] = [processExample(ex) for ex in overrideData['examples']]
+            if 'parameters' in overrideData:
+                data['parameters'] = overrideData['parameters']
 
         builtins_data['values'][name] = data
 

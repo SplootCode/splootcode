@@ -127,11 +127,11 @@ entries:
   - category: Loops
     entries:
       - sploot-node.for
+      - builtins.range
+      - builtins.enumerate
       - sploot-node.while
       - sploot-node.break
       - sploot-node.continue
-      - builtins.range
-      - builtins.enumerate
 
 
   - category: Lists

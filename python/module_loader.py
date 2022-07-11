@@ -114,6 +114,8 @@ def get_type_data(typething, overrides):
         thingKey = f'builtins.{typething.__name__}.{name}'
         if thingKey in overrides:
             overrideData = overrides[thingKey]
+            if 'abstract' in overrideData:
+                attr_data['shortDoc'] = overrideData['abstract']
             if 'examples' in overrideData:
                 attr_data['examples'] = [processExample(ex) for ex in overrideData['examples']]
             if 'parameters' in overrideData:

@@ -2,6 +2,20 @@
 overrides:
   - key: builtins.print
     abstract: 'Outputs information to the console.'
+    parameters:
+      - name: values
+        kind: 'VAR_POSITIONAL'
+      - name: sep
+        kind: 'KEYWORD_ONLY'
+      - name: end
+        kind: 'KEYWORD_ONLY'
+        default: '\n'
+      - name: file
+        kind: 'KEYWORD_ONLY'
+        default: 'sys.stdout'
+      - name: flush
+        kind: 'KEYWORD_ONLY'
+        default: 'False'
     examples:
       - ex: "print('Hello!')"
         desc: Adds a line to the console that says 'Hello!'. The console will start a new line after each print.
@@ -178,6 +192,22 @@ overrides:
 
   - key: builtins.enumerate
     abstract: 'Iterator over pairs of the count and the items from the iterable.'
+    parameters:
+      - name: iterable
+        kind: 'POSITIONAL_ONLY'
+      - name: start
+        kind: 'POSITIONAL_ONLY'
+        default: '0'
+    examples:
+      - ex: |
+            for i, letter in enumerate('Hello'):
+              print(i, letter)
+        desc: "Prints a number (starting at 0) the letter for each letter in 'hello'."
+      - ex: |
+            names = ['Alice', 'Bob', 'Charlie']
+            for index, name in enumerate(names):
+              print(index, name)
+        desc: 'Prints each name in the list, along with the index 0, 1, 2 for each name.'
 
   - key: builtins.len
     abstract: 'Returns the number of items in a container or characters in a string'
@@ -186,7 +216,26 @@ overrides:
         desc: Returns 5 because this string has 5 letters.
 
   - key: builtins.range
-    abstract: 'Counting iterator, from a starting number up to, but not including, the end number.'
+    abstract: 'Creates a sequence of numbers from a starting number up to, but not including, the end number.'
+    parameters:
+      - name: 'end/start'
+        kind: 'POSITIONAL_ONLY'
+      - name: 'end'
+        kind: 'POSITIONAL_ONLY'
+        default: None
+      - name: 'step'
+        kind: 'POSITIONAL_ONLY'
+        default: '1'
+    examples:
+      - ex: |
+            for num in range(10):
+              print(num)
+        desc: 'Prints numbers 0 to 9, with one on each line.'
+      - ex: |
+            for num in range(5, 10):
+              print(num)
+        desc: 'Prints numbers 5 to 9, with one on each line.'
+
 
   - key: builtins.dict.clear
     parameters: []

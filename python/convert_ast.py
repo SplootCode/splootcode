@@ -19,22 +19,25 @@ def SplootNode(type, childSets={}, properties={}):
     "properties": properties
   }
 
-def generateAssignmentTarget(targets):
+def generateAssignmentTargets(targets):
   if len(targets) != 1:
     raise Exception("Unsupported: multiple targets for assignment")
+
   target = targets[0]
   if type(target) == ast.Name:
-    return SplootNode('PY_IDENTIFIER', {}, {"identifier": target.id})
+    return [SplootNode('PY_IDENTIFIER', {}, {"identifier": target.id})]
   elif type(target) == ast.Subscript:
     toks = []
     appendSubscriptExpression(target, toks)
-    return toks[0]
+    return [toks[0]]
+  elif type(target) == ast.Tuple:
+    return [generateAssignmentTargets([el])[0] for el in target.elts]
   
   raise Exception(f"Unsupported target for assignment: {targets}")
 
 def generateAssignment(assignStatement):
   return SplootNode("PYTHON_ASSIGNMENT", {
-    "left": [generateAssignmentTarget(assignStatement.targets)],
+    "left": generateAssignmentTargets(assignStatement.targets),
     "right": [generateExpression(assignStatement.value)],
   })
 
@@ -201,18 +204,13 @@ def generateWhile(whileStatement):
 def generateFor(forStatement):
   body = [generateSplootStatement(s) for s in forStatement.body]
   iterable = generateExpression(forStatement.iter)
-
-  if type(forStatement.target) == ast.Name:
-    target = SplootNode('PY_IDENTIFIER', {}, {"identifier": forStatement.target.id})
-  else:
-    raise Exception(f"Unsupported target for assignment: {ast.dump(forStatement.target)}")
+  targets = generateAssignmentTargets([forStatement.target])
 
   return SplootNode('PYTHON_FOR_LOOP', {
-    'target': [target],
+    'target': targets,
     'iterable': [iterable],
     'block': body
   })
-
 
 def generateImport(astImport):
   names = [SplootNode('PYTHON_MODULE_IDENTIFIER', {}, {'identifier': n.name}) for n in astImport.names]

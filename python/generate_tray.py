@@ -24,9 +24,20 @@ def get_entry_for_builtin_value(key, scopeName, builtin_docs):
       entry['examples'] = scopeInfo['examples']
 
     if scopeInfo['isCallable']:
-      serNode = SplootNode('PYTHON_CALL_VARIABLE', {"arguments": [
-        SplootNode('PYTHON_EXPRESSION', {'tokens': []})
-      ]}, {"identifier": scopeName})
+      if 'parameters' not in scopeInfo:
+        print(scopeInfo)
+        params = []
+      else:
+        params = scopeInfo['parameters']
+      labels = [param['name'] for param in params]
+      required_count = len([param for param in params if is_required_param(param)])
+
+      serNode = SplootNode('PYTHON_CALL_VARIABLE',
+        {
+          "arguments": [SplootNode('PYTHON_EXPRESSION', {'tokens': []}) for i in range(required_count)]
+        },
+        {"identifier": scopeName})
+      serNode['meta'] = {'params': labels}
       entry['serializedNode'] = serNode
     else:
       serNode = SplootNode('PY_IDENTIFIER', {}, {"identifier": scopeName})
