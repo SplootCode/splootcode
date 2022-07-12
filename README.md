@@ -1,28 +1,32 @@
 # SplootCode Editor
-An experimental coding interface that's tree-based.
+
+A structured editor for writing and running Python.
 
 For progress updates, please join the mailing list on [splootcode.io](https://splootcode.io/).
 
-<img src="screenshot1.png" alt="Screenshot of SplootCode example" width="400">
+<img src="screenshot2.png" alt="Screenshot of SplootCode example" width="800">
 
 With a regular text-based programming language, the first step to process it is to parse it into an abstract-syntax-tree.
 In the SplootCode editor, the user edits the tree directly and that tree can then include more semantic meaning.
 
 Code no longer has to rely on cryptic punctuation characters and whitespace to represent structure. Instead the layout can be auto-generated, depending on screen size and user preferences.
 
-That being said, building a tree-editing interface that's fast, compact and intuitive is no easy feat. This is very much a work in progress.
+SplootCode aims to be a tree-editing interface that's fast, compact, intuitive and provides the full flexibility and expressiveness of regular text-based Python code.
 
 ## Goals
- * An unrestricted implementation of JavaScript or Python
+ * An unrestricted implementation of Python
  * Fast and easy to edit using a keyboard and autocomplete
- * A responsive layout that adapts to different screen sizes
+ * Continuous runtime feedback without the need for a step-by-step debugger
  * Help developers avoid syntax errors and other common programming errors
- * Avoid busywork like escaping, bracket matching, wrapping and whitespace
+ * Avoid needless busywork like escaping, bracket matching, wrapping and whitespace
  * Let beginners focus on the logic of their code rather than the syntax
+ * Make language features and functions easy to discover and use
+
+Being a web app, SplootCode uses [Pyodide](https://pyodide.org/) (CPython compiled to WebAssembly) to run Python in the browser.
 
 ## Development
 ### Requirements
-You'll need to have [nodejs](https://nodejs.org/) and [yarn](https://yarnpkg.com/) installed.
+You'll need to have Python, [nodejs](https://nodejs.org/) and [yarn](https://yarnpkg.com/) installed.
 
 ### Local Dev
 Install dependencies:
@@ -31,7 +35,7 @@ Install dependencies:
 $ yarn install
 ```
 
-Generate type information for built-in Javascript variables and functions.
+Generate type information for built-in variables and functions.
 
 ```
 $ yarn generate-types
