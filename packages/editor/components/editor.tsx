@@ -162,6 +162,28 @@ export class Editor extends React.Component<EditorProps> {
         }, 0)
       }
     }
+
+    if (event.shiftKey) {
+      switch (event.key) {
+        case 'ArrowLeft':
+          selection.expandSelectionLeft()
+          event.preventDefault()
+          return
+        case 'ArrowRight':
+          selection.expandSelectionRight()
+          event.preventDefault()
+          return
+        case 'ArrowDown':
+          selection.expandSelectionDown()
+          event.preventDefault()
+          return
+        case 'ArrowUp':
+          selection.expandSelectionUp()
+          event.preventDefault()
+          return
+      }
+    }
+
     switch (event.key) {
       case 'ArrowLeft':
         selection.moveCursorLeft()

@@ -274,6 +274,20 @@ export class CursorMap {
     return []
   }
 
+  getMultiSelectCursorForCursorPosition(position: CursorPosition, afterNode = false): NodeCursor {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const cursorEntry = entries[position.entryIndex]
+    if (!cursorEntry.isCursor) {
+      const nodeEntry = cursorEntry as NodeEntry
+      if (afterNode) {
+        return nodeEntry.nodeCursor.increment()
+      }
+      return nodeEntry.nodeCursor
+    } else {
+      return this.getAutocompleteCursorsForCursorPosition(position)[0]
+    }
+  }
+
   getSingleNodeForCursorPosition(position: CursorPosition): NodeCursor {
     const entries = this.getEntryListForLineIndex(position.lineIndex)
     const cursorEntry = entries[position.entryIndex]

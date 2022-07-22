@@ -2,6 +2,7 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { MultiselectTreeWalker } from './multiselect_tree_walker'
 import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import {
@@ -51,7 +52,13 @@ export class NodeSelection {
   selectionStart: NodeCursor
 
   @observable
+  selectedListBlocks: Set<RenderedChildSetBlock>
+
+  @observable
   cursor: CursorPosition
+
+  @observable
+  secondaryCursor: CursorPosition
 
   @observable
   state: SelectionState
@@ -102,15 +109,12 @@ export class NodeSelection {
     return this.state === SelectionState.Cursor || this.state === SelectionState.Inserting
   }
 
-  isSingleNode() {
-    return this.state === SelectionState.Editing || this.state === SelectionState.SingleNode
+  isMultiSelect() {
+    return this.state === SelectionState.MultiNode
   }
 
-  isSelectedNode(listBlock: RenderedChildSetBlock, index: number) {
-    if (this.isSingleNode()) {
-      return this.selectionStart.listBlock == listBlock && this.selectionStart.index == index
-    }
-    return false
+  isSingleNode() {
+    return this.state === SelectionState.Editing || this.state === SelectionState.SingleNode
   }
 
   isSelectedNodeAtPosition(position: CursorPosition): boolean {
@@ -133,14 +137,7 @@ export class NodeSelection {
 
   placeCursorPosition(position: CursorPosition, isCursor: boolean, updateXY = true) {
     if (isCursor) {
-      this.exitEdit()
-      if (this.selectionStart) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Empty
-        this.selectionStart = null
-      }
-      this.cursor = position
-      this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
-      this.state = SelectionState.Cursor
+      this.setSelectionCursor(position)
       if (updateXY) {
         this.updateCursorXYToCursor()
       }
@@ -164,7 +161,7 @@ export class NodeSelection {
   }
 
   getCursorXYPosition(): [number, number] {
-    if (this.isCursor()) {
+    if (this.isCursor() || this.isMultiSelect()) {
       return this.cursorMap.getCoordinates(this.cursor)
     }
     return [100, 100]
@@ -173,10 +170,6 @@ export class NodeSelection {
   @action
   deleteSelectedNode() {
     if (this.state === SelectionState.SingleNode) {
-      this.exitEdit()
-      if (this.selectionStart) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Empty
-      }
       const listBlock = this.selectionStart.listBlock
       let index = this.selectionStart.index
 
@@ -191,26 +184,6 @@ export class NodeSelection {
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()
       this.updateCursorXYToCursor()
-    }
-  }
-
-  @action
-  startInsertAtCurrentCursor() {
-    this.state = SelectionState.Inserting
-    this.updateRenderPositions()
-  }
-
-  @action
-  startEditAtCurrentCursor() {
-    if (this.isSingleNode()) {
-      const index = this.selectionStart.index
-      // Return null if not editable node.
-      this.editBox = this.selectionStart.listBlock.getEditData(index)
-      if (this.editBox !== null) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Editing
-        this.setState(SelectionState.Editing)
-        this.updateRenderPositions()
-      }
     }
   }
 
@@ -331,10 +304,6 @@ export class NodeSelection {
 
   replaceOrWrapSelectedNode(node: SplootNode) {
     if (this.isSingleNode()) {
-      this.exitEdit()
-      if (this.selectionStart) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Empty
-      }
       const childSet = this.selectionStart.listBlock.childSet
       const index = this.selectionStart.index
 
@@ -487,41 +456,229 @@ export class NodeSelection {
   @action
   exitEdit() {
     if (this.state === SelectionState.Editing) {
-      this.editBox = null
-      this.setState(SelectionState.SingleNode)
-      this.selectionStart.listBlock.selectionState = SelectionState.SingleNode
+      this.setSelectionSingleNode(new NodeCursor(this.selectionStart.listBlock, this.selectionStart.index))
       this.updateRenderPositions()
     }
     if (this.state == SelectionState.Inserting) {
-      this.state = SelectionState.Cursor
       this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
       this.updateRenderPositions()
     }
   }
 
   @action
-  clearSelection() {
+  startInsertAtCurrentCursor() {
+    this.state = SelectionState.Inserting
+    this.updateRenderPositions()
+  }
+
+  @action
+  startEditAtCurrentCursor() {
+    if (this.isSingleNode()) {
+      const index = this.selectionStart.index
+      // Return null if not editable node.
+      this.editBox = this.selectionStart.listBlock.getEditData(index)
+      if (this.editBox !== null) {
+        this.selectionStart.listBlock.selectionState = SelectionState.Editing
+        this.state = SelectionState.Editing
+        this.updateRenderPositions()
+      }
+    }
+  }
+
+  clearSelectedListBlocks() {
+    if (this.selectedListBlocks) {
+      this.selectedListBlocks.forEach((listBlock) => {
+        listBlock.selectionState = SelectionState.Empty
+      })
+    }
+  }
+
+  @action
+  setSelectionEmpty() {
+    this.editBox = null
     if (this.selectionStart) {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
+    this.clearSelectedListBlocks()
     this.state = SelectionState.Empty
     this.selectionStart = null
-  }
-
-  setState(newState: SelectionState) {
-    this.state = newState
   }
 
   selectNodeAtPosition(postition: CursorPosition) {
     this.cursor = postition
     const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(postition)
-    if (this.selectionStart) {
+    this.setSelectionSingleNode(nodeCursor)
+  }
+
+  @action
+  setSelectionSingleNode(nodeCursor: NodeCursor) {
+    this.editBox = null
+    if (this.selectionStart && this.selectionStart.listBlock !== nodeCursor.listBlock) {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
+    this.clearSelectedListBlocks()
     this.selectionStart = nodeCursor
-    nodeCursor.listBlock.selectedIndex = nodeCursor.index
+    nodeCursor.listBlock.selectedIndexStart = nodeCursor.index
+    nodeCursor.listBlock.selectedIndexEnd = nodeCursor.index + 1
     nodeCursor.listBlock.selectionState = SelectionState.SingleNode
-    this.setState(SelectionState.SingleNode)
+    this.state = SelectionState.SingleNode
+  }
+
+  @action
+  setSelectionCursor(position: CursorPosition) {
+    this.editBox = null
+    if (this.selectionStart) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
+      this.selectionStart = null
+    }
+    this.clearSelectedListBlocks()
+    this.cursor = position
+    this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
+    this.state = SelectionState.Cursor
+  }
+
+  setSelectionMultiselect(start: NodeCursor, end: NodeCursor) {
+    // Get real start - so that start is same level or higher than end.
+    const endAncestors: Set<RenderedChildSetBlock> = new Set()
+    let current = end.listBlock
+    while (current) {
+      endAncestors.add(current)
+      const parentNode = current.parentRef.node
+      current = parentNode.parentChildSet
+    }
+
+    let realStart = start
+    while (true) {
+      if (endAncestors.has(realStart.listBlock)) {
+        break
+      }
+      const parentNode = realStart.listBlock.parentRef.node
+      if (!parentNode) {
+        break
+      }
+      realStart = new NodeCursor(parentNode.parentChildSet, parentNode.index)
+    }
+
+    const treeWalker = new MultiselectTreeWalker(realStart, end)
+    treeWalker.walkToEnd()
+
+    const newSelectedListBlocks = treeWalker.getSelectedListBlocks()
+    if (this.selectedListBlocks) {
+      for (const alreadySelectedBlock of this.selectedListBlocks) {
+        if (!newSelectedListBlocks.has(alreadySelectedBlock)) {
+          alreadySelectedBlock.selectionState = SelectionState.Empty
+        }
+      }
+    }
+
+    if (newSelectedListBlocks.size !== 0) {
+      this.selectedListBlocks = newSelectedListBlocks
+      this.state = SelectionState.MultiNode
+    } else {
+      this.setSelectionCursor(this.cursor)
+    }
+  }
+
+  updateMultiSelect(newPrimaryCursor: CursorPosition, isCursor: boolean) {
+    // Figure out which is first (it can go either way)
+    if (!this.secondaryCursor) {
+      this.secondaryCursor = this.cursor
+    }
+    let start = this.secondaryCursor
+    let end = newPrimaryCursor
+    if (
+      newPrimaryCursor.lineIndex < this.secondaryCursor.lineIndex ||
+      (newPrimaryCursor.lineIndex === this.secondaryCursor.lineIndex &&
+        newPrimaryCursor.entryIndex < this.secondaryCursor.entryIndex)
+    ) {
+      start = newPrimaryCursor
+      end = this.secondaryCursor
+    }
+
+    // Get node set between start and end
+    const startCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(start, false)
+    const endCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(end, false)
+    this.cursor = newPrimaryCursor
+    this.setSelectionMultiselect(startCursor, endCursor)
+  }
+
+  @action
+  expandSelectionLeft() {
+    if (this.isCursor() || this.isSingleNode()) {
+      this.secondaryCursor = this.cursor
+    }
+    const currentNodeCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(this.cursor)
+    let cursor = this.cursor
+    while (true) {
+      const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(cursor)
+      const nodeCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(nextCursor)
+      if (nodeCursor.listBlock !== currentNodeCursor.listBlock || nodeCursor.index !== currentNodeCursor.index) {
+        this.updateMultiSelect(nextCursor, isCursor)
+        this.lastXCoordinate = x
+        this.lastYCoordinate = y
+        break
+      }
+      if (cursor.lineIndex === nextCursor.lineIndex && cursor.entryIndex === nextCursor.entryIndex) {
+        break
+      }
+      cursor = nextCursor
+    }
+  }
+
+  @action
+  expandSelectionRight() {
+    if (this.isCursor() || this.isSingleNode()) {
+      this.secondaryCursor = this.cursor
+    }
+    let cursor = this.cursor
+    const currentNodeCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(this.cursor)
+
+    while (true) {
+      const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorRightOfPosition(cursor)
+      const nodeCursor = this.cursorMap.getMultiSelectCursorForCursorPosition(nextCursor)
+      if (nodeCursor.listBlock !== currentNodeCursor.listBlock || nodeCursor.index !== currentNodeCursor.index) {
+        this.updateMultiSelect(nextCursor, isCursor)
+        this.lastXCoordinate = x
+        this.lastYCoordinate = y
+        break
+      }
+      if (cursor.lineIndex === nextCursor.lineIndex && cursor.entryIndex === nextCursor.entryIndex) {
+        break
+      }
+      cursor = nextCursor
+    }
+  }
+
+  @action
+  expandSelectionDown() {
+    if (this.isCursor() || this.isSingleNode()) {
+      this.secondaryCursor = this.cursor
+    }
+    const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorDownOfPosition(
+      this.lastXCoordinate,
+      this.lastYCoordinate,
+      this.cursor
+    )
+    this.updateMultiSelect(nextCursor, isCursor)
+
+    this.lastXCoordinate = x
+    this.lastYCoordinate = y
+  }
+
+  @action
+  expandSelectionUp() {
+    if (this.isCursor() || this.isSingleNode()) {
+      this.secondaryCursor = this.cursor
+    }
+    const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorUpOfPosition(
+      this.lastXCoordinate,
+      this.lastYCoordinate,
+      this.cursor
+    )
+    this.updateMultiSelect(nextCursor, isCursor)
+
+    this.lastXCoordinate = x
+    this.lastYCoordinate = y
   }
 
   @action
@@ -639,6 +796,18 @@ export class NodeCursor {
   constructor(listBlock: RenderedChildSetBlock, index: number) {
     this.listBlock = listBlock
     this.index = index
+  }
+
+  isLastIndex(): boolean {
+    return this.index >= this.listBlock.nodes.length - 1
+  }
+
+  getNode(): NodeBlock {
+    return this.listBlock.nodes[this.index]
+  }
+
+  increment(): NodeCursor {
+    return new NodeCursor(this.listBlock, this.index + 1)
   }
 
   selectedNode() {

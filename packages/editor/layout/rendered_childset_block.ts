@@ -30,7 +30,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   @observable
   nodes: NodeBlock[]
   @observable
-  selectedIndex: number
+  selectedIndexStart: number
+  @observable
+  selectedIndexEnd: number
   @observable
   selectionState: SelectionState
   @observable
@@ -160,15 +162,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   getChildSelectionState(idx: number): NodeSelectionState {
-    if (this.selectionState === SelectionState.Empty || this.selectedIndex !== idx) {
-      return NodeSelectionState.UNSELECTED
+    if (this.selectedIndexStart <= idx && this.selectedIndexEnd > idx) {
+      if (this.selectionState === SelectionState.SingleNode || this.selectionState === SelectionState.MultiNode) {
+        return NodeSelectionState.SELECTED
+      }
+      if (this.selectionState === SelectionState.Editing) {
+        return NodeSelectionState.EDITING
+      }
     }
-    if (this.selectionState === SelectionState.SingleNode) {
-      return NodeSelectionState.SELECTED
-    }
-    if (this.selectionState === SelectionState.Editing) {
-      return NodeSelectionState.EDITING
-    }
+
     return NodeSelectionState.UNSELECTED
   }
 
@@ -185,7 +187,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
   }
 
   isInsert(idx: number): boolean {
-    return this.selectedIndex === idx && this.selectionState === SelectionState.Inserting
+    return this.selectedIndexStart === idx && this.selectionState === SelectionState.Inserting
   }
 
   renumberChildren() {

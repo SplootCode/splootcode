@@ -387,7 +387,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const selection = this.props.selection
     if (selection.state === SelectionState.Cursor) {
-      selection.clearSelection()
+      selection.setSelectionEmpty()
     }
   }
 
