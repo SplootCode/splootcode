@@ -537,6 +537,14 @@ export class NodeSelection {
     this.state = SelectionState.Cursor
   }
 
+  getSelectedFragment(): SplootFragment {
+    if (this.isSingleNode()) {
+      return new SplootFragment([this.selectedNode], this.selectionStart.listBlock.childSet.nodeCategory)
+    } else if (this.isMultiSelect()) {
+      
+    }
+  }
+
   setSelectionMultiselect(start: NodeCursor, end: NodeCursor) {
     // Get real start - so that start is same level or higher than end.
     const endAncestors: Set<RenderedChildSetBlock> = new Set()

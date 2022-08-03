@@ -111,9 +111,9 @@ export class Editor extends React.Component<EditorProps> {
     const { selection } = this.props
     if (event.type === 'copy' || event.type === 'cut') {
       if (event.target instanceof SVGElement) {
-        const selectedNode = selection.selectedNode
-        if (selectedNode !== null) {
-          const jsonNode = JSON.stringify(selectedNode.serialize())
+        const selectedFragment = selection.getSelectedFragment()
+        if (selectedFragment !== null) {
+          const jsonNode = JSON.stringify(selectedFragment.serialize())
           // Maybe change to selectedNode.generateCodeString()
           // once we have paste of text code supported.
           const friendlytext = jsonNode
