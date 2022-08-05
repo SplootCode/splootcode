@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -eux
 
 if [ -x "$(command -v deactivate)" ]
