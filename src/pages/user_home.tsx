@@ -81,7 +81,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
 
   useEffect(() => {
-    setProjects(props.projectLoader.listProjectMetadata())
+    props.projectLoader.listProjectMetadata().then((projects) => {
+      setProjects(projects)
+    })
   }, [])
 
   const newProject = (clonedFrom?: Project) => {
@@ -118,7 +120,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
           if (saveProjectModalState.clonedFrom) {
             const proj = saveProjectModalState.clonedFrom
             props.projectLoader.cloneProject(projectID, title, proj).then((newProj) => {
-              setProjects(props.projectLoader.listProjectMetadata())
+              props.projectLoader.listProjectMetadata().then((projects) => {
+                setProjects(projects)
+              })
             })
           } else {
             props.projectLoader
@@ -160,7 +164,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
                     description={''}
                     onDelete={(id) => {
                       props.projectLoader.deleteProject(id).then(() => {
-                        setProjects(props.projectLoader.listProjectMetadata())
+                        props.projectLoader.listProjectMetadata().then((projects) => {
+                          setProjects(projects)
+                        })
                       })
                     }}
                   />

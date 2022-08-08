@@ -10,6 +10,7 @@ import { readFile } from 'fs'
 export async function loadTestProject(projectID: string, title: string): Promise<Project> {
   const fileLoader = new TestFileLoader()
   const proj = new Project(
+    'examples',
     {
       name: projectID,
       title: title,

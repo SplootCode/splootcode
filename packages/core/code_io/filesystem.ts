@@ -37,5 +37,5 @@ export async function loadProjectFromFolder(directoryHandle: FileSystemDirectory
   const packages = proj.packages.map(async (packRef) => {
     return fileLoader.loadPackage(proj.name, packRef.name)
   })
-  return new Project(proj, await Promise.all(packages), fileLoader)
+  return new Project('local', proj, await Promise.all(packages), fileLoader)
 }
