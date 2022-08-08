@@ -4,7 +4,7 @@ import { ProjectLoader, ProjectMetadata } from '../language/projects/file_loader
 import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 
 export class LocalStorageProjectLoader implements ProjectLoader {
-  listProjectMetadata(): ProjectMetadata[] {
+  async listProjectMetadata(): Promise<ProjectMetadata[]> {
     const projectsJSON = window.localStorage.getItem('projects')
     if (projectsJSON === null) {
       window.localStorage.setItem('projects', '[]')
@@ -17,8 +17,8 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     window.localStorage.setItem('projects', JSON.stringify(newMetaData))
   }
 
-  isValidProjectId(projectId: string): boolean {
-    const projectMeta = this.listProjectMetadata()
+  async isValidProjectId(projectId: string): Promise<boolean> {
+    const projectMeta = await this.listProjectMetadata()
     const exists = projectMeta.find((meta) => meta.id === projectId)
     if (exists) {
       return false
@@ -34,7 +34,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const packages = proj.packages.map(async (packRef) => {
       return fileLoader.loadPackage(proj.name, packRef.name)
     })
-    return new Project(proj, await Promise.all(packages), fileLoader)
+    return new Project('local', proj, await Promise.all(packages), fileLoader)
   }
 
   async newProject(projectId: string, title: string, layoutType: string): Promise<Project> {
@@ -47,7 +47,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       title: title,
       packages: [],
     }
-    const proj = new Project(serialisedProj, [], fileLoader)
+    const proj = new Project('local', serialisedProj, [], fileLoader)
     fileLoader.saveProject(proj)
     this.updateProjectMetadata(proj)
     return proj
@@ -77,19 +77,20 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       return newPack
     })
     const packages = await Promise.all(packagePromises)
-    const proj = new Project(serializedProj, packages, fileLoader)
+    const proj = new Project('local', serializedProj, packages, fileLoader)
     proj.save()
     this.updateProjectMetadata(proj)
     return proj
   }
 
   async updateProjectMetadata(project: Project): Promise<boolean> {
-    const allMeta = this.listProjectMetadata()
+    const allMeta = await this.listProjectMetadata()
     const meta = allMeta.filter((projectMetadata) => {
       return project.name === projectMetadata.id
     })
     if (meta.length === 0) {
       allMeta.push({
+        owner: 'local',
         id: project.name,
         title: project.title,
         lastModified: '',
@@ -111,7 +112,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
   async deleteProject(projectId: string): Promise<boolean> {
     const proj = await this.loadProject(projectId)
     await proj.delete()
-    const allMeta = this.listProjectMetadata()
+    const allMeta = await this.listProjectMetadata()
     this.overwriteProjectMetadata(
       allMeta.filter((meta) => {
         return meta.id !== projectId

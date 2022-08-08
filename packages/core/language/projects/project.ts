@@ -15,6 +15,7 @@ export enum ProjectLayoutType {
 }
 
 export class Project {
+  owner: string
   name: string
   isReadOnly: boolean
   layoutType: ProjectLayoutType
@@ -23,7 +24,8 @@ export class Project {
   packages: SplootPackage[]
   fileLoader: FileLoader
 
-  constructor(proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
+  constructor(owner: string, proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
+    this.owner = owner
     this.name = proj.name
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title

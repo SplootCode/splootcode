@@ -13,17 +13,17 @@ export interface FileLoader {
 }
 
 export interface ProjectMetadata {
+  owner: string
   id: string
   title: string
   lastModified: string
 }
 
 export interface ProjectLoader {
-  listProjectMetadata: () => ProjectMetadata[]
-  isValidProjectId: (projectId: string) => boolean
+  listProjectMetadata: () => Promise<ProjectMetadata[]>
+  isValidProjectId: (projectId: string) => Promise<boolean>
   loadProject: (projectId: string) => Promise<Project>
   newProject: (projectId: string, title: string, layoutType: string) => Promise<Project>
   deleteProject: (projectId: string) => Promise<boolean>
   cloneProject: (newProjectId: string, title: string, existingProject: Project) => Promise<Project>
-  updateProjectMetadata: (project: Project) => Promise<boolean>
 }
