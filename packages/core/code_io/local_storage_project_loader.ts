@@ -10,7 +10,12 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       window.localStorage.setItem('projects', '[]')
       return []
     }
-    return JSON.parse(projectsJSON) as ProjectMetadata[]
+    const projectsMeta = JSON.parse(projectsJSON) as ProjectMetadata[]
+    projectsMeta.forEach((proj) => {
+      proj.owner = 'local'
+    })
+
+    return projectsMeta
   }
 
   overwriteProjectMetadata(newMetaData: ProjectMetadata[]) {
@@ -101,6 +106,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     this.overwriteProjectMetadata(
       allMeta.map((projectMetadata) => {
         if (projectMetadata.id === project.name) {
+          projectMetadata.owner = 'local'
           projectMetadata.title = project.title
           projectMetadata.lastModified = ''
         }
