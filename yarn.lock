@@ -7507,16 +7507,17 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-structured-pyright@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.1.tgz#4d2dfe29631881886f2709617279f46f29905ea0"
-  integrity sha512-9dFUAVHKiHyASr49x+/3qDFElUgu8YTIzhZZjf7R54es/TJDrgvWPRKU34rWvvrt4My0dMP4VjXMepyNq+25Xw==
+structured-pyright@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.3.tgz#b7e383a998f8e028b90e9fc56b106ebfbec3c023"
+  integrity sha512-DuR99sCHNy0JYlRJ7meKCmQjdCG69szocQZCSf6OtrL55C06KlSzLClDlmaCtxNgl7YQzXSp2TweXYKGuveUcA==
   dependencies:
     leven "^3.1.0"
     vscode-jsonrpc "8.0.0-next.7"
     vscode-languageclient "8.0.0-next.14"
     vscode-languageserver "8.0.0-next.10"
     vscode-languageserver-protocol "3.17.0-next.16"
+    vscode-languageserver-textdocument "^1.0.5"
     vscode-uri "^3.0.3"
 
 style-loader@^1.0.1:
@@ -8013,6 +8014,11 @@ vscode-languageserver-protocol@3.17.0-next.16:
   dependencies:
     vscode-jsonrpc "8.0.0-next.7"
     vscode-languageserver-types "3.17.0-next.9"
+
+vscode-languageserver-textdocument@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.5.tgz#838769940ece626176ec5d5a2aa2d0aa69f5095c"
+  integrity sha512-1ah7zyQjKBudnMiHbZmxz5bYNM9KKZYz+5VQLj+yr8l+9w3g+WAhCkUkWbhMEdC5u0ub4Ndiye/fDyS8ghIKQg==
 
 vscode-languageserver-types@3.17.0-next.9:
   version "3.17.0-next.9"

@@ -215,11 +215,14 @@ export class NodeSelection {
   }
 
   @action
-  updatePropertyEdit(newValue: string) {
+  updatePropertyEdit(newValue: string): string {
     if (this.isEditingSingleNode()) {
-      this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
+      const sanitisedValue =
+        this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
       this.updateRenderPositions()
+      return sanitisedValue
     }
+    return null
   }
 
   @action

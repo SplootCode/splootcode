@@ -62,8 +62,14 @@ def generateAstExpressionToken(node):
                 args.append(generateAstExpression(argExp))
         varName = node["properties"]["identifier"]
         return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=[])
-    elif node["type"] in ["STRING_LITERAL", "NUMERIC_LITERAL", "PYTHON_BOOL"]:
+    elif node["type"] in ["STRING_LITERAL", "PYTHON_BOOL"]:
         return ast.Constant(node["properties"]["value"])
+    elif node["type"] == "NUMERIC_LITERAL":
+        num_val = node["properties"]["value"]
+        try:
+            return ast.Constant(int(num_val))
+        except ValueError:
+            return ast.Constant(float(num_val))
     elif node["type"] == "PYTHON_NONE":
         return ast.Constant(None)
     elif node["type"] == "PY_IDENTIFIER":

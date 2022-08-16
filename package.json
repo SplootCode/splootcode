@@ -39,7 +39,7 @@
     "react-router-dom": "^5.1.2",
     "react-spreadsheet": "^0.5.4",
     "recast": "^0.19.1",
-    "structured-pyright": "^1.0.1",
+    "structured-pyright": "1.0.3",
     "style-loader": "^1.0.1",
     "tslib": "^1.10.0",
     "typescript": "^4.5.4",
