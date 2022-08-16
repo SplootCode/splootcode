@@ -30,14 +30,14 @@ class NumberGenerator implements SuggestionGenerator {
     if (isValidNumber(textInput)) {
       const sanitisedValue = sanitiseNumberOnSave(textInput)
       const num = new PythonNumberLiteral(null, sanitisedValue)
-      const suggestedNode = new SuggestedNode(num, `${textInput}`, '', true, 'number')
+      const suggestedNode = new SuggestedNode(num, textInput, '', true, 'number')
       return [suggestedNode]
     }
     return []
   }
 }
 
-function parseStringToNum(textValue: string | number): number {
+function fallbackParseStringToNumber(textValue: string | number): number {
   if (typeof textValue === 'string') {
     let val = parseInt(textValue)
     if (textValue.includes('.')) {
@@ -63,7 +63,7 @@ function sanitiseNumberWhileEditing(textValue: string): string {
 function sanitiseNumberOnSave(textValue: string): string {
   let finalValue = sanitiseNumberWhileEditing(textValue)
   if (!isValidNumber(finalValue)) {
-    return `${parseStringToNum(textValue)}`
+    return `${fallbackParseStringToNumber(textValue)}`
   }
   // Add 0 after . if needed
   if (finalValue[finalValue.length - 1] === '.') {

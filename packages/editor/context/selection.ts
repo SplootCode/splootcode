@@ -222,7 +222,7 @@ export class NodeSelection {
       this.updateRenderPositions()
       return sanitisedValue
     }
-    return null
+    return ''
   }
 
   @action
