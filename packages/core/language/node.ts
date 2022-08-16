@@ -234,10 +234,11 @@ export class SplootNode {
     return null
   }
 
-  setEditablePropertyValue(newValue: string) {
+  setEditablePropertyValue(newValue: string): string {
     const editableProperty = this.getEditableProperty()
     this.setProperty(editableProperty, newValue)
     this.validateSelf()
+    return newValue
   }
 
   setProperty(name: string, value: any) {

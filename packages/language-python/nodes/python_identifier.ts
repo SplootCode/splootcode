@@ -94,6 +94,7 @@ export class PythonIdentifier extends PythonNode {
       // TODO - also allow rename everywhere
       // this.getScope().renameIdentifier(oldValue, newValue)
     }
+    return newValue
   }
 
   getName(): string {

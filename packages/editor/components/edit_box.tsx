@@ -41,7 +41,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     const { x, y } = editBoxData
     const positionStyles: React.CSSProperties = {
       position: 'absolute',
-      left: x + editorX + 'px',
+      left: x + editorX - 1 + 'px',
       top: y + editorY + 'px',
     }
     if (editBoxData.node.layout.boxType === NodeBoxType.STRING) {
@@ -68,7 +68,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
             ref={this.inputBox}
             autoFocus
             type="text"
-            defaultValue={userInput}
+            value={userInput}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
             onBlur={this.onBlur}
@@ -92,7 +92,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     }
 
     if (e.key === 'Enter' && e.shiftKey && this.props.editBoxData.node.layout.boxType === NodeBoxType.STRING) {
-      // Let it through
+      // Let it through (newline character)
     } else {
       // Enter key or Space
       if (e.key === 'Enter' || e.key === 'Space') {
@@ -114,8 +114,9 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
 
   onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const userInput = e.currentTarget.value
+    const sanitizedValue = this.props.selection.updatePropertyEdit(userInput)
     this.setState({
-      userInput: userInput,
+      userInput: sanitizedValue,
     })
   }
 
@@ -123,7 +124,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
     if (this.editTextArea.current) {
       const textArea = this.editTextArea.current
       const [width, height] = stringLiteralDimensions(this.state.userInput)
-      textArea.style.width = width + 'px'
+      textArea.style.width = Math.max(2, width) + 'px'
       textArea.style.height = height + 'px'
     } else if (this.inputBox.current) {
       const inp = this.inputBox.current

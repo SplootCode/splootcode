@@ -49,9 +49,11 @@ export function getExpressionTokenNodes(): SplootNode[] {
     new NoneLiteral(null),
     new PythonStringLiteral(null, 'hello'),
     new PythonStringLiteral(null, ''),
-    new PythonNumberLiteral(null, 0),
-    new PythonNumberLiteral(null, 12398293),
-    new PythonNumberLiteral(null, 0.234),
+    new PythonNumberLiteral(null, '0'),
+    new PythonNumberLiteral(null, '12398293'),
+    new PythonNumberLiteral(null, '0.234'),
+    new PythonNumberLiteral(null, '934892384493.234343434'),
+    new PythonNumberLiteral(null, '9348923844932348349389483'),
 
     // Identifier
     new PythonIdentifier(null, 'name'),
