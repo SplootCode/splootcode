@@ -78,6 +78,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         clonedFrom={saveProjectModalState.clonedFrom}
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
+        autoPromptFromReadOnly={false}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
         onComplete={(projectID, title) => {
           if (saveProjectModalState.clonedFrom) {
@@ -101,7 +102,16 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>{loadedProject ? <AutosaveHandler project={loadedProject} /> : null}</MenuBarItem>
+        <MenuBarItem>
+          {loadedProject ? (
+            <AutosaveHandler
+              project={loadedProject}
+              onSaveAs={() => {
+                setSaveProjectModalState({ open: true, clonedFrom: loadedProject })
+              }}
+            />
+          ) : null}
+        </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {loadedProject === null ? <div>Loading... </div> : <PythonEditorPanels project={loadedProject} />}

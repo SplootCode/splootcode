@@ -1,16 +1,47 @@
 import React, { useEffect, useState } from 'react'
+import { Box, Button, Text, useToast } from '@chakra-ui/react'
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
 import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
 import { Project } from '@splootcode/core/language/projects/project'
-import { Text } from '@chakra-ui/react'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
-export const AutosaveHandler = (props: { project: Project }) => {
-  const { project } = props
+function SavePrompt(props: { onNoSave: () => void; onSaveAs: () => void }) {
+  return (
+    <Box color="white" p={3} bg="blue.500">
+      Would you like to save changes?
+      <Button variant={'ghost'} onClick={props.onNoSave}>
+        Continue without saving
+      </Button>
+      <Button variant={'solid'} onClick={props.onSaveAs}>
+        Save
+      </Button>
+    </Box>
+  )
+}
+
+export const AutosaveHandler = (props: { project: Project; onSaveAs: () => void }) => {
+  const { project, onSaveAs } = props
 
   const [needsSave, setNeedsSave] = useState(false)
+  const toast = useToast()
 
   useEffect(() => {
+    if (needsSave && project.isReadOnly) {
+      const toastID = toast({
+        position: 'top',
+        isClosable: true,
+        duration: null,
+        render: () => (
+          <SavePrompt
+            onNoSave={() => toast.close(toastID)}
+            onSaveAs={() => {
+              toast.close(toastID)
+              onSaveAs()
+            }}
+          />
+        ),
+      })
+    }
     if (needsSave && !project?.isReadOnly) {
       setTimeout(() => {
         if (needsSave) {
@@ -40,7 +71,11 @@ export const AutosaveHandler = (props: { project: Project }) => {
   }, [project])
 
   if (project?.isReadOnly) {
-    return <Text color={'gray.500'}>{needsSave ? 'Use "Save As..." to save your changes to a new project' : ''}</Text>
+    return (
+      <>
+        <Text color={'gray.500'}>{needsSave ? 'Use "Save As..." to save your changes to a new project' : ''}</Text>
+      </>
+    )
   }
   return <Text color={'gray.500'}>{needsSave ? 'Saving...' : 'Saved'}</Text>
 }

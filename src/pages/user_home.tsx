@@ -115,6 +115,7 @@ export const UserHomePage = (props: UserHomePageProps) => {
         clonedFrom={saveProjectModalState.clonedFrom}
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
+        autoPromptFromReadOnly={false}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
         onComplete={(projectID, title) => {
           if (saveProjectModalState.clonedFrom) {

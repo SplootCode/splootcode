@@ -25,15 +25,16 @@ function convertToURL(title: string) {
     .replace(/[^\w-]+/g, '')
 }
 
-interface NewProjectModalProps {
+interface SaveProjectModalProps {
   isOpen: boolean
   clonedFrom?: Project
   onClose: () => void
   onComplete: (projectID: string, title: string) => void
   projectLoader: ProjectLoader
+  autoPromptFromReadOnly: boolean
 }
 
-export function SaveProjectModal(props: NewProjectModalProps) {
+export function SaveProjectModal(props: SaveProjectModalProps) {
   const { isOpen, onClose, onComplete, projectLoader, clonedFrom } = props
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
