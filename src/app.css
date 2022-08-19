@@ -9,6 +9,15 @@ pre {
 
 body {
     font-size: 12pt;
+    letter-spacing: -0.03rem;
+}
+
+button {
+    letter-spacing: -0.03rem
+}
+
+svg {
+    letter-spacing: normal;
 }
 
 :root {
