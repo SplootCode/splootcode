@@ -2,16 +2,18 @@ import './python_editor.css'
 
 import React, { useEffect, useState } from 'react'
 import { Editor } from '@splootcode/editor/components/editor'
+import { EditorBanner } from '@splootcode/editor/components/editor_banner'
 import { EditorState, EditorStateContext } from '@splootcode/editor/context/editor_context'
 import { Project } from '@splootcode/core/language/projects/project'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 
-interface WebEditorProps {
+interface PythonEditorProps {
   project: Project
+  onSaveAs: () => void
 }
 
-export const PythonEditorPanels = (props: WebEditorProps) => {
-  const { project } = props
+export const PythonEditorPanels = (props: PythonEditorProps) => {
+  const { project, onSaveAs } = props
   const onlyPackage: SplootPackage = project.packages[0]
 
   const [editorState, setEditorState] = useState(null)
@@ -36,6 +38,7 @@ export const PythonEditorPanels = (props: WebEditorProps) => {
             pkg={onlyPackage}
             selection={editorState.selection}
             validationWatcher={editorState.validationWatcher}
+            banner={project.isReadOnly ? <EditorBanner project={project} onSaveAs={onSaveAs} /> : null}
           />
         ) : null}
       </EditorStateContext.Provider>

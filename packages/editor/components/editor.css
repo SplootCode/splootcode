@@ -9,12 +9,19 @@
 }
 
 .editor-column {
-  overflow-y: scroll;
-  position: relative;
   height: calc(100vh - 41px);
+  display: flex;
+  flex-direction: column;
 }
 
-.editor-column::-webkit-scrollbar {
+.editor-box {
+  overflow-y: scroll;
+  position: relative;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.editor-box::-webkit-scrollbar {
   background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
