@@ -5,7 +5,7 @@ import { Project } from '@splootcode/core/language/projects/project'
 import { Text } from '@chakra-ui/react'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
-export const AutosaveHandler = (props: { project: Project; onSaveAs: () => void }) => {
+export const AutosaveHandler = (props: { project: Project }) => {
   const { project } = props
 
   const [needsSave, setNeedsSave] = useState(false)
@@ -43,11 +43,7 @@ export const AutosaveHandler = (props: { project: Project; onSaveAs: () => void 
   }, [project])
 
   if (project?.isReadOnly) {
-    return (
-      <>
-        <Text color={'gray.500'}>{needsSave ? 'Not saved' : ''}</Text>
-      </>
-    )
+    return <Text color={'gray.500'}>{needsSave ? 'Not saved' : ''}</Text>
   }
   return <Text color={'gray.500'}>{needsSave ? 'Saving...' : 'Saved'}</Text>
 }

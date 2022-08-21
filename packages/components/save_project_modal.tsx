@@ -31,7 +31,6 @@ interface SaveProjectModalProps {
   onClose: () => void
   onComplete: (projectID: string, title: string) => void
   projectLoader: ProjectLoader
-  autoPromptFromReadOnly: boolean
 }
 
 export function SaveProjectModal(props: SaveProjectModalProps) {
@@ -76,7 +75,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Project</ModalHeader>
+          <ModalHeader>{clonedFrom ? 'Save as new project' : 'New Project'}</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>
