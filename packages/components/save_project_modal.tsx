@@ -37,16 +37,27 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const { isOpen, onClose, onComplete, projectLoader, clonedFrom } = props
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
+  const [validID, setValidID] = useState(true)
 
   useEffect(() => {
     if (clonedFrom) {
-      setProjectID(clonedFrom.name)
-      setProjectTitle(clonedFrom.title)
+      const generate = async () => {
+        const [name, title] = await projectLoader.generateValidProjectId(clonedFrom.name, clonedFrom.title)
+        setProjectID(name)
+        setProjectTitle(title)
+      }
+      generate()
     } else {
       setProjectID('')
       setProjectTitle('')
     }
   }, [clonedFrom])
+
+  useEffect(() => {
+    projectLoader.isValidProjectId(projectID).then((isValid) => {
+      setValidID(isValid)
+    })
+  }, [projectID])
 
   const handleCreate = () => {
     onComplete(projectID, projectTitle)
@@ -57,7 +68,6 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
     setProjectID(convertToURL(e.target.value))
   }
 
-  const validID = projectLoader.isValidProjectId(projectID)
   let errorMessage = ''
   if (!validID && projectID !== '') {
     errorMessage = 'This project ID is already taken'
