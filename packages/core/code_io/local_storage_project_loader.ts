@@ -31,6 +31,20 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return true
   }
 
+  async generateValidProjectId(projectId: string, title: string): Promise<[string, string]> {
+    let num = 1
+    let newProjectId = projectId
+    let newTitle = title
+    let isValid = await this.isValidProjectId(projectId)
+    while (!isValid) {
+      newProjectId = `${projectId}-${num}`
+      newTitle = `${title} (${num})`
+      isValid = await this.isValidProjectId(newProjectId)
+      num++
+    }
+    return [newProjectId, newTitle]
+  }
+
   async loadProject(projectId: string): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
     const projKey = `project/${projectId}`

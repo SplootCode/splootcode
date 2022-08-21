@@ -12,14 +12,17 @@ export const AutosaveHandler = (props: { project: Project }) => {
 
   useEffect(() => {
     if (needsSave && !project?.isReadOnly) {
-      setTimeout(() => {
+      const id = setTimeout(() => {
         if (needsSave) {
           project.save()
           setNeedsSave(false)
         }
       }, 2000)
+      return () => {
+        clearTimeout(id)
+      }
     }
-  }, [needsSave])
+  }, [needsSave, project])
 
   useEffect(() => {
     const mutationObserver = {
@@ -40,7 +43,7 @@ export const AutosaveHandler = (props: { project: Project }) => {
   }, [project])
 
   if (project?.isReadOnly) {
-    return <Text color={'gray.500'}>{needsSave ? 'Use "Save As..." to save your changes to a new project' : ''}</Text>
+    return <Text color={'gray.500'}>{needsSave ? 'Not saved' : ''}</Text>
   }
   return <Text color={'gray.500'}>{needsSave ? 'Saving...' : 'Saved'}</Text>
 }

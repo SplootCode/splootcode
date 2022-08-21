@@ -25,7 +25,7 @@ function convertToURL(title: string) {
     .replace(/[^\w-]+/g, '')
 }
 
-interface NewProjectModalProps {
+interface SaveProjectModalProps {
   isOpen: boolean
   clonedFrom?: Project
   onClose: () => void
@@ -33,20 +33,31 @@ interface NewProjectModalProps {
   projectLoader: ProjectLoader
 }
 
-export function SaveProjectModal(props: NewProjectModalProps) {
+export function SaveProjectModal(props: SaveProjectModalProps) {
   const { isOpen, onClose, onComplete, projectLoader, clonedFrom } = props
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
+  const [validID, setValidID] = useState(true)
 
   useEffect(() => {
     if (clonedFrom) {
-      setProjectID(clonedFrom.name)
-      setProjectTitle(clonedFrom.title)
+      const generate = async () => {
+        const [name, title] = await projectLoader.generateValidProjectId(clonedFrom.name, clonedFrom.title)
+        setProjectID(name)
+        setProjectTitle(title)
+      }
+      generate()
     } else {
       setProjectID('')
       setProjectTitle('')
     }
   }, [clonedFrom])
+
+  useEffect(() => {
+    projectLoader.isValidProjectId(projectID).then((isValid) => {
+      setValidID(isValid)
+    })
+  }, [projectID])
 
   const handleCreate = () => {
     onComplete(projectID, projectTitle)
@@ -57,7 +68,6 @@ export function SaveProjectModal(props: NewProjectModalProps) {
     setProjectID(convertToURL(e.target.value))
   }
 
-  const validID = projectLoader.isValidProjectId(projectID)
   let errorMessage = ''
   if (!validID && projectID !== '') {
     errorMessage = 'This project ID is already taken'
@@ -75,7 +85,7 @@ export function SaveProjectModal(props: NewProjectModalProps) {
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Project</ModalHeader>
+          <ModalHeader>{clonedFrom ? 'Save as new project' : 'New Project'}</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>

@@ -104,7 +104,16 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         <MenuBarItem>{loadedProject ? <AutosaveHandler project={loadedProject} /> : null}</MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
-        {loadedProject === null ? <div>Loading... </div> : <PythonEditorPanels project={loadedProject} />}
+        {loadedProject === null ? (
+          <div>Loading... </div>
+        ) : (
+          <PythonEditorPanels
+            project={loadedProject}
+            onSaveAs={() => {
+              setSaveProjectModalState({ open: true, clonedFrom: loadedProject })
+            }}
+          />
+        )}
       </div>
     </React.Fragment>
   )
