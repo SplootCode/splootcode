@@ -14,8 +14,11 @@ export const AutosaveHandler = (props: { project: Project }) => {
     if (needsSave && !project?.isReadOnly) {
       const id = setTimeout(() => {
         if (needsSave) {
-          project.save()
-          setNeedsSave(false)
+          project.save().then((success) => {
+            if (success) {
+              setNeedsSave(false)
+            }
+          })
         }
       }, 2000)
       return () => {
