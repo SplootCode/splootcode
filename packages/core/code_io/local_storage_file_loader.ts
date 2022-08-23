@@ -45,7 +45,7 @@ export class LocalStorageFileLoader implements FileLoader {
     if (base_version) {
       const currentSaveVersion = this.getStoredProjectVersion(project.name)
       if (currentSaveVersion !== base_version) {
-        throw new SaveError('This project has been edited in another window. Please refresh.')
+        throw new SaveError('This project has been edited in another window.')
       }
       version = base_version
     } else {

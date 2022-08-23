@@ -55,7 +55,6 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
               title: err.message,
               status: 'warning',
               position: 'top',
-              duration: 10000,
             })
           } else {
             throw err
