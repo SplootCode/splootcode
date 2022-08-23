@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { AutosaveHandler } from '@splootcode/components/autosave_handler'
 import { MainMenuItem, MenuBar, MenuBarItem } from '@splootcode/components/menu_bar'
 import { Project } from '@splootcode/core/language/projects/project'
-import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
+import { ProjectLoader, SaveError } from '@splootcode/core/language/projects/file_loader'
 import { PythonEditorPanels } from './python_editor'
 import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 import { loadExampleProject } from '../code_io/static_projects'
 import { populateNewPythonProject } from '@splootcode/language-python/project'
 import { useHistory, useParams } from 'react-router-dom'
+import { useToast } from '@chakra-ui/react'
 
 interface ProjectEditorProps {
   projectLoader: ProjectLoader
@@ -20,6 +21,8 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
+
+  const toast = useToast()
 
   const history = useHistory()
 
@@ -46,7 +49,18 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       name: 'Save',
       disabled: loadedProject?.isReadOnly,
       onClick: () => {
-        loadedProject.save()
+        loadedProject.save().catch((err) => {
+          if (err instanceof SaveError) {
+            toast({
+              title: err.message,
+              status: 'warning',
+              position: 'top',
+              duration: 10000,
+            })
+          } else {
+            throw err
+          }
+        })
       },
     },
     {

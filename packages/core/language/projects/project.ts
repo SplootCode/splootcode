@@ -6,6 +6,7 @@ export interface SerializedProject {
   layouttype: string
   title: string
   splootversion: string
+  version: string
   packages: SerializedSplootPackageRef[]
 }
 
@@ -21,6 +22,7 @@ export class Project {
   layoutType: ProjectLayoutType
   title: string
   splootversion: string
+  version: string
   packages: SplootPackage[]
   fileLoader: FileLoader
 
@@ -29,6 +31,7 @@ export class Project {
     this.name = proj.name
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
+    this.version = proj.version
     this.fileLoader = fileLoader
     this.packages = packages
     switch (proj.layouttype) {
@@ -44,7 +47,8 @@ export class Project {
     if (this.fileLoader.isReadOnly()) {
       return false
     }
-    return await this.fileLoader.saveProject(this)
+    await this.fileLoader.saveProject(this, this.version)
+    return true
   }
 
   async delete(): Promise<boolean> {
@@ -72,6 +76,7 @@ export class Project {
       layouttype: this.layoutType,
       title: this.title,
       splootversion: this.splootversion,
+      version: this.version,
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,

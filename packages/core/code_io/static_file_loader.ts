@@ -1,4 +1,4 @@
-import { FileLoader } from '../language/projects/file_loader'
+import { FileLoader, SaveError } from '../language/projects/file_loader'
 import { Project } from '../language/projects/project'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
@@ -33,14 +33,17 @@ export class StaticFileLoader implements FileLoader {
   }
 
   async saveProject(project: Project) {
-    return false
+    throw new SaveError('Cannot save readonly project.')
+    return ''
   }
 
   async saveFile(projectId: string, packageId: string, file: SplootFile) {
-    return false
+    throw new SaveError('Cannot save readonly project.')
+    return ''
   }
 
   async deleteProject(project: Project) {
+    throw new SaveError('Cannot delete readonly project.')
     return false
   }
 }

@@ -32,11 +32,11 @@ export class FileSystemFileLoader implements FileLoader {
   }
 
   async saveProject(project: Project) {
-    return false
+    return ''
   }
 
   async saveFile(projectId: string, packageId: string, file: SplootFile) {
-    return false
+    return ''
   }
 
   async deleteProject(project: Project) {

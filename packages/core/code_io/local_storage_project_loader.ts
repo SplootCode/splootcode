@@ -50,6 +50,10 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const projKey = `project/${projectId}`
     const projStr = window.localStorage.getItem(projKey)
     const proj = JSON.parse(projStr) as SerializedProject
+    if (!proj.version) {
+      proj.version = (Math.random() + 1).toString(36)
+      window.localStorage.setItem(projKey, JSON.stringify(proj))
+    }
     const packages = proj.packages.map(async (packRef) => {
       return fileLoader.loadPackage(proj.name, packRef.name)
     })
@@ -63,12 +67,12 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       name: projectId,
       layouttype: layoutType,
       splootversion: '1.0.0',
+      version: '1',
       title: title,
       packages: [],
     }
     const proj = new Project('local', serialisedProj, [], fileLoader)
-    fileLoader.saveProject(proj)
-    this.updateProjectMetadata(proj)
+    await fileLoader.saveProject(proj, null)
     return proj
   }
 
