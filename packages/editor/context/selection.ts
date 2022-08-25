@@ -463,13 +463,13 @@ export class NodeSelection {
       // Insert node will also update the render positions
       childSet.insertNode(adapted, index)
       // Trigger a clean from the parent upward.
-      adapted.parent.node.clean()
+      // adapted.parent.node.clean()
       return
     }
     // Insert node will also update the render positions
     childSet.insertNode(node, index)
     // Trigger a clean from the parent upward.
-    node.parent.node.clean()
+    // node.parent.node.clean()
   }
 
   @action

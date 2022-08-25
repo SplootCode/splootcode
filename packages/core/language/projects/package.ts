@@ -58,6 +58,7 @@ export class SplootPackage {
 
   async addFile(name: string, type: string, rootNode: SplootNode) {
     const splootFile = new SplootFile(name, type)
+    // TODO something?
     splootFile.fileLoaded(rootNode)
     this.files[name] = splootFile
     if (!this.fileOrder.includes(name)) {

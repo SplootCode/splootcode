@@ -1,3 +1,4 @@
+import * as Y from 'yjs'
 import { ChildSet, ChildSetType } from './childset'
 import {
   DeserializationError,
@@ -46,6 +47,8 @@ export class SplootNode {
   invalidNode: number
   isRepeatableBlock: boolean
   metadata: Map<string, any>
+  yMap: Y.Map<any>
+  yDoc: Y.Doc
 
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
@@ -60,10 +63,30 @@ export class SplootNode {
     this.mutationObservers = []
     this.isRepeatableBlock = false
     this.metadata = new Map()
+    this.yMap = null
+    this.yDoc = null
   }
 
   get hasChildSets(): boolean {
     return this.childSetOrder.length !== 0
+  }
+
+  recursivelyAttachYMap(yDoc: Y.Doc): Y.Map<any> {
+    this.yDoc = yDoc
+    const yMap = new Y.Map()
+    this.yMap = yMap
+
+    yMap.set('type', this.type)
+    yMap.set('properties', this.properties)
+    const childSetMap = new Y.Map()
+    yMap.set('childSets', childSetMap)
+    this.childSetOrder.forEach((childSetID) => {
+      const childSet = this.childSets[childSetID]
+      const yArray = childSet.recursivelyAttachYArray(this.yDoc)
+      childSetMap.set(childSetID, yArray)
+    })
+    console.log(yMap)
+    return this.yMap
   }
 
   addChildSet(name: string, type: ChildSetType, category: NodeCategory, minChildren = 0, maxChildren = -1) {

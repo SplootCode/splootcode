@@ -19,9 +19,12 @@ import { Tray } from './tray/tray'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
 import { deserializeNode } from '@splootcode/core/language/type_registry'
 
+import * as Y from 'yjs'
+
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
 interface EditorProps {
+  undoManager: Y.UndoManager
   block: NodeBlock
   pkg: SplootPackage
   selection: NodeSelection
@@ -147,7 +150,7 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   keyHandler = (event: KeyboardEvent) => {
-    const { selection } = this.props
+    const { selection, undoManager } = this.props
     if (event.isComposing) {
       // IME composition, let it be captured by the insert box.
       return
@@ -166,6 +169,15 @@ export class Editor extends React.Component<EditorProps> {
         }, 0)
       }
     }
+
+    if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+      if (event.shiftKey) {
+        undoManager.redo()
+      } else {
+        undoManager.undo()
+      }
+    }
+
     switch (event.key) {
       case 'ArrowLeft':
         selection.moveCursorLeft()

@@ -5,6 +5,9 @@ import { ParentReference, SplootNode } from './node'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
+import * as Y from 'yjs'
+import { deseraliseYMapToNode } from './type_registry'
+
 export enum ChildSetType {
   Single = 0,
   Many,
@@ -20,6 +23,8 @@ export class ChildSet {
   nodeCategory: NodeCategory
   mutationObservers: ChildSetObserver[]
   enableMutations: boolean
+  yDoc: Y.Doc
+  yArray: Y.Array<any>
 
   constructor(
     owner: SplootNode,
@@ -44,6 +49,47 @@ export class ChildSet {
     this.nodeCategory = nodeCategory
     this.mutationObservers = []
     this.enableMutations = false
+  }
+
+  // childSet.recursivelyAttachYArray(ydoc, yArray)
+  recursivelyAttachYArray(yDoc: Y.Doc): Y.Array<any> {
+    this.yDoc = yDoc
+    const childMaps = this.children.map((node) => {
+      const childYMap = node.recursivelyAttachYMap(yDoc)
+      return childYMap
+    })
+    const yArray = new Y.Array()
+    yArray.push(childMaps)
+    this.yArray = yArray
+    this.yArray.observe(this.yObserver)
+    return yArray
+  }
+
+  yObserver = (event: Y.YArrayEvent<any>, transaction: Y.Transaction) => {
+    console.log(event, transaction)
+    // Sync with our actual array
+    let oldI = 0
+
+    console.log(event.changes.added)
+    console.log(event.changes.deleted)
+
+    while (oldI < this.children.length) {
+      const nodeMap = this.children[oldI].yMap
+      if (event.changes.deleted.has(nodeMap._item)) {
+        console.log('Detected a delete at index: ', oldI)
+        this.reallyRemoveChild(oldI)
+      } else {
+        console.log('not deleted:', nodeMap)
+        oldI++
+      }
+    }
+    this.yArray.forEach((nodeMap: Y.Map<any>, i) => {
+      if (event.changes.added.has(nodeMap._item)) {
+        console.log('detected added', i, nodeMap)
+        const newNode = deseraliseYMapToNode(this.yDoc, nodeMap)
+        this.reallyInsertNode(newNode, i)
+      }
+    })
   }
 
   getParentRef() {
@@ -79,6 +125,14 @@ export class ChildSet {
   }
 
   insertNode(node: SplootNode, index: number) {
+    if (this.yArray) {
+      this.yArray.insert(index, [node.recursivelyAttachYMap(this.yDoc)])
+    } else {
+      this.reallyInsertNode(node, index)
+    }
+  }
+
+  reallyInsertNode(node: SplootNode, index: number) {
     if (node.parent) {
       console.warn('Inserting a node which alredy has a parent!')
     }
@@ -116,6 +170,16 @@ export class ChildSet {
   }
 
   removeChild(index: number): SplootNode {
+    if (this.yArray) {
+      const child = this.getChild(index)
+      this.yArray.delete(index, 1)
+      return child
+    } else {
+      return this.reallyRemoveChild(index)
+    }
+  }
+
+  reallyRemoveChild(index: number): SplootNode {
     if (index >= this.children.length) {
       console.warn("Attempting to delete child that doesn't exist!!", index, this.childParentRef.childSetId)
     }

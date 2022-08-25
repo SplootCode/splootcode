@@ -1,5 +1,7 @@
 import { SplootNode } from '../node'
 
+import * as Y from 'yjs'
+
 export interface SerializedSplootFileRef {
   name: string
   type: string
@@ -10,6 +12,7 @@ export class SplootFile {
   type: string // Sploot node type
   rootNode: SplootNode
   isLoaded: boolean
+  yDoc: Y.Doc
 
   constructor(name: string, type: string) {
     this.rootNode = null
@@ -19,7 +22,11 @@ export class SplootFile {
   }
 
   fileLoaded(node: SplootNode) {
+    this.yDoc = new Y.Doc()
     this.rootNode = node
+    const map = this.rootNode.recursivelyAttachYMap(this.yDoc)
+    const rootMap = this.yDoc.getMap()
+    rootMap.set('rootNode', map)
     this.isLoaded = true
   }
 

@@ -10,6 +10,8 @@ import { action, observable } from 'mobx'
 import { generatePythonScope } from '@splootcode/language-python/scope/python_scope'
 import { isPythonNode } from '@splootcode/language-python/nodes/python_node'
 
+import * as Y from 'yjs'
+
 export class EditorState {
   project: Project
 
@@ -18,6 +20,7 @@ export class EditorState {
   selection: NodeSelection
   validationWatcher: ValidationWatcher
   analyser: PythonAnalyzer
+  undoManager: Y.UndoManager
 
   constructor(project: Project) {
     this.project = project
@@ -27,6 +30,7 @@ export class EditorState {
     this.validationWatcher.registerSelf()
     this.analyser = new PythonAnalyzer(project)
     this.analyser.registerSelf()
+    this.undoManager = null
   }
 
   async loadDefaultFile() {
@@ -37,6 +41,8 @@ export class EditorState {
 
   async openFile(pack: SplootPackage, file: SplootFile) {
     const loadedFile = await pack.getLoadedFile(file.name)
+
+    this.undoManager = new Y.UndoManager(loadedFile.yDoc.getMap())
 
     // Build scope
     if (isPythonNode(loadedFile.rootNode)) {

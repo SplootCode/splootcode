@@ -34,6 +34,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
       <EditorStateContext.Provider value={editorState}>
         {editorState ? (
           <Editor
+            undoManager={editorState.undoManager}
             block={editorState.rootNode}
             pkg={onlyPackage}
             selection={editorState.selection}

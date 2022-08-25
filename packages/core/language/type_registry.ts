@@ -2,6 +2,9 @@ import { HighlightColorCategory } from '../colors'
 import { NodeCategory, getNodeCategoriesForType, isNodeInCategory } from './node_category_registry'
 import { SplootNode } from './node'
 
+import * as Y from 'yjs'
+import { ChildSet } from './childset'
+
 const typeRegistry: { [key: string]: TypeRegistration } = {}
 const pasteAdapaterMapping = {}
 
@@ -171,6 +174,33 @@ export class DeserializationError extends Error {
     super(`Failed to deserialize node type: ${nodeType}. Reason: ${message}`)
     this.nodeType = nodeType
   }
+}
+
+function recursivelyApplyYMapToChildSet(yDoc: Y.Doc, childSetArr: Y.Array<any>, childSet: ChildSet) {
+  childSet.yDoc = yDoc
+  childSet.yArray = childSetArr
+  childSet.children.forEach((child, i) => {
+    recursivelyApplyYMapToNode(yDoc, childSetArr.get(i), child)
+  })
+  childSet.yArray.observe(childSet.yObserver)
+}
+
+function recursivelyApplyYMapToNode(yDoc: Y.Doc, nodeMap: Y.Map<any>, node: SplootNode) {
+  node.yDoc = yDoc
+  node.yMap = nodeMap
+  const childSetMap = nodeMap.get('childSets')
+  for (const childSetId of node.childSetOrder) {
+    const childSet = node.childSets[childSetId]
+    const childSetArr = childSetMap.get(childSetId) as Y.Array<any>
+    recursivelyApplyYMapToChildSet(yDoc, childSetArr, childSet)
+  }
+}
+
+export function deseraliseYMapToNode(yDoc: Y.Doc, nodeMap: Y.Map<any>): SplootNode {
+  const serNode = nodeMap.toJSON() as SerializedNode
+  const node = deserializeNode(serNode)
+  recursivelyApplyYMapToNode(yDoc, nodeMap, node)
+  return node
 }
 
 export function deserializeNode(serialisedNode: SerializedNode): SplootNode {
