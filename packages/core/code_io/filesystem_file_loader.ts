@@ -1,5 +1,4 @@
-import { FileLoader } from '../language/projects/file_loader'
-import { Project } from '../language/projects/project'
+import { FileLoader, SaveError } from '../language/projects/file_loader'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { SplootFile } from '../language/projects/file'
@@ -31,15 +30,7 @@ export class FileSystemFileLoader implements FileLoader {
     return rootNode
   }
 
-  async saveProject(project: Project) {
-    return ''
-  }
-
-  async saveFile(projectId: string, packageId: string, file: SplootFile) {
-    return ''
-  }
-
-  async deleteProject(project: Project) {
-    return false
+  async saveFile(projectId: string, packageId: string, file: SplootFile): Promise<string> {
+    throw new SaveError('Cannot save readonly file.')
   }
 }

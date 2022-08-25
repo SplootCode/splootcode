@@ -43,18 +43,6 @@ export class Project {
     }
   }
 
-  async save(): Promise<boolean> {
-    if (this.fileLoader.isReadOnly()) {
-      return false
-    }
-    await this.fileLoader.saveProject(this, this.version)
-    return true
-  }
-
-  async delete(): Promise<boolean> {
-    return await this.fileLoader.deleteProject(this)
-  }
-
   getDefaultPackage(): SplootPackage {
     return this.packages[0]
   }

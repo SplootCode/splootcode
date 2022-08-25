@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
 import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
 import { Project } from '@splootcode/core/language/projects/project'
-import { SaveError } from '@splootcode/core/language/projects/file_loader'
+import { ProjectLoader, SaveError } from '@splootcode/core/language/projects/file_loader'
 import { Text, useToast } from '@chakra-ui/react'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
-export const AutosaveHandler = (props: { project: Project }) => {
-  const { project } = props
+export const AutosaveHandler = (props: {
+  project: Project
+  projectLoader: ProjectLoader
+  reloadProject: () => void
+}) => {
+  const { project, projectLoader, reloadProject } = props
 
   const [needsSave, setNeedsSave] = useState(false)
   const [failedSave, setFailedSave] = useState(false)
@@ -17,14 +21,19 @@ export const AutosaveHandler = (props: { project: Project }) => {
     if (needsSave && !project?.isReadOnly) {
       const id = setTimeout(() => {
         if (needsSave) {
-          project
-            .save()
+          projectLoader
+            .saveProject(project)
             .then((success) => {
               if (success) {
                 setNeedsSave(false)
                 setFailedSave(false)
               } else {
                 setFailedSave(true)
+                toast({
+                  title: 'Failed to save. Reason: Unknown',
+                  position: 'top',
+                  status: 'warning',
+                })
               }
             })
             .catch((err) => {
@@ -64,6 +73,23 @@ export const AutosaveHandler = (props: { project: Project }) => {
     }
     return cleanup
   }, [project])
+
+  useEffect(() => {
+    if (!needsSave && !project?.isReadOnly) {
+      const checkVersion = async () => {
+        if (document['hidden'] === false) {
+          const isCurrent = await projectLoader.isCurrentVersion(project)
+          if (!isCurrent) {
+            reloadProject()
+          }
+        }
+      }
+      window.addEventListener('visibilitychange', checkVersion)
+      return () => {
+        window.removeEventListener('visibilitychange', checkVersion)
+      }
+    }
+  }, [needsSave, project])
 
   if (project?.isReadOnly || failedSave) {
     return <Text color={'gray.500'}>{needsSave ? 'Not saved' : ''}</Text>

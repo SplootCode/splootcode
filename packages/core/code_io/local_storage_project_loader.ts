@@ -1,7 +1,14 @@
 import { LocalStorageFileLoader } from './local_storage_file_loader'
+import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { Project, SerializedProject } from '../language/projects/project'
-import { ProjectLoader, ProjectMetadata } from '../language/projects/file_loader'
-import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
+import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
+import { SerializedNode, deserializeNode } from '../language/type_registry'
+
+const startingPythonFile: SerializedNode = {
+  type: 'PYTHON_FILE',
+  properties: {},
+  childSets: { body: [] },
+}
 
 export class LocalStorageProjectLoader implements ProjectLoader {
   async listProjectMetadata(): Promise<ProjectMetadata[]> {
@@ -72,7 +79,9 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       packages: [],
     }
     const proj = new Project('local', serialisedProj, [], fileLoader)
-    await fileLoader.saveProject(proj, null)
+    const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
+    await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
+    await this.saveProject(proj)
     return proj
   }
 
@@ -101,9 +110,61 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     })
     const packages = await Promise.all(packagePromises)
     const proj = new Project('local', serializedProj, packages, fileLoader)
-    proj.save()
-    this.updateProjectMetadata(proj)
+
+    await this.saveProject(proj)
+    await this.updateProjectMetadata(proj)
     return proj
+  }
+
+  getStoredProjectVersion(projectID: string): string {
+    const projKey = `project/${projectID}`
+    const projStr = window.localStorage.getItem(projKey)
+    if (projStr === null) {
+      return null
+    }
+    const proj = JSON.parse(projStr) as SerializedProject
+    return proj.version
+  }
+
+  async isCurrentVersion(project: Project): Promise<boolean> {
+    const currentSaveVersion = this.getStoredProjectVersion(project.name)
+    if (currentSaveVersion && currentSaveVersion !== project.version) {
+      return false
+    }
+    return true
+  }
+
+  async saveProject(project: Project): Promise<string> {
+    // Check local storage if it's got the same base version
+    let version
+    const base_version = project.version
+    if (base_version) {
+      const currentSaveVersion = this.getStoredProjectVersion(project.name)
+      // currentSaveVersion might be null if it's not yet saved.
+      if (currentSaveVersion && currentSaveVersion !== base_version) {
+        throw new SaveError('Cannot save. This project has been edited and saved in another window.')
+      }
+      version = base_version
+    } else {
+      version = (Math.random() + 1).toString(36)
+    }
+
+    for (const splootPackage of project.packages) {
+      const packageKey = `project/${project.name}/${splootPackage.name}`
+      window.localStorage.setItem(packageKey, splootPackage.serialize())
+      for (const filename of splootPackage.fileOrder) {
+        version = await project.fileLoader.saveFile(
+          project.name,
+          splootPackage.name,
+          splootPackage.files[filename],
+          version
+        )
+      }
+    }
+    project.version = version
+    const projKey = `project/${project.name}`
+    window.localStorage.setItem(projKey, project.serialize())
+    return version
   }
 
   async updateProjectMetadata(project: Project): Promise<boolean> {
@@ -135,7 +196,16 @@ export class LocalStorageProjectLoader implements ProjectLoader {
 
   async deleteProject(projectId: string): Promise<boolean> {
     const proj = await this.loadProject(projectId)
-    await proj.delete()
+    proj.packages.forEach((splootPackage) => {
+      splootPackage.fileOrder.forEach((filename) => {
+        const fileKey = `project/${proj.name}/${splootPackage.name}/${filename}`
+        window.localStorage.removeItem(fileKey)
+      })
+      const packageKey = `project/${proj.name}/${splootPackage.name}`
+      window.localStorage.removeItem(packageKey)
+    })
+    const projKey = `project/${proj.name}`
+    window.localStorage.removeItem(projKey)
     const allMeta = await this.listProjectMetadata()
     this.overwriteProjectMetadata(
       allMeta.filter((meta) => {

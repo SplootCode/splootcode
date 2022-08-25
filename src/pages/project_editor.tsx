@@ -4,38 +4,40 @@ import React, { useEffect, useState } from 'react'
 import { AutosaveHandler } from '@splootcode/components/autosave_handler'
 import { MainMenuItem, MenuBar, MenuBarItem } from '@splootcode/components/menu_bar'
 import { Project } from '@splootcode/core/language/projects/project'
-import { ProjectLoader, SaveError } from '@splootcode/core/language/projects/file_loader'
+import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
 import { PythonEditorPanels } from './python_editor'
 import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
 import { loadExampleProject } from '../code_io/static_projects'
-import { populateNewPythonProject } from '@splootcode/language-python/project'
 import { useHistory, useParams } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
 
 interface ProjectEditorProps {
   projectLoader: ProjectLoader
 }
 
 export const ProjectEditor = (props: ProjectEditorProps) => {
+  const { projectLoader } = props
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
 
-  const toast = useToast()
-
   const history = useHistory()
 
-  useEffect(() => {
+  const loadProjectFromStorage = () => {
+    setLoadedProject(null)
     if (ownerID === 'examples') {
       loadExampleProject(projectID).then((proj) => {
         setLoadedProject(proj)
       })
     } else if (ownerID === 'local') {
-      props.projectLoader.loadProject(projectID).then((proj) => {
+      projectLoader.loadProject(projectID).then((proj) => {
         setLoadedProject(proj)
       })
     }
+  }
+
+  useEffect(() => {
+    loadProjectFromStorage()
   }, [projectID, ownerID])
 
   const menuItems: MainMenuItem[] = [
@@ -43,23 +45,6 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       name: 'New Project',
       onClick: () => {
         setSaveProjectModalState({ open: true, clonedFrom: null })
-      },
-    },
-    {
-      name: 'Save',
-      disabled: loadedProject?.isReadOnly,
-      onClick: () => {
-        loadedProject.save().catch((err) => {
-          if (err instanceof SaveError) {
-            toast({
-              title: err.message,
-              status: 'warning',
-              position: 'top',
-            })
-          } else {
-            throw err
-          }
-        })
       },
     },
     {
@@ -100,21 +85,24 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
               setSaveProjectModalState({ open: false, clonedFrom: null })
             })
           } else {
-            props.projectLoader
-              .newProject(projectID, title, 'PYTHON_CLI')
-              .then((proj) => {
-                return populateNewPythonProject(proj)
-              })
-              .then(() => {
-                history.push(`/p/local/${projectID}`)
-                setSaveProjectModalState({ open: false, clonedFrom: null })
-              })
+            props.projectLoader.newProject(projectID, title, 'PYTHON_CLI').then(() => {
+              history.push(`/p/local/${projectID}`)
+              setSaveProjectModalState({ open: false, clonedFrom: null })
+            })
           }
         }}
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>{loadedProject ? <AutosaveHandler project={loadedProject} /> : null}</MenuBarItem>
+        <MenuBarItem>
+          {loadedProject ? (
+            <AutosaveHandler
+              project={loadedProject}
+              projectLoader={projectLoader}
+              reloadProject={loadProjectFromStorage}
+            />
+          ) : null}
+        </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {loadedProject === null ? (
