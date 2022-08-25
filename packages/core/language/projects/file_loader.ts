@@ -7,9 +7,7 @@ export interface FileLoader {
   isReadOnly: () => boolean
   loadPackage: (projectId: string, packageId: string) => Promise<SplootPackage>
   loadFile: (projectId: string, packageId: string, filename: string) => Promise<SplootNode>
-  saveProject: (project: Project) => Promise<boolean>
-  saveFile: (projectId: string, packageId: string, file: SplootFile) => Promise<boolean>
-  deleteProject: (project: Project) => Promise<boolean>
+  saveFile: (projectId: string, packageId: string, file: SplootFile, base_version: string) => Promise<string>
 }
 
 export interface ProjectMetadata {
@@ -27,4 +25,12 @@ export interface ProjectLoader {
   newProject: (projectId: string, title: string, layoutType: string) => Promise<Project>
   deleteProject: (projectId: string) => Promise<boolean>
   cloneProject: (newProjectId: string, title: string, existingProject: Project) => Promise<Project>
+  saveProject: (project: Project) => Promise<string>
+  isCurrentVersion: (project: Project) => Promise<boolean>
+}
+
+export class SaveError extends Error {
+  constructor(msg: string) {
+    super(msg)
+  }
 }

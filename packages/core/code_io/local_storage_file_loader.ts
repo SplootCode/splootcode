@@ -1,6 +1,5 @@
 import { FileLoader } from '../language/projects/file_loader'
 import { LocalStorageProjectLoader } from './local_storage_project_loader'
-import { Project } from '../language/projects/project'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 import { SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { SplootFile } from '../language/projects/file'
@@ -32,37 +31,11 @@ export class LocalStorageFileLoader implements FileLoader {
     return rootNode
   }
 
-  async saveProject(project: Project) {
-    const projKey = `project/${project.name}`
-    window.localStorage.setItem(projKey, project.serialize())
-    project.packages.forEach((splootPackage) => {
-      const packageKey = `project/${project.name}/${splootPackage.name}`
-      window.localStorage.setItem(packageKey, splootPackage.serialize())
-      splootPackage.fileOrder.forEach((filename) => {
-        this.saveFile(project.name, splootPackage.name, splootPackage.files[filename])
-      })
-    })
-    this.projectLoader.updateProjectMetadata(project)
-    return true
-  }
-
-  async saveFile(projectId: string, packageId: string, file: SplootFile) {
-    const fileKey = `project/${projectId}/${packageId}/${file.name}`
+  async saveFile(projectID: string, packageID: string, file: SplootFile, base_version: string): Promise<string> {
+    const fileKey = `project/${projectID}/${packageID}/${file.name}`
     window.localStorage.setItem(fileKey, file.serialize())
-    return true
-  }
-
-  async deleteProject(project: Project): Promise<boolean> {
-    project.packages.forEach((splootPackage) => {
-      splootPackage.fileOrder.forEach((filename) => {
-        const fileKey = `project/${project.name}/${splootPackage.name}/${filename}`
-        window.localStorage.removeItem(fileKey)
-      })
-      const packageKey = `project/${project.name}/${splootPackage.name}`
-      window.localStorage.removeItem(packageKey)
-    })
-    const projKey = `project/${project.name}`
-    window.localStorage.removeItem(projKey)
-    return true
+    // Randomly generate new version
+    const newVersion = (Math.random() + 1).toString(36)
+    return newVersion
   }
 }

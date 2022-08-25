@@ -8,7 +8,6 @@ import { Project } from '@splootcode/core/language/projects/project'
 import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
 import { SaveProjectModal } from '@splootcode/components/save_project_modal'
 import { loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
-import { populateNewPythonProject } from '@splootcode/language-python/project'
 
 interface UserHomePageProps {
   projectLoader: ProjectLoader
@@ -125,14 +124,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
               })
             })
           } else {
-            props.projectLoader
-              .newProject(projectID, title, 'PYTHON_CLI')
-              .then((proj) => {
-                return populateNewPythonProject(proj)
-              })
-              .then(() => {
-                history.push(`/p/local/${projectID}`)
-              })
+            props.projectLoader.newProject(projectID, title, 'PYTHON_CLI').then(() => {
+              history.push(`/p/local/${projectID}`)
+            })
           }
           setSaveProjectModalState({ open: false, clonedFrom: null })
         }}
