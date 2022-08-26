@@ -16,7 +16,11 @@ import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
-import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
+import {
+  adaptNodeToPasteDestination,
+  deserializeNode,
+  isAdaptableToPasteDesintation,
+} from '@splootcode/core/language/type_registry'
 
 export enum NodeSelectionState {
   UNSELECTED = 0,
@@ -544,7 +548,8 @@ export class NodeSelection {
 
   getSelectedFragment(): SplootFragment {
     if (this.isSingleNode()) {
-      return new SplootFragment([this.selectedNode], this.selectionStart.listBlock.childSet.nodeCategory)
+      const node = deserializeNode(this.selectedNode.shallowSerialize())
+      return new SplootFragment([node], this.selectionStart.listBlock.childSet.nodeCategory)
     } else if (this.isMultiSelect()) {
       const [realStart, end] = this.multiSelectCursors
       const fragmentWalker = new MultiselectFragmentCreator(realStart, end)

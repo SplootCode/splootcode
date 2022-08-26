@@ -1,6 +1,11 @@
 import { NodeCategory } from './node_category_registry'
-import { SerializedNode } from './type_registry'
+import { SerializedNode, deserializeNode } from './type_registry'
 import { SplootNode } from './node'
+
+interface SerializedFragment {
+  category: NodeCategory
+  nodes: SerializedNode[]
+}
 
 export class SplootFragment {
   nodes: SplootNode[]
@@ -25,7 +30,15 @@ export class SplootFragment {
     return this.nodes.length == 1
   }
 
-  serialize(): SerializedNode[] {
-    return this.nodes.map((node) => node.serialize())
+  serialize(): SerializedFragment {
+    return {
+      category: this.nodeCategory,
+      nodes: this.nodes.map((node) => node.serialize()),
+    }
   }
+}
+
+export function deserializeFragment(serFragment: SerializedFragment): SplootFragment {
+  const nodes = serFragment.nodes.map((serNode) => deserializeNode(serNode))
+  return new SplootFragment(nodes, serFragment.category)
 }

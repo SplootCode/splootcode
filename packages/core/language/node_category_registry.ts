@@ -14,6 +14,7 @@ export enum NodeCategory {
   Expression,
   ExpressionToken,
   ObjectPropertyDeclaration,
+  // 10
   JavascriptFile,
   ModuleSource,
   DataSheet,
@@ -25,6 +26,7 @@ export enum NodeCategory {
   StyleSheetProperty,
   StyleSheetPropertyValue,
   ComponentPropertyDeclaration,
+  // 20
   ComponentProperty,
   ComponentBodyStatement,
   JssBodyContent,
@@ -34,6 +36,7 @@ export enum NodeCategory {
   PythonStatementContents,
   PythonElseBlock,
   PythonExpression,
+  // 30
   PythonExpressionToken,
   PythonAssignable,
   PythonFunctionName,

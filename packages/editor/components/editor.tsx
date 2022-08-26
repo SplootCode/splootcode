@@ -17,7 +17,7 @@ import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { Tray } from './tray/tray'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
-import { deserializeNode } from '@splootcode/core/language/type_registry'
+import { deserializeFragment } from '@splootcode/core/language/fragment'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -113,9 +113,11 @@ export class Editor extends React.Component<EditorProps> {
 
   clipboardHandler = (event: ClipboardEvent) => {
     const { selection } = this.props
+    console.log(event, event.target)
     if (event.type === 'copy' || event.type === 'cut') {
       if (event.target instanceof SVGElement) {
         const selectedFragment = selection.getSelectedFragment()
+        console.log('copy', selectedFragment)
         if (selectedFragment !== null) {
           const jsonNode = JSON.stringify(selectedFragment.serialize())
           // Maybe change to selectedNode.generateCodeString()
@@ -125,18 +127,19 @@ export class Editor extends React.Component<EditorProps> {
           event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode)
           event.preventDefault()
         }
+        if (event.type === 'cut') {
+          selection.deleteSelectedNode()
+        }
       }
-    }
-    if (event.type === 'cut') {
-      selection.deleteSelectedNode()
     }
     if (event.type === 'paste') {
       const splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE)
       if (splootData) {
-        const node = deserializeNode(JSON.parse(splootData))
+        const fragment = deserializeFragment(JSON.parse(splootData))
         if (selection.isCursor()) {
-          selection.insertNodeAtCurrentCursor(node)
-        } else if (selection.isSingleNode()) {
+          selection.insertFragmentAtCurrentCursor(fragment)
+        } else if (selection.isSingleNode() && fragment.nodes.length === 1) {
+          const node = fragment.nodes[0]
           selection.replaceOrWrapSelectedNode(node)
         } else {
           // paste failed :(
