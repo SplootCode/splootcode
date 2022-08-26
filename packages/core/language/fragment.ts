@@ -1,4 +1,5 @@
 import { NodeCategory } from './node_category_registry'
+import { SerializedNode } from './type_registry'
 import { SplootNode } from './node'
 
 export class SplootFragment {
@@ -22,5 +23,9 @@ export class SplootFragment {
 
   isSingle() {
     return this.nodes.length == 1
+  }
+
+  serialize(): SerializedNode[] {
+    return this.nodes.map((node) => node.serialize())
   }
 }

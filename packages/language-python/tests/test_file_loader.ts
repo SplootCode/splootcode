@@ -10,10 +10,12 @@ import { readFile } from 'fs'
 export async function loadTestProject(projectID: string, title: string): Promise<Project> {
   const fileLoader = new TestFileLoader()
   const proj = new Project(
+    'examples',
     {
       name: projectID,
       title: title,
       layouttype: 'PYTHON_CLI',
+      version: '1',
       packages: [
         {
           buildType: PackageBuildType.PYTHON,
@@ -71,12 +73,12 @@ export class TestFileLoader implements FileLoader {
     return deserializeNode(JSON.parse(contents) as SerializedNode)
   }
 
-  async saveProject(project: Project) {
-    return false
+  async saveProject(project: Project, base_version: string) {
+    return ''
   }
 
-  async saveFile(projectId: string, packageId: string, file: SplootFile) {
-    return false
+  async saveFile(projectId: string, packageId: string, file: SplootFile, base_version: string) {
+    return ''
   }
 
   async deleteProject(project: Project) {

@@ -78,12 +78,13 @@ export class PythonCallVariable extends PythonNode {
     return null
   }
 
-  setEditablePropertyValue(newValue: string) {
+  setEditablePropertyValue(newValue: string): string {
     const oldValue = this.getIdentifier()
     newValue = sanitizeIdentifier(newValue)
     if (newValue.length > 0) {
       this.getScope().renameIdentifier(oldValue, newValue)
     }
+    return newValue
   }
 
   setIdentifier(identifier: string) {

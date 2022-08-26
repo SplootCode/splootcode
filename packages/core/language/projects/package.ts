@@ -56,19 +56,13 @@ export class SplootPackage {
     return this.files[this.fileOrder[0]]
   }
 
-  async saveFile(name: string): Promise<boolean> {
-    const file = this.files[name]
-    if (!file.isLoaded) {
-      return true // No point saving a file not loaded, it can't have changed
-    }
-    return this.fileLoader.saveFile(this.projectId, this.name, file)
-  }
-
   async addFile(name: string, type: string, rootNode: SplootNode) {
     const splootFile = new SplootFile(name, type)
     splootFile.fileLoaded(rootNode)
     this.files[name] = splootFile
-    this.fileOrder.push(name)
+    if (!this.fileOrder.includes(name)) {
+      this.fileOrder.push(name)
+    }
   }
 
   async getLoadedFile(name: string): Promise<SplootFile> {

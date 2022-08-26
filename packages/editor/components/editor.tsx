@@ -1,7 +1,7 @@
 import './editor.css'
 import 'allotment/dist/style.css'
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import { ActiveCursor } from './cursor'
@@ -26,6 +26,7 @@ interface EditorProps {
   pkg: SplootPackage
   selection: NodeSelection
   validationWatcher: ValidationWatcher
+  banner?: ReactNode
 }
 
 @observer
@@ -38,7 +39,7 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   render() {
-    const { block, pkg, selection, validationWatcher } = this.props
+    const { block, pkg, selection, validationWatcher, banner } = this.props
     let fileBody = null
 
     fileBody = block.renderedChildSets['body']
@@ -66,19 +67,22 @@ export class Editor extends React.Component<EditorProps> {
           <Allotment defaultSizes={[270, startSize, 360]} minSize={180} proportionalLayout={false}>
             <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
             <div className="editor-column">
-              <svg
-                className="editor-svg"
-                xmlns="http://www.w3.org/2000/svg"
-                height={height}
-                preserveAspectRatio="none"
-                onClick={this.onClickHandler}
-                ref={this.editorSvgRef}
-              >
-                <ExpandedListBlockView block={fileBody} isSelected={false} />
-                <ActiveCursor selection={selection} />
-              </svg>
-              {insertBox}
-              {editBox}
+              {banner}
+              <div className="editor-box">
+                <svg
+                  className="editor-svg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height={height}
+                  preserveAspectRatio="none"
+                  onClick={this.onClickHandler}
+                  ref={this.editorSvgRef}
+                >
+                  <ExpandedListBlockView block={fileBody} isSelected={false} />
+                  <ActiveCursor selection={selection} />
+                </svg>
+                {insertBox}
+                {editBox}
+              </div>
             </div>
             <div className="python-preview-panel">
               <PythonFrame pkg={pkg} validationWatcher={validationWatcher} />

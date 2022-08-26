@@ -2,6 +2,7 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { MultiselectFragmentCreator } from './multiselect_fragment_creator'
 import { MultiselectTreeWalker } from './multiselect_tree_walker'
 import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
@@ -53,6 +54,7 @@ export class NodeSelection {
 
   @observable
   selectedListBlocks: Set<RenderedChildSetBlock>
+  multiSelectCursors: [NodeCursor, NodeCursor]
 
   @observable
   cursor: CursorPosition
@@ -188,11 +190,14 @@ export class NodeSelection {
   }
 
   @action
-  updatePropertyEdit(newValue: string) {
+  updatePropertyEdit(newValue: string): string {
     if (this.isEditingSingleNode()) {
-      this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
+      const sanitisedValue =
+        this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
       this.updateRenderPositions()
+      return sanitisedValue
     }
+    return ''
   }
 
   @action
@@ -541,7 +546,11 @@ export class NodeSelection {
     if (this.isSingleNode()) {
       return new SplootFragment([this.selectedNode], this.selectionStart.listBlock.childSet.nodeCategory)
     } else if (this.isMultiSelect()) {
-      
+      const [realStart, end] = this.multiSelectCursors
+      const fragmentWalker = new MultiselectFragmentCreator(realStart, end)
+      fragmentWalker.walkToEnd()
+      console.log(fragmentWalker.getFragment())
+      return fragmentWalker.getFragment()
     }
   }
 
@@ -582,6 +591,7 @@ export class NodeSelection {
     if (newSelectedListBlocks.size !== 0) {
       this.selectedListBlocks = newSelectedListBlocks
       this.state = SelectionState.MultiNode
+      this.multiSelectCursors = [realStart, end]
     } else {
       this.setSelectionCursor(this.cursor)
     }

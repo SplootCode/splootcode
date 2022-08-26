@@ -31,7 +31,7 @@ function filterSuggestions(
     return []
   }
 
-  const dynamicSuggestions = []
+  const dynamicSuggestions: RenderedSuggestion[] = []
   const dynamicSuggestionsKeys: Set<string> = new Set()
   for (const autocompleter of autocompleters) {
     const prefixSuggestions = autocompleter.getPrefixSuggestions(userInput)
@@ -39,18 +39,21 @@ function filterSuggestions(
       if (userInput.length <= 1) {
         return prefixSuggestions
       }
-      const options: Fuse.FuseOptions<SuggestedNode> = {
+      const options: Fuse.IFuseOptions<RenderedSuggestion> = {
         keys: [
           { name: 'exactMatch', weight: 0.8 },
           { name: 'searchTerms', weight: 0.1 },
           { name: 'display', weight: 0.1 },
         ],
-        caseSensitive: true,
+        isCaseSensitive: true,
         threshold: 1.0,
+        distance: 0,
+        findAllMatches: false,
+        fieldNormWeight: 2.0,
       }
       const suggestions = prefixSuggestions
       const fuse = new Fuse(suggestions, options)
-      const results = fuse.search(userInput) as RenderedSuggestion[]
+      const results = fuse.search(userInput).map((res) => res.item)
       return results
     }
     const newDynamicSuggestions = autocompleter.getDynamicSuggestions(userInput).filter((suggestion) => {
@@ -61,18 +64,21 @@ function filterSuggestions(
     dynamicSuggestions.push(...newDynamicSuggestions)
   }
 
-  const options: Fuse.FuseOptions<SuggestedNode> = {
+  const options: Fuse.IFuseOptions<RenderedSuggestion> = {
     keys: [
       { name: 'exactMatch', weight: 0.8 },
       { name: 'searchTerms', weight: 0.1 },
       { name: 'display', weight: 0.1 },
     ],
-    caseSensitive: true,
+    isCaseSensitive: true,
+    distance: 0,
+    findAllMatches: false,
+    fieldNormWeight: 2.0,
   }
   const fuse = new Fuse(staticSuggestions, options)
-  const results = fuse.search(userInput) as RenderedSuggestion[]
+  const results = fuse.search(userInput).map((res) => res.item)
   const dynamicFuse = new Fuse(dynamicSuggestions, options)
-  const dynamicResults = dynamicFuse.search(userInput) as RenderedSuggestion[]
+  const dynamicResults = dynamicFuse.search(userInput).map((res) => res.item)
   return [...dynamicResults, ...results]
 }
 

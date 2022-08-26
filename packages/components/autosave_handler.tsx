@@ -2,24 +2,59 @@ import React, { useEffect, useState } from 'react'
 import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
 import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
 import { Project } from '@splootcode/core/language/projects/project'
-import { Text } from '@chakra-ui/react'
+import { ProjectLoader, SaveError } from '@splootcode/core/language/projects/file_loader'
+import { Text, useToast } from '@chakra-ui/react'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
-export const AutosaveHandler = (props: { project: Project }) => {
-  const { project } = props
+export const AutosaveHandler = (props: {
+  project: Project
+  projectLoader: ProjectLoader
+  reloadProject: () => void
+}) => {
+  const { project, projectLoader, reloadProject } = props
 
   const [needsSave, setNeedsSave] = useState(false)
+  const [failedSave, setFailedSave] = useState(false)
+  const toast = useToast()
 
   useEffect(() => {
     if (needsSave && !project?.isReadOnly) {
-      setTimeout(() => {
+      const id = setTimeout(() => {
         if (needsSave) {
-          project.save()
-          setNeedsSave(false)
+          projectLoader
+            .saveProject(project)
+            .then((success) => {
+              if (success) {
+                setNeedsSave(false)
+                setFailedSave(false)
+              } else {
+                setFailedSave(true)
+                toast({
+                  title: 'Failed to save. Reason: Unknown',
+                  position: 'top',
+                  status: 'warning',
+                })
+              }
+            })
+            .catch((err) => {
+              if (err instanceof SaveError) {
+                toast({
+                  title: err.message,
+                  position: 'top',
+                  status: 'warning',
+                })
+                setFailedSave(true)
+              } else {
+                throw err
+              }
+            })
         }
       }, 2000)
+      return () => {
+        clearTimeout(id)
+      }
     }
-  }, [needsSave])
+  }, [needsSave, project])
 
   useEffect(() => {
     const mutationObserver = {
@@ -39,8 +74,25 @@ export const AutosaveHandler = (props: { project: Project }) => {
     return cleanup
   }, [project])
 
-  if (project?.isReadOnly) {
-    return <Text color={'gray.500'}>{needsSave ? 'Use "Save As..." to save your changes to a new project' : ''}</Text>
+  useEffect(() => {
+    if (!needsSave && !project?.isReadOnly) {
+      const checkVersion = async () => {
+        if (document['hidden'] === false) {
+          const isCurrent = await projectLoader.isCurrentVersion(project)
+          if (!isCurrent) {
+            reloadProject()
+          }
+        }
+      }
+      window.addEventListener('visibilitychange', checkVersion)
+      return () => {
+        window.removeEventListener('visibilitychange', checkVersion)
+      }
+    }
+  }, [needsSave, project])
+
+  if (project?.isReadOnly || failedSave) {
+    return <Text color={'gray.500'}>{needsSave ? 'Not saved' : ''}</Text>
   }
   return <Text color={'gray.500'}>{needsSave ? 'Saving...' : 'Saved'}</Text>
 }

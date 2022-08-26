@@ -9,5 +9,5 @@ export async function loadExampleProject(projectId: string): Promise<Project> {
   const packages = proj.packages.map(async (packRef) => {
     return fileLoader.loadPackage(proj.name, packRef.name)
   })
-  return new Project(proj, await Promise.all(packages), fileLoader)
+  return new Project('examples', proj, await Promise.all(packages), fileLoader)
 }

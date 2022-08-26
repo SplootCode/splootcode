@@ -6,6 +6,7 @@ export interface SerializedProject {
   layouttype: string
   title: string
   splootversion: string
+  version: string
   packages: SerializedSplootPackageRef[]
 }
 
@@ -15,18 +16,22 @@ export enum ProjectLayoutType {
 }
 
 export class Project {
+  owner: string
   name: string
   isReadOnly: boolean
   layoutType: ProjectLayoutType
   title: string
   splootversion: string
+  version: string
   packages: SplootPackage[]
   fileLoader: FileLoader
 
-  constructor(proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
+  constructor(owner: string, proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
+    this.owner = owner
     this.name = proj.name
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
+    this.version = proj.version
     this.fileLoader = fileLoader
     this.packages = packages
     switch (proj.layouttype) {
@@ -36,17 +41,6 @@ export class Project {
       default:
         this.layoutType = ProjectLayoutType.WEB
     }
-  }
-
-  async save(): Promise<boolean> {
-    if (this.fileLoader.isReadOnly()) {
-      return false
-    }
-    return await this.fileLoader.saveProject(this)
-  }
-
-  async delete(): Promise<boolean> {
-    return await this.fileLoader.deleteProject(this)
   }
 
   getDefaultPackage(): SplootPackage {
@@ -70,6 +64,7 @@ export class Project {
       layouttype: this.layoutType,
       title: this.title,
       splootversion: this.splootversion,
+      version: this.version,
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,
