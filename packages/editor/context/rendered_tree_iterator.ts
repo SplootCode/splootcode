@@ -58,9 +58,6 @@ export class RenderedTreeIterator {
     for (const childSetID of node.childSetOrder) {
       const listBlock = node.renderedChildSets[childSetID]
       this.walkChildSet(listBlock, 0)
-      if (this.finished) {
-        break
-      }
     }
     this.visitNodeUp(node)
   }

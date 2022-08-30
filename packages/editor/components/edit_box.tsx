@@ -88,7 +88,7 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
 
     if (e.key === 'Backspace' && this.state.userInput === '') {
       selection.exitEdit()
-      selection.deleteSelectedNode()
+      selection.deleteSelectedNodes()
     }
 
     if (e.key === 'Enter' && e.shiftKey && this.props.editBoxData.node.layout.boxType === NodeBoxType.STRING) {

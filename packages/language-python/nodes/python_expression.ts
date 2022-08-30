@@ -27,7 +27,9 @@ import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { parseToPyright, validateExpressionParse } from './utils'
+import { registerFragmentAdapter } from '@splootcode/core/language/fragment_adapters'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 
@@ -159,6 +161,44 @@ export class PythonExpression extends PythonNode {
 
     registerAutocompleteAdapter(NodeCategory.PythonStatementContents, NodeCategory.PythonExpressionToken)
     registerAutocompleteAdapter(NodeCategory.PythonExpression, NodeCategory.PythonExpressionToken)
+
+    registerFragmentAdapter(
+      NodeCategory.PythonExpressionToken,
+      NodeCategory.PythonExpression,
+      (fragment: SplootFragment) => {
+        const expr = new PythonExpression(null)
+        fragment.nodes.forEach((node) => {
+          expr.getTokenSet().addChild(node)
+        })
+        return expr
+      }
+    )
+    registerFragmentAdapter(
+      NodeCategory.PythonExpressionToken,
+      NodeCategory.PythonStatementContents,
+      (fragment: SplootFragment) => {
+        const expr = new PythonExpression(null)
+        fragment.nodes.forEach((node) => {
+          expr.getTokenSet().addChild(node)
+        })
+        return expr
+      }
+    )
+    registerFragmentAdapter(
+      NodeCategory.PythonExpressionToken,
+      NodeCategory.PythonStatement,
+      (fragment: SplootFragment) => {
+        const statement = new PythonStatement(null)
+        const expr = new PythonExpression(null)
+        fragment.nodes.forEach((node) => {
+          expr.getTokenSet().addChild(node)
+        })
+        if (!expr.isEmpty()) {
+          statement.getStatement().addChild(expr)
+        }
+        return statement
+      }
+    )
 
     registerBlankFillForNodeCategory(NodeCategory.PythonExpression, () => {
       return new PythonExpression(null)

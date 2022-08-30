@@ -32,10 +32,12 @@ interface EditorProps {
 @observer
 export class Editor extends React.Component<EditorProps> {
   private editorSvgRef: React.RefObject<SVGSVGElement>
+  private editorColumnRef: React.RefObject<HTMLDivElement>
 
   constructor(props: EditorProps) {
     super(props)
     this.editorSvgRef = React.createRef()
+    this.editorColumnRef = React.createRef()
   }
 
   render() {
@@ -68,7 +70,7 @@ export class Editor extends React.Component<EditorProps> {
             <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
             <div className="editor-column">
               {banner}
-              <div className="editor-box">
+              <div className="editor-box" ref={this.editorColumnRef}>
                 <svg
                   className="editor-svg"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,21 +105,15 @@ export class Editor extends React.Component<EditorProps> {
     const refBox = this.editorSvgRef.current.getBoundingClientRect()
     const x = event.pageX - refBox.left
     const y = event.pageY - refBox.top
-    selection.handleClick(x, y)
-    const insertbox = document.getElementById('insertbox') as HTMLInputElement
-    if (insertbox) {
-      insertbox.value = ''
-      insertbox.focus()
-    }
+    selection.handleClick(x, y, event.shiftKey)
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
     const { selection } = this.props
-    console.log(event, event.target)
     if (event.type === 'copy' || event.type === 'cut') {
-      if (event.target instanceof SVGElement) {
+      const docSelection = document.getSelection()
+      if (this.editorColumnRef.current.contains(docSelection.focusNode)) {
         const selectedFragment = selection.getSelectedFragment()
-        console.log('copy', selectedFragment)
         if (selectedFragment !== null) {
           const jsonNode = JSON.stringify(selectedFragment.serialize())
           // Maybe change to selectedNode.generateCodeString()
@@ -126,9 +122,9 @@ export class Editor extends React.Component<EditorProps> {
           event.clipboardData.setData('text/plain', friendlytext)
           event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode)
           event.preventDefault()
-        }
-        if (event.type === 'cut') {
-          selection.deleteSelectedNode()
+          if (event.type === 'cut') {
+            selection.deleteSelectedNodes()
+          }
         }
       }
     }
@@ -158,7 +154,7 @@ export class Editor extends React.Component<EditorProps> {
     if (event.key === 'Backspace' || event.key === 'Delete') {
       // Must stop backspace propagation for people who use 'Go back with backspace' browser extension.
       event.stopPropagation()
-      this.props.selection.deleteSelectedNode()
+      this.props.selection.deleteSelectedNodes()
     }
 
     if (event.key === 'Enter') {

@@ -83,6 +83,7 @@ export class PythonStatement extends PythonNode {
   static deserializer(serializedNode: SerializedNode): PythonStatement {
     const res = new PythonStatement(null)
     res.deserializeChildSet('statement', serializedNode)
+    res.clean()
     return res
   }
 

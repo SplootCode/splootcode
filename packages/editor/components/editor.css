@@ -31,6 +31,10 @@
   min-height: 100%;
 }
 
+.editor-svg text::selection {
+  background: transparent
+}
+
 .python-preview-panel {
   border-left: 2px solid var(--section-separator-color);
 }

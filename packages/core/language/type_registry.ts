@@ -3,7 +3,7 @@ import { NodeCategory, getNodeCategoriesForType, isNodeInCategory } from './node
 import { SplootNode } from './node'
 
 const typeRegistry: { [key: string]: TypeRegistration } = {}
-const pasteAdapaterMapping = {}
+const pasteAdapaterMapping: { [key: string]: { [key: string]: (node: SplootNode) => SplootNode } } = {}
 
 export class TypeRegistration {
   typeName: string

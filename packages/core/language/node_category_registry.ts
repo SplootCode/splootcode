@@ -25,12 +25,13 @@ export enum NodeCategory {
   StyleSheetSelector,
   StyleSheetProperty,
   StyleSheetPropertyValue,
-  ComponentPropertyDeclaration,
   // 20
+  ComponentPropertyDeclaration,
   ComponentProperty,
   ComponentBodyStatement,
   JssBodyContent,
   JssStyleProperties,
+  // 25
   PythonFile,
   PythonStatement,
   PythonStatementContents,

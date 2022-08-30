@@ -1,7 +1,7 @@
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { RenderedTreeIterator } from './tree_walker'
+import { RenderedTreeIterator } from './rendered_tree_iterator'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
@@ -19,8 +19,7 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
   }
 
   visitNodeDown(node: NodeBlock): void {
-    console.log('Going down ', node.node.type)
-    // TODO: Add a shallow clone of this node to the stack
+    // Add a shallow clone of this node to the stack
     const serNode: SerializedNode = node.node.shallowSerialize()
     if (this.childSetStack.length !== 0) {
       const curChildSetStack = this.childSetStack[this.childSetStack.length - 1]
@@ -31,7 +30,6 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
   }
 
   visitNodeUp(node: NodeBlock): void {
-    console.log('Going up ', node.node.type)
     const serNode = this.nodeStack.pop()
     this.childSetStack.pop()
     // If this is a top-level node, add it to the fragment
@@ -47,11 +45,9 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
     if (this.nodeStack.length !== 0) {
       const currentNode = this.nodeStack[this.nodeStack.length - 1]
       currentNode.childSets[listBlock.parentRef.childSetId] = children
-      console.log('finished visiting childset ', listBlock.parentRef.childSetId)
-      console.log('for node: ', this.nodeStack[this.nodeStack.length - 1].type)
     }
     // Prep for next childset
-    console.log(this.childSetStack.push([]))
+    this.childSetStack.push([])
   }
 
   getFragment(): SplootFragment {

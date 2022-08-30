@@ -1,6 +1,6 @@
 import { NodeCursor, SelectionState } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
-import { RenderedTreeIterator } from './tree_walker'
+import { RenderedTreeIterator } from './rendered_tree_iterator'
 
 export class MultiselectTreeWalker extends RenderedTreeIterator {
   selectedListBlocks: Set<RenderedChildSetBlock>

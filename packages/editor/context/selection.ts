@@ -2,6 +2,7 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { MultiselectDeleter } from './multiselect_deleter'
 import { MultiselectFragmentCreator } from './multiselect_fragment_creator'
 import { MultiselectTreeWalker } from './multiselect_tree_walker'
 import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
@@ -16,6 +17,7 @@ import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, computed, observable } from 'mobx'
+import { adaptFragmentToPasteDestinationIfPossible } from '@splootcode/core/language/fragment_adapters'
 import {
   adaptNodeToPasteDestination,
   deserializeNode,
@@ -174,22 +176,37 @@ export class NodeSelection {
   }
 
   @action
-  deleteSelectedNode() {
+  deleteSelectedNodes() {
     if (this.state === SelectionState.SingleNode) {
       const listBlock = this.selectionStart.listBlock
-      let index = this.selectionStart.index
-
       const deletedNode = listBlock.childSet.removeChild(this.selectionStart.index)
-      const newNodes = deletedNode.getChildrenToKeepOnDelete()
-
-      newNodes.forEach((node) => {
-        listBlock.childSet.insertNode(node, index)
-        index++
+      const fragments: SplootFragment[] = []
+      deletedNode.childSetOrder.forEach((childSetId) => {
+        const childSet = deletedNode.getChildSet(childSetId)
+        if (childSet.getCount() > 0) {
+          const nodes = childSet.children.filter((node) => !node.isEmpty()).map((node) => node.clone())
+          if (nodes.length > 0) {
+            const fragment = new SplootFragment(nodes, childSet.nodeCategory)
+            fragments.push(fragment)
+          }
+        }
       })
+      for (const fragment of fragments) {
+        this.insertFragmentAtCurrentCursor(fragment)
+      }
+
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()
       this.updateCursorXYToCursor()
+    } else if (this.state === SelectionState.MultiNode) {
+      const [realStart, end] = this.multiSelectCursors
+      const deleteWalker = new MultiselectDeleter(realStart, end)
+      deleteWalker.walkToEnd()
+      const fragments = deleteWalker.perfromDelete()
+      for (const fragment of fragments) {
+        this.insertFragmentAtCurrentCursor(fragment)
+      }
     }
   }
 
@@ -265,8 +282,8 @@ export class NodeSelection {
 
   @action
   backspace() {
-    if (this.isSingleNode()) {
-      this.deleteSelectedNode()
+    if (this.isSingleNode() || this.isMultiSelect()) {
+      this.deleteSelectedNodes()
       return
     }
 
@@ -307,7 +324,7 @@ export class NodeSelection {
 
     this.moveCursorLeft()
     if (this.isSingleNode()) {
-      this.deleteSelectedNode()
+      this.deleteSelectedNodes()
     }
   }
 
@@ -389,12 +406,10 @@ export class NodeSelection {
       }
 
       for (const cursor of this.getCurrentNodeCursors()) {
-        const destCategory = cursor.listBlock.getPasteDestinationCategory()
-        const valid = fragment.nodes.filter((node) => isAdaptableToPasteDesintation(node, destCategory))
-        if (fragment.nodes.length == valid.length) {
-          const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
-          const listBlock = cursor.listBlock
-          let index = cursor.index
+        const listBlock = cursor.listBlock
+        let index = cursor.index
+        const adaptedNodes = adaptFragmentToPasteDestinationIfPossible(fragment, listBlock.childSet, index)
+        if (adaptedNodes !== null) {
           for (const node of adaptedNodes) {
             this.insertNode(listBlock, index, node)
             index++
@@ -403,6 +418,20 @@ export class NodeSelection {
         } else {
           console.warn('Cannot paste there - not all nodes are compatible')
         }
+
+        // const valid = fragment.nodes.filter((node) => isAdaptableToPasteDesintation(node, destCategory))
+        // if (fragment.nodes.length == valid.length) {
+        //   const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
+        //   const listBlock = cursor.listBlock
+        //   let index = cursor.index
+        //   for (const node of adaptedNodes) {
+        //     this.insertNode(listBlock, index, node)
+        //     index++
+        //   }
+        //   return
+        // } else {
+        //   console.warn('Cannot paste there - not all nodes are compatible')
+        // }
       }
     }
   }
@@ -554,9 +583,9 @@ export class NodeSelection {
       const [realStart, end] = this.multiSelectCursors
       const fragmentWalker = new MultiselectFragmentCreator(realStart, end)
       fragmentWalker.walkToEnd()
-      console.log(fragmentWalker.getFragment())
       return fragmentWalker.getFragment()
     }
+    return null
   }
 
   setSelectionMultiselect(start: NodeCursor, end: NodeCursor) {
@@ -785,10 +814,14 @@ export class NodeSelection {
     }
   }
 
-  handleClick(x: number, y: number) {
+  handleClick(x: number, y: number, withShift = false) {
     const [cursor, isCursor] = this.cursorMap.getCursorPositionByCoordinate(x, y)
     this.lastYCoordinate = y
     this.lastXCoordinate = x
+    if (withShift) {
+      this.updateMultiSelect(cursor, isCursor)
+      return
+    }
     if (isCursor) {
       this.placeCursorPosition(cursor, isCursor, false)
     } else {
