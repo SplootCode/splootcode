@@ -13,7 +13,7 @@ import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
-import { action, computed, observable } from 'mobx'
+import { action, observable } from 'mobx'
 import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
 
 export enum NodeSelectionState {
@@ -85,13 +85,6 @@ export class NodeSelection {
     this.updateRenderPositions()
   }
 
-  @computed get selectedNode() {
-    if (!this.selectionStart || !this.state) {
-      return null
-    }
-    return this.selectionStart.selectedNode()
-  }
-
   updateRenderPositions() {
     this.cursorMap = new CursorMap()
     this.rootNode.calculateDimensions(-20, -NODE_BLOCK_HEIGHT, this)
@@ -125,6 +118,15 @@ export class NodeSelection {
     return this.state === SelectionState.Editing
   }
 
+  copyCurrentSelection(): SplootFragment {
+    if (this.isSingleNode()) {
+      const selectedNode = this.selectionStart.selectedNode()
+      const node = selectedNode.clone()
+      return new SplootFragment([node], this.selectionStart.listBlock.childSet.nodeCategory)
+    }
+    return null
+  }
+
   @action
   placeCursor(listBlock: RenderedChildSetBlock, index: number, updateXY = true) {
     this.cursor = listBlock.getCursorPosition(this.cursorMap, index)
@@ -133,14 +135,7 @@ export class NodeSelection {
 
   placeCursorPosition(position: CursorPosition, isCursor: boolean, updateXY = true) {
     if (isCursor) {
-      this.exitEdit()
-      if (this.selectionStart) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Empty
-        this.selectionStart = null
-      }
-      this.cursor = position
-      this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
-      this.state = SelectionState.Cursor
+      this.setSelectionCursor(position)
       if (updateXY) {
         this.updateCursorXYToCursor()
       }
@@ -208,7 +203,7 @@ export class NodeSelection {
       this.editBox = this.selectionStart.listBlock.getEditData(index)
       if (this.editBox !== null) {
         this.selectionStart.listBlock.selectionState = SelectionState.Editing
-        this.setState(SelectionState.Editing)
+        this.state = SelectionState.Editing
         this.updateRenderPositions()
       }
     }
@@ -334,10 +329,6 @@ export class NodeSelection {
 
   replaceOrWrapSelectedNode(node: SplootNode) {
     if (this.isSingleNode()) {
-      this.exitEdit()
-      if (this.selectionStart) {
-        this.selectionStart.listBlock.selectionState = SelectionState.Empty
-      }
       const childSet = this.selectionStart.listBlock.childSet
       const index = this.selectionStart.index
 
@@ -406,7 +397,7 @@ export class NodeSelection {
     this.insertNodeByChildSet(childSet, index, node)
   }
 
-  insertFragmentAtCurrentCursor(fragment: SplootFragment) {
+  insertFragment(fragment: SplootFragment) {
     if (this.isCursor()) {
       if (fragment.isSingle()) {
         this.insertNodeAtCurrentCursor(fragment.nodes[0])
@@ -429,6 +420,8 @@ export class NodeSelection {
           console.warn('Cannot paste there - not all nodes are compatible')
         }
       }
+    } else if (this.isSingleNode() && fragment.isSingle()) {
+      this.replaceOrWrapSelectedNode(fragment.nodes[0])
     }
   }
 
@@ -490,13 +483,10 @@ export class NodeSelection {
   @action
   exitEdit() {
     if (this.state === SelectionState.Editing) {
-      this.editBox = null
-      this.setState(SelectionState.SingleNode)
-      this.selectionStart.listBlock.selectionState = SelectionState.SingleNode
+      this.setSelectionSingleNode(new NodeCursor(this.selectionStart.listBlock, this.selectionStart.index))
       this.updateRenderPositions()
     }
     if (this.state == SelectionState.Inserting) {
-      this.state = SelectionState.Cursor
       this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
       this.updateRenderPositions()
     }
@@ -504,6 +494,7 @@ export class NodeSelection {
 
   @action
   clearSelection() {
+    this.editBox = null
     if (this.selectionStart) {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
@@ -511,20 +502,35 @@ export class NodeSelection {
     this.selectionStart = null
   }
 
-  setState(newState: SelectionState) {
-    this.state = newState
+  @action
+  setSelectionSingleNode(nodeCursor: NodeCursor) {
+    this.editBox = null
+    if (this.selectionStart && this.selectionStart.listBlock !== nodeCursor.listBlock) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
+    }
+    this.selectionStart = nodeCursor
+    nodeCursor.listBlock.selectedIndexStart = nodeCursor.index
+    nodeCursor.listBlock.selectedIndexEnd = nodeCursor.index + 1
+    nodeCursor.listBlock.selectionState = SelectionState.SingleNode
+    this.state = SelectionState.SingleNode
+  }
+
+  @action
+  setSelectionCursor(position: CursorPosition) {
+    this.editBox = null
+    if (this.selectionStart) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
+      this.selectionStart = null
+    }
+    this.cursor = position
+    this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
+    this.state = SelectionState.Cursor
   }
 
   selectNodeAtPosition(postition: CursorPosition) {
     this.cursor = postition
     const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(postition)
-    if (this.selectionStart) {
-      this.selectionStart.listBlock.selectionState = SelectionState.Empty
-    }
-    this.selectionStart = nodeCursor
-    nodeCursor.listBlock.selectedIndex = nodeCursor.index
-    nodeCursor.listBlock.selectionState = SelectionState.SingleNode
-    this.setState(SelectionState.SingleNode)
+    this.setSelectionSingleNode(nodeCursor)
   }
 
   @action

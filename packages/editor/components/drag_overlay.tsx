@@ -88,14 +88,8 @@ class DragOverlayInternal extends React.Component<DragOverlayInternalProps, Drag
     const x = event.pageX - refBox.left
     const y = event.pageY - refBox.top
 
-    // TODO: Only allow cursors in positions that make sense.
     selection.placeCursorByXYCoordinate(x, y)
-    if (selection.isCursor()) {
-      selection.insertFragmentAtCurrentCursor(fragment.fragment.clone())
-    } else if (selection.isSingleNode() && fragment.nodes.length === 1) {
-      const node = fragment.nodes[0]
-      selection.replaceOrWrapSelectedNode(node.node.clone())
-    }
+    selection.insertFragment(fragment.fragment.clone())
     this.props.onEndDrag()
   }
 
