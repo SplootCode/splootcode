@@ -17,7 +17,7 @@ import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootPackage } from '@splootcode/core/language/projects/package'
 import { Tray } from './tray/tray'
 import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
-import { deserializeNode } from '@splootcode/core/language/type_registry'
+import { deserializeFragment } from '@splootcode/core/language/fragment'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -32,10 +32,12 @@ interface EditorProps {
 @observer
 export class Editor extends React.Component<EditorProps> {
   private editorSvgRef: React.RefObject<SVGSVGElement>
+  private editorColumnRef: React.RefObject<HTMLDivElement>
 
   constructor(props: EditorProps) {
     super(props)
     this.editorSvgRef = React.createRef()
+    this.editorColumnRef = React.createRef()
   }
 
   render() {
@@ -68,7 +70,7 @@ export class Editor extends React.Component<EditorProps> {
             <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
             <div className="editor-column">
               {banner}
-              <div className="editor-box">
+              <div className="editor-box" ref={this.editorColumnRef}>
                 <svg
                   className="editor-svg"
                   xmlns="http://www.w3.org/2000/svg"
@@ -104,43 +106,33 @@ export class Editor extends React.Component<EditorProps> {
     const x = event.pageX - refBox.left
     const y = event.pageY - refBox.top
     selection.handleClick(x, y)
-    const insertbox = document.getElementById('insertbox') as HTMLInputElement
-    if (insertbox) {
-      insertbox.value = ''
-      insertbox.focus()
-    }
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
     const { selection } = this.props
     if (event.type === 'copy' || event.type === 'cut') {
-      if (event.target instanceof SVGElement) {
-        const selectedNode = selection.selectedNode
-        if (selectedNode !== null) {
-          const jsonNode = JSON.stringify(selectedNode.serialize())
+      const docSelection = document.getSelection()
+      if (this.editorColumnRef.current.contains(docSelection.focusNode)) {
+        const selectedFragment = selection.copyCurrentSelection()
+        if (selectedFragment !== null) {
+          const jsonNode = JSON.stringify(selectedFragment.serialize())
           // Maybe change to selectedNode.generateCodeString()
           // once we have paste of text code supported.
           const friendlytext = jsonNode
           event.clipboardData.setData('text/plain', friendlytext)
           event.clipboardData.setData(SPLOOT_MIME_TYPE, jsonNode)
           event.preventDefault()
+          if (event.type === 'cut') {
+            selection.deleteSelectedNode()
+          }
         }
       }
-    }
-    if (event.type === 'cut') {
-      selection.deleteSelectedNode()
     }
     if (event.type === 'paste') {
       const splootData = event.clipboardData.getData(SPLOOT_MIME_TYPE)
       if (splootData) {
-        const node = deserializeNode(JSON.parse(splootData))
-        if (selection.isCursor()) {
-          selection.insertNodeAtCurrentCursor(node)
-        } else if (selection.isSingleNode()) {
-          selection.replaceOrWrapSelectedNode(node)
-        } else {
-          // paste failed :(
-        }
+        const fragment = deserializeFragment(JSON.parse(splootData))
+        selection.insertFragment(fragment)
         event.preventDefault()
       }
     }
