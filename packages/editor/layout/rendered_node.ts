@@ -260,6 +260,8 @@ export class NodeBlock implements NodeObserver {
         childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
         this.marginLeft += childSetBlock.width + 2 // Tiny gap
         leftPos += childSetBlock.width + 2
+        this.marginTop = Math.max(this.marginTop, childSetBlock.marginTop)
+        this.rowHeight = Math.max(this.rowHeight, childSetBlock.height + this.marginTop)
       } else if (component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
         const childSetBlock = this.renderedChildSets[component.identifier]
         if (marginAlreadyApplied && childSetBlock.allowInsert()) {
