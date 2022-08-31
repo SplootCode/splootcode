@@ -189,7 +189,7 @@ nodes:
     examples:
       - ex: 5//2
         desc: 5 divided by 2 is 2.5 but with floor division, the result is rounded down to 2.
-      - ex: 99 / 100
+      - ex: 99 // 100
         desc: The result is always rounded down. With normal division this would be 0.99 but the result of the floor division is 0.
       - ex: 5.1 // 2
         desc: When used with float numbers the result will be a float too, but still rounded down to a whole number.

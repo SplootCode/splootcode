@@ -75,7 +75,7 @@ export class ChildSet {
     } else if (this.type === ChildSetType.Immutable) {
       return false
     }
-    return true
+    return this.maxChildren === -1 || this.children.length < this.maxChildren
   }
 
   insertNode(node: SplootNode, index: number) {

@@ -6,8 +6,9 @@ from convert_ast import SplootNode, splootNodesFromPython, splootNodeFromPython
 from generate_builtins import generate_builtins_docs
 
 def processExample(ex):
+  nodes, category = splootNodesFromPython(ex['ex'])
   return {
-    'serializedNodes': splootNodesFromPython(ex['ex']),
+    'serializedNodes': {'category': category, 'nodes': nodes},
     'description': ex['desc']
   }
 

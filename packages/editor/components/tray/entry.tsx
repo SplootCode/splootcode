@@ -3,19 +3,12 @@ import React from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { MicroNode } from './category'
 import { RenderedFragment } from '../../layout/rendered_fragment'
-import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
-import { SplootFragment } from '@splootcode/core/language/fragment'
 import { TrayEntry } from '@splootcode/core/language/tray/tray'
+import { deserializeFragment } from '@splootcode/core/language/fragment'
 
 export interface EntryProps {
   entry: TrayEntry
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
-}
-
-export function getFragment(nodes: SerializedNode[]): RenderedFragment {
-  const splootNodes = nodes.map(deserializeNode)
-  const fragment = new SplootFragment(splootNodes)
-  return new RenderedFragment(fragment, true)
 }
 
 export const Entry = (props: EntryProps) => {
@@ -39,7 +32,7 @@ export const Entry = (props: EntryProps) => {
         </Text>
       )}
       {entry.examples?.map((example, idx) => {
-        const fragment = getFragment(example.serializedNodes)
+        const fragment = new RenderedFragment(deserializeFragment(example.serializedNodes), true)
         return (
           <Box key={idx} py={2}>
             <MicroNode fragment={fragment} startDrag={startDrag} />

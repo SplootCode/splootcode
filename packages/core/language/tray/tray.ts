@@ -1,3 +1,4 @@
+import { SerializedFragment } from '../fragment'
 import { SerializedNode } from '../type_registry'
 
 export type TrayListing = TrayCategory | TrayEntry
@@ -8,7 +9,7 @@ export interface TrayCategory {
 }
 
 export interface TrayExample {
-  serializedNodes: SerializedNode[]
+  serializedNodes: SerializedFragment
   description: string
 }
 
