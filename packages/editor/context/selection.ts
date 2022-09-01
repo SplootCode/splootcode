@@ -415,6 +415,7 @@ export class NodeSelection {
             this.insertNode(listBlock, index, node)
             index++
           }
+          this.placeCursor(listBlock, index, true)
           return
         }
       }
