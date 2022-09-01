@@ -14,6 +14,7 @@ import { RenderedFragment } from '../layout/rendered_fragment'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SplootNode } from '@splootcode/core/language/node'
 import { action, observable } from 'mobx'
+import { adaptFragmentToPasteDestinationIfPossible } from '@splootcode/core/language/fragment_adapter'
 import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
 
 export enum NodeSelectionState {
@@ -405,19 +406,17 @@ export class NodeSelection {
       }
 
       for (const cursor of this.getCurrentNodeCursors()) {
-        const destCategory = cursor.listBlock.getPasteDestinationCategory()
-        const valid = fragment.nodes.filter((node) => isAdaptableToPasteDesintation(node, destCategory))
-        if (fragment.nodes.length == valid.length) {
-          const adaptedNodes = fragment.nodes.map((node) => adaptNodeToPasteDestination(node, destCategory))
-          const listBlock = cursor.listBlock
-          let index = cursor.index
+        const listBlock = cursor.listBlock
+        let index = cursor.index
+
+        const adaptedNodes = adaptFragmentToPasteDestinationIfPossible(fragment, listBlock.childSet, index)
+        if (adaptedNodes !== null) {
           for (const node of adaptedNodes) {
             this.insertNode(listBlock, index, node)
             index++
           }
+          this.placeCursor(listBlock, index, true)
           return
-        } else {
-          console.warn('Cannot paste there - not all nodes are compatible')
         }
       }
     } else if (this.isSingleNode() && fragment.isSingle()) {

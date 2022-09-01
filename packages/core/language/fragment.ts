@@ -2,7 +2,7 @@ import { NodeCategory } from './node_category_registry'
 import { SerializedNode, deserializeNode } from './type_registry'
 import { SplootNode } from './node'
 
-interface SerializedFragment {
+export interface SerializedFragment {
   category: NodeCategory
   nodes: SerializedNode[]
 }
@@ -13,10 +13,21 @@ export class SplootFragment {
 
   constructor(nodes: SplootNode[], nodeCategory?: NodeCategory) {
     this.nodeCategory = nodeCategory
-    if (nodes.length == 0) {
-      throw Error('Cannot have empty sploot node fragment.')
-    }
     this.nodes = nodes
+
+    // Trim invisible nodes
+    if (nodes.length === 1 && nodes[0].getNodeLayout().isInvisible()) {
+      const node = nodes[0]
+      if (node.childSetOrder.length === 1) {
+        const childSet = node.getChildSet(node.childSetOrder[0])
+        this.nodes = childSet.children
+        this.nodeCategory = childSet.nodeCategory
+      }
+    }
+  }
+
+  isEmpty() {
+    return this.nodes.length === 0
   }
 
   clone(): SplootFragment {

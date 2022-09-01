@@ -18,6 +18,7 @@ export class TokenLayoutHandler implements ChildSetLayoutHandler {
 
   constructor() {
     this.cursorPositions = []
+    this.labels = []
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {

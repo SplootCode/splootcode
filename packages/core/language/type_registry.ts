@@ -1,9 +1,12 @@
 import { HighlightColorCategory } from '../colors'
 import { NodeCategory, getNodeCategoriesForType, isNodeInCategory } from './node_category_registry'
 import { SplootNode } from './node'
+import { resolveFragmentAdapters } from './fragment_adapter'
+
+export type PasteNodeAdapter = (node: SplootNode) => SplootNode
 
 const typeRegistry: { [key: string]: TypeRegistration } = {}
-const pasteAdapaterMapping = {}
+const pasteAdapaterMapping: { [key: string]: Map<NodeCategory, PasteNodeAdapter> } = {}
 
 export class TypeRegistration {
   typeName: string
@@ -11,7 +14,7 @@ export class TypeRegistration {
   properties: string[]
   childSets: { [key: string]: NodeCategory }
   layout: NodeLayout
-  pasteAdapters: { [key: string]: (node: SplootNode) => SplootNode } = {}
+  pasteAdapters: { [key: string]: PasteNodeAdapter } = {}
   deserializer: (serialisedNode: SerializedNode) => SplootNode
 }
 
@@ -41,6 +44,14 @@ export class NodeLayout {
     this.color = color
     this.components = layoutComponents
     this.boxType = boxType
+  }
+
+  isInvisible(): boolean {
+    return (
+      this.boxType === NodeBoxType.INVISIBLE &&
+      this.components.length === 1 &&
+      this.components[0].type !== LayoutComponentType.SEPARATOR
+    )
   }
 }
 
@@ -81,31 +92,28 @@ export function isScopedNodeType(typeName: string) {
   return typeRegistry[typeName].hasScope
 }
 
-function getChainedPasteAdapter(
-  adapter1: (node: SplootNode) => SplootNode,
-  adapater2: (node: SplootNode) => SplootNode
-): (node: SplootNode) => SplootNode {
+function getChainedPasteAdapter(adapter1: PasteNodeAdapter, adapater2: PasteNodeAdapter): PasteNodeAdapter {
   return (node: SplootNode) => {
     const temp = adapter1(node)
     return adapater2(temp)
   }
 }
 
-function getAdaptersForType(typeName: string): { [key: number]: (node: SplootNode) => SplootNode } {
+function getAdaptersForType(typeName: string): Map<NodeCategory, PasteNodeAdapter> {
   const typePasteAdapters = typeRegistry[typeName].pasteAdapters
-  const results: { [key: number]: (node: SplootNode) => SplootNode } = {}
+  const results: Map<NodeCategory, PasteNodeAdapter> = new Map()
   for (const targetTypeName in typePasteAdapters) {
     const targetCategories = getNodeCategoriesForType(targetTypeName)
     targetCategories.forEach((category) => {
-      results[category] = typePasteAdapters[targetTypeName]
+      results.set(category, typePasteAdapters[targetTypeName])
     })
     // Get the adapters for the target type too and add them in wrapped form
     const targetAdapters = getAdaptersForType(targetTypeName)
-    for (const targetAdapterCategory in targetAdapters) {
-      if (!(targetAdapterCategory in results)) {
-        results[targetAdapterCategory] = getChainedPasteAdapter(
-          typePasteAdapters[targetTypeName],
-          targetAdapters[targetAdapterCategory]
+    for (const targetAdapterCategory of targetAdapters.keys()) {
+      if (!results.has(targetAdapterCategory)) {
+        results.set(
+          targetAdapterCategory,
+          getChainedPasteAdapter(typePasteAdapters[targetTypeName], targetAdapters.get(targetAdapterCategory))
         )
       }
     }
@@ -118,6 +126,8 @@ export function resolvePasteAdapters() {
   for (const typeName in typeRegistry) {
     pasteAdapaterMapping[typeName] = getAdaptersForType(typeName)
   }
+  // Once the paste adapaters are done, we can resolve the fragment adapters
+  resolveFragmentAdapters()
 }
 
 export function isAdaptableToPasteDesintation(node: SplootNode, destCategory: NodeCategory): boolean {
@@ -128,7 +138,7 @@ export function isAdaptableToPasteDesintation(node: SplootNode, destCategory: No
     return true
   }
   const adapters = pasteAdapaterMapping[node.type]
-  if (destCategory in adapters) {
+  if (adapters.has(destCategory)) {
     return true
   }
   return false
@@ -142,10 +152,14 @@ export function adaptNodeToPasteDestination(node: SplootNode, destCategory: Node
     return node
   }
   const adapters = pasteAdapaterMapping[node.type]
-  if (!(destCategory in adapters)) {
+  if (!adapters.has(destCategory)) {
     return null
   }
-  return adapters[destCategory](node)
+  return adapters.get(destCategory)(node)
+}
+
+export function getPasteNodeAdaptersForType(nodeType: string): Map<NodeCategory, PasteNodeAdapter> {
+  return pasteAdapaterMapping[nodeType]
 }
 
 export function getLayout(typeName: string): NodeLayout {

@@ -31,7 +31,7 @@ describe('python tray entries', () => {
       nodeSanityCheck(node)
       if (entry.examples && entry.examples.length !== 0) {
         entry.examples.forEach((example) => {
-          example.serializedNodes.forEach((serNode) => {
+          example.serializedNodes.nodes.forEach((serNode) => {
             const node = deserializeNode(serNode)
             nodeSanityCheck(node)
           })

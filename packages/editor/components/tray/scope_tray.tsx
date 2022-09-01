@@ -11,6 +11,7 @@ import { TrayCategory } from '@splootcode/core/language/tray/tray'
 import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
 
 import './scope_tray.css'
+import { NodeCategory } from '@splootcode/core/language/node_category_registry'
 import { PythonNode } from '@splootcode/language-python/nodes/python_node'
 import { PythonScope } from '@splootcode/language-python/scope/python_scope'
 
@@ -32,30 +33,33 @@ const AssignmentCategory: TrayCategory = {
       },
       examples: [
         {
-          serializedNodes: [
-            {
-              type: 'PYTHON_ASSIGNMENT',
-              childSets: {
-                left: [{ type: 'PY_IDENTIFIER', properties: { identifier: 'num' }, childSets: {} }],
-                right: [
-                  {
-                    type: 'PYTHON_EXPRESSION',
-                    childSets: {
-                      tokens: [
-                        {
-                          type: 'NUMERIC_LITERAL',
-                          properties: { value: '10' },
-                          childSets: {},
-                        },
-                      ],
+          serializedNodes: {
+            category: NodeCategory.PythonStatementContents,
+            nodes: [
+              {
+                type: 'PYTHON_ASSIGNMENT',
+                childSets: {
+                  left: [{ type: 'PY_IDENTIFIER', properties: { identifier: 'num' }, childSets: {} }],
+                  right: [
+                    {
+                      type: 'PYTHON_EXPRESSION',
+                      childSets: {
+                        tokens: [
+                          {
+                            type: 'NUMERIC_LITERAL',
+                            properties: { value: '10' },
+                            childSets: {},
+                          },
+                        ],
+                      },
+                      properties: {},
                     },
-                    properties: {},
-                  },
-                ],
+                  ],
+                },
+                properties: {},
               },
-              properties: {},
-            },
-          ],
+            ],
+          },
           description: '',
         },
       ],
