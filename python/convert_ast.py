@@ -5,6 +5,22 @@ import ast
 AST_OPERATORS = {type(value["ast"]): key for key, value in OPERATORS.items()}
 UNARY_AST_OPERATORS = {type(value["ast"]): key for key, value in UNARY_OPERATORS.items()}
 
+# These need to match packages/core/language/node_cateogry_registry.ts
+class NodeCateogry:
+  PythonFile = 25
+  PythonStatement = 26
+  PythonStatementContents = 27
+  PythonElseBlock = 28
+  PythonExpression = 29
+  PythonExpressionToken = 30
+  PythonAssignable = 31
+  PythonFunctionName = 32
+  PythonLoopVariable = 33
+  PythonFunctionArgumentDeclaration = 34
+  PythonModuleIdentifier = 35
+  PythonModuleAttribute = 36
+  PythonDictionaryKeyValue = 37
+
 
 def convertOperator(astOp):
   if type(astOp) in AST_OPERATORS:
@@ -309,13 +325,13 @@ def splootNodesFromPython(codeString):
   tree = ast.parse(codeString)
 
   if len(tree.body) > 1:
-    return ([generateSplootStatement(statement) for statement in tree.body], 26)
+    return ([generateSplootStatement(statement) for statement in tree.body], NodeCateogry.PythonStatement)
 
   statement = tree.body[0]
   if type(statement) == ast.Expr:
     # Statement is a single expression - just return the list of tokens
     tokens = generateExpressionTokens(statement.value, None)
-    return (tokens, 30)
+    return (tokens, NodeCateogry.PythonExpressionToken)
 
   statementNode = generateSplootStatement(statement)
-  return ([statementNode['childSets']['statement'][0]], 27)
+  return ([statementNode['childSets']['statement'][0]], NodeCateogry.PythonStatementContents)
