@@ -29,9 +29,12 @@ import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutati
 import { ParentReference } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
+import { PythonIfStatement } from './python_if'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { registerLastResortFragmentAdapater } from '@splootcode/core/language/fragment_adapter'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 
@@ -165,9 +168,47 @@ export class PythonElifBlock extends PythonNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'condition', ['condition is true']),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_IF_STATEMENT: (node: PythonElifBlock) => {
+        const ifStatement = new PythonIfStatement(null)
+        ifStatement.getCondition().removeChild(0)
+        ifStatement.getCondition().addChild(node.getCondition().getChild(0))
+        ifStatement.getTrueBlock().removeChild(0)
+        node.getBlock().children.forEach((node) => {
+          ifStatement.getTrueBlock().addChild(node)
+        })
+        return ifStatement
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELIF_STATEMENT, NodeCategory.PythonElseBlock)
     registerAutocompleter(NodeCategory.PythonElseBlock, new InsertElifGenerator())
+    registerLastResortFragmentAdapater(
+      NodeCategory.PythonStatement,
+      PYTHON_ELIF_STATEMENT,
+      (fragment: SplootFragment) => {
+        const elifNode = new PythonElifBlock(null)
+        fragment.nodes.forEach((node) => {
+          elifNode.getBlock().addChild(node)
+        })
+        elifNode.getBlock().removeChild(0)
+        return elifNode
+      }
+    )
+    registerLastResortFragmentAdapater(
+      NodeCategory.PythonExpression,
+      PYTHON_ELIF_STATEMENT,
+      (fragment: SplootFragment) => {
+        const elifNode = new PythonElifBlock(null)
+        fragment.nodes.forEach((node) => {
+          const statement = new PythonStatement(null)
+          statement.getStatement().addChild(node)
+          elifNode.getBlock().addChild(statement)
+        })
+        elifNode.getBlock().removeChild(0)
+        return elifNode
+      }
+    )
   }
 }

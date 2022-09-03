@@ -27,14 +27,16 @@ import {
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
+import { PYTHON_ELIF_STATEMENT, PythonElifBlock } from './python_elif'
 import { PYTHON_ELSE_STATEMENT, PythonElseBlock } from './python_else'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
-import { PythonElifBlock } from './python_elif'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
+import { SplootFragment } from '@splootcode/core/language/fragment'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { registerFragmentAdapter } from '@splootcode/core/language/fragment_adapter'
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
 
@@ -199,5 +201,40 @@ export class PythonIfStatement extends PythonNode {
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_IF_STATEMENT, NodeCategory.PythonStatementContents)
     registerAutocompleter(NodeCategory.PythonStatementContents, new IfGenerator())
+
+    registerFragmentAdapter(NodeCategory.PythonElseBlock, PYTHON_IF_STATEMENT, (fragment: SplootFragment) => {
+      const first = fragment.nodes[0]
+      let remainder = []
+      if (fragment.nodes.length !== 0) {
+        remainder = fragment.nodes.slice(1)
+      }
+
+      const ifStatement = new PythonIfStatement(null)
+      // if the first nodes is an elif - convert that to an if
+      if (first.type === PYTHON_ELIF_STATEMENT) {
+        const elif = first as PythonElifBlock
+        ifStatement.getCondition().removeChild(0)
+        ifStatement.getCondition().addChild(elif.getCondition().getChild(0))
+        ifStatement.getTrueBlock().removeChild(0)
+        elif.getBlock().children.forEach((statementNode) => {
+          ifStatement.getTrueBlock().addChild(statementNode)
+        })
+      } else if (first.type === PYTHON_ELSE_STATEMENT) {
+        // if the first node is an else - make it the if
+        const elseBlock = first as PythonElseBlock
+        ifStatement.getTrueBlock().removeChild(0)
+        elseBlock.getBlock().children.forEach((statementNode) => {
+          ifStatement.getTrueBlock().addChild(statementNode)
+        })
+      } else {
+        // Not sure what this could be, but let's just keep it as remainder.
+        remainder = fragment.nodes
+      }
+
+      remainder.forEach((node) => {
+        ifStatement.getElseBlocks().addChild(node)
+      })
+      return ifStatement
+    })
   }
 }

@@ -99,16 +99,19 @@ function getChainedPasteAdapter(adapter1: PasteNodeAdapter, adapater2: PasteNode
   }
 }
 
-function getAdaptersForType(typeName: string): Map<NodeCategory, PasteNodeAdapter> {
+function getAdaptersForType(typeName: string, excludeTypes: string[]): Map<NodeCategory, PasteNodeAdapter> {
   const typePasteAdapters = typeRegistry[typeName].pasteAdapters
   const results: Map<NodeCategory, PasteNodeAdapter> = new Map()
   for (const targetTypeName in typePasteAdapters) {
+    if (excludeTypes.includes(targetTypeName)) {
+      continue
+    }
     const targetCategories = getNodeCategoriesForType(targetTypeName)
     targetCategories.forEach((category) => {
       results.set(category, typePasteAdapters[targetTypeName])
     })
     // Get the adapters for the target type too and add them in wrapped form
-    const targetAdapters = getAdaptersForType(targetTypeName)
+    const targetAdapters = getAdaptersForType(targetTypeName, [typeName, ...excludeTypes])
     for (const targetAdapterCategory of targetAdapters.keys()) {
       if (!results.has(targetAdapterCategory)) {
         results.set(
@@ -124,7 +127,7 @@ function getAdaptersForType(typeName: string): Map<NodeCategory, PasteNodeAdapte
 export function resolvePasteAdapters() {
   // Loop through all registered types
   for (const typeName in typeRegistry) {
-    pasteAdapaterMapping[typeName] = getAdaptersForType(typeName)
+    pasteAdapaterMapping[typeName] = getAdaptersForType(typeName, [typeName])
   }
   // Once the paste adapaters are done, we can resolve the fragment adapters
   resolveFragmentAdapters()

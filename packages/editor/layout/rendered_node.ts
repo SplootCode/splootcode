@@ -297,6 +297,13 @@ export class NodeBlock implements NodeObserver {
     }
   }
 
+  getChainToRoot(): number[] {
+    if (this.parentChildSet === null) {
+      return []
+    }
+    return this.parentChildSet.getChainToRoot().concat(this.index)
+  }
+
   registerCursorPositions(cursorMap: CursorMap) {
     if (this.parentChildSet !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
       cursorMap.registerNodeStart(

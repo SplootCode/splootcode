@@ -281,6 +281,16 @@ export class SplootNode {
     return getLayout(this.type)
   }
 
+  shallowSerialize(): SerializedNode {
+    const serNode: SerializedNode = {
+      type: this.type,
+      properties: { ...this.properties },
+      meta: Object.fromEntries(this.metadata),
+      childSets: {},
+    }
+    return serNode
+  }
+
   serialize(): SerializedNode {
     const result = {
       type: this.type,

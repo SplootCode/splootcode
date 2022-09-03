@@ -148,6 +148,11 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     this.marginTop = this.layoutHandler.marginTop
   }
 
+  getChainToRoot(): number[] {
+    const index = this.parentRef.node.childSetOrder.indexOf(this.parentRef.childSetId)
+    return this.parentRef.node.getChainToRoot().concat(index)
+  }
+
   getEditData(editIndex: number): EditBoxData {
     const node = this.nodes[editIndex]
     const property = node.node.getEditableProperty()

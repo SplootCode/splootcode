@@ -9,15 +9,20 @@ export interface SerializedFragment {
 
 export class SplootFragment {
   nodes: SplootNode[]
-  nodeCategory?: NodeCategory
+  nodeCategory: NodeCategory
 
-  constructor(nodes: SplootNode[], nodeCategory?: NodeCategory) {
+  constructor(nodes: SplootNode[], nodeCategory: NodeCategory, trim = true) {
     this.nodeCategory = nodeCategory
     this.nodes = nodes
+    if (trim) {
+      this.trim()
+    }
+  }
 
+  trim() {
     // Trim invisible nodes
-    if (nodes.length === 1 && nodes[0].getNodeLayout().isInvisible()) {
-      const node = nodes[0]
+    if (this.nodes.length === 1 && this.nodes[0].getNodeLayout().isInvisible()) {
+      const node = this.nodes[0]
       if (node.childSetOrder.length === 1) {
         const childSet = node.getChildSet(node.childSetOrder[0])
         this.nodes = childSet.children
