@@ -219,17 +219,21 @@ add(3, 4)
         self.assertEqual(fileNode, {
             'type': 'PYTHON_FILE',
             'childSets': {
-                'body': [
-                    {
-                        'type': 'PYTHON_IMPORT',
-                        'childSets': {
-                            'modules': [
-                                {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'},}
-                            ]
-                        },
-                        'properties': {},
-                    }
-                ]
+                'body': [{
+                    "type": "PYTHON_STATEMENT",
+                    "childSets": {
+                        "statement": [{
+                            'type': 'PYTHON_IMPORT',
+                            'childSets': {
+                                'modules': [
+                                    {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'},}
+                                ]
+                            },
+                            'properties': {},
+                        }]
+                    },
+                    'properties': {},
+                }]
             },
             'properties': {},
         })
@@ -243,14 +247,20 @@ add(3, 4)
             'type': 'PYTHON_FILE',
             'childSets': {'body': [
                 {
-                    'type': 'PYTHON_FROM_IMPORT',
-                    'childSets': {
-                        'attrs': [
-                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'randint'}}
-                        ],
-                        'module': [
-                            {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'}}
-                        ]
+                    "type": "PYTHON_STATEMENT",
+                    "childSets": {
+                        "statement": [{
+                            'type': 'PYTHON_FROM_IMPORT',
+                            'childSets': {
+                                'attrs': [
+                                    {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'randint'}}
+                                ],
+                                'module': [
+                                    {'type': 'PYTHON_MODULE_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'random'}}
+                                ]
+                            },
+                            'properties': {},
+                        }]
                     },
                     'properties': {},
                 }
