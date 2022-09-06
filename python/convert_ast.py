@@ -276,15 +276,15 @@ def generateSplootStatement(statement):
     func = generateFunction(statement)
     return SplootNode("PYTHON_STATEMENT", {"statement": [func]})
   elif type(statement) == ast.Break:
-    return SplootNode('PY_BREAK')
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_BREAK')]})
   elif type(statement) == ast.Continue:
-    return SplootNode('PY_CONTINUE')
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_CONTINUE')]})
   elif type(statement) == ast.Return:
-    return SplootNode('PYTHON_RETURN')
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PYTHON_RETURN')]})
   elif type(statement) == ast.Import:
-    return generateImport(statement)
+    return SplootNode("PYTHON_STATEMENT", {"statement": [generateImport(statement)]})
   elif type(statement) == ast.ImportFrom:
-    return generateImportFrom(statement)
+    return SplootNode("PYTHON_STATEMENT", {"statement": [generateImportFrom(statement)]})
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   

@@ -105,7 +105,7 @@ export class Editor extends React.Component<EditorProps> {
     const refBox = this.editorSvgRef.current.getBoundingClientRect()
     const x = event.pageX - refBox.left
     const y = event.pageY - refBox.top
-    selection.handleClick(x, y)
+    selection.handleClick(x, y, event.shiftKey)
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
@@ -158,6 +158,20 @@ export class Editor extends React.Component<EditorProps> {
         }, 0)
       }
     }
+
+    if (event.shiftKey) {
+      switch (event.key) {
+        case 'ArrowLeft':
+          selection.editSelectionLeft()
+          event.preventDefault()
+          return
+        case 'ArrowRight':
+          selection.editSelectionRight()
+          event.preventDefault()
+          return
+      }
+    }
+
     switch (event.key) {
       case 'ArrowLeft':
         selection.moveCursorLeft()
@@ -168,19 +182,19 @@ export class Editor extends React.Component<EditorProps> {
         event.preventDefault()
         break
       case 'ArrowUp':
-        selection.moveCursorUp()
+        selection.moveCursorUp(event.shiftKey)
         event.preventDefault()
         break
       case 'ArrowDown':
-        selection.moveCursorDown()
+        selection.moveCursorDown(event.shiftKey)
         event.preventDefault()
         break
       case 'Home':
-        selection.moveCursorToStartOfLine()
+        selection.moveCursorToStartOfLine(event.shiftKey)
         event.preventDefault()
         break
       case 'End':
-        selection.moveCursorToEndOfLine()
+        selection.moveCursorToEndOfLine(event.shiftKey)
         event.preventDefault()
         break
       case 'Tab':

@@ -15,9 +15,10 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
+import { PythonIfStatement } from './python_if'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
@@ -110,6 +111,17 @@ export class PythonElseBlock extends PythonNode {
       new LayoutComponent(LayoutComponentType.KEYWORD, 'else'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'block'),
     ])
+    typeRegistration.pasteAdapters = {
+      PYTHON_IF_STATEMENT: (node: SplootNode) => {
+        const ifStatement = new PythonIfStatement(null)
+        const elseBlock = node as PythonElseBlock
+        ifStatement.getTrueBlock().removeChild(0)
+        elseBlock.getBlock().children.forEach((statementNode) => {
+          ifStatement.getTrueBlock().addChild(statementNode)
+        })
+        return ifStatement
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ELSE_STATEMENT, NodeCategory.PythonElseBlock)

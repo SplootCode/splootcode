@@ -8,6 +8,7 @@ import { RenderedFragment } from '../../layout/rendered_fragment'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
 import { SplootFragment } from '@splootcode/core/language/fragment'
 import { TrayCategory } from '@splootcode/core/language/tray/tray'
+import { getNodeCategoriesForType } from '@splootcode/core/language/node_category_registry'
 
 export interface CategoryProps {
   category: TrayCategory
@@ -19,7 +20,8 @@ export function getSingleNodeFragment(node: SerializedNode, includeBlock: boolea
     return null
   }
   const splootNode = deserializeNode(node)
-  const fragment = new SplootFragment([splootNode])
+  const nodeCategories = Array.from(getNodeCategoriesForType(node.type))
+  const fragment = new SplootFragment([splootNode], nodeCategories[0])
   return new RenderedFragment(fragment, includeBlock)
 }
 

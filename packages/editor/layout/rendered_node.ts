@@ -297,6 +297,13 @@ export class NodeBlock implements NodeObserver {
     }
   }
 
+  getChainToRoot(): number[] {
+    if (this.parentChildSet === null) {
+      return []
+    }
+    return this.parentChildSet.getChainToRoot().concat(this.index)
+  }
+
   registerCursorPositions(cursorMap: CursorMap) {
     if (this.parentChildSet !== null && this.layout.boxType !== NodeBoxType.INVISIBLE) {
       cursorMap.registerNodeStart(
@@ -407,6 +414,16 @@ export class NodeBlock implements NodeObserver {
       const nextCursor = childSetListBlock.getNextChildInsert()
       if (nextCursor) {
         return nextCursor
+      }
+    }
+    return null
+  }
+
+  getNextChildCursorEvenIfInvalid(): NodeCursor {
+    for (const childSetId of this.childSetOrder) {
+      if (this.leftBreadcrumbChildSet !== childSetId) {
+        const childSetListBlock = this.renderedChildSets[childSetId]
+        return new NodeCursor(childSetListBlock, 0)
       }
     }
     return null

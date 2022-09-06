@@ -2,6 +2,9 @@ import { ChildSet } from '@splootcode/core/language/childset'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
+import { MultiselectDeleter } from './multiselect_deleter'
+import { MultiselectFragmentCreator } from './multiselect_fragment_creator'
+import { MultiselectTreeWalker } from './multiselect_tree_walker'
 import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
 import {
@@ -48,8 +51,11 @@ export class NodeSelection {
 
   rootNode: NodeBlock
 
-  @observable
   selectionStart: NodeCursor
+  selectionEnd: NodeCursor
+
+  @observable
+  selectedListBlocks: Set<RenderedChildSetBlock>
 
   @observable
   cursor: CursorPosition
@@ -79,6 +85,7 @@ export class NodeSelection {
     this.dragState = null
     this.lastXCoordinate = 0
     this.lastYCoordinate = 0
+    this.cursor = { lineIndex: 0, entryIndex: 0 }
   }
 
   setRootNode(rootNode: NodeBlock) {
@@ -98,6 +105,10 @@ export class NodeSelection {
 
   isSingleNode() {
     return this.state === SelectionState.Editing || this.state === SelectionState.SingleNode
+  }
+
+  isMultiSelect() {
+    return this.state === SelectionState.MultiNode
   }
 
   isSelectedNode(listBlock: RenderedChildSetBlock, index: number) {
@@ -124,6 +135,10 @@ export class NodeSelection {
       const selectedNode = this.selectionStart.selectedNode()
       const node = selectedNode.clone()
       return new SplootFragment([node], this.selectionStart.listBlock.childSet.nodeCategory)
+    } else if (this.isMultiSelect()) {
+      const fragmentWalker = new MultiselectFragmentCreator(this.selectionStart, this.selectionEnd)
+      fragmentWalker.walkToEnd()
+      return fragmentWalker.getFragment()
     }
     return null
   }
@@ -160,7 +175,7 @@ export class NodeSelection {
   }
 
   getCursorXYPosition(): [number, number] {
-    if (this.isCursor()) {
+    if (this.isCursor() || this.isMultiSelect()) {
       return this.cursorMap.getCoordinates(this.cursor)
     }
     return [100, 100]
@@ -187,6 +202,13 @@ export class NodeSelection {
       listBlock.parentRef.node.node.clean()
       this.updateRenderPositions()
       this.updateCursorXYToCursor()
+    } else if (this.state === SelectionState.MultiNode) {
+      const deleteWalker = new MultiselectDeleter(this.selectionStart, this.selectionEnd)
+      deleteWalker.walkToEnd()
+      const fragments = deleteWalker.perfromDelete()
+      for (const fragment of fragments) {
+        this.insertFragment(fragment, false)
+      }
     }
   }
 
@@ -267,7 +289,7 @@ export class NodeSelection {
       const insertCursor = lineStartCursor[0]
       const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
       this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
-      this.moveCursorDown()
+      this.moveCursorDown(false)
       return
     }
 
@@ -398,9 +420,9 @@ export class NodeSelection {
     this.insertNodeByChildSet(childSet, index, node)
   }
 
-  insertFragment(fragment: SplootFragment) {
+  insertFragment(fragment: SplootFragment, allowSingle = true) {
     if (this.isCursor()) {
-      if (fragment.isSingle()) {
+      if (fragment.isSingle() && allowSingle) {
         this.insertNodeAtCurrentCursor(fragment.nodes[0])
         return
       }
@@ -508,6 +530,7 @@ export class NodeSelection {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }
     this.selectionStart = nodeCursor
+    this.clearSelectedListBlocks()
     nodeCursor.listBlock.selectedIndexStart = nodeCursor.index
     nodeCursor.listBlock.selectedIndexEnd = nodeCursor.index + 1
     nodeCursor.listBlock.selectionState = SelectionState.SingleNode
@@ -521,15 +544,143 @@ export class NodeSelection {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
       this.selectionStart = null
     }
+    this.clearSelectedListBlocks()
     this.cursor = position
     this.insertBox = new InsertBoxData(this.cursorMap.getCoordinates(position))
     this.state = SelectionState.Cursor
+  }
+
+  clearSelectedListBlocks() {
+    if (this.selectedListBlocks) {
+      this.selectedListBlocks.forEach((listBlock) => {
+        listBlock.selectionState = SelectionState.Empty
+      })
+    }
   }
 
   selectNodeAtPosition(postition: CursorPosition) {
     this.cursor = postition
     const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(postition)
     this.setSelectionSingleNode(nodeCursor)
+  }
+
+  setSelectionMultiselect(start: NodeCursor, end: NodeCursor, cursor: CursorPosition, isCursor: boolean) {
+    this.cursor = cursor
+    if (!start.greaterThan(end) && !isCursor) {
+      end = end.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(end.index)
+    }
+    const treeWalker = new MultiselectTreeWalker(start, end)
+    treeWalker.walkToEnd()
+
+    const newSelectedListBlocks = treeWalker.getSelectedListBlocks()
+    if (this.selectedListBlocks) {
+      for (const alreadySelectedBlock of this.selectedListBlocks) {
+        if (!newSelectedListBlocks.has(alreadySelectedBlock)) {
+          alreadySelectedBlock.selectionState = SelectionState.Empty
+        }
+      }
+    }
+
+    if (newSelectedListBlocks.size !== 0) {
+      this.selectedListBlocks = newSelectedListBlocks
+      this.state = SelectionState.MultiNode
+      this.selectionStart = start
+      this.selectionEnd = end
+    }
+
+    if (this.selectionStart.equals(this.selectionEnd)) {
+      this.setSelectionCursor(this.cursor)
+    }
+  }
+
+  updateMultiSelect(newPrimaryCursor: CursorPosition, isCursor: boolean) {
+    const end = this.cursorMap.getMultiSelectCursorForCursorPosition(newPrimaryCursor)
+    this.setSelectionMultiselect(this.selectionStart, end, newPrimaryCursor, isCursor)
+  }
+
+  startMultiSelect(cursorIsStart: boolean) {
+    if (this.isSingleNode()) {
+      const beforeNode = this.cursorMap.getSingleNodeForCursorPosition(this.cursor)
+      const afterNode = beforeNode.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(beforeNode.index)
+      if (cursorIsStart) {
+        const cursor = beforeNode.listBlock.getCursorPosition(this.cursorMap, beforeNode.index)
+        this.setSelectionMultiselect(afterNode, beforeNode, cursor, true)
+      } else {
+        const cursor = afterNode.listBlock.getCursorPosition(this.cursorMap, afterNode.index)
+        this.setSelectionMultiselect(beforeNode, afterNode, cursor, true)
+      }
+    } else if (!this.isMultiSelect()) {
+      const start = this.cursorMap.getMultiSelectCursorForCursorPosition(this.cursor)
+      this.selectionStart = start
+      this.selectionEnd = start
+      this.state = SelectionState.MultiNode
+    }
+  }
+
+  @action
+  editSelectionLeft() {
+    this.startMultiSelect(true)
+    let cursor = this.cursor
+    while (true) {
+      const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorLeftOfPosition(cursor)
+      if (!isCursor) {
+        this.updateMultiSelect(nextCursor, isCursor)
+        this.lastXCoordinate = x
+        this.lastYCoordinate = y
+        break
+      }
+      if (cursor.lineIndex === nextCursor.lineIndex && cursor.entryIndex === nextCursor.entryIndex) {
+        break
+      }
+      cursor = nextCursor
+    }
+  }
+
+  @action
+  editSelectionRight() {
+    this.startMultiSelect(false)
+    let cursor = this.cursor
+    while (true) {
+      const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorRightOfPosition(cursor)
+      if (!isCursor) {
+        this.updateMultiSelect(nextCursor, isCursor)
+        this.lastXCoordinate = x
+        this.lastYCoordinate = y
+        break
+      }
+      if (cursor.lineIndex === nextCursor.lineIndex && cursor.entryIndex === nextCursor.entryIndex) {
+        break
+      }
+      cursor = nextCursor
+    }
+  }
+
+  @action
+  editSelectionDown() {
+    this.startMultiSelect(false)
+    const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorDownOfPosition(
+      this.lastXCoordinate,
+      this.lastYCoordinate,
+      this.cursor
+    )
+    this.updateMultiSelect(nextCursor, isCursor)
+
+    this.lastXCoordinate = x
+    this.lastYCoordinate = y
+  }
+
+  @action
+  expandSelectionUp() {
+    this.startMultiSelect(true)
+    const [nextCursor, isCursor, x, y] = this.cursorMap.getCursorUpOfPosition(
+      this.lastXCoordinate,
+      this.lastYCoordinate,
+      this.cursor
+    )
+    this.updateMultiSelect(nextCursor, isCursor)
+
+    this.lastXCoordinate = x
+    this.lastYCoordinate = y
   }
 
   @action
@@ -551,7 +702,7 @@ export class NodeSelection {
   }
 
   @action
-  moveCursorUp() {
+  moveCursorUp(shiftKey: boolean) {
     const [cursor, isCursor, x, y] = this.cursorMap.getCursorUpOfPosition(
       this.lastXCoordinate,
       this.lastYCoordinate,
@@ -559,11 +710,17 @@ export class NodeSelection {
     )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    this.placeCursorPosition(cursor, isCursor, false)
+
+    if (shiftKey) {
+      this.startMultiSelect(true)
+      this.updateMultiSelect(cursor, isCursor)
+    } else {
+      this.placeCursorPosition(cursor, isCursor, false)
+    }
   }
 
   @action
-  moveCursorDown() {
+  moveCursorDown(shiftKey: boolean) {
     const [cursor, isCursor, x, y] = this.cursorMap.getCursorDownOfPosition(
       this.lastXCoordinate,
       this.lastYCoordinate,
@@ -571,19 +728,34 @@ export class NodeSelection {
     )
     this.lastXCoordinate = x
     this.lastYCoordinate = y
-    this.placeCursorPosition(cursor, isCursor, false)
+    if (shiftKey) {
+      this.startMultiSelect(false)
+      this.updateMultiSelect(cursor, isCursor)
+    } else {
+      this.placeCursorPosition(cursor, isCursor, false)
+    }
   }
 
-  moveCursorToStartOfLine() {
+  moveCursorToStartOfLine(shiftKey: boolean) {
     const [cursor, isCursor, x] = this.cursorMap.getCursorAtStartOfLine(this.cursor)
     this.lastXCoordinate = x
-    this.placeCursorPosition(cursor, isCursor, false)
+    if (shiftKey) {
+      this.startMultiSelect(true)
+      this.updateMultiSelect(cursor, isCursor)
+    } else {
+      this.placeCursorPosition(cursor, isCursor, false)
+    }
   }
 
-  moveCursorToEndOfLine() {
+  moveCursorToEndOfLine(shiftKey: boolean) {
     const [cursor, isCursor, x] = this.cursorMap.getCursorAtEndOfLine(this.cursor)
     this.lastXCoordinate = x
-    this.placeCursorPosition(cursor, isCursor, false)
+    if (shiftKey) {
+      this.startMultiSelect(false)
+      this.updateMultiSelect(cursor, isCursor)
+    } else {
+      this.placeCursorPosition(cursor, isCursor, false)
+    }
   }
 
   moveCursorToNextInsert(backwards: boolean) {
@@ -613,17 +785,28 @@ export class NodeSelection {
     }
   }
 
-  handleClick(x: number, y: number) {
+  handleClick(x: number, y: number, shiftKey: boolean) {
     const [cursor, isCursor] = this.cursorMap.getCursorPositionByCoordinate(x, y)
     this.lastYCoordinate = y
     this.lastXCoordinate = x
-    if (isCursor) {
-      this.placeCursorPosition(cursor, isCursor, false)
+
+    if (shiftKey) {
+      const cursorAtStart =
+        this.cursor &&
+        (this.cursor.lineIndex > cursor.lineIndex
+          ? true
+          : this.cursor.lineIndex === cursor.lineIndex && this.cursor.entryIndex > cursor.entryIndex)
+      this.startMultiSelect(cursorAtStart)
+      this.updateMultiSelect(cursor, isCursor)
     } else {
-      if (this.isSelectedNodeAtPosition(cursor)) {
-        this.startEditAtCurrentCursor()
+      if (isCursor) {
+        this.placeCursorPosition(cursor, isCursor, false)
       } else {
-        this.selectNodeAtPosition(cursor)
+        if (this.isSelectedNodeAtPosition(cursor)) {
+          this.startEditAtCurrentCursor()
+        } else {
+          this.selectNodeAtPosition(cursor)
+        }
       }
     }
   }
@@ -654,5 +837,35 @@ export class NodeCursor {
       return null
     }
     return this.listBlock.childSet.getChildren()[this.index]
+  }
+
+  increment(): NodeCursor {
+    return new NodeCursor(this.listBlock, this.index + 1)
+  }
+
+  equals(other: NodeCursor): boolean {
+    return this.listBlock === other.listBlock && this.index === other.index
+  }
+
+  getChainToRoot(): number[] {
+    return this.listBlock.getChainToRoot().concat(this.index)
+  }
+
+  greaterThan(other: NodeCursor): boolean {
+    const thisChain = this.getChainToRoot()
+    const otherChain = other.getChainToRoot()
+    let i = 0
+    while (i < thisChain.length && i < otherChain.length) {
+      if (thisChain[i] > otherChain[i]) {
+        return true
+      } else if (thisChain[i] < otherChain[i]) {
+        return false
+      }
+      i++
+    }
+    if (thisChain.length > otherChain.length) {
+      return true
+    }
+    return false
   }
 }

@@ -16,9 +16,10 @@ import {
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { ParseNodeType, StatementListNode, StatementNode } from 'structured-pyright'
+import { PythonElifBlock } from './python_elif'
 import { PythonNode } from './python_node'
 import { StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
 
@@ -83,6 +84,7 @@ export class PythonStatement extends PythonNode {
   static deserializer(serializedNode: SerializedNode): PythonStatement {
     const res = new PythonStatement(null)
     res.deserializeChildSet('statement', serializedNode)
+    res.clean()
     return res
   }
 
@@ -111,6 +113,14 @@ export class PythonStatement extends PythonNode {
       [new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'statement')],
       NodeBoxType.INVISIBLE
     )
+    typeRegistration.pasteAdapters = {
+      PYTHON_ELIF_STATEMENT: (node: SplootNode) => {
+        const elif = new PythonElifBlock(null)
+        elif.getBlock().addChild(node)
+        elif.getBlock().removeChild(0)
+        return elif
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_STATEMENT, NodeCategory.PythonStatement)
