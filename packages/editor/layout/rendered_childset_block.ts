@@ -250,6 +250,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     return null
   }
 
+  getNextCursorInOrAfterNodeEvenIfInvalid(index: number): NodeCursor {
+    let nextChildCursor = null
+    nextChildCursor = this.nodes[index].getNextChildCursorEvenIfInvalid()
+    if (nextChildCursor) {
+      return nextChildCursor
+    }
+    return new NodeCursor(this, index + 1)
+  }
+
   isInsertableLineChildset(): boolean {
     return (
       this.allowInsert() &&

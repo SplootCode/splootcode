@@ -60,7 +60,10 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
   }
 
   getFragment(): SplootFragment {
-    this.fragment.trim()
-    return this.fragment
+    if (this.fragment) {
+      this.fragment.trim()
+      return this.fragment
+    }
+    return null
   }
 }

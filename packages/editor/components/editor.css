@@ -35,6 +35,10 @@
   background: transparent
 }
 
+.editor-svg pre::selection {
+  background: transparent
+}
+
 .python-preview-panel {
   border-left: 2px solid var(--section-separator-color);
 }

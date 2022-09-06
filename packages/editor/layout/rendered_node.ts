@@ -418,4 +418,14 @@ export class NodeBlock implements NodeObserver {
     }
     return null
   }
+
+  getNextChildCursorEvenIfInvalid(): NodeCursor {
+    for (const childSetId of this.childSetOrder) {
+      if (this.leftBreadcrumbChildSet !== childSetId) {
+        const childSetListBlock = this.renderedChildSets[childSetId]
+        return new NodeCursor(childSetListBlock, 0)
+      }
+    }
+    return null
+  }
 }

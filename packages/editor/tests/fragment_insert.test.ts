@@ -36,13 +36,15 @@ function getHelloWorldPythonFile(): PythonFile {
   return file
 }
 
-function getAssignNode(variableName: string, stringValue: string): PythonAssignment {
+function getAssignStatement(variableName: string, stringValue: string): PythonStatement {
   const val = new PythonStringLiteral(null, stringValue)
   const variable = new PythonIdentifier(null, variableName)
   const assign = new PythonAssignment(null)
   assign.getLeft().addChild(variable)
   ;(assign.getRight().getChild(0) as PythonExpression).getTokenSet().addChild(val)
-  return assign
+  const statement = new PythonStatement(null)
+  statement.getStatement().addChild(assign)
+  return statement
 }
 
 describe('python hello world file edits', () => {
@@ -62,13 +64,13 @@ describe('python hello world file edits', () => {
     selection.setRootNode(renderedNode)
     file.recursivelySetMutations(true)
 
-    selection.handleClick(0, 0)
+    selection.handleClick(0, 0, false)
     expect(selection.state).toStrictEqual(SelectionState.Cursor)
     expect(selection.cursor).toStrictEqual({ lineIndex: 0, entryIndex: 0 })
 
     const statementFragment = new SplootFragment(
-      [getAssignNode('name', 'Fred'), getAssignNode('foo', 'bar')],
-      NodeCategory.Statement
+      [getAssignStatement('name', 'Fred'), getAssignStatement('foo', 'bar')],
+      NodeCategory.PythonStatement
     )
 
     // Paste some statements at the start of the first line
@@ -90,7 +92,7 @@ describe('python hello world file edits', () => {
     selection.setRootNode(renderedNode)
     file.recursivelySetMutations(true)
 
-    selection.handleClick(0, 0)
+    selection.handleClick(0, 0, false)
     expect(selection.state).toStrictEqual(SelectionState.Cursor)
     expect(selection.cursor).toStrictEqual({ lineIndex: 0, entryIndex: 0 })
 
@@ -107,7 +109,7 @@ describe('python hello world file edits', () => {
     expect(expressionFragment.nodes.length).toBe(3)
 
     // Move cursor to the line after the print()
-    selection.moveCursorDown()
+    selection.moveCursorDown(false)
     expect(selection.cursor).toStrictEqual({ lineIndex: 1, entryIndex: 0 })
     // Type an if
     const ifStatement = new PythonIfStatement(null)

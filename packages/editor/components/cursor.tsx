@@ -14,7 +14,7 @@ interface ActiveCursorProps {
 export class ActiveCursor extends React.Component<ActiveCursorProps> {
   render() {
     const selection = this.props.selection
-    if (selection.state !== SelectionState.Cursor && selection.state !== SelectionState.MultiNode) {
+    if (selection.state !== SelectionState.Cursor) {
       return null
     }
 

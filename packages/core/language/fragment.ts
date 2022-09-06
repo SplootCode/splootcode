@@ -1,4 +1,5 @@
-import { NodeCategory } from './node_category_registry'
+import { InvariantViolationError, InvariantViolationType } from './invariants'
+import { NodeCategory, isNodeInCategory } from './node_category_registry'
 import { SerializedNode, deserializeNode } from './type_registry'
 import { SplootNode } from './node'
 
@@ -17,6 +18,14 @@ export class SplootFragment {
     if (trim) {
       this.trim()
     }
+    this.nodes.forEach((node) => {
+      if (!isNodeInCategory(node.type, this.nodeCategory)) {
+        throw new InvariantViolationError(
+          InvariantViolationType.FragmentNodeCategory,
+          `${node.type} is not valid for fragment category ${this.nodeCategory}.`
+        )
+      }
+    })
   }
 
   trim() {

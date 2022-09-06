@@ -65,7 +65,7 @@ describe('python hello world file edits', () => {
     file.recursivelySetMutations(true)
 
     // Place cursor at start of the line
-    selection.handleClick(0, 0)
+    selection.handleClick(0, 0, false)
     expect(selection.state).toStrictEqual(SelectionState.Cursor)
     expect(selection.cursor).toStrictEqual({ lineIndex: 0, entryIndex: 0 })
 
