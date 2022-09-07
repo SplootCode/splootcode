@@ -33,7 +33,21 @@ export class MultiselectDeleter extends RenderedTreeIterator {
     }
   }
 
-  visitedRange(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+    // Add leftovers to return set
+    if (endIndex < listBlock.nodes.length && this.nodeStack.length !== 0) {
+      const nodes = listBlock.childSet.children
+        .slice(endIndex)
+        .filter((node) => !node.isEmpty())
+        .map((node) => node.clone())
+      if (nodes.length > 0) {
+        const fragment = new SplootFragment(nodes, listBlock.childSet.nodeCategory)
+        this.toKeep.push(fragment)
+      }
+    }
+  }
+
+  visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
     // Add leftovers to return set
     if (endIndex < listBlock.nodes.length && this.nodeStack.length !== 0) {
       const nodes = listBlock.childSet.children

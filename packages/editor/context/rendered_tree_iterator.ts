@@ -27,11 +27,20 @@ export class RenderedTreeIterator {
   loadStackAfterNode(listBlock: RenderedChildSetBlock, index: number, includeNode = false) {
     if (listBlock) {
       const parentNode = listBlock.parentRef.node
-      // Load all the stack after the parent first.
-      this.loadStackAfterNode(parentNode.parentChildSet, parentNode.index)
 
       const childSetOrder = parentNode.childSetOrder
       const childSetOrderIndex = childSetOrder.indexOf(listBlock.childSet.childParentRef.childSetId)
+
+      let includeParentNode = false
+      if (listBlock.childSet.childParentRef.childSetId === parentNode.leftBreadcrumbChildSet) {
+        includeParentNode = true
+      }
+
+      // Load all the stack after the parent first.
+      this.loadStackAfterNode(parentNode.parentChildSet, parentNode.index, includeParentNode)
+      if (includeParentNode) {
+        return
+      }
 
       // Childsets after this one in the childset order
       const childSetCursors: NodeCursor[] = []
@@ -54,41 +63,66 @@ export class RenderedTreeIterator {
 
   visitNodeDown(node: NodeBlock) {}
 
+  visitNodeMiddle(node: NodeBlock) {}
+
   visitNodeUp(node: NodeBlock) {}
 
-  visitedRange(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
+  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
+  visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
 
-  walkNode(node: NodeBlock) {
-    this.visitNodeDown(node)
-    for (const childSetID of node.childSetOrder) {
-      const listBlock = node.renderedChildSets[childSetID]
-      this.walkChildSet(listBlock, 0)
+  walkNodeLeft(node: NodeBlock) {
+    if (node.leftBreadcrumbChildSet) {
+      this.walkChildSet(node.renderedChildSets[node.leftBreadcrumbChildSet], 0, true)
     }
-    this.visitNodeUp(node)
   }
 
-  walkChildSet(listBlock: RenderedChildSetBlock, startIndex: number) {
+  walkNode(node: NodeBlock) {
+    this.visitNodeMiddle(node)
+    for (const childSetID of node.childSetOrder) {
+      if (childSetID !== node.leftBreadcrumbChildSet) {
+        const listBlock = node.renderedChildSets[childSetID]
+        this.walkChildSet(listBlock, 0, false)
+      }
+    }
+  }
+
+  walkChildSet(listBlock: RenderedChildSetBlock, startIndex: number, isLeft: boolean) {
     let end = listBlock.nodes.length
     if (listBlock === this.end.listBlock) {
       end = this.end.index
+    }
+    if (listBlock === this.start.listBlock) {
+      startIndex = this.start.index
     }
     let i = startIndex
     for (; i < end; i++) {
       if (this.finished) {
         break
       }
-      this.walkNode(listBlock.nodes[i])
+      const node = listBlock.nodes[i]
+      this.visitNodeDown(node)
+      this.walkNodeLeft(node)
+      if (this.finished) {
+        this.visitNodeUp(node)
+        break
+      }
+      this.walkNode(node)
+      this.visitNodeUp(node)
     }
     if (listBlock === this.end.listBlock) {
       this.finished = true
     }
-    this.visitedRange(listBlock, startIndex, i)
+    if (isLeft) {
+      this.visitedRangeLeft(listBlock, startIndex, i)
+    } else {
+      this.visitedRangeRight(listBlock, startIndex, i)
+    }
   }
 
   walkToEnd() {
     while (!this.finished && this.cursorStack.length !== 0) {
       const cursor = this.cursorStack.pop()
-      this.walkChildSet(cursor.listBlock, cursor.index)
+      this.walkChildSet(cursor.listBlock, cursor.index, false)
     }
   }
 }

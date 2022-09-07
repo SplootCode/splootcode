@@ -8,17 +8,21 @@ import { SplootNode } from '@splootcode/core/language/node'
 import { combineFragments } from '@splootcode/core/language/fragment_adapter'
 
 export class MultiselectFragmentCreator extends RenderedTreeIterator {
-  nodeStack: SerializedNode[]
+  downNodeStack: SerializedNode[]
   childSetStack: SerializedNode[][]
+  leftChildSetStack: SerializedNode[][]
+  leftListBlockStack: RenderedChildSetBlock[]
   fragmentNodes: SplootNode[]
   fragment: SplootFragment
 
   constructor(start: NodeCursor, end: NodeCursor) {
     super(start, end)
-    this.nodeStack = []
+    this.downNodeStack = []
     this.fragmentNodes = []
     this.childSetStack = []
     this.fragment = null
+    this.leftChildSetStack = []
+    this.leftListBlockStack = []
   }
 
   visitNodeDown(node: NodeBlock): void {
@@ -28,25 +32,58 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
       const curChildSetStack = this.childSetStack[this.childSetStack.length - 1]
       curChildSetStack.push(serNode)
     }
-    this.nodeStack.push(serNode)
+    this.downNodeStack.push(serNode)
     this.childSetStack.push([])
+    this.leftChildSetStack.push([])
+    this.leftListBlockStack.push(null)
+  }
+
+  visitNodeMiddle(node: NodeBlock): void {
+    // Resolve the left children, now that we know this node is included.
+    const leftChildSetStack = this.leftChildSetStack.pop()
+    const leftListBlock = this.leftListBlockStack.pop()
+    if (leftListBlock !== null) {
+      const currentNode = this.downNodeStack[this.downNodeStack.length - 1]
+      currentNode.childSets[leftListBlock.parentRef.childSetId] = leftChildSetStack
+    }
   }
 
   visitNodeUp(node: NodeBlock): void {
-    const serNode = this.nodeStack.pop()
+    const serNode = this.downNodeStack.pop()
     this.childSetStack.pop()
-    // If this is a top-level node, add it to the fragment
-    if (this.nodeStack.length === 0) {
+
+    // If there are leftover left-side chidren, they must be separate fragments.
+    // It means the parent node was never reached by `visitNodeMiddle`
+    if (this.downNodeStack.length < this.leftListBlockStack.length) {
+      this.leftListBlockStack.pop()
+      const leftChildren = this.leftChildSetStack.pop()
+      const nodes = leftChildren.map((serNode) => deserializeNode(serNode))
+
+      // TODO: This is ok for now, because left childsets are always tokens
+      // and always match the current fragment node category.
+      // Really though, there's a risk that the fragment nodes are a different category to the left nodes.
+      this.fragmentNodes.push(...nodes)
+    } else if (this.downNodeStack.length === 0) {
       // Deserializing also repairs any missing/broken childsets
       this.fragmentNodes.push(deserializeNode(serNode))
     }
   }
 
-  visitedRange(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+    const children = this.childSetStack.pop().slice(0, endIndex - startIndex)
+    this.childSetStack.push([])
+    if (children.length !== 0) {
+      this.leftChildSetStack[this.leftChildSetStack.length - 1].push(...children)
+      this.leftListBlockStack.pop()
+      this.leftListBlockStack.push(listBlock)
+    }
+  }
+
+  visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
     // Copy these children into the current shallow-cloned node
     const children = this.childSetStack.pop()
-    if (this.nodeStack.length !== 0) {
-      const currentNode = this.nodeStack[this.nodeStack.length - 1]
+    if (this.downNodeStack.length !== 0) {
+      const currentNode = this.downNodeStack[this.downNodeStack.length - 1]
       currentNode.childSets[listBlock.parentRef.childSetId] = children
     } else {
       if (this.fragmentNodes.length !== 0) {
