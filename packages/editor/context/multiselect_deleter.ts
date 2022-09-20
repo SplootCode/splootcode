@@ -3,74 +3,51 @@ import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedTreeIterator } from './rendered_tree_iterator'
 import { SplootFragment } from '@splootcode/core/language/fragment'
-import { SplootNode } from '@splootcode/core/language/node'
+
+export interface DeleteSet {
+  node: NodeBlock
+  keep: SplootFragment[]
+}
 
 export class MultiselectDeleter extends RenderedTreeIterator {
-  nodeStack: boolean[]
-  toFullyDelete: SplootNode[]
+  childSetStack: boolean[]
+  toFullyDelete: DeleteSet[]
   toKeep: SplootFragment[]
 
   constructor(start: NodeCursor, end: NodeCursor) {
     super(start, end)
-    this.nodeStack = []
+    this.childSetStack = []
     this.toFullyDelete = []
     this.toKeep = []
   }
 
-  visitNodeDown(node: NodeBlock): void {
-    // Only stack nodes at the top level that can be deleted
-    if (this.nodeStack.length !== 0 || node.parentChildSet.allowDelete()) {
-      this.nodeStack.push(true)
+  visitNodeMiddle(node: NodeBlock): void {
+    if (this.childSetStack.length <= 1) {
+      this.toFullyDelete.push({ node: node, keep: [] })
     }
   }
 
-  visitNodeUp(node: NodeBlock): void {
-    if (this.nodeStack.length !== 0) {
-      this.nodeStack.pop()
-      if (this.nodeStack.length === 0) {
-        this.toFullyDelete.push(node.node)
-      }
-    }
-  }
-
-  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
-    // Add leftovers to return set
-    if (endIndex < listBlock.nodes.length && this.nodeStack.length !== 0) {
-      const nodes = listBlock.childSet.children
-        .slice(endIndex)
-        .filter((node) => !node.isEmpty())
-        .map((node) => node.clone())
-      if (nodes.length > 0) {
-        const fragment = new SplootFragment(nodes, listBlock.childSet.nodeCategory)
-        this.toKeep.push(fragment)
-      }
-    }
+  startRangeRight(): void {
+    this.childSetStack.push(true)
   }
 
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+    this.childSetStack.pop()
     // Add leftovers to return set
-    if (endIndex < listBlock.nodes.length && this.nodeStack.length !== 0) {
+    if (endIndex < listBlock.nodes.length && this.childSetStack.length !== 0) {
       const nodes = listBlock.childSet.children
         .slice(endIndex)
         .filter((node) => !node.isEmpty())
         .map((node) => node.clone())
+
       if (nodes.length > 0) {
         const fragment = new SplootFragment(nodes, listBlock.childSet.nodeCategory)
-        this.toKeep.push(fragment)
+        this.toFullyDelete[this.toFullyDelete.length - 1].keep.push(fragment)
       }
     }
   }
 
-  perfromDelete(): SplootFragment[] {
-    this.toFullyDelete.forEach((node) => {
-      const parent = node.parent.node
-      const parentChildSet = node.parent.getChildSet()
-      const index = parentChildSet.getIndexOf(node)
-      if (parentChildSet.allowDelete()) {
-        parentChildSet.removeChild(index)
-        parent.clean()
-      }
-    })
-    return this.toKeep
+  getDeletions(): DeleteSet[] {
+    return this.toFullyDelete
   }
 }

@@ -205,9 +205,25 @@ export class NodeSelection {
     } else if (this.state === SelectionState.MultiNode) {
       const deleteWalker = new MultiselectDeleter(this.selectionStart, this.selectionEnd)
       deleteWalker.walkToEnd()
-      const fragments = deleteWalker.perfromDelete()
-      for (const fragment of fragments) {
-        this.insertFragment(fragment, false)
+      const deleteSets = deleteWalker.getDeletions()
+      for (const deleteSet of deleteSets) {
+        const node = deleteSet.node
+        const parent = node.node.parent.node
+        const listBlock = node.parentChildSet
+        let index = node.index
+        const deletedNode = listBlock.childSet.removeChild(index)
+        if (node.leftBreadcrumbChildSet) {
+          const newNodes = deletedNode.getChildrenToKeepOnDelete()
+          newNodes.forEach((node) => {
+            listBlock.childSet.insertNode(node, index)
+            index++
+          })
+          this.placeCursor(listBlock, index)
+        }
+        parent.clean()
+        for (const fragment of deleteSet.keep) {
+          this.insertFragment(fragment, false)
+        }
       }
     }
   }

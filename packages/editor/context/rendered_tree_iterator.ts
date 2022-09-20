@@ -6,8 +6,7 @@ export class RenderedTreeIterator {
   start: NodeCursor
   end: NodeCursor
   finished: boolean
-
-  cursorStack: NodeCursor[]
+  cursorStack: [NodeCursor, boolean][]
 
   constructor(start: NodeCursor, end: NodeCursor) {
     this.start = start
@@ -19,44 +18,45 @@ export class RenderedTreeIterator {
       this.start = end
       this.end = start
     }
-
     // Build stack up to tree root
-    this.loadStackAfterNode(this.start.listBlock, this.start.index, true)
+    this.loadStackAfterNode(this.start.listBlock, this.start.index, true, false)
   }
 
-  loadStackAfterNode(listBlock: RenderedChildSetBlock, index: number, includeNode = false) {
+  loadStackAfterNode(listBlock: RenderedChildSetBlock, index: number, includeNode: boolean, pointsAtNode: boolean) {
     if (listBlock) {
       const parentNode = listBlock.parentRef.node
 
       const childSetOrder = parentNode.childSetOrder
       const childSetOrderIndex = childSetOrder.indexOf(listBlock.childSet.childParentRef.childSetId)
 
-      let includeParentNode = false
+      let isLeftChild = false
       if (listBlock.childSet.childParentRef.childSetId === parentNode.leftBreadcrumbChildSet) {
-        includeParentNode = true
+        isLeftChild = true
       }
 
-      // Load all the stack after the parent first.
-      this.loadStackAfterNode(parentNode.parentChildSet, parentNode.index, includeParentNode)
-      if (includeParentNode) {
-        return
-      }
+      if (isLeftChild) {
+        // Push all the stack after the parent first.
+        this.loadStackAfterNode(parentNode.parentChildSet, parentNode.index, true, true)
+      } else {
+        // Push all the stack after the parent first.
+        this.loadStackAfterNode(parentNode.parentChildSet, parentNode.index, false, false)
 
-      // Childsets after this one in the childset order
-      const childSetCursors: NodeCursor[] = []
-      childSetOrder.forEach((childSetID, idx) => {
-        if (idx > childSetOrderIndex) {
-          childSetCursors.push(new NodeCursor(parentNode.renderedChildSets[childSetID], 0))
-        }
-      })
-      childSetCursors.reverse()
-      this.cursorStack.push(...childSetCursors)
+        // Childsets after this one in the parent childset order
+        const childSetCursors: [NodeCursor, boolean][] = []
+        childSetOrder.forEach((childSetID, idx) => {
+          if (idx > childSetOrderIndex && childSetID !== parentNode.leftBreadcrumbChildSet) {
+            childSetCursors.push([new NodeCursor(parentNode.renderedChildSets[childSetID], 0), true /* isCursor */])
+          }
+        })
+        childSetCursors.reverse()
+        this.cursorStack.push(...childSetCursors)
+      }
 
       // Remaining positions in the same childset as node
-      if (includeNode) {
-        this.cursorStack.push(new NodeCursor(listBlock, index))
+      if (includeNode || pointsAtNode) {
+        this.cursorStack.push([new NodeCursor(listBlock, index), !pointsAtNode])
       } else {
-        this.cursorStack.push(new NodeCursor(listBlock, index + 1))
+        this.cursorStack.push([new NodeCursor(listBlock, index + 1), true /* isCursor */])
       }
     }
   }
@@ -67,12 +67,14 @@ export class RenderedTreeIterator {
 
   visitNodeUp(node: NodeBlock) {}
 
+  startRangeLeft() {}
   visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
+  startRangeRight() {}
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
 
   walkNodeLeft(node: NodeBlock) {
     if (node.leftBreadcrumbChildSet) {
-      this.walkChildSet(node.renderedChildSets[node.leftBreadcrumbChildSet], 0, true)
+      this.walkChildSet(node.renderedChildSets[node.leftBreadcrumbChildSet], 0, false)
     }
   }
 
@@ -84,9 +86,17 @@ export class RenderedTreeIterator {
         this.walkChildSet(listBlock, 0, false)
       }
     }
+    this.visitNodeUp(node)
   }
 
-  walkChildSet(listBlock: RenderedChildSetBlock, startIndex: number, isLeft: boolean) {
+  walkChildSet(listBlock: RenderedChildSetBlock, startIndex: number, startMidNode: boolean) {
+    const isLeft = listBlock.parentRef.childSetId === listBlock.parentRef.node.leftBreadcrumbChildSet
+    if (isLeft) {
+      this.startRangeLeft()
+    } else {
+      this.startRangeRight()
+    }
+
     let end = listBlock.nodes.length
     if (listBlock === this.end.listBlock) {
       end = this.end.index
@@ -101,13 +111,14 @@ export class RenderedTreeIterator {
       }
       const node = listBlock.nodes[i]
       this.visitNodeDown(node)
-      this.walkNodeLeft(node)
+      if (!startMidNode || i !== startIndex) {
+        this.walkNodeLeft(node)
+      }
       if (this.finished) {
         this.visitNodeUp(node)
         break
       }
       this.walkNode(node)
-      this.visitNodeUp(node)
     }
     if (listBlock === this.end.listBlock) {
       this.finished = true
@@ -121,8 +132,12 @@ export class RenderedTreeIterator {
 
   walkToEnd() {
     while (!this.finished && this.cursorStack.length !== 0) {
-      const cursor = this.cursorStack.pop()
-      this.walkChildSet(cursor.listBlock, cursor.index, false)
+      const [cursor, isCursor] = this.cursorStack.pop()
+      if (isCursor) {
+        this.walkChildSet(cursor.listBlock, cursor.index, false)
+      } else {
+        this.walkChildSet(cursor.listBlock, cursor.index, true)
+      }
     }
   }
 }
