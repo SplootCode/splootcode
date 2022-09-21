@@ -150,6 +150,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
   getChainToRoot(): number[] {
     const index = this.parentRef.node.childSetOrder.indexOf(this.parentRef.childSetId)
+    if (this.parentRef.node.leftBreadcrumbChildSet === this.parentRef.childSetId) {
+      return this.parentRef.node.getChainToRoot().concat(-1)
+    }
     return this.parentRef.node.getChainToRoot().concat(index)
   }
 
@@ -257,6 +260,15 @@ export class RenderedChildSetBlock implements ChildSetObserver {
       return nextChildCursor
     }
     return new NodeCursor(this, index + 1)
+  }
+
+  getNextCursorInOrBeforeNodeEvenIfInvalid(index: number): NodeCursor {
+    const node = this.nodes[index]
+    if (node.leftBreadcrumbChildSet) {
+      const listBlock = node.renderedChildSets[node.leftBreadcrumbChildSet]
+      return new NodeCursor(listBlock, listBlock.nodes.length)
+    }
+    return new NodeCursor(this, index)
   }
 
   isInsertableLineChildset(): boolean {

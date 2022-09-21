@@ -1,65 +1,86 @@
 import { NodeBlock } from '../layout/rendered_node'
+import { NodeCategory } from '@splootcode/core/language/node_category_registry'
 import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedTreeIterator } from './rendered_tree_iterator'
 import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
 import { SplootFragment } from '@splootcode/core/language/fragment'
-import { SplootNode } from '@splootcode/core/language/node'
 import { combineFragments } from '@splootcode/core/language/fragment_adapter'
 
 export class MultiselectFragmentCreator extends RenderedTreeIterator {
-  nodeStack: SerializedNode[]
+  leftChildSetStack: SerializedNode[][]
   childSetStack: SerializedNode[][]
-  fragmentNodes: SplootNode[]
   fragment: SplootFragment
 
   constructor(start: NodeCursor, end: NodeCursor) {
     super(start, end)
-    this.nodeStack = []
-    this.fragmentNodes = []
+    this.leftChildSetStack = []
     this.childSetStack = []
     this.fragment = null
   }
 
-  visitNodeDown(node: NodeBlock): void {
+  startRangeLeft(): void {
+    this.childSetStack.push([])
+  }
+
+  startRangeRight(): void {
+    this.childSetStack.push([])
+  }
+
+  visitNodeMiddle(node: NodeBlock): void {
     // Add a shallow clone of this node to the stack
-    const serNode: SerializedNode = node.node.shallowSerialize()
+    const thisNode: SerializedNode = node.node.shallowSerialize()
+
+    if (node.leftBreadcrumbChildSet) {
+      // Resolve the left children, now that we know this node is included.
+      const leftChildSetStack = this.leftChildSetStack.pop()
+      thisNode.childSets[node.leftBreadcrumbChildSet] = leftChildSetStack
+    }
+
     if (this.childSetStack.length !== 0) {
       const curChildSetStack = this.childSetStack[this.childSetStack.length - 1]
-      curChildSetStack.push(serNode)
+      curChildSetStack.push(thisNode)
     }
-    this.nodeStack.push(serNode)
-    this.childSetStack.push([])
   }
 
   visitNodeUp(node: NodeBlock): void {
-    const serNode = this.nodeStack.pop()
-    this.childSetStack.pop()
-    // If this is a top-level node, add it to the fragment
-    if (this.nodeStack.length === 0) {
-      // Deserializing also repairs any missing/broken childsets
-      this.fragmentNodes.push(deserializeNode(serNode))
+    if (this.leftChildSetStack.length > 0) {
+      const leftovers = this.leftChildSetStack.pop()
+      const currentChildSet = this.childSetStack[this.childSetStack.length - 1]
+      currentChildSet.push(...leftovers)
     }
   }
 
-  visitedRange(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+    // Do nothing for the left, let them accumulate in the childset stack.
+    // Move the childset Stack into the left childset stack?
+    const children = this.childSetStack.pop()
+    this.leftChildSetStack.push(children)
+  }
+
+  visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
     // Copy these children into the current shallow-cloned node
     const children = this.childSetStack.pop()
-    if (this.nodeStack.length !== 0) {
-      const currentNode = this.nodeStack[this.nodeStack.length - 1]
+    const currentChildSet = this.childSetStack[this.childSetStack.length - 1]
+    if (currentChildSet && currentChildSet.length !== 0) {
+      const currentNode = currentChildSet[currentChildSet.length - 1]
       currentNode.childSets[listBlock.parentRef.childSetId] = children
     } else {
-      if (this.fragmentNodes.length !== 0) {
-        const fragment = new SplootFragment(this.fragmentNodes, listBlock.childSet.nodeCategory, false /* don't trim */)
-        this.fragment = combineFragments(this.fragment, fragment)
-        this.fragmentNodes = []
-      }
+      // This whole childset doesn't have a parent to attach to.
+      const nodes = children.map((serNode) => deserializeNode(serNode))
+      const fragment = new SplootFragment(nodes, listBlock.childSet.nodeCategory, false /* don't trim */)
+      this.fragment = combineFragments(this.fragment, fragment)
     }
-    // Prep for next childset
-    this.childSetStack.push([])
   }
 
   getFragment(): SplootFragment {
+    if (this.leftChildSetStack.length !== 0) {
+      const leftChildren = this.leftChildSetStack.pop()
+      const nodes = leftChildren.map((serNode) => deserializeNode(serNode))
+      // Currently left children are always python expression tokens
+      const fragment = new SplootFragment(nodes, NodeCategory.PythonExpressionToken, false /* don't trim */)
+      this.fragment = combineFragments(this.fragment, fragment)
+    }
     if (this.fragment) {
       this.fragment.trim()
       return this.fragment

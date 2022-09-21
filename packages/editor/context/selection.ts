@@ -205,9 +205,25 @@ export class NodeSelection {
     } else if (this.state === SelectionState.MultiNode) {
       const deleteWalker = new MultiselectDeleter(this.selectionStart, this.selectionEnd)
       deleteWalker.walkToEnd()
-      const fragments = deleteWalker.perfromDelete()
-      for (const fragment of fragments) {
-        this.insertFragment(fragment, false)
+      const deleteSets = deleteWalker.getDeletions()
+      for (const deleteSet of deleteSets) {
+        const node = deleteSet.node
+        const parent = node.node.parent.node
+        const listBlock = node.parentChildSet
+        let index = node.index
+        const deletedNode = listBlock.childSet.removeChild(index)
+        if (node.leftBreadcrumbChildSet) {
+          const newNodes = deletedNode.getChildrenToKeepOnDelete()
+          newNodes.forEach((node) => {
+            listBlock.childSet.insertNode(node, index)
+            index++
+          })
+          this.placeCursor(listBlock, index)
+        }
+        parent.clean()
+        for (const fragment of deleteSet.keep) {
+          this.insertFragment(fragment, false)
+        }
       }
     }
   }
@@ -566,8 +582,12 @@ export class NodeSelection {
 
   setSelectionMultiselect(start: NodeCursor, end: NodeCursor, cursor: CursorPosition, isCursor: boolean) {
     this.cursor = cursor
-    if (!start.greaterThan(end) && !isCursor) {
-      end = end.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(end.index)
+    if (!isCursor) {
+      if (!start.greaterThan(end)) {
+        end = end.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(end.index)
+      } else {
+        end = end.listBlock.getNextCursorInOrBeforeNodeEvenIfInvalid(end.index)
+      }
     }
     const treeWalker = new MultiselectTreeWalker(start, end)
     treeWalker.walkToEnd()
@@ -600,14 +620,14 @@ export class NodeSelection {
 
   startMultiSelect(cursorIsStart: boolean) {
     if (this.isSingleNode()) {
-      const beforeNode = this.cursorMap.getSingleNodeForCursorPosition(this.cursor)
-      const afterNode = beforeNode.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(beforeNode.index)
+      const cursor = this.cursor
+      const selectedNode = this.cursorMap.getSingleNodeForCursorPosition(this.cursor)
+      const after = selectedNode.listBlock.getNextCursorInOrAfterNodeEvenIfInvalid(selectedNode.index)
+      const before = selectedNode.listBlock.getNextCursorInOrBeforeNodeEvenIfInvalid(selectedNode.index)
       if (cursorIsStart) {
-        const cursor = beforeNode.listBlock.getCursorPosition(this.cursorMap, beforeNode.index)
-        this.setSelectionMultiselect(afterNode, beforeNode, cursor, true)
+        this.setSelectionMultiselect(after, before, cursor, true)
       } else {
-        const cursor = afterNode.listBlock.getCursorPosition(this.cursorMap, afterNode.index)
-        this.setSelectionMultiselect(beforeNode, afterNode, cursor, true)
+        this.setSelectionMultiselect(before, after, cursor, true)
       }
     } else if (!this.isMultiSelect()) {
       const start = this.cursorMap.getMultiSelectCursorForCursorPosition(this.cursor)
@@ -864,7 +884,7 @@ export class NodeCursor {
       i++
     }
     if (thisChain.length > otherChain.length) {
-      return true
+      return thisChain[otherChain.length] >= 0
     }
     return false
   }

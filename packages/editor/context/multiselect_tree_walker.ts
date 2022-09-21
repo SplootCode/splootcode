@@ -10,7 +10,14 @@ export class MultiselectTreeWalker extends RenderedTreeIterator {
     this.selectedListBlocks = new Set()
   }
 
-  visitedRange(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+  visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
+    listBlock.selectionState = SelectionState.MultiNode
+    listBlock.selectedIndexStart = startIndex
+    listBlock.selectedIndexEnd = endIndex
+    this.selectedListBlocks.add(listBlock)
+  }
+
+  visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
     listBlock.selectionState = SelectionState.MultiNode
     listBlock.selectedIndexStart = startIndex
     listBlock.selectedIndexEnd = endIndex
