@@ -884,7 +884,7 @@ export class NodeCursor {
       i++
     }
     if (thisChain.length > otherChain.length) {
-      return thisChain[otherChain.length] > 0
+      return thisChain[otherChain.length] >= 0
     }
     return false
   }
