@@ -1,13 +1,22 @@
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js')
+import { ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+
+importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
 
 let pyodide = null
-let stdinbuffer = null
+let stdinbuffer: Int32Array = null
+let fetchBuffer: Uint8Array = null
+let fetchBufferMeta: Int32Array = null
 let rerun = false
-let readlines = []
+let readlines: string[] = []
+let requestPlayback: Map<string, ResponseData[]> = null
+
+const sendMessage = (message: WorkerMessage) => {
+  postMessage(message)
+}
 
 const stdout = {
   write: (s) => {
-    postMessage({
+    sendMessage({
       type: 'stdout',
       stdout: s,
     })
@@ -16,10 +25,10 @@ const stdout = {
 }
 
 const stderr = {
-  write: (s) => {
-    postMessage({
+  write: (s: string) => {
+    sendMessage({
       type: 'stderr',
-      stdout: s,
+      stderr: s,
     })
   },
   flush: () => {},
@@ -32,7 +41,7 @@ const stdin = {
         return ''
       }
       const val = readlines.shift()
-      postMessage({
+      sendMessage({
         type: 'stdout',
         stdout: val,
       })
@@ -43,7 +52,7 @@ const stdin = {
     // Keep reading from the buffer until we have a newline
     while (text[text.length - 1] !== '\n') {
       // Send message to activate input mode
-      postMessage({
+      sendMessage({
         type: 'stdin',
       })
       Atomics.wait(stdinbuffer, 0, -1)
@@ -56,12 +65,66 @@ const stdin = {
       const responseStdin = new TextDecoder('utf-8').decode(newStdinData)
       text += responseStdin
     }
-    postMessage({
+    sendMessage({
       type: 'inputValue',
       value: text,
     })
     return text
   },
+}
+
+const replayFetch = (fetchData: {
+  method: string
+  url: string
+  headers: { [key: string]: string }
+  body: any
+}): ResponseData => {
+  const serializedRequest = JSON.stringify(fetchData)
+  if (requestPlayback.has(serializedRequest)) {
+    const responses = requestPlayback.get(serializedRequest)
+    if (responses.length !== 0) {
+      return responses.shift()
+    }
+  }
+
+  throw Error('Run manually to perform request.')
+}
+
+const syncFetch = (method: string, url: string, headers: any, body: Uint8Array): ResponseData => {
+  let objHeaders = {}
+  if (pyodide.isPyProxy(headers) && headers.type === 'dict') {
+    objHeaders = headers.toJs({ dict_converter: Object.fromEntries })
+  }
+
+  if (rerun) {
+    return replayFetch({ method, url, headers: objHeaders, body })
+  }
+
+  sendMessage({
+    type: 'fetch',
+    data: {
+      method: method,
+      url: url,
+      headers: objHeaders,
+      body: body,
+    },
+  })
+  const res = Atomics.wait(fetchBufferMeta, 0, 0)
+  if (res === 'timed-out') {
+    console.warn('TODO: Support request timeout')
+  }
+  const size = Atomics.exchange(fetchBufferMeta, 1, 0)
+  const contentSize = Atomics.exchange(fetchBufferMeta, 2, 0)
+  const bytes = fetchBuffer.slice(0, size)
+  const contentBytes = fetchBuffer.slice(size, size + contentSize)
+
+  Atomics.store(fetchBufferMeta, 0, 0)
+
+  const decoder = new TextDecoder()
+  const textJSON = decoder.decode(bytes)
+  const result = JSON.parse(textJSON) as ResponseData
+  result.body = contentBytes
+  return result
 }
 
 let executorCode = null
@@ -72,12 +135,12 @@ const run = async () => {
   try {
     await pyodide.runPython(executorCode)
   } catch (err) {
-    postMessage({
+    sendMessage({
       type: 'stderr',
-      stdout: err.toString(),
+      stderr: err.toString(),
     })
   }
-  postMessage({
+  sendMessage({
     type: 'finished',
   })
 }
@@ -91,7 +154,7 @@ const loadModule = async (moduleName) => {
     }
     const jsResult = res.toJs({ dict_converter: Object.fromEntries })
     if (jsResult) {
-      postMessage({
+      sendMessage({
         type: 'module_info',
         info: jsResult,
       })
@@ -108,7 +171,8 @@ const getNodeTree = () => {
 const initialise = async () => {
   executorCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/executor.py')).text()
   moduleLoaderCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/module_loader.py')).text()
-  pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/' })
+  // @ts-ignore
+  pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
     stderr: stderr,
@@ -127,33 +191,45 @@ const initialise = async () => {
   })
   pyodide.registerJsModule('runtime_capture', {
     report: (json_dump) => {
-      postMessage({
+      sendMessage({
         type: 'runtime_capture',
         capture: json_dump,
       })
     },
   })
+  pyodide.registerJsModule('__splootcode_internal', {
+    sync_fetch: syncFetch,
+  })
+  await pyodide.loadPackage('micropip')
+  const micropip = pyodide.pyimport('micropip')
+  await micropip.install('http://localhost:3001/runtime-python/static/packages/requests-2.28.1-py3-none-any.whl')
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
-  postMessage({
+  sendMessage({
     type: 'ready',
   })
 }
 
 initialise()
 
-onmessage = function (e) {
+onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
       nodetree = e.data.nodetree
-      stdinbuffer = new Int32Array(e.data.buffer)
+      stdinbuffer = e.data.stdinBuffer
+      fetchBuffer = e.data.fetchBuffer
+      fetchBufferMeta = e.data.fetchBufferMeta
       rerun = false
+      requestPlayback = null
       run()
       break
     case 'rerun':
       nodetree = e.data.nodetree
       stdinbuffer = null
+      fetchBuffer = null
+      fetchBufferMeta = null
       readlines = e.data.readlines
+      requestPlayback = e.data.requestPlayback
       rerun = true
       run()
       break
@@ -161,6 +237,7 @@ onmessage = function (e) {
       loadModule(e.data.moduleName)
       break
     default:
+      // @ts-ignore
       console.warn(`Worker recieved unrecognised message type: ${e.data.type}`)
   }
 }
