@@ -24,11 +24,16 @@ import {
   registerAutocompleter,
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
+import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
+import { PYTHON_DICT } from './python_dictionary'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER } from './python_identifier'
+import { PYTHON_LIST } from './python_list'
+import { PYTHON_MEMBER } from './python_member'
 import { PYTHON_STRING } from './python_string'
+import { PYTHON_TUPLE } from './python_tuple'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
@@ -41,9 +46,18 @@ class Generator implements SuggestionGenerator {
     const leftChild = parent.getChildSet().getChild(index - 1)
     if (
       leftChild &&
-      [PYTHON_IDENTIFIER, PYTHON_CALL_MEMBER, PYTHON_SUBSCRIPT, PYTHON_STRING, PYTHON_CALL_VARIABLE].indexOf(
-        leftChild.type
-      ) !== -1
+      [
+        PYTHON_IDENTIFIER,
+        PYTHON_CALL_MEMBER,
+        PYTHON_CALL_VARIABLE,
+        PYTHON_MEMBER,
+        PYTHON_SUBSCRIPT,
+        PYTHON_STRING,
+        PYTHON_BRACKETS,
+        PYTHON_LIST,
+        PYTHON_TUPLE,
+        PYTHON_DICT,
+      ].indexOf(leftChild.type) !== -1
     ) {
       const node = new PythonSubscript(null)
       return [

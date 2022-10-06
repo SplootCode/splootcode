@@ -25,7 +25,7 @@ export default {
       import: './packages/runtime-python/runtime/index.tsx',
     },
     python_webworker: {
-      import: './packages/runtime-python/runtime/webworker.js',
+      import: './packages/runtime-python/runtime/webworker.ts',
       filename: 'runtime-python/webworker.js',
     },
     // // Disable web bundles to maybe revive them one day.
@@ -76,6 +76,11 @@ export default {
         },
         {
           from: path.resolve('python', 'module_loader.py'),
+          to: 'runtime-python/static',
+        },
+        {
+          from: path.resolve('python', 'packages', '*'),
+          context: 'python',
           to: 'runtime-python/static',
         },
       ],
