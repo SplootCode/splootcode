@@ -229,7 +229,7 @@ const initialise = async () => {
   })
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
-  await micropip.install('http://localhost:3001/runtime-python/static/packages/requests-2.28.1-py3-none-any.whl')
+  await micropip.install(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/packages/requests-2.28.1-py3-none-any.whl')
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({
