@@ -12,8 +12,10 @@ import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
 import { PYTHON_MEMBER, PythonMember } from './python_member'
 import { PYTHON_NUMBER_LITERAL } from './literals'
+import { PYTHON_SET } from './python_set'
 import { PYTHON_STRING } from './python_string'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
+import { PYTHON_TUPLE } from './python_tuple'
 import { ParentReference } from '@splootcode/core/language/node'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
@@ -73,8 +75,14 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_LIST:
           attributes = getAttributesForType(scope, 'builtins.list')
           break
+        case PYTHON_TUPLE:
+          attributes = getAttributesForType(scope, 'builtins.tuple')
+          break
         case PYTHON_DICT:
           attributes = getAttributesForType(scope, 'builtins.dict')
+          break
+        case PYTHON_SET:
+          attributes = getAttributesForType(scope, 'builtins.set')
           break
         case PYTHON_NUMBER_LITERAL:
           attributes = getAttributesForType(scope, 'builtins.int')
@@ -100,19 +108,33 @@ class MemberGenerator implements SuggestionGenerator {
     const inputName = textInput.substring(1) // Cut the '.' off
 
     if (attributes.length === 0) {
-      const node = new PythonCallMember(null, {
+      const callMemberNode = new PythonCallMember(null, {
         category: TypeCategory.Function,
         arguments: [{ name: '', type: FunctionArgType.PositionalOrKeyword }],
         shortDoc: '',
       })
-      node.setMember(inputName)
+      callMemberNode.setMember(inputName)
+      const memberNode = new PythonMember(null, {
+        category: TypeCategory.Value,
+        typeName: null,
+        shortDoc: '',
+      })
+      memberNode.setMember(inputName)
       return [
         new SuggestedNode(
-          node,
+          callMemberNode,
           `.${inputName}`,
           inputName,
           true,
           'Missing type information, cannot autocomplete methods',
+          allowWrap ? 'object' : undefined
+        ),
+        new SuggestedNode(
+          memberNode,
+          `.${inputName}`,
+          inputName,
+          true,
+          'Missing type information, cannot autocomplete attributes',
           allowWrap ? 'object' : undefined
         ),
       ]

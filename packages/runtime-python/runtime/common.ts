@@ -1,3 +1,8 @@
+export enum FetchSyncErrorType {
+  NO_RECORDED_REQUEST = 'NO_RECORDED_REQUEST',
+  FETCH_ERROR = 'FETCH_ERROR',
+}
+
 export interface ResponseData {
   completedResponse?: {
     status: number
@@ -5,6 +10,10 @@ export interface ResponseData {
     headers: { [key: string]: string }
   }
   body?: Uint8Array
+  error?: {
+    type: FetchSyncErrorType
+    message: string
+  }
 }
 
 export interface WorkerFetchMessage {
@@ -13,7 +22,7 @@ export interface WorkerFetchMessage {
     method: string
     url: string
     headers: { [key: string]: string }
-    body: Uint8Array
+    body: Uint8Array | string
   }
 }
 
@@ -43,7 +52,7 @@ export interface WorkerModuleInfoMessage {
 }
 
 export type WorkerMessage =
-  | { type: 'ready' | 'stdin' | 'finished' }
+  | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerInputValueMessage

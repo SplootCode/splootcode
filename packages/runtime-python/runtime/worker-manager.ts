@@ -1,4 +1,4 @@
-import { ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
 const INPUT_BUF_SIZE = 100
 
@@ -22,6 +22,7 @@ export class WorkerManager {
   private fetchBuffer: Uint8Array
   private fetchBufferMeta: Int32Array
   private leftoverInput: string
+  private leftoverFetch: Uint8Array
   private inputPlayback: string[]
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
@@ -31,6 +32,7 @@ export class WorkerManager {
     this.worker = null
     this.standardIO = standardIO
     this.inputPlayback = []
+    this.requestPlayback = new Map()
     this.stateCallBack = stateCallback
 
     this.initialiseWorker()
@@ -118,13 +120,23 @@ export class WorkerManager {
     }
   }
 
-  handleFetch(fetchData: { method: string; url: string; headers: { [key: string]: string }; body: Uint8Array }) {
+  async handleFetch(fetchData: {
+    method: string
+    url: string
+    headers: { [key: string]: string }
+    body: Uint8Array | string
+  }) {
     const serializedRequest = JSON.stringify(fetchData)
-    fetch(fetchData.url, {
-      method: fetchData.method,
-      headers: fetchData.headers,
-    }).then((response) => {
-      const responseData: ResponseData = {
+    let responseData: ResponseData
+    let body: Uint8Array
+    try {
+      const response = await fetch(fetchData.url, {
+        method: fetchData.method,
+        headers: fetchData.headers,
+        body: fetchData.body,
+      })
+
+      responseData = {
         completedResponse: {
           status: response.status,
           reason: response.statusText,
@@ -133,26 +145,65 @@ export class WorkerManager {
         },
       }
 
-      response.arrayBuffer().then((bodyBuffer) => {
-        const body = new Uint8Array(bodyBuffer)
-        const encoder = new TextEncoder()
-        const bytes = encoder.encode(JSON.stringify(responseData))
+      const bodyBuffer = await response.arrayBuffer()
+      body = new Uint8Array(bodyBuffer)
+    } catch (e) {
+      console.warn(e)
+      responseData = {
+        error: {
+          type: FetchSyncErrorType.FETCH_ERROR,
+          message: e.message,
+        },
+      }
+      body = new Uint8Array(0)
+    }
 
-        // Encode the response body separately (bytes don't JSON serialize well)
-        responseData.body = body
-        if (this.requestPlayback.has(serializedRequest)) {
-          this.requestPlayback.get(serializedRequest).push(responseData)
-        } else {
-          this.requestPlayback.set(serializedRequest, [responseData])
-        }
-        this.fetchBuffer.set(bytes, 0)
-        this.fetchBuffer.set(body, bytes.length)
-        Atomics.store(this.fetchBufferMeta, 1, bytes.length)
-        Atomics.store(this.fetchBufferMeta, 2, body.length)
-        Atomics.store(this.fetchBufferMeta, 0, 1)
-        Atomics.notify(this.fetchBufferMeta, 0)
-      })
-    })
+    const encoder = new TextEncoder()
+    const headerBytes = encoder.encode(JSON.stringify(responseData))
+
+    // Encode the response body separately (bytes don't JSON serialize well)
+    if (body) {
+      responseData.body = body
+    }
+    if (this.requestPlayback.has(serializedRequest)) {
+      this.requestPlayback.get(serializedRequest).push(responseData)
+    } else {
+      this.requestPlayback.set(serializedRequest, [responseData])
+    }
+    const headerSize = headerBytes.length
+    const bodySize = body ? body.length : 0
+    Atomics.store(this.fetchBufferMeta, 1, headerSize)
+    Atomics.store(this.fetchBufferMeta, 2, bodySize)
+
+    if (headerSize + bodySize < this.fetchBuffer.length) {
+      this.fetchBuffer.set(headerBytes, 0)
+      if (body) {
+        this.fetchBuffer.set(body, headerBytes.length)
+      }
+      Atomics.store(this.fetchBufferMeta, 0, 1)
+      Atomics.notify(this.fetchBufferMeta, 0)
+      return
+    }
+
+    this.leftoverFetch = new Uint8Array(headerSize + bodySize)
+    this.leftoverFetch.set(headerBytes, 0)
+    if (body) {
+      this.leftoverFetch.set(body, headerSize)
+    }
+    this.continueFetchResponse()
+  }
+
+  continueFetchResponse() {
+    if (this.leftoverFetch.length <= this.fetchBuffer.length) {
+      this.fetchBuffer.set(this.leftoverFetch, 0)
+      this.leftoverFetch = null
+    } else {
+      const toSend = this.leftoverFetch.subarray(0, this.fetchBuffer.length)
+      this.fetchBuffer.set(toSend, 0)
+      this.leftoverFetch = this.leftoverFetch.subarray(this.fetchBuffer.length)
+    }
+    Atomics.store(this.fetchBufferMeta, 0, 1)
+    Atomics.notify(this.fetchBufferMeta, 0)
   }
 
   stop() {
@@ -179,6 +230,8 @@ export class WorkerManager {
     } else if (type === 'fetch') {
       const fetchData = event.data.data
       this.handleFetch(fetchData)
+    } else if (type === 'continueFetch') {
+      this.continueFetchResponse()
     } else if (type === 'runtime_capture' || type === 'module_info') {
       parent.postMessage(event.data, process.env.EDITOR_DOMAIN)
     } else if (type === 'finished') {

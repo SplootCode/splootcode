@@ -1,4 +1,4 @@
-import { ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
 importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
 
@@ -8,7 +8,7 @@ let fetchBuffer: Uint8Array = null
 let fetchBufferMeta: Int32Array = null
 let rerun = false
 let readlines: string[] = []
-let requestPlayback: Map<string, ResponseData[]> = null
+let requestPlayback: Map<string, ResponseData[]> = new Map()
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -80,24 +80,34 @@ const replayFetch = (fetchData: {
   body: any
 }): ResponseData => {
   const serializedRequest = JSON.stringify(fetchData)
-  if (requestPlayback.has(serializedRequest)) {
+  if (requestPlayback && requestPlayback.has(serializedRequest)) {
     const responses = requestPlayback.get(serializedRequest)
     if (responses.length !== 0) {
       return responses.shift()
     }
   }
-
-  throw Error('Run manually to perform request.')
+  return {
+    error: {
+      type: FetchSyncErrorType.NO_RECORDED_REQUEST,
+      message: 'Run program to make requests.',
+    },
+  }
 }
 
-const syncFetch = (method: string, url: string, headers: any, body: Uint8Array): ResponseData => {
+const syncFetch = (method: string, url: string, headers: any, body: any): ResponseData => {
   let objHeaders = {}
+  let bodyArray: Uint8Array | string = null
   if (pyodide.isPyProxy(headers) && headers.type === 'dict') {
     objHeaders = headers.toJs({ dict_converter: Object.fromEntries })
   }
+  if (typeof body === 'string') {
+    bodyArray = body
+  } else if (pyodide.isPyProxy(body) && body.type === 'bytes') {
+    bodyArray = body.toJs() as Uint8Array
+  }
 
   if (rerun) {
-    return replayFetch({ method, url, headers: objHeaders, body })
+    return replayFetch({ method, url, headers: objHeaders, body: bodyArray })
   }
 
   sendMessage({
@@ -106,19 +116,36 @@ const syncFetch = (method: string, url: string, headers: any, body: Uint8Array):
       method: method,
       url: url,
       headers: objHeaders,
-      body: body,
+      body: bodyArray,
     },
   })
   const res = Atomics.wait(fetchBufferMeta, 0, 0)
   if (res === 'timed-out') {
-    console.warn('TODO: Support request timeout')
+    // TODO: Support request timeout
   }
-  const size = Atomics.exchange(fetchBufferMeta, 1, 0)
-  const contentSize = Atomics.exchange(fetchBufferMeta, 2, 0)
-  const bytes = fetchBuffer.slice(0, size)
-  const contentBytes = fetchBuffer.slice(size, size + contentSize)
-
-  Atomics.store(fetchBufferMeta, 0, 0)
+  const headerSize = Atomics.exchange(fetchBufferMeta, 1, 0)
+  const bodySize = Atomics.exchange(fetchBufferMeta, 2, 0)
+  const totalSize = headerSize + bodySize
+  let buffer: Uint8Array
+  if (totalSize <= fetchBuffer.length) {
+    buffer = fetchBuffer
+    Atomics.store(fetchBufferMeta, 0, 0)
+  } else {
+    let bytesRead = 0
+    buffer = new Uint8Array(totalSize)
+    while (bytesRead < totalSize) {
+      const toRead = Math.min(totalSize - bytesRead, fetchBuffer.length)
+      buffer.set(fetchBuffer.subarray(0, toRead), bytesRead)
+      bytesRead += toRead
+      Atomics.store(fetchBufferMeta, 0, 0)
+      if (bytesRead < totalSize) {
+        sendMessage({ type: 'continueFetch' })
+        Atomics.wait(fetchBufferMeta, 0, 0)
+      }
+    }
+  }
+  const bytes = buffer.slice(0, headerSize)
+  const contentBytes = buffer.slice(headerSize, headerSize + bodySize)
 
   const decoder = new TextDecoder()
   const textJSON = decoder.decode(bytes)
