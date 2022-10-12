@@ -181,21 +181,13 @@ export const UserHomePage = (props: UserHomePageProps) => {
               <ExampleCard
                 linkTo="/p/examples/temperature_conversion"
                 title="Temperature Conversion"
-                description="Convert temperatures in Fahrenheit to Celcius."
+                description="Convert temperatures in Fahrenheit to Celsius."
               />
               <ExampleCard
                 linkTo="/p/examples/secret_password"
                 title="Secret password"
                 description="Guess the password and learn about Python while-loops."
               />
-            </VStack>
-            <VStack align="stretch" flex={1} gridGap={1}>
-              <Heading as="h2" size="lg" fontSize={'20pt'}>
-                Challenges
-              </Heading>
-              <Box borderRadius="md" bg="gray.800" p="2">
-                Coming soon!
-              </Box>
             </VStack>
           </HStack>
         </VStack>
