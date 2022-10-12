@@ -24,6 +24,7 @@ import {
 import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
+import { PythonArgument } from './python_argument'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SingleStatementData, StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
@@ -152,15 +153,22 @@ export class PythonExpression extends PythonNode {
         statement.getStatement().addChild(node)
         return statement
       },
+      PY_ARG: (node: SplootNode) => {
+        const arg = new PythonArgument(null)
+        arg.getArgument().addChild(node)
+        return arg
+      },
     }
 
     registerType(typeRegistration)
     // When needed create the expression while autocompleting the expresison token.
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonStatementContents)
     registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonExpression)
+    registerNodeCateogry(PYTHON_EXPRESSION, NodeCategory.PythonFunctionArgumentValue)
 
     registerAutocompleteAdapter(NodeCategory.PythonStatementContents, NodeCategory.PythonExpressionToken)
     registerAutocompleteAdapter(NodeCategory.PythonExpression, NodeCategory.PythonExpressionToken)
+    registerAutocompleteAdapter(NodeCategory.PythonFunctionArgumentValue, NodeCategory.PythonExpressionToken)
 
     registerFragmentAdapter(NodeCategory.PythonExpressionToken, PYTHON_EXPRESSION, (fragment: SplootFragment) => {
       const expr = new PythonExpression(null)

@@ -9,6 +9,7 @@ import { NodeSelection } from '../context/selection'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python/nodes/python_call_member'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
 import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
+import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
 import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
 import { PythonExpression } from '@splootcode/language-python/nodes/python_expression'
 import { PythonFile } from '@splootcode/language-python/nodes/python_file'
@@ -22,7 +23,9 @@ function getExpressionFromString(s: string): PythonExpression {
 
 function getBreadcrumbsTestFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
-  ;(call.getArguments().getChild(0) as PythonExpression).getTokenSet().addChild(new PythonStringLiteral(null, 'Hello'))
+  const stringExpr = new PythonExpression(null)
+  stringExpr.getTokenSet().addChild(new PythonStringLiteral(null, 'Hello'))
+  ;(call.getArguments().getChild(0) as PythonArgument).getArgument().addChild(stringExpr)
 
   const expr = new PythonExpression(null)
   expr.getTokenSet().addChild(call)

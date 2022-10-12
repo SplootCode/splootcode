@@ -73,9 +73,9 @@ export class AutoCompleteRegistry {
 
   getAutocompleter(category: NodeCategory, excludeCategories: Set<NodeCategory>): Autocompleter {
     if (excludeCategories.size === 0) {
-      const existingAutocomplter = this.autocompleterCache.get(category)
-      if (existingAutocomplter) {
-        return existingAutocomplter
+      const existingAutocompleter = this.autocompleterCache.get(category)
+      if (existingAutocompleter) {
+        return existingAutocompleter
       }
     }
     const constants = [...(this.constantSuggestions.get(category) || [])]

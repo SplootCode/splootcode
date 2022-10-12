@@ -21,6 +21,25 @@ def generateCallMember(node):
     callExpr = ast.Call(memberExpr, args=args, keywords=[])
     return callExpr
 
+def generateCallVariable(node):
+    args = []
+    keywords = []
+    for arg in node["childSets"]["arguments"]:
+        argValues = arg["childSets"]["argument"]
+        if len(argValues) == 0:
+            continue
+        argValue = argValues[0]
+        if argValue["type"] == 'PYTHON_EXPRESSION':
+            args.append(generateAstExpression(argValue))
+        elif argValue["type"] == 'PY_KWARG':
+            name = argValue["properties"]["name"]
+            expr = generateAstExpression(argValue["childSets"]["value"][0])
+            kwarg = ast.keyword(arg=name, value=expr)
+            keywords.append(kwarg)
+
+    varName = node["properties"]["identifier"]
+    return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=keywords)
+
 def generateMember(node):
     object = generateAstExpressionToken(node["childSets"]["object"][0])
     member = node["properties"]["member"]
@@ -55,13 +74,7 @@ def generateSubscript(node, context=ast.Load()):
 
 def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
-        args = []
-        for argExp in node["childSets"]["arguments"]:
-            exp = generateAstExpression(argExp)
-            if exp is not None:
-                args.append(generateAstExpression(argExp))
-        varName = node["properties"]["identifier"]
-        return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=[])
+        return generateCallVariable(node)
     elif node["type"] in ["STRING_LITERAL", "PYTHON_BOOL"]:
         return ast.Constant(node["properties"]["value"])
     elif node["type"] == "NUMERIC_LITERAL":

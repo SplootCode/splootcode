@@ -57,14 +57,21 @@ def generateAssignment(assignStatement):
     "right": [generateExpression(assignStatement.value)],
   })
 
+def generateKeywordArgument(keyword):
+  kwarg_node = SplootNode('PY_KWARG', {'value': [generateExpression(keyword.value)]}, {'name': keyword.arg})
+  return SplootNode("PY_ARG", {'argument': [kwarg_node]})
+
 def appendCallToken(callExpr, tokens):
-  arguments = [generateExpression(arg) for arg in callExpr.args]
+  arguments = [SplootNode("PY_ARG", {'argument': [generateExpression(arg)]}) for arg in callExpr.args]
   if len(arguments) == 0:
-    arguments = [SplootNode("PYTHON_EXPRESSION", {'tokens':[]})]
+    arguments = [SplootNode("PY_ARG", {'argument': []})]
+
+  keywords = [generateKeywordArgument(kwarg) for kwarg in callExpr.keywords]
+  arguments.extend(keywords)
 
   if type(callExpr.func) == ast.Name:
     name = callExpr.func.id
-    tokens.append(SplootNode('PYTHON_CALL_VARIABLE', {"arguments":arguments}, {"identifier": name}))
+    tokens.append(SplootNode('PYTHON_CALL_VARIABLE', {"arguments": arguments}, {"identifier": name}))
   elif type(callExpr.func) == ast.Attribute:
     attr = callExpr.func
     obj = generateExpressionTokens(attr.value)

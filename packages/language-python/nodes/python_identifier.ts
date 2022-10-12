@@ -24,7 +24,7 @@ import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_
 
 export const PYTHON_IDENTIFIER = 'PY_IDENTIFIER'
 
-function sanitizeIdentifier(textInput: string): string {
+export function sanitizeIdentifier(textInput: string): string {
   textInput = textInput.replace(/[^\w\s\d]/g, ' ')
   // Don't mess with it if there are no spaces or punctuation.
   if (textInput.indexOf(' ') === -1) {

@@ -12,8 +12,10 @@ HELLO_NAME_SPLOOT = {
                     "tokens":[
                         {"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"print"},
                         "childSets":{"arguments":[
-                            {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{"tokens":[
-                                {"type":"STRING_LITERAL","properties":{"value":"Hello!"},"childSets":{}}
+                            {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{"tokens":[
+                                    {"type":"STRING_LITERAL","properties":{"value":"Hello!"},"childSets":{}}
+                                ]}},
                             ]}}
                         ]}}
                     ]
@@ -24,9 +26,13 @@ HELLO_NAME_SPLOOT = {
                     "left":[{"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}],
                     "right":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
                         "tokens":[{"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"input"},"childSets":{
-                            "arguments":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
-                                "tokens":[{"type":"STRING_LITERAL","properties":{"value":"What is your name? "},"childSets":{}}]
-                            }}]
+                            "arguments":[
+                                {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                    {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
+                                    "tokens":[{"type":"STRING_LITERAL","properties":{"value":"What is your name? "},"childSets":{}}]
+                                    }},
+                                ]}}
+                            ]
                         }}]
                     }}]
                 }},
@@ -35,11 +41,15 @@ HELLO_NAME_SPLOOT = {
                 {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
                     "tokens":[
                         {"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"print"},"childSets":{
-                            "arguments":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{"tokens":[
-                                {"type":"STRING_LITERAL","properties":{"value":"Hello, "},"childSets":{}},
-                                {"type":"PYTHON_BINARY_OPERATOR","properties":{"operator":"+"},"childSets":{}},
-                                {"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}
-                            ]}}]
+                            "arguments":[
+                                {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                    {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{"tokens":[
+                                        {"type":"STRING_LITERAL","properties":{"value":"Hello, "},"childSets":{}},
+                                        {"type":"PYTHON_BINARY_OPERATOR","properties":{"operator":"+"},"childSets":{}},
+                                        {"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}
+                                    ]}}
+                                ]}}
+                            ]
                         }}
                     ]
                 }}
@@ -102,10 +112,12 @@ add(3, 4)
                                                 'properties': {'identifier': 'print'},
                                                 "childSets": {
                                                     "arguments": [
-                                                        {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {'tokens': [
-                                                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'a'}},
-                                                            {'type': 'PYTHON_BINARY_OPERATOR', 'childSets': {}, 'properties': {'operator': '+'}},
-                                                            {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'b'}},
+                                                        {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                                            {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {'tokens': [
+                                                                {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'a'}},
+                                                                {'type': 'PYTHON_BINARY_OPERATOR', 'childSets': {}, 'properties': {'operator': '+'}},
+                                                                {'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'b'}},
+                                                            ]}},
                                                         ]}},
                                                     ]
                                                 }}
@@ -135,12 +147,16 @@ add(3, 4)
                         "tokens": [
                             {"type": "PYTHON_CALL_VARIABLE", 'properties': {'identifier': 'add'}, 'childSets':{
                                 'arguments': [
-                                    {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {
-                                        'tokens': [{'type': 'NUMERIC_LITERAL', 'childSets': {}, 'properties': {'value': 3}}]
-                                    }},
-                                    {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {
-                                        'tokens': [{'type': 'NUMERIC_LITERAL', 'childSets': {}, 'properties': {'value': 4}}]
-                                    }},
+                                    {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                        {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {
+                                            'tokens': [{'type': 'NUMERIC_LITERAL', 'childSets': {}, 'properties': {'value': 3}}]
+                                        }},
+                                    ]}},
+                                    {"type": "PY_ARG", "properties": {}, "childSets": {"argument": [
+                                        {"type": "PYTHON_EXPRESSION", "properties": {}, "childSets": {
+                                            'tokens': [{'type': 'NUMERIC_LITERAL', 'childSets': {}, 'properties': {'value': 4}}]
+                                        }},
+                                    ]}},
                                 ]
                             }}
                         ],

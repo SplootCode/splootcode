@@ -1,4 +1,5 @@
 import { NoneLiteral, PythonBool } from './nodes/literals'
+import { PythonArgument } from './nodes/python_argument'
 import { PythonAssignment } from './nodes/python_assignment'
 import { PythonBinaryOperator } from './nodes/python_binary_operator'
 import { PythonBrackets } from './nodes/python_brackets'
@@ -19,6 +20,7 @@ import { PythonIdentifier } from './nodes/python_identifier'
 import { PythonIfStatement } from './nodes/python_if'
 import { PythonImport } from './nodes/python_import'
 import { PythonKeyValue } from './nodes/python_keyvalue'
+import { PythonKeywordArgument } from './nodes/python_keyword_argument'
 import { PythonList } from './nodes/python_list'
 import { PythonMember } from './nodes/python_member'
 import { PythonModuleIdentifier } from './nodes/python_module_identifier'
@@ -31,6 +33,7 @@ import { PythonSubscript } from './nodes/python_subscript'
 import { PythonTuple } from './nodes/python_tuple'
 import { PythonVariableReference } from './nodes/variable_reference'
 import { PythonWhileLoop } from './nodes/python_while'
+import { registerArgumentAutocompleters } from './nodes/scope_argument_autocompleter'
 import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter'
 import { registerPythonAutocompleters } from './nodes/scope_autocompleter'
 import { resolvePasteAdapters } from '@splootcode/core/language/type_registry'
@@ -38,6 +41,8 @@ import { resolvePasteAdapters } from '@splootcode/core/language/type_registry'
 export function loadTypes() {
   PythonStringLiteral.register()
   PythonNumberLiteral.register()
+
+  PythonArgument.register()
   PythonAssignment.register()
   PythonBinaryOperator.register()
   PythonBool.register()
@@ -58,6 +63,7 @@ export function loadTypes() {
   PythonIfStatement.register()
   PythonImport.register()
   PythonKeyValue.register()
+  PythonKeywordArgument.register()
   PythonList.register()
   PythonMember.register()
   PythonModuleIdentifier.register()
@@ -69,6 +75,7 @@ export function loadTypes() {
   PythonWhileLoop.register()
   registerPythonAutocompleters()
   registerMemberAutocompleters()
+  registerArgumentAutocompleters()
 
   NoneLiteral.register()
 

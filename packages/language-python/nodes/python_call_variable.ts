@@ -15,6 +15,7 @@ import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutati
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
+import { PythonArgument } from './python_argument'
 import { PythonNode } from './python_node'
 import { ScopeMutation, ScopeMutationType } from '@splootcode/core/language/mutations/scope_mutations'
 
@@ -43,7 +44,7 @@ export class PythonCallVariable extends PythonNode {
   constructor(parentReference: ParentReference, name: string, signature?: FunctionSignature) {
     super(parentReference, PYTHON_CALL_VARIABLE)
     this.setProperty('identifier', name)
-    this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
+    this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonFunctionArgument)
     const paramNames = []
 
     if (signature) {
@@ -54,11 +55,11 @@ export class PythonCallVariable extends PythonNode {
           (arg.type == FunctionArgType.PositionalOnly || arg.type == FunctionArgType.PositionalOrKeyword) &&
           !arg.defaultValue
         ) {
-          this.getArguments().addChild(new PythonExpression(null))
+          this.getArguments().addChild(new PythonArgument(null))
         }
       }
     } else if (this.getArguments().getCount() === 0) {
-      this.getArguments().addChild(new PythonExpression(null))
+      this.getArguments().addChild(new PythonArgument(null))
     }
     this.metadata.set('params', paramNames)
   }
@@ -104,17 +105,21 @@ export class PythonCallVariable extends PythonNode {
       length: 0,
       start: 0,
       arguments: args.map((argNode) => {
-        const ret: ArgumentNode = {
-          nodeType: ParseNodeType.Argument,
-          argumentCategory: ArgumentCategory.Simple,
-          id: parseMapper.getNextId(),
-          start: 0,
-          length: 0,
-          valueExpression: null,
+        if (argNode.type === PYTHON_EXPRESSION) {
+          const ret: ArgumentNode = {
+            nodeType: ParseNodeType.Argument,
+            argumentCategory: ArgumentCategory.Simple,
+            id: parseMapper.getNextId(),
+            start: 0,
+            length: 0,
+            valueExpression: null,
+          }
+          const valueExpression = (argNode as PythonExpression).generateParseTree(parseMapper)
+          ret.valueExpression = valueExpression
+          ret.valueExpression.parent = ret
+          return ret
         }
-        const valueExpression = (argNode as PythonExpression).generateParseTree(parseMapper)
-        ret.valueExpression = valueExpression
-        ret.valueExpression.parent = ret
+        const ret = (argNode as PythonNode).generateParseTree(parseMapper) as ArgumentNode
         return ret
       }),
       leftExpression: {
@@ -162,11 +167,15 @@ export class PythonCallVariable extends PythonNode {
   validateSelf(): void {
     const elements = this.getArguments().children
     if (elements.length == 1) {
-      ;(elements[0] as PythonExpression).allowEmpty()
+      if (elements[0].type === PYTHON_EXPRESSION) {
+        ;(elements[0] as PythonExpression).allowEmpty()
+      }
     } else {
       elements.forEach((expression: PythonExpression, idx) => {
         // TODO: Add function argument names when required
-        expression.requireNonEmpty('Cannot have empty function arguments')
+        if (expression.type === PYTHON_EXPRESSION) {
+          expression.requireNonEmpty('Cannot have empty function arguments')
+        }
       })
     }
   }
@@ -201,7 +210,7 @@ export class PythonCallVariable extends PythonNode {
     const typeRegistration = new TypeRegistration()
     typeRegistration.typeName = PYTHON_CALL_VARIABLE
     typeRegistration.deserializer = PythonCallVariable.deserializer
-    typeRegistration.childSets = { arguments: NodeCategory.PythonExpression }
+    typeRegistration.childSets = { arguments: NodeCategory.PythonFunctionArgument }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CAP, 'f'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'identifier'),
