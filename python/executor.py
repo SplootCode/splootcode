@@ -7,24 +7,10 @@ import traceback
 SPLOOT_KEY = "__spt__"
 iterationLimit = None
 
-
-def generateCallMember(node):
-    args = []
-    for argExp in node["childSets"]["arguments"]:
-        exp = generateAstExpression(argExp)
-        if exp is not None:
-            args.append(generateAstExpression(argExp))
-
-    object = generateAstExpressionToken(node["childSets"]["object"][0])
-    member = node["properties"]["member"]
-    memberExpr = ast.Attribute(object, member, ctx=ast.Load())
-    callExpr = ast.Call(memberExpr, args=args, keywords=[])
-    return callExpr
-
-def generateCallVariable(node):
+def generateArgs(callNode):
     args = []
     keywords = []
-    for arg in node["childSets"]["arguments"]:
+    for arg in callNode["childSets"]["arguments"]:
         argValues = arg["childSets"]["argument"]
         if len(argValues) == 0:
             continue
@@ -36,7 +22,18 @@ def generateCallVariable(node):
             expr = generateAstExpression(argValue["childSets"]["value"][0])
             kwarg = ast.keyword(arg=name, value=expr)
             keywords.append(kwarg)
+    return (args, keywords)
 
+def generateCallMember(node):
+    args, keywords = generateArgs(node)
+    object = generateAstExpressionToken(node["childSets"]["object"][0])
+    member = node["properties"]["member"]
+    memberExpr = ast.Attribute(object, member, ctx=ast.Load())
+    callExpr = ast.Call(memberExpr, args=args, keywords=keywords)
+    return callExpr
+
+def generateCallVariable(node):
+    args, keywords = generateArgs(node)
     varName = node["properties"]["identifier"]
     return ast.Call(ast.Name(varName, ctx=ast.Load()), args=args, keywords=keywords)
 

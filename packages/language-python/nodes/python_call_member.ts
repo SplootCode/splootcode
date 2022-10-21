@@ -1,16 +1,6 @@
-import {
-  ArgumentCategory,
-  ArgumentNode,
-  CallNode,
-  ExpressionNode,
-  MemberAccessNode,
-  NameNode,
-  ParseNode,
-  ParseNodeType,
-  TokenType,
-} from 'structured-pyright'
 import { ChildSetType } from '@splootcode/core/language/childset'
-import { FunctionArgType, FunctionSignature } from '@splootcode/language-python/scope/types'
+import { ExpressionNode, MemberAccessNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
+import { FunctionSignature } from '@splootcode/language-python/scope/types'
 import { HighlightColorCategory } from '@splootcode/core/colors'
 import {
   LayoutComponent,
@@ -24,33 +14,20 @@ import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/no
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
-import { PythonNode } from './python_node'
+import { PythonCallNode } from './python_call_node'
 import { parseToPyright } from './utils'
 
 export const PYTHON_CALL_MEMBER = 'PYTHON_CALL_MEMBER'
 
-export class PythonCallMember extends PythonNode {
+export class PythonCallMember extends PythonCallNode {
   constructor(parentReference: ParentReference, signature: FunctionSignature = null) {
     super(parentReference, PYTHON_CALL_MEMBER)
     this.addChildSet('object', ChildSetType.Single, NodeCategory.PythonExpressionToken)
     this.setProperty('member', '')
-    this.addChildSet('arguments', ChildSetType.Many, NodeCategory.PythonExpression)
-    const paramNames = []
-    if (signature) {
-      signature.arguments.forEach((arg) => {
-        paramNames.push(arg.name)
-        if (
-          (arg.type === FunctionArgType.PositionalOnly || arg.type === FunctionArgType.PositionalOrKeyword) &&
-          !arg.defaultValue
-        ) {
-          this.getArguments().addChild(new PythonExpression(null))
-        }
-      })
-      if (signature.typeIfMethod) {
-        this.metadata.set('objectType', signature.typeIfMethod)
-      }
+    this.initArgumentsChildSet(signature)
+    if (signature?.typeIfMethod) {
+      this.metadata.set('objectType', signature.typeIfMethod)
     }
-    this.metadata.set('params', paramNames)
   }
 
   getObjectExpressionToken() {
@@ -75,14 +52,7 @@ export class PythonCallMember extends PythonNode {
     } else {
       this.setValidity(true, '')
     }
-    const elements = this.getArguments().children
-    if (elements.length == 1) {
-      ;(elements[0] as PythonExpression).allowEmpty()
-    } else {
-      elements.forEach((expression: PythonExpression, idx) => {
-        expression.requireNonEmpty('Cannot have empty function arguments')
-      })
-    }
+    this.validateArguments()
   }
 
   getArgumentNames() {
@@ -97,7 +67,7 @@ export class PythonCallMember extends PythonNode {
     return this.getChildSet('arguments')
   }
 
-  generateParseTree(parseMapper: ParseMapper): ParseNode {
+  generateLeftExpression(parseMapper: ParseMapper): ExpressionNode {
     const objectExpr: ExpressionNode = parseToPyright(parseMapper, this.getObjectExpressionToken().children)
     const memberName: NameNode = {
       nodeType: ParseNodeType.Name,
@@ -117,40 +87,7 @@ export class PythonCallMember extends PythonNode {
     }
     memberName.parent = memberExpr
     objectExpr.parent = memberExpr
-
-    const callVarExpr: CallNode = {
-      nodeType: ParseNodeType.Call,
-      id: parseMapper.getNextId(),
-      length: 0,
-      start: 0,
-      arguments: this.getArguments().children.map((argNode) => {
-        const ret: ArgumentNode = {
-          nodeType: ParseNodeType.Argument,
-          argumentCategory: ArgumentCategory.Simple,
-          id: parseMapper.getNextId(),
-          start: 0,
-          length: 0,
-          valueExpression: null,
-        }
-        const valueExpression = parseToPyright(parseMapper, (argNode as PythonExpression).getTokenSet().children)
-        if (valueExpression) {
-          ret.valueExpression = valueExpression
-          ret.valueExpression.parent = ret
-        }
-        return ret
-      }),
-      leftExpression: memberExpr,
-      trailingComma: false,
-    }
-    if (memberExpr) {
-      memberExpr.parent = callVarExpr
-    }
-    if (objectExpr) {
-      callVarExpr.leftExpression.parent = callVarExpr
-    }
-    callVarExpr.arguments.forEach((arg) => (arg.parent = callVarExpr))
-    parseMapper.addNode(this, callVarExpr)
-    return callVarExpr
+    return memberExpr
   }
 
   getNodeLayout(): NodeLayout {
@@ -182,7 +119,7 @@ export class PythonCallMember extends PythonNode {
     typeRegistration.deserializer = PythonCallMember.deserializer
     typeRegistration.childSets = {
       object: NodeCategory.PythonExpressionToken,
-      arguments: NodeCategory.PythonExpression,
+      arguments: NodeCategory.PythonFunctionArgument,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BREADCRUMBS, 'object', ['object']),

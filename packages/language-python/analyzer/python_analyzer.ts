@@ -1,6 +1,6 @@
-import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { ChildSetObserver, NodeObserver } from '@splootcode/core/language/observers'
 import {
+  CallNode,
+  CallSignatureInfo,
   ExpressionNode,
   ModuleImport,
   ParseNode,
@@ -8,7 +8,9 @@ import {
   Type,
   createStructuredProgram,
 } from 'structured-pyright'
-import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
+import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
+import { ChildSetObserver, NodeObserver } from '@splootcode/core/language/observers'
+import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
 import { Project } from '@splootcode/core/language/projects/project'
 import { PythonFile } from '../nodes/python_file'
 import { SplootFile } from '@splootcode/core/language/projects/file'
@@ -45,12 +47,16 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   rootNode: PythonFile
   program: StructuredEditorProgram
   nodeMap: Map<SplootNode, ParseNode>
+  currentParseID: number
+  latestParseID: number
 
   constructor(project: Project) {
     this.project = project
     this.rootNode = null
     this.program = createStructuredProgram(process.env.TYPESHED_PATH)
     this.nodeMap = new Map()
+    this.currentParseID = null
+    this.latestParseID = null
   }
 
   async loadFile(pack: SplootPackage, file: SplootFile) {
@@ -68,6 +74,15 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     return null
   }
 
+  getPyrightFunctionSignature(callNode: SplootNode, activeIndex: number): CallSignatureInfo {
+    const exprNode = this.nodeMap.get(callNode) as CallNode
+    if (exprNode) {
+      const sig = this.program.evaluator.getCallSignatureInfo(exprNode, activeIndex, true)
+      return sig
+    }
+    return null
+  }
+
   registerSelf() {
     globalMutationDispatcher.registerNodeObserver(this)
     globalMutationDispatcher.registerChildSetObserver(this)
@@ -78,19 +93,39 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     globalMutationDispatcher.deregisterChildSetObserver(this)
   }
 
-  async updateParse() {
-    const mainPath = '/main.py'
+  updateParse() {
+    this.latestParseID = Math.random()
+    this.runParse()
+  }
 
+  async runParse() {
+    if (this.currentParseID) {
+      // Parse already in progress - avoid concurrent parses
+      return
+    }
+    this.currentParseID = this.latestParseID
+
+    const mainPath = '/main.py'
     const parseMapper = new ParseMapper()
     const moduleNode = this.rootNode.generateParseTree(parseMapper)
     this.program.updateStructuredFile(mainPath, moduleNode, parseMapper.modules)
     await this.program.parseRecursively(mainPath)
     this.program.getBoundSourceFile(mainPath)
     this.nodeMap = parseMapper.nodeMap
+
+    if (this.latestParseID !== this.currentParseID) {
+      this.currentParseID = null
+      this.runParse()
+    } else {
+      this.currentParseID = null
+    }
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
-    this.updateParse()
+    // Don't update on validation mutations or runtime annotations.
+    if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
+      this.updateParse()
+    }
   }
 
   handleChildSetMutation(mutations: ChildSetMutation): void {

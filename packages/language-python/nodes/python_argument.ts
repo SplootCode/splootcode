@@ -12,19 +12,44 @@ import {
 } from '@splootcode/core/language/type_registry'
 import {
   NodeCategory,
+  SuggestionGenerator,
+  getAutocompleteRegistry,
   registerAutocompleteAdapter,
+  registerAutocompleter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
+import { PYTHON_KEWORD_ARGUMENT } from './python_keyword_argument'
 import { ParentReference } from '@splootcode/core/language/node'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
+import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 export const PYTHON_ARGUMENT = 'PY_ARG'
 
+class ExpressionArgumentGenerator implements SuggestionGenerator {
+  staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    const argNode = parent.node as PythonArgument
+    if (!argNode.allowPositional()) {
+      return []
+    }
+    const autocompleter = getAutocompleteRegistry().getAutocompleter(NodeCategory.PythonExpression, new Set())
+    return autocompleter.getStaticSuggestions(parent, index)
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    const argNode = parent.node as PythonArgument
+    if (!argNode.allowPositional()) {
+      return []
+    }
+    const autocompleter = getAutocompleteRegistry().getAutocompleter(NodeCategory.PythonExpression, new Set())
+    return autocompleter.getDynamicSuggestions(parent, index, textInput)
+  }
+}
+
 export class PythonArgument extends PythonNode {
-  constructor(parentReference: ParentReference, name?: string) {
+  constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ARGUMENT)
     this.addChildSet('argument', ChildSetType.Single, NodeCategory.PythonFunctionArgumentValue)
   }
@@ -37,10 +62,65 @@ export class PythonArgument extends PythonNode {
     return this.getArgument().children.length === 0
   }
 
+  argType(): string {
+    const argList = this.getArgument()
+    if (argList.children.length === 0) {
+      return null
+    }
+    return argList.getChild(0).type
+  }
+
+  allowEmpty() {
+    if (this.isEmpty()) {
+      this.setValidity(true, '')
+    }
+  }
+
+  requireNonEmpty(message: string): void {
+    if (this.isEmpty()) {
+      this.setValidity(false, message)
+    }
+  }
+
+  validateSelf(): void {
+    if (this.isEmpty()) {
+      // Empty expressions are valid in some circumstances - let the parent deal with this.
+      this.parent.node.validateSelf()
+    } else {
+      this.setValidity(true, '')
+    }
+  }
+
+  allowPositional() {
+    const argSet = this.parent.getChildSet()
+    let allowPositional = true
+    for (const arg of argSet.children) {
+      if ((arg as PythonArgument).argType() == PYTHON_KEWORD_ARGUMENT) {
+        allowPositional = false
+      }
+      if (arg === this) {
+        return allowPositional
+      }
+    }
+    return allowPositional
+  }
+
+  allowKeyword() {
+    const argSet = this.parent.getChildSet()
+    const myIndex = argSet.getIndexOf(this)
+    for (let i = myIndex + 1; i < argSet.children.length; i++) {
+      const child = argSet.getChild(i)
+      if ((child as PythonArgument).argType() !== PYTHON_KEWORD_ARGUMENT) {
+        return false
+      }
+    }
+    return true
+  }
+
   clean() {
     if (this.getArgument().getCount() !== 0) {
       const argument = this.getArgument().getChild(0)
-      if (argument.type === PYTHON_EXPRESSION && (argument as PythonExpression).getTokenSet().getCount() === 0) {
+      if (argument.type === PYTHON_EXPRESSION && (argument as PythonExpression).isEmpty()) {
         this.getArgument().removeChild(0)
       }
     }
@@ -109,7 +189,7 @@ export class PythonArgument extends PythonNode {
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_ARGUMENT, NodeCategory.PythonFunctionArgument)
-
+    registerAutocompleter(NodeCategory.PythonFunctionArgumentValue, new ExpressionArgumentGenerator())
     registerAutocompleteAdapter(NodeCategory.PythonFunctionArgument, NodeCategory.PythonFunctionArgumentValue)
 
     registerBlankFillForNodeCategory(NodeCategory.PythonFunctionArgument, () => {

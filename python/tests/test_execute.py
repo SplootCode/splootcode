@@ -354,3 +354,13 @@ print(x)
 
         f.seek(0)
         self.assertEqual(f.read(), "hello--thereEND")
+
+    def testMethodCall(self):
+        splootFile = splootFromPython('''x = 'hello'\nx = x.replace('lo', 'LO')\nprint(x)''')
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), "helLO\n")

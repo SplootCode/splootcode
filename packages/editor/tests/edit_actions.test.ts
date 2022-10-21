@@ -17,6 +17,7 @@ import { loadTypes } from '@splootcode/language-python/type_loader'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
+  call.getArguments().addChild(new PythonArgument(null))
   const stringExpr = new PythonExpression(null)
   stringExpr.getTokenSet().addChild(new PythonStringLiteral(null, 'Hello, World!'))
   ;(call.getArguments().getChild(0) as PythonArgument).getArgument().addChild(stringExpr)

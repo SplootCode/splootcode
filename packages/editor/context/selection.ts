@@ -298,6 +298,14 @@ export class NodeSelection {
       return
     }
 
+    const lineEndCursor = this.cursorMap.getLineEndCursorsForCursorPosition(this.cursor)
+    if (lineEndCursor.length !== 0) {
+      const insertCursor = lineEndCursor[0]
+      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
+      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
+      return
+    }
+
     const lineStartCursor = this.cursorMap.getLineStartCursorsForCursorPosition(this.cursor)
     if (lineStartCursor.length !== 0) {
       // Is start of line cursor. Insert empty node at the line cursor position.
@@ -306,14 +314,6 @@ export class NodeSelection {
       const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
       this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
       this.moveCursorDown(false)
-      return
-    }
-
-    const lineEndCursor = this.cursorMap.getLineEndCursorsForCursorPosition(this.cursor)
-    if (lineEndCursor.length !== 0) {
-      const insertCursor = lineEndCursor[0]
-      const newlineNode = getBlankFillForCategory(insertCursor.listBlock.childSet.nodeCategory)
-      this.insertNode(insertCursor.listBlock, insertCursor.index, newlineNode)
       return
     }
   }

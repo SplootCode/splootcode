@@ -61,15 +61,13 @@ export class PythonExpression extends PythonNode {
   }
 
   allowEmpty() {
-    const tokens = this.getTokenSet().children
-    if (tokens.length === 0) {
+    if (this.isEmpty()) {
       this.setValidity(true, '')
     }
   }
 
   requireNonEmpty(message: string): void {
-    const tokens = this.getTokenSet().children
-    if (tokens.length === 0) {
+    if (this.isEmpty()) {
       this.setValidity(false, message)
     }
   }
@@ -168,7 +166,6 @@ export class PythonExpression extends PythonNode {
 
     registerAutocompleteAdapter(NodeCategory.PythonStatementContents, NodeCategory.PythonExpressionToken)
     registerAutocompleteAdapter(NodeCategory.PythonExpression, NodeCategory.PythonExpressionToken)
-    registerAutocompleteAdapter(NodeCategory.PythonFunctionArgumentValue, NodeCategory.PythonExpressionToken)
 
     registerFragmentAdapter(NodeCategory.PythonExpressionToken, PYTHON_EXPRESSION, (fragment: SplootFragment) => {
       const expr = new PythonExpression(null)

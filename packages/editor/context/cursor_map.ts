@@ -102,6 +102,29 @@ export class CursorMap {
     lineMap.entries.push(lineEntry)
   }
 
+  registerLineStartOnFirstCursorAfter(nodeCursor: NodeCursor, x: number, y: number) {
+    const listBlock = nodeCursor.listBlock
+    if (listBlock === null) {
+      // This is the toplevel node and can't be selected.
+      return
+    }
+
+    if (!(y in this.linesIndex)) {
+      console.warn("Attempting to add line-start cursor to line that doesn't exist")
+      return
+    }
+
+    const line = this.linesIndex[y]
+    line.entries.sort((a, b) => {
+      return a.xCoord - b.xCoord
+    })
+    const firstCursor = line.entries.filter((entry) => entry.isCursor && entry.xCoord >= x)[0] as CursorEntry
+    if (!firstCursor) {
+      this.registerCursorStart(nodeCursor, x, y, CursorType.LineStart)
+    }
+    firstCursor.nodeCursors.push([nodeCursor, CursorType.LineStart])
+  }
+
   registerEndCursor(nodeCursor: NodeCursor, x: number, y: number) {
     const listBlock = nodeCursor.listBlock
     if (listBlock === null) {

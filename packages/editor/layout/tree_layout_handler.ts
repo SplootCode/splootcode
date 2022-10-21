@@ -1,6 +1,6 @@
 import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, ROW_SPACING } from './layout_constants'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { CursorMap, CursorType } from '../context/cursor_map'
+import { CursorMap } from '../context/cursor_map'
 import { LayoutComponent } from '@splootcode/core/language/type_registry'
 import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
@@ -92,11 +92,11 @@ export class TreeLayoutHandler implements ChildSetLayoutHandler {
   }
 
   registerCursorPositions(cursorMap: CursorMap, renderedChildSet: RenderedChildSetBlock): void {
-    this.lineStartCursorPositions.forEach((pos, i) => {
-      cursorMap.registerCursorStart(new NodeCursor(renderedChildSet, i), pos[0], pos[1], CursorType.LineStart)
+    this.lineStartCursorPositions.forEach(([x, y], i) => {
+      cursorMap.registerLineStartOnFirstCursorAfter(new NodeCursor(renderedChildSet, i), x, y)
     })
-    this.lineEndCursorPositions.forEach((pos, i) => {
-      cursorMap.registerEndCursor(new NodeCursor(renderedChildSet, i + 1), pos[0], pos[1])
+    this.lineEndCursorPositions.forEach(([x, y], i) => {
+      cursorMap.registerEndCursor(new NodeCursor(renderedChildSet, i + 1), x, y)
     })
   }
 }
