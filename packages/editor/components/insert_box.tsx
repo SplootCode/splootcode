@@ -11,7 +11,7 @@ import { EditorNodeBlock } from './node_block'
 import { InsertBoxData } from '../context/insert_box'
 import { NODE_BLOCK_HEIGHT, stringWidth } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory, getAutocompleRegistry } from '@splootcode/core/language/node_category_registry'
+import { NodeCategory, getAutocompleteRegistry } from '@splootcode/core/language/node_category_registry'
 import { ParentReference } from '@splootcode/core/language/node'
 import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
@@ -94,7 +94,7 @@ class CursorAutocompleter {
     this.parentRef = cursor.listBlock.childSet.getParentRef()
     this.index = cursor.index
     this.category = cursor.listBlock.childSet.nodeCategory
-    this.autocompleter = getAutocompleRegistry().getAutocompleter(this.category, excludedCategores)
+    this.autocompleter = getAutocompleteRegistry().getAutocompleter(this.category, excludedCategores)
   }
 
   renderSuggestion = (suggestedNode: SuggestedNode): RenderedSuggestion => {
@@ -178,7 +178,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
         const autocompleter = new CursorAutocompleter(cursor, categorySet)
         categorySet.add(category)
-        getAutocompleRegistry()
+        getAutocompleteRegistry()
           .getAdapatableCategories(category)
           .forEach((cat) => categorySet.add(cat))
         autocompleters.push(autocompleter)

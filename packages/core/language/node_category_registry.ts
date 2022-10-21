@@ -48,6 +48,8 @@ export enum NodeCategory {
   PythonModuleIdentifier,
   PythonModuleAttribute,
   PythonDictionaryKeyValue,
+  PythonFunctionArgument,
+  PythonFunctionArgumentValue,
 }
 
 export interface SuggestionGenerator {
@@ -60,7 +62,7 @@ const CategoryMap = new Map<NodeCategory, Set<string>>()
 const TypeToCategoryMap = new Map<string, Set<NodeCategory>>()
 const BlankFillMap = new Map<NodeCategory, () => SplootNode>()
 
-const autoCompleteRegistry = new AutoCompleteRegistry()
+const autocompleteRegistry = new AutoCompleteRegistry()
 
 export function getLayoutComponentForCategory(category: NodeCategory): LayoutComponentType {
   switch (category) {
@@ -99,15 +101,15 @@ export function getNodesForCategory(category: NodeCategory) {
 }
 
 export function registerAutocompleter(category: NodeCategory, suggestionGenerator: SuggestionGenerator) {
-  autoCompleteRegistry.registerSuggestionGenerator(category, suggestionGenerator)
+  autocompleteRegistry.registerSuggestionGenerator(category, suggestionGenerator)
 }
 
 export function registerAutocompleteAdapter(category: NodeCategory, wrappedCategory: NodeCategory) {
-  autoCompleteRegistry.registerAutocompleteAdapater(category, wrappedCategory)
+  autocompleteRegistry.registerAutocompleteAdapater(category, wrappedCategory)
 }
 
-export function getAutocompleRegistry() {
-  return autoCompleteRegistry
+export function getAutocompleteRegistry() {
+  return autocompleteRegistry
 }
 
 export function isNodeInCategory(nodeType: string, category: NodeCategory) {

@@ -2,7 +2,7 @@ import { FunctionArgType, TypeCategory, VariableTypeInfo } from '@splootcode/lan
 import {
   NodeCategory,
   SuggestionGenerator,
-  getAutocompleRegistry,
+  getAutocompleteRegistry,
 } from '@splootcode/core/language/node_category_registry'
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
@@ -168,6 +168,6 @@ class MemberGenerator implements SuggestionGenerator {
 }
 
 export function registerMemberAutocompleters() {
-  const registry = getAutocompleRegistry()
+  const registry = getAutocompleteRegistry()
   registry.registerPrefixOverride('.', NodeCategory.PythonExpressionToken, new MemberGenerator())
 }

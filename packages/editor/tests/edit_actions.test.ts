@@ -6,6 +6,7 @@ import 'jest-canvas-mock'
 import { AssignmentWrapGenerator, PYTHON_ASSIGNMENT } from '@splootcode/language-python/nodes/python_assignment'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection, SelectionState } from '../context/selection'
+import { PYTHON_ARGUMENT, PythonArgument } from '@splootcode/language-python/nodes/python_argument'
 import { PYTHON_CALL_VARIABLE, PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
 import { PYTHON_EXPRESSION, PythonExpression } from '@splootcode/language-python/nodes/python_expression'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
@@ -16,9 +17,10 @@ import { loadTypes } from '@splootcode/language-python/type_loader'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
-  ;(call.getArguments().getChild(0) as PythonExpression)
-    .getTokenSet()
-    .addChild(new PythonStringLiteral(null, 'Hello, World!'))
+  call.getArguments().addChild(new PythonArgument(null))
+  const stringExpr = new PythonExpression(null)
+  stringExpr.getTokenSet().addChild(new PythonStringLiteral(null, 'Hello, World!'))
+  ;(call.getArguments().getChild(0) as PythonArgument).getArgument().addChild(stringExpr)
 
   const expr = new PythonExpression(null)
   expr.getTokenSet().addChild(call)
@@ -47,10 +49,12 @@ describe('python hello world file edits', () => {
     const printCall = expr.getTokenSet().getChild(0) as PythonCallVariable
     expect(printCall.type).toBe(PYTHON_CALL_VARIABLE)
     expect(printCall.getArguments().getCount()).toBe(1)
-    const argExpr = printCall.getArguments().getChild(0) as PythonExpression
-    expect(argExpr.type).toBe(PYTHON_EXPRESSION)
+    const argExpr = printCall.getArguments().getChild(0) as PythonArgument
+    expect(argExpr.type).toBe(PYTHON_ARGUMENT)
+    const expr2 = argExpr.getArgument().getChild(0) as PythonExpression
+    expect(expr2.type).toBe(PYTHON_EXPRESSION)
 
-    const strNode = argExpr.getTokenSet().getChild(0) as PythonStringLiteral
+    const strNode = expr2.getTokenSet().getChild(0) as PythonStringLiteral
     expect(strNode.type).toBe(PYTHON_STRING)
     expect(strNode.getValue()).toBe('Hello, World!')
   })
@@ -112,7 +116,8 @@ describe('python hello world file edits', () => {
     const statement = file.getBody().getChild(0) as PythonStatement
     const expr = statement.getStatement().getChild(0) as PythonExpression
     const printCall = expr.getTokenSet().getChild(0) as PythonCallVariable
-    const argExpr = printCall.getArguments().getChild(0) as PythonExpression
+    const arg = printCall.getArguments().getChild(0) as PythonArgument
+    const argExpr = arg.getArgument().getChild(0) as PythonExpression
 
     const selection = new NodeSelection()
     const renderedNode = new NodeBlock(null, file, selection, 0)

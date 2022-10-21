@@ -9,11 +9,17 @@ import { NodeSelection } from '../context/selection'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python/nodes/python_call_member'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
 import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
+import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
 import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
 import { PythonExpression } from '@splootcode/language-python/nodes/python_expression'
 import { PythonFile } from '@splootcode/language-python/nodes/python_file'
 import { loadTypes } from '@splootcode/language-python/type_loader'
 
+function getArg(expr: PythonExpression): PythonArgument {
+  const arg = new PythonArgument(null)
+  arg.getArgument().addChild(expr)
+  return arg
+}
 function getExpressionFromString(s: string): PythonExpression {
   const expr = new PythonExpression(null)
   expr.getTokenSet().addChild(new PythonStringLiteral(null, s))
@@ -22,7 +28,10 @@ function getExpressionFromString(s: string): PythonExpression {
 
 function getBreadcrumbsTestFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
-  ;(call.getArguments().getChild(0) as PythonExpression).getTokenSet().addChild(new PythonStringLiteral(null, 'Hello'))
+  call.getArguments().addChild(new PythonArgument(null))
+  const stringExpr = new PythonExpression(null)
+  stringExpr.getTokenSet().addChild(new PythonStringLiteral(null, 'Hello'))
+  ;(call.getArguments().getChild(0) as PythonArgument).getArgument().addChild(stringExpr)
 
   const expr = new PythonExpression(null)
   expr.getTokenSet().addChild(call)
@@ -36,8 +45,8 @@ function getBreadcrumbsTestFile(): PythonFile {
   const replaceCall = new PythonCallMember(null)
   replaceCall.getObjectExpressionToken().addChild(new PythonStringLiteral(null, 'Some sentence from you'))
   replaceCall.setMember('replace')
-  replaceCall.getArguments().addChild(getExpressionFromString('from'))
-  replaceCall.getArguments().addChild(getExpressionFromString('to'))
+  replaceCall.getArguments().addChild(getArg(getExpressionFromString('from')))
+  replaceCall.getArguments().addChild(getArg(getExpressionFromString('to')))
 
   const lowerCall = new PythonCallMember(null)
   lowerCall.setMember('lower')
@@ -127,7 +136,7 @@ describe('python hello world file edits', () => {
     selection.setRootNode(renderedNode)
     file.recursivelySetMutations(true)
 
-    // Place cursor after the string node.
+    // Place cursor before the string node.
     selection.placeCursorPosition({ lineIndex: 1, entryIndex: 0 }, true)
     selection.editSelectionRight()
     selection.editSelectionRight()
@@ -200,7 +209,7 @@ describe('python hello world file edits', () => {
     selection.setRootNode(renderedNode)
     file.recursivelySetMutations(true)
 
-    // Place cursor after the string node.
+    // Place cursor before the string node.
     selection.placeCursorPosition({ lineIndex: 0, entryIndex: 0 }, true)
     selection.editSelectionDown()
 

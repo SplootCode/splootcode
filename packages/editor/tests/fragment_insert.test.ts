@@ -7,6 +7,7 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory } from '@splootcode/core/language/node_category_registry'
 import { NodeSelection, SelectionState } from '../context/selection'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
+import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
 import { PythonAssignment } from '@splootcode/language-python/nodes/python_assignment'
 import { PythonBinaryOperator } from '@splootcode/language-python/nodes/python_binary_operator'
 import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
@@ -21,9 +22,10 @@ import { loadTypes } from '@splootcode/language-python/type_loader'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
-  ;(call.getArguments().getChild(0) as PythonExpression)
-    .getTokenSet()
-    .addChild(new PythonStringLiteral(null, 'Hello, World!'))
+  call.getArguments().addChild(new PythonArgument(null))
+  const stringExpr = new PythonExpression(null)
+  stringExpr.getTokenSet().addChild(new PythonStringLiteral(null, 'Hello, World!'))
+  ;(call.getArguments().getChild(0) as PythonArgument).getArgument().addChild(stringExpr)
 
   const expr = new PythonExpression(null)
   expr.getTokenSet().addChild(call)

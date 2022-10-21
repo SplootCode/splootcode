@@ -13,7 +13,7 @@ import {
 import {
   NodeCategory,
   SuggestionGenerator,
-  getAutocompleRegistry,
+  getAutocompleteRegistry,
   registerAutocompleter,
   registerNodeCateogry,
 } from '@splootcode/core/language/node_category_registry'
@@ -97,7 +97,7 @@ export class StringLiteral extends JavaScriptSplootNode {
     registerAutocompleter(NodeCategory.ModuleSource, new StringGenerator())
     registerAutocompleter(NodeCategory.StyleSheetPropertyValue, new StringGenerator())
 
-    const registry = getAutocompleRegistry()
+    const registry = getAutocompleteRegistry()
     registry.registerPrefixOverride('"', NodeCategory.PythonExpressionToken, new StringGenerator())
     registry.registerPrefixOverride("'", NodeCategory.PythonExpressionToken, new StringGenerator())
   }

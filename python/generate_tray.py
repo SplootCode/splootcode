@@ -30,12 +30,16 @@ def get_entry_for_builtin_value(key, scopeName, builtin_docs):
         params = []
       else:
         params = scopeInfo['parameters']
-      labels = [param['name'] for param in params]
+      labels = [param['name'] for param in params if param['kind'] == 'POSITIONAL_ONLY' or param['kind'] == 'POSITIONAL_OR_KEYWORD']
       required_count = len([param for param in params if is_required_param(param)])
+
+      # If there are optional args, but none are *required* then we need to make space for them.
+      if len(params) != 0 and required_count == 0:
+        required_count = 1
 
       serNode = SplootNode('PYTHON_CALL_VARIABLE',
         {
-          "arguments": [SplootNode('PYTHON_EXPRESSION', {'tokens': []}) for i in range(required_count)]
+          "arguments": [SplootNode('PY_ARG') for i in range(required_count)]
         },
         {"identifier": scopeName})
       serNode['meta'] = {'params': labels}
@@ -46,6 +50,7 @@ def get_entry_for_builtin_value(key, scopeName, builtin_docs):
   else:
     raise Exception(f'ScopeEntry {scopeName} not found')
   return entry
+
 
 def is_required_param(param):
   return (param['kind'] == 'POSITIONAL_ONLY' or param['kind'] == 'POSITIONAL_OR_KEYWORD') and 'default' not in param
@@ -59,12 +64,20 @@ def get_entry_for_builtin_attr(key, typeName, attrName, builtin_docs):
   if scopeInfo['isCallable']:
     if 'parameters' not in scopeInfo:
       print(scopeInfo)
-    labels = [param['name'] for param in scopeInfo['parameters']]
-    required_count = len([param for param in scopeInfo['parameters'] if is_required_param(param)])
+      params = []
+    else:
+      params = scopeInfo['parameters']
+
+    labels = [param['name'] for param in params if param['kind'] == 'POSITIONAL_ONLY' or param['kind'] == 'POSITIONAL_OR_KEYWORD']
+    required_count = len([param for param in params if is_required_param(param)])
+
+    # If there are optional args, but none are *required* then we need to make space for them.
+    if len(params) != 0 and required_count == 0:
+      required_count = 1
 
     serNode = SplootNode('PYTHON_CALL_MEMBER', {
       "object": [],
-      "arguments": [SplootNode('PYTHON_EXPRESSION', {'tokens': []}) for i in range(required_count)]
+      "arguments": [SplootNode('PY_ARG') for i in range(required_count)]
     }, {"member": attrName})
     serNode['meta'] = {'params': labels, 'objectType': typeName}
     entry['serializedNode'] = serNode

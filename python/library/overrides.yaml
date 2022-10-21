@@ -160,6 +160,12 @@ overrides:
 
   - key: builtins.int
     abstract: 'Create a new integer by converting another value into an integer.'
+    parameters:
+      - name: 'value'
+        kind: 'POSITIONAL_ONLY'
+        default: '0'
+      - name: 'base'
+        kind: 'POSITIONAL_OR_KEYWORD'
     examples:
       - ex: 'int("56")'
         desc: Convert a string into an integer. Will cause an error if the string is not a valid number.
@@ -171,6 +177,10 @@ overrides:
   - key: builtins.float
     node: float()
     abstract: 'Creates a new integer by converting another value into an integer.'
+    parameters:
+      - name: 'value'
+        kind: 'POSITIONAL_ONLY'
+        default: '0'
     examples:
       - ex: float('2.6')
         desc: Create a float from a string. Will cause an error if the string is not a valid number.
