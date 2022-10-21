@@ -7507,10 +7507,10 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-structured-pyright@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.3.tgz#b7e383a998f8e028b90e9fc56b106ebfbec3c023"
-  integrity sha512-DuR99sCHNy0JYlRJ7meKCmQjdCG69szocQZCSf6OtrL55C06KlSzLClDlmaCtxNgl7YQzXSp2TweXYKGuveUcA==
+structured-pyright@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.4.tgz#6083567b11bbaede0af15ea99bb1549327140701"
+  integrity sha512-4GY75G+f5FvPhMzN1HJb0WVwGf1GieGjAdPrZ3vtz2yDdBeaILyVRVh7jjkpMoYmEwVdbMtDIt7RQZ/getnXug==
   dependencies:
     leven "^3.1.0"
     vscode-jsonrpc "8.0.0-next.7"
