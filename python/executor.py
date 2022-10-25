@@ -540,37 +540,14 @@ def generateWhileStatement(while_node):
 
     statements = getStatementsFromBlock(while_node["childSets"]["block"])
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
-    args = [ast.Constant("block")]
-    call_start_childset = ast.Call(func, args=args, keywords=[])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-
-    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
-    while_start_frame = ast.Call(
-        func,
-        args=[
-            ast.Constant("PYTHON_WHILE_LOOP"),
-            ast.Constant("frames"),
-        ],
-        keywords=[],
-    )
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    while_end_frame = ast.Call(func, args=[], keywords=[])
+    statements.insert(0, startChildSetStatement('block'))
+    statements.append(endFrame())
 
     return [
-        ast.Expr(while_start_frame, lineno=1, col_offset=0),
+        startFrameStatement('PYTHON_WHILE_LOOP', 'frames'),
         ast.While(wrapped_condition, statements, []),
-        ast.Expr(while_end_frame, lineno=1, col_offset=0),
+        endLoop(),
+        endFrame()
     ]
 
 def generateFunctionArguments(arg_list):

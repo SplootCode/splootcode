@@ -14,8 +14,12 @@ class LoopAnnotationsTest(unittest.TestCase):
 count = 0
 while count < 3:
     count = count + 1
+print(count)
 ''')
-        cap = executePythonFile(splootFile)
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            cap = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
         'root': {
@@ -57,7 +61,12 @@ while count < 3:
                                 },
                             }
                         ]},
-                    }
+                    },
+                    {
+                        'type': 'PYTHON_EXPRESSION',
+                        'data':  {'result': 'None', 'resultType': 'NoneType'},
+                        'sideEffects': [{'type': 'stdout', 'value':'3'}, {'type': 'stdout', 'value':'\n'}]
+                    },
                 ]
             }
         },
