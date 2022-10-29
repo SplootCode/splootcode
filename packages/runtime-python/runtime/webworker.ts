@@ -1,6 +1,10 @@
 import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
+import 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js'
+
+import executorURL from '../../../python/executor.py'
+import moduleLoaderURL from '../../../python/module_loader.py'
+import requestsPackageURL from '../../../python/packages/requests-2.28.1-py3-none-any.whl'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -196,8 +200,8 @@ const getNodeTree = () => {
 }
 
 const initialise = async () => {
-  executorCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/executor.py')).text()
-  moduleLoaderCode = await (await fetch(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/module_loader.py')).text()
+  executorCode = await (await fetch(executorURL)).text()
+  moduleLoaderCode = await (await fetch(moduleLoaderURL)).text()
   // @ts-ignore
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
   pyodide.registerJsModule('fakeprint', {
@@ -229,7 +233,7 @@ const initialise = async () => {
   })
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
-  await micropip.install(process.env.RUNTIME_PYTHON_STATIC_FOLDER + '/packages/requests-2.28.1-py3-none-any.whl')
+  await micropip.install(requestsPackageURL)
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({

@@ -110,7 +110,11 @@ export class PythonWhileLoop extends PythonNode {
         },
       },
     ]
-    mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    mutation.loopAnnotation = {
+      label: 'Repeated',
+      iterations: this.runtimeCapture.frames.length,
+      currentFrame: this.runtimeCaptureFrame,
+    }
     this.fireMutation(mutation)
   }
 

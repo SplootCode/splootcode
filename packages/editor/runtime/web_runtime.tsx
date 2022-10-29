@@ -21,18 +21,8 @@ export enum FrameState {
 
 interface DocumentNodeProps {
   pkg?: SplootPackage
-}
-
-const FRAME_VIEW_DOMAIN = process.env.FRAME_VIEW_DOMAIN
-const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME
-
-function getHiddenFrameSrc() {
-  const rand = Math.floor(Math.random() * 1000000 + 1)
-  return getFrameDomain() + '/splootframewebclient.html' + '?a=' + rand
-}
-
-function getFrameDomain() {
-  return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN
+  frameScheme: 'http' | 'https'
+  frameDomain: string
 }
 
 class DocumentNodeComponent extends Component<DocumentNodeProps> {
@@ -61,22 +51,36 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       <div id="frame-container">
         <FramePanel
           reload={this.reloadSiteInFrame}
-          frameUrl={getFrameDomain() + '/index.html'}
+          frameUrl={this.getFrameDomain() + '/index.html'}
           setAutorefresh={this.setAutorefresh}
         />
         <iframe
           ref={this.previewFrameRef}
           id="view-frame"
-          src={getFrameDomain() + '/index.html'}
+          src={this.getFrameDomain() + '/index.html'}
           allow="cross-origin-isolated"
         />
-        <iframe ref={this.hiddenFrameRef} id="hidden-frame" src={getHiddenFrameSrc()} allow="cross-origin-isolated" />
+        <iframe
+          ref={this.hiddenFrameRef}
+          id="hidden-frame"
+          src={this.getHiddenFrameSrc()}
+          allow="cross-origin-isolated"
+        />
       </div>
     )
   }
 
   setAutorefresh = (autorefresh: boolean) => {
     this.autorefresh = autorefresh
+  }
+
+  getFrameDomain = () => {
+    return this.props.frameScheme + '://' + this.props.frameDomain
+  }
+
+  getHiddenFrameSrc = () => {
+    const rand = Math.floor(Math.random() * 1000000 + 1)
+    return this.getFrameDomain() + '/splootframewebclient.html' + '?a=' + rand
   }
 
   sendNodeTreeToHiddenFrame() {
@@ -100,7 +104,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
   postMessageToHiddenFrame(payload: object) {
     try {
-      this.hiddenFrameRef.current.contentWindow.postMessage(payload, getFrameDomain())
+      this.hiddenFrameRef.current.contentWindow.postMessage(payload, this.getFrameDomain())
     } catch (error) {
       console.warn(error)
     }
@@ -135,7 +139,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
         break
       case FrameState.DEAD:
         console.warn('hidden frame is dead, reloading')
-        this.previewFrameRef.current.src = getHiddenFrameSrc()
+        this.previewFrameRef.current.src = this.getHiddenFrameSrc()
         this.hiddenFrameState = FrameState.LOADING
         this.lastHeartbeatTimestamp = new Date()
         break
@@ -159,17 +163,17 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
   }
 
   processMessage = (event: MessageEvent) => {
-    if (event.origin === getFrameDomain()) {
+    if (event.origin === this.getFrameDomain()) {
       this.handleMessageFromHiddenFrame(event)
     }
   }
   reloadSiteInFrame = () => {
-    this.previewFrameRef.current.src = getFrameDomain() + '/index.html'
+    this.previewFrameRef.current.src = this.getFrameDomain() + '/index.html'
   }
 
   handleMessageFromHiddenFrame(event: MessageEvent) {
     const type = event.data.type as string
-    if (event.origin !== getFrameDomain()) {
+    if (event.origin !== this.getFrameDomain()) {
       return
     }
     if (!event.data.type) {
@@ -224,6 +228,8 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 
 type ViewPageProps = {
   pkg: SplootPackage
+  frameScheme: 'http' | 'https'
+  frameDomain: string
 }
 
 type ViewPageState = {
@@ -318,6 +324,6 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
         </div>
       )
     }
-    return <DocumentNodeComponent pkg={pkg} />
+    return <DocumentNodeComponent pkg={pkg} frameScheme={this.props.frameScheme} frameDomain={this.props.frameDomain} />
   }
 }

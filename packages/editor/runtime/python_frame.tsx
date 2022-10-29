@@ -25,21 +25,11 @@ export enum FrameState {
   UNMOUNTED,
 }
 
-const FRAME_VIEW_DOMAIN = process.env.FRAME_VIEW_DOMAIN
-const FRAME_VIEW_SCHEME = process.env.FRAME_VIEW_SCHEME
-
-function getFrameDomain() {
-  return FRAME_VIEW_SCHEME + '://' + FRAME_VIEW_DOMAIN
-}
-
-function getFrameSrc() {
-  const rand = Math.floor(Math.random() * 1000000 + 1)
-  return getFrameDomain() + '/splootframepythonclient.html' + '?a=' + rand
-}
-
 type ViewPageProps = {
   pkg: SplootPackage
   validationWatcher: ValidationWatcher
+  frameScheme: 'http' | 'https'
+  frameDomain: string
 }
 
 @observer
@@ -66,7 +56,7 @@ export class PythonFrame extends Component<ViewPageProps> {
         <iframe
           ref={this.frameRef}
           id="view-python-frame"
-          src={getFrameSrc()}
+          src={this.getFrameSrc()}
           width={480}
           height={700}
           allow="cross-origin-isolated"
@@ -75,9 +65,18 @@ export class PythonFrame extends Component<ViewPageProps> {
     )
   }
 
+  getFrameDomain = () => {
+    return this.props.frameScheme + '://' + this.props.frameDomain
+  }
+
+  getFrameSrc = () => {
+    const rand = Math.floor(Math.random() * 1000000 + 1)
+    return this.getFrameDomain() + '/splootframepythonclient.html' + '?a=' + rand
+  }
+
   postMessageToFrame(payload: object) {
     try {
-      this.frameRef.current.contentWindow.postMessage(payload, getFrameDomain())
+      this.frameRef.current.contentWindow.postMessage(payload, this.getFrameDomain())
     } catch (error) {
       console.warn(error)
     }
@@ -105,7 +104,7 @@ export class PythonFrame extends Component<ViewPageProps> {
         break
       case FrameState.DEAD:
         console.warn('frame is dead, reloading')
-        this.frameRef.current.src = getFrameSrc()
+        this.frameRef.current.src = this.getFrameSrc()
         this.frameState = FrameState.LOADING
         this.lastHeartbeatTimestamp = new Date()
         break
@@ -152,14 +151,14 @@ export class PythonFrame extends Component<ViewPageProps> {
   }
 
   processMessage = (event: MessageEvent) => {
-    if (event.origin === getFrameDomain()) {
+    if (event.origin === this.getFrameDomain()) {
       this.handleMessageFromFrame(event)
     }
   }
 
   handleMessageFromFrame(event: MessageEvent) {
     const type = event.data.type as string
-    if (event.origin !== getFrameDomain()) {
+    if (event.origin !== this.getFrameDomain()) {
       return
     }
     if (!event.data.type) {

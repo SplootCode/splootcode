@@ -1,4 +1,5 @@
 import React from 'react'
+import { EditorHostingConfig } from 'editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core/language/projects/project'
@@ -18,8 +19,9 @@ export class EditorState {
   selection: NodeSelection
   validationWatcher: ValidationWatcher
   analyser: PythonAnalyzer
+  hostingConfig: EditorHostingConfig
 
-  constructor(project: Project) {
+  constructor(project: Project, hostingConfig: EditorHostingConfig) {
     this.project = project
     this.rootNode = null
     this.selection = new NodeSelection()
@@ -27,6 +29,8 @@ export class EditorState {
     this.validationWatcher.registerSelf()
     this.analyser = new PythonAnalyzer(project)
     this.analyser.registerSelf()
+    this.analyser.initialise(hostingConfig.TYPESHED_PATH)
+    this.hostingConfig = hostingConfig
   }
 
   async loadDefaultFile() {

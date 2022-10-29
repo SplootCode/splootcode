@@ -15,7 +15,7 @@ export enum WorkerState {
 }
 
 export class WorkerManager {
-  private workerURL: string
+  private workerURL: URL
   private worker: Worker
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
@@ -27,7 +27,7 @@ export class WorkerManager {
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
 
-  constructor(workerURL: string, standardIO: StandardIO, stateCallback: (state: WorkerState) => void) {
+  constructor(workerURL: URL, standardIO: StandardIO, stateCallback: (state: WorkerState) => void) {
     this.workerURL = workerURL
     this.worker = null
     this.standardIO = standardIO
@@ -40,7 +40,7 @@ export class WorkerManager {
 
   initialiseWorker() {
     if (!this.worker) {
-      this.worker = new Worker(this.workerURL)
+      this.worker = new Worker(this.workerURL, { type: 'module' })
       this.worker.addEventListener('message', this.handleMessageFromWorker)
     }
   }
@@ -233,7 +233,7 @@ export class WorkerManager {
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
     } else if (type === 'runtime_capture' || type === 'module_info') {
-      parent.postMessage(event.data, process.env.EDITOR_DOMAIN)
+      parent.postMessage(event.data, import.meta.env.SPLOOT_EDITOR_DOMAIN)
     } else if (type === 'finished') {
       this.stateCallBack(WorkerState.READY)
     } else {
