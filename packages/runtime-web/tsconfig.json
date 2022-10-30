@@ -19,16 +19,5 @@
     "paths": {
       "@splootcode/*": ["../*"]
     }
-  },
-  "references": [
-    {
-      "path": "../core"
-    },
-    {
-      "path": "../language-web"
-    },
-    {
-      "path": "../runtime-python"
-    }
-  ]
+  }
 }

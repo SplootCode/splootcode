@@ -1,5 +1,5 @@
 import React from 'react'
-import { EditorHostingConfig } from 'editor_hosting_config'
+import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core/language/projects/project'

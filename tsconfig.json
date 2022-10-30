@@ -17,7 +17,7 @@
     "paths": {
       "@splootcode/*": ["packages/*"]
     },
-    "types": ["vite/client", "jest"]
+    "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },
   "exclude": [
     "node_modules",
@@ -25,18 +25,4 @@
     "dist-runtime"
   ],
   "rootDir": "src",
-  "references": [
-    {
-      "path": "./packages/components"
-    },
-    {
-      "path": "./packages/core"
-    },
-    {
-      "path": "./packages/editor"
-    },
-    {
-      "path": "./packages/language-python"
-    },
-  ]
 }

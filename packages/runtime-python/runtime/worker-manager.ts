@@ -15,7 +15,7 @@ export enum WorkerState {
 }
 
 export class WorkerManager {
-  private workerURL: URL
+  private workerURL: string
   private worker: Worker
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
@@ -27,7 +27,7 @@ export class WorkerManager {
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
 
-  constructor(workerURL: URL, standardIO: StandardIO, stateCallback: (state: WorkerState) => void) {
+  constructor(workerURL: string, standardIO: StandardIO, stateCallback: (state: WorkerState) => void) {
     this.workerURL = workerURL
     this.worker = null
     this.standardIO = standardIO
