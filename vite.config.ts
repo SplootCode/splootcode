@@ -4,15 +4,20 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { defineConfig } from 'vite'
+import { resolve } from 'path'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
   envPrefix: 'SPLOOT_',
-  appType: 'spa',
   server: {
     port: 3000,
     strictPort: true,
   },
+  publicDir: 'public',
   plugins: [
+    viteStaticCopy({
+      targets: [{ src: resolve(__dirname, 'node_modules', 'structured-pyright', 'dist', 'static'), dest: '' }],
+    }),
     tsconfigPaths(),
     react({
       babel: {

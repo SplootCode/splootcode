@@ -19,7 +19,9 @@ export default defineConfig({
     },
   },
   plugins: [
-    tsconfigPaths(),
+    tsconfigPaths({
+      projects: ['./packages/runtime-python'],
+    }),
     react({
       babel: {
         configFile: true,

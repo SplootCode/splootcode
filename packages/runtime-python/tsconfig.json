@@ -22,9 +22,4 @@
     },
     "types": ["vite/client"]
   },
-  "references": [
-    {
-      "path": "../core"
-    }
-  ]
 }

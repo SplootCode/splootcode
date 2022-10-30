@@ -77,17 +77,17 @@ function generateDocumentation(fileNames: string[], options: ts.CompilerOptions)
   }
 
   // print out the stuff we've collected
-  console.log('Writing static/generated/ts_global_variables.json')
-  fs.writeFileSync('static/generated/ts_global_variables.json', JSON.stringify(globalVariables, undefined, 4))
+  console.log('Writing public/static/generated/ts_global_variables.json')
+  fs.writeFileSync('public/static/generated/ts_global_variables.json', JSON.stringify(globalVariables, undefined, 4))
 
-  console.log('Writing static/generated/ts_global_functions.json')
-  fs.writeFileSync('static/generated/ts_global_functions.json', JSON.stringify(globalFunctions, undefined, 4))
+  console.log('Writing public/static/generated/ts_global_functions.json')
+  fs.writeFileSync('public/static/generated/ts_global_functions.json', JSON.stringify(globalFunctions, undefined, 4))
 
-  console.log('Writing static/generated/ts_types.json')
-  fs.writeFileSync('static/generated/ts_types.json', JSON.stringify(typeDefinitions, undefined, 4))
+  console.log('Writing public/static/generated/ts_types.json')
+  fs.writeFileSync('public/static/generated/ts_types.json', JSON.stringify(typeDefinitions, undefined, 4))
 
-  console.log('Writing static/generated/ts_type_aliases.json')
-  fs.writeFileSync('static/generated/ts_type_aliases.json', JSON.stringify(typeAliases, undefined, 4))
+  console.log('Writing public/static/generated/ts_type_aliases.json')
+  fs.writeFileSync('public/static/generated/ts_type_aliases.json', JSON.stringify(typeAliases, undefined, 4))
   return
 
   function serializeDocumentation(documentation): string {
