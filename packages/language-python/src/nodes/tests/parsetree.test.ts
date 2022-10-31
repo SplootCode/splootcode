@@ -4,11 +4,11 @@ import { PythonNode } from '../python_node'
 import { PythonStatement } from '../python_statement'
 import { TestWalker } from './tree_walker'
 import { getEmptyStatementNodes } from './single_examples'
-import { loadTypes } from '../../type_loader'
+import { loadPythonTypes } from '../../type_loader'
 
 describe('python parse tree generation', () => {
   beforeAll(() => {
-    loadTypes()
+    loadPythonTypes()
   })
 
   test('statement nodes generate valid parse trees', () => {

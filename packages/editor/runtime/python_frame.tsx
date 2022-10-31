@@ -9,9 +9,9 @@ import { globalMutationDispatcher } from '@splootcode/core'
 
 import './python_frame.css'
 import { CapturePayload, FunctionDeclarationData, StatementCapture } from '@splootcode/core'
-import { PythonFile } from '@splootcode/language-python/nodes/python_file'
-import { PythonModuleSpec } from '@splootcode/language-python/scope/python'
-import { PythonScope } from '@splootcode/language-python/scope/python_scope'
+import { PythonFile } from '@splootcode/language-python'
+import { PythonModuleSpec } from '@splootcode/language-python'
+import { PythonScope } from '@splootcode/language-python'
 import { ScopeMutation, ScopeMutationType } from '@splootcode/core'
 
 export enum FrameState {

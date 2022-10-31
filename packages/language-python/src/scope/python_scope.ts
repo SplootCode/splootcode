@@ -1,9 +1,4 @@
-import {
-  ModuleDefinition,
-  TypeCategory,
-  TypeDefinition,
-  VariableTypeInfo,
-} from '@splootcode/language-python/scope/types'
+import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from './types'
 import { PythonAnalyzer } from '../analyzer/python_analyzer'
 import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { PythonNode } from '../nodes/python_node'

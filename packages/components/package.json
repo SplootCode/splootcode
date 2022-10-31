@@ -19,11 +19,12 @@
     "dist/index.css"
   ],
   "private": true,
-  "dependencies": {
+  "peerDependencies": {
+    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.6.9",
     "@emotion/react": "^11.1.4",
-    "@emotion/styled": "^11.1.4",
-    "react": "^17.0.2",
+    "@emotion/styled": "^11.0.0",
+    "react": "17.0.2",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {

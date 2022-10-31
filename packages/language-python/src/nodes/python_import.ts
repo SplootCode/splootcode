@@ -20,7 +20,7 @@ import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 import { SuggestedNode } from '@splootcode/core'
-import { TypeCategory } from '@splootcode/language-python/scope/types'
+import { TypeCategory } from '../scope/types'
 
 export const PYTHON_IMPORT = 'PYTHON_IMPORT'
 

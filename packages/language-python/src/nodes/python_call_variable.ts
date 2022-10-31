@@ -1,5 +1,5 @@
 import { ExpressionNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
-import { FunctionSignature } from '@splootcode/language-python/scope/types'
+import { FunctionSignature } from '../scope/types'
 import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,

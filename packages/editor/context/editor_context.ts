@@ -3,13 +3,13 @@ import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project } from '@splootcode/core'
-import { PythonAnalyzer } from '@splootcode/language-python/analyzer/python_analyzer'
+import { PythonAnalyzer } from '@splootcode/language-python'
 import { SplootFile } from '@splootcode/core'
 import { SplootPackage } from '@splootcode/core'
 import { ValidationWatcher } from '@splootcode/core'
 import { action, observable } from 'mobx'
-import { generatePythonScope } from '@splootcode/language-python/scope/python_scope'
-import { isPythonNode } from '@splootcode/language-python/nodes/python_node'
+import { generatePythonScope } from '@splootcode/language-python'
+import { isPythonNode } from '@splootcode/language-python'
 
 export class EditorState {
   project: Project

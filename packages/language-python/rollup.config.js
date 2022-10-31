@@ -1,11 +1,10 @@
-import css from 'rollup-plugin-import-css'
 import dts from 'rollup-plugin-dts'
+import json from '@rollup/plugin-json'
 import typescript from '@rollup/plugin-typescript'
 
 export default [
   {
-    external: ['react', '@emotion/core', '@emotion/styled', '@chakra-ui/react', '@chakra-ui/icons'],
-    plugins: [typescript(), css()],
+    plugins: [typescript(), json()],
     input: 'src/index.ts',
     output: [
       {
@@ -23,6 +22,6 @@ export default [
   {
     input: 'src/index.ts',
     output: [{ file: `dist/index.d.ts`, format: 'es' }],
-    plugins: [dts(), css()],
+    plugins: [dts(), json()],
   },
 ]

@@ -10,7 +10,7 @@ import {
 } from 'structured-pyright'
 
 import { ChildSetType } from '@splootcode/core'
-import { FunctionArgType, TypeCategory } from '@splootcode/language-python/scope/types'
+import { FunctionArgType, TypeCategory } from '../scope/types'
 import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '@splootcode/core'
 import { HighlightColorCategory } from '@splootcode/core'
 import {

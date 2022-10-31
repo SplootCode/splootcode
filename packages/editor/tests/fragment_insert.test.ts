@@ -6,19 +6,19 @@ import 'jest-canvas-mock'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory } from '@splootcode/core'
 import { NodeSelection, SelectionState } from '../context/selection'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
-import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
-import { PythonAssignment } from '@splootcode/language-python/nodes/python_assignment'
-import { PythonBinaryOperator } from '@splootcode/language-python/nodes/python_binary_operator'
-import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
-import { PythonExpression } from '@splootcode/language-python/nodes/python_expression'
-import { PythonFile } from '@splootcode/language-python/nodes/python_file'
-import { PythonIdentifier } from '@splootcode/language-python/nodes/python_identifier'
-import { PythonIfStatement } from '@splootcode/language-python/nodes/python_if'
-import { PythonScope } from '@splootcode/language-python/scope/python_scope'
-import { PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
+import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python'
+import { PythonArgument } from '@splootcode/language-python'
+import { PythonAssignment } from '@splootcode/language-python'
+import { PythonBinaryOperator } from '@splootcode/language-python'
+import { PythonCallVariable } from '@splootcode/language-python'
+import { PythonExpression } from '@splootcode/language-python'
+import { PythonFile } from '@splootcode/language-python'
+import { PythonIdentifier } from '@splootcode/language-python'
+import { PythonIfStatement } from '@splootcode/language-python'
+import { PythonScope } from '@splootcode/language-python'
+import { PythonStringLiteral } from '@splootcode/language-python'
 import { SplootFragment } from '@splootcode/core'
-import { loadTypes } from '@splootcode/language-python/type_loader'
+import { loadPythonTypes } from '@splootcode/language-python'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')
@@ -51,7 +51,7 @@ function getAssignStatement(variableName: string, stringValue: string): PythonSt
 
 describe('python hello world file edits', () => {
   beforeAll(() => {
-    loadTypes()
+    loadPythonTypes()
   })
 
   test('Test paste statements at start of expression line', () => {

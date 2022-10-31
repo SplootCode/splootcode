@@ -1,4 +1,4 @@
-import { FunctionSignature, TypeCategory } from '@splootcode/language-python/scope/types'
+import { FunctionSignature, TypeCategory } from '../scope/types'
 import { NodeCategory, SuggestionGenerator, registerAutocompleter } from '@splootcode/core'
 import { ParentReference } from '@splootcode/core'
 import { PythonCallVariable } from './python_call_variable'

@@ -1,13 +1,13 @@
 import { PYTHON_FILE, PythonFile } from '../nodes/python_file'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { TestWalker } from '../nodes/tests/tree_walker'
+import { loadPythonTypes } from '../type_loader'
 import { loadTestProject } from './test_file_loader'
-import { loadTypes } from '../type_loader'
 import { nodeSanityCheck } from '../nodes/tests/test_utils'
 
 describe('python whole file loading', () => {
   beforeAll(() => {
-    loadTypes()
+    loadPythonTypes()
   })
 
   test('load blank file', async () => {

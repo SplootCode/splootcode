@@ -1,4 +1,4 @@
-import { FunctionArgType, TypeCategory, VariableTypeInfo } from '@splootcode/language-python/scope/types'
+import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
   ParentReference,

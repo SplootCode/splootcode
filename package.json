@@ -13,7 +13,8 @@
   "private": true,
   "workspaces": [
     "packages/core",
-    "packages/components"
+    "packages/components",
+    "packages/language-python"
   ],
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",

@@ -6,7 +6,7 @@ import {
   ModuleDefinition,
   TypeCategory,
   VariableTypeInfo,
-} from '@splootcode/language-python/scope/types'
+} from './types'
 import { PythonScope } from './python_scope'
 
 interface VariableSpec {

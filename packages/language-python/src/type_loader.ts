@@ -38,7 +38,7 @@ import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter
 import { registerPythonAutocompleters } from './nodes/scope_autocompleter'
 import { resolvePasteAdapters } from '@splootcode/core'
 
-export function loadTypes() {
+export function loadPythonTypes() {
   PythonStringLiteral.register()
   PythonNumberLiteral.register()
 

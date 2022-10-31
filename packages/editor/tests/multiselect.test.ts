@@ -6,14 +6,14 @@ import 'jest-canvas-mock'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory } from '@splootcode/core'
 import { NodeSelection } from '../context/selection'
-import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python/nodes/python_call_member'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
-import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
-import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
-import { PythonCallVariable } from '@splootcode/language-python/nodes/python_call_variable'
-import { PythonExpression } from '@splootcode/language-python/nodes/python_expression'
-import { PythonFile } from '@splootcode/language-python/nodes/python_file'
-import { loadTypes } from '@splootcode/language-python/type_loader'
+import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python'
+import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python'
+import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python'
+import { PythonArgument } from '@splootcode/language-python'
+import { PythonCallVariable } from '@splootcode/language-python'
+import { PythonExpression } from '@splootcode/language-python'
+import { PythonFile } from '@splootcode/language-python'
+import { loadPythonTypes } from '@splootcode/language-python'
 
 function getArg(expr: PythonExpression): PythonArgument {
   const arg = new PythonArgument(null)
@@ -65,7 +65,7 @@ function getBreadcrumbsTestFile(): PythonFile {
 
 describe('python hello world file edits', () => {
   beforeAll(() => {
-    loadTypes()
+    loadPythonTypes()
   })
 
   test('Right arrow incrementally selects chained method calls.', () => {

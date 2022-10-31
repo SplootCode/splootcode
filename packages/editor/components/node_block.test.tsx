@@ -7,8 +7,8 @@ import pretty from 'pretty'
 import { act } from 'react-dom/test-utils'
 import { render, unmountComponentAtNode } from 'react-dom'
 
-import { PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
-import { loadTypes } from '@splootcode/language-python/type_loader'
+import { PythonStringLiteral } from '@splootcode/language-python'
+import { loadPythonTypes } from '@splootcode/language-python'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
@@ -17,7 +17,7 @@ import { NodeSelectionState } from '../context/selection'
 let container: HTMLElement = null
 
 beforeAll(() => {
-  loadTypes()
+  loadPythonTypes()
 })
 
 beforeEach(() => {
