@@ -7,9 +7,8 @@ import {
   ParseNode,
   ParseNodeType,
 } from 'structured-pyright'
-
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -17,13 +16,8 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
+} from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
@@ -34,10 +28,10 @@ import { PYTHON_LIST } from './python_list'
 import { PYTHON_MEMBER } from './python_member'
 import { PYTHON_STRING } from './python_string'
 import { PYTHON_TUPLE } from './python_tuple'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_SUBSCRIPT = 'PYTHON_SUBSCRIPT'
 

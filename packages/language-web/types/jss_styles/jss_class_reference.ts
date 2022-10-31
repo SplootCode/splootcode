@@ -1,7 +1,7 @@
 import * as recast from 'recast'
 
 import { ExpressionKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import { LOCAL_STYLES_IDENTIFIER } from './jss_style_block'
 import {
@@ -11,15 +11,10 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+} from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference } from '@splootcode/core'
+import { SuggestedNode } from '@splootcode/core'
 
 export const JSS_CLASS_REFERENCE = 'JSS_CLASS_REFERENCE'
 

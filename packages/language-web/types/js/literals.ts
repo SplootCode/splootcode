@@ -1,6 +1,6 @@
 import * as recast from 'recast'
 
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
@@ -9,18 +9,18 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
+} from '@splootcode/core'
 import {
   NodeCategory,
   SuggestionGenerator,
   getAutocompleteRegistry,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 import { StringLiteralKind } from 'ast-types/gen/kinds'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 export const STRING_LITERAL = 'STRING_LITERAL'
 export const NUMERIC_LITERAL = 'NUMERIC_LITERAL'

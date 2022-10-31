@@ -4,7 +4,7 @@
 import 'jest-canvas-mock'
 
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory } from '@splootcode/core/language/node_category_registry'
+import { NodeCategory } from '@splootcode/core'
 import { NodeSelection, SelectionState } from '../context/selection'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'
 import { PythonArgument } from '@splootcode/language-python/nodes/python_argument'
@@ -17,7 +17,7 @@ import { PythonIdentifier } from '@splootcode/language-python/nodes/python_ident
 import { PythonIfStatement } from '@splootcode/language-python/nodes/python_if'
 import { PythonScope } from '@splootcode/language-python/scope/python_scope'
 import { PythonStringLiteral } from '@splootcode/language-python/nodes/python_string'
-import { SplootFragment } from '@splootcode/core/language/fragment'
+import { SplootFragment } from '@splootcode/core'
 import { loadTypes } from '@splootcode/language-python/type_loader'
 
 function getHelloWorldPythonFile(): PythonFile {

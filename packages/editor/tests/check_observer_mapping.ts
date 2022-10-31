@@ -1,5 +1,5 @@
-import { ChildSet } from '@splootcode/core/language/childset'
-import { SplootNode } from '@splootcode/core/language/node'
+import { ChildSet } from '@splootcode/core'
+import { SplootNode } from '@splootcode/core'
 
 export function checkNodeObserversRecursively(splootNode: SplootNode) {
   const observers = splootNode.mutationObservers

@@ -15,8 +15,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { Project } from '@splootcode/core/language/projects/project'
-import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
+import { Project } from '@splootcode/core'
+import { ProjectLoader } from '@splootcode/core'
 
 function convertToURL(title: string) {
   return title

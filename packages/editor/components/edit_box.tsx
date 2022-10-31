@@ -4,7 +4,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { EditBoxData } from '../context/edit_box'
-import { NodeBoxType } from '@splootcode/core/language/type_registry'
+import { NodeBoxType } from '@splootcode/core'
 import { NodeSelection } from '../context/selection'
 import { stringLiteralDimensions, stringWidth } from '../layout/layout_constants'
 

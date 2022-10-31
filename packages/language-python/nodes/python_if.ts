@@ -1,12 +1,8 @@
 import { IfNode, ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
-import {
-  IfStatementData,
-  SingleStatementData,
-  StatementCapture,
-} from '@splootcode/core/language/capture/runtime_capture'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
+import { IfStatementData, SingleStatementData, StatementCapture } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -14,29 +10,20 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeAnnotation,
-  NodeAnnotationType,
-  getSideEffectAnnotations,
-} from '@splootcode/core/language/annotations/annotations'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
+} from '@splootcode/core'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
 import { PYTHON_ELIF_STATEMENT, PythonElifBlock } from './python_elif'
 import { PYTHON_ELSE_STATEMENT, PythonElseBlock } from './python_else'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SplootFragment } from '@splootcode/core/language/fragment'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { registerFragmentAdapter } from '@splootcode/core/language/fragment_adapter'
+import { SplootFragment } from '@splootcode/core'
+import { SuggestedNode } from '@splootcode/core'
+import { registerFragmentAdapter } from '@splootcode/core'
 
 export const PYTHON_IF_STATEMENT = 'PYTHON_IF_STATEMENT'
 

@@ -11,15 +11,15 @@ import {
   stringLiteralDimensions,
   stringWidth,
 } from './layout_constants'
-import { ColorUsageType, getColor } from '@splootcode/core/colors'
+import { ColorUsageType, getColor } from '@splootcode/core'
 import { CursorMap } from '../context/cursor_map'
-import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core/language/type_registry'
-import { LoopAnnotation, NodeAnnotation } from '@splootcode/core/language/annotations/annotations'
+import { LayoutComponent, LayoutComponentType, NodeBoxType, NodeLayout } from '@splootcode/core'
+import { LoopAnnotation, NodeAnnotation } from '@splootcode/core'
 import { NodeCursor, NodeSelection } from '../context/selection'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
-import { NodeObserver } from '@splootcode/core/language/observers'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
+import { NodeObserver } from '@splootcode/core'
 import { RenderedChildSetBlock } from './rendered_childset_block'
-import { SplootNode } from '@splootcode/core/language/node'
+import { SplootNode } from '@splootcode/core'
 
 export class RenderedParentRef {
   node: NodeBlock

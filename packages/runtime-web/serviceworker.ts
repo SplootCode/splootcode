@@ -1,6 +1,6 @@
 import { DATA_SHEET } from '@splootcode/language-web/types/dataset/datasheet'
 import { JAVASCRIPT_FILE } from '@splootcode/language-web/types/js/javascript_file'
-import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
+import { SerializedNode, deserializeNode } from '@splootcode/core'
 import { loadTypes } from '@splootcode/language-web/type_loader'
 
 const CacheName = 'splootcache-v1'

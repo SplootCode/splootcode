@@ -4,10 +4,10 @@ import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
 import { MainMenuItem, MenuBar } from '@splootcode/components/menu_bar'
-import { Project } from '@splootcode/core/language/projects/project'
-import { ProjectLoader } from '@splootcode/core/language/projects/file_loader'
+import { Project } from '@splootcode/core'
+import { ProjectLoader } from '@splootcode/core'
 import { SaveProjectModal } from '@splootcode/components/save_project_modal'
-import { loadProjectFromFolder } from '@splootcode/core/code_io/filesystem'
+import { loadProjectFromFolder } from '@splootcode/core'
 
 interface UserHomePageProps {
   projectLoader: ProjectLoader

@@ -4,7 +4,7 @@
 import 'jest-canvas-mock'
 
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory } from '@splootcode/core/language/node_category_registry'
+import { NodeCategory } from '@splootcode/core'
 import { NodeSelection } from '../context/selection'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python/nodes/python_call_member'
 import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python/nodes/python_statement'

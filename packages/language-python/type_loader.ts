@@ -36,7 +36,7 @@ import { PythonWhileLoop } from './nodes/python_while'
 import { registerArgumentAutocompleters } from './nodes/scope_argument_autocompleter'
 import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter'
 import { registerPythonAutocompleters } from './nodes/scope_autocompleter'
-import { resolvePasteAdapters } from '@splootcode/core/language/type_registry'
+import { resolvePasteAdapters } from '@splootcode/core'
 
 export function loadTypes() {
   PythonStringLiteral.register()

@@ -46,7 +46,7 @@ import { StyleRule } from './types/styles/style_rule'
 import { StyleSelector } from './types/styles/style_selector'
 import { VariableDeclaration } from './types/js/variable_declaration'
 import { VariableReference } from './types/js/variable_reference'
-import { resolvePasteAdapters } from '@splootcode/core/language/type_registry'
+import { resolvePasteAdapters } from '@splootcode/core'
 
 export function loadTypes() {
   Assignment.register()

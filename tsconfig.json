@@ -15,7 +15,11 @@
     "outDir": "lib",
     "baseUrl": ".",
     "paths": {
-      "@splootcode/*": ["packages/*"]
+      "@splootcode/components/*": ["packages/components/*"],
+      "@splootcode/editor/*": ["packages/editor/*"],
+      "@splootcode/language-python/*": ["packages/language-python/*"],
+      "@splootcode/language-web/*": ["packages/language-web/*"],
+      "@splootcode/runtime-python/*": ["packages/runtime-python/*"],
     },
     "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },

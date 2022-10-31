@@ -6,10 +6,10 @@ import { observer } from 'mobx-react'
 import { Box, ButtonGroup, FormControl, FormLabel, HStack, IconButton, Spacer, Switch } from '@chakra-ui/react'
 import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons'
 
-import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
+import { ChildSetMutation } from '@splootcode/core'
+import { NodeMutation } from '@splootcode/core'
+import { SplootPackage } from '@splootcode/core'
+import { globalMutationDispatcher } from '@splootcode/core'
 
 export enum FrameState {
   DEAD = 0,

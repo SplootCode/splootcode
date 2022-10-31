@@ -1,6 +1,6 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { DictionaryNode, ParseNode, ParseNodeType } from 'structured-pyright'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -8,19 +8,14 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
+} from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonKeyValue } from './python_keyvalue'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_DICT = 'PY_DICT'
 

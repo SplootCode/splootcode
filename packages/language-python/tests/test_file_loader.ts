@@ -1,10 +1,10 @@
 import path from 'path'
-import { FileLoader } from '@splootcode/core/language/projects/file_loader'
-import { PackageBuildType, SplootPackage } from '@splootcode/core/language/projects/package'
-import { Project } from '@splootcode/core/language/projects/project'
-import { SerializedNode, deserializeNode } from '@splootcode/core/language/type_registry'
-import { SplootFile } from '@splootcode/core/language/projects/file'
-import { SplootNode } from '@splootcode/core/language/node'
+import { FileLoader } from '@splootcode/core'
+import { PackageBuildType, SplootPackage } from '@splootcode/core'
+import { Project } from '@splootcode/core'
+import { SerializedNode, deserializeNode } from '@splootcode/core'
+import { SplootFile } from '@splootcode/core'
+import { SplootNode } from '@splootcode/core'
 import { readFile } from 'fs'
 
 export async function loadTestProject(projectID: string, title: string): Promise<Project> {

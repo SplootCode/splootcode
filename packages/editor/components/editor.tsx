@@ -15,10 +15,10 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { PythonFrame } from '../runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
+import { SplootPackage } from '@splootcode/core'
 import { Tray } from './tray/tray'
-import { ValidationWatcher } from '@splootcode/core/language/validation/validation_watcher'
-import { deserializeFragment } from '@splootcode/core/language/fragment'
+import { ValidationWatcher } from '@splootcode/core'
+import { deserializeFragment } from '@splootcode/core'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 

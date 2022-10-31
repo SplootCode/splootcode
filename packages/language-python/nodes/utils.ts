@@ -1,4 +1,4 @@
-import { AssignmentAnnotation, ReturnValueAnnotation } from '@splootcode/core/language/annotations/annotations'
+import { AssignmentAnnotation, ReturnValueAnnotation } from '@splootcode/core'
 import {
   BinaryOperationNode,
   ErrorExpressionCategory,
@@ -12,7 +12,7 @@ import {
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonBinaryOperator } from './python_binary_operator'
 import { PythonNode } from './python_node'
-import { SplootNode } from '@splootcode/core/language/node'
+import { SplootNode } from '@splootcode/core'
 
 export function formatPythonData(value: string, type: string): string {
   switch (type) {

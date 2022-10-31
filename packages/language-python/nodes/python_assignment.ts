@@ -1,7 +1,7 @@
 import { AssignmentNode, ErrorExpressionCategory, ExpressionNode, ParseNode, ParseNodeType } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,27 +9,18 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeAnnotation,
-  NodeAnnotationType,
-  getSideEffectAnnotations,
-} from '@splootcode/core/language/annotations/annotations'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
+} from '@splootcode/core'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SingleStatementData, StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SingleStatementData, StatementCapture } from '@splootcode/core'
+import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { NodeMutation } from '@splootcode/core/language/mutations/node_mutations'
-import { Project } from '@splootcode/core/language/projects/project'
-import { ProjectLoader, SaveError } from '@splootcode/core/language/projects/file_loader'
+import { ChildSetMutation } from '@splootcode/core'
+import { NodeMutation } from '@splootcode/core'
+import { Project } from '@splootcode/core'
+import { ProjectLoader, SaveError } from '@splootcode/core'
 import { Text, useToast } from '@chakra-ui/react'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
+import { globalMutationDispatcher } from '@splootcode/core'
 
 export const AutosaveHandler = (props: {
   project: Project

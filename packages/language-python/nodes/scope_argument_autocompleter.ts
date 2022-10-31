@@ -1,14 +1,10 @@
 import { FunctionParameter, ParameterCategory } from 'structured-pyright'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  getAutocompleteRegistry,
-} from '@splootcode/core/language/node_category_registry'
+import { NodeCategory, SuggestionGenerator, getAutocompleteRegistry } from '@splootcode/core'
 import { PYTHON_KEWORD_ARGUMENT, PythonKeywordArgument } from './python_keyword_argument'
-import { ParentReference } from '@splootcode/core/language/node'
+import { ParentReference } from '@splootcode/core'
 import { PythonArgument } from './python_argument'
 import { PythonCallVariable } from './python_call_variable'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 import { sanitizeIdentifier } from './python_identifier'
 
 function getInputBasedKwargs(textInput: string): SuggestedNode[] {

@@ -21,11 +21,6 @@
       "@splootcode/*": ["../*"]
     }
   },
-  "references": [
-    {
-      "path": "../core"
-    },
-  ],
   "include": [
     "code_io/**/*",
     "types/**/*",

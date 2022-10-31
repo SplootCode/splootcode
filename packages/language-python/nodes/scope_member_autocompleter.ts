@@ -1,9 +1,11 @@
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '@splootcode/language-python/scope/types'
 import {
   NodeCategory,
+  ParentReference,
+  SuggestedNode,
   SuggestionGenerator,
   getAutocompleteRegistry,
-} from '@splootcode/core/language/node_category_registry'
+} from '@splootcode/core'
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
@@ -16,10 +18,8 @@ import { PYTHON_SET } from './python_set'
 import { PYTHON_STRING } from './python_string'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { PYTHON_TUPLE } from './python_tuple'
-import { ParentReference } from '@splootcode/core/language/node'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 import { TypeCategory as TC, Type } from 'structured-pyright'
 
 function getAttributesForType(scope: PythonScope, typeName: string): [string, VariableTypeInfo][] {

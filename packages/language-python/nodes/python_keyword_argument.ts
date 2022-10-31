@@ -1,6 +1,6 @@
 import { ArgumentCategory, ArgumentNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,9 +9,9 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonArgument } from './python_argument'
 import { PythonExpression } from './python_expression'

@@ -2,7 +2,7 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedTreeIterator } from './rendered_tree_iterator'
-import { SplootFragment } from '@splootcode/core/language/fragment'
+import { SplootFragment } from '@splootcode/core'
 
 export interface DeleteSet {
   node: NodeBlock

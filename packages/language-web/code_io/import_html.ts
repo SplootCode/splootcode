@@ -3,7 +3,7 @@ import { SplootHtmlAttribute } from '../types/html/html_attribute'
 import { SplootHtmlDocument } from '../types/html/html_document'
 import { SplootHtmlElement } from '../types/html/html_element'
 import { SplootHtmlScriptElement } from '../types/html/html_script_element'
-import { SplootNode } from '@splootcode/core/language/node'
+import { SplootNode } from '@splootcode/core'
 import { StringLiteral } from '../types/js/literals'
 import { parseJs } from './import_js'
 

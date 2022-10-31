@@ -1,7 +1,7 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { ExpressionNode, MemberAccessNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
 import { FunctionSignature } from '@splootcode/language-python/scope/types'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,10 +9,10 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
+} from '@splootcode/core'
+import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonCallNode } from './python_call_node'
 import { parseToPyright } from './utils'

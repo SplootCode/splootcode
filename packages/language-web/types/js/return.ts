@@ -1,9 +1,9 @@
 import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { ExpressionKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import {
   LayoutComponent,
@@ -12,16 +12,11 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference } from '@splootcode/core'
 import { SplootExpression } from './expression'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 export const RETURN_STATEMENT = 'RETURN_STATEMENT'
 

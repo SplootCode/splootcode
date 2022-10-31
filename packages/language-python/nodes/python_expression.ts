@@ -1,6 +1,6 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { ExpressionNode } from 'structured-pyright'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,28 +9,24 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeAnnotation,
-  NodeAnnotationType,
-  getSideEffectAnnotations,
-} from '@splootcode/core/language/annotations/annotations'
+} from '@splootcode/core'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
 import {
   NodeCategory,
   registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonArgument } from './python_argument'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SingleStatementData, StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
-import { SplootFragment } from '@splootcode/core/language/fragment'
+import { SingleStatementData, StatementCapture } from '@splootcode/core'
+import { SplootFragment } from '@splootcode/core'
 import { parseToPyright, validateExpressionParse } from './utils'
-import { registerFragmentAdapter } from '@splootcode/core/language/fragment_adapter'
+import { registerFragmentAdapter } from '@splootcode/core'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 

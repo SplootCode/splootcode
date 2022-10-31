@@ -8,15 +8,15 @@ import {
   Type,
   createStructuredProgram,
 } from 'structured-pyright'
-import { ChildSetMutation } from '@splootcode/core/language/mutations/child_set_mutations'
-import { ChildSetObserver, NodeObserver } from '@splootcode/core/language/observers'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
-import { Project } from '@splootcode/core/language/projects/project'
+import { ChildSetMutation } from '@splootcode/core'
+import { ChildSetObserver, NodeObserver } from '@splootcode/core'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
+import { Project } from '@splootcode/core'
 import { PythonFile } from '../nodes/python_file'
-import { SplootFile } from '@splootcode/core/language/projects/file'
-import { SplootNode } from '@splootcode/core/language/node'
-import { SplootPackage } from '@splootcode/core/language/projects/package'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
+import { SplootFile } from '@splootcode/core'
+import { SplootNode } from '@splootcode/core'
+import { SplootPackage } from '@splootcode/core'
+import { globalMutationDispatcher } from '@splootcode/core'
 
 export class ParseMapper {
   nodeMap: Map<SplootNode, ParseNode>

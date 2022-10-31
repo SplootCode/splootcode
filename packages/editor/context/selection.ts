@@ -1,4 +1,4 @@
-import { ChildSet } from '@splootcode/core/language/childset'
+import { ChildSet } from '@splootcode/core'
 import { CursorMap } from './cursor_map'
 import { EditBoxData } from './edit_box'
 import { InsertBoxData } from './insert_box'
@@ -7,18 +7,14 @@ import { MultiselectFragmentCreator } from './multiselect_fragment_creator'
 import { MultiselectTreeWalker } from './multiselect_tree_walker'
 import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 import { NodeBlock } from '../layout/rendered_node'
-import {
-  NodeCategory,
-  getBlankFillForCategory,
-  isNodeInCategory,
-} from '@splootcode/core/language/node_category_registry'
+import { NodeCategory, getBlankFillForCategory, isNodeInCategory } from '@splootcode/core'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedFragment } from '../layout/rendered_fragment'
-import { SplootFragment } from '@splootcode/core/language/fragment'
-import { SplootNode } from '@splootcode/core/language/node'
+import { SplootFragment } from '@splootcode/core'
+import { SplootNode } from '@splootcode/core'
 import { action, observable } from 'mobx'
-import { adaptFragmentToPasteDestinationIfPossible } from '@splootcode/core/language/fragment_adapter'
-import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core/language/type_registry'
+import { adaptFragmentToPasteDestinationIfPossible } from '@splootcode/core'
+import { adaptNodeToPasteDestination, isAdaptableToPasteDesintation } from '@splootcode/core'
 
 export enum NodeSelectionState {
   UNSELECTED = 0,

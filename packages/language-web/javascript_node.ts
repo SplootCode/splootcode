@@ -1,7 +1,7 @@
 import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
-import { SplootNode } from '../core/language/node'
+import { SplootNode } from '@splootcode/core'
 
 export class JavaScriptSplootNode extends SplootNode {
   generateJsAst(): ASTNode {

@@ -1,5 +1,5 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -8,20 +8,20 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
+} from '@splootcode/core'
 import {
   NodeCategory,
   registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
+} from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { ParseNodeType, StatementListNode, StatementNode } from 'structured-pyright'
 import { PythonElifBlock } from './python_elif'
 import { PythonNode } from './python_node'
-import { StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
+import { StatementCapture } from '@splootcode/core'
 
 export const PYTHON_STATEMENT = 'PYTHON_STATEMENT'
 

@@ -1,11 +1,11 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { LayoutComponent, LayoutComponentType } from '@splootcode/core/language/type_registry'
+import { LayoutComponent, LayoutComponentType } from '@splootcode/core'
 import { NodeBlock } from './rendered_node'
-import { SplootFragment } from '@splootcode/core/language/fragment'
+import { SplootFragment } from '@splootcode/core'
 import { StackLayoutHandler } from './stack_layout_handler'
 import { TokenLayoutHandler } from './token_layout_handler'
 import { TreeLayoutHandler } from './tree_layout_handler'
-import { getLayoutComponentForCategory } from '@splootcode/core/language/node_category_registry'
+import { getLayoutComponentForCategory } from '@splootcode/core'
 
 export class RenderedFragment {
   fragment: SplootFragment

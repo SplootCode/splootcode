@@ -1,9 +1,9 @@
 import { ParseNode } from 'structured-pyright'
 
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonScope } from '../scope/python_scope'
-import { isScopedNodeType } from '@splootcode/core/language/type_registry'
+import { isScopedNodeType } from '@splootcode/core'
 
 export function isPythonNode(node: SplootNode): node is PythonNode {
   return (<PythonNode>node).isPythonNode !== undefined

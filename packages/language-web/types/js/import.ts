@@ -1,8 +1,8 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import { IdentifierKind } from 'ast-types/gen/kinds'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import {
@@ -12,16 +12,11 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference } from '@splootcode/core'
 import { StringLiteral } from './literals'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 export const IMPORT = 'IMPORT'
 

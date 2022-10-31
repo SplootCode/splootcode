@@ -1,7 +1,7 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
+import { ChildSetType } from '@splootcode/core'
 import { DOMParser, XMLSerializer } from 'xmldom'
 import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -9,9 +9,9 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference, SplootNode } from '@splootcode/core'
 import { STRING_LITERAL, StringLiteral } from '../js/literals'
 
 export const HTML_DOCUMENT = 'HTML_DOCUMENT'

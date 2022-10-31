@@ -1,4 +1,4 @@
-import { TrayCategory } from '@splootcode/core/language/tray/tray'
+import { TrayCategory } from '@splootcode/core'
 
 import * as pythonLib from '../generated/python_tray.json'
 

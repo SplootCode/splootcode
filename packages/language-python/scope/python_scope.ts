@@ -7,14 +7,10 @@ import {
 import { PythonAnalyzer } from '../analyzer/python_analyzer'
 import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { PythonNode } from '../nodes/python_node'
-import {
-  RenameScopeMutation,
-  ScopeMutation,
-  ScopeMutationType,
-} from '@splootcode/core/language/mutations/scope_mutations'
-import { ScopeObserver } from '@splootcode/core/language/observers'
-import { SplootNode } from '@splootcode/core/language/node'
-import { globalMutationDispatcher } from '@splootcode/core/language/mutations/mutation_dispatcher'
+import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '@splootcode/core'
+import { ScopeObserver } from '@splootcode/core'
+import { SplootNode } from '@splootcode/core'
+import { globalMutationDispatcher } from '@splootcode/core'
 
 export interface VariableMetadata {
   documentation: string

@@ -1,5 +1,5 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -7,12 +7,12 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
+} from '@splootcode/core'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
+import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
-import { PythonFileData, StatementCapture } from '@splootcode/core/language/capture/runtime_capture'
+import { PythonFileData, StatementCapture } from '@splootcode/core'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 

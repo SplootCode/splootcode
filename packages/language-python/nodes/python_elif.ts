@@ -1,10 +1,6 @@
-import { ChildSetType } from '@splootcode/core/language/childset'
-import {
-  ElseIfStatementData,
-  SingleStatementData,
-  StatementCapture,
-} from '@splootcode/core/language/capture/runtime_capture'
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { ChildSetType } from '@splootcode/core'
+import { ElseIfStatementData, SingleStatementData, StatementCapture } from '@splootcode/core'
+import { HighlightColorCategory } from '@splootcode/core'
 import { IfNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import {
   LayoutComponent,
@@ -13,28 +9,19 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
-import {
-  NodeAnnotation,
-  NodeAnnotationType,
-  getSideEffectAnnotations,
-} from '@splootcode/core/language/annotations/annotations'
-import {
-  NodeCategory,
-  SuggestionGenerator,
-  registerAutocompleter,
-  registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { NodeMutation, NodeMutationType } from '@splootcode/core/language/mutations/node_mutations'
-import { ParentReference } from '@splootcode/core/language/node'
+} from '@splootcode/core'
+import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
+import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { NodeMutation, NodeMutationType } from '@splootcode/core'
+import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonIfStatement } from './python_if'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SplootFragment } from '@splootcode/core/language/fragment'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
-import { registerLastResortFragmentAdapater } from '@splootcode/core/language/fragment_adapter'
+import { SplootFragment } from '@splootcode/core'
+import { SuggestedNode } from '@splootcode/core'
+import { registerLastResortFragmentAdapater } from '@splootcode/core'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 

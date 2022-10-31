@@ -23,7 +23,7 @@ import { PythonStringLiteral } from '../python_string'
 import { PythonSubscript } from '../python_subscript'
 import { PythonTuple } from '../python_tuple'
 import { PythonWhileLoop } from '../python_while'
-import { SplootNode } from '@splootcode/core/language/node'
+import { SplootNode } from '@splootcode/core'
 
 export function getEmptyStatementNodes(): PythonNode[] {
   return [

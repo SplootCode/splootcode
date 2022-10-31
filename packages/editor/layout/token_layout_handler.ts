@@ -1,7 +1,7 @@
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap, CursorType } from '../context/cursor_map'
 import { EXPRESSION_TOKEN_SPACING, NODE_INLINE_SPACING, placeholderWidth } from './layout_constants'
-import { LayoutComponent } from '@splootcode/core/language/type_registry'
+import { LayoutComponent } from '@splootcode/core'
 import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from './rendered_childset_block'

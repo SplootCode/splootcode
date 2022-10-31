@@ -1,10 +1,10 @@
 import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
-import { SerializedNode, TypeRegistration, registerType } from '@splootcode/core/language/type_registry'
+import { ChildSetType } from '@splootcode/core'
+import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
+import { ParentReference, SplootNode } from '@splootcode/core'
+import { SerializedNode, TypeRegistration, registerType } from '@splootcode/core'
 import { SplootDataFieldDeclaration } from './field_declaration'
 import { SplootDataRow } from './row'
 

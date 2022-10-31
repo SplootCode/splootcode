@@ -1,4 +1,4 @@
-import { HighlightColorCategory } from '@splootcode/core/colors'
+import { HighlightColorCategory } from '@splootcode/core'
 import {
   LayoutComponent,
   LayoutComponentType,
@@ -6,9 +6,9 @@ import {
   SerializedNode,
   TypeRegistration,
   registerType,
-} from '@splootcode/core/language/type_registry'
+} from '@splootcode/core'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+import { ParentReference, SplootNode } from '@splootcode/core'
 
 export const PYTHON_VARIABLE_REFERENCE = 'PYTHON_VARIABLE_REFERENCE'
 

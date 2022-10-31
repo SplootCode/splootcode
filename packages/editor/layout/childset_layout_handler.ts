@@ -1,5 +1,5 @@
 import { CursorMap } from '../context/cursor_map'
-import { LayoutComponent } from '@splootcode/core/language/type_registry'
+import { LayoutComponent } from '@splootcode/core'
 import { NodeBlock } from './rendered_node'
 import { NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from './rendered_childset_block'

@@ -9,8 +9,8 @@ import { PythonLanguageTray } from '@splootcode/language-python/tray/language'
 import { PythonNode } from '@splootcode/language-python/nodes/python_node'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { ScopeTray } from './scope_tray'
-import { SplootNode } from '@splootcode/core/language/node'
-import { TrayCategory } from '@splootcode/core/language/tray/tray'
+import { SplootNode } from '@splootcode/core'
+import { TrayCategory } from '@splootcode/core'
 
 interface TrayProps {
   rootNode: SplootNode

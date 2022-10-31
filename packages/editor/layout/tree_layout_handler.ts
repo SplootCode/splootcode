@@ -1,7 +1,7 @@
 import { BRACKET_WIDTH, NODE_BLOCK_HEIGHT, NODE_INLINE_SPACING, ROW_SPACING } from './layout_constants'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
 import { CursorMap } from '../context/cursor_map'
-import { LayoutComponent } from '@splootcode/core/language/type_registry'
+import { LayoutComponent } from '@splootcode/core'
 import { NodeBlock } from './rendered_node'
 import { NodeCursor, NodeSelection } from '../context/selection'
 import { RenderedChildSetBlock } from './rendered_childset_block'
