@@ -90,15 +90,7 @@ export const ScopeTray = (props: EntryProps) => {
       <AccordionItem border={'none'}>
         {({ isExpanded }) => (
           <>
-            <AccordionButton
-              size={'sm'}
-              border={'none'}
-              px={0}
-              py={1}
-              mb={1}
-              fontSize={'14px'}
-              _hover={{ bg: 'gray.700' }}
-            >
+            <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
               {isExpanded ? (
                 <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
               ) : (

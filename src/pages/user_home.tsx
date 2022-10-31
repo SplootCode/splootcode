@@ -3,10 +3,10 @@ import { Box, Container, Flex, HStack, Heading, Spacer, Text, VStack } from '@ch
 import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
-import { MainMenuItem, MenuBar } from '@splootcode/components/menu_bar'
+import { MainMenuItem, MenuBar } from '@splootcode/components'
 import { Project } from '@splootcode/core'
 import { ProjectLoader } from '@splootcode/core'
-import { SaveProjectModal } from '@splootcode/components/save_project_modal'
+import { SaveProjectModal } from '@splootcode/components'
 import { loadProjectFromFolder } from '@splootcode/core'
 
 interface UserHomePageProps {

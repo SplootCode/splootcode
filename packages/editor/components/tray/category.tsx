@@ -63,15 +63,7 @@ const CategoryView = (props: CategoryProps) => {
             <AccordionItem key={listing.category} border={'none'} isDisabled={listing.entries.length === 0} py={0}>
               {({ isExpanded }) => (
                 <>
-                  <AccordionButton
-                    size={'sm'}
-                    border={'none'}
-                    px={0}
-                    py={1}
-                    mb={1}
-                    fontSize={'14px'}
-                    _hover={{ bg: 'gray.700' }}
-                  >
+                  <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
                     {isExpanded ? (
                       <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
                     ) : (
@@ -92,15 +84,7 @@ const CategoryView = (props: CategoryProps) => {
           <AccordionItem key={listing.key} border={'none'}>
             {({ isExpanded }) => (
               <>
-                <AccordionButton
-                  size={'sm'}
-                  border={'none'}
-                  px={0}
-                  py={1}
-                  mb={1}
-                  fontSize={'14px'}
-                  _hover={{ bg: 'gray.700' }}
-                >
+                <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
                   {isExpanded ? (
                     <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
                   ) : (

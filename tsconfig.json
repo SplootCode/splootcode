@@ -15,7 +15,6 @@
     "outDir": "lib",
     "baseUrl": ".",
     "paths": {
-      "@splootcode/components/*": ["packages/components/*"],
       "@splootcode/editor/*": ["packages/editor/*"],
       "@splootcode/language-python/*": ["packages/language-python/*"],
       "@splootcode/language-web/*": ["packages/language-web/*"],

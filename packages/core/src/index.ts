@@ -84,7 +84,7 @@ export {
 
 // Project stuff
 export { Project, SerializedProject } from './language/projects/project'
-export { ProjectLoader, FileLoader, SaveError } from './language/projects/file_loader'
+export { ProjectLoader, ProjectMetadata, FileLoader, SaveError } from './language/projects/file_loader'
 export { SplootPackage, PackageBuildType } from './language/projects/package'
 export { SplootFile } from './language/projects/file'
 
