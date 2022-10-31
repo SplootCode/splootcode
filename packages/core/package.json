@@ -6,6 +6,9 @@
   "typings": "dist/index.d.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "test": "echo 'No tests for core package.'"
+  },
   "dependencies": {
   },
   "devDependencies": {

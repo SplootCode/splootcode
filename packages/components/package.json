@@ -18,6 +18,9 @@
   "files": [
     "dist/index.css"
   ],
+  "scripts": {
+    "test": "echo 'No tests for components package.'"
+  },
   "private": true,
   "peerDependencies": {
     "@chakra-ui/icons": "^1.1.7",

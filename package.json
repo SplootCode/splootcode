@@ -6,14 +6,14 @@
     "start-frame": "yarn vite --config vite-runtime.config.ts",
     "build": "yarn tsc && yarn vite build && yarn vite build --config vite-runtime.config.ts",
     "generate-types": "pushd . && cd python && ./generate.sh && popd",
-    "test": "jest"
+    "test": "yarn workspaces run test"
   },
   "license": "BUSL-1.1",
   "type": "module",
   "private": true,
   "workspaces": [
-    "packages/core",
     "packages/components",
+    "packages/core",
     "packages/editor",
     "packages/language-python"
   ],
