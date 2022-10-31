@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom'
 import { App } from './app'
 import { AppProviders } from './providers'
 import { loadPythonTypes } from '@splootcode/language-python'
-import { preloadFonts } from '@splootcode/editor/layout/layout_constants'
+import { preloadFonts } from '@splootcode/editor'
 
 import '@splootcode/components/styles.css'
+import '@splootcode/editor/styles.css'
 
 const root = document.getElementById('app-root')
 
