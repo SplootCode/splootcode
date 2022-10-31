@@ -74,7 +74,7 @@ export function getNodeShape(
 
 @observer
 export class EditorNodeBlock extends React.Component<NodeBlockProps> {
-  constructor(props) {
+  constructor(props: NodeBlockProps) {
     super(props)
   }
 

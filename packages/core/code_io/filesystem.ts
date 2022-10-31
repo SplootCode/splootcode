@@ -5,12 +5,14 @@ import { SplootPackage } from '../language/projects/package'
 async function savePackage(directoryHandle: FileSystemDirectoryHandle, project: Project, pack: SplootPackage) {
   const packDir = await directoryHandle.getDirectoryHandle(pack.name, { create: true })
   const packFile = await packDir.getFileHandle('package.sp', { create: true })
+  // @ts-ignore
   const writable = await packFile.createWritable()
   await writable.write(pack.serialize())
   await writable.close()
   // Save each file
   const promises = pack.fileOrder.map(async (filename) => {
     const fileHandle = await packDir.getFileHandle(filename + '.sp', { create: true })
+    // @ts-ignore
     const writable = await fileHandle.createWritable()
     await writable.write(pack.files[filename].serialize())
     await writable.close()
@@ -21,6 +23,7 @@ async function savePackage(directoryHandle: FileSystemDirectoryHandle, project: 
 export async function exportProjectToFolder(directoryHandle: FileSystemDirectoryHandle, project: Project) {
   // Write project file
   const fileHandle = await directoryHandle.getFileHandle('project.sp', { create: true })
+  // @ts-ignore
   const writable = await fileHandle.createWritable()
   await writable.write(project.serialize())
   await writable.close()

@@ -40,7 +40,7 @@ export class WorkerManager {
 
   initialiseWorker() {
     if (!this.worker) {
-      this.worker = new Worker(this.workerURL)
+      this.worker = new Worker(this.workerURL, { type: 'module' })
       this.worker.addEventListener('message', this.handleMessageFromWorker)
     }
   }
@@ -233,7 +233,7 @@ export class WorkerManager {
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
     } else if (type === 'runtime_capture' || type === 'module_info') {
-      parent.postMessage(event.data, process.env.EDITOR_DOMAIN)
+      parent.postMessage(event.data, import.meta.env.SPLOOT_EDITOR_DOMAIN)
     } else if (type === 'finished') {
       this.stateCallBack(WorkerState.READY)
     } else {

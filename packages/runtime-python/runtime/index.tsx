@@ -1,20 +1,20 @@
+import './terminal.css'
 import 'tslib'
 import 'xterm/css/xterm.css'
 
-import './terminal.css'
-
-import { FitAddon } from 'xterm-addon-fit'
-import { Terminal } from 'xterm'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import WasmTTY from './wasm-tty/wasm-tty'
 import { AppProviders } from './providers'
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import { FitAddon } from 'xterm-addon-fit'
+import { Terminal } from 'xterm'
 import { WorkerManager, WorkerState } from './worker-manager'
 
-const PARENT_TARGET_DOMAIN = process.env.EDITOR_DOMAIN
+// @ts-ignore
+import WorkerURL from './webworker?worker&url'
+
+const PARENT_TARGET_DOMAIN = import.meta.env.SPLOOT_EDITOR_DOMAIN
 export enum FrameState {
   DEAD = 0,
   LOADING,
@@ -186,7 +186,6 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       switch (data) {
         case '\r': // ENTER
         case '\x0a': // CTRL+J
-        case '\x0d': // CTRL+M
           this.resolveActiveInput(this.wasmTty.getInput())
           break
 
@@ -301,7 +300,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   initialiseWorkerManager = () => {
     this.workerManager = new WorkerManager(
-      process.env.RUNTIME_PYTHON_WEBWORKER_PATH,
+      WorkerURL,
       {
         stdin: this.getTerminalInput,
         stdout: (s: string) => {

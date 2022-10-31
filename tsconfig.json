@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": ["dom", "es2019", "webworker"],
+    "target": "ES2020",
+    "module": "ES2020",
+    "lib": ["dom", "ES2020", "webworker"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -16,24 +16,13 @@
     "baseUrl": ".",
     "paths": {
       "@splootcode/*": ["packages/*"]
-    }
+    },
+    "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },
   "exclude": [
     "node_modules",
+    "dist",
+    "dist-runtime"
   ],
   "rootDir": "src",
-  "references": [
-    {
-      "path": "./packages/components"
-    },
-    {
-      "path": "./packages/core"
-    },
-    {
-      "path": "./packages/editor"
-    },
-    {
-      "path": "./packages/language-python"
-    },
-  ]
 }

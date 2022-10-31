@@ -8,6 +8,7 @@ import { ActiveCursor } from './cursor'
 import { Allotment } from 'allotment'
 import { DragOverlay } from './drag_overlay'
 import { EditBox } from './edit_box'
+import { EditorHostingConfig } from '../editor_hosting_config'
 import { ExpandedListBlockView } from './list_block'
 import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
@@ -27,6 +28,7 @@ interface EditorProps {
   selection: NodeSelection
   validationWatcher: ValidationWatcher
   banner?: ReactNode
+  editorHostingConfig: EditorHostingConfig
 }
 
 @observer
@@ -87,7 +89,12 @@ export class Editor extends React.Component<EditorProps> {
               </div>
             </div>
             <div className="python-preview-panel">
-              <PythonFrame pkg={pkg} validationWatcher={validationWatcher} />
+              <PythonFrame
+                pkg={pkg}
+                validationWatcher={validationWatcher}
+                frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}
+                frameDomain={this.props.editorHostingConfig.FRAME_VIEW_DOMAIN}
+              />
             </div>
           </Allotment>
         </div>

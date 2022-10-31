@@ -53,19 +53,31 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   constructor(project: Project) {
     this.project = project
     this.rootNode = null
-    this.program = createStructuredProgram(process.env.TYPESHED_PATH)
+    this.program = null
     this.nodeMap = new Map()
     this.currentParseID = null
     this.latestParseID = null
   }
 
+  initialise(typeshedPath: string) {
+    try {
+      this.program = createStructuredProgram(typeshedPath)
+    } catch (e) {
+      console.warn('Failed to initialize Pyright program')
+      console.warn(e)
+    }
+  }
+
   async loadFile(pack: SplootPackage, file: SplootFile) {
     const loadedFile = pack.getLoadedFile(file.name)
     this.rootNode = (await loadedFile).rootNode as PythonFile
-    await this.updateParse()
+    this.updateParse()
   }
 
   getPyrightTypeForExpression(node: SplootNode): Type {
+    if (!this.program) {
+      return null
+    }
     const exprNode = this.nodeMap.get(node)
     if (exprNode) {
       const typeResult = this.program.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
@@ -75,6 +87,10 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   }
 
   getPyrightFunctionSignature(callNode: SplootNode, activeIndex: number): CallSignatureInfo {
+    if (!this.program) {
+      return null
+    }
+
     const exprNode = this.nodeMap.get(callNode) as CallNode
     if (exprNode) {
       const sig = this.program.evaluator.getCallSignatureInfo(exprNode, activeIndex, true)
@@ -99,6 +115,10 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   }
 
   async runParse() {
+    if (!this.program) {
+      return
+    }
+
     if (this.currentParseID) {
       // Parse already in progress - avoid concurrent parses
       return
