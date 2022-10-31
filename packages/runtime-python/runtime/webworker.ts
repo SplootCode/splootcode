@@ -1,7 +1,5 @@
 import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
-import 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js'
-
 import executorURL from '../../../python/executor.py'
 import moduleLoaderURL from '../../../python/module_loader.py'
 import requestsPackageURL from '../../../python/packages/requests-2.28.1-py3-none-any.whl'
@@ -200,6 +198,9 @@ const getNodeTree = () => {
 }
 
 const initialise = async () => {
+  // @ts-ignore
+  await import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
+
   executorCode = await (await fetch(executorURL)).text()
   moduleLoaderCode = await (await fetch(moduleLoaderURL)).text()
   // @ts-ignore

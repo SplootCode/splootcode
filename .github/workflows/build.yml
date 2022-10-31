@@ -25,6 +25,6 @@ jobs:
       - name: Run Python generation
         run: cd python && ./generate.sh && cd ..
       - name: Build
-        run: yarn build-prod
+        run: yarn build
       - name: Test
         run: yarn test

@@ -186,7 +186,6 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       switch (data) {
         case '\r': // ENTER
         case '\x0a': // CTRL+J
-        case '\x0d': // CTRL+M
           this.resolveActiveInput(this.wasmTty.getInput())
           break
 
