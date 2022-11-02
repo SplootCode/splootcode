@@ -12,7 +12,7 @@
     "skipDefaultLibCheck": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
-    "outDir": "lib",
+    "noEmit": true,
     "baseUrl": ".",
     "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },

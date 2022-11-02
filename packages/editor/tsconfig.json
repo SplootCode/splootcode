@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "downlevelIteration": true,
-    "outDir": "out",
+    "noEmit": true,
     "baseUrl": ".",
     "types": ["jest"]
   },

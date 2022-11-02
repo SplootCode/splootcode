@@ -54,8 +54,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@splootcode/core": "^1.0.0",
-    "@splootcode/language-python": "^1.0.0",
     "allotment": "^1.11.1",
     "fuse.js": "^6.6.2",
     "mobx": "^5.15.0",

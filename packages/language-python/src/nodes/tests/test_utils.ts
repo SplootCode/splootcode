@@ -1,4 +1,5 @@
 import { ChildSetType, SplootNode, isNodeInCategory } from '@splootcode/core'
+import { expect } from '@jest/globals'
 
 export function deepEquals(node1: SplootNode, node2: SplootNode) {
   expect(node1.type).toEqual(node2.type)
