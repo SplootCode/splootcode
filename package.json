@@ -4,7 +4,7 @@
     "lint-fix": "yarn eslint . --fix",
     "start": "yarn vite",
     "start-frame": "yarn vite --config vite-runtime.config.ts",
-    "check-types": "yarn workspaces run tsc && yarn tsc",
+    "check:packages": "yarn workspaces run tsc",
     "build:packages": "yarn workspaces run build",
     "build:app": "yarn vite build",
     "build:runtime": "yarn vite build --config vite-runtime.config.ts",

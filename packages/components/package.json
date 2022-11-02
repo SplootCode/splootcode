@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "test": "echo 'No tests for components package.'",
-    "build": "yarn rollup -c"
+    "build": "yarn tsc && yarn rollup -c"
   },
   "private": true,
   "peerDependencies": {
@@ -42,5 +42,7 @@
     "tslib": "^1.10.0",
     "typescript": "^4.8.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@splootcode/core": "^1.0.0"
+  }
 }
