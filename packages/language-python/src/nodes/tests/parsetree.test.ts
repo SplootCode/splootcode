@@ -3,6 +3,7 @@ import { ParseNodeType, isExpressionNode } from 'structured-pyright'
 import { PythonNode } from '../python_node'
 import { PythonStatement } from '../python_statement'
 import { TestWalker } from './tree_walker'
+import { beforeAll, describe, expect, test } from '@jest/globals'
 import { getEmptyStatementNodes } from './single_examples'
 import { loadPythonTypes } from '../../type_loader'
 

@@ -20,6 +20,7 @@
       "packages/core",
       "packages/components",
       "packages/language-python",
+      "packages/language-web",
       "packages/editor",
       "packages/runtime-python"
     ]

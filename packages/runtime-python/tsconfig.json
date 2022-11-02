@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "resolveJsonModule": true,
-    "outDir": "lib",
+    "noEmit": true,
     "baseUrl": ".",
   },
   "exclude": [

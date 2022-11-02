@@ -15,7 +15,7 @@
     "downlevelIteration": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "outDir": "lib",
+    "noEmit": true,
     "baseUrl": ".",
   },
   "include": [
