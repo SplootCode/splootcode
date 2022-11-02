@@ -18,7 +18,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["unused-imports", "sort-imports-es6-autofix"],
+  "plugins": ["unused-imports", "sort-imports-es6-autofix", "import"],
   "rules": {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }],
@@ -26,6 +26,7 @@
     "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/ban-ts-comment": ["off"],
     "@typescript-eslint/no-empty-function": ["off"],
+    "import/no-duplicates": ["error"],
     "unused-imports/no-unused-imports": "error",
     "sort-imports-es6-autofix/sort-imports-es6": ["error", {
       "ignoreCase": false,

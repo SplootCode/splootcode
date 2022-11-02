@@ -16,8 +16,5 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "paths": {
-      "@splootcode/*": ["../*"]
-    }
   }
 }

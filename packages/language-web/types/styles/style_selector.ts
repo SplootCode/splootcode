@@ -1,25 +1,24 @@
 import * as csstree from 'css-tree'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HighlightColorCategory } from '@splootcode/core/colors'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+  registerType,
+} from '@splootcode/core'
 import { STRING_LITERAL, StringLiteral } from '../js/literals'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import type { SerializedNode } from '@splootcode/core'
 
 export const STYLE_SELECTOR_BASIC = 'STYLE_SELECTOR_BASIC'
 

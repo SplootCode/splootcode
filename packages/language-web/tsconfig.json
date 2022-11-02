@@ -17,15 +17,7 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "paths": {
-      "@splootcode/*": ["../*"]
-    }
   },
-  "references": [
-    {
-      "path": "../core"
-    },
-  ],
   "include": [
     "code_io/**/*",
     "types/**/*",

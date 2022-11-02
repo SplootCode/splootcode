@@ -37,6 +37,7 @@ export default defineConfig({
     },
   ],
   optimizeDeps: {
+    include: ['@chakra-ui/react', '@chakra-ui/icons'],
     esbuildOptions: {
       define: {
         global: 'globalThis',
@@ -56,6 +57,21 @@ export default defineConfig({
         // used during production bundling
         nodePolyfills(),
       ],
+      output: {
+        manualChunks: {
+          chakra: [
+            '@chakra-ui/react',
+            '@chakra-ui/icons',
+            '@emotion/react',
+            '@emotion/styled',
+            'focus-visible',
+            'framer-motion',
+          ],
+          pyright: ['structured-pyright'],
+          editor: ['@splootcode/editor'],
+          python: ['@splootcode/language-python'],
+        },
+      },
     },
   },
 })

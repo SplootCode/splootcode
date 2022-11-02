@@ -1,5 +1,5 @@
 import { SplootHtmlElement } from './html_element'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+import { SuggestedNode } from '@splootcode/core'
 
 // https://github.com/microsoft/vscode-custom-data/blob/master/web-data/data/browsers.html-data.json
 import * as vscodeHtmlData from 'vscode-web-custom-data/data/browsers.html-data.json'

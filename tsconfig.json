@@ -14,15 +14,13 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "paths": {
-      "@splootcode/*": ["packages/*"]
-    },
     "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },
+  "include": ["src", "src-runtime"],
   "exclude": [
     "node_modules",
     "dist",
-    "dist-runtime"
+    "dist-runtime",
+    "packages"
   ],
-  "rootDir": "src",
 }

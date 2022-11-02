@@ -1,26 +1,25 @@
 import * as recast from 'recast'
 
 import { CallExpressionKind, ExpressionKind } from 'ast-types/gen/kinds'
-import { ChildSetType } from '@splootcode/core/language/childset'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
+  registerType,
+} from '@splootcode/core'
 import { VARIABLE_REFERENCE, VariableReferenceGenerator } from './variable_reference'
 
-import { HighlightColorCategory } from '@splootcode/core/colors'
 import { JavaScriptSplootNode } from '../../javascript_node'
 import { MEMBER_EXPRESSION } from './member_expression'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'

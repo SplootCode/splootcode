@@ -1,26 +1,25 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { HighlightColorCategory } from '@splootcode/core/colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
+  registerType,
+} from '@splootcode/core'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { ObjectPropertyKind, StatementKind } from 'ast-types/gen/kinds'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 export const JSS_STYLE_BLOCK = 'JSS_STYLE_BLOCK'
 export const LOCAL_STYLES_IDENTIFIER = 'jss_local_styles'

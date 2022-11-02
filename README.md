@@ -35,10 +35,16 @@ Install dependencies:
 $ yarn install
 ```
 
-Generate type information for built-in variables and functions.
+Generate type information for built-in variables and functions (requires Python 3.8+).
 
 ```
 $ yarn generate-types
+```
+
+Build the yarn workspace packages:
+
+```
+$ yarn build:packages
 ```
 
 There are two main parts to this project, the editor and the runtime which is an iframe which executes the code.

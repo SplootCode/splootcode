@@ -1,23 +1,22 @@
-import { HighlightColorCategory } from '@splootcode/core/colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
+  registerType,
+} from '@splootcode/core'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 export const BINARY_OPERATOR = 'BINARY_OPERATOR'
 

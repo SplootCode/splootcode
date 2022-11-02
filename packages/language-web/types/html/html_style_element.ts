@@ -1,27 +1,25 @@
 import * as csstree from 'css-tree'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { HighlightColorCategory } from '@splootcode/core/colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
-import { ParentReference } from '@splootcode/core/language/node'
+  registerType,
+} from '@splootcode/core'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { SplootHtmlAttribute } from './html_attribute'
 import { StyleRule } from '../styles/style_rule'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 import { isTagValidWithParent } from './tags'
 
 export const HTML_STYLE_ELEMENT = 'HTML_STYLE_ELEMENT'

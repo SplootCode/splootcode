@@ -1,6 +1,12 @@
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core/language/node_category_registry'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
-import { SerializedNode, TypeRegistration, registerType } from '@splootcode/core/language/type_registry'
+import {
+  NodeCategory,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  TypeRegistration,
+  registerNodeCateogry,
+  registerType,
+} from '@splootcode/core'
 
 export const DATA_FIELD_DECLARATION = 'DATA_FIELD_DECLARATION'
 

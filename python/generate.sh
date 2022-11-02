@@ -17,5 +17,5 @@ else
   source venv/bin/activate
 fi
 
-python generate_tray.py -o ../packages/language-python/generated/python_tray.json
-python generate_builtins.py -o ../packages/language-python/generated/python_builtins.json
+python generate_tray.py -o ../packages/language-python/src/generated/python_tray.json
+python generate_builtins.py -o ../packages/language-python/src/generated/python_builtins.json

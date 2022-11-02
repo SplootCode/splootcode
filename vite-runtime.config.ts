@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
@@ -16,17 +15,16 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'splootframepythonclient.html'),
       },
+      output: {
+        manualChunks: {
+          xterm: ['xterm'],
+          chakra: ['@chakra-ui/react', '@chakra-ui/icons'],
+        },
+      },
     },
   },
   plugins: [
-    tsconfigPaths({
-      projects: ['./packages/runtime-python'],
-    }),
-    react({
-      babel: {
-        configFile: true,
-      },
-    }),
+    react(),
     {
       name: 'configure-response-headers',
       configureServer: (server) => {

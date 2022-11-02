@@ -2,7 +2,7 @@ import './app.css'
 
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { LocalStorageProjectLoader } from '@splootcode/core/code_io/local_storage_project_loader'
+import { LocalStorageProjectLoader } from '@splootcode/core'
 import { ProjectEditor } from './pages/project_editor'
 import { UserHomePage } from './pages/user_home'
 

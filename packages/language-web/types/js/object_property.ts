@@ -1,28 +1,27 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core/language/childset'
-import { ExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '@splootcode/core/colors'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core/language/type_registry'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   registerAutocompleter,
   registerNodeCateogry,
-} from '@splootcode/core/language/node_category_registry'
+  registerType,
+} from '@splootcode/core'
+import { ExpressionKind, ObjectPropertyKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { OBJECT_EXPRESSION, ObjectExpression } from './object_expression'
-import { ParentReference, SplootNode } from '@splootcode/core/language/node'
 import { SplootExpression } from './expression'
-import { SuggestedNode } from '@splootcode/core/language/autocomplete/suggested_node'
 
 export const OBJECT_PROPERTY = 'OBJECT_PROPERTY'
 
