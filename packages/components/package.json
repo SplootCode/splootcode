@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "test": "echo 'No tests for components package.'",
-    "build": "yarn tsc && yarn rollup -c"
+    "build": "yarn rollup -c"
   },
   "private": true,
   "peerDependencies": {

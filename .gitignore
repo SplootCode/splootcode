@@ -117,3 +117,5 @@ frame-dist
 
 # TernJS port file
 .tern-port
+
+.rollup.cache

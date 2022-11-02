@@ -10,7 +10,7 @@
     "build:runtime": "yarn vite build --config vite-runtime.config.ts",
     "build": "yarn build:packages && yarn build:app && yarn build:runtime",
     "generate-types": "pushd . && cd python && ./generate.sh && popd",
-    "test": "yarn workspaces run test"
+    "test": "yarn jest"
   },
   "license": "BUSL-1.1",
   "type": "module",
