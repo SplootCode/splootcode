@@ -15,6 +15,7 @@ export enum WorkerState {
 }
 
 export class WorkerManager {
+  private parentWindowDomain: string
   private workerURL: string
   private worker: Worker
   private standardIO: StandardIO
@@ -27,7 +28,13 @@ export class WorkerManager {
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
 
-  constructor(workerURL: string, standardIO: StandardIO, stateCallback: (state: WorkerState) => void) {
+  constructor(
+    parentWindowDomain: string,
+    workerURL: string,
+    standardIO: StandardIO,
+    stateCallback: (state: WorkerState) => void
+  ) {
+    this.parentWindowDomain = parentWindowDomain
     this.workerURL = workerURL
     this.worker = null
     this.standardIO = standardIO
@@ -233,7 +240,7 @@ export class WorkerManager {
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
     } else if (type === 'runtime_capture' || type === 'module_info') {
-      parent.postMessage(event.data, import.meta.env.SPLOOT_EDITOR_DOMAIN)
+      parent.postMessage(event.data, this.parentWindowDomain)
     } else if (type === 'finished') {
       this.stateCallBack(WorkerState.READY)
     } else {

@@ -37,6 +37,7 @@ export default defineConfig({
     },
   ],
   optimizeDeps: {
+    include: ['@chakra-ui/react', '@chakra-ui/icons'],
     esbuildOptions: {
       define: {
         global: 'globalThis',

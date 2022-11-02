@@ -12,7 +12,7 @@
     "downlevelIteration": true,
     "outDir": "out",
     "baseUrl": ".",
-    "types": ["jest", "@types/wicg-file-system-access"]
+    "types": ["@types/wicg-file-system-access"]
   },
   "include": ["src"],
   "exclude": [

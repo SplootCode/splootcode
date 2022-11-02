@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
@@ -19,14 +18,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    tsconfigPaths({
-      projects: ['./packages/runtime-python'],
-    }),
-    react({
-      babel: {
-        configFile: true,
-      },
-    }),
+    react(),
     {
       name: 'configure-response-headers',
       configureServer: (server) => {

@@ -16,9 +16,5 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "paths": {
-      "@splootcode/components/*": ["../components/*"],
-      "@splootcode/editor/*": ["../editor/*"],
-    }
   }
 }

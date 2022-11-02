@@ -11,10 +11,6 @@ import { FitAddon } from 'xterm-addon-fit'
 import { Terminal } from 'xterm'
 import { WorkerManager, WorkerState } from './worker-manager'
 
-// @ts-ignore
-import WorkerURL from './webworker?worker&url'
-
-const PARENT_TARGET_DOMAIN = import.meta.env.SPLOOT_EDITOR_DOMAIN
 export enum FrameState {
   DEAD = 0,
   LOADING,
@@ -22,11 +18,10 @@ export enum FrameState {
   UNMOUNTED,
 }
 
-function sendToParent(payload) {
-  parent.postMessage(payload, PARENT_TARGET_DOMAIN)
+interface ConsoleProps {
+  parentWindowDomain: string
+  workerURL: string
 }
-
-interface ConsoleProps {}
 
 interface ConsoleState {
   ready: boolean
@@ -65,6 +60,10 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
       runtimeCapture: true,
       autoRun: true,
     }
+  }
+
+  sendToParent = (payload) => {
+    parent.postMessage(payload, this.props.parentWindowDomain)
   }
 
   render() {
@@ -265,7 +264,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     this.term.onData(this.handleTermData)
 
     window.addEventListener('message', this.handleMessage, false)
-    sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
+    this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
 
     window.addEventListener('resize', this.handleResize, false)
     this.initialiseWorkerManager()
@@ -300,7 +299,8 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
   initialiseWorkerManager = () => {
     this.workerManager = new WorkerManager(
-      WorkerURL,
+      this.props.parentWindowDomain,
+      this.props.workerURL,
       {
         stdin: this.getTerminalInput,
         stdout: (s: string) => {
@@ -314,7 +314,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         if (state === WorkerState.READY) {
           this.setState({ ready: true, running: false })
           this.pasteLinesBuffer = []
-          sendToParent({ type: 'ready' })
+          this.sendToParent({ type: 'ready' })
         } else if (state === WorkerState.DISABLED) {
           this.setState({ ready: false, running: false })
         }
@@ -343,9 +343,9 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     switch (data.type) {
       case 'heartbeat':
         if (this.state.nodeTreeLoaded) {
-          sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
+          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         } else {
-          sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
+          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
         }
         break
       case 'nodetree':
@@ -354,7 +354,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
           nodeTreeLoaded: true,
           nodeTreeErrors: false,
         })
-        sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
+        this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.state.autoRun && this.state.ready && !this.state.running) {
           this.rerun()
         }
@@ -371,11 +371,13 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
   }
 }
 
-const root = document.getElementById('app-root')
+export function initializeConsole(editorDomain: string, workerURL: string) {
+  const root = document.getElementById('app-root')
 
-ReactDOM.render(
-  <AppProviders>
-    <Console />
-  </AppProviders>,
-  root
-)
+  ReactDOM.render(
+    <AppProviders>
+      <Console parentWindowDomain={editorDomain} workerURL={workerURL} />
+    </AppProviders>,
+    root
+  )
+}

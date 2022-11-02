@@ -14,18 +14,13 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "paths": {
-      "@splootcode/editor/*": ["packages/editor/*"],
-      "@splootcode/language-python/*": ["packages/language-python/*"],
-      "@splootcode/language-web/*": ["packages/language-web/*"],
-      "@splootcode/runtime-python/*": ["packages/runtime-python/*"],
-    },
     "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },
+  "include": ["src", "src-runtime"],
   "exclude": [
     "node_modules",
     "dist",
-    "dist-runtime"
+    "dist-runtime",
+    "packages"
   ],
-  "rootDir": "src",
 }

@@ -1,8 +1,4 @@
-import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
-
-import executorURL from '../../../python/executor.py'
-import moduleLoaderURL from '../../../python/module_loader.py'
-import requestsPackageURL from '../../../python/packages/requests-2.28.1-py3-none-any.whl'
+import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -197,12 +193,18 @@ const getNodeTree = () => {
   return nodetree
 }
 
-const initialise = async () => {
+interface StaticURLs {
+  executorURL: string
+  moduleLoaderURL: string
+  requestsPackageURL: string
+}
+
+export const initialize = async (urls: StaticURLs) => {
   // @ts-ignore
   await import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
 
-  executorCode = await (await fetch(executorURL)).text()
-  moduleLoaderCode = await (await fetch(moduleLoaderURL)).text()
+  executorCode = await (await fetch(urls.executorURL)).text()
+  moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
   // @ts-ignore
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
   pyodide.registerJsModule('fakeprint', {
@@ -234,15 +236,13 @@ const initialise = async () => {
   })
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
-  await micropip.install(requestsPackageURL)
+  await micropip.install(urls.requestsPackageURL)
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({
     type: 'ready',
   })
 }
-
-initialise()
 
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
