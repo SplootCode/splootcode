@@ -17,10 +17,10 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/components",
       "packages/core",
-      "packages/editor",
+      "packages/components",
       "packages/language-python",
+      "packages/editor",
       "packages/runtime-python"
     ]
   },
