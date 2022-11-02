@@ -1,7 +1,6 @@
 import { CallNode, ExpressionNode, ParseNodeType } from 'structured-pyright'
-import { ChildSetType } from '@splootcode/core'
+import { ChildSetType, NodeCategory } from '@splootcode/core'
 import { FunctionArgType, FunctionSignature } from '../scope/types'
-import { NodeCategory } from '@splootcode/core'
 import { PYTHON_ARGUMENT, PythonArgument } from './python_argument'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'

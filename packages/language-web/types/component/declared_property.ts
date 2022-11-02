@@ -1,16 +1,19 @@
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { VariableDefinition } from '@splootcode/language-web/definitions/loader'
 
 export const DELCARED_PROEPRTY = 'DELCARED_PROEPRTY'

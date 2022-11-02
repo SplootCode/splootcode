@@ -1,18 +1,20 @@
-import { ChildSetType } from '@splootcode/core'
-import { ExpressionNode, MemberAccessNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
-import { FunctionSignature } from '../scope/types'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
+import { ExpressionNode, MemberAccessNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
+import { FunctionSignature } from '../scope/types'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonCallNode } from './python_call_node'
 import { parseToPyright } from './utils'

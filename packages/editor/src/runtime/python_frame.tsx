@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
-import { ChildSetMutation } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
-import { SplootPackage } from '@splootcode/core'
-import { ValidationWatcher } from '@splootcode/core'
-import { globalMutationDispatcher } from '@splootcode/core'
+import {
+  CapturePayload,
+  ChildSetMutation,
+  FunctionDeclarationData,
+  NodeMutation,
+  NodeMutationType,
+  ScopeMutation,
+  ScopeMutationType,
+  SplootPackage,
+  StatementCapture,
+  ValidationWatcher,
+  globalMutationDispatcher,
+} from '@splootcode/core'
 
 import './python_frame.css'
-import { CapturePayload, FunctionDeclarationData, StatementCapture } from '@splootcode/core'
-import { PythonFile } from '@splootcode/language-python'
-import { PythonModuleSpec } from '@splootcode/language-python'
-import { PythonScope } from '@splootcode/language-python'
-import { ScopeMutation, ScopeMutationType } from '@splootcode/core'
+import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 
 export enum FrameState {
   DEAD = 0,

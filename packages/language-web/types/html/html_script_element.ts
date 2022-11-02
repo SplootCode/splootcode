@@ -1,24 +1,28 @@
 import * as recast from 'recast'
 
 import { ASTNode } from 'ast-types'
-import { ChildSetType } from '@splootcode/core'
-import { ExpressionKind, StatementKind } from 'ast-types/gen/kinds'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { ExpressionKind, StatementKind } from 'ast-types/gen/kinds'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
 import { SplootHtmlAttribute } from './html_attribute'
-import { SuggestedNode } from '@splootcode/core'
 import { isTagValidWithParent } from './tags'
 
 export const HTML_SCRIPT_ElEMENT = 'HTML_SCRIPT_ELEMENT'

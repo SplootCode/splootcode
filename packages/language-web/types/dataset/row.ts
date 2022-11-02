@@ -1,10 +1,16 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core'
+import {
+  ChildSetType,
+  NodeCategory,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  TypeRegistration,
+  registerNodeCateogry,
+  registerType,
+} from '@splootcode/core'
 import { ExpressionKind, ObjectExpressionKind } from 'ast-types/gen/kinds'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
-import { SerializedNode, TypeRegistration, registerType } from '@splootcode/core'
 import { SplootDataStringEntry } from './string_entry'
 
 export interface DataEntrySplootNode extends SplootNode {

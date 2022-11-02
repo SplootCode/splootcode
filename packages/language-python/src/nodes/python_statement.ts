@@ -1,27 +1,26 @@
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  StatementCapture,
+  TypeRegistration,
   registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
+  registerType,
 } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { ParseNodeType, StatementListNode, StatementNode } from 'structured-pyright'
 import { PythonElifBlock } from './python_elif'
 import { PythonNode } from './python_node'
-import { StatementCapture } from '@splootcode/core'
 
 export const PYTHON_STATEMENT = 'PYTHON_STATEMENT'
 

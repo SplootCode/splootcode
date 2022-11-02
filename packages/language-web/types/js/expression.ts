@@ -1,21 +1,23 @@
 import * as recast from 'recast'
 
 import { BINARY_OPERATOR, BinaryOperator } from './binary_operator'
-import { ChildSetType } from '@splootcode/core'
-import { ExpressionKind, UnaryExpressionKind } from 'ast-types/gen/kinds'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { ExpressionKind, UnaryExpressionKind } from 'ast-types/gen/kinds'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { JavaScriptSplootNode } from '../../javascript_node'
 
 export const SPLOOT_EXPRESSION = 'SPLOOT_EXPRESSION'
 

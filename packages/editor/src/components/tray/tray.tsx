@@ -4,13 +4,10 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { Category } from './category'
-import { PYTHON_FILE } from '@splootcode/language-python'
-import { PythonLanguageTray } from '@splootcode/language-python'
-import { PythonNode } from '@splootcode/language-python'
+import { PYTHON_FILE, PythonLanguageTray, PythonNode } from '@splootcode/language-python'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { ScopeTray } from './scope_tray'
-import { SplootNode } from '@splootcode/core'
-import { TrayCategory } from '@splootcode/core'
+import { SplootNode, TrayCategory } from '@splootcode/core'
 
 interface TrayProps {
   rootNode: SplootNode

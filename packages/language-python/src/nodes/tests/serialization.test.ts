@@ -1,7 +1,5 @@
-import { NodeCategory, getNodesForCategory } from '@splootcode/core'
-import { SplootNode } from '@splootcode/core'
+import { NodeCategory, SplootNode, deserializeNode, getNodesForCategory } from '@splootcode/core'
 import { deepEquals, nodeSanityCheck } from './test_utils'
-import { deserializeNode } from '@splootcode/core'
 import { getEmptyStatementNodes, getExpressionTokenNodes } from './single_examples'
 import { loadPythonTypes } from '../../type_loader'
 

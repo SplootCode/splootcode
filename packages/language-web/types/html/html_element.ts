@@ -1,20 +1,24 @@
-import { ChildSetType } from '@splootcode/core'
-import { HTML_SCRIPT_ElEMENT } from './html_script_element'
-import { HTML_STYLE_ELEMENT } from './html_style_element'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { HTML_SCRIPT_ElEMENT } from './html_script_element'
+import { HTML_STYLE_ELEMENT } from './html_style_element'
 import { STRING_LITERAL, StringLiteral } from '../js/literals'
 import { SplootHtmlAttribute } from './html_attribute'
-import { SuggestedNode } from '@splootcode/core'
 import { getValidElements } from './tags'
 
 export const HTML_ElEMENT = 'HTML_ELEMENT'

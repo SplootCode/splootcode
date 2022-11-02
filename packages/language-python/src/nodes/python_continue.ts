@@ -1,22 +1,26 @@
 import { ContinueNode, ParseNodeType } from 'structured-pyright'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_FOR_LOOP } from './python_for'
 import { PYTHON_WHILE_LOOP } from './python_while'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { StatementCapture } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_CONTINUE = 'PY_CONTINUE'
 

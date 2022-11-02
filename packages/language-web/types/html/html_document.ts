@@ -1,17 +1,19 @@
-import { ChildSetType } from '@splootcode/core'
-import { DOMParser, XMLSerializer } from 'xmldom'
-import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { DOMParser, XMLSerializer } from 'xmldom'
+import { HTML_ElEMENT, SplootHtmlElement } from './html_element'
 import { STRING_LITERAL, StringLiteral } from '../js/literals'
 
 export const HTML_DOCUMENT = 'HTML_DOCUMENT'

@@ -1,22 +1,26 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core'
-import { ComponentProperty } from './component_property'
-import { ExpressionKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { ComponentProperty } from './component_property'
+import { ExpressionKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { SPLOOT_EXPRESSION, SplootExpression } from '../js/expression'
-import { SuggestedNode } from '@splootcode/core'
 import { getValidReactElements } from '../html/tags'
 
 export const REACT_ELEMENT = 'REACT_ELEMENT'

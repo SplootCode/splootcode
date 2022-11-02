@@ -3,17 +3,21 @@ import { action, observable } from 'mobx'
 import { AttachRightLayoutHandler } from './attach_right_layout_handler'
 import { BlockChildSetLayoutHandler } from './block_layout_handler'
 import { BreadcrumbsLayoutHandler } from './breadcrumbs_layout_handler'
-import { ChildSet } from '@splootcode/core'
+import {
+  ChildSet,
+  ChildSetMutation,
+  ChildSetMutationType,
+  ChildSetObserver,
+  LayoutComponent,
+  LayoutComponentType,
+  NodeCategory,
+  SplootNode,
+} from '@splootcode/core'
 import { ChildSetLayoutHandler } from './childset_layout_handler'
-import { ChildSetMutation, ChildSetMutationType } from '@splootcode/core'
-import { ChildSetObserver } from '@splootcode/core'
 import { CursorMap } from '../context/cursor_map'
 import { CursorPosition, NodeCursor, NodeSelection, NodeSelectionState, SelectionState } from '../context/selection'
 import { EditBoxData } from '../context/edit_box'
-import { LayoutComponent, LayoutComponentType } from '@splootcode/core'
 import { NodeBlock, RenderedParentRef } from './rendered_node'
-import { NodeCategory } from '@splootcode/core'
-import { SplootNode } from '@splootcode/core'
 import { StackLayoutHandler } from './stack_layout_handler'
 import { TokenLayoutHandler } from './token_layout_handler'
 import { TreeLayoutHandler } from './tree_layout_handler'

@@ -1,20 +1,24 @@
 import { ConstantNode, KeywordType, ParseNode, ParseNodeType } from 'structured-pyright'
 
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_NONE = 'PYTHON_NONE'
 export const PYTHON_BOOL = 'PYTHON_BOOL'

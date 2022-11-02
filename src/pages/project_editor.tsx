@@ -1,13 +1,9 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import { AutosaveHandler } from '@splootcode/components'
-import { MainMenuItem, MenuBar, MenuBarItem } from '@splootcode/components'
-import { Project } from '@splootcode/core'
-import { ProjectLoader } from '@splootcode/core'
+import { AutosaveHandler, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
+import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor'
-import { SaveProjectModal } from '@splootcode/components'
-import { exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { loadExampleProject } from '../code_io/static_projects'
 import { useHistory, useParams } from 'react-router-dom'
 

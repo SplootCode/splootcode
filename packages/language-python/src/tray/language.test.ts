@@ -1,6 +1,5 @@
 import { PythonLanguageTray } from './language'
-import { TrayCategory, TrayEntry, TrayListing } from '@splootcode/core'
-import { deserializeNode } from '@splootcode/core'
+import { TrayCategory, TrayEntry, TrayListing, deserializeNode } from '@splootcode/core'
 import { loadPythonTypes } from '../type_loader'
 import { nodeSanityCheck } from '../nodes/tests/test_utils'
 

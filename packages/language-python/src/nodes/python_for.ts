@@ -1,26 +1,35 @@
 import { ExpressionNode, ForNode, ParseNodeType, SuiteNode } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core'
-import { ForLoopData, ForLoopIteration, SingleStatementData, StatementCapture } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  ForLoopData,
+  ForLoopIteration,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
   SerializedNode,
+  SingleStatementData,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '@splootcode/core'
 import { parseToPyright } from './utils'
 
 export const PYTHON_FOR_LOOP = 'PYTHON_FOR_LOOP'

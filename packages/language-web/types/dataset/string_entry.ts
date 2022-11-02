@@ -1,6 +1,12 @@
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
-import { SerializedNode, TypeRegistration, registerType } from '@splootcode/core'
+import {
+  NodeCategory,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  TypeRegistration,
+  registerNodeCateogry,
+  registerType,
+} from '@splootcode/core'
 
 export const DATA_STRING_ENTRY = 'DATA_STRING_ENTRY'
 

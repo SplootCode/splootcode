@@ -6,10 +6,7 @@ import { observer } from 'mobx-react'
 import { Box, ButtonGroup, FormControl, FormLabel, HStack, IconButton, Spacer, Switch } from '@chakra-ui/react'
 import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons'
 
-import { ChildSetMutation } from '@splootcode/core'
-import { NodeMutation } from '@splootcode/core'
-import { SplootPackage } from '@splootcode/core'
-import { globalMutationDispatcher } from '@splootcode/core'
+import { ChildSetMutation, NodeMutation, SplootPackage, globalMutationDispatcher } from '@splootcode/core'
 
 export enum FrameState {
   DEAD = 0,

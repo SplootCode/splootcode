@@ -1,26 +1,34 @@
 import { ParseNodeType, ReturnNode } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
   SerializedNode,
+  SingleStatementData,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  getSideEffectAnnotations,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
 import { PYTHON_FUNCTION_DECLARATION } from './python_function'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SingleStatementData, StatementCapture } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_RETURN = 'PYTHON_RETURN'
 

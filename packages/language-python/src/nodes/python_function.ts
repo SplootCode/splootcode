@@ -9,28 +9,36 @@ import {
   ParseNodeType,
 } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core'
-import { FunctionArgType, TypeCategory } from '../scope/types'
-import { FunctionCallData, FunctionDeclarationData, StatementCapture } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  FunctionCallData,
+  FunctionDeclarationData,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
+import { FunctionArgType, TypeCategory } from '../scope/types'
 import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonScope, VariableMetadata } from '../scope/python_scope'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 

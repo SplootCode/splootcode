@@ -1,22 +1,26 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core'
-import { DeclaredIdentifier } from '../js/declared_identifier'
-import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
+import { DeclaredIdentifier } from '../js/declared_identifier'
+import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { ObjectPropertyKind } from 'ast-types/gen/kinds'
-import { ParentReference, SplootNode } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
 
 export const JSS_CLASS_BLOCK = 'JSS_CLASS_BLOCK'
 

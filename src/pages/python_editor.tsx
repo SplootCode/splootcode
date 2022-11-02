@@ -1,12 +1,8 @@
 import './python_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import { Editor } from '@splootcode/editor'
-import { EditorBanner } from '@splootcode/editor'
-import { EditorHostingConfig } from '@splootcode/editor'
-import { EditorState, EditorStateContext } from '@splootcode/editor'
-import { Project } from '@splootcode/core'
-import { SplootPackage } from '@splootcode/core'
+import { Editor, EditorBanner, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import { Project, SplootPackage } from '@splootcode/core'
 
 const hostingConfig: EditorHostingConfig = {
   TYPESHED_PATH: import.meta.env.SPLOOT_TYPESHED_PATH,

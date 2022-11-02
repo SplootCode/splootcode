@@ -1,27 +1,35 @@
-import { ChildSetType } from '@splootcode/core'
-import { ElseIfStatementData, SingleStatementData, StatementCapture } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
-import { IfNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import {
+  ChildSetType,
+  ElseIfStatementData,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
   SerializedNode,
+  SingleStatementData,
+  SplootFragment,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  getSideEffectAnnotations,
+  registerAutocompleter,
+  registerLastResortFragmentAdapater,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
+import { IfNode, ParseNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonIfStatement } from './python_if'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SplootFragment } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
-import { registerLastResortFragmentAdapater } from '@splootcode/core'
 
 export const PYTHON_ELIF_STATEMENT = 'PYTHON_ELIF_STATEMENT'
 

@@ -1,25 +1,33 @@
 import { ImportAsNode, ImportNode, ParseNodeType } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
-import { ImportStatementData, StatementCapture } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
+  ImportStatementData,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  getSideEffectAnnotations,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '@splootcode/core'
 import { TypeCategory } from '../scope/types'
 
 export const PYTHON_IMPORT = 'PYTHON_IMPORT'

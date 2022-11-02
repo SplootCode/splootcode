@@ -1,23 +1,27 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core'
+import {
+  ChildSetType,
+  HighlightColorCategory,
+  LayoutComponent,
+  LayoutComponentType,
+  NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
+  TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
+  registerType,
+} from '@splootcode/core'
 import { DeclaredIdentifier } from './declared_identifier'
 import { ExpressionKind, FunctionDeclarationKind, IdentifierKind } from 'ast-types/gen/kinds'
 import { HTML_SCRIPT_ElEMENT, SplootHtmlScriptElement } from '../html/html_script_element'
-import { HighlightColorCategory } from '@splootcode/core'
 import { JavaScriptSplootNode } from '../../javascript_node'
-import {
-  LayoutComponent,
-  LayoutComponentType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
-import { SuggestedNode } from '@splootcode/core'
 
 export const FUNCTION_DECLARATION = 'FUNCTION_DECLARATION'
 

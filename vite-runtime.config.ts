@@ -15,6 +15,12 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'splootframepythonclient.html'),
       },
+      output: {
+        manualChunks: {
+          xterm: ['xterm'],
+          chakra: ['@chakra-ui/react', '@chakra-ui/icons'],
+        },
+      },
     },
   },
   plugins: [

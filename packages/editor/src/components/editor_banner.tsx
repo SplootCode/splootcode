@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Button, Flex, Text } from '@chakra-ui/react'
-import { ChildSetMutation } from '@splootcode/core'
-import { NodeMutation } from '@splootcode/core'
-import { Project } from '@splootcode/core'
-import { globalMutationDispatcher } from '@splootcode/core'
+import { ChildSetMutation, NodeMutation, Project, globalMutationDispatcher } from '@splootcode/core'
 
 export function EditorBanner(props: { project: Project; onSaveAs: () => void }) {
   const { project, onSaveAs } = props

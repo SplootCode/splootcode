@@ -1,18 +1,20 @@
 import { DictionaryKeyEntryNode, ExpressionNode, ParseNodeType } from 'structured-pyright'
 
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
   TypeRegistration,
+  registerBlankFillForNodeCategory,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerBlankFillForNodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonExpression } from './python_expression'
 import { PythonNode } from './python_node'

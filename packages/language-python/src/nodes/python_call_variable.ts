@@ -1,21 +1,25 @@
 import { ExpressionNode, NameNode, ParseNodeType, TokenType } from 'structured-pyright'
 import { FunctionSignature } from '../scope/types'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
+  ScopeMutation,
+  ScopeMutationType,
   SerializedNode,
+  SplootNode,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonCallNode } from './python_call_node'
-import { ScopeMutation, ScopeMutationType } from '@splootcode/core'
 
 export const PYTHON_CALL_VARIABLE = 'PYTHON_CALL_VARIABLE'
 

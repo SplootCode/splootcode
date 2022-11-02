@@ -1,19 +1,22 @@
 import * as recast from 'recast'
 
-import { ChildSet, ChildSetType } from '@splootcode/core'
-import { ExpressionKind } from 'ast-types/gen/kinds'
-import { HighlightColorCategory } from '@splootcode/core'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSet,
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { ExpressionKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { SPLOOT_EXPRESSION, SplootExpression } from './expression'
 
 export const LOGICAL_EXPRESSION = 'LOGICAL_EXPRESSION'

@@ -1,18 +1,20 @@
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
+  PythonFileData,
   SerializedNode,
+  StatementCapture,
   TypeRegistration,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
-import { NodeCategory, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
-import { PythonFileData, StatementCapture } from '@splootcode/core'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 

@@ -1,19 +1,22 @@
 import { ModuleNameNode, ParseNodeType, TokenType } from 'structured-pyright'
 
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_MODULE_IDENTIFIER = 'PYTHON_MODULE_IDENTIFIER'
 

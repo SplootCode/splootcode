@@ -1,32 +1,35 @@
-import { ChildSetType } from '@splootcode/core'
-import { ExpressionNode } from 'structured-pyright'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeAnnotation,
+  NodeAnnotationType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core'
-import { NodeAnnotation, NodeAnnotationType, getSideEffectAnnotations } from '@splootcode/core'
-import {
   NodeCategory,
+  NodeLayout,
+  NodeMutation,
+  NodeMutationType,
+  ParentReference,
+  SerializedNode,
+  SingleStatementData,
+  SplootFragment,
+  SplootNode,
+  StatementCapture,
+  TypeRegistration,
+  getSideEffectAnnotations,
   registerAutocompleteAdapter,
   registerBlankFillForNodeCategory,
+  registerFragmentAdapter,
   registerNodeCateogry,
+  registerType,
 } from '@splootcode/core'
-import { NodeMutation, NodeMutationType } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
+import { ExpressionNode } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonArgument } from './python_argument'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SingleStatementData, StatementCapture } from '@splootcode/core'
-import { SplootFragment } from '@splootcode/core'
 import { parseToPyright, validateExpressionParse } from './utils'
-import { registerFragmentAdapter } from '@splootcode/core'
 
 export const PYTHON_EXPRESSION = 'PYTHON_EXPRESSION'
 

@@ -1,27 +1,26 @@
 import { ParseNodeType, StringNode, StringTokenFlags, TokenType } from 'structured-pyright'
 
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   getAutocompleteRegistry,
   registerAutocompleter,
   registerNodeCateogry,
+  registerType,
 } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_STRING = 'STRING_LITERAL'
 

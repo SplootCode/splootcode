@@ -3,17 +3,17 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Text } from '@chakra-ui/react'
 import { Category, MicroNode, getSingleNodeFragment } from './category'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { FunctionSignature, TypeCategory } from '@splootcode/language-python'
-import { PythonCallVariable } from '@splootcode/language-python'
+import {
+  FunctionSignature,
+  PythonCallVariable,
+  PythonNode,
+  PythonScope,
+  TypeCategory,
+} from '@splootcode/language-python'
+import { NodeCategory, ScopeObserver, TrayCategory, globalMutationDispatcher } from '@splootcode/core'
 import { RenderedFragment } from '../../layout/rendered_fragment'
-import { ScopeObserver } from '@splootcode/core'
-import { TrayCategory } from '@splootcode/core'
-import { globalMutationDispatcher } from '@splootcode/core'
 
 import './scope_tray.css'
-import { NodeCategory } from '@splootcode/core'
-import { PythonNode } from '@splootcode/language-python'
-import { PythonScope } from '@splootcode/language-python'
 
 export interface EntryProps {
   rootNode: PythonNode

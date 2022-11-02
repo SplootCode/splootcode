@@ -1,11 +1,8 @@
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory } from '@splootcode/core'
+import { NodeCategory, SerializedNode, SplootFragment, combineFragments, deserializeNode } from '@splootcode/core'
 import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedTreeIterator } from './rendered_tree_iterator'
-import { SerializedNode, deserializeNode } from '@splootcode/core'
-import { SplootFragment } from '@splootcode/core'
-import { combineFragments } from '@splootcode/core'
 
 export class MultiselectFragmentCreator extends RenderedTreeIterator {
   leftChildSetStack: SerializedNode[][]

@@ -1,30 +1,28 @@
 import { ArgumentCategory, ArgumentNode, ErrorExpressionCategory, ParseNodeType } from 'structured-pyright'
-import { ChildSetType } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
   NodeBoxType,
-  NodeLayout,
-  SerializedNode,
-  TypeRegistration,
-  registerType,
-} from '@splootcode/core'
-import {
   NodeCategory,
+  NodeLayout,
+  ParentReference,
+  SerializedNode,
+  SuggestedNode,
   SuggestionGenerator,
+  TypeRegistration,
   getAutocompleteRegistry,
   registerAutocompleteAdapter,
   registerAutocompleter,
   registerBlankFillForNodeCategory,
   registerNodeCateogry,
+  registerType,
 } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 import { PYTHON_KEWORD_ARGUMENT } from './python_keyword_argument'
-import { ParentReference } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_ARGUMENT = 'PY_ARG'
 

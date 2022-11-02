@@ -1,22 +1,25 @@
 import * as recast from 'recast'
 
-import { ChildSetType } from '@splootcode/core'
-import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
-import { HighlightColorCategory } from '@splootcode/core'
-import { IdentifierKind } from 'ast-types/gen/kinds'
-import { JavaScriptSplootNode } from '../../javascript_node'
 import {
+  ChildSetType,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
+import { DECLARED_IDENTIFIER, DeclaredIdentifier } from './declared_identifier'
+import { IdentifierKind } from 'ast-types/gen/kinds'
+import { JavaScriptSplootNode } from '../../javascript_node'
 import { StringLiteral } from './literals'
-import { SuggestedNode } from '@splootcode/core'
 
 export const IMPORT_DEFAULT = 'IMPORT_DEFAULT'
 

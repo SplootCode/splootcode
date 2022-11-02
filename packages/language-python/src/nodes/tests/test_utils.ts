@@ -1,6 +1,4 @@
-import { ChildSetType } from '@splootcode/core'
-import { SplootNode } from '@splootcode/core'
-import { isNodeInCategory } from '@splootcode/core'
+import { ChildSetType, SplootNode, isNodeInCategory } from '@splootcode/core'
 
 export function deepEquals(node1: SplootNode, node2: SplootNode) {
   expect(node1.type).toEqual(node2.type)

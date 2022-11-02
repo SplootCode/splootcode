@@ -7,8 +7,7 @@ import pretty from 'pretty'
 import { act } from 'react-dom/test-utils'
 import { render, unmountComponentAtNode } from 'react-dom'
 
-import { PythonStringLiteral } from '@splootcode/language-python'
-import { loadPythonTypes } from '@splootcode/language-python'
+import { PythonStringLiteral, loadPythonTypes } from '@splootcode/language-python'
 
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'

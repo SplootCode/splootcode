@@ -1,21 +1,26 @@
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
+  ScopeMutation,
+  ScopeMutationType,
   SerializedNode,
+  SplootNode,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
 import { NameNode, ParseNodeType, TokenType } from 'structured-pyright'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
-import { ScopeMutation, ScopeMutationType } from '@splootcode/core'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_IDENTIFIER = 'PY_IDENTIFIER'
 

@@ -6,14 +6,19 @@ import 'jest-canvas-mock'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCategory } from '@splootcode/core'
 import { NodeSelection } from '../context/selection'
-import { PYTHON_CALL_MEMBER, PythonCallMember } from '@splootcode/language-python'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python'
-import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python'
-import { PythonArgument } from '@splootcode/language-python'
-import { PythonCallVariable } from '@splootcode/language-python'
-import { PythonExpression } from '@splootcode/language-python'
-import { PythonFile } from '@splootcode/language-python'
-import { loadPythonTypes } from '@splootcode/language-python'
+import {
+  PYTHON_CALL_MEMBER,
+  PYTHON_STATEMENT,
+  PYTHON_STRING,
+  PythonArgument,
+  PythonCallMember,
+  PythonCallVariable,
+  PythonExpression,
+  PythonFile,
+  PythonStatement,
+  PythonStringLiteral,
+  loadPythonTypes,
+} from '@splootcode/language-python'
 
 function getArg(expr: PythonExpression): PythonArgument {
   const arg = new PythonArgument(null)

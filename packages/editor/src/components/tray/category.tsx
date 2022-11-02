@@ -5,10 +5,13 @@ import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Entry } from './entry'
 import { FragmentView } from '../fragment'
 import { RenderedFragment } from '../../layout/rendered_fragment'
-import { SerializedNode, deserializeNode } from '@splootcode/core'
-import { SplootFragment } from '@splootcode/core'
-import { TrayCategory } from '@splootcode/core'
-import { getNodeCategoriesForType } from '@splootcode/core'
+import {
+  SerializedNode,
+  SplootFragment,
+  TrayCategory,
+  deserializeNode,
+  getNodeCategoriesForType,
+} from '@splootcode/core'
 
 export interface CategoryProps {
   category: TrayCategory

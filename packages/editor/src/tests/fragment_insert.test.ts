@@ -4,21 +4,23 @@
 import 'jest-canvas-mock'
 
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeCategory } from '@splootcode/core'
+import { NodeCategory, SplootFragment } from '@splootcode/core'
 import { NodeSelection, SelectionState } from '../context/selection'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python'
-import { PythonArgument } from '@splootcode/language-python'
-import { PythonAssignment } from '@splootcode/language-python'
-import { PythonBinaryOperator } from '@splootcode/language-python'
-import { PythonCallVariable } from '@splootcode/language-python'
-import { PythonExpression } from '@splootcode/language-python'
-import { PythonFile } from '@splootcode/language-python'
-import { PythonIdentifier } from '@splootcode/language-python'
-import { PythonIfStatement } from '@splootcode/language-python'
-import { PythonScope } from '@splootcode/language-python'
-import { PythonStringLiteral } from '@splootcode/language-python'
-import { SplootFragment } from '@splootcode/core'
-import { loadPythonTypes } from '@splootcode/language-python'
+import {
+  PYTHON_STATEMENT,
+  PythonArgument,
+  PythonAssignment,
+  PythonBinaryOperator,
+  PythonCallVariable,
+  PythonExpression,
+  PythonFile,
+  PythonIdentifier,
+  PythonIfStatement,
+  PythonScope,
+  PythonStatement,
+  PythonStringLiteral,
+  loadPythonTypes,
+} from '@splootcode/language-python'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')

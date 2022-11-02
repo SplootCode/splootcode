@@ -1,11 +1,15 @@
 import { FunctionSignature, TypeCategory } from '../scope/types'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter } from '@splootcode/core'
-import { ParentReference } from '@splootcode/core'
+import {
+  NodeCategory,
+  ParentReference,
+  SuggestedNode,
+  SuggestionGenerator,
+  registerAutocompleter,
+} from '@splootcode/core'
 import { PythonCallVariable } from './python_call_variable'
 import { PythonFromImport } from './python_from_import'
 import { PythonIdentifier } from './python_identifier'
 import { PythonNode } from './python_node'
-import { SuggestedNode } from '@splootcode/core'
 
 class ScopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {

@@ -2,10 +2,14 @@ import { ModuleDefinition, TypeCategory, TypeDefinition, VariableTypeInfo } from
 import { PythonAnalyzer } from '../analyzer/python_analyzer'
 import { PythonModuleSpec, loadPythonBuiltins, loadPythonModule } from './python'
 import { PythonNode } from '../nodes/python_node'
-import { RenameScopeMutation, ScopeMutation, ScopeMutationType } from '@splootcode/core'
-import { ScopeObserver } from '@splootcode/core'
-import { SplootNode } from '@splootcode/core'
-import { globalMutationDispatcher } from '@splootcode/core'
+import {
+  RenameScopeMutation,
+  ScopeMutation,
+  ScopeMutationType,
+  ScopeObserver,
+  SplootNode,
+  globalMutationDispatcher,
+} from '@splootcode/core'
 
 export interface VariableMetadata {
   documentation: string

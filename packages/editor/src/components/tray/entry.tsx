@@ -3,8 +3,7 @@ import React from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { MicroNode } from './category'
 import { RenderedFragment } from '../../layout/rendered_fragment'
-import { TrayEntry } from '@splootcode/core'
-import { deserializeFragment } from '@splootcode/core'
+import { TrayEntry, deserializeFragment } from '@splootcode/core'
 
 export interface EntryProps {
   entry: TrayEntry

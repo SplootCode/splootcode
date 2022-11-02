@@ -3,17 +3,25 @@
  */
 import 'jest-canvas-mock'
 
-import { AssignmentWrapGenerator, PYTHON_ASSIGNMENT } from '@splootcode/language-python'
+import {
+  AssignmentWrapGenerator,
+  PYTHON_ARGUMENT,
+  PYTHON_ASSIGNMENT,
+  PYTHON_CALL_VARIABLE,
+  PYTHON_EXPRESSION,
+  PYTHON_STATEMENT,
+  PYTHON_STRING,
+  PythonArgument,
+  PythonCallVariable,
+  PythonExpression,
+  PythonFile,
+  PythonStatement,
+  PythonStringLiteral,
+  loadPythonTypes,
+} from '@splootcode/language-python'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection, SelectionState } from '../context/selection'
-import { PYTHON_ARGUMENT, PythonArgument } from '@splootcode/language-python'
-import { PYTHON_CALL_VARIABLE, PythonCallVariable } from '@splootcode/language-python'
-import { PYTHON_EXPRESSION, PythonExpression } from '@splootcode/language-python'
-import { PYTHON_STATEMENT, PythonStatement } from '@splootcode/language-python'
-import { PYTHON_STRING, PythonStringLiteral } from '@splootcode/language-python'
-import { PythonFile } from '@splootcode/language-python'
 import { checkNodeObserversRecursively } from './check_observer_mapping'
-import { loadPythonTypes } from '@splootcode/language-python'
 
 function getHelloWorldPythonFile(): PythonFile {
   const call = new PythonCallVariable(null, 'print')

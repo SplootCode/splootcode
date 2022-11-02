@@ -1,5 +1,4 @@
-import { Project, SerializedProject } from '@splootcode/core'
-import { StaticFileLoader } from '@splootcode/core'
+import { Project, SerializedProject, StaticFileLoader } from '@splootcode/core'
 
 export async function loadExampleProject(projectId: string): Promise<Project> {
   const rootUrl = '/static/projects/' + projectId + '/'

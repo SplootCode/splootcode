@@ -1,22 +1,27 @@
-import { ChildSetType } from '@splootcode/core'
-import { ElseStatementData, StatementCapture } from '@splootcode/core'
-import { HighlightColorCategory } from '@splootcode/core'
 import {
+  ChildSetType,
+  ElseStatementData,
+  HighlightColorCategory,
   LayoutComponent,
   LayoutComponentType,
+  NodeCategory,
   NodeLayout,
+  ParentReference,
   SerializedNode,
+  SplootNode,
+  StatementCapture,
+  SuggestedNode,
+  SuggestionGenerator,
   TypeRegistration,
+  registerAutocompleter,
+  registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { NodeCategory, SuggestionGenerator, registerAutocompleter, registerNodeCateogry } from '@splootcode/core'
-import { ParentReference, SplootNode } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { ParseNode, ParseNodeType, SuiteNode } from 'structured-pyright'
 import { PythonIfStatement } from './python_if'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
-import { SuggestedNode } from '@splootcode/core'
 
 export const PYTHON_ELSE_STATEMENT = 'PYTHON_ELSE_STATEMENT'
 

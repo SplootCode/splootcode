@@ -2,14 +2,9 @@ import React from 'react'
 import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
-import { Project } from '@splootcode/core'
-import { PythonAnalyzer } from '@splootcode/language-python'
-import { SplootFile } from '@splootcode/core'
-import { SplootPackage } from '@splootcode/core'
-import { ValidationWatcher } from '@splootcode/core'
+import { Project, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
+import { PythonAnalyzer, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
-import { generatePythonScope } from '@splootcode/language-python'
-import { isPythonNode } from '@splootcode/language-python'
 
 export class EditorState {
   project: Project
