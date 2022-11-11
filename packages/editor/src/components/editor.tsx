@@ -13,15 +13,16 @@ import { ExpandedListBlockView } from './list_block'
 import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
+import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
 import { PythonFrame } from '../runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
-import { SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
 import { Tray } from './tray/tray'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
 interface EditorProps {
   block: NodeBlock
+  project: Project
   pkg: SplootPackage
   selection: NodeSelection
   validationWatcher: ValidationWatcher
@@ -41,7 +42,7 @@ export class Editor extends React.Component<EditorProps> {
   }
 
   render() {
-    const { block, pkg, selection, validationWatcher, banner } = this.props
+    const { block, project, pkg, selection, validationWatcher, banner } = this.props
     let fileBody = null
 
     fileBody = block.renderedChildSets['body']
@@ -88,6 +89,7 @@ export class Editor extends React.Component<EditorProps> {
             </div>
             <div className="python-preview-panel">
               <PythonFrame
+                project={project}
                 pkg={pkg}
                 validationWatcher={validationWatcher}
                 frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}

@@ -2,17 +2,35 @@
   display: flex;
   justify-content: space-between;
   height: 36px;
-  padding: 2px 4px;
+  padding: 0px 4px;
   background-color: var(--chakra-colors-gray-800);
   box-sizing: border-box;
   border-bottom: 1px solid var(--chakra-colors-gray-900);
 }
   
 .menubar-left {
+  display: inline-block;
+}
+
+.menubar-center {
   display: flex;
+  align-items: center;
+  gap: 8px;
 }
   
 .menubar-item {
-  margin-right: 8px;
-  padding: 5px 3px;
+  display: inline-block;
+  min-width: 60px;
+}
+
+.menubar-right {
+  display: flex;
+  align-items: center;
+}
+
+.menubar-separator {
+  background-color: var(--chakra-colors-green-500);
+  height: 16px;
+  width: 1px;
+  display: inline-block;
 }

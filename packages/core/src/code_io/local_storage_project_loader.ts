@@ -19,8 +19,11 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     }
     const projectsMeta = JSON.parse(projectsJSON) as ProjectMetadata[]
     projectsMeta.forEach((proj) => {
-      proj.owner = 'local'
+      proj.owner = proj.owner ?? 'local'
     })
+
+    // Only list 'local' owner projects
+    projectsMeta.filter((proj) => proj.owner === 'local')
 
     return projectsMeta
   }
@@ -29,7 +32,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     window.localStorage.setItem('projects', JSON.stringify(newMetaData))
   }
 
-  async isValidProjectId(projectId: string): Promise<boolean> {
+  async isValidProjectId(ownerId: string, projectId: string): Promise<boolean> {
     const projectMeta = await this.listProjectMetadata()
     const exists = projectMeta.find((meta) => meta.id === projectId)
     if (exists) {
@@ -38,36 +41,39 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return true
   }
 
-  async generateValidProjectId(projectId: string, title: string): Promise<[string, string]> {
+  async generateValidProjectId(ownerId: string, projectId: string, title: string): Promise<[string, string]> {
     let num = 1
     let newProjectId = projectId
     let newTitle = title
-    let isValid = await this.isValidProjectId(projectId)
+    let isValid = await this.isValidProjectId(ownerId, projectId)
     while (!isValid) {
       newProjectId = `${projectId}-${num}`
       newTitle = `${title} (${num})`
-      isValid = await this.isValidProjectId(newProjectId)
+      isValid = await this.isValidProjectId(ownerId, newProjectId)
       num++
     }
     return [newProjectId, newTitle]
   }
 
-  async loadProject(projectId: string): Promise<Project> {
+  async loadProject(ownerId: string, projectId: string): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
-    const projKey = `project/${projectId}`
+    const projKey = this.getProjKey(ownerId, projectId)
     const projStr = window.localStorage.getItem(projKey)
+    if (!projStr) {
+      return null
+    }
     const proj = JSON.parse(projStr) as SerializedProject
     if (!proj.version) {
       proj.version = (Math.random() + 1).toString(36)
       window.localStorage.setItem(projKey, JSON.stringify(proj))
     }
     const packages = proj.packages.map(async (packRef) => {
-      return fileLoader.loadPackage(proj.name, packRef.name)
+      return fileLoader.loadPackage(ownerId, proj.name, packRef.name)
     })
-    return new Project('local', proj, await Promise.all(packages), fileLoader)
+    return new Project(ownerId, proj, await Promise.all(packages), fileLoader)
   }
 
-  async newProject(projectId: string, title: string, layoutType: string): Promise<Project> {
+  async newProject(onwerId: string, projectId: string, title: string, layoutType: string): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
 
     const serialisedProj: SerializedProject = {
@@ -78,14 +84,19 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       title: title,
       packages: [],
     }
-    const proj = new Project('local', serialisedProj, [], fileLoader)
+    const proj = new Project(onwerId, serialisedProj, [], fileLoader)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
     await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
     await this.saveProject(proj)
     return proj
   }
 
-  async cloneProject(newProjectId: string, title: string, existingProject: Project): Promise<Project> {
+  async cloneProject(
+    newOwnerID: string,
+    newProjectId: string,
+    title: string,
+    existingProject: Project
+  ): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
     const serializedProj = JSON.parse(existingProject.serialize()) as SerializedProject
     serializedProj.name = newProjectId
@@ -96,10 +107,10 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         buildType: existingPackage.buildType,
         files: [],
       }
-      const newPack = new SplootPackage(newProjectId, serializedPack, fileLoader)
+      const newPack = new SplootPackage(newOwnerID, newProjectId, serializedPack)
 
       const filePromises = existingPackage.fileOrder.map((fileName) => {
-        return existingPackage.getLoadedFile(fileName)
+        return existingPackage.getLoadedFile(fileLoader, fileName)
       })
       const files = await Promise.all(filePromises)
       files.forEach((splootFile) => {
@@ -109,15 +120,15 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       return newPack
     })
     const packages = await Promise.all(packagePromises)
-    const proj = new Project('local', serializedProj, packages, fileLoader)
+    const proj = new Project(newOwnerID, serializedProj, packages, fileLoader)
 
     await this.saveProject(proj)
     await this.updateProjectMetadata(proj)
     return proj
   }
 
-  getStoredProjectVersion(projectID: string): string {
-    const projKey = `project/${projectID}`
+  getStoredProjectVersion(ownerId: string, projectID: string): string {
+    const projKey = this.getProjKey(ownerId, projectID)
     const projStr = window.localStorage.getItem(projKey)
     if (projStr === null) {
       return null
@@ -127,7 +138,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
   }
 
   async isCurrentVersion(project: Project): Promise<boolean> {
-    const currentSaveVersion = this.getStoredProjectVersion(project.name)
+    const currentSaveVersion = this.getStoredProjectVersion(project.owner, project.name)
     if (currentSaveVersion && currentSaveVersion !== project.version) {
       return false
     }
@@ -139,7 +150,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     let version
     const base_version = project.version
     if (base_version) {
-      const currentSaveVersion = this.getStoredProjectVersion(project.name)
+      const currentSaveVersion = this.getStoredProjectVersion(project.owner, project.name)
       // currentSaveVersion might be null if it's not yet saved.
       if (currentSaveVersion && currentSaveVersion !== base_version) {
         throw new SaveError('Cannot save. This project has been edited and saved in another window.')
@@ -149,11 +160,13 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       version = (Math.random() + 1).toString(36)
     }
 
+    const projKey = this.getProjKey(project.owner, project.name)
     for (const splootPackage of project.packages) {
-      const packageKey = `project/${project.name}/${splootPackage.name}`
+      const packageKey = `${projKey}/${splootPackage.name}`
       window.localStorage.setItem(packageKey, splootPackage.serialize())
       for (const filename of splootPackage.fileOrder) {
         version = await project.fileLoader.saveFile(
+          project.owner,
           project.name,
           splootPackage.name,
           splootPackage.files[filename],
@@ -162,19 +175,22 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       }
     }
     project.version = version
-    const projKey = `project/${project.name}`
     window.localStorage.setItem(projKey, project.serialize())
+    this.updateProjectMetadata(project)
     return version
   }
 
   async updateProjectMetadata(project: Project): Promise<boolean> {
+    if (project.owner !== 'local') {
+      return true
+    }
     const allMeta = await this.listProjectMetadata()
     const meta = allMeta.filter((projectMetadata) => {
       return project.name === projectMetadata.id
     })
     if (meta.length === 0) {
       allMeta.push({
-        owner: 'local',
+        owner: project.owner,
         id: project.name,
         title: project.title,
         lastModified: '',
@@ -184,8 +200,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     }
     this.overwriteProjectMetadata(
       allMeta.map((projectMetadata) => {
-        if (projectMetadata.id === project.name) {
-          projectMetadata.owner = 'local'
+        if (projectMetadata.id === project.name && projectMetadata.owner === project.owner) {
           projectMetadata.title = project.title
           projectMetadata.lastModified = ''
         }
@@ -194,17 +209,25 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     )
   }
 
-  async deleteProject(projectId: string): Promise<boolean> {
-    const proj = await this.loadProject(projectId)
+  getProjKey(ownerId: string, projectId: string) {
+    if (ownerId === 'local') {
+      return `project/${projectId}`
+    }
+    return `project/${ownerId}/${projectId}`
+  }
+
+  async deleteProject(ownerId: string, projectId: string): Promise<boolean> {
+    const proj = await this.loadProject(ownerId, projectId)
+    const projKey = this.getProjKey(ownerId, projectId)
     proj.packages.forEach((splootPackage) => {
       splootPackage.fileOrder.forEach((filename) => {
-        const fileKey = `project/${proj.name}/${splootPackage.name}/${filename}`
+        const fileKey = `${projKey}/${splootPackage.name}/${filename}`
         window.localStorage.removeItem(fileKey)
       })
-      const packageKey = `project/${proj.name}/${splootPackage.name}`
+      const packageKey = `${projKey}/${splootPackage.name}`
       window.localStorage.removeItem(packageKey)
     })
-    const projKey = `project/${proj.name}`
+
     window.localStorage.removeItem(projKey)
     const allMeta = await this.listProjectMetadata()
     this.overwriteProjectMetadata(

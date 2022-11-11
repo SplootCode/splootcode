@@ -4,7 +4,7 @@ import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
 import { MainMenuItem, MenuBar, SaveProjectModal } from '@splootcode/components'
-import { Project, ProjectLoader, loadProjectFromFolder } from '@splootcode/core'
+import { Project, ProjectLoader, ProjectMetadata, loadProjectFromFolder } from '@splootcode/core'
 
 interface UserHomePageProps {
   projectLoader: ProjectLoader
@@ -29,15 +29,16 @@ const ExampleCard = (props: { linkTo: string; title: string; description: string
 }
 
 const ProjectCard = (props: {
+  ownerID: string
   projectID: string
   title: string
   description: string
-  onDelete: (id: string) => void
+  onDelete: () => void
 }) => {
-  const { projectID, title, description, onDelete } = props
+  const { ownerID, projectID, title, description, onDelete } = props
   return (
     <Flex borderWidth="1px" borderRadius="md" bg="gray.800" borderColor="gray.500">
-      <Link to={`/p/local/${projectID}`}>
+      <Link to={`/p/${ownerID}/${projectID}`}>
         <Box py={2} px={2}>
           <Heading as="h4" size="sm" pb={1}>
             {title}
@@ -62,7 +63,7 @@ const ProjectCard = (props: {
           event.preventDefault()
           const result = window.confirm(`Are you sure you want to delete ${title}?`)
           if (result) {
-            onDelete(projectID)
+            onDelete()
           }
           return false
         }}
@@ -109,19 +110,20 @@ export const UserHomePage = (props: UserHomePageProps) => {
     <React.Fragment>
       <SaveProjectModal
         clonedFrom={saveProjectModalState.clonedFrom}
+        newOwner="local"
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
         onComplete={(projectID, title) => {
           if (saveProjectModalState.clonedFrom) {
             const proj = saveProjectModalState.clonedFrom
-            props.projectLoader.cloneProject(projectID, title, proj).then((newProj) => {
+            props.projectLoader.cloneProject('local', projectID, title, proj).then((newProj) => {
               props.projectLoader.listProjectMetadata().then((projects) => {
                 setProjects(projects)
               })
             })
           } else {
-            props.projectLoader.newProject(projectID, title, 'PYTHON_CLI').then(() => {
+            props.projectLoader.newProject('local', projectID, title, 'PYTHON_CLI').then(() => {
               history.push(`/p/local/${projectID}`)
             })
           }
@@ -146,15 +148,16 @@ export const UserHomePage = (props: UserHomePageProps) => {
                   You do not have any projects yet.
                 </Box>
               ) : null}
-              {projects.map((projectMeta) => {
+              {projects.map((projectMeta: ProjectMetadata) => {
                 return (
                   <ProjectCard
                     key={projectMeta.id}
+                    ownerID={projectMeta.owner}
                     projectID={projectMeta.id}
                     title={projectMeta.title}
                     description={''}
-                    onDelete={(id) => {
-                      props.projectLoader.deleteProject(id).then(() => {
+                    onDelete={() => {
+                      props.projectLoader.deleteProject(projectMeta.owner, projectMeta.id).then(() => {
                         props.projectLoader.listProjectMetadata().then((projects) => {
                           setProjects(projects)
                         })

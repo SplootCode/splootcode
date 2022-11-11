@@ -7,6 +7,7 @@ import {
   FunctionDeclarationData,
   NodeMutation,
   NodeMutationType,
+  Project,
   ScopeMutation,
   ScopeMutationType,
   SplootPackage,
@@ -26,6 +27,7 @@ export enum FrameState {
 }
 
 type ViewPageProps = {
+  project: Project
   pkg: SplootPackage
   validationWatcher: ValidationWatcher
   frameScheme: 'http' | 'https'
@@ -131,7 +133,7 @@ export class PythonFrame extends Component<ViewPageProps> {
   }
 
   onPythonRuntimeIsReady = async () => {
-    const file = await this.props.pkg.getLoadedFile('main.py')
+    const file = await this.props.pkg.getLoadedFile(this.props.project.fileLoader, 'main.py')
     ;(file.rootNode as PythonFile).getScope().loadAllImportedModules()
   }
 
@@ -145,7 +147,7 @@ export class PythonFrame extends Component<ViewPageProps> {
   }
 
   async recievedModuleInfo(payload: PythonModuleSpec) {
-    const file = await this.props.pkg.getLoadedFile('main.py')
+    const file = await this.props.pkg.getLoadedFile(this.props.project.fileLoader, 'main.py')
     const pythonFile = file.rootNode as PythonFile
     ;(pythonFile.getScope(false) as PythonScope).processPythonModuleSpec(payload)
   }
@@ -192,7 +194,7 @@ export class PythonFrame extends Component<ViewPageProps> {
     // TODO: handle mutliple python files or different names.
     const filename = 'main.py'
     this.props.pkg
-      .getLoadedFile(filename)
+      .getLoadedFile(this.props.project.fileLoader, filename)
       .then((file) => {
         file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
         const scope = (file.rootNode as PythonFile).getScope()
@@ -238,7 +240,7 @@ export class PythonFrame extends Component<ViewPageProps> {
       }
 
       pkg.fileOrder.forEach((filename) => {
-        pkg.getLoadedFile(filename).then((file) => {
+        pkg.getLoadedFile(this.props.project.fileLoader, filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
           // Check again that the current state is valid - otherwise bail out
           if (this.props.validationWatcher.isValid()) {

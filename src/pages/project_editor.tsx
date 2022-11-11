@@ -26,7 +26,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         setLoadedProject(proj)
       })
     } else if (ownerID === 'local') {
-      projectLoader.loadProject(projectID).then((proj) => {
+      projectLoader.loadProject(ownerID, projectID).then((proj) => {
         setLoadedProject(proj)
       })
     }
@@ -70,18 +70,19 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
     <React.Fragment>
       <SaveProjectModal
         clonedFrom={saveProjectModalState.clonedFrom}
+        newOwner="local"
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
         onComplete={(projectID, title) => {
           if (saveProjectModalState.clonedFrom) {
             const proj = saveProjectModalState.clonedFrom
-            props.projectLoader.cloneProject(projectID, title, proj).then((newProj) => {
+            props.projectLoader.cloneProject('local', projectID, title, proj).then((newProj) => {
               history.push(`/p/local/${projectID}`)
               setSaveProjectModalState({ open: false, clonedFrom: null })
             })
           } else {
-            props.projectLoader.newProject(projectID, title, 'PYTHON_CLI').then(() => {
+            props.projectLoader.newProject('local', projectID, title, 'PYTHON_CLI').then(() => {
               history.push(`/p/local/${projectID}`)
               setSaveProjectModalState({ open: false, clonedFrom: null })
             })

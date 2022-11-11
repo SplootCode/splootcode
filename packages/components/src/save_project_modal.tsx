@@ -26,6 +26,7 @@ function convertToURL(title: string) {
 
 interface SaveProjectModalProps {
   isOpen: boolean
+  newOwner: string
   clonedFrom?: Project
   onClose: () => void
   onComplete: (projectID: string, title: string) => void
@@ -33,7 +34,7 @@ interface SaveProjectModalProps {
 }
 
 export function SaveProjectModal(props: SaveProjectModalProps) {
-  const { isOpen, onClose, onComplete, projectLoader, clonedFrom } = props
+  const { isOpen, onClose, onComplete, newOwner, projectLoader, clonedFrom } = props
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
   const [validID, setValidID] = useState(true)
@@ -41,7 +42,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   useEffect(() => {
     if (clonedFrom) {
       const generate = async () => {
-        const [name, title] = await projectLoader.generateValidProjectId(clonedFrom.name, clonedFrom.title)
+        const [name, title] = await projectLoader.generateValidProjectId(newOwner, clonedFrom.name, clonedFrom.title)
         setProjectID(name)
         setProjectTitle(title)
       }
@@ -53,7 +54,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   }, [clonedFrom])
 
   useEffect(() => {
-    projectLoader.isValidProjectId(projectID).then((isValid) => {
+    projectLoader.isValidProjectId(newOwner, projectID).then((isValid) => {
       setValidID(isValid)
     })
   }, [projectID])
