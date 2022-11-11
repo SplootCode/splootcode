@@ -1,7 +1,7 @@
 import './menu_bar.css'
 import React from 'react'
+import { Button, IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
-import { IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 export interface MainMenuItem {
@@ -43,11 +43,12 @@ export const MenuBar = ({ children, menuItems }: MenuBarProps): React.ReactEleme
             })}
           </MenuList>
         </Menu>
-        <MenuBarItem>
-          <Link to="/">Home</Link>
-        </MenuBarItem>
-        {children}
+        <Button as={Link} to="/" variant="ghost" size={'sm'} fontSize={'md'}>
+          Home
+        </Button>
       </div>
+      <div className="menubar-center">{children}</div>
+      <div className="menubar-right"></div>
     </nav>
   )
 }

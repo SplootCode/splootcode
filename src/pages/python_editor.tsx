@@ -38,6 +38,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
         {editorState ? (
           <Editor
             block={editorState.rootNode}
+            project={project}
             pkg={onlyPackage}
             selection={editorState.selection}
             validationWatcher={editorState.validationWatcher}

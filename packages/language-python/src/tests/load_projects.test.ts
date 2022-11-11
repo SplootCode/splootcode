@@ -13,7 +13,7 @@ describe('python whole file loading', () => {
 
   test('load blank file', async () => {
     const proj = await loadTestProject('blank', 'empty main.py')
-    const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+    const pythonFile = await proj.getDefaultPackage().getLoadedFile(proj.fileLoader, 'main.py')
 
     expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
     const rootNode = pythonFile.rootNode as PythonFile
@@ -32,7 +32,7 @@ describe('python whole file loading', () => {
     return Promise.all(
       example_projects.map(async (projectID) => {
         const proj = await loadTestProject(projectID, `Example project ${projectID}`)
-        const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+        const pythonFile = await proj.getDefaultPackage().getLoadedFile(proj.fileLoader, 'main.py')
 
         expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
         const rootNode = pythonFile.rootNode as PythonFile
@@ -51,7 +51,7 @@ describe('python whole file loading', () => {
   test('load with missing properties and childsets', async () => {
     // Series of expression and statements which are missing childsets or properties.
     const proj = await loadTestProject('missing_values', 'missing values')
-    const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+    const pythonFile = await proj.getDefaultPackage().getLoadedFile(proj.fileLoader, 'main.py')
 
     expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
     const rootNode = pythonFile.rootNode as PythonFile
@@ -67,7 +67,7 @@ describe('python whole file loading', () => {
 
   test('load with missing expressions where an expression is required', async () => {
     const proj = await loadTestProject('missing_expressions', 'missing expressions')
-    const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+    const pythonFile = await proj.getDefaultPackage().getLoadedFile(proj.fileLoader, 'main.py')
 
     expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
     const rootNode = pythonFile.rootNode as PythonFile
@@ -83,7 +83,7 @@ describe('python whole file loading', () => {
 
   test('load collections literals', async () => {
     const proj = await loadTestProject('test_collections', 'collections')
-    const pythonFile = await proj.getDefaultPackage().getLoadedFile('main.py')
+    const pythonFile = await proj.getDefaultPackage().getLoadedFile(proj.fileLoader, 'main.py')
 
     expect(pythonFile.rootNode.type).toEqual(PYTHON_FILE)
     const rootNode = pythonFile.rootNode as PythonFile

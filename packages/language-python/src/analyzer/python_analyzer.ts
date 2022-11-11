@@ -73,7 +73,7 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   }
 
   async loadFile(pack: SplootPackage, file: SplootFile) {
-    const loadedFile = pack.getLoadedFile(file.name)
+    const loadedFile = pack.getLoadedFile(this.project.fileLoader, file.name)
     this.rootNode = (await loadedFile).rootNode as PythonFile
     this.updateParse()
   }

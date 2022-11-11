@@ -28,7 +28,7 @@ export async function loadTestProject(projectID: string, title: string): Promise
       ],
       splootversion: '1.0',
     },
-    [await fileLoader.loadPackage(projectID, 'main')],
+    [await fileLoader.loadPackage('examples', projectID, 'main')],
     fileLoader
   )
   return proj
@@ -39,27 +39,23 @@ export class TestFileLoader implements FileLoader {
     return true
   }
 
-  async loadPackage(projectId: string, packageId: string) {
+  async loadPackage(ownerID: string, projectId: string, packageId: string) {
     if (packageId !== 'main') {
       throw new Error(`Project ${projectId} to load package ${packageId} but only 'main' is supported.`)
     }
-    return new SplootPackage(
-      projectId,
-      {
-        name: packageId,
-        buildType: PackageBuildType.PYTHON,
-        files: [
-          {
-            name: 'main.py',
-            type: 'PYTHON_FILE',
-          },
-        ],
-      },
-      this
-    )
+    return new SplootPackage(ownerID, projectId, {
+      name: packageId,
+      buildType: PackageBuildType.PYTHON,
+      files: [
+        {
+          name: 'main.py',
+          type: 'PYTHON_FILE',
+        },
+      ],
+    })
   }
 
-  async loadFile(projectId: string, packageId: string, filename: string): Promise<SplootNode> {
+  async loadFile(ownerID: string, projectId: string, packageId: string, filename: string): Promise<SplootNode> {
     if (filename !== 'main.py') {
       throw new Error(`Attempted to load file ${filename} but only 'main.py' is supported.`)
     }
@@ -81,7 +77,7 @@ export class TestFileLoader implements FileLoader {
     return ''
   }
 
-  async saveFile(projectId: string, packageId: string, file: SplootFile, base_version: string) {
+  async saveFile(ownerID: string, projectId: string, packageId: string, file: SplootFile, base_version: string) {
     return ''
   }
 

@@ -35,7 +35,8 @@ export class EditorState {
   }
 
   async openFile(pack: SplootPackage, file: SplootFile) {
-    const loadedFile = await pack.getLoadedFile(file.name)
+    const fileLoader = this.project.fileLoader
+    const loadedFile = await pack.getLoadedFile(fileLoader, file.name)
 
     // Build scope
     if (isPythonNode(loadedFile.rootNode)) {

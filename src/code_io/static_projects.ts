@@ -6,7 +6,7 @@ export async function loadExampleProject(projectId: string): Promise<Project> {
   const projStr = await (await fetch(rootUrl + 'project.sp')).text()
   const proj = JSON.parse(projStr) as SerializedProject
   const packages = proj.packages.map(async (packRef) => {
-    return fileLoader.loadPackage(proj.name, packRef.name)
+    return fileLoader.loadPackage('examples', proj.name, packRef.name)
   })
   return new Project('examples', proj, await Promise.all(packages), fileLoader)
 }

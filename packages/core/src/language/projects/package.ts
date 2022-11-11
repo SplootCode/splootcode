@@ -21,17 +21,17 @@ export enum PackageBuildType {
 }
 
 export class SplootPackage {
+  ownerID: string
   projectId: string
   name: string
   files: { [key: string]: SplootFile }
   fileOrder: string[]
   buildType: PackageBuildType
-  fileLoader: FileLoader
 
-  constructor(projectId: string, pack: SerializedSplootPackage, fileLoader: FileLoader) {
+  constructor(ownerID: string, projectId: string, pack: SerializedSplootPackage) {
+    this.ownerID = ownerID
     this.projectId = projectId
     this.name = pack.name
-    this.fileLoader = fileLoader
     this.buildType = pack.buildType
     this.fileOrder = pack.files.map((file) => file.name)
     this.files = {}
@@ -65,10 +65,10 @@ export class SplootPackage {
     }
   }
 
-  async getLoadedFile(name: string): Promise<SplootFile> {
+  async getLoadedFile(fileLoader: FileLoader, name: string): Promise<SplootFile> {
     const file = this.files[name]
     if (!file.isLoaded) {
-      return await this.fileLoader.loadFile(this.projectId, this.name, name).then((rootNode: SplootNode) => {
+      return await fileLoader.loadFile(this.ownerID, this.projectId, this.name, name).then((rootNode: SplootNode) => {
         file.fileLoaded(rootNode)
         return file
       })

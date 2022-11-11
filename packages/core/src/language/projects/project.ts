@@ -53,7 +53,7 @@ export class Project {
       buildType: buildType,
       files: [],
     }
-    const pack = new SplootPackage(this.name, serialisedPackage, this.fileLoader)
+    const pack = new SplootPackage(this.owner, this.name, serialisedPackage)
     this.packages.push(pack)
     return pack
   }

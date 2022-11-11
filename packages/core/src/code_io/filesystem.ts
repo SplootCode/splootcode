@@ -38,7 +38,7 @@ export async function loadProjectFromFolder(directoryHandle: FileSystemDirectory
   const projStr = await (await (await directoryHandle.getFileHandle('project.sp')).getFile()).text()
   const proj = JSON.parse(projStr) as SerializedProject
   const packages = proj.packages.map(async (packRef) => {
-    return fileLoader.loadPackage(proj.name, packRef.name)
+    return fileLoader.loadPackage('unknown', proj.name, packRef.name)
   })
   return new Project('local', proj, await Promise.all(packages), fileLoader)
 }

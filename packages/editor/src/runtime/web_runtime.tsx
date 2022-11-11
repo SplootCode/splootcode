@@ -6,7 +6,7 @@ import { observer } from 'mobx-react'
 import { Box, ButtonGroup, FormControl, FormLabel, HStack, IconButton, Spacer, Switch } from '@chakra-ui/react'
 import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons'
 
-import { ChildSetMutation, NodeMutation, SplootPackage, globalMutationDispatcher } from '@splootcode/core'
+import { ChildSetMutation, NodeMutation, Project, SplootPackage, globalMutationDispatcher } from '@splootcode/core'
 
 export enum FrameState {
   DEAD = 0,
@@ -17,6 +17,7 @@ export enum FrameState {
 }
 
 interface DocumentNodeProps {
+  project: Project
   pkg?: SplootPackage
   frameScheme: 'http' | 'https'
   frameDomain: string
@@ -90,7 +91,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
       this.lastSentNodeTree = now
       this.needsNewNodeTree = false
       pkg.fileOrder.forEach((filename) => {
-        pkg.getLoadedFile(filename).then((file) => {
+        pkg.getLoadedFile(this.props.project.fileLoader, filename).then((file) => {
           const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
           this.postMessageToHiddenFrame(payload)
           return
@@ -224,6 +225,7 @@ class DocumentNodeComponent extends Component<DocumentNodeProps> {
 }
 
 type ViewPageProps = {
+  project: Project
   pkg: SplootPackage
   frameScheme: 'http' | 'https'
   frameDomain: string
@@ -311,7 +313,7 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
   }
 
   render() {
-    const { pkg } = this.props
+    const { pkg, project } = this.props
     if (this.state.hasError) {
       return (
         <div>
@@ -321,6 +323,13 @@ export class ViewPage extends Component<ViewPageProps, ViewPageState> {
         </div>
       )
     }
-    return <DocumentNodeComponent pkg={pkg} frameScheme={this.props.frameScheme} frameDomain={this.props.frameDomain} />
+    return (
+      <DocumentNodeComponent
+        project={project}
+        pkg={pkg}
+        frameScheme={this.props.frameScheme}
+        frameDomain={this.props.frameDomain}
+      />
+    )
   }
 }

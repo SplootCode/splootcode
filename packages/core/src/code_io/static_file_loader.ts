@@ -18,20 +18,20 @@ export class StaticFileLoader implements FileLoader {
     return true
   }
 
-  async loadPackage(projectId: string, packageId: string): Promise<SplootPackage> {
+  async loadPackage(ownerID: string, projectId: string, packageId: string): Promise<SplootPackage> {
     const packStr = await (await fetch(this.rootProjectUrl + packageId + '/package.sp')).text()
     const pack = JSON.parse(packStr) as SerializedSplootPackage
-    return new SplootPackage(projectId, pack, this)
+    return new SplootPackage(ownerID, projectId, pack)
   }
 
-  async loadFile(projectId: string, packageId: string, filename: string): Promise<SplootNode> {
+  async loadFile(ownerID: string, projectId: string, packageId: string, filename: string): Promise<SplootNode> {
     const fileStr = await (await fetch(this.rootProjectUrl + packageId + '/' + filename + '.sp')).text()
     const serNode = JSON.parse(fileStr) as SerializedNode
     const rootNode = deserializeNode(serNode)
     return rootNode
   }
 
-  async saveFile(projectId: string, packageId: string, file: SplootFile): Promise<string> {
+  async saveFile(ownerID: string, projectId: string, packageId: string, file: SplootFile): Promise<string> {
     throw new SaveError('Cannot save readonly file.')
   }
 }
