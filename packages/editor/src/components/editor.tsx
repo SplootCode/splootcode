@@ -68,7 +68,7 @@ export class Editor extends React.Component<EditorProps> {
       <React.Fragment>
         <div className="editor">
           <Allotment defaultSizes={[270, startSize, 360]} minSize={180} proportionalLayout={false}>
-            <Tray key={block.node.type} width={200} startDrag={this.startDrag} rootNode={block.node} />
+            <Tray key={block.node.type} startDrag={this.startDrag} rootNode={block.node} />
             <div className="editor-column">
               {banner}
               <div className="editor-box" ref={this.editorColumnRef}>
