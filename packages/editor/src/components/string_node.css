@@ -4,6 +4,10 @@
   font-size: 16px;
   line-height: 20px;
   white-space: pre-wrap;
+  color: white;
+  margin: 0;
+  font-weight: normal;
+  padding: 0px;
 }
 
 .string-node.measurement {

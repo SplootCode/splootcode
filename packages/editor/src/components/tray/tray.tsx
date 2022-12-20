@@ -11,7 +11,6 @@ import { SplootNode, TrayCategory } from '@splootcode/core'
 
 interface TrayProps {
   rootNode: SplootNode
-  width: number
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
 }
 
@@ -20,7 +19,7 @@ interface TrayState {
 }
 
 function getTrayListing(rootNode: SplootNode): TrayCategory {
-  if (rootNode.type === PYTHON_FILE) {
+  if (!rootNode || rootNode.type === PYTHON_FILE) {
     return PythonLanguageTray
   }
   return {
@@ -42,7 +41,7 @@ export class Tray extends React.Component<TrayProps, TrayState> {
     const { rootNode, startDrag } = this.props
     return (
       <div className="tray">
-        <ScopeTray rootNode={rootNode as PythonNode} startDrag={startDrag} />
+        {rootNode ? <ScopeTray rootNode={rootNode as PythonNode} startDrag={startDrag} /> : null}
         <Category category={this.state.listing} startDrag={startDrag} />
       </div>
     )
