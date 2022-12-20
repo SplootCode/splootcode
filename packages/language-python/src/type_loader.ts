@@ -36,6 +36,7 @@ import { registerArgumentAutocompleters } from './nodes/scope_argument_autocompl
 import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter'
 import { registerPythonAutocompleters } from './nodes/scope_autocompleter'
 import { resolvePasteAdapters } from '@splootcode/core'
+import { PythonComment } from './nodes/python_comment'
 
 export function loadPythonTypes() {
   PythonStringLiteral.register()
@@ -72,6 +73,7 @@ export function loadPythonTypes() {
   PythonSubscript.register()
   PythonTuple.register()
   PythonWhileLoop.register()
+  PythonComment.register()
   registerPythonAutocompleters()
   registerMemberAutocompleters()
   registerArgumentAutocompleters()
