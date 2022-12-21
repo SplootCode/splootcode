@@ -1,4 +1,5 @@
 import { CursorPosition, NodeCursor } from './selection'
+import { NODE_BLOCK_HEIGHT } from '../layout/layout_constants'
 
 type LineEntry = CursorEntry | NodeEntry
 
@@ -248,6 +249,18 @@ export class CursorMap {
       return [cursorEntry.xCoord + 3, line.yCoord + line.marginTop]
     }
     return [cursorEntry.xCoord, line.yCoord + line.marginTop]
+  }
+
+  getBoundingBoxForNodeCursor(position: CursorPosition): [number, number, number, number] {
+    const entries = this.getEntryListForLineIndex(position.lineIndex)
+    const line = this.lines[position.lineIndex]
+    const cursorEntry = entries[position.entryIndex]
+    if (cursorEntry.isCursor) {
+      return [cursorEntry.xCoord + 3, line.yCoord + line.marginTop, 0, NODE_BLOCK_HEIGHT]
+    }
+    const nodeEntry = cursorEntry as NodeEntry
+    const node = nodeEntry.nodeCursor.renderedNode()
+    return [node.x, node.y, node.rowWidth, node.rowHeight]
   }
 
   getNodeCursorsForCursorPosition(position: CursorPosition): NodeCursor[] {

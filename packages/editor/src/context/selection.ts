@@ -853,6 +853,13 @@ export class NodeCursor {
     this.index = index
   }
 
+  renderedNode() {
+    if (!this.listBlock) {
+      return null
+    }
+    return this.listBlock.nodes[this.index]
+  }
+
   selectedNode() {
     if (!this.listBlock) {
       return null

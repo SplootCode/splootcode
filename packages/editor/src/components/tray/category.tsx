@@ -35,6 +35,9 @@ const MicroNodeInternal = (props: {
   const { fragment: fragment, startDrag } = props
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.effectAllowed = 'copyMove'
+    const data = JSON.stringify(fragment.fragment.serialize())
+    event.dataTransfer.setData('sploot-fragment', data)
     startDrag(fragment, 0, 0)
   }
 
