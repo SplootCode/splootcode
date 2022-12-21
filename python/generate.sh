@@ -4,7 +4,9 @@ set -eux
 
 if [ -x "$(command -v deactivate)" ]
 then
-  deactivate
+  # Attempt to deactivate any virutal env. If deactivating the virtual env fails
+  # then we're probably not in a virtual env, there's another deactivate command.
+  deactivate || true
 fi
 
 if [ ! -d "venv" ]

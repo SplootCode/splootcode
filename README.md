@@ -61,7 +61,9 @@ $ yarn start-frame
 
 The app should become availble at `http://localhost:3000`. The runtime frame will be served from `:3001` and will be loaded automatically by the editor.
 
-The main editor and frame communicate via `postMessage`, and they need to know each other's domains. This is configured in a dotenv file, e.g. `development.env`. If you change the above ports, you'll need to edit that file.
+The main editor and frame communicate via `postMessage`, and they need to know each other's domains. This is configured in a dotenv file, `.env.development`. If you wish to change the above ports, you'll need to edit that file too.
+
+**Important:** The main app must be opened on `localhost` NOT `127.0.0.1` in the URL bar for the runtime iframe to work correctly. Otherwise the runtime iframe will be assumed dead and reloaded continously. Unfortunately in older versions (earlier than Node 17) the Vite devserver will open to `127.0.0.1`, newer versions of node should default to `localhost`. If you wish to use a different origin then update `.env.development` to match.
 
 ## License
 If you're planning to use this for commercial purposes, please check the [LICENSE](LICENSE) file. It is not a standard open source license.
