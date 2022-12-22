@@ -25,13 +25,15 @@ import { PythonNode } from './python_node'
 export const PYTHON_COMMENT = 'PY_COMMENT'
 
 class CommentGenerator implements SuggestionGenerator {
+    // like the name implies, these are autocorrect suggestions that always remain the same 
   staticSuggestions(parent: ParentReference, index: number) {
     console.log('static suggestions!')
     const emptyComment = new PythonComment(null, '')
+    // this is
     const suggestedNode = new SuggestedNode(emptyComment, 'empty comment', 'comment', true, 'comment')
     return [suggestedNode]
   }
-
+    // while these ones change as you type 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     console.log('dynamicSuggestions!!')
     if (textInput.startsWith("'") || textInput.startsWith('"')) {
@@ -61,6 +63,7 @@ export class PythonComment extends PythonNode {
     return 'value'
   }
 
+//   helps the code be parsed as Code :sweat:
   generateParseTree(parseMapper: ParseMapper): StringNode {
     const val = this.getValue()
     return {
@@ -82,10 +85,12 @@ export class PythonComment extends PythonNode {
     }
   }
 
+//   turns the comment's serialized JSON into a Python Comment node
   static deserializer(serializedNode: SerializedNode): PythonComment {
     return new PythonComment(null, serializedNode.properties.value)
   }
 
+// this is what the Type Loader uses to register this
   static register() {
     console.log('register is being called')
     const comment = new TypeRegistration()
