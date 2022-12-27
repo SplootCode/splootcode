@@ -643,6 +643,8 @@ def generateAstStatement(sploot_node):
         return generateBreakStatement(sploot_node)
     elif sploot_node["type"] == "PY_CONTINUE":
         return generateContinueStatement(sploot_node)
+    elif sploot_node["type"] == "PY_COMMENT":
+        return None
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
