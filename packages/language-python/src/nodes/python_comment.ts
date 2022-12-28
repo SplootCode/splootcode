@@ -22,24 +22,21 @@ import { PythonNode } from './python_node'
 export const PYTHON_COMMENT = 'PY_COMMENT'
 
 class CommentGenerator implements SuggestionGenerator {
-  // like the name implies, these are autocorrect suggestions that always remain the same
+  // like the name implies, these are autocorrect suggestions that always remain the same ie static
   staticSuggestions(parent: ParentReference, index: number) {
-    console.log('static suggestions!')
     const emptyComment = new PythonComment(null, '')
-    // this is
     const suggestedNode = new SuggestedNode(emptyComment, 'empty comment', 'comment', true, 'comment')
     return [suggestedNode]
   }
   // while these ones change as you type
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
-    console.log('dynamicSuggestions!!')
-    if (textInput.startsWith("'") || textInput.startsWith('"')) {
+    if (textInput.startsWith('#')) {
       let value = textInput.slice(1)
       if (value.length !== 0 && value[value.length - 1] === textInput[0]) {
         value = value.slice(0, value.length - 1)
       }
-      const customString = new PythonComment(null, value)
-      const suggestedNode = new SuggestedNode(customString, `string ${value}`, textInput, true, 'string')
+      const customComment = new PythonComment(null, value)
+      const suggestedNode = new SuggestedNode(customComment, `comment ${value}`, textInput, true, 'comment')
       return [suggestedNode]
     }
     return []
@@ -56,11 +53,12 @@ export class PythonComment extends PythonNode {
     return this.properties.value
   }
 
+  // without this, we cannot edit the contents of a comment
   getEditableProperty() {
     return 'value'
   }
 
-  //  No reason to create a parse tree for comments
+  //  No real reason to create a parse tree for comments, so return null
   generateParseTree(parseMapper: ParseMapper): any {
     return null
   }
@@ -70,9 +68,8 @@ export class PythonComment extends PythonNode {
     return new PythonComment(null, serializedNode.properties.value)
   }
 
-  // this is what the Type Loader uses to register this
+  // this is what the Type Loader uses to register the comment as an accepted node in sploot
   static register() {
-    console.log('register is being called')
     const typeRegistration = new TypeRegistration()
     typeRegistration.typeName = PYTHON_COMMENT
     typeRegistration.deserializer = PythonComment.deserializer
