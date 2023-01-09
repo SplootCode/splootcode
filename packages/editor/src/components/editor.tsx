@@ -14,7 +14,7 @@ import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
-import { PythonFrame } from '../runtime/python_frame'
+import { PythonFrame } from 'src/runtime/python_frame'
 import { RenderedFragment } from '../layout/rendered_fragment'
 import { Tray } from './tray/tray'
 
