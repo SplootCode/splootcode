@@ -1,22 +1,7 @@
 
-html {
-  height: 100%;
-}
-
-body { 
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-size: 12pt;
-}
-
 .terminal-menu {
   background-color: var(--chakra-colors-gray-900);
   border-bottom: 1px solid var(--chakra-colors-gray-800);
-}
-
-#app-root {
-  height: 100%;
 }
 
 #terminal-container {

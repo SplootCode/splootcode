@@ -27,6 +27,11 @@ export class WorkerManager {
   private inputPlayback: string[]
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
+  private _workerState: WorkerState
+
+  public get workerState() {
+    return this._workerState
+  }
 
   constructor(
     parentWindowDomain: string,
@@ -40,6 +45,7 @@ export class WorkerManager {
     this.standardIO = standardIO
     this.inputPlayback = []
     this.requestPlayback = new Map()
+    this._workerState = WorkerState.DISABLED
     this.stateCallBack = stateCallback
 
     this.initialiseWorker()
@@ -64,7 +70,8 @@ export class WorkerManager {
 
     this.fetchBuffer = new Uint8Array(new SharedArrayBuffer(128 * 1024))
     this.fetchBufferMeta = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * 3))
-
+    this._workerState = WorkerState.RUNNING
+    this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'run',
       nodetree: nodeTree,
@@ -75,6 +82,8 @@ export class WorkerManager {
   }
 
   rerun(nodeTree: any) {
+    this._workerState = WorkerState.RUNNING
+    this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'rerun',
       nodetree: nodeTree,
@@ -215,6 +224,7 @@ export class WorkerManager {
 
   stop() {
     this.standardIO.stderr('\r\nProgram Stopped.\r\n')
+    this._workerState = WorkerState.DISABLED
     this.stateCallBack(WorkerState.DISABLED)
     this.worker.removeEventListener('message', this.handleMessageFromWorker)
     this.worker.terminate()
@@ -225,6 +235,7 @@ export class WorkerManager {
   handleMessageFromWorker = (event: MessageEvent<WorkerMessage>) => {
     const type = event.data.type
     if (type === 'ready') {
+      this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
     } else if (type === 'stdout') {
       this.standardIO.stdout(event.data.stdout)
@@ -242,6 +253,7 @@ export class WorkerManager {
     } else if (type === 'runtime_capture' || type === 'module_info') {
       parent.postMessage(event.data, this.parentWindowDomain)
     } else if (type === 'finished') {
+      this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
     } else {
       console.warn(`Unrecognised message from worker: ${type}`)

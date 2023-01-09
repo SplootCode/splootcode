@@ -1,10 +1,9 @@
-import css from 'rollup-plugin-import-css'
 import dts from 'rollup-plugin-dts'
 import typescript from '@rollup/plugin-typescript'
 
 export default [
   {
-    plugins: [typescript(), css()],
+    plugins: [typescript()],
     input: 'src/index.ts',
     output: [
       {
@@ -38,6 +37,6 @@ export default [
   {
     input: 'src/webworker.ts',
     output: [{ file: `dist/worker.d.ts`, format: 'es' }],
-    plugins: [dts(), css()],
+    plugins: [dts()],
   },
 ]
