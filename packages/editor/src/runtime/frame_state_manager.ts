@@ -4,7 +4,7 @@ const HeartbeatTimeout = 60000 // Die if no heartbeat for 1 min
 
 export enum FrameState {
   DEAD = 0,
-  LOADING,
+  REQUESTING_INITIAL_FILES,
   LIVE,
   UNMOUNTED,
 }
@@ -13,7 +13,7 @@ export class FrameStateManager {
   private lastHeartbeatTimestamp: Date
   private frameState: FrameState
   private postMessageToFrame: (message: any) => void
-  private sendNodeTreeToHiddenFrame: () => void
+  private sendNodeTreeToHiddenFrame: (initialSend: boolean) => void
   private reloadFrame: () => void
   private currentHeartbeat = null
   private needsNewNodeTree = false
@@ -22,12 +22,12 @@ export class FrameStateManager {
   constructor(
     postMessageToFrame: (message: any) => void,
     reloadFrame: () => void,
-    sendNodeTreeToHiddenFrame: () => void
+    sendNodeTreeToHiddenFrame: (initialSend: boolean) => void
   ) {
     this.postMessageToFrame = postMessageToFrame
     this.reloadFrame = reloadFrame
     this.sendNodeTreeToHiddenFrame = sendNodeTreeToHiddenFrame
-    this.frameState = FrameState.LOADING
+    this.frameState = FrameState.REQUESTING_INITIAL_FILES
     this.lastHeartbeatTimestamp = new Date()
     this.lastSentNodeTree = new Date(new Date().getMilliseconds() - 1000)
   }
@@ -40,11 +40,9 @@ export class FrameStateManager {
   handleHeartbeat(payload: any) {
     this.frameState = payload['state']
     this.lastHeartbeatTimestamp = new Date()
-    if (this.frameState == FrameState.LOADING) {
+    if (this.frameState == FrameState.REQUESTING_INITIAL_FILES) {
       this.needsNewNodeTree = false
-      this.sendNodeTreeToHiddenFrame()
-    } else if (this.needsNewNodeTree) {
-      this.sendNodeTreeToHiddenFrame()
+      this.sendNodeTreeToHiddenFrame(true)
     }
   }
 
@@ -57,7 +55,7 @@ export class FrameStateManager {
       if (millis > 200) {
         this.needsNewNodeTree = false
         this.lastSentNodeTree = new Date()
-        this.sendNodeTreeToHiddenFrame()
+        this.sendNodeTreeToHiddenFrame(false)
       }
     } else {
       this.needsNewNodeTree = false
@@ -75,10 +73,15 @@ export class FrameStateManager {
       this.frameState = FrameState.DEAD
     }
     switch (this.frameState) {
-      case FrameState.LOADING:
-        this.sendNodeTreeToHiddenFrame()
+      case FrameState.REQUESTING_INITIAL_FILES:
+        if (millis > HeartbeatSendInterval) {
+          this.sendHeartbeatRequest()
+        }
         break
       case FrameState.LIVE:
+        if (this.needsNewNodeTree) {
+          this.sendNodeTreeToHiddenFrame(false)
+        }
         if (millis > HeartbeatSendInterval) {
           this.sendHeartbeatRequest()
         }
@@ -86,7 +89,7 @@ export class FrameStateManager {
       case FrameState.DEAD:
         console.warn('frame is dead, reloading')
         this.reloadFrame()
-        this.frameState = FrameState.LOADING
+        this.frameState = FrameState.REQUESTING_INITIAL_FILES
         this.lastHeartbeatTimestamp = new Date()
         break
     }

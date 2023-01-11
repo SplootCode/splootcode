@@ -14,7 +14,7 @@ import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
-import { PythonFrame } from 'src/runtime/python_frame'
+import { PythonRuntimePanel } from 'src/runtime/python_runtime_panel'
 import { RenderedFragment } from '../layout/rendered_fragment'
 import { Tray } from './tray/tray'
 
@@ -88,7 +88,7 @@ export class Editor extends React.Component<EditorProps> {
               </div>
             </div>
             <div className="python-preview-panel">
-              <PythonFrame
+              <PythonRuntimePanel
                 project={project}
                 pkg={pkg}
                 validationWatcher={validationWatcher}

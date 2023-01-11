@@ -1,4 +1,4 @@
-import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -154,7 +154,7 @@ const syncFetch = (method: string, url: string, headers: any, body: any): Respon
 
 let executorCode = null
 let moduleLoaderCode = null
-let nodetree = null
+let workspace: Map<string, FileSpec> = new Map()
 
 const run = async () => {
   try {
@@ -189,8 +189,8 @@ const loadModule = async (moduleName) => {
   }
 }
 
-const getNodeTree = () => {
-  return nodetree
+const getWorkspace = () => {
+  return workspace
 }
 
 interface StaticURLs {
@@ -214,7 +214,8 @@ export const initialize = async (urls: StaticURLs) => {
   })
   pyodide.registerJsModule('nodetree', {
     getNodeTree: () => {
-      return pyodide.toPy(getNodeTree())
+      const nodeTree = getWorkspace().get('main.py').content
+      return pyodide.toPy(nodeTree)
     },
     getIterationLimit: () => {
       if (rerun) {
@@ -247,7 +248,7 @@ export const initialize = async (urls: StaticURLs) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
-      nodetree = e.data.nodetree
+      workspace = e.data.workspace
       stdinbuffer = e.data.stdinBuffer
       fetchBuffer = e.data.fetchBuffer
       fetchBufferMeta = e.data.fetchBufferMeta
@@ -256,7 +257,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
-      nodetree = e.data.nodetree
+      workspace = e.data.workspace
       stdinbuffer = null
       fetchBuffer = null
       fetchBufferMeta = null
