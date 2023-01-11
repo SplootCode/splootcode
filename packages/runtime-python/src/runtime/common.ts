@@ -3,6 +3,17 @@ export enum FetchSyncErrorType {
   FETCH_ERROR = 'FETCH_ERROR',
 }
 
+export type FileSpec = SplootFile | BlobFile
+export interface SplootFile {
+  type: 'sploot'
+  content: any // SerializedNode
+}
+
+export interface BlobFile {
+  type: 'blob'
+  content: Uint8Array
+}
+
 export interface ResponseData {
   completedResponse?: {
     status: number
@@ -62,7 +73,7 @@ export type WorkerMessage =
 
 export interface RunMessage {
   type: 'run'
-  nodetree: any
+  workspace: Map<string, FileSpec>
   stdinBuffer: Int32Array
   fetchBuffer: Uint8Array
   fetchBufferMeta: Int32Array
@@ -70,7 +81,7 @@ export interface RunMessage {
 
 export interface RerunMessage {
   type: 'rerun'
-  nodetree: any
+  workspace: Map<string, FileSpec>
   readlines: string[]
   requestPlayback: Map<string, ResponseData[]>
 }

@@ -5,29 +5,14 @@ import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { Button, ButtonGroup } from '@chakra-ui/react'
-import {
-  CapturePayload,
-  ChildSetMutation,
-  FunctionDeclarationData,
-  NodeMutation,
-  NodeMutationType,
-  Project,
-  ScopeMutation,
-  ScopeMutationType,
-  SplootPackage,
-  StatementCapture,
-  ValidationWatcher,
-  globalMutationDispatcher,
-} from '@splootcode/core'
+import { CapturePayload } from '@splootcode/core'
+import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
-import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 import { Terminal } from 'xterm'
 
 type ViewPageProps = {
-  project: Project
-  pkg: SplootPackage
-  validationWatcher: ValidationWatcher
+  fileChangeWatcher: FileChangeWatcher
   frameScheme: 'http' | 'https'
   frameDomain: string
 }
@@ -35,7 +20,6 @@ type ViewPageProps = {
 interface ConsoleState {
   ready: boolean
   running: boolean
-  nodeTree: any
   runtimeCapture: boolean
   frameSrc: string
 }
@@ -70,7 +54,6 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
     this.state = {
       ready: false,
       running: false,
-      nodeTree: null,
       runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
     }
@@ -290,40 +273,6 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
     }
   }
 
-  handleNodeMutation = (mutation: NodeMutation) => {
-    // There's a node tree version we've not loaded yet.
-    if (mutation.type !== NodeMutationType.SET_VALIDITY) {
-      // Only trigger for actual code changes
-      // The validation mutations always get sent before the actual code change.
-      this.frameStateManager.setNeedsNewNodeTree(true)
-    }
-  }
-
-  handleChildSetMutation = (mutation: ChildSetMutation) => {
-    // There's a node tree version we've not loaded yet.
-    this.frameStateManager.setNeedsNewNodeTree(true)
-  }
-
-  onPythonRuntimeIsReady = async () => {
-    const file = await this.props.pkg.getLoadedFile(this.props.project.fileLoader, 'main.py')
-    ;(file.rootNode as PythonFile).getScope().loadAllImportedModules()
-  }
-
-  handleScopeMutation = (mutation: ScopeMutation) => {
-    if (mutation.type === ScopeMutationType.IMPORT_MODULE) {
-      this.postMessageToFrame({
-        type: 'module_info',
-        moduleName: mutation.moduleName,
-      })
-    }
-  }
-
-  async recievedModuleInfo(payload: PythonModuleSpec) {
-    const file = await this.props.pkg.getLoadedFile(this.props.project.fileLoader, 'main.py')
-    const pythonFile = file.rootNode as PythonFile
-    ;(pythonFile.getScope(false) as PythonScope).processPythonModuleSpec(payload)
-  }
-
   processMessage = (event: MessageEvent) => {
     if (event.origin === this.getFrameDomain()) {
       this.handleMessageFromFrame(event)
@@ -348,7 +297,7 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
         break
       case 'ready':
         this.setState({ ready: true, running: false })
-        this.onPythonRuntimeIsReady()
+        this.props.fileChangeWatcher.onPythonRuntimeIsReady()
         break
       case 'running':
         this.term.clear()
@@ -374,67 +323,49 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
         break
       case 'runtime_capture':
         const capture = JSON.parse(event.data.capture) as CapturePayload
-        this.updateRuntimeCapture(capture)
+        this.props.fileChangeWatcher.updateRuntimeCapture(capture)
         break
       case 'module_info':
-        this.recievedModuleInfo(event.data.info)
+        this.props.fileChangeWatcher.recievedModuleInfo(event.data.info)
         break
       default:
         console.warn('Unknown event from frame: ', event)
     }
   }
 
-  updateRuntimeCapture(capture: CapturePayload) {
-    // TODO: handle mutliple python files or different names.
-    const filename = 'main.py'
-    this.props.pkg
-      .getLoadedFile(this.props.project.fileLoader, filename)
-      .then((file) => {
-        file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
-        const scope = (file.rootNode as PythonFile).getScope()
-        for (const funcID in capture.detached) {
-          const funcNode = scope.getRegisteredFunction(funcID)
-          const funcDeclarationStatement: StatementCapture = {
-            type: 'PYTHON_FUNCTION_DECLARATION',
-            data: {
-              calls: capture.detached[funcID],
-            } as FunctionDeclarationData,
-          }
-          funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
-        }
-        for (const funcID of scope.allRegisteredFunctionIDs()) {
-          if (!(funcID in capture.detached)) {
-            scope.getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
-          }
-        }
-      })
-      .catch((err) => {
-        console.warn(err)
-        console.warn(`Failed to apply runtime capture`)
-      })
+  loadModule = (moduleName: string) => {
+    this.postMessageToFrame({
+      type: 'module_info',
+      moduleName: moduleName,
+    })
   }
 
-  sendNodeTreeToHiddenFrame = async () => {
-    const pkg = this.props.pkg
-    if (!this.props.validationWatcher.isValid()) {
+  sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
+    let isValid = this.props.fileChangeWatcher.isValid()
+    if (!isValid) {
+      this.setState({ ready: false })
+      this.frameStateManager.setNeedsNewNodeTree(false)
+      return
+    }
+    let fileState: Map<string, FileSpec>
+    if (isInitial) {
+      fileState = await this.props.fileChangeWatcher.getAllFileState()
+    } else {
+      fileState = await this.props.fileChangeWatcher.getUpdatedFileState()
+    }
+
+    // Check validity again - if it's not valid, bail out
+    isValid = this.props.fileChangeWatcher.isValid()
+    if (!isValid) {
       this.setState({ ready: false })
       this.frameStateManager.setNeedsNewNodeTree(false)
       return
     }
 
-    pkg.fileOrder.forEach((filename) => {
-      pkg.getLoadedFile(this.props.project.fileLoader, filename).then((file) => {
-        const payload = { type: 'nodetree', data: { filename: file.name, tree: file.rootNode.serialize() } }
-        // Check again that the current state is valid - otherwise bail out
-        if (this.props.validationWatcher.isValid()) {
-          this.postMessageToFrame(payload)
-        } else {
-          this.setState({ ready: false })
-        }
-        this.frameStateManager.setNeedsNewNodeTree(false)
-        return
-      })
-    })
+    const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
+    const payload = { type: messageType, data: { files: fileState } }
+    this.postMessageToFrame(payload)
+    this.frameStateManager.setNeedsNewNodeTree(false)
   }
 
   reloadFrame = () => {
@@ -469,6 +400,10 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
     }
   }
 
+  setDirty = () => {
+    this.frameStateManager.setNeedsNewNodeTree(true)
+  }
+
   componentDidMount() {
     this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#040810' } })
     this.wasmTty = new WasmTTY(this.term)
@@ -480,20 +415,24 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
       this.terminalFitAddon.fit()
     }, 1)
 
-    globalMutationDispatcher.registerChildSetObserver(this)
-    globalMutationDispatcher.registerNodeObserver(this)
-    globalMutationDispatcher.registerScopeObserver(this)
+    this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule)
+
     window.addEventListener('message', this.processMessage, false)
     this.frameStateManager.startHeartbeat()
     this.resizeObserver.observe(this.termRef.current)
+  }
+
+  componentDidUpdate(prevProps: Readonly<ViewPageProps>, prevState: Readonly<ConsoleState>, snapshot?: any): void {
+    if (prevProps.fileChangeWatcher !== this.props.fileChangeWatcher) {
+      prevProps.fileChangeWatcher.deregisterObservers()
+      this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule)
+    }
   }
 
   componentWillUnmount() {
     this.resizeObserver.disconnect()
     this.frameStateManager.stopHeartbeat()
     window.removeEventListener('message', this.processMessage, false)
-    globalMutationDispatcher.deregisterChildSetObserver(this)
-    globalMutationDispatcher.deregisterNodeObserver(this)
-    globalMutationDispatcher.deregisterScopeObserver(this)
+    this.props.fileChangeWatcher.deregisterObservers()
   }
 }

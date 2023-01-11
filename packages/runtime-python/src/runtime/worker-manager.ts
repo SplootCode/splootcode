@@ -1,4 +1,4 @@
-import { FetchSyncErrorType, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
 const INPUT_BUF_SIZE = 100
 
@@ -62,7 +62,7 @@ export class WorkerManager {
     this.worker.postMessage(message)
   }
 
-  run(nodeTree: any) {
+  run(workspace: Map<string, FileSpec>) {
     this.inputPlayback = []
     this.requestPlayback = new Map()
     this.stdinbuffer = new Int32Array(new SharedArrayBuffer(INPUT_BUF_SIZE * Int32Array.BYTES_PER_ELEMENT))
@@ -74,19 +74,19 @@ export class WorkerManager {
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'run',
-      nodetree: nodeTree,
+      workspace: workspace,
       stdinBuffer: this.stdinbuffer,
       fetchBuffer: this.fetchBuffer,
       fetchBufferMeta: this.fetchBufferMeta,
     })
   }
 
-  rerun(nodeTree: any) {
+  rerun(workspace: Map<string, FileSpec>) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'rerun',
-      nodetree: nodeTree,
+      workspace: workspace,
       readlines: this.inputPlayback,
       requestPlayback: this.requestPlayback,
     })

@@ -1,10 +1,11 @@
 import 'tslib'
+import { FileSpec } from './common'
 
 import { WorkerManager, WorkerState } from './worker-manager'
 
 export enum FrameState {
   DEAD = 0,
-  LOADING,
+  REQUESTING_INITIAL_FILES,
   LIVE,
   UNMOUNTED,
 }
@@ -13,13 +14,15 @@ class RuntimeStateManager {
   private parentWindowDomain: string
   private workerURL: string
   private workerManager: WorkerManager
-  private nodeTree: any
-  private nodeTreeLoaded: boolean
+  private workspace: Map<string, FileSpec>
+  private initialFilesLoaded: boolean
   private stdinPromiseResolve: (s: string) => void
 
   constructor(parentWindowDomain: string, workerURL: string) {
     this.parentWindowDomain = parentWindowDomain
     this.workerURL = workerURL
+    this.initialFilesLoaded = false
+    this.workspace = new Map()
   }
 
   sendToParent = (payload) => {
@@ -58,10 +61,10 @@ class RuntimeStateManager {
       },
       (state: WorkerState) => {
         if (state === WorkerState.READY) {
-          if (this.nodeTreeLoaded) {
+          if (this.initialFilesLoaded) {
             this.sendToParent({ type: 'ready' })
           } else {
-            this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
+            this.sendToParent({ type: 'heartbeat', data: { state: FrameState.REQUESTING_INITIAL_FILES } })
           }
         } else if (state === WorkerState.DISABLED) {
           this.sendToParent({ type: 'disabled' })
@@ -70,6 +73,17 @@ class RuntimeStateManager {
         }
       }
     )
+  }
+
+  addFilesToWorkspace(files: Map<string, FileSpec>, isInitial: boolean) {
+    const workspace = isInitial ? new Map<string, FileSpec>() : this.workspace
+    for (const [filename, file] of files) {
+      workspace.set(filename, file)
+    }
+    this.workspace = workspace
+    if (isInitial) {
+      this.initialFilesLoaded = true
+    }
   }
 
   handleMessage = (event: MessageEvent) => {
@@ -81,18 +95,24 @@ class RuntimeStateManager {
 
     switch (data.type) {
       case 'heartbeat':
-        if (this.nodeTreeLoaded) {
+        if (this.initialFilesLoaded) {
           this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         } else {
-          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LOADING } })
+          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.REQUESTING_INITIAL_FILES } })
         }
         break
-      case 'nodetree':
-        this.nodeTree = data.data.tree
-        this.nodeTreeLoaded = true
+      case 'updatedfiles':
+        this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, false)
+        if (this.workerManager.workerState === WorkerState.READY) {
+          this.workerManager.rerun(this.workspace)
+        }
+        break
+      case 'initialfiles':
+        this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
+        this.initialFilesLoaded = true
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.nodeTree)
+          this.workerManager.rerun(this.workspace)
         }
         break
       case 'stdin':
@@ -100,8 +120,8 @@ class RuntimeStateManager {
         this.handleStdinInput(text)
         break
       case 'run':
-        if (this.nodeTreeLoaded) {
-          this.workerManager.run(this.nodeTree)
+        if (this.initialFilesLoaded) {
+          this.workerManager.run(this.workspace)
         } else {
           console.warn('Cannot run, no nodetree loaded')
         }
