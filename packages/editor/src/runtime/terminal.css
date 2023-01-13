@@ -9,7 +9,7 @@
 }
 
 #terminal {
-  height: calc(100% - 48px);
+  height: calc(100% - 42px);
   background-color: var(--chakra-colors-gray-900);
   box-sizing: border-box;
   padding-left: 8px;

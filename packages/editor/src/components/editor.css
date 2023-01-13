@@ -41,6 +41,7 @@
 
 .python-preview-panel {
   border-left: 2px solid var(--section-separator-color);
+  height: calc(100vh - 40px);
 }
 
 text {
