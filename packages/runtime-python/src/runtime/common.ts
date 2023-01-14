@@ -1,3 +1,5 @@
+import { FrameState } from '.'
+
 export enum FetchSyncErrorType {
   NO_RECORDED_REQUEST = 'NO_RECORDED_REQUEST',
   FETCH_ERROR = 'FETCH_ERROR',
@@ -92,3 +94,18 @@ export interface LoadModuleMessage {
 }
 
 export type WorkerManagerMessage = RunMessage | RerunMessage | LoadModuleMessage
+
+/** Messages to send to the Editor window */
+
+export interface HeartbeatMessage {
+  type: 'heartbeat'
+  data: { state: FrameState }
+}
+
+export type EditorMessage =
+  | { type: 'ready' | 'disabled' | 'running' | 'stdin' }
+  | HeartbeatMessage
+  | WorkerRuntimeCaptureMessage
+  | WorkerModuleInfoMessage
+  | WorkerStdoutMessage
+  | WorkerStderrMessage

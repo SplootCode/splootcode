@@ -1,4 +1,11 @@
-import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import {
+  EditorMessage,
+  FetchSyncErrorType,
+  FileSpec,
+  ResponseData,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './common'
 
 const INPUT_BUF_SIZE = 100
 
@@ -15,7 +22,6 @@ export enum WorkerState {
 }
 
 export class WorkerManager {
-  private parentWindowDomain: string
   private workerURL: string
   private worker: Worker
   private standardIO: StandardIO
@@ -27,6 +33,7 @@ export class WorkerManager {
   private inputPlayback: string[]
   private requestPlayback: Map<string, ResponseData[]>
   private stateCallBack: (state: WorkerState) => void
+  private sendToParentWindow: (payload: EditorMessage) => void
   private _workerState: WorkerState
 
   public get workerState() {
@@ -34,12 +41,12 @@ export class WorkerManager {
   }
 
   constructor(
-    parentWindowDomain: string,
     workerURL: string,
     standardIO: StandardIO,
-    stateCallback: (state: WorkerState) => void
+    stateCallback: (state: WorkerState) => void,
+    sendToParentWindow: (payload: EditorMessage) => void
   ) {
-    this.parentWindowDomain = parentWindowDomain
+    this.sendToParentWindow = sendToParentWindow
     this.workerURL = workerURL
     this.worker = null
     this.standardIO = standardIO
@@ -251,7 +258,7 @@ export class WorkerManager {
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
     } else if (type === 'runtime_capture' || type === 'module_info') {
-      parent.postMessage(event.data, this.parentWindowDomain)
+      this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)

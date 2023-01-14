@@ -1,5 +1,5 @@
 import 'tslib'
-import { FileSpec } from './common'
+import { EditorMessage, FileSpec } from './common'
 
 import { WorkerManager, WorkerState } from './worker-manager'
 
@@ -12,21 +12,28 @@ export enum FrameState {
 
 class RuntimeStateManager {
   private parentWindowDomain: string
+  private parentWindowDomainRegex: string
   private workerURL: string
   private workerManager: WorkerManager
   private workspace: Map<string, FileSpec>
   private initialFilesLoaded: boolean
   private stdinPromiseResolve: (s: string) => void
 
-  constructor(parentWindowDomain: string, workerURL: string) {
-    this.parentWindowDomain = parentWindowDomain
+  constructor(parentWindowDomainRegex: string, workerURL: string) {
+    this.parentWindowDomain = null
+    this.parentWindowDomainRegex = parentWindowDomainRegex
     this.workerURL = workerURL
     this.initialFilesLoaded = false
     this.workspace = new Map()
   }
 
-  sendToParent = (payload) => {
-    parent.postMessage(payload, this.parentWindowDomain)
+  sendToParent = (payload: EditorMessage) => {
+    if (this.parentWindowDomain) {
+      parent.postMessage(payload, this.parentWindowDomain)
+    } else if (payload.type === 'heartbeat') {
+      // Only allow heartbeat messages to go to any origin.
+      parent.postMessage(payload, '*')
+    }
   }
 
   getTerminalInput = async () => {
@@ -46,7 +53,6 @@ class RuntimeStateManager {
 
   initialiseWorkerManager = () => {
     this.workerManager = new WorkerManager(
-      this.parentWindowDomain,
       this.workerURL,
       {
         stdin: this.getTerminalInput,
@@ -71,7 +77,8 @@ class RuntimeStateManager {
         } else if (state === WorkerState.RUNNING) {
           this.sendToParent({ type: 'running' })
         }
-      }
+      },
+      this.sendToParent
     )
   }
 
@@ -91,6 +98,14 @@ class RuntimeStateManager {
     if (data.type && data.type.startsWith('webpack')) {
       // Ignore webpack devserver
       return
+    }
+    if (this.parentWindowDomain) {
+      if (event.origin !== this.parentWindowDomain) {
+        console.warn('Ignoring message from unknown origin', event.origin)
+        return
+      }
+    } else if (event.origin.match(this.parentWindowDomainRegex)) {
+      this.parentWindowDomain = event.origin
     }
 
     switch (data.type) {
@@ -143,8 +158,8 @@ class RuntimeStateManager {
 
 let runtimeStateManager: RuntimeStateManager
 
-export function initialize(editorDomain: string, workerURL: string) {
-  runtimeStateManager = new RuntimeStateManager(editorDomain, workerURL)
+export function initialize(editorDomainRegex: string, workerURL: string) {
+  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, workerURL)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManager()
 }
