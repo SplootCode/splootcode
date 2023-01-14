@@ -47,7 +47,12 @@ export class FrameStateManager {
   }
 
   setNeedsNewNodeTree(value: boolean) {
-    if (value) {
+    this.needsNewNodeTree = value
+    setTimeout(() => this.sendNewNodeTreeIfNeeded(), 0)
+  }
+
+  sendNewNodeTreeIfNeeded() {
+    if (this.needsNewNodeTree) {
       const now = new Date()
       const millis = now.getTime() - this.lastSentNodeTree.getTime()
 
@@ -57,9 +62,6 @@ export class FrameStateManager {
         this.lastSentNodeTree = new Date()
         this.sendNodeTreeToHiddenFrame(false)
       }
-    } else {
-      this.needsNewNodeTree = false
-      this.lastSentNodeTree = new Date()
     }
   }
 
