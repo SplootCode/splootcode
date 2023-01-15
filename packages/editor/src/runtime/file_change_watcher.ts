@@ -14,7 +14,7 @@ export interface BlobFile {
 
 export interface FileChangeWatcher {
   onPythonRuntimeIsReady: () => Promise<void>
-  updateRuntimeCapture: (capture: CapturePayload) => void
+  updateRuntimeCaptures: (captures: Map<string, CapturePayload>) => void
   registerObservers: (setDirty: () => void, loadModule: (moduleName: string) => void) => void
   deregisterObservers: () => void
   recievedModuleInfo: (payload: PythonModuleSpec) => void

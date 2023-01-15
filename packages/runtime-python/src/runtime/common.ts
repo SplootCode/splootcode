@@ -56,7 +56,7 @@ export interface WorkerInputValueMessage {
 
 export interface WorkerRuntimeCaptureMessage {
   type: 'runtime_capture'
-  capture: any
+  captures: Map<string, any>
 }
 
 export interface WorkerModuleInfoMessage {

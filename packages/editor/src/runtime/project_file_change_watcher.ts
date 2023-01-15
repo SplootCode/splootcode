@@ -30,34 +30,36 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     this.setDirty = null
   }
 
-  updateRuntimeCapture(capture: CapturePayload) {
+  updateRuntimeCaptures(captures: Map<string, CapturePayload>) {
     // TODO: handle mutliple python files or different names.
-    const filename = 'main.py'
-    this.pkg
-      .getLoadedFile(this.project.fileLoader, filename)
-      .then((file) => {
-        file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
-        const scope = (file.rootNode as PythonFile).getScope()
-        for (const funcID in capture.detached) {
-          const funcNode = scope.getRegisteredFunction(funcID)
-          const funcDeclarationStatement: StatementCapture = {
-            type: 'PYTHON_FUNCTION_DECLARATION',
-            data: {
-              calls: capture.detached[funcID],
-            } as FunctionDeclarationData,
+    for (const filename of captures.keys()) {
+      const capture = captures.get(filename)
+      this.pkg
+        .getLoadedFile(this.project.fileLoader, filename)
+        .then((file) => {
+          file.rootNode.recursivelyApplyRuntimeCapture(capture.root)
+          const scope = (file.rootNode as PythonFile).getScope()
+          for (const funcID in capture.detached) {
+            const funcNode = scope.getRegisteredFunction(funcID)
+            const funcDeclarationStatement: StatementCapture = {
+              type: 'PYTHON_FUNCTION_DECLARATION',
+              data: {
+                calls: capture.detached[funcID],
+              } as FunctionDeclarationData,
+            }
+            funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
           }
-          funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
-        }
-        for (const funcID of scope.allRegisteredFunctionIDs()) {
-          if (!(funcID in capture.detached)) {
-            scope.getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
+          for (const funcID of scope.allRegisteredFunctionIDs()) {
+            if (!(funcID in capture.detached)) {
+              scope.getRegisteredFunction(funcID)?.recursivelyClearRuntimeCapture()
+            }
           }
-        }
-      })
-      .catch((err) => {
-        console.warn(err)
-        console.warn(`Failed to apply runtime capture`)
-      })
+        })
+        .catch((err) => {
+          console.warn(err)
+          console.warn(`Failed to apply runtime capture`)
+        })
+    }
   }
 
   isValid(): boolean {

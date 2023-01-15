@@ -322,8 +322,8 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
         this.wasmTty.print(event.data.stderr)
         break
       case 'runtime_capture':
-        const capture = JSON.parse(event.data.capture) as CapturePayload
-        this.props.fileChangeWatcher.updateRuntimeCapture(capture)
+        const captures = event.data.captures as Map<string, CapturePayload>
+        this.props.fileChangeWatcher.updateRuntimeCaptures(captures)
         break
       case 'module_info':
         this.props.fileChangeWatcher.recievedModuleInfo(event.data.info)
