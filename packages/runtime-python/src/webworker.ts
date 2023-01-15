@@ -226,9 +226,11 @@ export const initialize = async (urls: StaticURLs) => {
   })
   pyodide.registerJsModule('runtime_capture', {
     report: (json_dump) => {
+      const captureMap = new Map()
+      captureMap.set('main.py', JSON.parse(json_dump))
       sendMessage({
         type: 'runtime_capture',
-        capture: json_dump,
+        captures: captureMap,
       })
     },
   })
