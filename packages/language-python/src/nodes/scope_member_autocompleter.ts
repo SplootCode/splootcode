@@ -61,6 +61,7 @@ class MemberGenerator implements SuggestionGenerator {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
     const scope = (parent.node as PythonNode).getScope(false)
+    const filePath = scope.getFilePath()
     let attributes: [string, VariableTypeInfo][] = []
     let allowWrap = false
 
@@ -93,7 +94,7 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_SUBSCRIPT:
         case PYTHON_BRACKETS:
         case PYTHON_MEMBER:
-          const typeResult = analyzer.getPyrightTypeForExpression(leftChild)
+          const typeResult = analyzer.getPyrightTypeForExpression(filePath, leftChild)
           if (typeResult) {
             attributes = getAttributesFromType(scope, typeResult)
           } else {

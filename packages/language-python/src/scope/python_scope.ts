@@ -33,6 +33,7 @@ function generateRandomID(): string {
 }
 
 export class PythonScope {
+  filePath: string // Path to the python file for this scope.
   parent: PythonScope
   name: string
   childScopes: Set<PythonScope>
@@ -47,7 +48,8 @@ export class PythonScope {
   pythonParent: PythonScope
   functionRegistry: Map<string, SplootNode>
 
-  constructor(parent: PythonScope, nodeType: string) {
+  constructor(filePath: string, parent: PythonScope, nodeType: string) {
+    this.filePath = filePath
     this.parent = parent
     this.name = ''
     this.childScopes = new Set()
@@ -78,6 +80,10 @@ export class PythonScope {
 
   removeWatcher(name: string, node: SplootNode) {
     this.nameWatchers.get(name).delete(node)
+  }
+
+  getFilePath(): string {
+    return this.filePath
   }
 
   getGlobalScope(): PythonScope {
@@ -278,7 +284,7 @@ export class PythonScope {
   }
 
   addChildScope(nodeType: string): PythonScope {
-    const childScope = new PythonScope(this, nodeType)
+    const childScope = new PythonScope(this.filePath, this, nodeType)
     this.childScopes.add(childScope)
     this.fireMutation({
       type: ScopeMutationType.ADD_CHILD_SCOPE,
@@ -392,8 +398,8 @@ export class PythonScope {
   }
 }
 
-export async function generatePythonScope(rootNode: PythonNode, analyzer: PythonAnalyzer) {
-  const scope = new PythonScope(null, null)
+export async function generatePythonScope(filePath: string, rootNode: PythonNode, analyzer: PythonAnalyzer) {
+  const scope = new PythonScope(filePath, null, null)
   scope.isGlobal = true
   scope.analyzer = analyzer
   const globalScope = scope

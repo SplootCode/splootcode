@@ -61,7 +61,7 @@ describe('python hello world file edits', () => {
     const selection = new NodeSelection()
     const renderedNode = new NodeBlock(null, file, selection, 0)
     renderedNode.calculateDimensions(0, 0, null)
-    const scope = new PythonScope(null, null)
+    const scope = new PythonScope('main.py', null, null)
     scope.isGlobal = true
     const globalScope = scope
     file.recursivelyBuildScope(globalScope)
