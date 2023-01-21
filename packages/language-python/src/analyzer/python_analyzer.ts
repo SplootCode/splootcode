@@ -14,10 +14,7 @@ import {
   NodeMutation,
   NodeMutationType,
   NodeObserver,
-  Project,
-  SplootFile,
   SplootNode,
-  SplootPackage,
   globalMutationDispatcher,
 } from '@splootcode/core'
 import { PythonFile } from '../nodes/python_file'
@@ -47,20 +44,20 @@ export class ParseMapper {
 }
 
 export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
-  project: Project
-  rootNode: PythonFile
+  files: Map<string, PythonFile>
   program: StructuredEditorProgram
-  nodeMap: Map<SplootNode, ParseNode>
+  nodeMaps: Map<string, ParseMapper>
   currentParseID: number
   latestParseID: number
+  dirtyPaths: Set<string>
 
-  constructor(project: Project) {
-    this.project = project
-    this.rootNode = null
+  constructor() {
     this.program = null
-    this.nodeMap = new Map()
+    this.nodeMaps = new Map()
+    this.files = new Map()
     this.currentParseID = null
     this.latestParseID = null
+    this.dirtyPaths = new Set()
   }
 
   initialise(typeshedPath: string) {
@@ -72,17 +69,17 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     }
   }
 
-  async loadFile(pack: SplootPackage, file: SplootFile) {
-    const loadedFile = pack.getLoadedFile(this.project.fileLoader, file.name)
-    this.rootNode = (await loadedFile).rootNode as PythonFile
-    this.updateParse()
+  async loadFile(path: string, rootNode: PythonFile) {
+    this.files.set(path, rootNode)
+    this.updateParse(path)
   }
 
-  getPyrightTypeForExpression(node: SplootNode): Type {
+  getPyrightTypeForExpression(path: string, node: SplootNode): Type {
     if (!this.program) {
       return null
     }
-    const exprNode = this.nodeMap.get(node)
+    const nodeMap = this.nodeMaps.get(path).nodeMap
+    const exprNode = nodeMap.get(node)
     if (exprNode) {
       const typeResult = this.program.evaluator.getTypeOfExpression(exprNode as ExpressionNode)
       return typeResult.type
@@ -90,12 +87,13 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     return null
   }
 
-  getPyrightFunctionSignature(callNode: SplootNode, activeIndex: number): CallSignatureInfo {
+  getPyrightFunctionSignature(path: string, callNode: SplootNode, activeIndex: number): CallSignatureInfo {
     if (!this.program) {
       return null
     }
 
-    const exprNode = this.nodeMap.get(callNode) as CallNode
+    const nodeMap = this.nodeMaps.get(path).nodeMap
+    const exprNode = nodeMap.get(callNode) as CallNode
     if (exprNode) {
       const sig = this.program.evaluator.getCallSignatureInfo(exprNode, activeIndex, true)
       return sig
@@ -113,7 +111,8 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     globalMutationDispatcher.deregisterChildSetObserver(this)
   }
 
-  updateParse() {
+  updateParse(path: string) {
+    this.dirtyPaths.add(path)
     this.latestParseID = Math.random()
     this.runParse()
   }
@@ -127,15 +126,20 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       // Parse already in progress - avoid concurrent parses
       return
     }
+    const paths = this.dirtyPaths
+    this.dirtyPaths = new Set()
     this.currentParseID = this.latestParseID
 
-    const mainPath = '/main.py'
-    const parseMapper = new ParseMapper()
-    const moduleNode = this.rootNode.generateParseTree(parseMapper)
-    this.program.updateStructuredFile(mainPath, moduleNode, parseMapper.modules)
-    await this.program.parseRecursively(mainPath)
-    this.program.getBoundSourceFile(mainPath)
-    this.nodeMap = parseMapper.nodeMap
+    for (const path of paths) {
+      const pathForFile = '/' + path
+      const parseMapper = new ParseMapper()
+      const rootNode = this.files.get(path)
+      const moduleNode = rootNode.generateParseTree(parseMapper)
+      this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
+      await this.program.parseRecursively(pathForFile)
+      this.program.getBoundSourceFile(pathForFile)
+      this.nodeMaps.set(path, parseMapper)
+    }
 
     if (this.latestParseID !== this.currentParseID) {
       this.currentParseID = null
@@ -148,11 +152,17 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   handleNodeMutation(nodeMutation: NodeMutation): void {
     // Don't update on validation mutations or runtime annotations.
     if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
-      this.updateParse()
+      // TODO: Handle mutations per file.
+      for (const path of this.files.keys()) {
+        this.updateParse(path)
+      }
     }
   }
 
   handleChildSetMutation(mutations: ChildSetMutation): void {
-    this.updateParse()
+    // TODO: Handle mutations per file.
+    for (const path of this.files.keys()) {
+      this.updateParse(path)
+    }
   }
 }

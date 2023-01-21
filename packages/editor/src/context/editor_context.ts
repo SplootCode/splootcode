@@ -3,7 +3,7 @@ import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
-import { PythonAnalyzer, generatePythonScope, isPythonNode } from '@splootcode/language-python'
+import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
 export class EditorState {
@@ -22,7 +22,7 @@ export class EditorState {
     this.selection = new NodeSelection()
     this.validationWatcher = new ValidationWatcher()
     this.validationWatcher.registerSelf()
-    this.analyser = new PythonAnalyzer(project)
+    this.analyser = new PythonAnalyzer()
     this.analyser.registerSelf()
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
@@ -40,13 +40,14 @@ export class EditorState {
 
     // Build scope
     if (isPythonNode(loadedFile.rootNode)) {
-      await generatePythonScope(loadedFile.rootNode, this.analyser)
+      await generatePythonScope(file.name, loadedFile.rootNode, this.analyser)
     }
 
     // Start up the analyzer
     // We don't technically need to wait for it, but it helps give time for
     // fonts to load correctly before render calculations happen.
-    await this.analyser.loadFile(pack, file)
+    const rootNode = loadedFile.rootNode as PythonFile
+    await this.analyser.loadFile(file.name, rootNode)
 
     // Prep NodeBlocks for rendering
     const newRootNode = new NodeBlock(null, loadedFile.rootNode, this.selection, 0)

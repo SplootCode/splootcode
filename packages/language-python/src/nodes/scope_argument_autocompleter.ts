@@ -35,8 +35,9 @@ function getAvailableFunctionArgs(callNode: PythonCallVariable, argNode: PythonA
   const argList = callNode.getArguments().children as PythonArgument[]
   const argIndex = argList.indexOf(argNode)
   const scope = callNode.getScope(false)
+  const filePath = scope.filePath
   const analyzer = scope.getAnalyzer()
-  const callInfo = analyzer.getPyrightFunctionSignature(callNode, argIndex)
+  const callInfo = analyzer.getPyrightFunctionSignature(filePath, callNode, argIndex)
   if (!callInfo) {
     return null
   }
@@ -100,9 +101,10 @@ class KeywordArgGenerator implements SuggestionGenerator {
 
     const scope = argNode.getScope(false)
     const analyzer = scope.getAnalyzer()
+    const filePath = scope.getFilePath()
     const callNode = argNode.parent.node as PythonCallVariable
     const argIndex = callNode.getArguments().getIndexOf(argNode)
-    const callInfo = analyzer.getPyrightFunctionSignature(callNode, argIndex)
+    const callInfo = analyzer.getPyrightFunctionSignature(filePath, callNode, argIndex)
 
     if (!callInfo) {
       return []
@@ -131,11 +133,12 @@ class KeywordArgGenerator implements SuggestionGenerator {
       return []
     }
     const scope = argNode.getScope(false)
+    const path = scope.getFilePath()
     const analyzer = scope.getAnalyzer()
 
     const callNode = argNode.parent.node as PythonCallVariable
     const argIndex = callNode.getArguments().getIndexOf(argNode)
-    const callInfo = analyzer.getPyrightFunctionSignature(callNode, argIndex)
+    const callInfo = analyzer.getPyrightFunctionSignature(path, callNode, argIndex)
     if (!callInfo) {
       return getInputBasedKwargs(textInput)
     }
