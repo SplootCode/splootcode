@@ -25,7 +25,7 @@ import {
   registerType,
 } from '@splootcode/core'
 import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
-import { PYTHON_IDENTIFIER, PythonIdentifier } from './python_identifier'
+import { PYTHON_IDENTIFIER, PythonIdentifier, sanitizeIdentifier } from './python_identifier'
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
@@ -37,6 +37,26 @@ class AssignmentGenerator implements SuggestionGenerator {
     const sampleNode = new PythonAssignment(null)
     const suggestedNode = new SuggestedNode(sampleNode, 'assign', '= assign set', true, 'assign a value to a variable')
     return [suggestedNode]
+  }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    if (textInput.includes('=')) {
+      const identifier = sanitizeIdentifier(textInput.split('=')[0].trim())
+      if (identifier) {
+        const identifierNode = new PythonIdentifier(null, identifier)
+        const assignmentNode = new PythonAssignment(null)
+        assignmentNode.getLeft().addChild(identifierNode)
+        const suggestedNode = new SuggestedNode(
+          assignmentNode,
+          identifier + '=',
+          '= assign set',
+          true,
+          'assign a value to a variable'
+        )
+        return [suggestedNode]
+      }
+    }
+    return []
   }
 }
 
@@ -78,6 +98,31 @@ export class AssignmentWrapGenerator implements SuggestionGenerator {
     }
     return []
   }
+
+  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+    if (parent.node.type === PYTHON_EXPRESSION && index === 0 && textInput.includes('=')) {
+      // parent of this expression *must* be a statement
+      if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
+        const grandParent = parent.node.parent.node as PythonStatement
+        const identifier = sanitizeIdentifier(textInput.split('=')[0].trim())
+        if (identifier) {
+          const identifierNode = new PythonIdentifier(null, identifier)
+          const assignmentNode = new PythonAssignment(null)
+          assignmentNode.getLeft().addChild(identifierNode)
+          const suggestedNode = new SuggestedNode(
+            assignmentNode,
+            identifier + '=',
+            '= assign set',
+            true,
+            'assign a value to a variable'
+          )
+          suggestedNode.setOverrideLocation(grandParent.getStatement(), 0, 'right')
+          return [suggestedNode]
+        }
+      }
+    }
+    return []
+  }
 }
 
 export class PythonAssignment extends PythonNode {
@@ -85,7 +130,7 @@ export class PythonAssignment extends PythonNode {
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ASSIGNMENT)
-    this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable)
+    this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable, 0, 1)
     this.addChildSet('right', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('right').addChild(new PythonExpression(null))
     this.scopedVariables = new Set()

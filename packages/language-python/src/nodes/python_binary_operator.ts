@@ -38,7 +38,7 @@ const OPERATORS = {
   in: { display: 'in', key: 'in', searchTerms: ['in'], description: 'is inside this list or set' },
   'not in': {
     display: 'not in',
-    key: 'not in ',
+    key: 'not in',
     searchTerms: ['not in'],
     description: 'is not inside this list or set',
   },

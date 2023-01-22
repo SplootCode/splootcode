@@ -414,6 +414,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       return null
     }
     userInput = userInput.trim()
+    const prefixNoSpaces = prefix.replace(/\s/g, '')
 
     const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
     const suggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, prefix)
@@ -426,7 +427,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     let prefixMatch = false
     for (let i = 0; i < lim; i++) {
       const suggestion = suggestions[i]
-      if (!exactMatch && suggestion.isExactMatch(prefix)) {
+      if (!exactMatch && (suggestion.isExactMatch(prefix) || suggestion.isExactMatch(prefixNoSpaces))) {
         exactMatch = suggestion
       } else if (suggestion.isPrefixMatch(userInput)) {
         prefixMatch = true
@@ -460,22 +461,44 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       return userInput
     }
 
+    const assignmentMatch = userInput.match(/^([\p{L}_][\p{L}_0-9\s]*=)\(?([^\(=]*)$/iu)
+    if (assignmentMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, assignmentMatch[1], assignmentMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, assignmentMatch[2].trim())
+        return assignmentMatch[2].trim()
+      }
+      return userInput
+    }
+
+    const functionMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9\s]*)\(/iu)
+    if (functionMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, functionMatch[1], '')
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, '')
+        return ''
+      }
+      return userInput
+    }
+
+    const notInMatch = userInput.match(/^(not in\s)([^\s])/iu)
+    if (notInMatch) {
+      const matchingSuggestion = this.prefixMatch(userInput, notInMatch[1], notInMatch[2])
+      if (matchingSuggestion) {
+        this.onSelected(matchingSuggestion, notInMatch[2].trim())
+        return notInMatch[2].trim()
+      }
+      return userInput
+    }
+
     // Keywords and identifiers
-    const alphaMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9]*)\(?([^\(]*)/iu)
+    // Also includes identifier and an = (for assignment)
+    const alphaMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9]*\s*)((?:\s[^\s]+)|[^\p{L}_0-9\s]+)/iu)
     if (alphaMatch) {
       const matchingSuggestion = this.prefixMatch(userInput, alphaMatch[1], alphaMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, alphaMatch[2].trim())
         return alphaMatch[2].trim()
-      }
-      // Keywords and identifiers with spaces (does not apply to methods)
-      const alphaMatch2 = userInput.match(/^([\p{L}_][\p{L}_0-9\s]*)\(?([^\(]*)/iu)
-      if (alphaMatch2) {
-        const matchingSuggestion = this.prefixMatch(userInput, alphaMatch2[1], alphaMatch2[2])
-        if (matchingSuggestion) {
-          this.onSelected(matchingSuggestion, alphaMatch2[2].trim())
-          return alphaMatch2[2].trim()
-        }
       }
       return userInput
     }
