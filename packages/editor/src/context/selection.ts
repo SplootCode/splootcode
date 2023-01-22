@@ -443,8 +443,22 @@ export class NodeSelection {
         this.insertNodeAtCurrentCursor(fragment.nodes[0])
         return
       }
-
-      for (const cursor of this.getCurrentNodeCursors()) {
+      const cursors = this.getCurrentNodeCursors()
+      // Sort cursors to surface the best match for the fragment.
+      cursors.sort((cursor1, cursor2) => {
+        const cat1 = cursor1.listBlock.getPasteDestinationCategory()
+        const cat2 = cursor2.listBlock.getPasteDestinationCategory()
+        if (cat1 == cat2) {
+          return 0
+        }
+        if (cat1 === fragment.nodeCategory) {
+          return -1
+        } else if (cat2 === fragment.nodeCategory) {
+          return 1
+        }
+        return 0
+      })
+      for (const cursor of cursors) {
         const listBlock = cursor.listBlock
         let index = cursor.index
 
@@ -465,7 +479,22 @@ export class NodeSelection {
 
   insertNodeAtCurrentCursor(node: SplootNode) {
     if (this.isCursor()) {
-      for (const cursor of this.getCurrentNodeCursors()) {
+      const cursors = this.getCurrentNodeCursors()
+      // Sort cursors to ensure a good match for this node is first.
+      cursors.sort((cursor1, cursor2) => {
+        const cat1 = cursor1.listBlock.getPasteDestinationCategory()
+        const cat2 = cursor2.listBlock.getPasteDestinationCategory()
+        if (cat1 == cat2) {
+          return 0
+        }
+        if (isNodeInCategory(node.type, cat1)) {
+          return -1
+        } else if (isNodeInCategory(node.type, cat2)) {
+          return 1
+        }
+        return 0
+      })
+      for (const cursor of cursors) {
         const adaptedNode = adaptNodeToPasteDestination(node, cursor.listBlock.getPasteDestinationCategory())
         if (adaptedNode) {
           this.insertNode(cursor.listBlock, cursor.index, adaptedNode)
