@@ -140,7 +140,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     }
 
     return (
-      <g pointerEvents={'none'}>
+      <g>
         {this.renderLeftAttachedBreadcrumbsChildSet()}
         {loopAnnotation}
         {shape}
