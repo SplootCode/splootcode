@@ -113,6 +113,9 @@ export class PythonIfStatement extends PythonNode {
 
   validateSelf(): void {
     ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
+    for (const elseBlock of this.getElseBlocks().children) {
+      elseBlock.validateSelf()
+    }
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {

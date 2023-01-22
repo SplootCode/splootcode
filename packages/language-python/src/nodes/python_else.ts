@@ -44,6 +44,18 @@ export class PythonElseBlock extends PythonNode {
     return this.getChildSet('block')
   }
 
+  validateSelf(): void {
+    if (this.parent) {
+      const childset = this.parent.getChildSet()
+      const myIndex = childset.getIndexOf(this)
+      if (myIndex !== childset.getCount() - 1) {
+        this.setValidity(false, 'Else block must be the last child of an if statement.')
+        return
+      }
+    }
+    this.setValidity(true, null)
+  }
+
   generateParseTree(parseMapper: ParseMapper): ParseNode {
     const elseSuite: SuiteNode = {
       nodeType: ParseNodeType.Suite,
