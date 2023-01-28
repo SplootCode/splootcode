@@ -29,6 +29,7 @@ import { PYTHON_IDENTIFIER, PythonIdentifier, sanitizeIdentifier } from './pytho
 import { PYTHON_STATEMENT, PythonStatement } from './python_statement'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonNode } from './python_node'
+import { PythonSubscript } from './python_subscript'
 
 export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 
@@ -66,6 +67,9 @@ function generateAssignableExpression(parseMapper: ParseMapper, splootNode: Pyth
     if (node.type === 'PY_IDENTIFIER') {
       const id = node as PythonIdentifier
       return id.generateParseTree(parseMapper)
+    } else if (node.type === 'PYTHON_SUBSCRIPT') {
+      const subscript = node as PythonSubscript
+      return subscript.generateParseTree(parseMapper)
     }
     console.warn('Unrecognised assignment token')
   }

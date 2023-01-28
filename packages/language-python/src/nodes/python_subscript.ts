@@ -4,7 +4,6 @@ import {
   ErrorExpressionCategory,
   ExpressionNode,
   IndexNode,
-  ParseNode,
   ParseNodeType,
 } from 'structured-pyright'
 import {
@@ -94,7 +93,7 @@ export class PythonSubscript extends PythonNode {
     return this.getTarget().children
   }
 
-  generateParseTree(parseMapper: ParseMapper): ParseNode {
+  generateParseTree(parseMapper: ParseMapper): IndexNode {
     let targetExpression: ExpressionNode
     if (this.getTarget().getCount() === 0) {
       targetExpression = {
