@@ -7,6 +7,7 @@ import {
   ParentReference,
   SerializedNode,
   SplootNode,
+  StatementCapture,
   SuggestedNode,
   SuggestionGenerator,
   TypeRegistration,
@@ -46,7 +47,7 @@ class CommentGenerator implements SuggestionGenerator {
 export class PythonComment extends PythonNode {
   constructor(parentReference: ParentReference, value: string) {
     super(parentReference, PYTHON_COMMENT)
-    this.properties = { value: value }
+    this.setProperty('value', value)
   }
 
   getValue() {
@@ -56,6 +57,11 @@ export class PythonComment extends PythonNode {
   // without this, we cannot edit the contents of a comment
   getEditableProperty() {
     return 'value'
+  }
+
+  recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
+    // Comments won't get runtime annotations.
+    return false
   }
 
   //  No real reason to create a parse tree for comments, so return null
@@ -74,7 +80,7 @@ export class PythonComment extends PythonNode {
     typeRegistration.typeName = PYTHON_COMMENT
     typeRegistration.deserializer = PythonComment.deserializer
     typeRegistration.properties = ['value']
-    typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE, [
+    typeRegistration.layout = new NodeLayout(HighlightColorCategory.COMMENT, [
       new LayoutComponent(LayoutComponentType.CAP, '#'),
       new LayoutComponent(LayoutComponentType.PROPERTY, 'value'),
     ])

@@ -14,6 +14,7 @@ export enum HighlightColorCategory {
   HTML_ATTRIBUTE,
   STYLE_RULE,
   STYLE_PROPERTY,
+  COMMENT,
 }
 
 export enum ColorUsageType {
@@ -41,6 +42,8 @@ function colorBase(category: HighlightColorCategory): string {
       return 'code-purple'
     case HighlightColorCategory.CONTROL:
       return 'code-purple'
+    case HighlightColorCategory.COMMENT:
+      return 'code-comment'
   }
   return 'code-neutral'
 }

@@ -53,6 +53,10 @@ text {
 
 :root {
   --string-font: 'Inconsolata', monospace;
+  /* Comments are special because the cap is brighter than the text. */
+  --code-comment-200: rgb(164, 166, 180);
+  --code-comment-700: rgb(217, 220, 226);
+
   --code-neutral-200: rgb(226, 226, 226);
   --code-neutral-700: rgb(97, 97, 96);
   --code-yellow-200: rgb(255 254 196);

@@ -1,3 +1,4 @@
+import { PYTHON_COMMENT } from '../python_comment'
 import { ParseMapper } from '../../analyzer/python_analyzer'
 import { ParseNodeType, isExpressionNode } from 'structured-pyright'
 import { PythonNode } from '../python_node'
@@ -15,6 +16,10 @@ describe('python parse tree generation', () => {
   test('statement nodes generate valid parse trees', () => {
     const examples: PythonNode[] = getEmptyStatementNodes()
     examples.forEach((node) => {
+      if (node.type === PYTHON_COMMENT) {
+        // Skip comments, they don't need to generate parse trees.
+        return
+      }
       const statement = new PythonStatement(null)
       statement.getStatement().addChild(node)
       const parseTree = statement.generateParseTree(new ParseMapper())
