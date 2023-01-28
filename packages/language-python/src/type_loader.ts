@@ -6,6 +6,7 @@ import { PythonBrackets } from './nodes/python_brackets'
 import { PythonBreak } from './nodes/python_break'
 import { PythonCallMember } from './nodes/python_call_member'
 import { PythonCallVariable } from './nodes/python_call_variable'
+import { PythonComment } from './nodes/python_comment'
 import { PythonContinue } from './nodes/python_continue'
 import { PythonDeclaredIdentifier } from './nodes/declared_identifier'
 import { PythonDictionary } from './nodes/python_dictionary'
@@ -36,7 +37,6 @@ import { registerArgumentAutocompleters } from './nodes/scope_argument_autocompl
 import { registerMemberAutocompleters } from './nodes/scope_member_autocompleter'
 import { registerPythonAutocompleters } from './nodes/scope_autocompleter'
 import { resolvePasteAdapters } from '@splootcode/core'
-import { PythonComment } from './nodes/python_comment'
 
 export function loadPythonTypes() {
   PythonStringLiteral.register()
@@ -50,6 +50,7 @@ export function loadPythonTypes() {
   PythonBreak.register()
   PythonCallMember.register()
   PythonCallVariable.register()
+  PythonComment.register()
   PythonContinue.register()
   PythonDictionary.register()
   PythonElifBlock.register()
@@ -73,7 +74,7 @@ export function loadPythonTypes() {
   PythonSubscript.register()
   PythonTuple.register()
   PythonWhileLoop.register()
-  PythonComment.register()
+
   registerPythonAutocompleters()
   registerMemberAutocompleters()
   registerArgumentAutocompleters()

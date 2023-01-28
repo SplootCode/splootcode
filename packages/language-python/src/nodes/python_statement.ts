@@ -58,7 +58,7 @@ export class PythonStatement extends PythonNode {
     const child = this.getStatement().getChild(0)
     const childParseNode = (child as PythonNode).generateParseTree(parseMapper)
     if (!childParseNode) {
-      console.warn(`No parse for child node type, ${child.type}`)
+      // Expected for some nodes (like comments)
       return null
     }
     if (childParseNode && statementNodes.includes(childParseNode.nodeType)) {

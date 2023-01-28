@@ -5,6 +5,7 @@ import { PythonBrackets } from '../python_brackets'
 import { PythonBreak } from '../python_break'
 import { PythonCallMember } from '../python_call_member'
 import { PythonCallVariable } from '../python_call_variable'
+import { PythonComment } from '../python_comment'
 import { PythonContinue } from '../python_continue'
 import { PythonDictionary } from '../python_dictionary'
 import { PythonExpression } from '../python_expression'
@@ -38,6 +39,7 @@ export function getEmptyStatementNodes(): PythonNode[] {
     new PythonImport(null),
     new PythonReturn(null),
     new PythonWhileLoop(null),
+    new PythonComment(null, 'something'),
   ]
 }
 
