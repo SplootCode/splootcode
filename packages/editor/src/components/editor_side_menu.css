@@ -1,0 +1,23 @@
+
+.editor-side-menu-bar {
+  width: 46px;
+  box-sizing: border-box;
+  background-color: var(--chakra-colors-gray-900);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid var(--section-separator-color);
+  padding: 0px;
+}
+
+.editor-side-menu-container {
+  width: 100%;
+}
+
+.editor-side-menu-icon {
+  fill: #5E6C86
+}
+
+.editor-side-menu-selected .editor-side-menu-icon {
+  fill: var(--chakra-colors-gray-400);
+}
