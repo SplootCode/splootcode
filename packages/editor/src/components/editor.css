@@ -1,4 +1,6 @@
 .editor {
+  display: flex;
+  flex-direction: row;
   padding-left: 0px;
   padding: 0px;
   background-color: var(--editor-bg-color);

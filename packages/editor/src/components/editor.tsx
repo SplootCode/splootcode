@@ -5,18 +5,17 @@ import React, { ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import { ActiveCursor } from './cursor'
-import { Allotment } from 'allotment'
+import { Allotment, LayoutPriority } from 'allotment'
 import { DragOverlay } from './drag_overlay'
 import { EditBox } from './edit_box'
 import { EditorHostingConfig } from '../editor_hosting_config'
+import { EditorSideMenu, EditorSideMenuPane, EditorSideMenuView } from './editor_side_menu'
 import { ExpandedListBlockView } from './list_block'
 import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
 import { PythonRuntimePanel } from 'src/runtime/python_runtime_panel'
-import { RenderedFragment } from '../layout/rendered_fragment'
-import { Tray } from './tray/tray'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -30,10 +29,18 @@ interface EditorProps {
   editorHostingConfig: EditorHostingConfig
 }
 
+interface EditorState {
+  visibleView: EditorSideMenuView
+}
+
 @observer
-export class Editor extends React.Component<EditorProps> {
+export class Editor extends React.Component<EditorProps, EditorState> {
   private editorSvgRef: React.RefObject<SVGSVGElement>
   private editorColumnRef: React.RefObject<HTMLDivElement>
+
+  state = {
+    visibleView: 'tray' as EditorSideMenuView,
+  }
 
   constructor(props: EditorProps) {
     super(props)
@@ -64,47 +71,54 @@ export class Editor extends React.Component<EditorProps> {
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
     const startSize = window.outerWidth - 270 - 360
+    const visibleView = this.state.visibleView
     return (
       <React.Fragment>
         <div className="editor">
+          <EditorSideMenu
+            currentView={this.state.visibleView}
+            onChangeView={(newView: EditorSideMenuView) => this.setState({ visibleView: newView })}
+          />
           <Allotment defaultSizes={[270, startSize, 360]} minSize={180} proportionalLayout={false}>
-            <Tray key={block.node.type} startDrag={this.startDrag} rootNode={block.node} />
-            <div className="editor-column">
-              {banner}
-              <div className="editor-box" ref={this.editorColumnRef}>
-                <svg
-                  className="editor-svg"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height={height}
-                  preserveAspectRatio="none"
-                  onClick={this.onClickHandler}
-                  ref={this.editorSvgRef}
-                >
-                  <ExpandedListBlockView block={fileBody} isSelected={false} />
-                  <ActiveCursor selection={selection} />
-                </svg>
-                {insertBox}
-                {editBox}
+            <Allotment.Pane visible={visibleView !== ''} snap>
+              <EditorSideMenuPane visibleView={visibleView} fileBlock={block} selection={selection} />
+            </Allotment.Pane>
+            <Allotment.Pane priority={LayoutPriority.High}>
+              <div className="editor-column">
+                {banner}
+                <div className="editor-box" ref={this.editorColumnRef}>
+                  <svg
+                    className="editor-svg"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height={height}
+                    preserveAspectRatio="none"
+                    onClick={this.onClickHandler}
+                    ref={this.editorSvgRef}
+                  >
+                    <ExpandedListBlockView block={fileBody} isSelected={false} />
+                    <ActiveCursor selection={selection} />
+                  </svg>
+                  {insertBox}
+                  {editBox}
+                </div>
               </div>
-            </div>
-            <div className="python-preview-panel">
-              <PythonRuntimePanel
-                project={project}
-                pkg={pkg}
-                validationWatcher={validationWatcher}
-                frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}
-                frameDomain={this.props.editorHostingConfig.FRAME_VIEW_DOMAIN}
-              />
-            </div>
+            </Allotment.Pane>
+            <Allotment.Pane preferredSize={360} priority={LayoutPriority.Low}>
+              <div className="python-preview-panel">
+                <PythonRuntimePanel
+                  project={project}
+                  pkg={pkg}
+                  validationWatcher={validationWatcher}
+                  frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}
+                  frameDomain={this.props.editorHostingConfig.FRAME_VIEW_DOMAIN}
+                />
+              </div>
+            </Allotment.Pane>
           </Allotment>
         </div>
         <DragOverlay selection={selection} editorRef={this.editorSvgRef} />
       </React.Fragment>
     )
-  }
-
-  startDrag = (fragment: RenderedFragment, offsetX: number, offestY: number) => {
-    this.props.selection.startDrag(fragment, offsetX, offestY)
   }
 
   onClickHandler = (event: React.MouseEvent) => {
