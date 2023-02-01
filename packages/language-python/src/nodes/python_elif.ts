@@ -115,20 +115,7 @@ export class PythonElifBlock extends PythonNode {
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotations
     this.fireMutation(mutation)
-
-    const blockChildren = this.getBlock().children
-    let i = 0
-    if (data.block) {
-      const blockData = data.block
-      for (; i < blockData.length; i++) {
-        blockChildren[i].recursivelyApplyRuntimeCapture(blockData[i])
-      }
-    }
-    if (i < blockChildren.length) {
-      for (; i < blockChildren.length; i++) {
-        blockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
+    this.getBlock().recursivelyApplyRuntimeCapture(data.block || [])
     return true
   }
 

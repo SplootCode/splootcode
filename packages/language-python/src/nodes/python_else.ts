@@ -83,19 +83,7 @@ export class PythonElseBlock extends PythonNode {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
     }
     const data = capture.data as ElseStatementData
-    const blockChildren = this.getBlock().children
-    let i = 0
-    if (data.block) {
-      const trueBlockData = data.block
-      for (; i < trueBlockData.length; i++) {
-        blockChildren[i].recursivelyApplyRuntimeCapture(trueBlockData[i])
-      }
-    }
-    if (i < blockChildren.length) {
-      for (; i < blockChildren.length; i++) {
-        blockChildren[i].recursivelyClearRuntimeCapture()
-      }
-    }
+    this.getBlock().recursivelyApplyRuntimeCapture(data.block || [])
     return true
   }
 
