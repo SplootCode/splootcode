@@ -19,6 +19,11 @@ export default [
     ],
   },
   {
+    input: 'src/index.ts',
+    output: [{ file: `dist/index.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
+  {
     plugins: [typescript()],
     input: 'src/webworker.ts',
     output: [

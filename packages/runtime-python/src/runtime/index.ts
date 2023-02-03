@@ -1,5 +1,5 @@
 import 'tslib'
-import { EditorMessage, FileSpec } from './common'
+import { EditorMessage, FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
 
 import { WorkerManager, WorkerState } from './worker-manager'
 
@@ -18,13 +18,15 @@ class RuntimeStateManager {
   private workspace: Map<string, FileSpec>
   private initialFilesLoaded: boolean
   private stdinPromiseResolve: (s: string) => void
+  private fetchHandler: FetchHandler
 
-  constructor(parentWindowDomainRegex: string, workerURL: string) {
+  constructor(parentWindowDomainRegex: string, workerURL: string, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
     this.parentWindowDomainRegex = parentWindowDomainRegex
     this.workerURL = workerURL
     this.initialFilesLoaded = false
     this.workspace = new Map()
+    this.fetchHandler = fetchHandler
   }
 
   sendToParent = (payload: EditorMessage) => {
@@ -78,7 +80,8 @@ class RuntimeStateManager {
           this.sendToParent({ type: 'running' })
         }
       },
-      this.sendToParent
+      this.sendToParent,
+      this.fetchHandler
     )
   }
 
@@ -134,6 +137,9 @@ class RuntimeStateManager {
         const text = event.data.stdin
         this.handleStdinInput(text)
         break
+      case 'token':
+        this.fetchHandler.setToken(event.data.token, event.data.expiry)
+        break
       case 'run':
         if (this.initialFilesLoaded) {
           this.workerManager.run(this.workspace)
@@ -158,8 +164,53 @@ class RuntimeStateManager {
 
 let runtimeStateManager: RuntimeStateManager
 
-export function initialize(editorDomainRegex: string, workerURL: string) {
-  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, workerURL)
+const defaultFetchHandler: FetchHandler = {
+  setToken(token, expiry) {
+    // Do nothing
+  },
+  fetch: async (fetchData: FetchData) => {
+    try {
+      const response = await fetch(fetchData.url, {
+        headers: fetchData.headers,
+        body: fetchData.body,
+      })
+
+      const headersObj = {}
+      response.headers.forEach((value, key) => {
+        headersObj[key] = value
+      })
+
+      const responseData: ResponseData = {
+        completedResponse: {
+          status: response.status,
+          reason: response.statusText,
+          headers: headersObj,
+        },
+      }
+
+      const bodyBuffer = await response.arrayBuffer()
+      responseData.body = new Uint8Array(bodyBuffer)
+      return responseData
+    } catch (e) {
+      console.warn(e)
+      const responseData: ResponseData = {
+        error: {
+          type: FetchSyncErrorType.FETCH_ERROR,
+          message: e.message,
+        },
+      }
+      responseData.body = new Uint8Array(0)
+      return responseData
+    }
+  },
+}
+
+export function initialize(
+  editorDomainRegex: string,
+  workerURL: string,
+  requestHandler: FetchHandler = defaultFetchHandler
+) {
+  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, workerURL, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManager()
 }

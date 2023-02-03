@@ -15,7 +15,8 @@ import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
-import { PythonRuntimePanel } from 'src/runtime/python_runtime_panel'
+import { PythonRuntimePanel } from '../runtime/python_runtime_panel'
+import { RuntimeToken } from '../runtime/python_frame'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -27,6 +28,7 @@ interface EditorProps {
   validationWatcher: ValidationWatcher
   banner?: ReactNode
   editorHostingConfig: EditorHostingConfig
+  refreshToken?: () => Promise<RuntimeToken>
 }
 
 interface EditorState {
@@ -111,6 +113,7 @@ export class Editor extends React.Component<EditorProps, EditorState> {
                   validationWatcher={validationWatcher}
                   frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}
                   frameDomain={this.props.editorHostingConfig.FRAME_VIEW_DOMAIN}
+                  refreshToken={this.props.refreshToken}
                 />
               </div>
             </Allotment.Pane>

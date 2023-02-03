@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FileChangeWatcher } from './file_change_watcher'
 import { Project, SplootPackage, ValidationWatcher } from '@splootcode/core'
 import { ProjectFileChangeWatcher } from './project_file_change_watcher'
-import { PythonFrame } from './python_frame'
+import { PythonFrame, RuntimeToken } from './python_frame'
 
 export type RuntimePanelProps = {
   project: Project
@@ -10,6 +10,7 @@ export type RuntimePanelProps = {
   validationWatcher: ValidationWatcher
   frameScheme: 'http' | 'https'
   frameDomain: string
+  refreshToken?: () => Promise<RuntimeToken>
 }
 
 interface RuntimePanelState {
@@ -25,8 +26,15 @@ export class PythonRuntimePanel extends Component<RuntimePanelProps, RuntimePane
   }
 
   render() {
-    const { frameScheme, frameDomain } = this.props
+    const { frameScheme, frameDomain, refreshToken } = this.props
     const fileChangeWatcher = this.state.fileChangeWatcher
-    return <PythonFrame fileChangeWatcher={fileChangeWatcher} frameDomain={frameDomain} frameScheme={frameScheme} />
+    return (
+      <PythonFrame
+        fileChangeWatcher={fileChangeWatcher}
+        frameDomain={frameDomain}
+        frameScheme={frameScheme}
+        refreshToken={refreshToken}
+      />
+    )
   }
 }
