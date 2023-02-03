@@ -16,6 +16,18 @@ export interface BlobFile {
   content: Uint8Array
 }
 
+export interface FetchData {
+  method: string
+  url: string
+  headers: { [key: string]: string }
+  body: Uint8Array | string
+}
+
+export interface FetchHandler {
+  setToken: (token: string, expiry: Date) => void
+  fetch: (fetchData: FetchData, sendToParent: (payload: EditorMessage) => void) => Promise<ResponseData>
+}
+
 export interface ResponseData {
   completedResponse?: {
     status: number
@@ -103,7 +115,7 @@ export interface HeartbeatMessage {
 }
 
 export type EditorMessage =
-  | { type: 'ready' | 'disabled' | 'running' | 'stdin' }
+  | { type: 'ready' | 'disabled' | 'running' | 'stdin' | 'refresh_token' }
   | HeartbeatMessage
   | WorkerRuntimeCaptureMessage
   | WorkerModuleInfoMessage

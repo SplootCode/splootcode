@@ -1,11 +1,4 @@
-import {
-  EditorMessage,
-  FetchSyncErrorType,
-  FileSpec,
-  ResponseData,
-  WorkerManagerMessage,
-  WorkerMessage,
-} from './common'
+import { EditorMessage, FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 
 const INPUT_BUF_SIZE = 100
 
@@ -26,6 +19,7 @@ export class WorkerManager {
   private worker: Worker
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
+  private fetchHandler: FetchHandler
   private fetchBuffer: Uint8Array
   private fetchBufferMeta: Int32Array
   private leftoverInput: string
@@ -44,7 +38,8 @@ export class WorkerManager {
     workerURL: string,
     standardIO: StandardIO,
     stateCallback: (state: WorkerState) => void,
-    sendToParentWindow: (payload: EditorMessage) => void
+    sendToParentWindow: (payload: EditorMessage) => void,
+    fetchHandler: FetchHandler
   ) {
     this.sendToParentWindow = sendToParentWindow
     this.workerURL = workerURL
@@ -54,6 +49,7 @@ export class WorkerManager {
     this.requestPlayback = new Map()
     this._workerState = WorkerState.DISABLED
     this.stateCallBack = stateCallback
+    this.fetchHandler = fetchHandler
 
     this.initialiseWorker()
   }
@@ -150,44 +146,14 @@ export class WorkerManager {
     body: Uint8Array | string
   }) {
     const serializedRequest = JSON.stringify(fetchData)
-    let responseData: ResponseData
-    let body: Uint8Array
-    try {
-      const response = await fetch(fetchData.url, {
-        method: fetchData.method,
-        headers: fetchData.headers,
-        body: fetchData.body,
-      })
 
-      responseData = {
-        completedResponse: {
-          status: response.status,
-          reason: response.statusText,
-          /* @ts-ignore */
-          headers: Object.fromEntries(response.headers.entries()),
-        },
-      }
-
-      const bodyBuffer = await response.arrayBuffer()
-      body = new Uint8Array(bodyBuffer)
-    } catch (e) {
-      console.warn(e)
-      responseData = {
-        error: {
-          type: FetchSyncErrorType.FETCH_ERROR,
-          message: e.message,
-        },
-      }
-      body = new Uint8Array(0)
-    }
+    // Execute fetch
+    const responseData = await this.fetchHandler.fetch(fetchData, this.sendToParentWindow)
 
     const encoder = new TextEncoder()
     const headerBytes = encoder.encode(JSON.stringify(responseData))
 
-    // Encode the response body separately (bytes don't JSON serialize well)
-    if (body) {
-      responseData.body = body
-    }
+    const body = responseData.body
     if (this.requestPlayback.has(serializedRequest)) {
       this.requestPlayback.get(serializedRequest).push(responseData)
     } else {

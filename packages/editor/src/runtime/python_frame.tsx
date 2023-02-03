@@ -11,10 +11,16 @@ import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
 import { Terminal } from 'xterm'
 
+export interface RuntimeToken {
+  token: string
+  expiry: Date
+}
+
 type ViewPageProps = {
   fileChangeWatcher: FileChangeWatcher
   frameScheme: 'http' | 'https'
   frameDomain: string
+  refreshToken?: () => Promise<RuntimeToken>
 }
 
 interface ConsoleState {
@@ -328,9 +334,31 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
       case 'module_info':
         this.props.fileChangeWatcher.recievedModuleInfo(event.data.info)
         break
+      case 'refresh_token':
+        this.refreshToken()
+        break
       default:
         console.warn('Unknown event from frame: ', event)
     }
+  }
+
+  refreshToken = async () => {
+    if (!this.props.refreshToken) {
+      console.warn('No refresh token refresh function provided.')
+      this.postMessageToFrame({
+        type: 'token',
+        token: null,
+        expiry: null,
+      })
+      return
+    }
+
+    const tokenInfo = await this.props.refreshToken()
+    this.postMessageToFrame({
+      type: 'token',
+      token: tokenInfo.token,
+      expiry: tokenInfo.expiry,
+    })
   }
 
   loadModule = (moduleName: string) => {
