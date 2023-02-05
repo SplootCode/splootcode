@@ -100,6 +100,10 @@ export class NodeSelection {
     this.cursorMap.dedupdeAndSort()
   }
 
+  isEmpty() {
+    return this.state === SelectionState.Empty
+  }
+
   isCursor() {
     return this.state === SelectionState.Cursor || this.state === SelectionState.Inserting
   }
@@ -562,6 +566,7 @@ export class NodeSelection {
   @action
   clearSelection() {
     this.editBox = null
+    this.clearSelectedListBlocks()
     if (this.selectionStart) {
       this.selectionStart.listBlock.selectionState = SelectionState.Empty
     }

@@ -50,7 +50,8 @@ export function getNodeShape(
   y: number,
   width: number,
   leftCurve: boolean,
-  rightCurve: boolean
+  rightCurve: boolean,
+  ref: React.RefObject<SVGPathElement>
 ) {
   let leftSide: string
   let rightSide: string
@@ -69,13 +70,16 @@ export function getNodeShape(
     width -= 4
   }
 
-  return <path className={className} d={`M ${x} ${y} ${leftSide} h ${width} ${rightSide} z`} />
+  return <path ref={ref} tabIndex={0} className={className} d={`M ${x} ${y} ${leftSide} h ${width} ${rightSide} z`} />
 }
 
 @observer
 export class EditorNodeBlock extends React.Component<NodeBlockProps> {
+  shapeRef = React.createRef<SVGPathElement>()
+
   constructor(props: NodeBlockProps) {
     super(props)
+    this.shapeRef = React.createRef()
   }
 
   render() {
@@ -133,10 +137,10 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         shape = null
       }
     } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve)
+      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve, this.shapeRef)
       internalLeftPos = leftPos + NODE_INLINE_SPACING
     } else {
-      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve)
+      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve, this.shapeRef)
     }
 
     return (
@@ -259,6 +263,22 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     )
   }
 
+  componentDidMount(): void {
+    if (this.props.selectionState === NodeSelectionState.SELECTED && this.shapeRef.current !== null) {
+      this.shapeRef.current.focus()
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<NodeBlockProps>): void {
+    if (
+      this.props.selectionState === NodeSelectionState.SELECTED &&
+      prevProps.selectionState !== NodeSelectionState.SELECTED &&
+      this.shapeRef.current !== null
+    ) {
+      this.shapeRef.current.focus()
+    }
+  }
+
   renderLeftAttachedBreadcrumbsChildSet() {
     const { block } = this.props
     if (block.leftBreadcrumbChildSet === null) {
@@ -269,7 +289,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       const placeholder = childSetBlock.labels.length !== 0 ? childSetBlock.labels[0] : ''
       const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
       const classname = 'svgsplootnode gap placeholder-outline ' + (invalid ? ' invalid' : '')
-      const shape = getNodeShape(classname, block.x, block.y, childSetBlock.width, false, false)
+      const shape = getNodeShape(classname, block.x, block.y, childSetBlock.width, false, false, this.shapeRef)
       return (
         <>
           {shape}
