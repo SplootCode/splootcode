@@ -13,6 +13,10 @@
   fill: var(--editor-node-block-fill);
 }
 
+.svgsplootnode:focus {
+  outline: 0;
+}
+
 .svgsplootnode.cap-line {
   stroke: var(--editor-cap-line);
 }

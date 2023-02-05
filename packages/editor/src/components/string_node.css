@@ -34,3 +34,7 @@
   fill: var(--editor-selected-node-block-fill);
   stroke: transparent
 }
+
+.string-node-selected-background:focus {
+  outline: 0;
+}

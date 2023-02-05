@@ -50,6 +50,13 @@ function getRightCapShape(className: string, x: number, y: number, height: numbe
 
 @observer
 export class StringNode extends React.Component<StringNodeProps> {
+  shapeRef = React.createRef<SVGRectElement>()
+
+  constructor(props: StringNodeProps) {
+    super(props)
+    this.shapeRef = React.createRef()
+  }
+
   render() {
     const { block, selectionState, isInvalidBlamed } = this.props
     const isSelected = selectionState !== NodeSelectionState.UNSELECTED
@@ -65,6 +72,8 @@ export class StringNode extends React.Component<StringNodeProps> {
     if (isSelected) {
       rectangle = (
         <rect
+          ref={this.shapeRef}
+          tabIndex={0}
           className="string-node-selected-background"
           x={leftPos + STRING_CAP_WIDTH - 2}
           y={topPos}
@@ -89,5 +98,21 @@ export class StringNode extends React.Component<StringNodeProps> {
         {endCap}
       </>
     )
+  }
+
+  componentDidMount(): void {
+    if (this.props.selectionState === NodeSelectionState.SELECTED) {
+      this.shapeRef.current?.focus()
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<StringNodeProps>): void {
+    if (
+      this.props.selectionState === NodeSelectionState.SELECTED &&
+      prevProps.selectionState !== NodeSelectionState.SELECTED &&
+      this.shapeRef.current != null
+    ) {
+      this.shapeRef.current.focus()
+    }
   }
 }

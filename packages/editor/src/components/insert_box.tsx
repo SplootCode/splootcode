@@ -310,22 +310,12 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
             onChange={this.onChange}
             onClick={this.onClick}
             onKeyDown={this.onKeyDown}
-            onKeyPress={this.onKeyPress}
-            onBlur={this.onBlur}
             style={{ width: autoWidth }}
           />
         </div>
         {suggestionsListComponent}
       </div>
     )
-  }
-
-  onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === ' ') {
-      e.stopPropagation()
-      e.nativeEvent.stopImmediatePropagation()
-      return false
-    }
   }
 
   onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -391,13 +381,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
-  }
-
-  onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const selection = this.props.selection
-    if (selection.state === SelectionState.Cursor) {
-      selection.clearSelection()
-    }
   }
 
   getWidth = (input: string) => {

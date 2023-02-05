@@ -88,7 +88,12 @@ export class Editor extends React.Component<EditorProps, EditorState> {
             <Allotment.Pane priority={LayoutPriority.High}>
               <div className="editor-column">
                 {banner}
-                <div className="editor-box" ref={this.editorColumnRef}>
+                <div
+                  className="editor-box"
+                  ref={this.editorColumnRef}
+                  onBlur={this.onBlurHandler}
+                  onFocus={this.onFocusHandler}
+                >
                   <svg
                     className="editor-svg"
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,8 +137,26 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     selection.handleClick(x, y, event.shiftKey)
   }
 
+  onBlurHandler = (event: React.FocusEvent) => {
+    if (!this.editorColumnRef.current.contains(event.relatedTarget)) {
+      this.props.selection.clearSelection()
+    }
+  }
+
+  onFocusHandler = (event: React.FocusEvent) => {
+    if (this.props.selection.isEmpty()) {
+      this.props.selection.placeCursorByXYCoordinate(0, 0)
+    }
+  }
+
   clipboardHandler = (event: ClipboardEvent) => {
     const { selection } = this.props
+
+    // If the selection is empty, we don't have focus.
+    if (this.props.selection.isEmpty()) {
+      return
+    }
+
     if (event.type === 'copy' || event.type === 'cut') {
       const docSelection = document.getSelection()
       if (this.editorColumnRef.current.contains(docSelection.focusNode)) {
@@ -163,6 +186,11 @@ export class Editor extends React.Component<EditorProps, EditorState> {
   }
 
   keyHandler = (event: KeyboardEvent) => {
+    // If the selection is empty then the editor does not have focus.
+    if (this.props.selection.isEmpty()) {
+      return
+    }
+
     const { selection } = this.props
     if (event.isComposing) {
       // IME composition, let it be captured by the insert box.
