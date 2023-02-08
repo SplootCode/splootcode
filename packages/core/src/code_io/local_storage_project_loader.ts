@@ -82,6 +82,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       splootversion: '1.0.0',
       version: '1',
       title: title,
+      environmentVars: {},
       packages: [],
     }
     const proj = new Project(onwerId, serialisedProj, [], fileLoader)

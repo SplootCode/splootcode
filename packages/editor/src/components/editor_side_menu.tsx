@@ -1,11 +1,13 @@
+import './editor_side_menu.css'
 import React, { Component } from 'react'
-import { Button } from '@chakra-ui/react'
+import { BiCog } from 'react-icons/bi'
+import { Box, Icon, IconButton, Text } from '@chakra-ui/react'
+import { ConfigPanel } from './config_panel'
 import { NodeBlock } from 'src/layout/rendered_node'
 import { NodeSelection } from 'src/context/selection'
+import { Project } from '@splootcode/core'
 import { RenderedFragment } from 'src/layout/rendered_fragment'
 import { Tray } from './tray/tray'
-
-import './editor_side_menu.css'
 
 const TRAY_ICON = (
   <svg width="30" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="editor-side-menu-icon">
@@ -16,7 +18,7 @@ const TRAY_ICON = (
   </svg>
 )
 
-export type EditorSideMenuView = 'tray' | ''
+export type EditorSideMenuView = 'tray' | 'config' | ''
 
 export interface EditorSideMenuProps {
   onChangeView: (newView: EditorSideMenuView) => void
@@ -38,7 +40,8 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
     return (
       <div className="editor-side-menu-bar">
         <div className={'editor-side-menu-container ' + (currentView === 'tray' ? 'editor-side-menu-selected' : '')}>
-          <Button
+          <IconButton
+            aria-label="Library"
             size="sm"
             padding={1}
             width="100%"
@@ -47,9 +50,22 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
             variant={'ghost'}
             onClick={() => handleClick('tray')}
             color={currentView === 'tray' ? 'gray.200' : 'gray.500'}
-          >
-            {TRAY_ICON}
-          </Button>
+            icon={TRAY_ICON}
+          ></IconButton>
+        </div>
+        <div className={'editor-side-menu-container ' + (currentView === 'config' ? 'editor-side-menu-selected' : '')}>
+          <IconButton
+            aria-label="Configuration"
+            size="sm"
+            padding={1}
+            width="100%"
+            height={10}
+            borderRadius={0}
+            variant={'ghost'}
+            onClick={() => handleClick('config')}
+            color={currentView === 'config' ? 'gray.200' : 'gray.500'}
+            icon={<Icon as={BiCog} boxSize={6} />}
+          ></IconButton>
         </div>
       </div>
     )
@@ -59,13 +75,36 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
 export interface EditorSideMenuPaneProps {
   fileBlock: NodeBlock
   selection: NodeSelection
-  visibleView: 'tray' | ''
+  project: Project
+  visibleView: 'tray' | 'config' | ''
 }
 
 export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
   render() {
-    const block = this.props.fileBlock
-    return <Tray key={block.node.type} startDrag={this.startDrag} rootNode={block.node} />
+    const { fileBlock, visibleView, project } = this.props
+    const trayState = visibleView === 'tray' ? {} : { display: 'none' }
+    const configState = visibleView === 'config' ? {} : { display: 'none' }
+    const title = { tray: 'Library', config: 'Configuration' }[visibleView]
+    return (
+      <>
+        <div style={trayState} className="editor-side-menu">
+          <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
+            <Text as={'h2'} color="gray.200">
+              {title}
+            </Text>
+          </Box>
+          <Tray key={fileBlock.node.type} startDrag={this.startDrag} rootNode={fileBlock.node} />
+        </div>
+        <div style={configState} className="editor-side-menu">
+          <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
+            <Text as={'h2'} color="gray.200">
+              {title}
+            </Text>
+          </Box>
+          <ConfigPanel project={project} startDrag={this.startDrag} />
+        </div>
+      </>
+    )
   }
 
   startDrag = (fragment: RenderedFragment, offsetX: number, offestY: number) => {

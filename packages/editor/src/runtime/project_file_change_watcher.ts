@@ -5,6 +5,7 @@ import {
   NodeMutation,
   NodeMutationType,
   Project,
+  ProjectMutation,
   ScopeMutation,
   ScopeMutationType,
   SerializedNode,
@@ -80,6 +81,14 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     return await this.getAllFileState()
   }
 
+  getEnvVars(): Map<string, string> {
+    const varsSimplified = new Map()
+    for (const [key, value] of this.project.envrionmentVars) {
+      varsSimplified.set(key, value[0])
+    }
+    return varsSimplified
+  }
+
   handleNodeMutation = (mutation: NodeMutation) => {
     // There's a node tree version we've not loaded yet.
     if (mutation.type !== NodeMutationType.SET_VALIDITY) {
@@ -105,6 +114,10 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     }
   }
 
+  handleProjectMutation = (mutation: ProjectMutation) => {
+    this.setDirty()
+  }
+
   async recievedModuleInfo(payload: PythonModuleSpec) {
     const file = await this.pkg.getLoadedFile(this.project.fileLoader, 'main.py')
     const pythonFile = file.rootNode as PythonFile
@@ -117,12 +130,14 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
     globalMutationDispatcher.registerScopeObserver(this)
+    globalMutationDispatcher.registerProjectObserver(this)
   }
 
   deregisterObservers() {
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
     globalMutationDispatcher.deregisterScopeObserver(this)
+    globalMutationDispatcher.deregisterProjectObserver(this)
     this.setDirty = null
     this.loadModule = null
   }

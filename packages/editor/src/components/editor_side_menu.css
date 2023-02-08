@@ -1,4 +1,22 @@
 
+.editor-side-menu {
+  --editor-bg-color: var(--chakra-colors-gray-900);
+  width: 100%;
+  height: calc(99vh - 41px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-right: 1px solid var(--section-separator-color);
+  box-sizing: border-box;
+  padding: 0;
+  background-color: var(--chakra-colors-gray-900);
+  color: var(--chakra-colors-gray-300)
+}
+
+.editor-side-menu::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
 .editor-side-menu-bar {
   width: 46px;
   box-sizing: border-box;

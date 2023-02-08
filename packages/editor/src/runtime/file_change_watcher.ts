@@ -21,4 +21,5 @@ export interface FileChangeWatcher {
   isValid: () => boolean
   getUpdatedFileState: () => Promise<Map<string, FileSpec>>
   getAllFileState: () => Promise<Map<string, FileSpec>>
+  getEnvVars: () => Map<string, string>
 }

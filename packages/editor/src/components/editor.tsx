@@ -81,9 +81,9 @@ export class Editor extends React.Component<EditorProps, EditorState> {
             currentView={this.state.visibleView}
             onChangeView={(newView: EditorSideMenuView) => this.setState({ visibleView: newView })}
           />
-          <Allotment defaultSizes={[270, startSize, 360]} minSize={180} proportionalLayout={false}>
+          <Allotment defaultSizes={[300, startSize, 360]} minSize={180} proportionalLayout={false}>
             <Allotment.Pane visible={visibleView !== ''} snap>
-              <EditorSideMenuPane visibleView={visibleView} fileBlock={block} selection={selection} />
+              <EditorSideMenuPane visibleView={visibleView} fileBlock={block} selection={selection} project={project} />
             </Allotment.Pane>
             <Allotment.Pane priority={LayoutPriority.High}>
               <div className="editor-column">

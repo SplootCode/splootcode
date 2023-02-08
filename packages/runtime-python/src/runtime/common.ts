@@ -88,6 +88,7 @@ export type WorkerMessage =
 export interface RunMessage {
   type: 'run'
   workspace: Map<string, FileSpec>
+  envVars: Map<string, string>
   stdinBuffer: Int32Array
   fetchBuffer: Uint8Array
   fetchBufferMeta: Int32Array
@@ -96,6 +97,7 @@ export interface RunMessage {
 export interface RerunMessage {
   type: 'rerun'
   workspace: Map<string, FileSpec>
+  envVars: Map<string, string>
   readlines: string[]
   requestPlayback: Map<string, ResponseData[]>
 }
