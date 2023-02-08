@@ -6,6 +6,7 @@ import {
   ButtonGroup,
   Divider,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   HStack,
   IconButton,
@@ -134,6 +135,15 @@ function EnvironmentVar(props: {
 
   const hasChanged = newName !== name || newValue !== value || newSecret !== secret
 
+  const nameRegex = /^[a-zA-Z0-9_]*$/
+  const nameStartWithRegex = /^[a-zA-Z_]/
+  let nameError = null
+  if (newName !== '' && !nameRegex.test(newName)) {
+    nameError = 'Name can only include _, letters A-Z, and numbers'
+  } else if (newName !== '' && !nameStartWithRegex.test(newName)) {
+    nameError = 'Name cannot start with a number.'
+  }
+
   return (
     <>
       <Box py={4}>
@@ -161,27 +171,32 @@ function EnvironmentVar(props: {
                 </ButtonGroup>
               ) : null}
             </HStack>
-            <FormControl>
+            <FormControl isInvalid={!!nameError}>
               <Input
                 type="text"
                 size="sm"
+                autoComplete="off"
+                aria-label="Environment variable name"
                 backgroundColor={'gray.800'}
-                placeholder="Variable name"
+                placeholder="Name"
                 onChange={handleNameChange}
                 value={newName}
                 m={0}
                 variant="filled"
               />
+              {nameError ? <FormErrorMessage>{nameError}</FormErrorMessage> : null}
             </FormControl>
             <FormControl>
               <InputGroup size="sm">
                 <Input
+                  autoComplete="off"
+                  aria-label="Environment variable value"
                   pr={newSecret ? '4.5rem' : undefined}
                   type={show || !newSecret ? 'text' : 'password'}
                   value={newValue}
                   onChange={handleValueChange}
                   backgroundColor={'gray.800'}
-                  placeholder="Enter value"
+                  placeholder="Value"
                   variant="filled"
                 />
                 {newSecret ? (
@@ -194,7 +209,7 @@ function EnvironmentVar(props: {
               </InputGroup>
             </FormControl>
             <FormControl display="flex" alignItems="center" justifyContent={'space-between'}>
-              <FormLabel htmlFor="email-alerts" mb="0" fontSize={'md'} color="gray.400" pl={1}>
+              <FormLabel htmlFor={`is-secret-${name}`} mb="0" fontSize={'md'} color="gray.400" pl={1}>
                 Secret{' '}
                 <Tooltip
                   label="Secret variables are private to you and will not be shared when the rest of the project is shared."
@@ -203,14 +218,14 @@ function EnvironmentVar(props: {
                   <QuestionIcon mx={1} color={'gray.400'} />
                 </Tooltip>
               </FormLabel>
-              <Switch id="email-alerts" isChecked={newSecret} onChange={handleSecretChange} />
+              <Switch id={`is-secret-${name}`} isChecked={newSecret} onChange={handleSecretChange} />
             </FormControl>
             {hasChanged ? (
               <ButtonGroup justifyContent={'right'}>
                 <Button size="sm" onClick={handleCancel}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" colorScheme="blue">
+                <Button type="submit" size="sm" colorScheme="blue" disabled={!!nameError || newName === ''}>
                   Save changes
                 </Button>
               </ButtonGroup>
@@ -226,19 +241,19 @@ function EnvironmentVar(props: {
 export function ConfigPanel(props: ConfigPanelProps) {
   const { project, startDrag } = props
 
-  const [envVars, setEnvVars] = React.useState(Object.fromEntries(project.envrionmentVars))
+  const [envVars, setEnvVars] = React.useState(Object.fromEntries(project.environmentVars))
   const varOrder = Object.keys(envVars)
   varOrder.sort()
 
   const updateEnvironmentVars = useCallback(() => {
-    setEnvVars(Object.fromEntries(project.envrionmentVars))
+    setEnvVars(Object.fromEntries(project.environmentVars))
   }, [project])
 
   useEffect(() => {}, [updateEnvironmentVars])
 
   const deleteVar = (name: string) => {
     project.deleteEnvironmentVar(name)
-    setEnvVars(Object.fromEntries(project.envrionmentVars))
+    setEnvVars(Object.fromEntries(project.environmentVars))
   }
 
   const updateVar = (prevName: string, newName: string, value: string, secret: boolean) => {
@@ -246,7 +261,7 @@ export function ConfigPanel(props: ConfigPanelProps) {
       project.deleteEnvironmentVar(prevName)
     }
     project.setEnvironmentVar(newName, value, secret)
-    setEnvVars(Object.fromEntries(project.envrionmentVars))
+    setEnvVars(Object.fromEntries(project.environmentVars))
   }
 
   const newVar = () => {
@@ -285,7 +300,7 @@ export function ConfigPanel(props: ConfigPanelProps) {
           )
         })}
       </Box>
-      {numberOfValidVars !== 0 ? <EnvironmentUsage startDrag={startDrag} envVars={project.envrionmentVars} /> : null}
+      {numberOfValidVars !== 0 ? <EnvironmentUsage startDrag={startDrag} envVars={project.environmentVars} /> : null}
     </div>
   )
 }

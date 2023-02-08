@@ -28,7 +28,8 @@ export class Project {
   version: string
   packages: SplootPackage[]
   fileLoader: FileLoader
-  envrionmentVars: Map<string, [string, boolean]>
+  environmentVars: Map<string, [string, boolean]>
+  environmentVarsChanged: boolean
 
   constructor(owner: string, proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
     this.owner = owner
@@ -38,7 +39,8 @@ export class Project {
     this.version = proj.version
     this.fileLoader = fileLoader
     this.packages = packages
-    this.envrionmentVars = new Map(Object.entries(proj.environmentVars || {}))
+    this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
+    this.environmentVarsChanged = false
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -64,7 +66,8 @@ export class Project {
   }
 
   deleteEnvironmentVar(key: string) {
-    this.envrionmentVars.delete(key)
+    this.environmentVars.delete(key)
+    this.environmentVarsChanged = true
     globalMutationDispatcher.handleProjectMutation({
       type: ProjectMutationType.DELETE_ENVIRONMENT_VAR,
       name: key,
@@ -72,13 +75,18 @@ export class Project {
   }
 
   setEnvironmentVar(key: string, value: string, secret: boolean) {
-    this.envrionmentVars.set(key, [value, secret])
+    this.environmentVars.set(key, [value, secret])
+    this.environmentVarsChanged = true
     globalMutationDispatcher.handleProjectMutation({
       type: ProjectMutationType.SET_ENVIRONMENT_VAR,
       newName: key,
       newValue: value,
       secret,
     })
+  }
+
+  clearChangedState() {
+    this.environmentVarsChanged = false
   }
 
   serialize(): string {
@@ -88,7 +96,7 @@ export class Project {
       title: this.title,
       splootversion: this.splootversion,
       version: this.version,
-      environmentVars: Object.fromEntries(this.envrionmentVars),
+      environmentVars: Object.fromEntries(this.environmentVars),
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,

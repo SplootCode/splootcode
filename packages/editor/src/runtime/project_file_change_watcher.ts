@@ -83,7 +83,7 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
 
   getEnvVars(): Map<string, string> {
     const varsSimplified = new Map()
-    for (const [key, value] of this.project.envrionmentVars) {
+    for (const [key, value] of this.project.environmentVars) {
       varsSimplified.set(key, value[0])
     }
     return varsSimplified
