@@ -273,7 +273,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       fetchBufferMeta = e.data.fetchBufferMeta
       rerun = false
       requestPlayback = null
-      envVars = e.data.envVars
+      envVars = e.data.envVars || new Map<string, string>()
       run()
       break
     case 'rerun':
@@ -284,7 +284,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       readlines = e.data.readlines
       requestPlayback = e.data.requestPlayback
       rerun = true
-      envVars = e.data.envVars
+      envVars = e.data.envVars || new Map<string, string>()
       run()
       break
     case 'loadModule':
