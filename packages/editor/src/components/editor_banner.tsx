@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Button, Flex, Text } from '@chakra-ui/react'
-import { ChildSetMutation, NodeMutation, Project, globalMutationDispatcher } from '@splootcode/core'
+import { ChildSetMutation, NodeMutation, Project, ProjectMutation, globalMutationDispatcher } from '@splootcode/core'
 
 export function EditorBanner(props: { project: Project; onSaveAs: () => void }) {
   const { project, onSaveAs } = props
@@ -17,12 +17,17 @@ export function EditorBanner(props: { project: Project; onSaveAs: () => void }) 
         handleChildSetMutation: (mutation: ChildSetMutation) => {
           setMutationCount((count) => count + 1)
         },
+        handleProjectMutation: (mutation: ProjectMutation) => {
+          setMutationCount((count) => count + 1)
+        },
       }
       globalMutationDispatcher.registerChildSetObserver(mutationObserver)
       globalMutationDispatcher.registerNodeObserver(mutationObserver)
+      globalMutationDispatcher.registerProjectObserver(mutationObserver)
       const cleanup = () => {
         globalMutationDispatcher.deregisterNodeObserver(mutationObserver)
         globalMutationDispatcher.deregisterChildSetObserver(mutationObserver)
+        globalMutationDispatcher.deregisterProjectObserver(mutationObserver)
       }
       return cleanup
     }

@@ -1,17 +1,20 @@
 import { ChildSetMutation } from './child_set_mutations'
-import { ChildSetObserver, NodeObserver, ScopeObserver } from '../observers'
+import { ChildSetObserver, NodeObserver, ProjectObserver, ScopeObserver } from '../observers'
 import { NodeMutation } from './node_mutations'
+import { ProjectMutation } from './project_mutations'
 import { ScopeMutation } from './scope_mutations'
 
 class MutationDispatcher {
   nodeObservers: NodeObserver[]
   childSetObservers: ChildSetObserver[]
   scopeObservers: ScopeObserver[]
+  projectObservers: ProjectObserver[]
 
   constructor() {
     this.nodeObservers = []
     this.childSetObservers = []
     this.scopeObservers = []
+    this.projectObservers = []
   }
 
   registerNodeObserver(observer: NodeObserver) {
@@ -62,6 +65,23 @@ class MutationDispatcher {
   handleScopeMutation(mutation: ScopeMutation) {
     this.scopeObservers.forEach((observer: ScopeObserver) => {
       observer.handleScopeMutation(mutation)
+    })
+  }
+
+  registerProjectObserver(observer: ProjectObserver) {
+    this.projectObservers.push(observer)
+  }
+
+  deregisterProjectObserver(observer: ProjectObserver) {
+    const idx = this.projectObservers.indexOf(observer)
+    if (idx !== -1) {
+      this.projectObservers.splice(idx, 1)
+    }
+  }
+
+  handleProjectMutation(mutation: ProjectMutation) {
+    this.projectObservers.forEach((observer: ProjectObserver) => {
+      observer.handleProjectMutation(mutation)
     })
   }
 }

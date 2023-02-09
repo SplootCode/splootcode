@@ -1,5 +1,7 @@
 import { FileLoader } from './file_loader'
 import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
+import { ProjectMutationType } from '../mutations/project_mutations'
+import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 
 export interface SerializedProject {
   name: string
@@ -8,6 +10,7 @@ export interface SerializedProject {
   splootversion: string
   version: string
   packages: SerializedSplootPackageRef[]
+  environmentVars?: { [key: string]: [string, boolean] }
 }
 
 export enum ProjectLayoutType {
@@ -25,6 +28,8 @@ export class Project {
   version: string
   packages: SplootPackage[]
   fileLoader: FileLoader
+  environmentVars: Map<string, [string, boolean]>
+  environmentVarsChanged: boolean
 
   constructor(owner: string, proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
     this.owner = owner
@@ -34,6 +39,8 @@ export class Project {
     this.version = proj.version
     this.fileLoader = fileLoader
     this.packages = packages
+    this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
+    this.environmentVarsChanged = false
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -58,13 +65,50 @@ export class Project {
     return pack
   }
 
-  serialize(): string {
+  deleteEnvironmentVar(key: string) {
+    this.environmentVars.delete(key)
+    this.environmentVarsChanged = true
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.DELETE_ENVIRONMENT_VAR,
+      name: key,
+    })
+  }
+
+  setEnvironmentVar(key: string, value: string, secret: boolean) {
+    this.environmentVars.set(key, [value, secret])
+    this.environmentVarsChanged = true
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.SET_ENVIRONMENT_VAR,
+      newName: key,
+      newValue: value,
+      secret,
+    })
+  }
+
+  clearChangedState() {
+    this.environmentVarsChanged = false
+  }
+
+  serialize(includeSecrets = false): string {
+    let environmentVars = this.environmentVars
+    if (!includeSecrets) {
+      environmentVars = new Map(
+        [...this.environmentVars.entries()].map(([key, [value, secret]]) => {
+          if (secret) {
+            return [key, ['', secret]]
+          }
+          return [key, [value, secret]]
+        })
+      )
+    }
+
     const serProj: SerializedProject = {
       name: this.name,
       layouttype: this.layoutType,
       title: this.title,
       splootversion: this.splootversion,
       version: this.version,
+      environmentVars: Object.fromEntries(environmentVars),
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,

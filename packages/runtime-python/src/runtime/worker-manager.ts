@@ -65,7 +65,7 @@ export class WorkerManager {
     this.worker.postMessage(message)
   }
 
-  run(workspace: Map<string, FileSpec>) {
+  run(workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
     this.inputPlayback = []
     this.requestPlayback = new Map()
     this.stdinbuffer = new Int32Array(new SharedArrayBuffer(INPUT_BUF_SIZE * Int32Array.BYTES_PER_ELEMENT))
@@ -78,18 +78,20 @@ export class WorkerManager {
     this.sendMessage({
       type: 'run',
       workspace: workspace,
+      envVars: envVars,
       stdinBuffer: this.stdinbuffer,
       fetchBuffer: this.fetchBuffer,
       fetchBufferMeta: this.fetchBufferMeta,
     })
   }
 
-  rerun(workspace: Map<string, FileSpec>) {
+  rerun(workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'rerun',
       workspace: workspace,
+      envVars: envVars,
       readlines: this.inputPlayback,
       requestPlayback: this.requestPlayback,
     })

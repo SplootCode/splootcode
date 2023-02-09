@@ -4,6 +4,7 @@ import {
   NodeMutation,
   Project,
   ProjectLoader,
+  ProjectMutation,
   SaveError,
   globalMutationDispatcher,
 } from '@splootcode/core'
@@ -67,12 +68,17 @@ export const AutosaveHandler = (props: {
       handleChildSetMutation: (mutation: ChildSetMutation) => {
         setNeedsSave(true)
       },
+      handleProjectMutation: (mutation: ProjectMutation) => {
+        setNeedsSave(true)
+      },
     }
     globalMutationDispatcher.registerChildSetObserver(mutationObserver)
     globalMutationDispatcher.registerNodeObserver(mutationObserver)
+    globalMutationDispatcher.registerProjectObserver(mutationObserver)
     const cleanup = () => {
       globalMutationDispatcher.deregisterNodeObserver(mutationObserver)
       globalMutationDispatcher.deregisterChildSetObserver(mutationObserver)
+      globalMutationDispatcher.deregisterProjectObserver(mutationObserver)
     }
     return cleanup
   }, [project])

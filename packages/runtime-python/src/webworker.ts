@@ -7,6 +7,7 @@ let fetchBufferMeta: Int32Array = null
 let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
+let envVars: Map<string, string> = new Map()
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -156,8 +157,24 @@ let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
 
+const EnvVarCode = `
+import os;
+for varName in os.environ:
+  if varName not in ['USER', 'LOGNAME', 'PATH', 'PWD', 'HOME', 'LANG', '_']:
+    del os.environ[varName];
+for varName, varValue in envVars.items():
+  os.environ[varName] = varValue;
+`
+
 const run = async () => {
   try {
+    // Set up environment variables.
+    // This is a bit hacky but pyodide's API doesn't give us access to environment variables.
+    const globals = pyodide.toPy({ envVars: pyodide.toPy(envVars) })
+    await pyodide.runPython(EnvVarCode, {
+      globals: globals,
+    })
+
     await pyodide.runPython(executorCode)
   } catch (err) {
     sendMessage({
@@ -256,6 +273,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       fetchBufferMeta = e.data.fetchBufferMeta
       rerun = false
       requestPlayback = null
+      envVars = e.data.envVars
       run()
       break
     case 'rerun':
@@ -266,6 +284,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       readlines = e.data.readlines
       requestPlayback = e.data.requestPlayback
       rerun = true
+      envVars = e.data.envVars
       run()
       break
     case 'loadModule':

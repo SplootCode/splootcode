@@ -390,8 +390,10 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
       return
     }
 
+    const envVars = this.props.fileChangeWatcher.getEnvVars()
+
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
-    const payload = { type: messageType, data: { files: fileState } }
+    const payload = { type: messageType, data: { files: fileState, envVars: envVars } }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
   }

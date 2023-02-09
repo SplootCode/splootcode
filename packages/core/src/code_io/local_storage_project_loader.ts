@@ -82,6 +82,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       splootversion: '1.0.0',
       version: '1',
       title: title,
+      environmentVars: {},
       packages: [],
     }
     const proj = new Project(onwerId, serialisedProj, [], fileLoader)
@@ -175,7 +176,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       }
     }
     project.version = version
-    window.localStorage.setItem(projKey, project.serialize())
+    window.localStorage.setItem(projKey, project.serialize(false))
     this.updateProjectMetadata(project)
     return version
   }

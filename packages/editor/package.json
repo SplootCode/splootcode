@@ -58,6 +58,7 @@
     "fuse.js": "^6.6.2",
     "mobx": "^5.15.0",
     "mobx-react": "^6.2.5",
+    "react-icons": "^4.4.0",
     "xterm": "^5.1.0",
     "xterm-addon-fit": "^0.7.0"
   }

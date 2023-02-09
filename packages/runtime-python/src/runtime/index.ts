@@ -16,6 +16,7 @@ class RuntimeStateManager {
   private workerURL: string
   private workerManager: WorkerManager
   private workspace: Map<string, FileSpec>
+  private envVars: Map<string, string>
   private initialFilesLoaded: boolean
   private stdinPromiseResolve: (s: string) => void
   private fetchHandler: FetchHandler
@@ -26,6 +27,7 @@ class RuntimeStateManager {
     this.workerURL = workerURL
     this.initialFilesLoaded = false
     this.workspace = new Map()
+    this.envVars = new Map()
     this.fetchHandler = fetchHandler
   }
 
@@ -96,6 +98,10 @@ class RuntimeStateManager {
     }
   }
 
+  setEnvironmentVars(envVars: Map<string, string>) {
+    this.envVars = envVars
+  }
+
   handleMessage = (event: MessageEvent) => {
     const data = event.data
     if (data.type && data.type.startsWith('webpack')) {
@@ -121,16 +127,18 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, false)
+        this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.workspace)
+          this.workerManager.rerun(this.workspace, this.envVars)
         }
         break
       case 'initialfiles':
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
+        this.setEnvironmentVars(data.data.envVars)
         this.initialFilesLoaded = true
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.workspace)
+          this.workerManager.rerun(this.workspace, this.envVars)
         }
         break
       case 'stdin':
@@ -142,7 +150,7 @@ class RuntimeStateManager {
         break
       case 'run':
         if (this.initialFilesLoaded) {
-          this.workerManager.run(this.workspace)
+          this.workerManager.run(this.workspace, this.envVars)
         } else {
           console.warn('Cannot run, no nodetree loaded')
         }
