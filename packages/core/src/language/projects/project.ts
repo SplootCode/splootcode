@@ -89,14 +89,26 @@ export class Project {
     this.environmentVarsChanged = false
   }
 
-  serialize(): string {
+  serialize(includeSecrets = false): string {
+    let environmentVars = this.environmentVars
+    if (!includeSecrets) {
+      environmentVars = new Map(
+        [...this.environmentVars.entries()].map(([key, [value, secret]]) => {
+          if (secret) {
+            return [key, ['', secret]]
+          }
+          return [key, [value, secret]]
+        })
+      )
+    }
+
     const serProj: SerializedProject = {
       name: this.name,
       layouttype: this.layoutType,
       title: this.title,
       splootversion: this.splootversion,
       version: this.version,
-      environmentVars: Object.fromEntries(this.environmentVars),
+      environmentVars: Object.fromEntries(environmentVars),
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,
