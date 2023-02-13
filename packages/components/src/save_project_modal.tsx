@@ -29,7 +29,7 @@ interface SaveProjectModalProps {
   newOwner: string
   clonedFrom?: Project
   onClose: () => void
-  onComplete: (projectID: string, title: string) => void
+  onComplete: (onwerID: string, projectID: string) => void
   projectLoader: ProjectLoader
 }
 
@@ -59,10 +59,6 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
     })
   }, [projectID])
 
-  const handleCreate = () => {
-    onComplete(projectID, projectTitle)
-  }
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectTitle(e.target.value)
     setProjectID(convertToURL(e.target.value))
@@ -76,7 +72,16 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (projectTitle !== '' && validID) {
-      onComplete(projectID, projectTitle)
+      if (props.clonedFrom) {
+        const proj = props.clonedFrom
+        props.projectLoader.cloneProject(newOwner, projectID, projectTitle, proj).then((newProj) => {
+          onComplete(newOwner, projectID)
+        })
+      } else {
+        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI').then(() => {
+          onComplete(newOwner, projectID)
+        })
+      }
     }
   }
 
@@ -97,7 +102,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
               </FormControl>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" disabled={projectTitle === '' || !validID} onClick={handleCreate}>
+              <Button colorScheme="blue" disabled={projectTitle === '' || !validID} type="submit">
                 Create project
               </Button>
             </ModalFooter>

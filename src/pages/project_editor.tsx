@@ -2,10 +2,17 @@ import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
 import { AutosaveHandler, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
+import { EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
-import { PythonEditorPanels } from './python_editor'
+import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
 import { useHistory, useParams } from 'react-router-dom'
+
+const hostingConfig: EditorHostingConfig = {
+  TYPESHED_PATH: import.meta.env.SPLOOT_TYPESHED_PATH,
+  FRAME_VIEW_SCHEME: import.meta.env.SPLOOT_FRAME_VIEW_SCHEME,
+  FRAME_VIEW_DOMAIN: import.meta.env.SPLOOT_FRAME_VIEW_DOMAIN,
+}
 
 interface ProjectEditorProps {
   projectLoader: ProjectLoader
@@ -16,18 +23,34 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
+  const [editorState, setEditorState] = useState<EditorState>(null)
 
   const history = useHistory()
+
+  useEffect(() => {
+    if (loadedProject) {
+      const editorState = new EditorState(loadedProject, hostingConfig)
+      editorState.loadDefaultFile().then(() => {
+        setEditorState(editorState)
+      })
+
+      return () => {
+        editorState.cleanup()
+      }
+    }
+  }, [loadedProject])
 
   const loadProjectFromStorage = () => {
     setLoadedProject(null)
     if (ownerID === 'examples') {
       loadExampleProject(projectID).then((proj) => {
         setLoadedProject(proj)
+        setEditorState(null)
       })
     } else if (ownerID === 'local') {
       projectLoader.loadProject(ownerID, projectID).then((proj) => {
         setLoadedProject(proj)
+        setEditorState(null)
       })
     }
   }
@@ -74,19 +97,9 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
-        onComplete={(projectID, title) => {
-          if (saveProjectModalState.clonedFrom) {
-            const proj = saveProjectModalState.clonedFrom
-            props.projectLoader.cloneProject('local', projectID, title, proj).then((newProj) => {
-              history.push(`/p/local/${projectID}`)
-              setSaveProjectModalState({ open: false, clonedFrom: null })
-            })
-          } else {
-            props.projectLoader.newProject('local', projectID, title, 'PYTHON_CLI').then(() => {
-              history.push(`/p/local/${projectID}`)
-              setSaveProjectModalState({ open: false, clonedFrom: null })
-            })
-          }
+        onComplete={(owner, projectID) => {
+          setSaveProjectModalState({ open: false, clonedFrom: null })
+          history.push(`/p/${owner}/${projectID}`)
         }}
       />
       <MenuBar menuItems={menuItems}>
@@ -102,15 +115,15 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
-        {loadedProject === null ? (
-          <div>Loading... </div>
+        {editorState ? (
+          <EditorStateContext.Provider value={editorState}>
+            <PythonEditorPanels
+              editorState={editorState}
+              onSaveAs={() => setSaveProjectModalState({ open: true, clonedFrom: loadedProject })}
+            />
+          </EditorStateContext.Provider>
         ) : (
-          <PythonEditorPanels
-            project={loadedProject}
-            onSaveAs={() => {
-              setSaveProjectModalState({ open: true, clonedFrom: loadedProject })
-            }}
-          />
+          <p>Loading...</p>
         )}
       </div>
     </React.Fragment>

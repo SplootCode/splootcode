@@ -5,17 +5,15 @@ import React, { ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import { ActiveCursor } from './cursor'
-import { Allotment, LayoutPriority } from 'allotment'
 import { DragOverlay } from './drag_overlay'
 import { EditBox } from './edit_box'
 import { EditorHostingConfig } from '../editor_hosting_config'
-import { EditorSideMenu, EditorSideMenuPane, EditorSideMenuView } from './editor_side_menu'
+import { EditorSideMenuView } from './editor_side_menu'
 import { ExpandedListBlockView } from './list_block'
 import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
-import { PythonRuntimePanel } from '../runtime/python_runtime_panel'
 import { RuntimeToken } from '../runtime/python_frame'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
@@ -51,7 +49,7 @@ export class Editor extends React.Component<EditorProps, EditorState> {
   }
 
   render() {
-    const { block, project, pkg, selection, validationWatcher, banner } = this.props
+    const { block, selection, banner } = this.props
     let fileBody = null
 
     fileBody = block.renderedChildSets['body']
@@ -72,57 +70,30 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     } else if (selection.isEditingSingleNode()) {
       editBox = <EditBox editorX={1} editorY={1} selection={selection} editBoxData={selection.editBox} />
     }
-    const startSize = window.outerWidth - 270 - 360
-    const visibleView = this.state.visibleView
     return (
       <React.Fragment>
-        <div className="editor">
-          <EditorSideMenu
-            currentView={this.state.visibleView}
-            onChangeView={(newView: EditorSideMenuView) => this.setState({ visibleView: newView })}
-          />
-          <Allotment defaultSizes={[300, startSize, 360]} minSize={180} proportionalLayout={false}>
-            <Allotment.Pane visible={visibleView !== ''} snap>
-              <EditorSideMenuPane visibleView={visibleView} fileBlock={block} selection={selection} project={project} />
-            </Allotment.Pane>
-            <Allotment.Pane priority={LayoutPriority.High}>
-              <div className="editor-column">
-                {banner}
-                <div
-                  className="editor-box"
-                  ref={this.editorColumnRef}
-                  onBlur={this.onBlurHandler}
-                  onFocus={this.onFocusHandler}
-                >
-                  <svg
-                    className="editor-svg"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height={height}
-                    preserveAspectRatio="none"
-                    onClick={this.onClickHandler}
-                    ref={this.editorSvgRef}
-                  >
-                    <ExpandedListBlockView block={fileBody} isSelected={false} />
-                    <ActiveCursor selection={selection} />
-                  </svg>
-                  {insertBox}
-                  {editBox}
-                </div>
-              </div>
-            </Allotment.Pane>
-            <Allotment.Pane preferredSize={360} priority={LayoutPriority.Low}>
-              <div className="python-preview-panel">
-                <PythonRuntimePanel
-                  project={project}
-                  pkg={pkg}
-                  validationWatcher={validationWatcher}
-                  frameScheme={this.props.editorHostingConfig.FRAME_VIEW_SCHEME}
-                  frameDomain={this.props.editorHostingConfig.FRAME_VIEW_DOMAIN}
-                  refreshToken={this.props.refreshToken}
-                />
-              </div>
-            </Allotment.Pane>
-          </Allotment>
+        <div className="editor-column">
+          {banner}
+          <div
+            className="editor-box"
+            ref={this.editorColumnRef}
+            onBlur={this.onBlurHandler}
+            onFocus={this.onFocusHandler}
+          >
+            <svg
+              className="editor-svg"
+              xmlns="http://www.w3.org/2000/svg"
+              height={height}
+              preserveAspectRatio="none"
+              onClick={this.onClickHandler}
+              ref={this.editorSvgRef}
+            >
+              <ExpandedListBlockView block={fileBody} isSelected={false} />
+              <ActiveCursor selection={selection} />
+            </svg>
+            {insertBox}
+            {editBox}
+          </div>
         </div>
         <DragOverlay selection={selection} editorRef={this.editorSvgRef} />
       </React.Fragment>
