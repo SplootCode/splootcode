@@ -345,6 +345,40 @@ print(x)
         f.seek(0)
         self.assertEqual(f.read(), "{'fred': 'blogs', ('foo', 'bar'): ['list', 'of', 'things']}\n")
 
+    def testReturnBare(self):
+        splootFile = splootFromPython('''
+def test():
+    return
+
+if test() is None:
+    print("hello")
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), 'hello\n')
+
+    def testReturnWithValue(self):
+        splootFile = splootFromPython('''
+def test():
+    return 1 + 1
+
+if test() == 2:
+    print("hello")
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), 'hello\n')
+
     def testKwargs(self):
         splootFile = splootFromPython('''print('hello', 'there', sep="--", end="END")''')
         f = io.StringIO()
