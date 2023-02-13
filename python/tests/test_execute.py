@@ -350,7 +350,7 @@ print(x)
 def test():
     return
 
-if not test():
+if test() is None:
     print("hello")
 ''')
 
@@ -367,7 +367,7 @@ if not test():
 def test():
     return 1 + 1
 
-if test():
+if test() == 2:
     print("hello")
 ''')
 
