@@ -14,7 +14,6 @@ import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
-import { RuntimeToken } from '../runtime/python_frame'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -26,7 +25,6 @@ interface EditorProps {
   validationWatcher: ValidationWatcher
   banner?: ReactNode
   editorHostingConfig: EditorHostingConfig
-  refreshToken?: () => Promise<RuntimeToken>
 }
 
 interface EditorState {
