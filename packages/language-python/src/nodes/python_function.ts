@@ -146,20 +146,20 @@ export class PythonFunctionDeclaration extends PythonNode {
       this.setValidity(true, '')
     }
 
-    const seenIdentifiers: Record<string, boolean> = {}
+    const seenIdentifiers: Set<string> = new Set()
 
     this.getParams().children.forEach((paramNode, i) => {
       if (paramNode.type === PYTHON_IDENTIFIER) {
         const identifier = paramNode as PythonIdentifier
         const name = identifier.getName()
 
-        if (seenIdentifiers[name]) {
+        if (seenIdentifiers.has(name)) {
           this.setValidity(false, "Can't have more than one parameter with the same name", 'params', i)
 
           return
         }
 
-        seenIdentifiers[name] = true
+        seenIdentifiers.add(name)
       }
     })
   }
