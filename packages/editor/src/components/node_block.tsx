@@ -204,6 +204,13 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
             internalLeftPos += renderedComponent.width
           } else if (renderedComponent.layoutComponent.type === LayoutComponentType.CHILD_SET_TOKEN_LIST) {
             const childSetBlock = block.renderedChildSets[renderedComponent.layoutComponent.identifier]
+
+            let invalidIndex: number | undefined = undefined
+
+            if (!block.node.isValid && renderedComponent.layoutComponent.identifier === block.invalidChildsetID) {
+              invalidIndex = block.invalidChildsetIndex
+            }
+
             result = (
               <TokenListBlockView
                 key={idx}
@@ -211,7 +218,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
                 isSelected={isSelected}
                 isValid={block.invalidChildsetID !== renderedComponent.layoutComponent.identifier}
                 isInline={block.layout.boxType !== NodeBoxType.INVISIBLE}
-                invalidIndex={block.invalidChildsetIndex}
+                invalidIndex={invalidIndex}
               />
             )
             internalLeftPos += renderedComponent.width
@@ -313,12 +320,19 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
     if (block.rightAttachedChildSet === null) {
       return null
     }
+
+    let invalidIndex: number | undefined = undefined
+
+    if (block.invalidChildsetID === block.rightAttachedChildSet) {
+      invalidIndex = block.invalidChildsetIndex
+    }
     const childSetBlock = block.renderedChildSets[block.rightAttachedChildSet]
     if (childSetBlock.componentType === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
       return (
         <AttachedChildRightExpressionView
           childSetBlock={childSetBlock}
           isSelected={isSelected}
+          invalidIndex={invalidIndex}
         ></AttachedChildRightExpressionView>
       )
     }
