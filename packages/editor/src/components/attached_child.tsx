@@ -17,7 +17,7 @@ interface AttachedChildViewProps {
 @observer
 export class AttachedChildRightExpressionView extends React.Component<AttachedChildViewProps> {
   render() {
-    const { isSelected, childSetBlock, invalidIndex: invalidChildsetIndex } = this.props
+    const { isSelected, childSetBlock, invalidIndex } = this.props
 
     const bracketLeftPos = childSetBlock.x + BRACKET_WIDTH
     const childWidth = childSetBlock.width - BRACKET_WIDTH * 2
@@ -51,7 +51,7 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
                 block={nodeBlock}
                 selectionState={selectionState}
                 placeholder={label}
-                isInvalidBlamed={invalidChildsetIndex === idx}
+                isInvalidBlamed={invalidIndex === idx}
               />
             </React.Fragment>
           )
