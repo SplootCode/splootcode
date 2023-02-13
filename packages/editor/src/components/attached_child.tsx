@@ -11,12 +11,13 @@ import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 interface AttachedChildViewProps {
   childSetBlock: RenderedChildSetBlock
   isSelected: boolean
+  invalidIndex?: number
 }
 
 @observer
 export class AttachedChildRightExpressionView extends React.Component<AttachedChildViewProps> {
   render() {
-    const { isSelected, childSetBlock } = this.props
+    const { isSelected, childSetBlock, invalidIndex } = this.props
 
     const bracketLeftPos = childSetBlock.x + BRACKET_WIDTH
     const childWidth = childSetBlock.width - BRACKET_WIDTH * 2
@@ -46,7 +47,12 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
           const selectionState = childSetBlock.getChildSelectionState(idx)
           return (
             <React.Fragment key={idx}>
-              <EditorNodeBlock block={nodeBlock} selectionState={selectionState} placeholder={label} />
+              <EditorNodeBlock
+                block={nodeBlock}
+                selectionState={selectionState}
+                placeholder={label}
+                isInvalidBlamed={invalidIndex === idx}
+              />
             </React.Fragment>
           )
         })}
