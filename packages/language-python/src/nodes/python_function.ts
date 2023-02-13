@@ -143,6 +143,23 @@ export class PythonFunctionDeclaration extends PythonNode {
     } else {
       this.setValidity(true, '')
     }
+
+    const seenIdentifiers: Record<string, boolean> = {};
+
+    this.getParams().children.forEach((paramNode) => {
+        if (paramNode.type === PYTHON_IDENTIFIER) {
+          const identifier = paramNode as PythonIdentifier;
+          const name = identifier.getName();
+
+          if (seenIdentifiers[name]) {
+            identifier.setValidity(false, "Can't have more than one parameter with the same name")
+
+            return
+          }
+
+          seenIdentifiers[name] = true;
+        }
+      })
   }
 
   addSelfToScope() {
