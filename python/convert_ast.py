@@ -287,7 +287,12 @@ def generateSplootStatement(statement):
   elif type(statement) == ast.Continue:
     return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_CONTINUE')]})
   elif type(statement) == ast.Return:
-    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PYTHON_RETURN')]})
+    value = SplootNode("PYTHON_EXPRESSION", {"tokens": []})
+
+    if statement.value:
+      value = generateExpression(statement.value)
+
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode("PYTHON_RETURN", {"value": [value]})]})
   elif type(statement) == ast.Import:
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImport(statement)]})
   elif type(statement) == ast.ImportFrom:
