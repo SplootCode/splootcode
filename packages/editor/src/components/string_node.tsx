@@ -18,6 +18,7 @@ export function getLeftCapShape(className: string, x: number, y: number, height:
   return (
     <>
       <path
+        tabIndex={0}
         className={className}
         d={`M ${x + 4} ${y} q -4,0 -4,4 v ${height - 8} q 0,4 4,4 h ${STRING_CAP_WIDTH - 6} v ${-height} z`}
       />
@@ -35,6 +36,7 @@ function getRightCapShape(className: string, x: number, y: number, height: numbe
   return (
     <>
       <path
+        tabIndex={0}
         className={className}
         d={`M ${x} ${y} v ${height} h ${STRING_CAP_WIDTH - 6} q 4,0 4,-4 v ${-height + 8} q 0,-4 -4,-4 z`}
       />
@@ -93,7 +95,9 @@ export class StringNode extends React.Component<StringNodeProps> {
         {rectangle}
         {startCap}
         <foreignObject x={leftPos + STRING_CAP_WIDTH} y={topPos} width={internalWidth} height={block.rowHeight}>
-          <pre className="string-node">{textContent}</pre>
+          <pre tabIndex={0} className="string-node">
+            {textContent}
+          </pre>
         </foreignObject>
         {endCap}
       </>
