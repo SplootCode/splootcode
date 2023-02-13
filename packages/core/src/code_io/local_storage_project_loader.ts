@@ -73,7 +73,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return new Project(ownerId, proj, await Promise.all(packages), fileLoader)
   }
 
-  async newProject(onwerId: string, projectId: string, title: string, layoutType: string): Promise<Project> {
+  async newProject(ownerId: string, projectId: string, title: string, layoutType: string): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
 
     const serialisedProj: SerializedProject = {
@@ -85,7 +85,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       environmentVars: {},
       packages: [],
     }
-    const proj = new Project(onwerId, serialisedProj, [], fileLoader)
+    const proj = new Project(ownerId, serialisedProj, [], fileLoader)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
     await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
     await this.saveProject(proj)

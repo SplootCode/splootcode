@@ -29,7 +29,7 @@ interface SaveProjectModalProps {
   newOwner: string
   clonedFrom?: Project
   onClose: () => void
-  onComplete: (onwerID: string, projectID: string) => void
+  onComplete: (ownerID: string, projectID: string) => void
   projectLoader: ProjectLoader
 }
 
