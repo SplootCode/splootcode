@@ -30,7 +30,7 @@ interface SaveProjectModalProps {
   clonedFrom?: Project
   onClose: () => void
   onComplete: (ownerID: string, projectID: string) => void
-  projectLoader: ProjectLoader
+  projectLoader?: ProjectLoader
 }
 
 export function SaveProjectModal(props: SaveProjectModalProps) {
@@ -54,6 +54,10 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   }, [clonedFrom])
 
   useEffect(() => {
+    if (projectID === '') {
+      return
+    }
+
     projectLoader.isValidProjectId(newOwner, projectID).then((isValid) => {
       setValidID(isValid)
     })
