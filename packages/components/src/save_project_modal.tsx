@@ -30,7 +30,7 @@ interface SaveProjectModalProps {
   clonedFrom?: Project
   onClose: () => void
   onComplete: (ownerID: string, projectID: string) => void
-  projectLoader: ProjectLoader
+  projectLoader?: ProjectLoader
 }
 
 export function SaveProjectModal(props: SaveProjectModalProps) {
@@ -40,7 +40,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const [validID, setValidID] = useState(true)
 
   useEffect(() => {
-    if (clonedFrom) {
+    if (clonedFrom && projectLoader) {
       const generate = async () => {
         const [name, title] = await projectLoader.generateValidProjectId(newOwner, clonedFrom.name, clonedFrom.title)
         setProjectID(name)
@@ -51,9 +51,13 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
       setProjectID('')
       setProjectTitle('')
     }
-  }, [clonedFrom])
+  }, [clonedFrom, projectLoader])
 
   useEffect(() => {
+    if (projectID === '') {
+      return
+    }
+
     projectLoader.isValidProjectId(newOwner, projectID).then((isValid) => {
       setValidID(isValid)
     })
@@ -102,7 +106,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
               </FormControl>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" disabled={projectTitle === '' || !validID} type="submit">
+              <Button colorScheme="blue" disabled={projectTitle === '' || projectID === '' || !validID} type="submit">
                 Create project
               </Button>
             </ModalFooter>
