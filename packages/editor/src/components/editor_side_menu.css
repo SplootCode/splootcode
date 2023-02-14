@@ -33,9 +33,5 @@
 }
 
 .editor-side-menu-icon {
-  fill: #5E6C86
-}
-
-.editor-side-menu-selected .editor-side-menu-icon {
-  fill: var(--chakra-colors-gray-400);
+  fill: currentColor
 }

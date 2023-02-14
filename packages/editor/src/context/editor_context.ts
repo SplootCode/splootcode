@@ -15,8 +15,9 @@ export class EditorState {
   validationWatcher: ValidationWatcher
   analyser: PythonAnalyzer
   hostingConfig: EditorHostingConfig
+  featureFlags: Map<string, boolean>
 
-  constructor(project: Project, hostingConfig: EditorHostingConfig) {
+  constructor(project: Project, hostingConfig: EditorHostingConfig, featureFlags?: Map<string, boolean>) {
     this.project = project
     this.rootNode = null
     this.selection = new NodeSelection()
@@ -26,6 +27,7 @@ export class EditorState {
     this.analyser.registerSelf()
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
+    this.featureFlags = featureFlags || new Map()
   }
 
   async loadDefaultFile() {

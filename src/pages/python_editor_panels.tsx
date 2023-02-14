@@ -24,9 +24,6 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
   const onlyPackage: SplootPackage = editorState.project.packages[0]
   const startSize = window.outerWidth - 270 - 360
 
-  const block = editorState.rootNode
-  const project = editorState.project
-  const selection = editorState.selection
   const editorHostingConfig = editorState.hostingConfig
   const validationWatcher = editorState.validationWatcher
 
@@ -38,7 +35,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
       />
       <Allotment defaultSizes={[300, startSize, 360]} minSize={180} proportionalLayout={false}>
         <Allotment.Pane visible={visibleView !== ''} snap>
-          <EditorSideMenuPane visibleView={visibleView} fileBlock={block} selection={selection} project={project} />
+          <EditorSideMenuPane visibleView={visibleView} editorState={editorState} />
         </Allotment.Pane>
         <Allotment.Pane priority={LayoutPriority.High}>
           <Editor
