@@ -15,6 +15,8 @@ import {
 } from '@splootcode/core'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
+import { PythonFunctionDeclaration } from './python_function'
+import { PythonIdentifier } from './python_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 
@@ -62,6 +64,18 @@ export class PythonFile extends PythonNode {
     const data = capture.data as PythonFileData
     this.getBody().recursivelyApplyRuntimeCapture(data.body)
     return true
+  }
+
+  makeHandler(name: string): void {
+    const stmt = new PythonStatement(new ParentReference(this, 'body'))
+    const func = new PythonFunctionDeclaration(new ParentReference(stmt, 'statement'))
+
+    func.getIdentifier().addChild(new PythonIdentifier(new ParentReference(func, 'identifier'), name))
+    func.getParams().addChild(new PythonIdentifier(new ParentReference(func, 'params'), 'event'))
+    func.getParams().addChild(new PythonIdentifier(new ParentReference(func, 'params'), 'context'))
+
+    stmt.getStatement().addChild(func)
+    this.getBody().addChild(stmt)
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFile {
