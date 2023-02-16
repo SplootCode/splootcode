@@ -20,5 +20,4 @@ export { PythonAssignment, AssignmentWrapGenerator, PYTHON_ASSIGNMENT } from './
 export { PythonFile, PYTHON_FILE } from './nodes/python_file'
 export { PythonBinaryOperator } from './nodes/python_binary_operator'
 export { PythonIdentifier } from './nodes/python_identifier'
-export { PythonFunctionDeclaration, PYTHON_FUNCTION_DECLARATION } from './nodes/python_function'
 export type { PythonModuleSpec } from './scope/python'
