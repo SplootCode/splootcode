@@ -114,20 +114,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
         isOpen={saveProjectModalState.open}
         projectLoader={props.projectLoader}
         onClose={() => setSaveProjectModalState({ open: false, clonedFrom: null })}
-        onComplete={(projectID, title) => {
-          if (saveProjectModalState.clonedFrom) {
-            const proj = saveProjectModalState.clonedFrom
-            props.projectLoader.cloneProject('local', projectID, title, proj).then((newProj) => {
-              props.projectLoader.listProjectMetadata().then((projects) => {
-                setProjects(projects)
-              })
-            })
-          } else {
-            props.projectLoader.newProject('local', projectID, title, 'PYTHON_CLI').then(() => {
-              history.push(`/p/local/${projectID}`)
-            })
-          }
+        onComplete={(owner, projectID) => {
           setSaveProjectModalState({ open: false, clonedFrom: null })
+          history.push(`/p/${owner}/${projectID}`)
         }}
       />
       <MenuBar menuItems={menuItems}></MenuBar>
