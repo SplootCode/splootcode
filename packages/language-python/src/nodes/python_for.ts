@@ -112,6 +112,10 @@ export class PythonForLoop extends PythonNode {
     const identifierChildSet = this.getTarget()
     if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
       const name = (this.getTarget().getChild(0) as PythonIdentifier).getName()
+      if (this.scopedVariable && name !== this.scopedVariable) {
+        this.getScope(true).removeVariable(this.scopedVariable, this)
+      }
+
       this.getScope().addVariable(
         name,
         {
