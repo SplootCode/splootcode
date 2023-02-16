@@ -13,7 +13,7 @@ import {
   registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { FunctionSignature } from 'src/scope/types'
+import { FunctionSignature, TypeCategory } from 'src/scope/types'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonFunctionDeclaration } from './python_function'
@@ -21,15 +21,20 @@ import { PythonIdentifier } from './python_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 
-export const isFunctionHandlerSignature = (func: FunctionSignature): boolean => {
+export const PYTHON_FILE = 'PYTHON_FILE'
+
+export interface PotentialHandlers {
+  candidates: string[]
+  newName?: string
+}
+
+const isFunctionHandlerSignature = (func: FunctionSignature): boolean => {
   if (func.arguments.length !== 2) {
     return false
   }
 
   return func.arguments[0].name == 'event' && func.arguments[1].name == 'context'
 }
-
-export const PYTHON_FILE = 'PYTHON_FILE'
 
 export class PythonFile extends PythonNode {
   constructor(parentReference: ParentReference) {
@@ -85,6 +90,39 @@ export class PythonFile extends PythonNode {
 
     stmt.getStatement().addChild(func)
     this.getBody().addChild(stmt)
+  }
+
+  getPotentialHandlers(): PotentialHandlers {
+    const scope = this.getScope()
+
+    const candidates: string[] = []
+    const seenNames = new Set<string>()
+
+    for (const [name, entry] of scope.variables.entries()) {
+      let funcSignature: FunctionSignature = null
+      for (const metadata of entry.declarers.values()) {
+        if (metadata.typeInfo?.category === TypeCategory.Function) {
+          funcSignature = metadata.typeInfo
+        }
+      }
+
+      if (funcSignature) {
+        seenNames.add(name)
+
+        if (isFunctionHandlerSignature(funcSignature)) {
+          candidates.push(name)
+        }
+      }
+    }
+
+    let newName = 'handler'
+    let i = 1
+    while (seenNames.has(newName)) {
+      newName = `handler${i}`
+      i++
+    }
+
+    return { candidates, newName }
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFile {
