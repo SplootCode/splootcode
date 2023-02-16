@@ -13,7 +13,7 @@ import {
   registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
-import { FunctionSignature, TypeCategory } from 'src/scope/types'
+import { FunctionSignature, TypeCategory } from '../scope/types'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonFunctionDeclaration } from './python_function'
