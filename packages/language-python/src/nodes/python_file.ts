@@ -13,12 +13,21 @@ import {
   registerNodeCateogry,
   registerType,
 } from '@splootcode/core'
+import { FunctionSignature } from 'src/scope/types'
 import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonFunctionDeclaration } from './python_function'
 import { PythonIdentifier } from './python_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
+
+export const isFunctionHandlerSignature = (func: FunctionSignature): boolean => {
+  if (func.arguments.length !== 2) {
+    return false
+  }
+
+  return func.arguments[0].name == 'event' && func.arguments[1].name == 'context'
+}
 
 export const PYTHON_FILE = 'PYTHON_FILE'
 
