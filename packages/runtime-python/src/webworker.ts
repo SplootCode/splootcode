@@ -214,6 +214,7 @@ interface StaticURLs {
   executorURL: string
   moduleLoaderURL: string
   requestsPackageURL: string
+  splootlibPackageURL: string
 }
 
 export const initialize = async (urls: StaticURLs) => {
@@ -256,6 +257,8 @@ export const initialize = async (urls: StaticURLs) => {
   })
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
+  await micropip.install(urls.splootlibPackageURL)
+  console.log('splootlib installed')
   await micropip.install(urls.requestsPackageURL)
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
