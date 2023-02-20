@@ -28,12 +28,17 @@ export interface PotentialHandlers {
   newName?: string
 }
 
-const isFunctionHandlerSignature = (func: FunctionSignature): boolean => {
-  if (func.arguments.length !== 2) {
+const isFunctionHandlerSignature = (func: FunctionSignature, requiredArgs: string[]): boolean => {
+  if (func.arguments.length !== requiredArgs.length) {
     return false
   }
 
-  return func.arguments[0].name == 'event' && func.arguments[1].name == 'context'
+  for (let i = 0; i < requiredArgs.length; i++) {
+    if (func.arguments[i].name !== requiredArgs[i]) {
+      return false
+    }
+  }
+  return true
 }
 
 export class PythonFile extends PythonNode {
@@ -80,19 +85,20 @@ export class PythonFile extends PythonNode {
     return true
   }
 
-  makeHandler(name: string): void {
-    const stmt = new PythonStatement(new ParentReference(this, 'body'))
-    const func = new PythonFunctionDeclaration(new ParentReference(stmt, 'statement'))
+  makeHandler(name: string, args: string[]): void {
+    const stmt = new PythonStatement(null)
+    const func = new PythonFunctionDeclaration(null)
 
-    func.getIdentifier().addChild(new PythonIdentifier(new ParentReference(func, 'identifier'), name))
-    func.getParams().addChild(new PythonIdentifier(new ParentReference(func, 'params'), 'event'))
-    func.getParams().addChild(new PythonIdentifier(new ParentReference(func, 'params'), 'context'))
+    func.getIdentifier().addChild(new PythonIdentifier(null, name))
+    for (const argName of args) {
+      func.getParams().addChild(new PythonIdentifier(null, argName))
+    }
 
     stmt.getStatement().addChild(func)
     this.getBody().addChild(stmt)
   }
 
-  getPotentialHandlers(): PotentialHandlers {
+  getPotentialHandlers(requiredArgs: string[]): PotentialHandlers {
     const scope = this.getScope()
 
     const candidates: string[] = []
@@ -106,10 +112,9 @@ export class PythonFile extends PythonNode {
         }
       }
 
+      seenNames.add(name)
       if (funcSignature) {
-        seenNames.add(name)
-
-        if (isFunctionHandlerSignature(funcSignature)) {
+        if (isFunctionHandlerSignature(funcSignature, requiredArgs)) {
           candidates.push(name)
         }
       }
