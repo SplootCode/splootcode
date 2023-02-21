@@ -756,10 +756,17 @@ class SplootCapture:
 capture = None
 
 
-def executePythonFile(tree):
+def executePythonFile(tree, handlerFunction=None):
     global capture
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
+        if handlerFunction:
+            functionName = ast.Name(handlerFunction, ctx=ast.Load())
+            args = []
+            func_call = ast.Call(functionName, args=args, keywords=[])
+            call_statement = ast.Expr(func_call, lineno=1, col_offset=0)
+            statements.append(call_statement)
+
         mods = ast.Module(body=statements, type_ignores=[])
         code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
         # Uncomment to print generated Python code
@@ -810,6 +817,7 @@ if __name__ == "__main__":
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
     iterationLimit = nodetree.getIterationLimit()
-    cap = executePythonFile(tree)
+    handler = nodetree.getHandlerFunction()
+    cap = executePythonFile(tree, handler)
     if cap:
         runtime_capture.report(json.dumps(cap))

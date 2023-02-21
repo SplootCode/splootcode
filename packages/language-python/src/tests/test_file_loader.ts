@@ -3,6 +3,7 @@ import {
   FileLoader,
   PackageBuildType,
   Project,
+  RunType,
   SerializedNode,
   SplootFile,
   SplootNode,
@@ -19,6 +20,9 @@ export async function loadTestProject(projectID: string, title: string): Promise
       name: projectID,
       title: title,
       layouttype: 'PYTHON_CLI',
+      runSettings: {
+        runType: RunType.COMMAND_LINE,
+      },
       version: '1',
       packages: [
         {

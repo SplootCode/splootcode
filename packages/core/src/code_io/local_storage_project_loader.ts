@@ -2,6 +2,7 @@ import { LocalStorageFileLoader } from './local_storage_file_loader'
 import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
+import { RunType } from 'src/language/projects/run_settings'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 
 const startingPythonFile: SerializedNode = {
@@ -79,6 +80,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
+      runSettings: { runType: RunType.COMMAND_LINE },
       splootversion: '1.0.0',
       version: '1',
       title: title,
