@@ -1,11 +1,13 @@
 import { FileLoader } from './file_loader'
 import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
 import { ProjectMutationType } from '../mutations/project_mutations'
+import { RunSettings, RunType } from './run_settings'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 
 export interface SerializedProject {
   name: string
   layouttype: string
+  runSettings: RunSettings
   title: string
   splootversion: string
   version: string
@@ -23,6 +25,7 @@ export class Project {
   name: string
   isReadOnly: boolean
   layoutType: ProjectLayoutType
+  runSettings: RunSettings
   title: string
   splootversion: string
   version: string
@@ -37,6 +40,7 @@ export class Project {
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
     this.version = proj.version
+    this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE }
     this.fileLoader = fileLoader
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
@@ -52,6 +56,14 @@ export class Project {
 
   getDefaultPackage(): SplootPackage {
     return this.packages[0]
+  }
+
+  setRunSettings(newSettings: RunSettings) {
+    this.runSettings = newSettings
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_RUN_SETTINGS,
+      newSettings: newSettings,
+    })
   }
 
   addNewPackage(name: string, buildType: PackageBuildType): SplootPackage {
@@ -105,6 +117,7 @@ export class Project {
     const serProj: SerializedProject = {
       name: this.name,
       layouttype: this.layoutType,
+      runSettings: this.runSettings,
       title: this.title,
       splootversion: this.splootversion,
       version: this.version,

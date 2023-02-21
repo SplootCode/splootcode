@@ -4,8 +4,8 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Button, ButtonGroup } from '@chakra-ui/react'
-import { CapturePayload } from '@splootcode/core'
+import { Button, ButtonGroup, Select } from '@chakra-ui/react'
+import { CapturePayload, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
@@ -16,7 +16,8 @@ export interface RuntimeToken {
   expiry: Date
 }
 
-type ViewPageProps = {
+type PythonFrameProps = {
+  project: Project
   fileChangeWatcher: FileChangeWatcher
   frameScheme: 'http' | 'https'
   frameDomain: string
@@ -28,9 +29,11 @@ interface ConsoleState {
   running: boolean
   runtimeCapture: boolean
   frameSrc: string
+  handlerFunctions: string[]
+  selectedHandler: string
 }
 
-export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
+export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   private frameRef: React.RefObject<HTMLIFrameElement>
   private frameStateManager: FrameStateManager
   private termRef: React.RefObject<HTMLDivElement>
@@ -41,7 +44,7 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
   private pasteLinesBuffer: string[]
   private resizeObserver: ResizeObserver
 
-  constructor(props: ViewPageProps) {
+  constructor(props: PythonFrameProps) {
     super(props)
     this.frameRef = React.createRef()
     this.frameStateManager = new FrameStateManager(
@@ -57,11 +60,32 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
       this.handleResize()
     })
 
+    let selectedHanlder = ''
+    if (this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION) {
+      selectedHanlder = this.props.project.runSettings.handlerFunction
+    }
+
     this.state = {
       ready: false,
       running: false,
       runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
+      handlerFunctions: [],
+      selectedHandler: selectedHanlder,
+    }
+  }
+
+  setHandlerFunction = (functionName: string) => {
+    this.setState({ selectedHandler: functionName })
+    if (functionName == '') {
+      this.props.project.setRunSettings({
+        runType: RunType.COMMAND_LINE,
+      })
+    } else {
+      this.props.project.setRunSettings({
+        runType: RunType.HANDLER_FUNCTION,
+        handlerFunction: functionName,
+      })
     }
   }
 
@@ -72,6 +96,22 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
+              {this.state.handlerFunctions.length > 0 ? (
+                <Select
+                  size="sm"
+                  value={this.state.selectedHandler}
+                  onChange={(e) => this.setHandlerFunction(e.target.value)}
+                >
+                  <option value="">Whole program</option>
+                  {this.state.handlerFunctions.map((functionName) => {
+                    return (
+                      <option key={functionName} value={functionName}>
+                        {functionName} function
+                      </option>
+                    )
+                  })}
+                </Select>
+              ) : null}
               <Button
                 isLoading={running}
                 loadingText="Running"
@@ -79,6 +119,7 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
                 onClick={this.run}
                 disabled={!(ready && !running)}
                 height={8}
+                minWidth={'100px'}
               >
                 Run
               </Button>
@@ -104,14 +145,14 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
   run = async () => {
     this.term.clear()
     this.wasmTty.clearTty()
-    this.postMessageToFrame({ type: 'run' })
+    this.postMessageToFrame({ type: 'run', handlerFunction: this.state.selectedHandler })
     this.setState({ running: true })
   }
 
   rerun = async () => {
     this.wasmTty.clearTty()
     this.term.clear()
-    this.postMessageToFrame({ type: 'rerun' })
+    this.postMessageToFrame({ type: 'rerun', handlerFunction: this.state.selectedHandler })
     this.setState({ running: true })
   }
 
@@ -369,6 +410,7 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
+    this.setState({ handlerFunctions: this.props.fileChangeWatcher.getHandlerFunctions() })
     let isValid = this.props.fileChangeWatcher.isValid()
     if (!isValid) {
       this.setState({ ready: false })
@@ -393,7 +435,11 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
-    const payload = { type: messageType, data: { files: fileState, envVars: envVars } }
+    const payload = {
+      type: messageType,
+      data: { files: fileState, envVars: envVars },
+      handlerFunction: this.state.selectedHandler,
+    }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
   }
@@ -452,7 +498,7 @@ export class PythonFrame extends Component<ViewPageProps, ConsoleState> {
     this.resizeObserver.observe(this.termRef.current)
   }
 
-  componentDidUpdate(prevProps: Readonly<ViewPageProps>, prevState: Readonly<ConsoleState>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<PythonFrameProps>, prevState: Readonly<ConsoleState>, snapshot?: any): void {
     if (prevProps.fileChangeWatcher !== this.props.fileChangeWatcher) {
       prevProps.fileChangeWatcher.deregisterObservers()
       this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule)

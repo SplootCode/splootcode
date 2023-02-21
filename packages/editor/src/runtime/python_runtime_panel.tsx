@@ -26,10 +26,11 @@ export class PythonRuntimePanel extends Component<RuntimePanelProps, RuntimePane
   }
 
   render() {
-    const { frameScheme, frameDomain, refreshToken } = this.props
+    const { project, frameScheme, frameDomain, refreshToken } = this.props
     const fileChangeWatcher = this.state.fileChangeWatcher
     return (
       <PythonFrame
+        project={project}
         fileChangeWatcher={fileChangeWatcher}
         frameDomain={frameDomain}
         frameScheme={frameScheme}

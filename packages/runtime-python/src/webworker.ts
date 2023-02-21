@@ -156,6 +156,7 @@ const syncFetch = (method: string, url: string, headers: any, body: any): Respon
 let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
+let handlerFunction = ''
 
 const EnvVarCode = `
 import os;
@@ -240,6 +241,9 @@ export const initialize = async (urls: StaticURLs) => {
       }
       return pyodide.toPy(0)
     },
+    getHandlerFunction: () => {
+      return handlerFunction
+    },
   })
   pyodide.registerJsModule('runtime_capture', {
     report: (json_dump) => {
@@ -267,6 +271,7 @@ export const initialize = async (urls: StaticURLs) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
+      handlerFunction = e.data.handlerFunction
       workspace = e.data.workspace
       stdinbuffer = e.data.stdinBuffer
       fetchBuffer = e.data.fetchBuffer
@@ -277,6 +282,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
+      handlerFunction = e.data.handlerFunction
       workspace = e.data.workspace
       stdinbuffer = null
       fetchBuffer = null
