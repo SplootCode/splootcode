@@ -1,8 +1,8 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import { AutosaveHandler, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
-import { EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import { AutosaveInfo, AutosaveWatcher, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
@@ -24,6 +24,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
   const [editorState, setEditorState] = useState<EditorState>(null)
+  const [autosaveWatcher, setAutosaveWatcher] = useState<AutosaveWatcher>(null)
 
   const history = useHistory()
 
@@ -54,6 +55,17 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       })
     }
   }
+
+  useEffect(() => {
+    if (loadedProject) {
+      const autosaveWatcher = new AutosaveWatcher(loadedProject, projectLoader, loadProjectFromStorage)
+      setAutosaveWatcher(autosaveWatcher)
+
+      return () => {
+        autosaveWatcher.deregisterSelf()
+      }
+    }
+  }, [loadedProject, projectLoader])
 
   useEffect(() => {
     loadProjectFromStorage()
@@ -105,13 +117,15 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
         <MenuBarItem>
-          {loadedProject ? (
+          {/* {loadedProject ? (
             <AutosaveHandler
               project={loadedProject}
               projectLoader={projectLoader}
               reloadProject={loadProjectFromStorage}
             />
-          ) : null}
+          ) : null} */}
+
+          {loadedProject && autosaveWatcher && <AutosaveInfo autosave={autosaveWatcher} project={loadedProject} />}
         </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">

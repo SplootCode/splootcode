@@ -88,6 +88,10 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
         <div style={trayState} className="editor-side-menu">
           <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
             <Text as={'h2'} color="gray.200">
+              {/* <AutosaveInfo
+                autosave={editorState.autosaveWatcher}
+                // lastVersion={editorState.autosaveWatcher.lastVersion}
+              /> */}
               {title}
             </Text>
           </Box>

@@ -16,6 +16,8 @@ export class EditorState {
   analyser: PythonAnalyzer
   hostingConfig: EditorHostingConfig
   featureFlags: Map<string, boolean>
+  // autosaveWatcher: AutosaveWatcher
+  // projectLoader
 
   constructor(project: Project, hostingConfig: EditorHostingConfig, featureFlags?: Map<string, boolean>) {
     this.project = project
@@ -28,6 +30,8 @@ export class EditorState {
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
     this.featureFlags = featureFlags || new Map()
+    // this.autosaveWatcher = new AutosaveWatcher(project)
+    // this.autosaveWatcher.registerSelf()
   }
 
   async loadDefaultFile() {
@@ -74,6 +78,7 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
+    // this.autosaveWatcher.deregisterSelf()
   }
 }
 

@@ -45,7 +45,7 @@ export {
 export { Autocompleter } from './language/autocomplete/autocompleter'
 
 // Mutations and observers
-export { NodeObserver, ChildSetObserver, ScopeObserver } from './language/observers'
+export { NodeObserver, ChildSetObserver, ScopeObserver, ProjectObserver } from './language/observers'
 export { NodeMutation, NodeMutationType } from './language/mutations/node_mutations'
 export { ChildSetMutation, ChildSetMutationType } from './language/mutations/child_set_mutations'
 export { ProjectMutation, ProjectMutationType } from './language/mutations/project_mutations'
