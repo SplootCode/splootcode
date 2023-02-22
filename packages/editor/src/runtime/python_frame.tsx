@@ -481,7 +481,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   refreshProjectRunSettings = () => {
-    console.log('Refreshing run state')
     const runType = this.props.project.runSettings.runType
     if (runType !== RunType.HANDLER_FUNCTION) {
       this.setState({ selectedHandler: '' })
