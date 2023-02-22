@@ -26,6 +26,7 @@ export class Project {
   isReadOnly: boolean
   layoutType: ProjectLayoutType
   runSettings: RunSettings
+  runSettingsChanged: boolean
   title: string
   splootversion: string
   version: string
@@ -45,6 +46,7 @@ export class Project {
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
     this.environmentVarsChanged = false
+    this.runSettingsChanged = false
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -60,6 +62,7 @@ export class Project {
 
   setRunSettings(newSettings: RunSettings) {
     this.runSettings = newSettings
+    this.runSettingsChanged = true
     globalMutationDispatcher.handleProjectMutation({
       type: ProjectMutationType.UPDATE_RUN_SETTINGS,
       newSettings: newSettings,
@@ -99,6 +102,7 @@ export class Project {
 
   clearChangedState() {
     this.environmentVarsChanged = false
+    this.runSettingsChanged = false
   }
 
   serialize(includeSecrets = false): string {
