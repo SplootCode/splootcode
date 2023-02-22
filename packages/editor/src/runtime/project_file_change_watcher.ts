@@ -6,6 +6,7 @@ import {
   NodeMutationType,
   Project,
   ProjectMutation,
+  ProjectMutationType,
   ScopeMutation,
   ScopeMutationType,
   SerializedNode,
@@ -22,6 +23,7 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
   pkg: SplootPackage
   validationWatcher: ValidationWatcher
   setDirty: () => void
+  refreshProjectRunSettings: () => void
   loadModule: (moduleName: string) => void
   candidateHandlerFunctions: string[]
 
@@ -30,6 +32,7 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     this.pkg = pkg
     this.validationWatcher = validatioWatcher
     this.setDirty = null
+    this.refreshProjectRunSettings = null
     this.candidateHandlerFunctions = []
     this.scanForHandlerFunctions()
   }
@@ -131,6 +134,9 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
   }
 
   handleProjectMutation = (mutation: ProjectMutation) => {
+    if (mutation.type === ProjectMutationType.UPDATE_RUN_SETTINGS) {
+      this.refreshProjectRunSettings()
+    }
     this.setDirty()
   }
 
@@ -140,9 +146,14 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     ;(pythonFile.getScope(false) as PythonScope).processPythonModuleSpec(payload)
   }
 
-  registerObservers(setDirty: () => void, loadModule: (moduleName: string) => void) {
+  registerObservers(
+    setDirty: () => void,
+    loadModule: (moduleName: string) => void,
+    refreshProjectRunSettings: () => void
+  ) {
     this.setDirty = setDirty
     this.loadModule = loadModule
+    this.refreshProjectRunSettings = refreshProjectRunSettings
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
     globalMutationDispatcher.registerScopeObserver(this)
@@ -156,5 +167,6 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     globalMutationDispatcher.deregisterProjectObserver(this)
     this.setDirty = null
     this.loadModule = null
+    this.refreshProjectRunSettings = null
   }
 }

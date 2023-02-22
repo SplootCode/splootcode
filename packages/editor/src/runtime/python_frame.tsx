@@ -480,6 +480,15 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     this.frameStateManager.setNeedsNewNodeTree(true)
   }
 
+  refreshProjectRunSettings = () => {
+    const runType = this.props.project.runSettings.runType
+    if (runType !== RunType.HANDLER_FUNCTION) {
+      this.setState({ selectedHandler: '' })
+    } else {
+      this.setState({ selectedHandler: this.props.project.runSettings.handlerFunction })
+    }
+  }
+
   componentDidMount() {
     this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#040810' } })
     this.wasmTty = new WasmTTY(this.term)
@@ -491,7 +500,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.terminalFitAddon.fit()
     }, 1)
 
-    this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule)
+    this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule, this.refreshProjectRunSettings)
 
     window.addEventListener('message', this.processMessage, false)
     this.frameStateManager.startHeartbeat()
@@ -501,7 +510,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   componentDidUpdate(prevProps: Readonly<PythonFrameProps>, prevState: Readonly<ConsoleState>, snapshot?: any): void {
     if (prevProps.fileChangeWatcher !== this.props.fileChangeWatcher) {
       prevProps.fileChangeWatcher.deregisterObservers()
-      this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule)
+      this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule, this.refreshProjectRunSettings)
     }
   }
 
