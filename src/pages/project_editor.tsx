@@ -27,6 +27,19 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
 
   const history = useHistory()
 
+  useEffect(() => {
+    if (loadedProject) {
+      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader)
+      editorState.loadDefaultFile().then(() => {
+        setEditorState(editorState)
+      })
+
+      return () => {
+        editorState.cleanup()
+      }
+    }
+  }, [loadedProject])
+
   const loadProjectFromStorage = () => {
     setLoadedProject(null)
     if (ownerID === 'examples') {
@@ -41,19 +54,6 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       })
     }
   }
-
-  useEffect(() => {
-    if (loadedProject) {
-      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader)
-      editorState.loadDefaultFile().then(() => {
-        setEditorState(editorState)
-      })
-
-      return () => {
-        editorState.cleanup()
-      }
-    }
-  }, [loadedProject])
 
   useEffect(() => {
     loadProjectFromStorage()
