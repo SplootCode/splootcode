@@ -136,7 +136,7 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>{editorState && <AutosaveInfo editorState={editorState} />}</MenuBarItem>
+        <MenuBarItem>{editorState ? <AutosaveInfo editorState={editorState} /> : null}</MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {editorState ? (
