@@ -1,9 +1,9 @@
 import React from 'react'
-import { AutosaveWatcher, AutosaveWatcherConfig } from './autosave_watcher'
+import { AutosaveWatcher } from './autosave_watcher'
 import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
-import { Project, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
+import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
@@ -22,7 +22,7 @@ export class EditorState {
   constructor(
     project: Project,
     hostingConfig: EditorHostingConfig,
-    autosaveWatcherConfig: AutosaveWatcherConfig,
+    projectLoader: ProjectLoader,
     featureFlags?: Map<string, boolean>
   ) {
     this.project = project
@@ -35,12 +35,7 @@ export class EditorState {
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
     this.featureFlags = featureFlags || new Map()
-    this.autosaveWatcher = new AutosaveWatcher(
-      project,
-      autosaveWatcherConfig.projectLoader,
-      autosaveWatcherConfig.handleRefreshProject,
-      autosaveWatcherConfig.handleFailedSave
-    )
+    this.autosaveWatcher = new AutosaveWatcher(project, projectLoader)
     this.autosaveWatcher.registerSelf()
   }
 

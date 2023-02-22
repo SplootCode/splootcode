@@ -1,17 +1,12 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import {
-  AutosaveInfo,
-  AutosaveWatcherFailedSaveInfo,
-  EditorHostingConfig,
-  EditorState,
-  EditorStateContext,
-} from '@splootcode/editor'
+import { AutosaveInfo, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
 import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
+import { observer } from 'mobx-react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
 
@@ -25,7 +20,7 @@ interface ProjectEditorProps {
   projectLoader: ProjectLoader
 }
 
-export const ProjectEditor = (props: ProjectEditorProps) => {
+export const ProjectEditor = observer((props: ProjectEditorProps) => {
   const { projectLoader } = props
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
@@ -51,18 +46,20 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   }
 
   useEffect(() => {
+    if (!editorState?.autosaveWatcher?.failedSave) {
+      return
+    }
+
+    toast({
+      title: editorState.autosaveWatcher.failedSaveInfo.title,
+      position: 'top',
+      status: 'warning',
+    })
+  }, [editorState?.autosaveWatcher?.failedSave])
+
+  useEffect(() => {
     if (loadedProject) {
-      const editorState = new EditorState(loadedProject, hostingConfig, {
-        projectLoader,
-        handleRefreshProject: loadProjectFromStorage,
-        handleFailedSave: (params: AutosaveWatcherFailedSaveInfo) => {
-          toast({
-            title: params.title,
-            position: 'top',
-            status: 'warning',
-          })
-        },
-      })
+      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader)
       editorState.loadDefaultFile().then(() => {
         setEditorState(editorState)
       })
@@ -76,6 +73,23 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   useEffect(() => {
     loadProjectFromStorage()
   }, [projectID, ownerID])
+
+  useEffect(() => {
+    if (!loadedProject?.isReadOnly) {
+      const checkVersion = async () => {
+        if (document['hidden'] === false) {
+          const isCurrent = await projectLoader.isCurrentVersion(loadedProject)
+          if (!isCurrent) {
+            loadProjectFromStorage()
+          }
+        }
+      }
+      window.addEventListener('visibilitychange', checkVersion)
+      return () => {
+        window.removeEventListener('visibilitychange', checkVersion)
+      }
+    }
+  }, [loadedProject])
 
   const menuItems: MainMenuItem[] = [
     {
@@ -138,4 +152,4 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       </div>
     </React.Fragment>
   )
-}
+})

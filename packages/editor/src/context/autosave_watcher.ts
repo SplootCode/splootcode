@@ -19,19 +19,17 @@ export interface AutosaveWatcherFailedSaveInfo {
 export type AutosaveRefreshProjectHandler = () => void
 export type AutosaveFailedSaveInfoHandler = (AutosaveWatcherFailedSaveInfo) => void
 
-export interface AutosaveWatcherConfig {
-  projectLoader: ProjectLoader
-  handleRefreshProject: AutosaveRefreshProjectHandler
-  handleFailedSave: AutosaveFailedSaveInfoHandler
-}
-
 export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectObserver {
   @observable
   needsSave: boolean
+
   @observable
   lastVersion: string
+
   @observable
   failedSave: boolean
+  failedSaveInfo: AutosaveWatcherFailedSaveInfo
+
   @observable
   needsRefresh: boolean
 
@@ -42,24 +40,12 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
 
   timeoutIDs: number[]
 
-  handleRefreshProject: () => void
-  handleFailedSave: (AutosaveWatcherFailedSaveInfo) => void
-
-  ensureLatestVersionHandler: () => Promise<void>
-
-  constructor(
-    project: Project,
-    projectLoader: ProjectLoader,
-    handleRefreshProject: () => void,
-    handleFailedSave: (AutosaveWatcherFailedSaveInfo) => void
-  ) {
+  constructor(project: Project, projectLoader: ProjectLoader) {
     this.project = project
     this.lastVersion = this.project.version
     this.projectLoader = projectLoader
-    this.handleRefreshProject = handleRefreshProject
     this.needsSave = false
     this.failedSave = false
-    this.handleFailedSave = handleFailedSave
 
     this.timeoutIDs = []
   }
@@ -98,18 +84,18 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
                     this.needsSave = true
                     this.failedSave = true
 
-                    this.handleFailedSave({
+                    this.failedSaveInfo = {
                       title: 'Failed to save. Reason: Unknown',
-                    })
+                    }
                   }
                 })
                 .catch((err) => {
                   if (err instanceof SaveError) {
                     this.failedSave = true
 
-                    this.handleFailedSave({
+                    this.failedSaveInfo = {
                       title: err.message,
-                    })
+                    }
                   } else {
                     throw err
                   }
@@ -121,25 +107,6 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
 
       this.timeoutIDs.push(id)
     }
-  }
-
-  getEnsureLatestVersionHandler() {
-    if (!this.ensureLatestVersionHandler) {
-      this.ensureLatestVersionHandler = async () => {
-        if (this.project.isReadOnly) {
-          return
-        }
-
-        if (document['hidden'] === false) {
-          const isCurrent = await this.projectLoader.isCurrentVersion(this.project)
-          if (!isCurrent) {
-            this.handleRefreshProject()
-          }
-        }
-      }
-    }
-
-    return this.ensureLatestVersionHandler
   }
 
   removeTimeoutID(id: number) {
@@ -155,7 +122,6 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
     globalMutationDispatcher.registerProjectObserver(this)
-    window.addEventListener('visibilitychange', this.getEnsureLatestVersionHandler())
   }
 
   public deregisterSelf() {
@@ -168,7 +134,5 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
     globalMutationDispatcher.deregisterProjectObserver(this)
-
-    window.removeEventListener('visibilitychange', this.getEnsureLatestVersionHandler())
   }
 }
