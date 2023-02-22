@@ -1,12 +1,20 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import { AutosaveInfo, AutosaveWatcher, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import {
+  AutosaveInfo,
+  AutosaveWatcher,
+  AutosaveWatcherFailedSaveInfo,
+  EditorHostingConfig,
+  EditorState,
+  EditorStateContext,
+} from '@splootcode/editor'
 import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
 import { useHistory, useParams } from 'react-router-dom'
+import { useToast } from '@chakra-ui/react'
 
 const hostingConfig: EditorHostingConfig = {
   TYPESHED_PATH: import.meta.env.SPLOOT_TYPESHED_PATH,
@@ -25,6 +33,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
   const [editorState, setEditorState] = useState<EditorState>(null)
   const [autosaveWatcher, setAutosaveWatcher] = useState<AutosaveWatcher>(null)
+  const toast = useToast()
 
   const history = useHistory()
 
@@ -58,7 +67,20 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
 
   useEffect(() => {
     if (loadedProject) {
-      const autosaveWatcher = new AutosaveWatcher(loadedProject, projectLoader, loadProjectFromStorage)
+      const autosaveWatcher = new AutosaveWatcher(
+        loadedProject,
+        projectLoader,
+        loadProjectFromStorage,
+        (params: AutosaveWatcherFailedSaveInfo) => {
+          toast({
+            title: params.title,
+            position: 'top',
+            status: 'warning',
+          })
+        }
+      )
+      autosaveWatcher.registerSelf()
+
       setAutosaveWatcher(autosaveWatcher)
 
       return () => {

@@ -12,6 +12,10 @@ import {
 } from '@splootcode/core/'
 import { action, observable, runInAction } from 'mobx'
 
+export interface AutosaveWatcherFailedSaveInfo {
+  title: string
+}
+
 export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectObserver {
   @observable
   needsSave: boolean
@@ -29,32 +33,42 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
 
   timeoutIDs: number[]
 
-  handleFail: () => void
+  handleRefreshProject: () => void
+  handleFailedSave: (AutosaveWatcherFailedSaveInfo) => void
 
-  constructor(project: Project, projectLoader: ProjectLoader, handleFail: () => void) {
+  ensureLatestVersionHandler: () => Promise<void>
+
+  constructor(
+    project: Project,
+    projectLoader: ProjectLoader,
+    handleRefreshProject: () => void,
+    handleFailedSave: (AutosaveWatcherFailedSaveInfo) => void
+  ) {
     this.project = project
     this.lastVersion = this.project.version
     this.projectLoader = projectLoader
-    this.handleFail = handleFail
+    this.handleRefreshProject = handleRefreshProject
+    this.needsSave = false
+    this.failedSave = false
+    this.handleFailedSave = handleFailedSave
 
     this.timeoutIDs = []
-
-    globalMutationDispatcher.registerChildSetObserver(this)
-    globalMutationDispatcher.registerNodeObserver(this)
-    globalMutationDispatcher.registerProjectObserver(this)
-
-    this.ensureUpToDate()
   }
 
   handleChildSetMutation(mutations: ChildSetMutation): void {
+    console.log('childset mutation')
     this.trigger()
   }
 
   handleProjectMutation(mutation: ProjectMutation): void {
+    console.log('childset mutation')
+
     this.trigger()
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
+    console.log('childset mutation')
+
     this.trigger()
   }
 
@@ -69,14 +83,10 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
           runInAction(() => {
             this.removeTimeoutID(id)
 
-            // this.ensureUpToDate()
-
             if (this.needsSave) {
               this.projectLoader
                 .saveProject(this.project)
                 .then((success) => {
-                  // this.handleFail()
-
                   if (success) {
                     this.needsSave = false
                     this.failedSave = false
@@ -85,28 +95,18 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
                     this.needsSave = true
                     this.failedSave = true
 
-                    // this.handleFail()
-
-                    // TODO(harrison): properly implement this toast
-                    // toast({
-                    //   title: 'Failed to save. Reason: Unknown',
-                    //   position: 'top',
-                    //   status: 'warning',
-                    // })
+                    this.handleFailedSave({
+                      title: 'Failed to save. Reason: Unknown',
+                    })
                   }
                 })
                 .catch((err) => {
                   if (err instanceof SaveError) {
                     this.failedSave = true
 
-                    // this.handleFail()
-                    // TODO(harrison): properly implement this failed save
-                    // toast({
-                    //   title: err.message,
-                    //   position: 'top',
-                    //   status: 'warning',
-                    // })
-                    // setFailedSave(true)
+                    this.handleFailedSave({
+                      title: err.message,
+                    })
                   } else {
                     throw err
                   }
@@ -120,23 +120,23 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     }
   }
 
-  // TODO(harrison): make sure this runs correctly
-  ensureUpToDate() {
-    if (!this.needsSave && !this.project?.isReadOnly) {
-      const checkVersion = async () => {
+  ensureLatestVersion() {
+    if (!this.ensureLatestVersionHandler) {
+      this.ensureLatestVersionHandler = async () => {
+        if (this.project.isReadOnly) {
+          return
+        }
+
         if (document['hidden'] === false) {
           const isCurrent = await this.projectLoader.isCurrentVersion(this.project)
           if (!isCurrent) {
-            console.log('not up to date?')
-            this.handleFail()
+            this.handleRefreshProject()
           }
         }
       }
-      window.addEventListener('visibilitychange', checkVersion)
-      return () => {
-        window.removeEventListener('visibilitychange', checkVersion)
-      }
     }
+
+    return this.ensureLatestVersionHandler
   }
 
   removeTimeoutID(id: number) {
@@ -148,7 +148,12 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     this.timeoutIDs.splice(i, 1)
   }
 
-  public registerSelf() {}
+  public registerSelf() {
+    globalMutationDispatcher.registerChildSetObserver(this)
+    globalMutationDispatcher.registerNodeObserver(this)
+    globalMutationDispatcher.registerProjectObserver(this)
+    window.addEventListener('visibilitychange', this.ensureLatestVersion())
+  }
 
   public deregisterSelf() {
     for (const timeoutID of this.timeoutIDs) {
@@ -160,5 +165,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
     globalMutationDispatcher.deregisterProjectObserver(this)
+
+    window.removeEventListener('visibilitychange', this.ensureLatestVersion())
   }
 }
