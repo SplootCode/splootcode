@@ -6,7 +6,6 @@ import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcod
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
-import { observer } from 'mobx-react'
 import { useHistory, useParams } from 'react-router-dom'
 
 const hostingConfig: EditorHostingConfig = {
@@ -19,7 +18,7 @@ interface ProjectEditorProps {
   projectLoader: ProjectLoader
 }
 
-export const ProjectEditor = observer((props: ProjectEditorProps) => {
+export const ProjectEditor = (props: ProjectEditorProps) => {
   const { projectLoader } = props
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
@@ -123,4 +122,4 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
       </div>
     </React.Fragment>
   )
-})
+}
