@@ -8,7 +8,6 @@ import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
 import { observer } from 'mobx-react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
 
 const hostingConfig: EditorHostingConfig = {
   TYPESHED_PATH: import.meta.env.SPLOOT_TYPESHED_PATH,
@@ -26,7 +25,6 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
   const [editorState, setEditorState] = useState<EditorState>(null)
-  const toast = useToast()
 
   const history = useHistory()
 
@@ -44,18 +42,6 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
       })
     }
   }
-
-  useEffect(() => {
-    if (!editorState?.autosaveWatcher?.failedSave) {
-      return
-    }
-
-    toast({
-      title: editorState.autosaveWatcher.failedSaveInfo.title,
-      position: 'top',
-      status: 'warning',
-    })
-  }, [editorState?.autosaveWatcher?.failedSave])
 
   useEffect(() => {
     if (loadedProject) {
@@ -136,7 +122,9 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>{editorState ? <AutosaveInfo editorState={editorState} /> : null}</MenuBarItem>
+        <MenuBarItem>
+          {editorState ? <AutosaveInfo editorState={editorState} reloadProject={loadProjectFromStorage} /> : null}
+        </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {editorState ? (

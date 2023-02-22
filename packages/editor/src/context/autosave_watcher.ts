@@ -16,9 +16,6 @@ export interface AutosaveWatcherFailedSaveInfo {
   title: string
 }
 
-export type AutosaveRefreshProjectHandler = () => void
-export type AutosaveFailedSaveInfoHandler = (AutosaveWatcherFailedSaveInfo) => void
-
 export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectObserver {
   @observable
   needsSave: boolean
@@ -38,7 +35,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
   project: Project
   projectLoader: ProjectLoader
 
-  timeoutIDs: number[]
+  timeoutID?: number
 
   constructor(project: Project, projectLoader: ProjectLoader) {
     this.project = project
@@ -46,8 +43,6 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     this.projectLoader = projectLoader
     this.needsSave = false
     this.failedSave = false
-
-    this.timeoutIDs = []
   }
 
   handleChildSetMutation(mutations: ChildSetMutation): void {
@@ -66,56 +61,44 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
   trigger() {
     this.needsSave = true
 
-    if (this.needsSave && !this.project?.isReadOnly) {
-      const id = window.setTimeout(
+    if (this.timeoutID == null && !this.project?.isReadOnly) {
+      this.timeoutID = window.setTimeout(
         () =>
           runInAction(() => {
-            this.removeTimeoutID(id)
+            this.needsSave = false
+            this.timeoutID = null
 
-            if (this.needsSave) {
-              this.projectLoader
-                .saveProject(this.project)
-                .then((success) => {
-                  if (success) {
-                    this.needsSave = false
-                    this.failedSave = false
-                    this.lastVersion = this.project.version
-                  } else {
-                    this.needsSave = true
-                    this.failedSave = true
+            this.projectLoader
+              .saveProject(this.project)
+              .then((success) => {
+                if (success) {
+                  this.needsSave = false
+                  this.failedSave = false
+                  this.lastVersion = this.project.version
+                } else {
+                  this.needsSave = true
+                  this.failedSave = true
 
-                    this.failedSaveInfo = {
-                      title: 'Failed to save. Reason: Unknown',
-                    }
+                  this.failedSaveInfo = {
+                    title: 'Failed to save. Reason: Unknown',
                   }
-                })
-                .catch((err) => {
-                  if (err instanceof SaveError) {
-                    this.failedSave = true
+                }
+              })
+              .catch((err) => {
+                if (err instanceof SaveError) {
+                  this.failedSave = true
 
-                    this.failedSaveInfo = {
-                      title: err.message,
-                    }
-                  } else {
-                    throw err
+                  this.failedSaveInfo = {
+                    title: err.message,
                   }
-                })
-            }
+                } else {
+                  throw err
+                }
+              })
           }),
         2000
       )
-
-      this.timeoutIDs.push(id)
     }
-  }
-
-  removeTimeoutID(id: number) {
-    const i = this.timeoutIDs.indexOf(id)
-    if (i < 0) {
-      return
-    }
-
-    this.timeoutIDs.splice(i, 1)
   }
 
   public registerSelf() {
@@ -125,11 +108,9 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
   }
 
   public deregisterSelf() {
-    for (const timeoutID of this.timeoutIDs) {
-      window.clearTimeout(timeoutID)
+    if (this.timeoutID) {
+      clearTimeout(this.timeoutID)
     }
-
-    this.timeoutIDs = []
 
     globalMutationDispatcher.deregisterChildSetObserver(this)
     globalMutationDispatcher.deregisterNodeObserver(this)
