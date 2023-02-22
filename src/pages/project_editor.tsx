@@ -3,7 +3,6 @@ import './project_editor.css'
 import React, { useEffect, useState } from 'react'
 import {
   AutosaveInfo,
-  AutosaveWatcher,
   AutosaveWatcherFailedSaveInfo,
   EditorHostingConfig,
   EditorState,
@@ -32,23 +31,9 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
   const [editorState, setEditorState] = useState<EditorState>(null)
-  const [autosaveWatcher, setAutosaveWatcher] = useState<AutosaveWatcher>(null)
   const toast = useToast()
 
   const history = useHistory()
-
-  useEffect(() => {
-    if (loadedProject) {
-      const editorState = new EditorState(loadedProject, hostingConfig)
-      editorState.loadDefaultFile().then(() => {
-        setEditorState(editorState)
-      })
-
-      return () => {
-        editorState.cleanup()
-      }
-    }
-  }, [loadedProject])
 
   const loadProjectFromStorage = () => {
     setLoadedProject(null)
@@ -67,27 +52,26 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
 
   useEffect(() => {
     if (loadedProject) {
-      const autosaveWatcher = new AutosaveWatcher(
-        loadedProject,
+      const editorState = new EditorState(loadedProject, hostingConfig, {
         projectLoader,
-        loadProjectFromStorage,
-        (params: AutosaveWatcherFailedSaveInfo) => {
+        handleRefreshProject: loadProjectFromStorage,
+        handleFailedSave: (params: AutosaveWatcherFailedSaveInfo) => {
           toast({
             title: params.title,
             position: 'top',
             status: 'warning',
           })
-        }
-      )
-      autosaveWatcher.registerSelf()
-
-      setAutosaveWatcher(autosaveWatcher)
+        },
+      })
+      editorState.loadDefaultFile().then(() => {
+        setEditorState(editorState)
+      })
 
       return () => {
-        autosaveWatcher.deregisterSelf()
+        editorState.cleanup()
       }
     }
-  }, [loadedProject, projectLoader])
+  }, [loadedProject])
 
   useEffect(() => {
     loadProjectFromStorage()
@@ -138,17 +122,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
-        <MenuBarItem>
-          {/* {loadedProject ? (
-            <AutosaveHandler
-              project={loadedProject}
-              projectLoader={projectLoader}
-              reloadProject={loadProjectFromStorage}
-            />
-          ) : null} */}
-
-          {loadedProject && autosaveWatcher && <AutosaveInfo autosave={autosaveWatcher} project={loadedProject} />}
-        </MenuBarItem>
+        <MenuBarItem>{editorState && <AutosaveInfo editorState={editorState} />}</MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">
         {editorState ? (

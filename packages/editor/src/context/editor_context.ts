@@ -1,4 +1,5 @@
 import React from 'react'
+import { AutosaveWatcher, AutosaveWatcherConfig } from './autosave_watcher'
 import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
@@ -16,10 +17,14 @@ export class EditorState {
   analyser: PythonAnalyzer
   hostingConfig: EditorHostingConfig
   featureFlags: Map<string, boolean>
-  // autosaveWatcher: AutosaveWatcher
-  // projectLoader
+  autosaveWatcher: AutosaveWatcher
 
-  constructor(project: Project, hostingConfig: EditorHostingConfig, featureFlags?: Map<string, boolean>) {
+  constructor(
+    project: Project,
+    hostingConfig: EditorHostingConfig,
+    autosaveWatcherConfig: AutosaveWatcherConfig,
+    featureFlags?: Map<string, boolean>
+  ) {
     this.project = project
     this.rootNode = null
     this.selection = new NodeSelection()
@@ -30,8 +35,13 @@ export class EditorState {
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
     this.featureFlags = featureFlags || new Map()
-    // this.autosaveWatcher = new AutosaveWatcher(project)
-    // this.autosaveWatcher.registerSelf()
+    this.autosaveWatcher = new AutosaveWatcher(
+      project,
+      autosaveWatcherConfig.projectLoader,
+      autosaveWatcherConfig.handleRefreshProject,
+      autosaveWatcherConfig.handleFailedSave
+    )
+    this.autosaveWatcher.registerSelf()
   }
 
   async loadDefaultFile() {
@@ -78,7 +88,7 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
-    // this.autosaveWatcher.deregisterSelf()
+    this.autosaveWatcher.deregisterSelf()
   }
 }
 

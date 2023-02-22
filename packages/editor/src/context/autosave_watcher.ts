@@ -16,6 +16,15 @@ export interface AutosaveWatcherFailedSaveInfo {
   title: string
 }
 
+export type AutosaveRefreshProjectHandler = () => void
+export type AutosaveFailedSaveInfoHandler = (AutosaveWatcherFailedSaveInfo) => void
+
+export interface AutosaveWatcherConfig {
+  projectLoader: ProjectLoader
+  handleRefreshProject: AutosaveRefreshProjectHandler
+  handleFailedSave: AutosaveFailedSaveInfoHandler
+}
+
 export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectObserver {
   @observable
   needsSave: boolean
@@ -56,19 +65,14 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
   }
 
   handleChildSetMutation(mutations: ChildSetMutation): void {
-    console.log('childset mutation')
     this.trigger()
   }
 
   handleProjectMutation(mutation: ProjectMutation): void {
-    console.log('childset mutation')
-
     this.trigger()
   }
 
   handleNodeMutation(nodeMutation: NodeMutation): void {
-    console.log('childset mutation')
-
     this.trigger()
   }
 
@@ -77,7 +81,6 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     this.needsSave = true
 
     if (this.needsSave && !this.project?.isReadOnly) {
-      // TODO(harrison): handle these IDs
       const id = setTimeout(
         () =>
           runInAction(() => {
@@ -120,7 +123,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     }
   }
 
-  ensureLatestVersion() {
+  getEnsureLatestVersionHandler() {
     if (!this.ensureLatestVersionHandler) {
       this.ensureLatestVersionHandler = async () => {
         if (this.project.isReadOnly) {
@@ -152,7 +155,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     globalMutationDispatcher.registerChildSetObserver(this)
     globalMutationDispatcher.registerNodeObserver(this)
     globalMutationDispatcher.registerProjectObserver(this)
-    window.addEventListener('visibilitychange', this.ensureLatestVersion())
+    window.addEventListener('visibilitychange', this.getEnsureLatestVersionHandler())
   }
 
   public deregisterSelf() {
@@ -166,6 +169,6 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     globalMutationDispatcher.deregisterNodeObserver(this)
     globalMutationDispatcher.deregisterProjectObserver(this)
 
-    window.removeEventListener('visibilitychange', this.ensureLatestVersion())
+    window.removeEventListener('visibilitychange', this.getEnsureLatestVersionHandler())
   }
 }

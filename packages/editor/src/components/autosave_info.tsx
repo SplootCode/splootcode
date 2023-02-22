@@ -1,20 +1,20 @@
 import React from 'react'
-import { AutosaveWatcher } from '../context/autosave_watcher'
-import { Project } from '@splootcode/core'
+import { EditorState } from 'src/context/editor_context'
 import { Text } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 
 interface AutosaveInfoProps {
-  project: Project
-  autosave: AutosaveWatcher
+  editorState: EditorState
 }
 
 @observer
 export class AutosaveInfo extends React.Component<AutosaveInfoProps> {
   render() {
-    if (this.props.project?.isReadOnly || this.props.autosave.failedSave) {
-      return <Text color={'gray.500'}>{this.props.autosave.needsSave ? 'Not saved' : ''}</Text>
+    const { editorState } = this.props
+
+    if (editorState.project?.isReadOnly || editorState.autosaveWatcher.failedSave) {
+      return <Text color={'gray.500'}>{editorState.autosaveWatcher.needsSave ? 'Not saved' : ''}</Text>
     }
-    return <Text color={'gray.500'}>{this.props.autosave.needsSave ? 'Saving...' : 'Saved'}</Text>
+    return <Text color={'gray.500'}>{editorState.autosaveWatcher.needsSave ? 'Saving...' : 'Saved'}</Text>
   }
 }
