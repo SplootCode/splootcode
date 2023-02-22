@@ -60,23 +60,6 @@ export const ProjectEditor = observer((props: ProjectEditorProps) => {
     loadProjectFromStorage()
   }, [projectID, ownerID])
 
-  useEffect(() => {
-    if (!loadedProject?.isReadOnly) {
-      const checkVersion = async () => {
-        if (document['hidden'] === false) {
-          const isCurrent = await projectLoader.isCurrentVersion(loadedProject)
-          if (!isCurrent) {
-            loadProjectFromStorage()
-          }
-        }
-      }
-      window.addEventListener('visibilitychange', checkVersion)
-      return () => {
-        window.removeEventListener('visibilitychange', checkVersion)
-      }
-    }
-  }, [loadedProject])
-
   const menuItems: MainMenuItem[] = [
     {
       name: 'New Project',
