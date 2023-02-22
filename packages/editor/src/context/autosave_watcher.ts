@@ -81,7 +81,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
     this.needsSave = true
 
     if (this.needsSave && !this.project?.isReadOnly) {
-      const id = setTimeout(
+      const id = window.setTimeout(
         () =>
           runInAction(() => {
             this.removeTimeoutID(id)
@@ -117,7 +117,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
             }
           }),
         2000
-      ) as unknown as number
+      )
 
       this.timeoutIDs.push(id)
     }
@@ -160,7 +160,7 @@ export class AutosaveWatcher implements NodeObserver, ChildSetObserver, ProjectO
 
   public deregisterSelf() {
     for (const timeoutID of this.timeoutIDs) {
-      clearInterval(timeoutID as any)
+      window.clearTimeout(timeoutID)
     }
 
     this.timeoutIDs = []
