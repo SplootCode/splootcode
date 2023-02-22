@@ -1,8 +1,8 @@
 import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
-import { AutosaveHandler, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
-import { EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import { AutosaveInfo, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
+import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
@@ -29,7 +29,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
 
   useEffect(() => {
     if (loadedProject) {
-      const editorState = new EditorState(loadedProject, hostingConfig)
+      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader)
       editorState.loadDefaultFile().then(() => {
         setEditorState(editorState)
       })
@@ -105,13 +105,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>
         <MenuBarItem>
-          {loadedProject ? (
-            <AutosaveHandler
-              project={loadedProject}
-              projectLoader={projectLoader}
-              reloadProject={loadProjectFromStorage}
-            />
-          ) : null}
+          {editorState ? <AutosaveInfo editorState={editorState} reloadProject={loadProjectFromStorage} /> : null}
         </MenuBarItem>
       </MenuBar>
       <div className="project-editor-container">

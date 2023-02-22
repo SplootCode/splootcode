@@ -1,8 +1,9 @@
 import React from 'react'
+import { AutosaveWatcher } from './autosave_watcher'
 import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
-import { Project, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
+import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
@@ -16,8 +17,14 @@ export class EditorState {
   analyser: PythonAnalyzer
   hostingConfig: EditorHostingConfig
   featureFlags: Map<string, boolean>
+  autosaveWatcher: AutosaveWatcher
 
-  constructor(project: Project, hostingConfig: EditorHostingConfig, featureFlags?: Map<string, boolean>) {
+  constructor(
+    project: Project,
+    hostingConfig: EditorHostingConfig,
+    projectLoader: ProjectLoader,
+    featureFlags?: Map<string, boolean>
+  ) {
     this.project = project
     this.rootNode = null
     this.selection = new NodeSelection()
@@ -28,6 +35,8 @@ export class EditorState {
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
     this.featureFlags = featureFlags || new Map()
+    this.autosaveWatcher = new AutosaveWatcher(project, projectLoader)
+    this.autosaveWatcher.registerSelf()
   }
 
   async loadDefaultFile() {
@@ -74,6 +83,7 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
+    this.autosaveWatcher.deregisterSelf()
   }
 }
 
