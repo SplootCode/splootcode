@@ -21,6 +21,7 @@ export interface ProjectMetadata {
   id: string
   title: string
   lastModified: string
+  live?: boolean
 }
 
 export interface ProjectLoader {
