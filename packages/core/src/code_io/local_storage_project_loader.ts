@@ -197,6 +197,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         id: project.name,
         title: project.title,
         lastModified: '',
+        live: false,
       })
       this.overwriteProjectMetadata(allMeta)
       return
