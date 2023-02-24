@@ -1,8 +1,8 @@
+import { ChildSetType, SplootFragment } from '@splootcode/core'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeCursor } from './selection'
 import { RenderedChildSetBlock } from '../layout/rendered_childset_block'
 import { RenderedTreeIterator } from './rendered_tree_iterator'
-import { SplootFragment } from '@splootcode/core'
 
 export interface DeleteSet {
   node: NodeBlock
@@ -22,17 +22,21 @@ export class MultiselectDeleter extends RenderedTreeIterator {
   }
 
   visitNodeMiddle(node: NodeBlock): void {
-    if (this.childSetStack.length <= 1) {
+    if (this.childSetStack.length <= 1 && node.parentChildSet.childSet.type !== ChildSetType.Immutable) {
       this.toFullyDelete.push({ node: node, keep: [] })
     }
   }
 
-  startRangeRight(): void {
-    this.childSetStack.push(true)
+  startRangeRight(listBlock: RenderedChildSetBlock): void {
+    if (listBlock.childSet.type !== ChildSetType.Immutable) {
+      this.childSetStack.push(true)
+    }
   }
 
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
-    this.childSetStack.pop()
+    if (listBlock.childSet.type !== ChildSetType.Immutable) {
+      this.childSetStack.pop()
+    }
     // Add leftovers to return set
     if (endIndex < listBlock.nodes.length && this.childSetStack.length !== 0) {
       const nodes = listBlock.childSet.children
