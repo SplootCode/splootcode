@@ -29,6 +29,7 @@ export class WorkerManager {
   private stateCallBack: (state: WorkerState) => void
   private sendToParentWindow: (payload: EditorMessage) => void
   private _workerState: WorkerState
+  private textFileValueCallback: (path: string, value: string) => void
 
   public get workerState() {
     return this._workerState
@@ -39,7 +40,8 @@ export class WorkerManager {
     standardIO: StandardIO,
     stateCallback: (state: WorkerState) => void,
     sendToParentWindow: (payload: EditorMessage) => void,
-    fetchHandler: FetchHandler
+    fetchHandler: FetchHandler,
+    textFileValueCallback: (path: string, value: string) => void
   ) {
     this.sendToParentWindow = sendToParentWindow
     this.workerURL = workerURL
@@ -50,6 +52,7 @@ export class WorkerManager {
     this._workerState = WorkerState.DISABLED
     this.stateCallBack = stateCallback
     this.fetchHandler = fetchHandler
+    this.textFileValueCallback = textFileValueCallback
 
     this.initialiseWorker()
   }
@@ -232,6 +235,8 @@ export class WorkerManager {
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
+    } else if (type === 'textValue') {
+      this.textFileValueCallback(event.data.fileName, event.data.content)
     } else {
       console.warn(`Unrecognised message from worker: ${type}`)
     }

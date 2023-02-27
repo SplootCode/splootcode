@@ -21,6 +21,7 @@ class RuntimeStateManager {
   private stdinPromiseResolve: (s: string) => void
   private fetchHandler: FetchHandler
   private handlerFunction: string
+  private stlite_app: any
 
   constructor(parentWindowDomainRegex: string, workerURL: string, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
@@ -31,9 +32,11 @@ class RuntimeStateManager {
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
     this.handlerFunction = ''
+    this.stlite_app = null
   }
 
   sendToParent = (payload: EditorMessage) => {
+    console.log('Sending', payload)
     if (this.parentWindowDomain) {
       parent.postMessage(payload, this.parentWindowDomain)
     } else if (payload.type === 'heartbeat') {
@@ -85,7 +88,8 @@ class RuntimeStateManager {
         }
       },
       this.sendToParent,
-      this.fetchHandler
+      this.fetchHandler,
+      this.textFileValueCallback
     )
   }
 
@@ -102,6 +106,47 @@ class RuntimeStateManager {
 
   setEnvironmentVars(envVars: Map<string, string>) {
     this.envVars = envVars
+  }
+
+  initializeStlite() {
+    // @ts-ignore
+    // await import()
+
+    // @ts-ignore
+    console.log(window.stlite)
+    // @ts-ignore
+    this.stlite_app = stlite.mount(
+      {
+        requirements: [], // Packages to install
+        entrypoint: 'main.py', // The target file of the `streamlit run` command
+        files: {
+          'main.py': `
+import streamlit as st
+`,
+        },
+      },
+      document.getElementById('root')
+    )
+    console.log(this.stlite_app)
+    if (this.initialFilesLoaded) {
+      this.sendToParent({ type: 'ready' })
+    } else {
+      this.sendToParent({ type: 'heartbeat', data: { state: FrameState.REQUESTING_INITIAL_FILES } })
+    }
+  }
+
+  textFileValueCallback = (fileName: string, text: string) => {
+    console.log('Text file value callback', fileName, text)
+    this.updateStliteFiles(fileName, text)
+  }
+
+  updateStliteFiles = (fileName: string, text: string) => {
+    console.log('Updating files')
+    if (this.stlite_app) {
+      if (fileName.endsWith('.py')) {
+        this.stlite_app.writeFile(fileName, text)
+      }
+    }
   }
 
   handleMessage = (event: MessageEvent) => {
@@ -129,7 +174,6 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         this.handlerFunction = data.handlerFunction
-
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, false)
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
@@ -138,7 +182,6 @@ class RuntimeStateManager {
         break
       case 'initialfiles':
         this.handlerFunction = data.handlerFunction
-
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
         this.setEnvironmentVars(data.data.envVars)
         this.initialFilesLoaded = true
@@ -228,4 +271,5 @@ export function initialize(
   runtimeStateManager = new RuntimeStateManager(editorDomainRegex, workerURL, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManager()
+  runtimeStateManager.initializeStlite()
 }

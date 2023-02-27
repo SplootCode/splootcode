@@ -4,9 +4,6 @@ import json
 import traceback
 
 
-SPLOOT_KEY = "__spt__"
-iterationLimit = None
-
 def generateArgs(callNode):
     args = []
     keywords = []
@@ -266,23 +263,14 @@ def generateAstExpressionStatement(exp_node):
     if not top_expr:
         return None
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="logExpressionResult", ctx=ast.Load())
-    args = [ast.Constant("PYTHON_EXPRESSION"), ast.Dict([], []), top_expr]
-    wrapped = ast.Call(func, args=args, keywords=[])
-    expr = ast.Expr(value=wrapped, lineno=1, col_offset=0)
+    expr = ast.Expr(value=top_expr, lineno=1, col_offset=0)
     return expr
 
 
 def generateAssignmentStatement(assign_node):
     target = generateAstAssignableExpression(assign_node["childSets"]["left"])
     value = generateAstExpression(assign_node["childSets"]["right"][0])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="logExpressionResult", ctx=ast.Load())
-    args = [ast.Constant("PYTHON_ASSIGNMENT"), ast.Dict([], []), value]
-    wrapped = ast.Call(func, args=args, keywords=[])
-    return ast.Assign([target], wrapped)
+    return ast.Assign([target], value)
 
 
 def getStatementsFromBlock(blockChildSet):
@@ -291,50 +279,21 @@ def getStatementsFromBlock(blockChildSet):
         new_statements = generateAstStatement(node)
         if new_statements:
             statements.extend(new_statements)
+    if len(statements) == 0:
+        statements = [ast.Pass()]
     return statements
 
 
 def generateIfStatementFromElif(elif_node, else_nodes):
     condition = generateAstExpression(elif_node["childSets"]["condition"][0])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_ELIF_STATEMENT"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
-
     statements = getStatementsFromBlock(elif_node["childSets"]["block"])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
 
     else_statements = []
     if len(else_nodes) != 0:
         else_statements = generateElifNestedChain(else_nodes)
-    
-    # End the elif frame before starting the next else/elif block
-    else_statements.insert(0, ast.Expr(call_end_frame, lineno=1, col_offset=0))
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
-    args = [ast.Constant("block")]
-    call_start_childset = ast.Call(func, args=args, keywords=[])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-
-    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
     return [
-        ast.If(wrapped_condition, statements, else_statements),
+        ast.If(condition, statements, else_statements),
     ]
     
 
@@ -351,26 +310,9 @@ def generateElifNestedChain(else_nodes):
         raise Exception(f'Unrecognised node type in elif/else chain: {first["type"]}')
 
 
+
 def generateElseStatement(else_node):
     statements = getStatementsFromBlock(else_node["childSets"]["block"])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
-    else_start_frame = ast.Call(
-        func,
-        args=[
-            ast.Constant("PYTHON_ELSE_STATEMENT"),
-            ast.Constant("block"),
-        ],
-        keywords=[],
-    )
-    statements.insert(0, ast.Expr(else_start_frame, lineno=1, col_offset=0))
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
-
     return statements
 
 def generateFromImportStatement(import_node):
@@ -378,25 +320,7 @@ def generateFromImportStatement(import_node):
     attrNames = []
     for attrNode in import_node['childSets']['attrs']:
         attrNames.append(ast.alias(attrNode['properties']['identifier']))
-
     statements = [ast.ImportFrom(moduleName, attrNames, 0)]
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
-    import_start_frame = ast.Call(
-        func,
-        args=[
-            ast.Constant("PYTHON_FROM_IMPORT"),
-            ast.Constant("import"),
-        ],
-        keywords=[],
-    )
-    statements.insert(0, ast.Expr(import_start_frame, lineno=1, col_offset=0))
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
     return statements
 
 def generateImportStatement(import_node):
@@ -404,150 +328,37 @@ def generateImportStatement(import_node):
     moduleNames = import_node['childSets']['modules']
     for moduleName in moduleNames:
         aliases.append(ast.alias(moduleName['properties']['identifier']))
-
     statements = [ast.Import(aliases)]
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
-    import_start_frame = ast.Call(
-        func,
-        args=[
-            ast.Constant("PYTHON_IMPORT"),
-            ast.Constant("import"),
-        ],
-        keywords=[],
-    )
-    statements.insert(0, ast.Expr(import_start_frame, lineno=1, col_offset=0))
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
     return statements
 
 def generateIfStatement(if_node):
     condition = generateAstExpression(if_node["childSets"]["condition"][0])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_IF_STATEMENT"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
-
     statements = getStatementsFromBlock(if_node["childSets"]["trueblock"])
 
     else_statements = []
     if "elseblocks" in if_node["childSets"] and len(if_node["childSets"]["elseblocks"]) != 0:
         else_statements = generateElifNestedChain(if_node["childSets"]["elseblocks"])
-        else_statements.insert(0, startChildSetStatement('elseblocks'))
-
-    statements.insert(0, startChildSetStatement('trueblock'))
 
     return [
-        ast.If(wrapped_condition, statements, else_statements),
-        endFrame(),
+        ast.If(condition, statements, else_statements),
     ]
-
-def startFrameStatement(nodeType, childSetName):
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
-    start_frame = ast.Call(
-        func,
-        args=[
-            ast.Constant(nodeType),
-            ast.Constant(childSetName),
-        ],
-        keywords=[],
-    )
-    return ast.Expr(start_frame, lineno=1, col_offset=0)
-
-
-def logExpressionResultAndStartFrame(nodeType, childSet, expr):
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant(nodeType),
-        ast.Constant(childSet),
-        expr,
-    ]
-    return ast.Call(func, args=args, keywords=[])
-
-def iterableLogExpressionResultAndStartFrame(nodeType, childset, iterable):
-    mapFunc = ast.Lambda(
-        ast.arguments(posonlyargs=[], args=[ast.arg('x')], kwonlyargs=[], kw_defaults=[], defaults=[]),
-        logExpressionResultAndStartFrame(nodeType, childset, ast.Name('x', ctx=ast.Load())))
-
-    return ast.Call(ast.Name('map', ast.Load()), args=[mapFunc, iterable], keywords=[])
-
-def endFrame():
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-    return ast.Expr(call_end_frame, lineno=1, col_offset=0)
-
-def endLoop():
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endLoop", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-    return ast.Expr(call_end_frame, lineno=1, col_offset=0)
-
-
-def startChildSetStatement(childSetName):
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
-    args = [ast.Constant(childSetName)]
-    call_start_childset = ast.Call(func, args=args, keywords=[])
-    return ast.Expr(call_start_childset, lineno=1, col_offset=0)
-
 
 def generateForStatement(for_node):
     target = generateAstAssignableExpression(for_node["childSets"]["target"])
     iterable = generateAstExpression(for_node["childSets"]["iterable"][0])
-    iterable = iterableLogExpressionResultAndStartFrame('PYTHON_FOR_LOOP_ITERATION', 'iterable', iterable)
     blockStatements = getStatementsFromBlock(for_node["childSets"]["block"])
     if len(blockStatements) == 0:
         blockStatements = [ast.Pass()]
-
-    blockStatements.insert(0, startChildSetStatement('block'))
-    blockStatements.append(endFrame())
-
     return [
-        startFrameStatement('PYTHON_FOR_LOOP', 'frames'),
         ast.For(target, iterable, blockStatements, []),
-        endFrame()
     ]
-
 
 def generateWhileStatement(while_node):
     condition = generateAstExpression(while_node["childSets"]["condition"][0])
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_WHILE_LOOP_ITERATION"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
-
     statements = getStatementsFromBlock(while_node["childSets"]["block"])
 
-    statements.insert(0, startChildSetStatement('block'))
-    statements.append(endFrame())
-
     return [
-        startFrameStatement('PYTHON_WHILE_LOOP', 'frames'),
-        ast.While(wrapped_condition, statements, []),
-        endLoop(),
-        endFrame()
+        ast.While(condition, statements, []),
     ]
 
 def generateFunctionArguments(arg_list):
@@ -564,30 +375,10 @@ def generateFunctionArguments(arg_list):
 
 def generateFunctionStatement(func_node):
     nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
-    func_id = func_node['properties']['id']
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="startDetachedFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_FUNCTION_CALL"),
-        ast.Constant("body"),
-        ast.Constant(func_id)
-    ]
-    call_start_frame = ast.Call(func, args, keywords=[])
-    
     statements = getStatementsFromBlock(func_node["childSets"]["body"])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-
-    statements.insert(0, ast.Expr(call_start_frame, lineno=1, col_offset=0))
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
-
+    if len(statements) == 0:
+        statements = [ast.Pass()]
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
-    
     return [ast.FunctionDef(nameIdentifier, funcArgs, statements, [])]
 
 
@@ -595,23 +386,17 @@ def generateReturnStatement(return_node):
     ret_expr = generateAstExpression(return_node['childSets']['value'][0])
     if ret_expr is None:
         ret_expr = ast.Constant(None)
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="logExpressionResultAndEndFrames", ctx=ast.Load())
-    args = [ast.Constant("PYTHON_RETURN"), ast.Constant("PYTHON_FUNCTION_CALL"), ret_expr]
-    wrapped = ast.Call(func, args=args, keywords=[])
     return [
-        ast.Return(wrapped)
+        ast.Return(ret_expr)
     ]
 
 def generateBreakStatement(node):
     return [
-        endLoop(),
         ast.Break()
     ]
 
 def generateContinueStatement(node):
     return [
-        endLoop(),
         ast.Continue()
     ]
 
@@ -756,7 +541,7 @@ class SplootCapture:
 capture = None
 
 
-def executePythonFile(tree, handlerFunction=None):
+def generateTextCode(tree, handlerFunction=None):
     global capture
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
@@ -768,22 +553,8 @@ def executePythonFile(tree, handlerFunction=None):
             statements.append(call_statement)
 
         mods = ast.Module(body=statements, type_ignores=[])
-        code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
-        # Uncomment to print generated Python code
-        # print(ast.unparse(ast.fix_missing_locations(mods)))
-        # print()
-        capture = SplootCapture()
-        try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__'})
-        except EOFError as e:
-            # This is because we don't have inputs in a rerun.
-            capture.logException(type(e).__name__, str(e))
-        except BaseException as e:
-            capture.logException(type(e).__name__, str(e))
-            traceback.print_exc()
-
-        return capture.toDict()
-
+        return ast.unparse(ast.fix_missing_locations(mods))
+    return ''
 
 def wrapStdout(write):
     def f(s):
@@ -792,32 +563,33 @@ def wrapStdout(write):
         write(s)
     return f
 
-if __name__ == "__main__":
-    import fakeprint  # pylint: disable=import-error
-    import nodetree  # pylint: disable=import-error
-    import runtime_capture # pylint: disable=import-error
+import fakeprint  # pylint: disable=import-error
+import nodetree  # pylint: disable=import-error
+import runtime_capture # pylint: disable=import-error
 
-    # Only wrap stdin/stdout once.
-    # Horrifying hack.
-    try:
-        wrapStdin
-    except NameError:
-        def wrapStdin(readline):
-            def f():
-                runtime_capture.report(json.dumps(capture.toDict()))
-                return readline()
-            return f
+# Only wrap stdin/stdout once.
+# Horrifying hack.
+try:
+    wrapStdin
+except NameError:
+    def wrapStdin(readline):
+        def f():
+            runtime_capture.report(json.dumps(capture.toDict()))
+            return readline()
+        return f
 
-        fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
-        fakeprint.stdin.readline = wrapStdin(fakeprint.stdin.readline)
+    fakeprint.stdout.write = wrapStdout(fakeprint.stdout.write)
+    fakeprint.stdin.readline = wrapStdin(fakeprint.stdin.readline)
 
-    sys.stdout = fakeprint.stdout
-    sys.stderr = fakeprint.stdout
-    sys.stdin = fakeprint.stdin
+sys.stdout = fakeprint.stdout
+sys.stderr = fakeprint.stdout
+sys.stdin = fakeprint.stdin
 
-    tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
-    iterationLimit = nodetree.getIterationLimit()
-    handler = nodetree.getHandlerFunction()
-    cap = executePythonFile(tree, handler)
-    if cap:
-        runtime_capture.report(json.dumps(cap))
+tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
+iterationLimit = nodetree.getIterationLimit()
+handler = nodetree.getHandlerFunction()
+# cap = executePythonFile(tree, handler)
+# if cap:
+#     runtime_capture.report(json.dumps(cap))
+    
+generateTextCode(tree, handler)

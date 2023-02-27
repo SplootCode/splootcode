@@ -76,6 +76,12 @@ export interface WorkerModuleInfoMessage {
   info: any
 }
 
+export interface WorkerTextConvertResultMessage {
+  type: 'textValue'
+  fileName: string
+  content: string
+}
+
 export type WorkerMessage =
   | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
@@ -84,6 +90,7 @@ export type WorkerMessage =
   | WorkerFetchMessage
   | WorkerRuntimeCaptureMessage
   | WorkerModuleInfoMessage
+  | WorkerTextConvertResultMessage
 
 export interface RunMessage {
   type: 'run'

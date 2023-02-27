@@ -171,12 +171,19 @@ const run = async () => {
   try {
     // Set up environment variables.
     // This is a bit hacky but pyodide's API doesn't give us access to environment variables.
-    const globals = pyodide.toPy({ envVars: pyodide.toPy(envVars) })
-    await pyodide.runPython(EnvVarCode, {
-      globals: globals,
-    })
-
-    await pyodide.runPython(executorCode)
+    // const globals = pyodide.toPy({ envVars: pyodide.toPy(envVars) })
+    // await pyodide.runPython(EnvVarCode, {
+    //   globals: globals,
+    // })
+    const res = await pyodide.runPython(executorCode)
+    console.log(res)
+    if (res) {
+      sendMessage({
+        type: 'textValue',
+        fileName: 'main.py',
+        content: res as string,
+      })
+    }
   } catch (err) {
     sendMessage({
       type: 'stderr',

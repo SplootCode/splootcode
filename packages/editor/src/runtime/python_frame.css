@@ -6,9 +6,6 @@
 }
 
 #view-python-frame {
-  position: absolute;
   border: none;
-  display: block;
-  width: 0;
-  height: 0;
+  height: calc(100% - 42px);
 }

@@ -1,3 +1,4 @@
+import inject from '@rollup/plugin-inject'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -53,8 +54,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [
-        // Enable rollup polyfills plugin
-        // used during production bundling
+        {
+          ...inject({
+            Buffer: ['buffer/', 'Buffer'],
+            process: 'process-es6/',
+          }),
+        },
         nodePolyfills(),
       ],
       output: {

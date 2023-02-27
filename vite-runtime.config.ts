@@ -1,4 +1,6 @@
 import react from '@vitejs/plugin-react'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
@@ -9,6 +11,20 @@ export default defineConfig({
     strictPort: true,
   },
   assetsInclude: ['**/*.py', '**/*.whl'],
+  optimizeDeps: {
+    include: ['@chakra-ui/react', '@chakra-ui/icons'],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+        }),
+        NodeModulesPolyfillPlugin(),
+      ],
+    },
+  },
   build: {
     outDir: 'dist-runtime',
     rollupOptions: {
