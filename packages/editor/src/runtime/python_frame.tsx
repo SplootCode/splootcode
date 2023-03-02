@@ -410,7 +410,15 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    this.setState({ handlerFunctions: this.props.fileChangeWatcher.getHandlerFunctions() })
+    const handlerFunctions = this.props.fileChangeWatcher.getHandlerFunctions()
+    this.setState({ handlerFunctions })
+
+    let handler = this.state.selectedHandler
+    if (!handlerFunctions.includes(handler)) {
+      handler = ''
+      this.setHandlerFunction(handler)
+    }
+
     let isValid = this.props.fileChangeWatcher.isValid()
     if (!isValid) {
       this.setState({ ready: false })
@@ -438,7 +446,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const payload = {
       type: messageType,
       data: { files: fileState, envVars: envVars },
-      handlerFunction: this.state.selectedHandler,
+      handlerFunction: handler,
     }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
