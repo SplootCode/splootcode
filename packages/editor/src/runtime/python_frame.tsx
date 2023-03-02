@@ -490,7 +490,12 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   componentDidMount() {
-    this.term = new Terminal({ scrollback: 10000, fontSize: 14, theme: { background: '#040810' } })
+    this.term = new Terminal({
+      scrollback: 10000,
+      fontSize: 14,
+      theme: { background: '#040810' },
+      fontFamily: 'Inconsolata, monospace',
+    })
     this.wasmTty = new WasmTTY(this.term)
     this.terminalFitAddon = new FitAddon()
     this.term.loadAddon(this.terminalFitAddon)
