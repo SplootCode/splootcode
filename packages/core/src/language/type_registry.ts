@@ -176,6 +176,7 @@ export function getLayout(typeName: string): NodeLayout {
 
 export interface SerializedNode {
   type: string
+  matchingID?: string
   properties: { [key: string]: string }
   childSets: { [key: string]: SerializedNode[] }
   meta?: { [key: string]: any }

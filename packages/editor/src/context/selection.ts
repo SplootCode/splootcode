@@ -258,7 +258,6 @@ export class NodeSelection {
     if (this.isEditingSingleNode()) {
       const sanitisedValue =
         this.selectionStart.listBlock.nodes[this.selectionStart.index].node.setEditablePropertyValue(newValue)
-      this.updateRenderPositions()
       return sanitisedValue
     }
     return ''

@@ -14,6 +14,7 @@ import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
+import { UndoWatcher } from '../context/undoWatcher'
 
 export const SPLOOT_MIME_TYPE = 'application/splootcodenode'
 
@@ -25,6 +26,7 @@ interface EditorProps {
   validationWatcher: ValidationWatcher
   banner?: ReactNode
   editorHostingConfig: EditorHostingConfig
+  undoWatcher: UndoWatcher
 }
 
 interface EditorState {
@@ -221,6 +223,15 @@ export class Editor extends React.Component<EditorProps, EditorState> {
       case 'Tab':
         selection.moveCursorToNextInsert(event.shiftKey)
         event.preventDefault()
+    }
+
+    if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault()
+      if (event.shiftKey) {
+        this.props.undoWatcher.redo()
+      } else {
+        this.props.undoWatcher.undo()
+      }
     }
   }
 
