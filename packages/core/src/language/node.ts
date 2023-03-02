@@ -325,6 +325,8 @@ export class SplootNode {
   }
 
   applySerializedSnapshot(snapshot: SerializedNode) {
+    // Recursively apply the serialized snapshot to this node and children
+    // wherever there are differences.
     if (snapshot.type !== this.type) {
       throw Error(`Mismatched types: ${snapshot.type} vs ${this.type}`)
     }

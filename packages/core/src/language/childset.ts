@@ -220,7 +220,7 @@ export class ChildSet {
   }
 
   applySerializedSnapshot(snapshot: SerializedNode[]) {
-    // Match up the children roughly - making sure node type is the same.
+    // Use the matchingID and type (just in case) to match up nodes and apply differences.
     let childIndex = 0
     let snapshotIndex = 0
     while (childIndex < this.children.length && snapshotIndex < snapshot.length) {
