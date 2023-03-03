@@ -5,6 +5,7 @@ import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
+import { UndoWatcher } from './undoWatcher'
 import { action, observable } from 'mobx'
 
 export class EditorState {
@@ -18,6 +19,7 @@ export class EditorState {
   hostingConfig: EditorHostingConfig
   featureFlags: Map<string, boolean>
   autosaveWatcher: AutosaveWatcher
+  undoWatcher: UndoWatcher
 
   constructor(
     project: Project,
@@ -37,6 +39,9 @@ export class EditorState {
     this.featureFlags = featureFlags || new Map()
     this.autosaveWatcher = new AutosaveWatcher(project, projectLoader)
     this.autosaveWatcher.registerSelf()
+
+    this.undoWatcher = new UndoWatcher()
+    this.undoWatcher.registerSelf()
   }
 
   async loadDefaultFile() {
@@ -59,6 +64,7 @@ export class EditorState {
     // fonts to load correctly before render calculations happen.
     const rootNode = loadedFile.rootNode as PythonFile
     await this.analyser.loadFile(file.name, rootNode)
+    this.undoWatcher.setRootNode(rootNode)
 
     // Prep NodeBlocks for rendering
     const newRootNode = new NodeBlock(null, loadedFile.rootNode, this.selection, 0)
@@ -84,6 +90,7 @@ export class EditorState {
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
     this.autosaveWatcher.deregisterSelf()
+    this.undoWatcher.deregisterSelf()
   }
 }
 

@@ -16,6 +16,11 @@ import { ScopeMutation } from './mutations/scope_mutations'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
+function generateMatchingID() {
+  // Generate random string value
+  return (Math.random() + 1).toString(36).substring(5)
+}
+
 export class ParentReference {
   node: SplootNode
   childSetId: string // never directly use string ?
@@ -33,6 +38,7 @@ export class ParentReference {
 export class SplootNode {
   parent: ParentReference
   type: string
+  matchingID: string
   properties: { [key: string]: any } // Depends on the type
   childSets: { [key: string]: ChildSet }
   childSetOrder: string[]
@@ -50,6 +56,7 @@ export class SplootNode {
   constructor(parent: ParentReference, type: string) {
     this.parent = parent
     this.type = type
+    this.matchingID = generateMatchingID()
     this.isValid = true
     this.invalidReason = ''
     this.childSets = {}
@@ -291,12 +298,15 @@ export class SplootNode {
     return serNode
   }
 
-  serialize(): SerializedNode {
+  serialize(includeMatchingID = false): SerializedNode {
     const result = {
       type: this.type,
       properties: {},
       childSets: {},
     } as SerializedNode
+    if (includeMatchingID) {
+      result.matchingID = this.matchingID
+    }
     for (const property in this.properties) {
       result.properties[property] = this.properties[property]
     }
@@ -308,10 +318,27 @@ export class SplootNode {
       const childSet = this.getChildSet(childSetId)
       result.childSets[childSetId] = []
       childSet.getChildren().forEach((node: SplootNode) => {
-        result.childSets[childSetId].push(node.serialize())
+        result.childSets[childSetId].push(node.serialize(includeMatchingID))
       })
     })
     return result
+  }
+
+  applySerializedSnapshot(snapshot: SerializedNode) {
+    // Recursively apply the serialized snapshot to this node and children
+    // wherever there are differences.
+    if (snapshot.type !== this.type) {
+      throw Error(`Mismatched types: ${snapshot.type} vs ${this.type}`)
+    }
+    for (const property in snapshot.properties) {
+      if (this.getProperty(property) !== snapshot.properties[property]) {
+        this.setProperty(property, snapshot.properties[property])
+      }
+    }
+    for (const childSetId in snapshot.childSets) {
+      const childSet = this.getChildSet(childSetId)
+      childSet.applySerializedSnapshot(snapshot.childSets[childSetId])
+    }
   }
 
   deserializeChildSet(childSetId: string, serializedNode: SerializedNode) {

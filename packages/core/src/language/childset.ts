@@ -2,6 +2,7 @@ import { ChildSetMutation, ChildSetMutationType } from './mutations/child_set_mu
 import { ChildSetObserver } from './observers'
 import { NodeCategory } from './node_category_registry'
 import { ParentReference, SplootNode } from './node'
+import { SerializedNode, deserializeNode } from './type_registry'
 import { StatementCapture } from './capture/runtime_capture'
 import { globalMutationDispatcher } from './mutations/mutation_dispatcher'
 
@@ -216,5 +217,41 @@ export class ChildSet {
 
   getLeftmostChild(): SplootNode {
     return this.children[0]
+  }
+
+  applySerializedSnapshot(snapshot: SerializedNode[]) {
+    // Use the matchingID and type (just in case) to match up nodes and apply differences.
+    let childIndex = 0
+    let snapshotIndex = 0
+    while (childIndex < this.children.length && snapshotIndex < snapshot.length) {
+      const child = this.children[childIndex]
+      if (child.matchingID === snapshot[snapshotIndex].matchingID && child.type === snapshot[snapshotIndex].type) {
+        child.applySerializedSnapshot(snapshot[snapshotIndex])
+        childIndex++
+        snapshotIndex++
+      } else {
+        if (this.children.length > snapshot.length) {
+          // Delete the child.
+          this.removeChild(childIndex)
+        } else {
+          // Insert a new child.
+          const newNode = deserializeNode(snapshot[snapshotIndex])
+          newNode.matchingID = snapshot[snapshotIndex].matchingID
+          this.insertNode(newNode, childIndex)
+          childIndex++
+          snapshotIndex++
+        }
+      }
+    }
+    // If there are more children, delete them.
+    while (childIndex < this.children.length) {
+      this.removeChild(childIndex)
+    }
+    // If there are more snapshots, insert them.
+    while (snapshotIndex < snapshot.length) {
+      const newNode = deserializeNode(snapshot[snapshotIndex])
+      this.addChild(newNode)
+      snapshotIndex++
+    }
   }
 }

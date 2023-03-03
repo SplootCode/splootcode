@@ -48,6 +48,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
               editorState.project.isReadOnly ? <EditorBanner project={editorState.project} onSaveAs={onSaveAs} /> : null
             }
             editorHostingConfig={editorState.hostingConfig}
+            undoWatcher={editorState.undoWatcher}
           />
         </Allotment.Pane>
         <Allotment.Pane preferredSize={360} priority={LayoutPriority.Low}>
