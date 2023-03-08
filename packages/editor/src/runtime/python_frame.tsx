@@ -61,7 +61,10 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     })
 
     let selectedHanlder = ''
-    if (this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION) {
+    if (
+      this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION ||
+      this.props.project.runSettings.runType == RunType.HTTP_REQUEST
+    ) {
       selectedHanlder = this.props.project.runSettings.handlerFunction
     }
 
@@ -76,14 +79,21 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   setHandlerFunction = (functionName: string) => {
+    console.log('setting', functionName)
     this.setState({ selectedHandler: functionName })
     if (functionName == '') {
       this.props.project.setRunSettings({
         runType: RunType.COMMAND_LINE,
       })
-    } else {
+    } else if (this.props.project.runSettings.runType === RunType.HANDLER_FUNCTION) {
       this.props.project.setRunSettings({
         runType: RunType.HANDLER_FUNCTION,
+        handlerFunction: functionName,
+      })
+    } else if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST) {
+      console.log('set http request', functionName)
+      this.props.project.setRunSettings({
+        runType: RunType.HTTP_REQUEST,
         handlerFunction: functionName,
       })
     }
@@ -96,6 +106,18 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
+              <Button
+                minWidth={'100px'}
+                size="xs"
+                onClick={() =>
+                  this.props.project.setRunSettings({
+                    runType: RunType.HTTP_REQUEST,
+                    handlerFunction: 'peanut',
+                  })
+                }
+              >
+                {this.props.project.runSettings.runType}
+              </Button>
               {this.state.handlerFunctions.length > 0 ? (
                 <Select
                   size="sm"
@@ -143,6 +165,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   run = async () => {
+    console.log('run', this.state.selectedHandler)
     this.term.clear()
     this.wasmTty.clearTty()
     this.postMessageToFrame({ type: 'run', handlerFunction: this.state.selectedHandler })
@@ -150,6 +173,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   rerun = async () => {
+    console.log('rerun', this.state.selectedHandler)
+
     this.wasmTty.clearTty()
     this.term.clear()
     this.postMessageToFrame({ type: 'rerun', handlerFunction: this.state.selectedHandler })
@@ -413,11 +438,14 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const handlerFunctions = this.props.fileChangeWatcher.getHandlerFunctions()
     this.setState({ handlerFunctions })
 
-    let handler = this.state.selectedHandler
-    if (!handlerFunctions.includes(handler)) {
-      handler = ''
-      this.setHandlerFunction(handler)
-    }
+    console.log(this.state)
+    const handler = this.state.selectedHandler
+
+    console.log('trying to run', handler, 'from', handlerFunctions)
+    // if (!handlerFunctions.includes(handler)) {
+    //   handler = ''
+    //   this.setHandlerFunction(handler)
+    // }
 
     let isValid = this.props.fileChangeWatcher.isValid()
     if (!isValid) {

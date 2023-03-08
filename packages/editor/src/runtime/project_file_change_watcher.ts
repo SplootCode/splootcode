@@ -7,6 +7,7 @@ import {
   Project,
   ProjectMutation,
   ProjectMutationType,
+  RunType,
   ScopeMutation,
   ScopeMutationType,
   SerializedNode,
@@ -16,7 +17,7 @@ import {
   globalMutationDispatcher,
 } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
-import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
+import { PotentialHandlers, PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 
 export class ProjectFileChangeWatcher implements FileChangeWatcher {
   project: Project
@@ -117,7 +118,19 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
   scanForHandlerFunctions = async () => {
     const file = await this.pkg.getLoadedFile(this.project.fileLoader, 'main.py')
     const pythonFile = file.rootNode as PythonFile
-    const potentialHandlers = pythonFile.getPotentialHandlers([])
+
+    let potentialHandlers: PotentialHandlers = {
+      candidates: [],
+    }
+
+    if (this.project.runSettings.runType === RunType.HANDLER_FUNCTION) {
+      potentialHandlers = pythonFile.getPotentialHandlers([])
+    } else if (this.project.runSettings.runType === RunType.HTTP_REQUEST) {
+      potentialHandlers = pythonFile.getPotentialHandlers(['request'])
+    }
+
+    console.log(potentialHandlers, this.project.runSettings.runType)
+
     this.candidateHandlerFunctions = potentialHandlers.candidates
   }
 
