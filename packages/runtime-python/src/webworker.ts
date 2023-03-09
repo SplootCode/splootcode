@@ -177,6 +177,12 @@ const run = async () => {
     })
 
     await pyodide.runPython(executorCode)
+
+    if (handlerFunction) {
+      await pyodide.runPython(`
+import serverless_wsgi
+`)
+    }
   } catch (err) {
     sendMessage({
       type: 'stderr',
@@ -215,6 +221,8 @@ interface StaticURLs {
   executorURL: string
   moduleLoaderURL: string
   requestsPackageURL: string
+  flaskPackageURL: string
+  serverlessWSGIPackageURL: string
 }
 
 export const initialize = async (urls: StaticURLs) => {
@@ -261,6 +269,8 @@ export const initialize = async (urls: StaticURLs) => {
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(urls.requestsPackageURL)
+  await micropip.install(urls.flaskPackageURL)
+  await micropip.install(urls.serverlessWSGIPackageURL)
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({
