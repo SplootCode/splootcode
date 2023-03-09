@@ -1,3 +1,5 @@
+import { HTTPRequestEvent } from '../../http_types'
+
 export enum RunType {
   COMMAND_LINE = 'COMMAND_LINE',
   HANDLER_FUNCTION = 'HANDLER_FUNCTION',
@@ -7,4 +9,6 @@ export enum RunType {
 export interface RunSettings {
   runType: RunType
   handlerFunction?: string
+
+  httpScenarios?: HTTPRequestEvent[]
 }

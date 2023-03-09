@@ -80,7 +80,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
-      runSettings: { runType: RunType.COMMAND_LINE },
+      runSettings: { runType: RunType.COMMAND_LINE, httpScenarios: [] },
       splootversion: '1.0.0',
       version: '1',
       title: title,

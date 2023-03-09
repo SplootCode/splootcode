@@ -21,6 +21,7 @@ class RuntimeStateManager {
   private stdinPromiseResolve: (s: string) => void
   private fetchHandler: FetchHandler
   private handlerFunction: string
+  private handlerFunctionArgs: unknown[]
 
   constructor(parentWindowDomainRegex: string, workerURL: string, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
@@ -31,6 +32,7 @@ class RuntimeStateManager {
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
     this.handlerFunction = ''
+    this.handlerFunctionArgs = []
   }
 
   sendToParent = (payload: EditorMessage) => {
@@ -129,22 +131,24 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         this.handlerFunction = data.handlerFunction
+        this.handlerFunctionArgs = data.handlerFunctionArgs
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, false)
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.handlerFunction, this.workspace, this.envVars)
+          this.workerManager.rerun(this.handlerFunction, this.handlerFunctionArgs, this.workspace, this.envVars)
         }
         break
       case 'initialfiles':
         this.handlerFunction = data.handlerFunction
+        this.handlerFunctionArgs = data.handlerFunctionArgs
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
         this.setEnvironmentVars(data.data.envVars)
         this.initialFilesLoaded = true
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.handlerFunction, this.workspace, this.envVars)
+          this.workerManager.rerun(this.handlerFunction, this.handlerFunctionArgs, this.workspace, this.envVars)
         }
         break
       case 'stdin':
@@ -157,7 +161,7 @@ class RuntimeStateManager {
       case 'run':
         this.handlerFunction = data.handlerFunction
         if (this.initialFilesLoaded) {
-          this.workerManager.run(this.handlerFunction, this.workspace, this.envVars)
+          this.workerManager.run(this.handlerFunction, this.handlerFunctionArgs, this.workspace, this.envVars)
         } else {
           console.warn('Cannot run, no nodetree loaded')
         }

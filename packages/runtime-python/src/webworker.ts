@@ -157,6 +157,7 @@ let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
 let handlerFunction = ''
+let handlerFunctionArgs = {}
 
 const EnvVarCode = `
 import os;
@@ -178,10 +179,10 @@ const run = async () => {
 
     await pyodide.runPython(executorCode)
 
-    if (handlerFunction) {
-      await pyodide.runPython(`
-import serverless_wsgi
-`)
+    console.log('about to exec', handlerFunctionArgs)
+
+    if (handlerFunctionArgs) {
+      pyodide.globals.set('__spt__handler_args__', handlerFunctionArgs)
     }
   } catch (err) {
     sendMessage({
@@ -252,6 +253,9 @@ export const initialize = async (urls: StaticURLs) => {
     getHandlerFunction: () => {
       return handlerFunction
     },
+    getHandlerFunctionArgs: () => {
+      return pyodide.toPy(handlerFunctionArgs)
+    },
   })
   pyodide.registerJsModule('runtime_capture', {
     report: (json_dump) => {
@@ -282,6 +286,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
       handlerFunction = e.data.handlerFunction
+      handlerFunctionArgs = e.data.handlerFunctionArgs
       workspace = e.data.workspace
       stdinbuffer = e.data.stdinBuffer
       fetchBuffer = e.data.fetchBuffer
@@ -293,6 +298,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       break
     case 'rerun':
       handlerFunction = e.data.handlerFunction
+      handlerFunctionArgs = e.data.handlerFunctionArgs
       workspace = e.data.workspace
       stdinbuffer = null
       fetchBuffer = null

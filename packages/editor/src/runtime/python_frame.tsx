@@ -4,8 +4,8 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Button, ButtonGroup, Select } from '@chakra-ui/react'
-import { CapturePayload, Project, RunType } from '@splootcode/core'
+import { Button, ButtonGroup, Collapse, Select } from '@chakra-ui/react'
+import { CapturePayload, HTTPRequestEvent, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
@@ -31,6 +31,9 @@ interface ConsoleState {
   frameSrc: string
   handlerFunctions: string[]
   selectedHandler: string
+  httpRequestEvent?: HTTPRequestEvent
+
+  showExtraRuntimeOptions: boolean
 }
 
 export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
@@ -61,11 +64,13 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     })
 
     let selectedHanlder = ''
-    if (
-      this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION ||
-      this.props.project.runSettings.runType == RunType.HTTP_REQUEST
-    ) {
+    if (this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION) {
       selectedHanlder = this.props.project.runSettings.handlerFunction
+    }
+
+    let httpRequestEvent: HTTPRequestEvent | null = null
+    if (this.props.project.runSettings.httpScenarios.length > 0) {
+      httpRequestEvent = this.props.project.runSettings.httpScenarios[0]
     }
 
     this.state = {
@@ -75,6 +80,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       frameSrc: this.getFrameSrc(),
       handlerFunctions: [],
       selectedHandler: selectedHanlder,
+      httpRequestEvent: httpRequestEvent,
+      showExtraRuntimeOptions: false,
     }
   }
 
@@ -82,21 +89,26 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     console.log('setting', functionName)
     this.setState({ selectedHandler: functionName })
     if (functionName == '') {
+      let rt = this.props.project.runSettings.runType
+      if (rt !== RunType.COMMAND_LINE && rt !== RunType.HTTP_REQUEST) {
+        rt = RunType.COMMAND_LINE
+      }
+
       this.props.project.setRunSettings({
-        runType: RunType.COMMAND_LINE,
+        runType: rt,
+        httpScenarios: this.props.project.runSettings.httpScenarios,
       })
     } else if (this.props.project.runSettings.runType === RunType.HANDLER_FUNCTION) {
       this.props.project.setRunSettings({
         runType: RunType.HANDLER_FUNCTION,
         handlerFunction: functionName,
-      })
-    } else if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST) {
-      console.log('set http request', functionName)
-      this.props.project.setRunSettings({
-        runType: RunType.HTTP_REQUEST,
-        handlerFunction: functionName,
+        httpScenarios: this.props.project.runSettings.httpScenarios,
       })
     }
+  }
+
+  setShowExtraRuntimeOptions = (show: boolean) => {
+    this.setState({ showExtraRuntimeOptions: show })
   }
 
   render() {
@@ -106,18 +118,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
-              <Button
-                minWidth={'100px'}
-                size="xs"
-                onClick={() =>
-                  this.props.project.setRunSettings({
-                    runType: RunType.HTTP_REQUEST,
-                    handlerFunction: 'peanut',
-                  })
-                }
-              >
-                {this.props.project.runSettings.runType}
-              </Button>
               {this.state.handlerFunctions.length > 0 ? (
                 <Select
                   size="sm"
@@ -134,6 +134,18 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                   })}
                 </Select>
               ) : null}
+              {/* {RunType.HTTP_REQUEST in this.props.project.runSettings.paramOptions ? (
+                <Select size="sm" onChange={(e) => this.setHandlerFunctionArgs(e.target.value)}>
+                  {this.props.project.runSettings.paramOptions[RunType.HTTP_REQUEST].map((v, i) => {
+                    return (
+                      <option key={i} value={JSON.stringify(v)}>
+                        Option {i + 1}
+                      </option>
+                    )
+                  })}
+                </Select>
+              ) : null} */}
+
               <Button
                 isLoading={running}
                 loadingText="Running"
@@ -148,7 +160,15 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               <Button disabled={!running} onClick={this.stop} height={8}>
                 Stop
               </Button>
+
+              {/* <Button onClick={() => this.setShowExtraRuntimeOptions(!this.state.showExtraRuntimeOptions)} height={8}>
+                Show extra
+              </Button> */}
             </ButtonGroup>
+
+            <Collapse in={this.state.showExtraRuntimeOptions} animateOpacity>
+              <h1>hello world</h1>
+            </Collapse>
           </div>
           <div id="terminal" ref={this.termRef} />
         </div>
@@ -441,7 +461,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     console.log(this.state)
     const handler = this.state.selectedHandler
 
-    console.log('trying to run', handler, 'from', handlerFunctions)
     // if (!handlerFunctions.includes(handler)) {
     //   handler = ''
     //   this.setHandlerFunction(handler)
@@ -470,11 +489,14 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
+    console.log('event is', this.state.httpRequestEvent)
+
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload = {
       type: messageType,
       data: { files: fileState, envVars: envVars },
       handlerFunction: handler,
+      handlerFunctionArgs: this.state.httpRequestEvent,
     }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
