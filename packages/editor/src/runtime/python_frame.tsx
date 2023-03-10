@@ -4,7 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Button, ButtonGroup, Collapse } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Collapse, Select } from '@chakra-ui/react'
 import { CapturePayload, HTTPRequestEvent, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
@@ -82,6 +82,13 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     this.setState({ showExtraRuntimeOptions: show })
   }
 
+  setProjectRunType = (runType: string) => {
+    this.props.project.setRunSettings({
+      ...this.props.project.runSettings,
+      runType: runType as RunType,
+    })
+  }
+
   render() {
     const { ready, running } = this.state
     return (
@@ -89,35 +96,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
-              {/* {this.state.handlerFunctions.length > 0 ? (
-                <Select
-                  size="sm"
-                  value={this.state.selectedHandler}
-                  onChange={(e) => this.setHandlerFunction(e.target.value)}
-                >
-                  <option value="">Whole program</option>
-                  {this.state.handlerFunctions.map((functionName) => {
-                    return (
-                      <option key={functionName} value={functionName}>
-                        {functionName} function
-                      </option>
-                    )
-                  })}
-                </Select>
-              ) : null} */}
-
-              {/* {RunType.HTTP_REQUEST in this.props.project.runSettings.paramOptions ? (
-                <Select size="sm" onChange={(e) => this.setHandlerFunctionArgs(e.target.value)}>
-                  {this.props.project.runSettings.paramOptions[RunType.HTTP_REQUEST].map((v, i) => {
-                    return (
-                      <option key={i} value={JSON.stringify(v)}>
-                        Option {i + 1}
-                      </option>
-                    )
-                  })}
-                </Select>
-              ) : null} */}
-
               <Button
                 isLoading={running}
                 loadingText="Running"
@@ -133,13 +111,42 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 Stop
               </Button>
 
-              {/* <Button onClick={() => this.setShowExtraRuntimeOptions(!this.state.showExtraRuntimeOptions)} height={8}>
-                Show extra
-              </Button> */}
+              <Button onClick={() => this.setShowExtraRuntimeOptions(!this.state.showExtraRuntimeOptions)} height={8}>
+                Settings
+              </Button>
             </ButtonGroup>
 
             <Collapse in={this.state.showExtraRuntimeOptions} animateOpacity>
-              <h1>hello world</h1>
+              <Box m={'1'}>
+                <Select
+                  size="sm"
+                  value={this.state.projectRunType}
+                  onChange={(e) => this.setProjectRunType(e.target.value)}
+                >
+                  <option value={RunType.COMMAND_LINE}>Command line</option>
+                  <option value={RunType.HTTP_REQUEST}>HTTP Request</option>
+                  <option value={RunType.SCHEDULE}>Schedule</option>
+                </Select>
+
+                {this.state.projectRunType === RunType.HTTP_REQUEST ? (
+                  <Select
+                    size="sm"
+                    onChange={(e) =>
+                      this.setState({
+                        httpRequestEvent: JSON.parse(e.target.value),
+                      })
+                    }
+                  >
+                    {this.props.project.runSettings.httpScenarios.map((v, i) => {
+                      return (
+                        <option key={i} value={JSON.stringify(v)}>
+                          Option {i + 1}
+                        </option>
+                      )
+                    })}
+                  </Select>
+                ) : null}
+              </Box>
             </Collapse>
           </div>
           <div id="terminal" ref={this.termRef} />
@@ -425,17 +432,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    // const handlerFunctions = this.props.fileChangeWatcher.getHandlerFunctions()
-    // this.setState({ handlerFunctions })
-
-    console.log(this.state)
-    // const handler = this.state.selectedHandler
-
-    // if (!handlerFunctions.includes(handler)) {
-    //   handler = ''
-    //   this.setHandlerFunction(handler)
-    // }
-
     let isValid = this.props.fileChangeWatcher.isValid()
     if (!isValid) {
       this.setState({ ready: false })
@@ -458,8 +454,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     }
 
     const envVars = this.props.fileChangeWatcher.getEnvVars()
-
-    console.log('event is', this.state.httpRequestEvent)
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload = {
@@ -514,11 +508,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     this.setState({
       projectRunType: runType,
     })
-    // if (runType !== RunType.HANDLER_FUNCTION) {
-    //   this.setState({ selectedHandler: '' })
-    // } else {
-    //   this.setState({ selectedHandler: this.props.project.runSettings.handlerFunction })
-    // }
   }
 
   componentDidMount() {
