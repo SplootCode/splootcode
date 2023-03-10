@@ -398,3 +398,27 @@ if test() == 2:
 
         f.seek(0)
         self.assertEqual(f.read(), "helLO\n")
+
+    def testDecorator(self):
+        splootFile = splootFromPython('''
+def do_twice(func):
+    def inner():
+        func()
+        func()
+    return inner
+
+@do_twice
+def say_hello():
+    print("hello")
+
+say_hello()
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        self.assertEqual(f.read(), "hello\nhello\n")
+

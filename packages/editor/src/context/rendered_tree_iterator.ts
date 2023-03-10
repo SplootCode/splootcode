@@ -30,7 +30,11 @@ export class RenderedTreeIterator {
       const childSetOrderIndex = childSetOrder.indexOf(listBlock.childSet.childParentRef.childSetId)
 
       let isLeftChild = false
-      if (listBlock.childSet.childParentRef.childSetId === parentNode.leftBreadcrumbChildSet) {
+      if (
+        [parentNode.leftBreadcrumbChildSet, parentNode.beforeStackChildSet].includes(
+          listBlock.childSet.childParentRef.childSetId
+        )
+      ) {
         isLeftChild = true
       }
 
@@ -73,6 +77,9 @@ export class RenderedTreeIterator {
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
 
   walkNodeLeft(node: NodeBlock) {
+    if (node.beforeStackChildSet) {
+      this.walkChildSet(node.renderedChildSets[node.beforeStackChildSet], 0, false)
+    }
     if (node.leftBreadcrumbChildSet) {
       this.walkChildSet(node.renderedChildSets[node.leftBreadcrumbChildSet], 0, false)
     }
@@ -81,7 +88,7 @@ export class RenderedTreeIterator {
   walkNode(node: NodeBlock) {
     this.visitNodeMiddle(node)
     for (const childSetID of node.childSetOrder) {
-      if (childSetID !== node.leftBreadcrumbChildSet) {
+      if (childSetID !== node.leftBreadcrumbChildSet && childSetID !== node.beforeStackChildSet) {
         const listBlock = node.renderedChildSets[childSetID]
         this.walkChildSet(listBlock, 0, false)
       }
@@ -90,7 +97,9 @@ export class RenderedTreeIterator {
   }
 
   walkChildSet(listBlock: RenderedChildSetBlock, startIndex: number, startMidNode: boolean) {
-    const isLeft = listBlock.parentRef.childSetId === listBlock.parentRef.node.leftBreadcrumbChildSet
+    const isLeft =
+      listBlock.parentRef.childSetId === listBlock.parentRef.node.leftBreadcrumbChildSet ||
+      listBlock.parentRef.childSetId === listBlock.parentRef.node.beforeStackChildSet
     if (isLeft) {
       this.startRangeLeft()
     } else {

@@ -1,6 +1,7 @@
 import { action, observable } from 'mobx'
 
 import { AttachRightLayoutHandler } from './attach_right_layout_handler'
+import { BeforeStackLayoutHandler } from './before_stack_layout_handler'
 import { BlockChildSetLayoutHandler } from './block_layout_handler'
 import { BreadcrumbsLayoutHandler } from './breadcrumbs_layout_handler'
 import {
@@ -86,6 +87,9 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         break
       case LayoutComponentType.CHILD_SET_STACK:
         this.layoutHandler = new StackLayoutHandler()
+        break
+      case LayoutComponentType.CHILD_SET_BEFORE_STACK:
+        this.layoutHandler = new BeforeStackLayoutHandler()
         break
       case LayoutComponentType.CHILD_SET_TOKEN_LIST:
         this.layoutHandler = new TokenLayoutHandler()

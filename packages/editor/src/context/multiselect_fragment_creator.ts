@@ -33,6 +33,11 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
       const leftChildSetStack = this.leftChildSetStack.pop()
       thisNode.childSets[node.leftBreadcrumbChildSet] = leftChildSetStack
     }
+    if (node.beforeStackChildSet) {
+      // Resolve the before stack, now that we know this node is included.
+      const leftChildSetStack = this.leftChildSetStack.pop()
+      thisNode.childSets[node.beforeStackChildSet] = leftChildSetStack
+    }
 
     if (this.childSetStack.length !== 0) {
       const curChildSetStack = this.childSetStack[this.childSetStack.length - 1]

@@ -50,6 +50,9 @@ export enum NodeCategory {
   PythonDictionaryKeyValue,
   PythonFunctionArgument,
   PythonFunctionArgumentValue,
+
+  // 40
+  PythonDecorator,
 }
 
 export interface SuggestionGenerator {

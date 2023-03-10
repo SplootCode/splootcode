@@ -68,6 +68,7 @@ export enum LayoutComponentType {
   CHILD_SET_TOKEN_LIST,
   CHILD_SET_BREADCRUMBS,
   CHILD_SET_STACK,
+  CHILD_SET_BEFORE_STACK,
 }
 
 export class LayoutComponent {

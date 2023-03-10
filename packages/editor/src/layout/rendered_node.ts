@@ -73,6 +73,8 @@ export class NodeBlock implements NodeObserver {
   rightAttachedChildSet: string
   @observable
   leftBreadcrumbChildSet: string
+  @observable
+  beforeStackChildSet: string
 
   @observable
   x: number
@@ -92,6 +94,8 @@ export class NodeBlock implements NodeObserver {
   marginLeft: number
   @observable
   marginTop: number
+  @observable
+  beforeStackHeight: number
 
   @observable
   runtimeAnnotations: NodeAnnotation[]
@@ -137,8 +141,10 @@ export class NodeBlock implements NodeObserver {
 
     this.rowHeight = NODE_BLOCK_HEIGHT
     this.indentedBlockHeight = 0
+    this.beforeStackHeight = 0
     this.rightAttachedChildSet = null
     this.leftBreadcrumbChildSet = null
+    this.beforeStackChildSet = null
 
     this.layout.components.forEach((component: LayoutComponent, idx: number) => {
       if (
@@ -148,7 +154,8 @@ export class NodeBlock implements NodeObserver {
         component.type === LayoutComponentType.CHILD_SET_TOKEN_LIST ||
         component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT ||
         component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS ||
-        component.type === LayoutComponentType.CHILD_SET_STACK
+        component.type === LayoutComponentType.CHILD_SET_STACK ||
+        component.type === LayoutComponentType.CHILD_SET_BEFORE_STACK
       ) {
         const childSet = node.getChildSet(component.identifier)
         this.childSetOrder.push(component.identifier)
@@ -219,6 +226,13 @@ export class NodeBlock implements NodeObserver {
         childSetBlock.calculateDimensions(x, y + this.rowHeight + this.indentedBlockHeight, selection)
         this.indentedBlockHeight += childSetBlock.height
         this.width = Math.max(this.width, childSetBlock.width)
+      } else if (component.type === LayoutComponentType.CHILD_SET_BEFORE_STACK) {
+        const childSetBlock = this.renderedChildSets[component.identifier]
+        childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
+        this.marginTop = this.marginTop + childSetBlock.height
+        this.width = Math.max(this.width, childSetBlock.width)
+        this.beforeStackChildSet = component.identifier
+        this.beforeStackHeight = childSetBlock.height
       } else if (component.type === LayoutComponentType.CAP) {
         const width = stringWidth(component.identifier) + nodeInlineSpacing * 2
         this.blockWidth += width
@@ -317,14 +331,21 @@ export class NodeBlock implements NodeObserver {
       cursorMap.registerNodeStart(
         new NodeCursor(this.parentChildSet, this.index),
         this.x + this.marginLeft,
-        this.y,
-        this.marginTop
+        this.y + this.marginTop
       )
+      if (this.marginTop !== 0) {
+        cursorMap.addMarginToLine(this.y, this.marginTop - this.beforeStackHeight)
+      }
+
       for (const layoutComponent of this.layout.components) {
         if (layoutComponent.type === LayoutComponentType.CHILD_SET_BLOCK) {
           // This node has a block. Add a newline cursor after this node for the first line of the block.
           const renderedChildSet = this.renderedChildSets[layoutComponent.identifier]
-          cursorMap.registerEndCursor(new NodeCursor(renderedChildSet, 0), this.x + this.rowWidth, this.y)
+          cursorMap.registerEndCursor(
+            new NodeCursor(renderedChildSet, 0),
+            this.x + this.rowWidth,
+            this.y + this.marginTop
+          )
         }
       }
     }
