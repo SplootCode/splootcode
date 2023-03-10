@@ -26,5 +26,4 @@ export interface FileChangeWatcher {
   getUpdatedFileState: () => Promise<Map<string, FileSpec>>
   getAllFileState: () => Promise<Map<string, FileSpec>>
   getEnvVars: () => Map<string, string>
-  getHandlerFunctions: () => string[]
 }
