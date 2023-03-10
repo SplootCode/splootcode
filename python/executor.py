@@ -757,7 +757,7 @@ class SplootCapture:
 capture = None
 
 
-def executePythonFile(tree, runType: str, eventData=None):
+def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
     global capture
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
