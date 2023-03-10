@@ -87,8 +87,9 @@ export type WorkerMessage =
 
 export interface RunMessage {
   type: 'run'
-  handlerFunction: string
-  handlerFunctionArgs: unknown
+  // handlerFunction: string
+  runType: RunType
+  eventData: unknown
   workspace: Map<string, FileSpec>
   envVars: Map<string, string>
   stdinBuffer: Int32Array
@@ -98,8 +99,9 @@ export interface RunMessage {
 
 export interface RerunMessage {
   type: 'rerun'
-  handlerFunction: string
-  handlerFunctionArgs: unknown
+  // handlerFunction: string
+  runType: RunType
+  eventData: unknown
   workspace: Map<string, FileSpec>
   envVars: Map<string, string>
   readlines: string[]
@@ -127,3 +129,9 @@ export type EditorMessage =
   | WorkerModuleInfoMessage
   | WorkerStdoutMessage
   | WorkerStderrMessage
+
+export enum RunType {
+  COMMAND_LINE = 'COMMAND_LINE',
+  HTTP_REQUEST = 'HTTP_REQUEST',
+  SCHEDULE = 'SCHEDULE',
+}

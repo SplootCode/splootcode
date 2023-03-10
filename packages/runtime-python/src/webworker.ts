@@ -1,4 +1,11 @@
-import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import {
+  FetchSyncErrorType,
+  FileSpec,
+  ResponseData,
+  RunType,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './runtime/common'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -156,8 +163,8 @@ const syncFetch = (method: string, url: string, headers: any, body: any): Respon
 let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
-let handlerFunction = ''
-let handlerFunctionArgs = {}
+let runType: RunType | null = null
+let eventData = {}
 
 const EnvVarCode = `
 import os;
@@ -179,11 +186,11 @@ const run = async () => {
 
     await pyodide.runPython(executorCode)
 
-    console.log('about to exec', handlerFunctionArgs)
+    // console.log('about to exec', handlerFunctionArgs)
 
-    if (handlerFunctionArgs) {
-      pyodide.globals.set('__spt__handler_args__', handlerFunctionArgs)
-    }
+    // if (handlerFunctionArgs) {
+    //   pyodide.globals.set('__spt__handler_args__', handlerFunctionArgs)
+    // }
   } catch (err) {
     sendMessage({
       type: 'stderr',
@@ -250,11 +257,11 @@ export const initialize = async (urls: StaticURLs) => {
       }
       return pyodide.toPy(0)
     },
-    getHandlerFunction: () => {
-      return handlerFunction
+    getRunType: () => {
+      return runType as string
     },
-    getHandlerFunctionArgs: () => {
-      return pyodide.toPy(handlerFunctionArgs)
+    getEventData: () => {
+      return pyodide.toPy(eventData)
     },
   })
   pyodide.registerJsModule('runtime_capture', {
@@ -285,8 +292,9 @@ export const initialize = async (urls: StaticURLs) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
-      handlerFunction = e.data.handlerFunction
-      handlerFunctionArgs = e.data.handlerFunctionArgs
+      // handlerFunction = e.data.handlerFunction
+      eventData = e.data.eventData
+      runType = e.data.runType
       workspace = e.data.workspace
       stdinbuffer = e.data.stdinBuffer
       fetchBuffer = e.data.fetchBuffer
@@ -297,8 +305,10 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
-      handlerFunction = e.data.handlerFunction
-      handlerFunctionArgs = e.data.handlerFunctionArgs
+      // handlerFunction = e.data.handlerFunction
+      runType = e.data.runType
+
+      eventData = e.data.eventData
       workspace = e.data.workspace
       stdinbuffer = null
       fetchBuffer = null

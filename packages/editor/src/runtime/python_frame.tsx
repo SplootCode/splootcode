@@ -4,7 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Button, ButtonGroup, Collapse, Select } from '@chakra-ui/react'
+import { Button, ButtonGroup, Collapse } from '@chakra-ui/react'
 import { CapturePayload, HTTPRequestEvent, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
@@ -29,9 +29,8 @@ interface ConsoleState {
   running: boolean
   runtimeCapture: boolean
   frameSrc: string
-  handlerFunctions: string[]
-  selectedHandler: string
   httpRequestEvent?: HTTPRequestEvent
+  projectRunType: RunType
 
   showExtraRuntimeOptions: boolean
 }
@@ -63,11 +62,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.handleResize()
     })
 
-    let selectedHanlder = ''
-    if (this.props.project.runSettings.runType == RunType.HANDLER_FUNCTION) {
-      selectedHanlder = this.props.project.runSettings.handlerFunction
-    }
-
     let httpRequestEvent: HTTPRequestEvent | null = null
     if (this.props.project.runSettings.httpScenarios.length > 0) {
       httpRequestEvent = this.props.project.runSettings.httpScenarios[0]
@@ -78,32 +72,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       running: false,
       runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
-      handlerFunctions: [],
-      selectedHandler: selectedHanlder,
+      projectRunType: this.props.project.runSettings.runType,
       httpRequestEvent: httpRequestEvent,
       showExtraRuntimeOptions: false,
-    }
-  }
-
-  setHandlerFunction = (functionName: string) => {
-    console.log('setting', functionName)
-    this.setState({ selectedHandler: functionName })
-    if (functionName == '') {
-      let rt = this.props.project.runSettings.runType
-      if (rt !== RunType.COMMAND_LINE && rt !== RunType.HTTP_REQUEST) {
-        rt = RunType.COMMAND_LINE
-      }
-
-      this.props.project.setRunSettings({
-        runType: rt,
-        httpScenarios: this.props.project.runSettings.httpScenarios,
-      })
-    } else if (this.props.project.runSettings.runType === RunType.HANDLER_FUNCTION) {
-      this.props.project.setRunSettings({
-        runType: RunType.HANDLER_FUNCTION,
-        handlerFunction: functionName,
-        httpScenarios: this.props.project.runSettings.httpScenarios,
-      })
     }
   }
 
@@ -118,7 +89,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
-              {this.state.handlerFunctions.length > 0 ? (
+              {/* {this.state.handlerFunctions.length > 0 ? (
                 <Select
                   size="sm"
                   value={this.state.selectedHandler}
@@ -133,7 +104,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                     )
                   })}
                 </Select>
-              ) : null}
+              ) : null} */}
+
               {/* {RunType.HTTP_REQUEST in this.props.project.runSettings.paramOptions ? (
                 <Select size="sm" onChange={(e) => this.setHandlerFunctionArgs(e.target.value)}>
                   {this.props.project.runSettings.paramOptions[RunType.HTTP_REQUEST].map((v, i) => {
@@ -185,19 +157,17 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   run = async () => {
-    console.log('run', this.state.selectedHandler)
     this.term.clear()
     this.wasmTty.clearTty()
-    this.postMessageToFrame({ type: 'run', handlerFunction: this.state.selectedHandler })
+    this.postMessageToFrame({ type: 'run', runType: this.props.project.runSettings.runType })
     this.setState({ running: true })
   }
 
   rerun = async () => {
-    console.log('rerun', this.state.selectedHandler)
-
     this.wasmTty.clearTty()
     this.term.clear()
-    this.postMessageToFrame({ type: 'rerun', handlerFunction: this.state.selectedHandler })
+    this.postMessageToFrame({ type: 'run', runType: this.props.project.runSettings.runType })
+
     this.setState({ running: true })
   }
 
@@ -455,11 +425,11 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    const handlerFunctions = this.props.fileChangeWatcher.getHandlerFunctions()
-    this.setState({ handlerFunctions })
+    // const handlerFunctions = this.props.fileChangeWatcher.getHandlerFunctions()
+    // this.setState({ handlerFunctions })
 
     console.log(this.state)
-    const handler = this.state.selectedHandler
+    // const handler = this.state.selectedHandler
 
     // if (!handlerFunctions.includes(handler)) {
     //   handler = ''
@@ -495,8 +465,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const payload = {
       type: messageType,
       data: { files: fileState, envVars: envVars },
-      handlerFunction: handler,
-      handlerFunctionArgs: this.state.httpRequestEvent,
+      // handlerFunction: handler,
+      runType: this.state.projectRunType,
+      eventData: this.state.httpRequestEvent,
     }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
@@ -540,11 +511,14 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
   refreshProjectRunSettings = () => {
     const runType = this.props.project.runSettings.runType
-    if (runType !== RunType.HANDLER_FUNCTION) {
-      this.setState({ selectedHandler: '' })
-    } else {
-      this.setState({ selectedHandler: this.props.project.runSettings.handlerFunction })
-    }
+    this.setState({
+      projectRunType: runType,
+    })
+    // if (runType !== RunType.HANDLER_FUNCTION) {
+    //   this.setState({ selectedHandler: '' })
+    // } else {
+    //   this.setState({ selectedHandler: this.props.project.runSettings.handlerFunction })
+    // }
   }
 
   componentDidMount() {

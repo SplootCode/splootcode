@@ -1,4 +1,12 @@
-import { EditorMessage, FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import {
+  EditorMessage,
+  FetchHandler,
+  FileSpec,
+  ResponseData,
+  RunType,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './common'
 
 const INPUT_BUF_SIZE = 100
 
@@ -65,12 +73,7 @@ export class WorkerManager {
     this.worker.postMessage(message)
   }
 
-  run(
-    handlerFunction: string,
-    handlerFunctionArgs: unknown,
-    workspace: Map<string, FileSpec>,
-    envVars: Map<string, string>
-  ) {
+  run(runType: RunType, eventData: unknown, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
     this.inputPlayback = []
     this.requestPlayback = new Map()
     this.stdinbuffer = new Int32Array(new SharedArrayBuffer(INPUT_BUF_SIZE * Int32Array.BYTES_PER_ELEMENT))
@@ -82,8 +85,9 @@ export class WorkerManager {
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'run',
-      handlerFunction: handlerFunction,
-      handlerFunctionArgs: handlerFunctionArgs,
+      runType: runType,
+      // handlerFunction: handlerFunction,
+      eventData: eventData,
       workspace: workspace,
       envVars: envVars,
       stdinBuffer: this.stdinbuffer,
@@ -92,18 +96,13 @@ export class WorkerManager {
     })
   }
 
-  rerun(
-    handlerFunction: string,
-    handlerFunctionArgs: unknown,
-    workspace: Map<string, FileSpec>,
-    envVars: Map<string, string>
-  ) {
+  rerun(runType: RunType, eventData: unknown, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'rerun',
-      handlerFunction: handlerFunction,
-      handlerFunctionArgs: handlerFunctionArgs,
+      runType: runType,
+      eventData: eventData,
       workspace: workspace,
       envVars: envVars,
       readlines: this.inputPlayback,

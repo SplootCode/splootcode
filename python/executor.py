@@ -757,40 +757,40 @@ class SplootCapture:
 capture = None
 
 
-def executePythonFile(tree, handlerFunction=None, handlerFunctionArgs:list=None):
+def executePythonFile(tree, runType: str, eventData=None):
     global capture
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
-        if handlerFunction:
-            functionName = ast.Name(handlerFunction, ctx=ast.Load())
-            args = []
-            # if handlerFunctionArgs:
-            #     args = [ast.Starred(ast.Name(SPLOOT_HANDLER_ARGS, ctx=ast.Load()), ctx=ast.Load())]
 
-            func_call = ast.Call(functionName, args=args, keywords=[])
-            call_statement = ast.Expr(func_call, lineno=1, col_offset=0)
-            statements.append(call_statement)
+        if runType == "COMMAND_LINE" or runType == "SCHEDULE":
+            # to run these, we just run the entire file!
+            pass
+        elif runType == "HTTP_REQUEST":
+            # we need to parse our http scenario event into serverless_wsgi so
+            if not eventData:
+                raise Exception("Need an event to run a HTTP request")
 
-        if handlerFunctionArgs:
-            extra = ast.parse("""
+            extra = ast.parse(f"""
 import serverless_wsgi
 
-# print(__spt__handler_args__)
-
-print(serverless_wsgi.handle_request(app, __spt__handler_args__, {}))
+print(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
             """)
 
-            statements.extend(extra.body)
+            # TODO(harrison): surface this return value somewhere (via runtime capture?)
 
+            statements.extend(extra.body)
+        else:
+            raise NotImplementedError("This run type is not implemented: " + runType)
 
         mods = ast.Module(body=statements, type_ignores=[])
         code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
         # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
+        # print()
 
         capture = SplootCapture()
         try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: handlerFunctionArgs})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))
@@ -833,8 +833,9 @@ if __name__ == "__main__":
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
     iterationLimit = nodetree.getIterationLimit()
-    handler = nodetree.getHandlerFunction()
-    handlerArgs = nodetree.getHandlerFunctionArgs()
-    cap = executePythonFile(tree, handler, handlerArgs)
+    # handler = nodetree.getHandlerFunction()
+    runType = nodetree.getRunType()
+    eventData = nodetree.getEventData()
+    cap = executePythonFile(tree, runType, eventData)
     if cap:
         runtime_capture.report(json.dumps(cap))
