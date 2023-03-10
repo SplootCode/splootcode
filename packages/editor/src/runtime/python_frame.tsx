@@ -459,7 +459,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const payload = {
       type: messageType,
       data: { files: fileState, envVars: envVars },
-      // handlerFunction: handler,
       runType: this.state.projectRunType,
       eventData: this.state.httpRequestEvent,
     }

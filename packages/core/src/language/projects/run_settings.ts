@@ -11,7 +11,6 @@ export enum RunType {
 
 export interface RunSettings {
   runType: RunType
-  handlerFunction?: string
 
   httpScenarios?: HTTPRequestEvent[]
 }

@@ -833,7 +833,6 @@ if __name__ == "__main__":
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
     iterationLimit = nodetree.getIterationLimit()
-    # handler = nodetree.getHandlerFunction()
     runType = nodetree.getRunType()
     eventData = nodetree.getEventData()
     cap = executePythonFile(tree, runType, eventData)

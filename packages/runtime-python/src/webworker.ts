@@ -185,12 +185,6 @@ const run = async () => {
     })
 
     await pyodide.runPython(executorCode)
-
-    // console.log('about to exec', handlerFunctionArgs)
-
-    // if (handlerFunctionArgs) {
-    //   pyodide.globals.set('__spt__handler_args__', handlerFunctionArgs)
-    // }
   } catch (err) {
     sendMessage({
       type: 'stderr',
@@ -292,7 +286,6 @@ export const initialize = async (urls: StaticURLs) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
-      // handlerFunction = e.data.handlerFunction
       eventData = e.data.eventData
       runType = e.data.runType
       workspace = e.data.workspace
@@ -305,7 +298,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
-      // handlerFunction = e.data.handlerFunction
       runType = e.data.runType
 
       eventData = e.data.eventData

@@ -20,7 +20,6 @@ class RuntimeStateManager {
   private initialFilesLoaded: boolean
   private stdinPromiseResolve: (s: string) => void
   private fetchHandler: FetchHandler
-  // private handlerFunction: string
   private runType: RunType
   private eventData: unknown
 
@@ -32,7 +31,6 @@ class RuntimeStateManager {
     this.workspace = new Map()
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
-    // this.handlerFunction = ''
     this.eventData = {}
   }
 

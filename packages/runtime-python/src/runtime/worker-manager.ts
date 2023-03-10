@@ -86,7 +86,6 @@ export class WorkerManager {
     this.sendMessage({
       type: 'run',
       runType: runType,
-      // handlerFunction: handlerFunction,
       eventData: eventData,
       workspace: workspace,
       envVars: envVars,

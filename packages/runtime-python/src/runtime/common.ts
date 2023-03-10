@@ -87,7 +87,6 @@ export type WorkerMessage =
 
 export interface RunMessage {
   type: 'run'
-  // handlerFunction: string
   runType: RunType
   eventData: unknown
   workspace: Map<string, FileSpec>
@@ -99,7 +98,6 @@ export interface RunMessage {
 
 export interface RerunMessage {
   type: 'rerun'
-  // handlerFunction: string
   runType: RunType
   eventData: unknown
   workspace: Map<string, FileSpec>

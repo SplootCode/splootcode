@@ -116,7 +116,6 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
       this.loadModule(mutation.moduleName)
     }
     // TODO: Deal with a rename better than we currently do.
-    // this.scanForHandlerFunctions()
   }
 
   handleProjectMutation = (mutation: ProjectMutation) => {
