@@ -1,4 +1,4 @@
-import { HTTPRequestEvent } from '../../http_types'
+import { HTTPScenario } from '../../http_types'
 
 export enum RunType {
   // deprecated
@@ -11,6 +11,7 @@ export enum RunType {
 
 export interface RunSettings {
   runType: RunType
+  handlerFunction?: string
 
-  httpScenarios?: HTTPRequestEvent[]
+  httpScenarios?: HTTPScenario[]
 }

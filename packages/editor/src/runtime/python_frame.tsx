@@ -5,7 +5,7 @@ import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { Box, Button, ButtonGroup, Collapse, Select } from '@chakra-ui/react'
-import { CapturePayload, HTTPRequestEvent, Project, RunType } from '@splootcode/core'
+import { CapturePayload, HTTPScenario, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
@@ -29,7 +29,7 @@ interface ConsoleState {
   running: boolean
   runtimeCapture: boolean
   frameSrc: string
-  httpRequestEvent?: HTTPRequestEvent
+  selectedHTTPScenario?: HTTPScenario
   projectRunType: RunType
 
   showExtraRuntimeOptions: boolean
@@ -62,9 +62,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.handleResize()
     })
 
-    let httpRequestEvent: HTTPRequestEvent | null = null
+    let httpScenario: HTTPScenario | null = null
     if (this.props.project.runSettings.httpScenarios.length > 0) {
-      httpRequestEvent = this.props.project.runSettings.httpScenarios[0]
+      httpScenario = this.props.project.runSettings.httpScenarios[0]
     }
 
     this.state = {
@@ -73,7 +73,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
       projectRunType: this.props.project.runSettings.runType,
-      httpRequestEvent: httpRequestEvent,
+      selectedHTTPScenario: httpScenario,
       showExtraRuntimeOptions: false,
     }
   }
@@ -133,14 +133,14 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                     size="sm"
                     onChange={(e) =>
                       this.setState({
-                        httpRequestEvent: JSON.parse(e.target.value),
+                        selectedHTTPScenario: JSON.parse(e.target.value),
                       })
                     }
                   >
                     {this.props.project.runSettings.httpScenarios.map((v, i) => {
                       return (
                         <option key={i} value={JSON.stringify(v)}>
-                          Option {i + 1}
+                          Option: {v.name}
                         </option>
                       )
                     })}
@@ -460,7 +460,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       type: messageType,
       data: { files: fileState, envVars: envVars },
       runType: this.state.projectRunType,
-      eventData: this.state.httpRequestEvent,
+      eventData: this.state.selectedHTTPScenario.event,
     }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)

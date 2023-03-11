@@ -11,6 +11,7 @@ export interface RequestContext {
 }
 
 export interface HTTPRequestEvent {
+  version: string
   rawPath: string
   rawQueryString: string
   cookies: string[]
@@ -18,4 +19,9 @@ export interface HTTPRequestEvent {
   requestContext: RequestContext
   body: string
   isBase64Encoded: boolean
+}
+
+export interface HTTPScenario {
+  name: string
+  event: HTTPRequestEvent
 }
