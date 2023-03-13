@@ -268,6 +268,14 @@ export const initialize = async (urls: StaticURLs) => {
       })
     },
   })
+  pyodide.registerJsModule('web_response', {
+    report: (json_dump) => {
+      sendMessage({
+        type: 'web_response',
+        response: JSON.parse(json_dump),
+      })
+    },
+  })
   pyodide.registerJsModule('__splootcode_internal', {
     sync_fetch: syncFetch,
   })

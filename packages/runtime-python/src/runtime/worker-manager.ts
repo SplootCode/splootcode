@@ -237,7 +237,7 @@ export class WorkerManager {
       this.handleFetch(fetchData)
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
-    } else if (type === 'runtime_capture' || type === 'module_info') {
+    } else if (type === 'runtime_capture' || type === 'module_info' || type === 'web_response') {
       this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY

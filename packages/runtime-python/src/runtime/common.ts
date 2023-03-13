@@ -71,6 +71,11 @@ export interface WorkerRuntimeCaptureMessage {
   captures: Map<string, any>
 }
 
+export interface WorkerWebResponseMessage {
+  type: 'web_response'
+  response: unknown
+}
+
 export interface WorkerModuleInfoMessage {
   type: 'module_info'
   info: any
@@ -84,6 +89,7 @@ export type WorkerMessage =
   | WorkerFetchMessage
   | WorkerRuntimeCaptureMessage
   | WorkerModuleInfoMessage
+  | WorkerWebResponseMessage
 
 export interface RunMessage {
   type: 'run'
@@ -127,6 +133,7 @@ export type EditorMessage =
   | WorkerModuleInfoMessage
   | WorkerStdoutMessage
   | WorkerStderrMessage
+  | WorkerWebResponseMessage
 
 export enum RunType {
   COMMAND_LINE = 'COMMAND_LINE',

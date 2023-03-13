@@ -12,3 +12,10 @@
   width: 0;
   height: 0;
 }
+
+#frame-container {
+  position: relative;
+  height: 10vh;
+  background-color: white;
+  color: white;
+}

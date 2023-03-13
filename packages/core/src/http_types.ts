@@ -25,3 +25,10 @@ export interface HTTPScenario {
   name: string
   event: HTTPRequestEvent
 }
+
+export interface HTTPResponse {
+  statusCode: number
+  headers: Record<string, string>
+  body: string
+  isBase64Encoded: boolean
+}

@@ -4,11 +4,12 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Box, Button, ButtonGroup, Collapse, Select } from '@chakra-ui/react'
-import { CapturePayload, HTTPScenario, Project, RunType } from '@splootcode/core'
+import { Box, Button, ButtonGroup, Collapse, Select, Text } from '@chakra-ui/react'
+import { CapturePayload, HTTPResponse, HTTPScenario, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
+import { ResponseViewer } from './response_viewer'
 import { Terminal } from 'xterm'
 
 export interface RuntimeToken {
@@ -33,6 +34,8 @@ interface ConsoleState {
   projectRunType: RunType
 
   showExtraRuntimeOptions: boolean
+
+  responseData?: HTTPResponse
 }
 
 export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
@@ -75,6 +78,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       projectRunType: this.props.project.runSettings.runType,
       selectedHTTPScenario: httpScenario,
       showExtraRuntimeOptions: false,
+      responseData: null,
     }
   }
 
@@ -149,8 +153,17 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               </Box>
             </Collapse>
           </div>
-          <div id="terminal" ref={this.termRef} />
+          {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+            <ResponseViewer response={this.state.responseData} />
+          ) : null}
+
+          <Box p="1">
+            <Text>Console</Text>
+
+            <div id="terminal" ref={this.termRef} />
+          </Box>
         </div>
+
         <iframe
           ref={this.frameRef}
           id="view-python-frame"
@@ -400,6 +413,15 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       case 'refresh_token':
         this.refreshToken()
         break
+      case 'web_response':
+        const response = event.data.response as HTTPResponse
+        console.log('got web response', event.data)
+
+        this.setState({
+          responseData: response,
+        })
+
+        break
       default:
         console.warn('Unknown event from frame: ', event)
     }
@@ -455,12 +477,17 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
+    let event = null
+    if (this.state.selectedHTTPScenario) {
+      event = this.state.selectedHTTPScenario.event
+    }
+
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload = {
       type: messageType,
       data: { files: fileState, envVars: envVars },
       runType: this.state.projectRunType,
-      eventData: this.state.selectedHTTPScenario.event,
+      eventData: event,
     }
     this.postMessageToFrame(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
