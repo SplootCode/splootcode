@@ -48,7 +48,11 @@ export class RenderedTreeIterator {
         // Childsets after this one in the parent childset order
         const childSetCursors: [NodeCursor, boolean][] = []
         childSetOrder.forEach((childSetID, idx) => {
-          if (idx > childSetOrderIndex && childSetID !== parentNode.leftBreadcrumbChildSet) {
+          if (
+            idx > childSetOrderIndex &&
+            childSetID !== parentNode.leftBreadcrumbChildSet &&
+            childSetID !== parentNode.beforeStackChildSet
+          ) {
             childSetCursors.push([new NodeCursor(parentNode.renderedChildSets[childSetID], 0), true /* isCursor */])
           }
         })

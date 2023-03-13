@@ -7,6 +7,7 @@ import {
   NodeLayout,
   ParentReference,
   SerializedNode,
+  SplootNode,
   SuggestedNode,
   SuggestionGenerator,
   TypeRegistration,
@@ -80,7 +81,13 @@ export class PythonDecorator extends PythonNode {
       new LayoutComponent(LayoutComponentType.KEYWORD, '@'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'expression'),
     ])
-    typeRegistration.pasteAdapters = {}
+    typeRegistration.pasteAdapters = {
+      PYTHON_FUNCTION_DECLARATION: (node: SplootNode) => {
+        const funcNode = new PythonFunctionDeclaration(null)
+        funcNode.getDecoratorSet().addChild(node)
+        return funcNode
+      },
+    }
 
     registerType(typeRegistration)
     registerNodeCateogry(PYTHON_DECORATOR, NodeCategory.PythonDecorator)

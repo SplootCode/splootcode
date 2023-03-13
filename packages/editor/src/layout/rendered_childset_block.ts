@@ -158,7 +158,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
 
   getChainToRoot(): number[] {
     const index = this.parentRef.node.childSetOrder.indexOf(this.parentRef.childSetId)
-    if (this.parentRef.node.leftBreadcrumbChildSet === this.parentRef.childSetId) {
+    if (
+      this.parentRef.node.leftBreadcrumbChildSet === this.parentRef.childSetId ||
+      this.parentRef.node.beforeStackChildSet === this.parentRef.childSetId
+    ) {
       return this.parentRef.node.getChainToRoot().concat(-1)
     }
     return this.parentRef.node.getChainToRoot().concat(index)
@@ -274,6 +277,10 @@ export class RenderedChildSetBlock implements ChildSetObserver {
     const node = this.nodes[index]
     if (node.leftBreadcrumbChildSet) {
       const listBlock = node.renderedChildSets[node.leftBreadcrumbChildSet]
+      return new NodeCursor(listBlock, listBlock.nodes.length)
+    }
+    if (node.beforeStackChildSet) {
+      const listBlock = node.renderedChildSets[node.beforeStackChildSet]
       return new NodeCursor(listBlock, listBlock.nodes.length)
     }
     return new NodeCursor(this, index)

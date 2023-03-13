@@ -164,9 +164,10 @@ export class NodeBlock implements NodeObserver {
         this.renderedChildSets[component.identifier] = renderedChildSet
         if (component.type === LayoutComponentType.CHILD_SET_ATTACH_RIGHT) {
           this.rightAttachedChildSet = component.identifier
-        }
-        if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
+        } else if (component.type === LayoutComponentType.CHILD_SET_BREADCRUMBS) {
           this.leftBreadcrumbChildSet = component.identifier
+        } else if (component.type === LayoutComponentType.CHILD_SET_BEFORE_STACK) {
+          this.beforeStackChildSet = component.identifier
         }
       }
     })
@@ -231,7 +232,6 @@ export class NodeBlock implements NodeObserver {
         childSetBlock.calculateDimensions(x, y + this.marginTop, selection)
         this.marginTop = this.marginTop + childSetBlock.height
         this.width = Math.max(this.width, childSetBlock.width)
-        this.beforeStackChildSet = component.identifier
         this.beforeStackHeight = childSetBlock.height
       } else if (component.type === LayoutComponentType.CAP) {
         const width = stringWidth(component.identifier) + nodeInlineSpacing * 2
@@ -452,7 +452,7 @@ export class NodeBlock implements NodeObserver {
 
   getNextChildCursorEvenIfInvalid(): NodeCursor {
     for (const childSetId of this.childSetOrder) {
-      if (this.leftBreadcrumbChildSet !== childSetId) {
+      if (this.leftBreadcrumbChildSet !== childSetId && this.beforeStackChildSet !== childSetId) {
         const childSetListBlock = this.renderedChildSets[childSetId]
         return new NodeCursor(childSetListBlock, 0)
       }
