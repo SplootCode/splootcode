@@ -14,8 +14,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from '@chakra-ui/react'
-import { Project, ProjectLoader } from '@splootcode/core'
+import { Project, ProjectLoader, RunType } from '@splootcode/core'
 
 function convertToURL(title: string) {
   return title
@@ -38,6 +39,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
   const [validID, setValidID] = useState(true)
+  const [projectType, setProjectType] = useState('')
 
   useEffect(() => {
     if (clonedFrom && projectLoader) {
@@ -82,9 +84,11 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
           onComplete(newOwner, projectID)
         })
       } else {
-        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI').then(() => {
-          onComplete(newOwner, projectID)
-        })
+        props.projectLoader
+          .newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', projectType as RunType)
+          .then(() => {
+            onComplete(newOwner, projectID)
+          })
       }
     }
   }
@@ -104,9 +108,29 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
                 <FormHelperText>Unique project ID: {projectID}</FormHelperText>
                 <FormErrorMessage>{errorMessage}</FormErrorMessage>
               </FormControl>
+
+              {!clonedFrom ? (
+                <FormControl mt="4">
+                  <FormLabel>Project type</FormLabel>
+
+                  <Select
+                    placeholder="Choose a project type"
+                    onChange={(ev) => setProjectType(ev.target.value)}
+                    value={projectType}
+                  >
+                    <option value={RunType.COMMAND_LINE}>Command line app</option>
+                    <option value={RunType.HTTP_REQUEST}>Webhook app</option>
+                    <option value={RunType.SCHEDULE}>Scheduled app</option>
+                  </Select>
+                </FormControl>
+              ) : null}
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" disabled={projectTitle === '' || projectID === '' || !validID} type="submit">
+              <Button
+                colorScheme="blue"
+                disabled={projectTitle === '' || projectID === '' || !validID || projectType == ''}
+                type="submit"
+              >
                 Create project
               </Button>
             </ModalFooter>

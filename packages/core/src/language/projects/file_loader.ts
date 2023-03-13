@@ -1,4 +1,5 @@
 import { Project } from './project'
+import { RunType } from './run_settings'
 import { SplootFile } from './file'
 import { SplootNode } from '../node'
 import { SplootPackage } from './package'
@@ -29,7 +30,13 @@ export interface ProjectLoader {
   isValidProjectId: (ownerId: string, projectId: string) => Promise<boolean>
   generateValidProjectId: (ownerId: string, projectId: string, title: string) => Promise<[string, string]>
   loadProject: (ownerId: string, projectId: string) => Promise<Project>
-  newProject: (ownerId: string, projectId: string, title: string, layoutType: string) => Promise<Project>
+  newProject: (
+    ownerId: string,
+    projectId: string,
+    title: string,
+    layoutType: string,
+    runType: RunType
+  ) => Promise<Project>
   deleteProject: (ownerId: string, projectId: string) => Promise<boolean>
   cloneProject: (newOwnerId: string, newProjectId: string, title: string, existingProject: Project) => Promise<Project>
   saveProject: (project: Project) => Promise<string>

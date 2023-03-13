@@ -74,13 +74,19 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return new Project(ownerId, proj, await Promise.all(packages), fileLoader)
   }
 
-  async newProject(ownerId: string, projectId: string, title: string, layoutType: string): Promise<Project> {
+  async newProject(
+    ownerId: string,
+    projectId: string,
+    title: string,
+    layoutType: string,
+    runType: RunType
+  ): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
 
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
-      runSettings: { runType: RunType.COMMAND_LINE },
+      runSettings: { runType, httpScenarios: [] },
       splootversion: '1.0.0',
       version: '1',
       title: title,
