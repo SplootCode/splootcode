@@ -5,7 +5,15 @@ import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { Box, Button, ButtonGroup, Select, Text } from '@chakra-ui/react'
-import { CapturePayload, HTTPResponse, HTTPScenario, Project, RunType } from '@splootcode/core'
+import {
+  CapturePayload,
+  HTTPRequestAWSEvent,
+  HTTPResponse,
+  HTTPScenario,
+  Project,
+  RunType,
+  httpRequestToHTTPRequestEvent,
+} from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
 import { FrameStateManager } from './frame_state_manager'
@@ -384,7 +392,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         break
       case 'web_response':
         const response = event.data.response as HTTPResponse
-        console.log('got web response', event.data)
 
         this.setState({
           responseData: response,
@@ -446,9 +453,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
-    let event = null
+    let event: HTTPRequestAWSEvent = null
     if (this.state.selectedHTTPScenario) {
-      event = this.state.selectedHTTPScenario.event
+      event = event = httpRequestToHTTPRequestEvent(this.state.selectedHTTPScenario.event)
     }
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
