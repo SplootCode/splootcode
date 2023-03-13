@@ -55,10 +55,14 @@ export function getSideEffectAnnotations(capture: StatementCapture): NodeAnnotat
     return []
   }
   const annotations: NodeAnnotation[] = []
-  const stdout = capture.sideEffects
+  let stdout = capture.sideEffects
     .filter((sideEffect) => sideEffect.type === 'stdout')
     .map((sideEffect) => sideEffect.value)
     .join('')
+
+  if (stdout.length > 20) {
+    stdout = stdout.substring(0, 17) + '...'
+  }
   annotations.push({
     type: NodeAnnotationType.SideEffect,
     value: {

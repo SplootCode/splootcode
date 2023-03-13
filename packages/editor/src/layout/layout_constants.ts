@@ -71,6 +71,11 @@ export function labelStringWidth(s: string) {
   return getTextWidth(s, "16px 'Karla'")
 }
 
+export async function awaitFontsLoaded() {
+  const promises = [document.fonts.load('16px "Karla"'), document.fonts.load("16px 'Inconsolata'")]
+  await Promise.all(promises)
+}
+
 export function preloadFonts() {
   stringWidth('loadfontplz')
   stringLiteralDimensions('loadfontplz')

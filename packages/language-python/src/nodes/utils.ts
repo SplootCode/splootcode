@@ -16,11 +16,17 @@ import { PythonNode } from './python_node'
 export function formatPythonData(value: string, type: string): string {
   switch (type) {
     case 'str':
+      if (value.length > 20) {
+        return `"${value.substring(0, 17)}..." (str)`
+      }
       return `"${value}" (str)`
     case 'bool':
     case 'NoneType':
       return value
     default:
+      if (value.length > 30) {
+        return `(${type})`
+      }
       return `${value} (${type})`
   }
 }
@@ -30,7 +36,7 @@ export function formatPythonReturnValue(value: ReturnValueAnnotation): string {
 }
 
 export function formatPythonAssingment(value: AssignmentAnnotation): string {
-  return `${value.variableName} = ${formatPythonData(value.value, value.type)}`
+  return `→ ${formatPythonData(value.value, value.type)}`
 }
 
 const UnaryOperators = {

@@ -500,7 +500,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   componentDidMount() {
     this.term = new Terminal({
       scrollback: 10000,
-      fontSize: 14,
+      fontSize: 15,
       theme: { background: '#040810' },
       fontFamily: 'Inconsolata, monospace',
     })

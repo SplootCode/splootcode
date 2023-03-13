@@ -7,6 +7,7 @@ import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } 
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { UndoWatcher } from './undoWatcher'
 import { action, observable } from 'mobx'
+import { awaitFontsLoaded } from 'src/layout/layout_constants'
 
 export class EditorState {
   project: Project
@@ -66,6 +67,8 @@ export class EditorState {
     await this.analyser.loadFile(file.name, rootNode)
     this.undoWatcher.setRootNode(rootNode)
 
+    // Make sure font is loaded before rendering.
+    await awaitFontsLoaded()
     // Prep NodeBlocks for rendering
     const newRootNode = new NodeBlock(null, loadedFile.rootNode, this.selection, 0)
 
