@@ -4,7 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Box, Button, ButtonGroup, Collapse, Select, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Select, Text } from '@chakra-ui/react'
 import { CapturePayload, HTTPResponse, HTTPScenario, Project, RunType } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
@@ -32,8 +32,6 @@ interface ConsoleState {
   frameSrc: string
   selectedHTTPScenario?: HTTPScenario
   projectRunType: RunType
-
-  showExtraRuntimeOptions: boolean
 
   responseData?: HTTPResponse
 }
@@ -77,13 +75,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       frameSrc: this.getFrameSrc(),
       projectRunType: this.props.project.runSettings.runType,
       selectedHTTPScenario: httpScenario,
-      showExtraRuntimeOptions: false,
       responseData: null,
     }
-  }
-
-  setShowExtraRuntimeOptions = (show: boolean) => {
-    this.setState({ showExtraRuntimeOptions: show })
   }
 
   setProjectRunType = (runType: string) => {
@@ -100,6 +93,19 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
+              <Select
+                size="sm"
+                value={this.state.selectedHTTPScenario?.name || ''}
+                onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
+              >
+                {this.props.project.runSettings.httpScenarios.map((scenario) => {
+                  return (
+                    <option key={scenario.name} value={JSON.stringify(scenario.event)}>
+                      {scenario.name}
+                    </option>
+                  )
+                })}
+              </Select>
               <Button
                 isLoading={running}
                 loadingText="Running"
@@ -114,44 +120,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               <Button disabled={!running} onClick={this.stop} height={8}>
                 Stop
               </Button>
-
-              <Button onClick={() => this.setShowExtraRuntimeOptions(!this.state.showExtraRuntimeOptions)} height={8}>
-                Settings
-              </Button>
             </ButtonGroup>
-
-            <Collapse in={this.state.showExtraRuntimeOptions} animateOpacity>
-              <Box m={'1'}>
-                <Select
-                  size="sm"
-                  value={this.state.projectRunType}
-                  onChange={(e) => this.setProjectRunType(e.target.value)}
-                >
-                  <option value={RunType.COMMAND_LINE}>Command line</option>
-                  <option value={RunType.HTTP_REQUEST}>HTTP Request</option>
-                  <option value={RunType.SCHEDULE}>Schedule</option>
-                </Select>
-
-                {this.state.projectRunType === RunType.HTTP_REQUEST ? (
-                  <Select
-                    size="sm"
-                    onChange={(e) =>
-                      this.setState({
-                        selectedHTTPScenario: JSON.parse(e.target.value),
-                      })
-                    }
-                  >
-                    {this.props.project.runSettings.httpScenarios.map((v, i) => {
-                      return (
-                        <option key={i} value={JSON.stringify(v)}>
-                          Option: {v.name}
-                        </option>
-                      )
-                    })}
-                  </Select>
-                ) : null}
-              </Box>
-            </Collapse>
           </div>
           {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
             <ResponseViewer response={this.state.responseData} />

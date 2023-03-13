@@ -6,6 +6,8 @@ import traceback
 
 SPLOOT_KEY = "__spt__"
 SPLOOT_HANDLER_ARGS="__spt__handler_args__"
+SPLOOT_RESPONSE_OBJ="__spt__response_obj__"
+
 iterationLimit = None
 
 def generateArgs(callNode):
@@ -759,6 +761,8 @@ capture = None
 
 def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
     global capture
+    global response
+
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
 
@@ -771,9 +775,15 @@ def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
                 raise Exception("Need an event to run a HTTP request")
 
             extra = ast.parse(f"""
+flask_app = None
+try:
+    flask_app = app
+except NameError:
+    print("Please call your flask app, `app`.")
+
 import serverless_wsgi
 
-print(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
+{SPLOOT_RESPONSE_OBJ}(serverless_wsgi.handle_request(flask_app, {SPLOOT_HANDLER_ARGS}, {{}}))
             """)
 
             # TODO(harrison): surface this return value somewhere (via runtime capture?)
@@ -789,8 +799,14 @@ print(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
         # print()
 
         capture = SplootCapture()
+        response = {}
+
+        def set_response(r):
+            global response
+            response = r
+
         try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData, SPLOOT_RESPONSE_OBJ: set_response}, {})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))
@@ -798,7 +814,7 @@ print(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
             capture.logException(type(e).__name__, str(e))
             traceback.print_exc()
 
-        return capture.toDict()
+        return (capture.toDict(), response)
 
 
 def wrapStdout(write):
@@ -812,6 +828,7 @@ if __name__ == "__main__":
     import fakeprint  # pylint: disable=import-error
     import nodetree  # pylint: disable=import-error
     import runtime_capture # pylint: disable=import-error
+    import web_response # pylint: disable=import-error
 
     # Only wrap stdin/stdout once.
     # Horrifying hack.
@@ -835,6 +852,8 @@ if __name__ == "__main__":
     iterationLimit = nodetree.getIterationLimit()
     runType = nodetree.getRunType()
     eventData = nodetree.getEventData()
-    cap = executePythonFile(tree, runType, eventData)
+    cap, response = executePythonFile(tree, runType, eventData)
     if cap:
         runtime_capture.report(json.dumps(cap))
+    if response:
+        web_response.report(json.dumps(response))
