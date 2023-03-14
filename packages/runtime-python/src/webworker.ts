@@ -1,4 +1,11 @@
-import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import {
+  FetchSyncErrorType,
+  FileSpec,
+  ResponseData,
+  RunType,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './runtime/common'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -156,7 +163,8 @@ const syncFetch = (method: string, url: string, headers: any, body: any): Respon
 let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
-let handlerFunction = ''
+let runType: RunType | null = null
+let eventData = {}
 
 const EnvVarCode = `
 import os;
@@ -215,6 +223,8 @@ interface StaticURLs {
   executorURL: string
   moduleLoaderURL: string
   requestsPackageURL: string
+  flaskPackageURL: string
+  serverlessWSGIPackageURL: string
 }
 
 export const initialize = async (urls: StaticURLs) => {
@@ -241,8 +251,11 @@ export const initialize = async (urls: StaticURLs) => {
       }
       return pyodide.toPy(0)
     },
-    getHandlerFunction: () => {
-      return handlerFunction
+    getRunType: () => {
+      return runType as string
+    },
+    getEventData: () => {
+      return pyodide.toPy(eventData)
     },
   })
   pyodide.registerJsModule('runtime_capture', {
@@ -255,12 +268,22 @@ export const initialize = async (urls: StaticURLs) => {
       })
     },
   })
+  pyodide.registerJsModule('web_response', {
+    report: (json_dump) => {
+      sendMessage({
+        type: 'web_response',
+        response: JSON.parse(json_dump),
+      })
+    },
+  })
   pyodide.registerJsModule('__splootcode_internal', {
     sync_fetch: syncFetch,
   })
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(urls.requestsPackageURL)
+  await micropip.install(urls.flaskPackageURL)
+  await micropip.install(urls.serverlessWSGIPackageURL)
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({
@@ -271,7 +294,8 @@ export const initialize = async (urls: StaticURLs) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
-      handlerFunction = e.data.handlerFunction
+      eventData = e.data.eventData
+      runType = e.data.runType
       workspace = e.data.workspace
       stdinbuffer = e.data.stdinBuffer
       fetchBuffer = e.data.fetchBuffer
@@ -282,7 +306,9 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
-      handlerFunction = e.data.handlerFunction
+      runType = e.data.runType
+
+      eventData = e.data.eventData
       workspace = e.data.workspace
       stdinbuffer = null
       fetchBuffer = null
