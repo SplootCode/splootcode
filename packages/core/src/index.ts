@@ -101,3 +101,13 @@ export { StaticFileLoader } from './code_io/static_file_loader'
 // Colors
 // TODO: Move colours to language-specific packages.
 export { HighlightColorCategory, ColorUsageType, getColor } from './colors'
+
+export {
+  HTTPRequest,
+  HTTPScenario,
+  HTTPResponse,
+  HTTPRequestAWSEvent,
+  httpRequestToHTTPRequestEvent,
+} from './http_types'
+
+export * from './feature_flags/feature_flags'

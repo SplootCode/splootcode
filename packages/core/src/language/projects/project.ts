@@ -41,7 +41,28 @@ export class Project {
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
     this.version = proj.version
-    this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE }
+    this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE, httpScenarios: [] }
+    if (!this.runSettings.httpScenarios) {
+      this.runSettings.httpScenarios = [
+        {
+          name: 'test',
+          event: {
+            version: '2.0',
+            rawQueryString: '?',
+            headers: {},
+            requestContext: {
+              http: {
+                method: 'GET',
+                path: '/',
+                protocol: 'HTTP/1.1',
+              },
+            },
+            body: '',
+            isBase64Encoded: false,
+          },
+        },
+      ]
+    }
     this.fileLoader = fileLoader
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
@@ -134,6 +155,7 @@ export class Project {
         return packRef
       }),
     }
+
     return JSON.stringify(serProj, null, 2) + '\n'
   }
 }

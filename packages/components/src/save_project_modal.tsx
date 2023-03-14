@@ -14,8 +14,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from '@chakra-ui/react'
-import { Project, ProjectLoader } from '@splootcode/core'
+import { ENABLE_HTTP_APPS_FLAG, Project, ProjectLoader, RunType, loadFeatureFlags } from '@splootcode/core'
 
 function convertToURL(title: string) {
   return title
@@ -38,6 +39,9 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
   const [validID, setValidID] = useState(true)
+  const [projectType, setProjectType] = useState('')
+
+  const featureFlags = loadFeatureFlags()
 
   useEffect(() => {
     if (clonedFrom && projectLoader) {
@@ -82,11 +86,23 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
           onComplete(newOwner, projectID)
         })
       } else {
-        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI').then(() => {
+        let runType = RunType.COMMAND_LINE
+        if (httpsAppsEnable) {
+          runType = projectType as RunType
+        }
+
+        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', runType).then(() => {
           onComplete(newOwner, projectID)
         })
       }
     }
+  }
+
+  const httpsAppsEnable = featureFlags.get(ENABLE_HTTP_APPS_FLAG)
+
+  let validType = true
+  if (httpsAppsEnable) {
+    validType = projectType === RunType.COMMAND_LINE || projectType === RunType.HTTP_REQUEST
   }
 
   return (
@@ -104,9 +120,28 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
                 <FormHelperText>Unique project ID: {projectID}</FormHelperText>
                 <FormErrorMessage>{errorMessage}</FormErrorMessage>
               </FormControl>
+
+              {httpsAppsEnable && !clonedFrom ? (
+                <FormControl mt="4">
+                  <FormLabel>Project type</FormLabel>
+
+                  <Select
+                    placeholder="Choose a project type"
+                    onChange={(ev) => setProjectType(ev.target.value)}
+                    value={projectType}
+                  >
+                    <option value={RunType.COMMAND_LINE}>Script app</option>
+                    <option value={RunType.HTTP_REQUEST}>Webhook app</option>
+                  </Select>
+                </FormControl>
+              ) : null}
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" disabled={projectTitle === '' || projectID === '' || !validID} type="submit">
+              <Button
+                colorScheme="blue"
+                disabled={projectTitle === '' || projectID === '' || !validID || !validType}
+                type="submit"
+              >
                 Create project
               </Button>
             </ModalFooter>

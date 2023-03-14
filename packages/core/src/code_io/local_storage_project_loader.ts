@@ -2,7 +2,7 @@ import { LocalStorageFileLoader } from './local_storage_file_loader'
 import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
-import { RunType } from 'src/language/projects/run_settings'
+import { RunType } from '../language/projects/run_settings'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 
 const startingPythonFile: SerializedNode = {
@@ -74,23 +74,31 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return new Project(ownerId, proj, await Promise.all(packages), fileLoader)
   }
 
-  async newProject(ownerId: string, projectId: string, title: string, layoutType: string): Promise<Project> {
+  async newProject(
+    ownerId: string,
+    projectId: string,
+    title: string,
+    layoutType: string,
+    runType: RunType
+  ): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
 
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
-      runSettings: { runType: RunType.COMMAND_LINE },
+      runSettings: { runType, httpScenarios: [] },
       splootversion: '1.0.0',
       version: '1',
       title: title,
       environmentVars: {},
       packages: [],
     }
+
     const proj = new Project(ownerId, serialisedProj, [], fileLoader)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
     await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
     await this.saveProject(proj)
+
     return proj
   }
 
