@@ -35,7 +35,7 @@ export const Entry = (props: EntryProps) => {
         return (
           <Box key={idx} py={2}>
             <MicroNode fragment={fragment} startDrag={startDrag} />
-            <Text textColor={'gray.400'} lineHeight={1.1} pt={1} pb={2} pl={0} pr={1}>
+            <Text textColor={'gray.300'} lineHeight={1.1} pt={1} pb={2} pl={0} pr={1}>
               {example.description}
             </Text>
           </Box>

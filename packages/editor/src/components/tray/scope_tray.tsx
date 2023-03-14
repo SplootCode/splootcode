@@ -92,16 +92,16 @@ export const ScopeTray = (props: EntryProps) => {
           <>
             <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
               {isExpanded ? (
-                <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                <ChevronDownIcon textColor={'gray.300'} mr={0.5} />
               ) : (
-                <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                <ChevronRightIcon textColor={'gray.300'} mr={0.5} />
               )}{' '}
               <Text>Variables</Text>
             </AccordionButton>
             <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
               {rootScope.hasEntries() ? (
                 <Box borderY={'solid 1px'} borderColor={'gray.700'} py={2} mb={2}>
-                  <Text textColor={'gray.400'} lineHeight={1.1} py={1} px={1}>
+                  <Text textColor={'gray.300'} lineHeight={1.1} py={1} px={1}>
                     Global
                   </Text>
                   <ScopeTree scope={rootScope} startDrag={startDrag} />

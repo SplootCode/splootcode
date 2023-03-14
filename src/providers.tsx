@@ -8,23 +8,24 @@ const config: ThemeConfig = {
 
 const colors = {
   gray: {
-    50: '#F7FAFC', // Original chakra
-    100: '#EDF2F7', // Original chakra
-    200: '#F3F5F9', // Sploot neutral 200
-    300: '#C8D3E9', // Sploot neutral 300
-    400: '#9DAAC1', // Sploot neutral 400
-    500: '#5E6C86', // Sploot neutral 500
-    600: '#3E4A60', // Sploot neutral 600
-    700: '#2F3848', // Sploot neutral 700
-    800: '#182134', // Sploot neutral 800
-    900: '#040810', // Sploot neutral 900
+    50: '#e8f3ff',
+    100: '#cfd7e4',
+    200: '#b3bccd',
+    300: '#95a1b6',
+    400: '#7886a0',
+    500: '#5f6d87',
+    600: '#49556a',
+    700: '#343c4d',
+    800: '#1e2431',
+    850: '#09101b',
+    900: '#060b14',
   },
 }
 
 const styles = {
   global: {
     body: {
-      bg: 'gray.900',
+      bg: 'gray.850',
     },
   },
 }

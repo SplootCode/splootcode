@@ -59,7 +59,10 @@ text {
   --code-comment-200: rgb(164, 166, 180);
   --code-comment-700: rgb(217, 220, 226);
 
+  /* --code-neutral-200: rgb(226, 226, 226); */
   --code-neutral-200: rgb(226, 226, 226);
+  --code-neutral-300: rgb(215, 215, 215);
+
   --code-neutral-700: rgb(97, 97, 96);
   --code-yellow-200: rgb(255 254 196);
   --code-yellow-700: rgb(139 139 109);
@@ -72,9 +75,9 @@ text {
   --code-green-200: rgb(123 216 188);
   --code-green-700: rgb(24, 126, 95);
 
-  --editor-bg-color: #000000;
+  --editor-bg-color: var(--chakra-colors-gray-900);
   --editor-text-color: #FFFFFF;
-  --editor-node-block-fill: #1e2730;
+  --editor-node-block-fill: #242b3a; /*#1e2730*/
   --editor-node-block-edge: var(--editor-node-block-fill);
   --editor-connector-stroke: #6d737c;
   --editor-connector-label: #87909d;
@@ -87,13 +90,13 @@ text {
   --editor-annotation-label: #87909d;
   --editor-annotation-error: #fa8039;
 
-  --editor-autocomplete-bg-color: var(--chakra-colors-gray-900);
+  --editor-autocomplete-bg-color: var(--chakra-colors-gray-850);
   --editor-autocomplete-edge-color: var(--chakra-colors-gray-700);
   --editor-autocomplete-text-color: var(--chakra-colors-gray-500);
   --editor-autocomplete-hover-color: rgb(103, 154, 242, 0.1);
   --editor-autocomplete-highlight-color: #034581;
-  --editor-autocomplete-highlight-text-color: var(--chakra-colors-gray-200);
-  --editor-autocomplete-highlight-placeholder-label: var(--chakra-colors-gray-300);
+  --editor-autocomplete-highlight-text-color: var(--chakra-colors-gray-100);
+  --editor-autocomplete-highlight-placeholder-label: var(--chakra-colors-gray-200);
 
   --editor-invalid-node-block-edge: #d37000;
 

@@ -71,9 +71,9 @@ const CategoryView = (props: CategoryProps) => {
                 <>
                   <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
                     {isExpanded ? (
-                      <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                      <ChevronDownIcon textColor={'gray.300'} mr={0.5} />
                     ) : (
-                      <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                      <ChevronRightIcon textColor={'gray.300'} mr={0.5} />
                     )}
                     {listing.category}
                   </AccordionButton>
@@ -92,9 +92,9 @@ const CategoryView = (props: CategoryProps) => {
               <>
                 <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
                   {isExpanded ? (
-                    <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                    <ChevronDownIcon textColor={'gray.300'} mr={0.5} />
                   ) : (
-                    <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                    <ChevronRightIcon textColor={'gray.300'} mr={0.5} />
                   )}
                   <MicroNode fragment={fragment} startDrag={startDrag} />
                   <Text pl={1}>{listing.title}</Text>

@@ -1,6 +1,5 @@
-
 .editor-side-menu {
-  --editor-bg-color: var(--chakra-colors-gray-900);
+  --editor-bg-color: var(--chakra-colors-gray-850);
   width: 100%;
   height: calc(99vh - 41px);
   overflow-y: scroll;
@@ -8,8 +7,8 @@
   border-right: 1px solid var(--section-separator-color);
   box-sizing: border-box;
   padding: 0;
-  background-color: var(--chakra-colors-gray-900);
-  color: var(--chakra-colors-gray-300)
+  background-color: var(--chakra-colors-gray-850);
+  color: var(--chakra-colors-gray-100)
 }
 
 .editor-side-menu::-webkit-scrollbar {
@@ -20,7 +19,7 @@
 .editor-side-menu-bar {
   width: 46px;
   box-sizing: border-box;
-  background-color: var(--chakra-colors-gray-900);
+  background-color: var(--chakra-colors-gray-850);
   display: flex;
   flex-direction: column;
   align-items: center;

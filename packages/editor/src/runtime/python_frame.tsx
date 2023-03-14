@@ -501,7 +501,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     this.term = new Terminal({
       scrollback: 10000,
       fontSize: 15,
-      theme: { background: '#040810' },
+      theme: { background: '#09111c' },
       fontFamily: 'Inconsolata, monospace',
     })
     this.wasmTty = new WasmTTY(this.term)

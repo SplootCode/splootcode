@@ -12,24 +12,20 @@
 }
 
 .loop-annotation-dot {
-    fill: white;
-}
-
-.loop-annotation-dot.selected {
-    fill: blue;
+    fill: var(--chakra-colors-gray-300);
 }
 
 .slider-track {
-    fill: var(--editor-connector-label);
+    fill: var(--chakra-colors-gray-400);
 }
 
 .slider-fill {
-    fill: white;
+    fill: var(--chakra-colors-gray-300);
     transition: width 0.5s;
 }
 
 .slider-handle {
-    fill: white;
+    fill: var(--chakra-colors-gray-300);
     transition: cx 0.5s;
 }
 

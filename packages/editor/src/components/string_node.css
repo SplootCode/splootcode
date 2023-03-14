@@ -4,7 +4,7 @@
   font-size: 16px;
   line-height: 20px;
   white-space: pre-wrap;
-  color: white;
+  color: var(--code-neutral-300);
   margin: 0;
   font-weight: normal;
   padding: 0px;

@@ -1,16 +1,16 @@
 
 .terminal-menu {
-  background-color: var(--chakra-colors-gray-900);
   border-bottom: 1px solid var(--chakra-colors-gray-800);
 }
 
 #terminal-container {
   height: 100%;
+  background-color: var(--chakra-colors-gray-850);
 }
 
 #terminal {
   height: calc(100% - 42px);
-  background-color: var(--chakra-colors-gray-900);
+  /* background-color: var(--chakra-colors-gray-900); */
   box-sizing: border-box;
   padding-left: 8px;
   padding-top: 5px;
@@ -19,15 +19,15 @@
 
 .xterm .xterm-viewport {
   padding-right: 10px;
-  background-color: var(--chakra-colors-gray-900);
+  /* background-color: var(--chakra-colors-gray-900); */
 }
 
 .xterm-viewport::-webkit-scrollbar {
-  background-color: var(--chakra-colors-gray-900);
+  /* background-color: var(--chakra-colors-gray-900); */
   width: 8px;
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
-  background: var(--chakra-colors-gray-500);
+  background: var(--chakra-colors-gray-600);
   border-radius: 4px;
 }

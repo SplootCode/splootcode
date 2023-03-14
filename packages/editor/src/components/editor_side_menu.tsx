@@ -47,7 +47,7 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
             borderRadius={0}
             variant={'ghost'}
             onClick={() => handleClick('tray')}
-            color={currentView === 'tray' ? 'gray.300' : 'gray.500'}
+            color={currentView === 'tray' ? 'gray.200' : 'gray.400'}
             icon={TRAY_ICON}
           ></IconButton>
         </div>
@@ -61,7 +61,7 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
             borderRadius={0}
             variant={'ghost'}
             onClick={() => handleClick('config')}
-            color={currentView === 'config' ? 'gray.300' : 'gray.500'}
+            color={currentView === 'config' ? 'gray.200' : 'gray.400'}
             icon={<Icon as={BiCog} boxSize={7} />}
           ></IconButton>
         </div>
@@ -87,7 +87,7 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
       <>
         <div style={trayState} className="editor-side-menu">
           <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
-            <Text as={'h2'} color="gray.200">
+            <Text as={'h2'} color="gray.100">
               {title}
             </Text>
           </Box>
@@ -95,7 +95,7 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
         </div>
         <div style={configState} className="editor-side-menu">
           <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
-            <Text as={'h2'} color="gray.200">
+            <Text as={'h2'} color="gray.100">
               {title}
             </Text>
           </Box>

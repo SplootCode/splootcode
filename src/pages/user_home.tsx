@@ -19,7 +19,7 @@ const ExampleCard = (props: { linkTo: string; title: string; description: string
           <Heading as="h4" size="sm" pb={1}>
             {title}
           </Heading>
-          <Text lineHeight={1.2} color={'gray.300'}>
+          <Text lineHeight={1.2} color={'gray.200'}>
             {description}
           </Text>
         </Box>
@@ -44,7 +44,7 @@ const ProjectCard = (props: {
             {title}
           </Heading>
           {description ? (
-            <Text lineHeight={1.2} color={'gray.300'}>
+            <Text lineHeight={1.2} color={'gray.200'}>
               {description}
             </Text>
           ) : null}
