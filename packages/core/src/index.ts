@@ -109,3 +109,5 @@ export {
   HTTPRequestAWSEvent,
   httpRequestToHTTPRequestEvent,
 } from './http_types'
+
+export * from './feature_flags/feature_flags'

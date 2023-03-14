@@ -1,5 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 
+import {} from '@splootcode/editor'
 import {
   Button,
   FormControl,
@@ -16,8 +17,7 @@ import {
   ModalOverlay,
   Select,
 } from '@chakra-ui/react'
-import { ENABLE_HTTP_APPS_FLAG, loadFeatureFlags } from '@splootcode/editor'
-import { Project, ProjectLoader, RunType } from '@splootcode/core'
+import { ENABLE_HTTP_APPS_FLAG, Project, ProjectLoader, RunType, loadFeatureFlags } from '@splootcode/core'
 
 function convertToURL(title: string) {
   return title
