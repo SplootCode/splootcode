@@ -62,6 +62,8 @@ export class NodeBlock implements NodeObserver {
   layout: NodeLayout
   textColor: string
   capColor: string
+  capFillColor: string
+  nodeFillColor: string
 
   @observable
   renderedInlineComponents: RenderedInlineComponent[]
@@ -121,6 +123,8 @@ export class NodeBlock implements NodeObserver {
     this.layout = node.getNodeLayout()
     this.textColor = getColor(this.layout.color, ColorUsageType.NODE_TEXT)
     this.capColor = getColor(this.layout.color, ColorUsageType.CAP_TEXT)
+    this.nodeFillColor = getColor(this.layout.color, ColorUsageType.NODE_FILL)
+    this.capFillColor = getColor(this.layout.color, ColorUsageType.CAP_FILL)
     this.node = node
     this.leftCurve = false
     this.rightCurve = false

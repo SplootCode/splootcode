@@ -56,27 +56,30 @@ text {
 :root {
   --string-font: 'Inconsolata', monospace;
   /* Comments are special because the cap is brighter than the text. */
-  --code-comment-200: rgb(164, 166, 180);
-  --code-comment-700: rgb(217, 220, 226);
+  --code-comment-text: #87909d;
+  --code-comment-cap-text: rgb(152 156 164);
 
-  --code-neutral-200: rgb(226, 226, 226);
-  --code-neutral-700: rgb(97, 97, 96);
-  --code-yellow-200: rgb(255 254 196);
-  --code-yellow-700: rgb(139 139 109);
-  --code-purple-200: rgb(199, 166, 255);
-  --code-purple-700: rgb(95, 58, 158);
-  --code-lightblue-200: rgb(149, 217, 255);
-  --code-lightblue-700: rgb(77 118 141);
-  --code-blue-200: rgb(124 179 253);
-  --code-blue-700: rgb(60 110 174);
-  --code-green-200: rgb(123 216 188);
-  --code-green-700: rgb(24, 126, 95);
+  --code-neutral-text: rgb(226, 226, 226);
+  --code-neutral-300: rgb(188, 192, 205);
+  --code-neutral-cap-text: rgb(97, 97, 96);
+  --code-yellow-text: rgb(255 254 196);
+  --code-yellow-cap-text: rgb(139 139 109);
+  --code-purple-text: rgb(200 171 255);
+  --code-purple-cap-text: rgb(95, 58, 158);
+  --code-lightblue-text: rgb(149, 217, 255);
+  --code-lightblue-cap-text: rgb(77 118 141);
+  --code-blue-text: rgb(124 179 253);
+  --code-blue-cap-text: rgb(60 110 174);
+  --code-green-text: rgb(167 219 200);
+  --code-green-cap-text: rgb(24, 126, 95);
 
   --editor-bg-color: #000000;
   --editor-text-color: #FFFFFF;
   --editor-node-block-fill: #1e2730;
+  --editor-string-block-outline: #1e3b31;
+  --editor-string-block-fill: #0f1c18;
   --editor-node-block-edge: var(--editor-node-block-fill);
-  --editor-connector-stroke: #6d737c;
+  --editor-connector-stroke: #767d86;
   --editor-connector-label: #87909d;
   --editor-placeholder-stroke: #6d737c;
   --editor-placeholder-label: #87909d;

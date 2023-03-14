@@ -327,7 +327,7 @@ export class PythonFunctionDeclaration extends PythonNode {
       new LayoutComponent(LayoutComponentType.CHILD_SET_BEFORE_STACK, 'decorators'),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'function'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier', ['name']),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'params'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'params', undefined, { brackets: true }),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ])
     typeRegistration.pasteAdapters = {

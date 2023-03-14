@@ -1,19 +1,37 @@
 
 .string-node {
   font-family: var(--string-font);
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   white-space: pre-wrap;
-  color: white;
+  color: var(--code-green-text);
   margin: 0;
   font-weight: normal;
   padding: 0px;
 }
 
+.svgsplootnode.stringnode {
+  fill: var(--editor-string-block-outline);
+  stroke: var(--editor-string-block-outline);
+}
+
+.svgsplootnode.stringnode.selected {
+  fill: var(--editor-selected-node-block-fill);
+  stroke: var(--editor-selected-node-block-edge);
+}
+
+
 .string-node.measurement {
   position: absolute;
   left: -1000px;
   top: 0;
+}
+
+.string-node-cap-text {
+  fill: var(--code-green-text);
+  font-family: 'Inconsolata';
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .editing.string-node {
@@ -24,11 +42,18 @@
 .string-node > input {
   font-family: inherit;
   border: none;
+  font-size: 15px;
 }
 
 .string-node > input:focus {
   outline: none;
 }
+
+.string-node-background {
+  fill: var(--editor-string-block-fill);
+  stroke: var(--editor-string-block-fill);
+}
+
 
 .string-node-selected-background {
   fill: var(--editor-selected-node-block-fill);

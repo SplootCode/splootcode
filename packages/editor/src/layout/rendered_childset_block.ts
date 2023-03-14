@@ -102,7 +102,7 @@ export class RenderedChildSetBlock implements ChildSetObserver {
         this.layoutHandler = new TreeLayoutHandler(layoutComponent)
         break
       case LayoutComponentType.CHILD_SET_ATTACH_RIGHT:
-        this.layoutHandler = new AttachRightLayoutHandler()
+        this.layoutHandler = new AttachRightLayoutHandler(layoutComponent)
         break
       default:
         console.warn(`Unsupported childset layout type: ${layoutComponent.type}`)

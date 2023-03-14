@@ -3,19 +3,19 @@ export const NODE_INLINE_SPACING = 4
 export const NODE_INLINE_SPACING_SMALL = 4
 
 /* Node block row size and spacing */
-export const NODE_BLOCK_HEIGHT = 20
-export const NODE_TEXT_OFFSET = 15
-export const ROW_SPACING = 8
+export const NODE_BLOCK_HEIGHT = 18
+export const NODE_TEXT_OFFSET = 14
+export const ROW_SPACING = 10
 
 /* Strings */
-export const STRING_CAP_WIDTH = 16
+export const STRING_CAP_WIDTH = 10
 export const MAX_STRING_WIDTH = 500
 
 /* Expressions */
 export const EXPRESSION_TOKEN_SPACING = 6
 
 /* Annotations */
-export const LOOP_ANNOTATION_HEIGHT = 14
+export const LOOP_ANNOTATION_HEIGHT = 18
 
 export const BRACKET_WIDTH = 4
 
@@ -54,7 +54,7 @@ export function stringLiteralDimensions(s: string): [number, number] {
   const lines = s.split('\n')
   const maxWidth = Math.min(
     lines.reduce((prev, line) => {
-      return Math.max(prev, getTextWidth(line, "16px 'Inconsolata'"))
+      return Math.max(prev, getTextWidth(line, "15px 'Inconsolata'"))
     }, 0),
     MAX_STRING_WIDTH
   )
@@ -72,7 +72,7 @@ export function labelStringWidth(s: string) {
 }
 
 export async function awaitFontsLoaded() {
-  const promises = [document.fonts.load('16px "Karla"'), document.fonts.load("16px 'Inconsolata'")]
+  const promises = [document.fonts.load('16px "Karla"'), document.fonts.load("15px 'Inconsolata'")]
   await Promise.all(promises)
 }
 

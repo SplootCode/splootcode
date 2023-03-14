@@ -12,13 +12,15 @@ export class AttachRightLayoutHandler implements ChildSetLayoutHandler {
   width: number
   height: number
   marginTop: number
+  brackets: boolean
 
   labels: string[]
 
   cursorPositions: [number, number][]
 
-  constructor() {
+  constructor(layoutComponent: LayoutComponent) {
     this.cursorPositions = []
+    this.brackets = layoutComponent.metadata?.brackets
   }
 
   updateLayout(layoutComponent: LayoutComponent): void {
