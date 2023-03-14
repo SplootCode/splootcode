@@ -41,7 +41,6 @@ export class Project {
     this.isReadOnly = fileLoader.isReadOnly()
     this.title = proj.title
     this.version = proj.version
-    console.log('trying to set runsettings to', proj.runSettings)
     this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE, httpScenarios: [] }
     if (!this.runSettings.httpScenarios) {
       this.runSettings.httpScenarios = [
@@ -156,8 +155,6 @@ export class Project {
         return packRef
       }),
     }
-
-    console.log('this is it', serProj)
 
     return JSON.stringify(serProj, null, 2) + '\n'
   }
