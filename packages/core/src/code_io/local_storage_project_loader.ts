@@ -93,10 +93,15 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       environmentVars: {},
       packages: [],
     }
+
+    console.log('hello world', serialisedProj)
+
     const proj = new Project(ownerId, serialisedProj, [], fileLoader)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
     await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
     await this.saveProject(proj)
+
+    console.log('now is', proj)
     return proj
   }
 

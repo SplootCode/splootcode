@@ -80,11 +80,13 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     if (functionName == '') {
       this.props.project.setRunSettings({
         runType: RunType.COMMAND_LINE,
+        httpScenarios: this.props.project.runSettings.httpScenarios,
       })
     } else {
       this.props.project.setRunSettings({
         runType: RunType.HANDLER_FUNCTION,
         handlerFunction: functionName,
+        httpScenarios: this.props.project.runSettings.httpScenarios,
       })
     }
   }
