@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 
-import {} from '@splootcode/editor'
 import {
   Button,
   FormControl,
