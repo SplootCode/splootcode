@@ -22,6 +22,7 @@ export async function loadTestProject(projectID: string, title: string): Promise
       layouttype: 'PYTHON_CLI',
       runSettings: {
         runType: RunType.COMMAND_LINE,
+        httpScenarios: [],
       },
       version: '1',
       packages: [
