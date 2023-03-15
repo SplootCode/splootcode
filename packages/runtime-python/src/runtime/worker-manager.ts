@@ -1,4 +1,13 @@
-import { EditorMessage, FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import {
+  EditorMessage,
+  FetchHandler,
+  FileSpec,
+  ResponseData,
+  RunType,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './common'
+import { HTTPRequestAWSEvent } from '@splootcode/core'
 
 const INPUT_BUF_SIZE = 100
 
@@ -65,7 +74,12 @@ export class WorkerManager {
     this.worker.postMessage(message)
   }
 
-  run(handlerFunction: string, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
+  run(
+    runType: RunType,
+    eventData: HTTPRequestAWSEvent,
+    workspace: Map<string, FileSpec>,
+    envVars: Map<string, string>
+  ) {
     this.inputPlayback = []
     this.requestPlayback = new Map()
     this.stdinbuffer = new Int32Array(new SharedArrayBuffer(INPUT_BUF_SIZE * Int32Array.BYTES_PER_ELEMENT))
@@ -77,7 +91,8 @@ export class WorkerManager {
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'run',
-      handlerFunction: handlerFunction,
+      runType: runType,
+      eventData: eventData,
       workspace: workspace,
       envVars: envVars,
       stdinBuffer: this.stdinbuffer,
@@ -86,12 +101,18 @@ export class WorkerManager {
     })
   }
 
-  rerun(handlerFunction: string, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
+  rerun(
+    runType: RunType,
+    eventData: HTTPRequestAWSEvent,
+    workspace: Map<string, FileSpec>,
+    envVars: Map<string, string>
+  ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
       type: 'rerun',
-      handlerFunction: handlerFunction,
+      runType: runType,
+      eventData: eventData,
       workspace: workspace,
       envVars: envVars,
       readlines: this.inputPlayback,
@@ -227,7 +248,7 @@ export class WorkerManager {
       this.handleFetch(fetchData)
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
-    } else if (type === 'runtime_capture' || type === 'module_info') {
+    } else if (type === 'runtime_capture' || type === 'module_info' || type === 'web_response') {
       this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY

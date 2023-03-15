@@ -1,9 +1,21 @@
+import { HTTPScenario } from '../http_types'
 import { LocalStorageFileLoader } from './local_storage_file_loader'
 import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
 import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
 import { RunType } from '../language/projects/run_settings'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
+
+const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
+  name: 'Test Request',
+  rawQueryString: '?',
+  headers: {},
+  method: 'GET',
+  path: '/',
+  protocol: 'HTTP/1.1',
+  body: '',
+  isBase64Encoded: false,
+}
 
 const startingPythonFile: SerializedNode = {
   type: 'PYTHON_FILE',
@@ -86,7 +98,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
-      runSettings: { runType, httpScenarios: [] },
+      runSettings: { runType, httpScenarios: [DEFAULT_HTTP_SCENARIO] },
       splootversion: '1.0.0',
       version: '1',
       title: title,

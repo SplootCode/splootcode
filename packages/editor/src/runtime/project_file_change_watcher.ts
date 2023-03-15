@@ -25,7 +25,6 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
   setDirty: () => void
   refreshProjectRunSettings: () => void
   loadModule: (moduleName: string) => void
-  candidateHandlerFunctions: string[]
 
   constructor(project: Project, pkg: SplootPackage, validatioWatcher: ValidationWatcher) {
     this.project = project
@@ -33,8 +32,6 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     this.validationWatcher = validatioWatcher
     this.setDirty = null
     this.refreshProjectRunSettings = null
-    this.candidateHandlerFunctions = []
-    this.scanForHandlerFunctions()
   }
 
   updateRuntimeCaptures(captures: Map<string, CapturePayload>) {
@@ -114,23 +111,11 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     ;(file.rootNode as PythonFile).getScope().loadAllImportedModules()
   }
 
-  scanForHandlerFunctions = async () => {
-    const file = await this.pkg.getLoadedFile(this.project.fileLoader, 'main.py')
-    const pythonFile = file.rootNode as PythonFile
-    const potentialHandlers = pythonFile.getPotentialHandlers([])
-    this.candidateHandlerFunctions = potentialHandlers.candidates
-  }
-
   handleScopeMutation = async (mutation: ScopeMutation) => {
     if (mutation.type === ScopeMutationType.IMPORT_MODULE) {
       this.loadModule(mutation.moduleName)
     }
     // TODO: Deal with a rename better than we currently do.
-    this.scanForHandlerFunctions()
-  }
-
-  getHandlerFunctions = () => {
-    return this.candidateHandlerFunctions
   }
 
   handleProjectMutation = (mutation: ProjectMutation) => {

@@ -3,17 +3,17 @@ import contextlib
 import unittest
 
 from executor import executePythonFile, wrapStdout
-from convert_ast import splootFromPython 
+from convert_ast import splootFromPython
 
 
 class ExecuteTest(unittest.TestCase):
     def testHelloWorld(self):
         splootFile = splootFromPython('print("Hello, World!")')
-        
+
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
             'root': {
@@ -32,7 +32,7 @@ class ExecuteTest(unittest.TestCase):
                 }
             },
             'detached': {}})
-        
+
         self.assertEqual(f.getvalue(), "Hello, World!\n")
 
 
@@ -49,7 +49,7 @@ else:
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
             'root': {
@@ -83,7 +83,7 @@ else:
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
             'root': {
@@ -127,7 +127,7 @@ add(123, 45)
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
         'root': {
@@ -171,7 +171,7 @@ add(123, 45)
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
             'root': {
@@ -421,4 +421,3 @@ say_hello()
 
         f.seek(0)
         self.assertEqual(f.read(), "hello\nhello\n")
-

@@ -2,9 +2,13 @@ import ast
 import sys
 import json
 import traceback
+from typing import Tuple
 
 
 SPLOOT_KEY = "__spt__"
+SPLOOT_HANDLER_ARG="__spt__handler_arg__"
+SPLOOT_SET_RESPONSE_FUNC="__spt__set_response__"
+
 iterationLimit = None
 
 def generateArgs(callNode):
@@ -317,7 +321,7 @@ def generateIfStatementFromElif(elif_node, else_nodes):
     else_statements = []
     if len(else_nodes) != 0:
         else_statements = generateElifNestedChain(else_nodes)
-    
+
     # End the elif frame before starting the next else/elif block
     else_statements.insert(0, ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
@@ -336,7 +340,7 @@ def generateIfStatementFromElif(elif_node, else_nodes):
     return [
         ast.If(wrapped_condition, statements, else_statements),
     ]
-    
+
 
 def generateElifNestedChain(else_nodes):
     if len(else_nodes) == 1 and else_nodes[0]["type"] == 'PYTHON_ELSE_STATEMENT':
@@ -577,7 +581,7 @@ def generateFunctionStatement(func_node):
     ]
     decorators = [generateAstExpression(dec['childSets']['expression'][0]) for dec in func_node['childSets']['decorators']]
     call_start_frame = ast.Call(func, args, keywords=[])
-    
+
     statements = getStatementsFromBlock(func_node["childSets"]["body"])
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
@@ -588,7 +592,7 @@ def generateFunctionStatement(func_node):
     statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
-    
+
     return [ast.FunctionDef(nameIdentifier, funcArgs, statements, decorators)]
 
 
@@ -755,27 +759,57 @@ class SplootCapture:
 
 
 capture = None
+response = None
 
 
-def executePythonFile(tree, handlerFunction=None):
+def executePythonFile(tree, runType="COMMAND_LINE", eventData=None) -> Tuple[dict, dict]:
     global capture
+    global response
+
     if tree["type"] == "PYTHON_FILE":
         statements = getStatementsFromBlock(tree["childSets"]["body"])
-        if handlerFunction:
-            functionName = ast.Name(handlerFunction, ctx=ast.Load())
-            args = []
-            func_call = ast.Call(functionName, args=args, keywords=[])
-            call_statement = ast.Expr(func_call, lineno=1, col_offset=0)
-            statements.append(call_statement)
+
+        if runType == "COMMAND_LINE" or runType == "SCHEDULE":
+            # to run these, we just run the entire file!
+            pass
+        elif runType == "HTTP_REQUEST":
+            # we need to parse our http scenario event into serverless_wsgi so
+            if not eventData:
+                raise Exception("Need an event to run a HTTP request")
+
+            extra = ast.parse(f"""
+import serverless_wsgi
+
+flask_app = None
+
+try:
+    flask_app = app
+except NameError:
+    print("Please call your Flask app 'app'")
+
+if flask_app:
+    {SPLOOT_SET_RESPONSE_FUNC}(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARG}, {{}}))
+            """)
+
+            statements.extend(extra.body)
+        else:
+            raise NotImplementedError("This run type is not implemented: " + runType)
 
         mods = ast.Module(body=statements, type_ignores=[])
         code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
         # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
-        # print()
+        # print(ast.dump(mods))
+
         capture = SplootCapture()
+        response = {}
+
+        def set_response(r):
+            global response
+            response = r
+
         try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__'})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARG: eventData, SPLOOT_SET_RESPONSE_FUNC: set_response})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))
@@ -783,7 +817,7 @@ def executePythonFile(tree, handlerFunction=None):
             capture.logException(type(e).__name__, str(e))
             traceback.print_exc()
 
-        return capture.toDict()
+        return (capture.toDict(), response)
 
 
 def wrapStdout(write):
@@ -797,6 +831,7 @@ if __name__ == "__main__":
     import fakeprint  # pylint: disable=import-error
     import nodetree  # pylint: disable=import-error
     import runtime_capture # pylint: disable=import-error
+    import web_response # pylint: disable=import-error
 
     # Only wrap stdin/stdout once.
     # Horrifying hack.
@@ -818,7 +853,10 @@ if __name__ == "__main__":
 
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
     iterationLimit = nodetree.getIterationLimit()
-    handler = nodetree.getHandlerFunction()
-    cap = executePythonFile(tree, handler)
+    runType = nodetree.getRunType()
+    eventData = nodetree.getEventData()
+    cap, response = executePythonFile(tree, runType, eventData)
     if cap:
         runtime_capture.report(json.dumps(cap))
+    if response:
+        web_response.report(json.dumps(response))
