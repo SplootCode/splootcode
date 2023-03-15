@@ -62,7 +62,18 @@ export class Project {
     this.version = proj.version
     this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE, httpScenarios: [] }
     if (!this.runSettings.httpScenarios) {
-      this.runSettings.httpScenarios = [DEFAULT_HTTP_SCENARIO]
+      this.runSettings.httpScenarios = [
+        {
+          name: 'test',
+          rawQueryString: '?',
+          headers: {},
+          method: 'GET',
+          path: '/',
+          protocol: 'HTTP/1.1',
+          body: '',
+          isBase64Encoded: false,
+        },
+      ]
     }
     this.fileLoader = fileLoader
     this.packages = packages
