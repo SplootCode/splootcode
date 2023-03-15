@@ -19,7 +19,7 @@ print(count)
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
         'root': {
@@ -82,7 +82,7 @@ for char in 'hello':
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
         'root': {
@@ -167,7 +167,7 @@ print('end')
         f = io.StringIO()
         f.write = wrapStdout(f.write)
         with contextlib.redirect_stdout(f):
-            cap = executePythonFile(splootFile)
+            cap, _ = executePythonFile(splootFile)
 
         self.assertEqual(cap, {
         'root': {
@@ -228,4 +228,3 @@ print('end')
             }
         },
         'detached': {}})
-

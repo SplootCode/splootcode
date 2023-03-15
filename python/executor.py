@@ -2,6 +2,7 @@ import ast
 import sys
 import json
 import traceback
+from typing import Tuple
 
 
 SPLOOT_KEY = "__spt__"
@@ -761,7 +762,7 @@ capture = None
 response = None
 
 
-def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
+def executePythonFile(tree, runType="COMMAND_LINE", eventData=None) -> Tuple[dict, dict]:
     global capture
     global response
 
