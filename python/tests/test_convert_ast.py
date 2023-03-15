@@ -98,6 +98,7 @@ add(3, 4)
                     "type": "PYTHON_FUNCTION_DECLARATION",
                     "properties": {'id': None},
                     "childSets": {
+                        "decorators": [],
                         "identifier": [{'type': 'PY_IDENTIFIER', 'childSets': {}, 'properties': {'identifier': 'add'}}],
                         "body": [
                             {

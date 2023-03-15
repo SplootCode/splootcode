@@ -64,6 +64,7 @@ export class PythonFunctionDeclaration extends PythonNode {
     this.scopedName = null
     this.scopedParameters = new Set()
 
+    this.addChildSet('decorators', ChildSetType.Many, NodeCategory.PythonDecorator)
     this.addChildSet('identifier', ChildSetType.Single, NodeCategory.PythonFunctionName)
     this.addChildSet('params', ChildSetType.Many, NodeCategory.PythonFunctionArgumentDeclaration)
     this.addChildSet('body', ChildSetType.Many, NodeCategory.PythonStatement, 1)
@@ -81,6 +82,10 @@ export class PythonFunctionDeclaration extends PythonNode {
 
   getBody() {
     return this.getChildSet('body')
+  }
+
+  getDecoratorSet() {
+    return this.getChildSet('decorators')
   }
 
   generateParseTree(parseMapper: ParseMapper): ParseNode {
@@ -304,6 +309,7 @@ export class PythonFunctionDeclaration extends PythonNode {
 
   static deserializer(serializedNode: SerializedNode): PythonFunctionDeclaration {
     const node = new PythonFunctionDeclaration(null)
+    node.deserializeChildSet('decorators', serializedNode)
     node.deserializeChildSet('identifier', serializedNode)
     node.deserializeChildSet('params', serializedNode)
     node.deserializeChildSet('body', serializedNode)
@@ -318,6 +324,7 @@ export class PythonFunctionDeclaration extends PythonNode {
     typeRegistration.properties = ['identifier']
     typeRegistration.childSets = { params: NodeCategory.DeclaredIdentifier, body: NodeCategory.Statement }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
+      new LayoutComponent(LayoutComponentType.CHILD_SET_BEFORE_STACK, 'decorators'),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'function'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier', ['name']),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'params'),

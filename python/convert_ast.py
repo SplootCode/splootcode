@@ -259,6 +259,7 @@ def generateArgs(arguments):
 
 def generateFunction(func):
   return SplootNode('PYTHON_FUNCTION_DECLARATION', {
+    'decorators': [SplootNode('PY_DECORATOR', {'expression': [generateExpression(d)]}) for d in func.decorator_list],
     'identifier': [SplootNode('PY_IDENTIFIER', {}, {'identifier': func.name})],
     'params': generateArgs(func.args),
     'body': [generateSplootStatement(s) for s in func.body],

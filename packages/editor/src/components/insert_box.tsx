@@ -262,7 +262,9 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
                   >
                     <g
                       transform={
-                        suggestion.nodeBlock.marginTop !== 0 ? `translate(0 ${-suggestion.nodeBlock.marginTop})` : ''
+                        suggestion.nodeBlock.marginTop !== 0
+                          ? `translate(0 ${-suggestion.nodeBlock.marginTop + suggestion.nodeBlock.beforeStackHeight})`
+                          : ''
                       }
                     >
                       <EditorNodeBlock block={suggestion.nodeBlock} selectionState={NodeSelectionState.UNSELECTED} />

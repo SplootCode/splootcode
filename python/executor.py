@@ -575,6 +575,7 @@ def generateFunctionStatement(func_node):
         ast.Constant("body"),
         ast.Constant(func_id)
     ]
+    decorators = [generateAstExpression(dec['childSets']['expression'][0]) for dec in func_node['childSets']['decorators']]
     call_start_frame = ast.Call(func, args, keywords=[])
     
     statements = getStatementsFromBlock(func_node["childSets"]["body"])
@@ -588,7 +589,7 @@ def generateFunctionStatement(func_node):
 
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
     
-    return [ast.FunctionDef(nameIdentifier, funcArgs, statements, [])]
+    return [ast.FunctionDef(nameIdentifier, funcArgs, statements, decorators)]
 
 
 def generateReturnStatement(return_node):
