@@ -51,6 +51,10 @@ export class PythonDecorator extends PythonNode {
     return this.getChildSet('expression')
   }
 
+  validateSelf(): void {
+    ;(this.getExpression().getChild(0) as PythonExpression).requireNonEmpty('Decorator expression cannot be empty.')
+  }
+
   generateParseTree(parseMapper: ParseMapper): DecoratorNode {
     const expr = this.getExpression().getChild(0) as PythonExpression
     const decorator: DecoratorNode = {
@@ -79,7 +83,7 @@ export class PythonDecorator extends PythonNode {
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.OPERATOR, [
       new LayoutComponent(LayoutComponentType.KEYWORD, '@'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'expression'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'expression', ['decorator']),
     ])
     typeRegistration.pasteAdapters = {
       PYTHON_FUNCTION_DECLARATION: (node: SplootNode) => {
