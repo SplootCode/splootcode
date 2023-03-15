@@ -6,7 +6,7 @@ import traceback
 
 SPLOOT_KEY = "__spt__"
 SPLOOT_HANDLER_ARGS="__spt__handler_args__"
-SPLOOT_RESPONSE_OBJ="__spt__response_obj__"
+SPLOOT_SET_RESPONSE_FUNC="__spt__response_obj__"
 
 iterationLimit = None
 
@@ -757,6 +757,7 @@ class SplootCapture:
 
 
 capture = None
+response = None
 
 
 def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
@@ -775,18 +776,10 @@ def executePythonFile(tree, runType="COMMAND_LINE", eventData=None):
                 raise Exception("Need an event to run a HTTP request")
 
             extra = ast.parse(f"""
-flask_app = None
-try:
-    flask_app = app
-except NameError:
-    print("Please call your flask app, `app`.")
-
 import serverless_wsgi
 
-{SPLOOT_RESPONSE_OBJ}(serverless_wsgi.handle_request(flask_app, {SPLOOT_HANDLER_ARGS}, {{}}))
+{SPLOOT_SET_RESPONSE_FUNC}(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
             """)
-
-            # TODO(harrison): surface this return value somewhere (via runtime capture?)
 
             statements.extend(extra.body)
         else:
@@ -796,7 +789,7 @@ import serverless_wsgi
         code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
         # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
-        # print()
+        # print(ast.dump(mods))
 
         capture = SplootCapture()
         response = {}
@@ -806,7 +799,7 @@ import serverless_wsgi
             response = r
 
         try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData, SPLOOT_RESPONSE_OBJ: set_response}, {})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData, SPLOOT_SET_RESPONSE_FUNC: set_response})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))
