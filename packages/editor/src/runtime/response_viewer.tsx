@@ -38,7 +38,13 @@ export function ResponseViewer(props: ResponseViewerProps) {
     body = <Text>No content...</Text>
   }
   return (
-    <Box p="1" backgroundColor={'#040810'} borderBottom={'1px solid var(--chakra-colors-gray-800)'}>
+    <Box
+      p="1"
+      backgroundColor={'#040810'}
+      borderBottom={'1px solid var(--chakra-colors-gray-800)'}
+      maxHeight={'40vh'}
+      overflow={'scroll'}
+    >
       <Text>
         <Text as="span" color={'green.400'}>
           200
