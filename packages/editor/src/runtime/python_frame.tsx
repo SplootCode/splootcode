@@ -12,7 +12,7 @@ import {
   HTTPScenario,
   Project,
   RunType,
-  httpRequestToHTTPRequestEvent,
+  httpScenarioToHTTPRequestEvent,
 } from '@splootcode/core'
 import { FileChangeWatcher, FileSpec } from './file_change_watcher'
 import { FitAddon } from 'xterm-addon-fit'
@@ -109,7 +109,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 >
                   {this.props.project.runSettings.httpScenarios.map((scenario, i) => {
                     return (
-                      <option key={i} value={JSON.stringify(scenario.event)}>
+                      <option key={i} value={JSON.stringify(scenario)}>
                         {scenario.name}
                       </option>
                     )
@@ -457,7 +457,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
     let event: HTTPRequestAWSEvent = null
     if (this.state.selectedHTTPScenario) {
-      event = event = httpRequestToHTTPRequestEvent(this.state.selectedHTTPScenario.event)
+      event = event = httpScenarioToHTTPRequestEvent(this.state.selectedHTTPScenario)
     }
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
