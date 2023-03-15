@@ -1,5 +1,4 @@
 import { FileLoader } from './file_loader'
-import { HTTPScenario } from 'src/http_types'
 import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
 import { ProjectMutationType } from '../mutations/project_mutations'
 import { RunSettings, RunType } from './run_settings'
@@ -19,24 +18,6 @@ export interface SerializedProject {
 export enum ProjectLayoutType {
   WEB = 'WEB',
   PYTHON_CLI = 'PYTHON_CLI',
-}
-
-export const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
-  name: 'Home URL',
-  event: {
-    version: '2.0',
-    rawQueryString: '?',
-    headers: {},
-    requestContext: {
-      http: {
-        method: 'GET',
-        path: '/',
-        protocol: 'HTTP/1.1',
-      },
-    },
-    body: '',
-    isBase64Encoded: false,
-  },
 }
 
 export class Project {
@@ -62,18 +43,7 @@ export class Project {
     this.version = proj.version
     this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE, httpScenarios: [] }
     if (!this.runSettings.httpScenarios) {
-      this.runSettings.httpScenarios = [
-        {
-          name: 'test',
-          rawQueryString: '?',
-          headers: {},
-          method: 'GET',
-          path: '/',
-          protocol: 'HTTP/1.1',
-          body: '',
-          isBase64Encoded: false,
-        },
-      ]
+      this.runSettings.httpScenarios = []
     }
     this.fileLoader = fileLoader
     this.packages = packages

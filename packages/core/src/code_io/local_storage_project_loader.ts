@@ -1,9 +1,21 @@
-import { DEFAULT_HTTP_SCENARIO, Project, SerializedProject } from '../language/projects/project'
+import { HTTPScenario } from '../http_types'
 import { LocalStorageFileLoader } from './local_storage_file_loader'
 import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
+import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
 import { RunType } from '../language/projects/run_settings'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
+
+const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
+  name: 'Home URL',
+  rawQueryString: '?',
+  headers: {},
+  method: 'GET',
+  path: '/',
+  protocol: 'HTTP/1.1',
+  body: '',
+  isBase64Encoded: false,
+}
 
 const startingPythonFile: SerializedNode = {
   type: 'PYTHON_FILE',
