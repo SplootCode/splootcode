@@ -6,8 +6,8 @@ from typing import Tuple
 
 
 SPLOOT_KEY = "__spt__"
-SPLOOT_HANDLER_ARGS="__spt__handler_args__"
-SPLOOT_SET_RESPONSE_FUNC="__spt__response_obj__"
+SPLOOT_HANDLER_ARG="__spt__handler_arg__"
+SPLOOT_SET_RESPONSE_FUNC="__spt__set_response__"
 
 iterationLimit = None
 
@@ -780,7 +780,15 @@ def executePythonFile(tree, runType="COMMAND_LINE", eventData=None) -> Tuple[dic
             extra = ast.parse(f"""
 import serverless_wsgi
 
-{SPLOOT_SET_RESPONSE_FUNC}(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARGS}, {{}}))
+flask_app = None
+
+try:
+    flask_app = app
+except NameError:
+    print("Please call your Flask app 'app'")
+
+if flask_app:
+    {SPLOOT_SET_RESPONSE_FUNC}(serverless_wsgi.handle_request(app, {SPLOOT_HANDLER_ARG}, {{}}))
             """)
 
             statements.extend(extra.body)
@@ -801,7 +809,7 @@ import serverless_wsgi
             response = r
 
         try:
-            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARGS: eventData, SPLOOT_SET_RESPONSE_FUNC: set_response})
+            exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARG: eventData, SPLOOT_SET_RESPONSE_FUNC: set_response})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
             capture.logException(type(e).__name__, str(e))
