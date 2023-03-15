@@ -138,9 +138,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
             <ResponseViewer response={this.state.responseData} />
           ) : null}
 
-          <Box p="1">
-            <div id="terminal" ref={this.termRef} />
-          </Box>
+          <Box p="1" id="terminal" ref={this.termRef}></Box>
         </div>
 
         <iframe
@@ -456,8 +454,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
     let event: HTTPRequestAWSEvent = null
-    if (this.state.selectedHTTPScenario) {
-      event = event = httpScenarioToHTTPRequestEvent(this.state.selectedHTTPScenario)
+    if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST && this.state.selectedHTTPScenario) {
+      event = httpScenarioToHTTPRequestEvent(this.state.selectedHTTPScenario)
     }
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
