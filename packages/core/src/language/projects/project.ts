@@ -46,20 +46,13 @@ export class Project {
       this.runSettings.httpScenarios = [
         {
           name: 'test',
-          event: {
-            version: '2.0',
-            rawQueryString: '?',
-            headers: {},
-            requestContext: {
-              http: {
-                method: 'GET',
-                path: '/',
-                protocol: 'HTTP/1.1',
-              },
-            },
-            body: '',
-            isBase64Encoded: false,
-          },
+          rawQueryString: '?',
+          headers: {},
+          method: 'GET',
+          path: '/',
+          protocol: 'HTTP/1.1',
+          body: '',
+          isBase64Encoded: false,
         },
       ]
     }
