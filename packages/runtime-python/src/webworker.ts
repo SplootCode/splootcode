@@ -6,6 +6,7 @@ import {
   WorkerManagerMessage,
   WorkerMessage,
 } from './runtime/common'
+import { HTTPRequestAWSEvent } from '@splootcode/core'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -164,7 +165,7 @@ let executorCode = null
 let moduleLoaderCode = null
 let workspace: Map<string, FileSpec> = new Map()
 let runType: RunType | null = null
-let eventData = {}
+let eventData: HTTPRequestAWSEvent | null = null
 
 const EnvVarCode = `
 import os;

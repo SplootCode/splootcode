@@ -1,5 +1,6 @@
 import 'tslib'
 import { EditorMessage, FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, RunType } from './common'
+import { HTTPRequestAWSEvent } from '@splootcode/core'
 
 import { WorkerManager, WorkerState } from './worker-manager'
 
@@ -21,7 +22,7 @@ class RuntimeStateManager {
   private stdinPromiseResolve: (s: string) => void
   private fetchHandler: FetchHandler
   private runType: RunType
-  private eventData: unknown
+  private eventData: HTTPRequestAWSEvent | null
 
   constructor(parentWindowDomainRegex: string, workerURL: string, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
@@ -31,7 +32,7 @@ class RuntimeStateManager {
     this.workspace = new Map()
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
-    this.eventData = {}
+    this.eventData = null
   }
 
   sendToParent = (payload: EditorMessage) => {

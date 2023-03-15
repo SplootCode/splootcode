@@ -1,5 +1,7 @@
 import { FrameState } from '.'
 
+import { HTTPRequestAWSEvent, HTTPResponse } from '@splootcode/core'
+
 export enum FetchSyncErrorType {
   NO_RECORDED_REQUEST = 'NO_RECORDED_REQUEST',
   FETCH_ERROR = 'FETCH_ERROR',
@@ -73,7 +75,7 @@ export interface WorkerRuntimeCaptureMessage {
 
 export interface WorkerWebResponseMessage {
   type: 'web_response'
-  response: unknown
+  response: HTTPResponse
 }
 
 export interface WorkerModuleInfoMessage {
@@ -94,7 +96,7 @@ export type WorkerMessage =
 export interface RunMessage {
   type: 'run'
   runType: RunType
-  eventData: unknown
+  eventData: HTTPRequestAWSEvent
   workspace: Map<string, FileSpec>
   envVars: Map<string, string>
   stdinBuffer: Int32Array
@@ -105,7 +107,7 @@ export interface RunMessage {
 export interface RerunMessage {
   type: 'rerun'
   runType: RunType
-  eventData: unknown
+  eventData: HTTPRequestAWSEvent
   workspace: Map<string, FileSpec>
   envVars: Map<string, string>
   readlines: string[]

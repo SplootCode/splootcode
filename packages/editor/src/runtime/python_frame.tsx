@@ -107,9 +107,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                   value={this.state.selectedHTTPScenario?.name || ''}
                   onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
                 >
-                  {this.props.project.runSettings.httpScenarios.map((scenario) => {
+                  {this.props.project.runSettings.httpScenarios.map((scenario, i) => {
                     return (
-                      <option key={scenario.name} value={JSON.stringify(scenario.event)}>
+                      <option key={i} value={JSON.stringify(scenario.event)}>
                         {scenario.name}
                       </option>
                     )

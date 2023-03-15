@@ -7,6 +7,7 @@ import {
   WorkerManagerMessage,
   WorkerMessage,
 } from './common'
+import { HTTPRequestAWSEvent } from '@splootcode/core'
 
 const INPUT_BUF_SIZE = 100
 
@@ -73,7 +74,12 @@ export class WorkerManager {
     this.worker.postMessage(message)
   }
 
-  run(runType: RunType, eventData: unknown, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
+  run(
+    runType: RunType,
+    eventData: HTTPRequestAWSEvent,
+    workspace: Map<string, FileSpec>,
+    envVars: Map<string, string>
+  ) {
     this.inputPlayback = []
     this.requestPlayback = new Map()
     this.stdinbuffer = new Int32Array(new SharedArrayBuffer(INPUT_BUF_SIZE * Int32Array.BYTES_PER_ELEMENT))
@@ -95,7 +101,12 @@ export class WorkerManager {
     })
   }
 
-  rerun(runType: RunType, eventData: unknown, workspace: Map<string, FileSpec>, envVars: Map<string, string>) {
+  rerun(
+    runType: RunType,
+    eventData: HTTPRequestAWSEvent,
+    workspace: Map<string, FileSpec>,
+    envVars: Map<string, string>
+  ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
