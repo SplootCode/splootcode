@@ -7,7 +7,7 @@ import { RunType } from '../language/projects/run_settings'
 import { SerializedNode, deserializeNode } from '../language/type_registry'
 
 const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
-  name: 'Home URL',
+  name: 'Test Request',
   rawQueryString: '?',
   headers: {},
   method: 'GET',
