@@ -1,4 +1,5 @@
 import { FileSystemFileLoader } from './filesystem_file_loader'
+import { LocalStorageProjectLoader } from './local_storage_project_loader'
 import { Project, SerializedProject } from '../language/projects/project'
 import { SplootPackage } from '../language/projects/package'
 
@@ -40,5 +41,6 @@ export async function loadProjectFromFolder(directoryHandle: FileSystemDirectory
   const packages = proj.packages.map(async (packRef) => {
     return fileLoader.loadPackage('unknown', proj.name, packRef.name)
   })
-  return new Project('local', proj, await Promise.all(packages), fileLoader)
+
+  return new Project('local', proj, await Promise.all(packages), fileLoader, new LocalStorageProjectLoader())
 }

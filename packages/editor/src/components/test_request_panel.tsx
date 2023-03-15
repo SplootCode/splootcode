@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
   Input,
   Select,
   Text,
+  VStack,
 } from '@chakra-ui/react'
 import { HTTPScenario, Project, RunSettings } from '@splootcode/core'
 
@@ -34,23 +35,15 @@ function generateEmptyScenario(): HTTPScenario {
 }
 
 function RequestScenarioEdit(props: {
-  runSettings: RunSettings
-  scenarioIndex: number
-  setNewRunSettings: (newRunSettings: RunSettings) => void
+  currentScenario: HTTPScenario
+  saveScenario: (newScenario: HTTPScenario) => void
 }) {
-  const { runSettings, scenarioIndex, setNewRunSettings } = props
-  const savedScenario = runSettings.httpScenarios[scenarioIndex]
-  const [editingScenario, setEditingScenario] = React.useState(savedScenario)
+  const { currentScenario, saveScenario } = props
+  const [editingScenario, setEditingScenario] = React.useState(currentScenario)
 
   useEffect(() => {
-    setEditingScenario(savedScenario)
-  }, [savedScenario])
-
-  const saveScenario = (index: number, newScenario: HTTPScenario) => {
-    const newRunSettings = { ...runSettings }
-    newRunSettings.httpScenarios[index] = newScenario
-    setNewRunSettings(newRunSettings)
-  }
+    setEditingScenario(currentScenario)
+  }, [currentScenario])
 
   const setName = (newName: string) => {
     const newScenario = { ...editingScenario, name: newName }
@@ -67,94 +60,118 @@ function RequestScenarioEdit(props: {
 
   return (
     <form>
-      <FormControl>
-        <FormLabel>Name</FormLabel>
-        <Input
-          type="text"
-          size="sm"
-          autoComplete="off"
-          aria-label="Name"
-          backgroundColor={'gray.800'}
-          placeholder="Name"
-          onChange={(e) => setName(e.target.value)}
-          value={editingScenario.name}
-          m={0}
-          variant="filled"
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Method</FormLabel>
-        <Select
-          size="sm"
-          autoComplete="off"
-          aria-label="Method"
-          backgroundColor={'gray.800'}
-          onChange={(e) => setMethod(e.target.value)}
-          value={editingScenario.method}
-          m={0}
-          variant="filled"
-        >
-          {methods.map((method) => {
-            return (
-              <option key={method} value={method}>
-                {method}
-              </option>
-            )
-          })}
-        </Select>
-      </FormControl>
-      <Button onClick={() => saveScenario(scenarioIndex, editingScenario)}>Save</Button>
+      <VStack gap={1} py={2}>
+        <FormControl>
+          <FormLabel mb={1} fontSize={'sm'}>
+            Name
+          </FormLabel>
+          <Input
+            type="text"
+            size="sm"
+            fontSize={'md'}
+            autoComplete="off"
+            aria-label="Name"
+            backgroundColor={'gray.800'}
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+            value={editingScenario.name}
+            m={0}
+            variant="filled"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel mb={1} fontSize={'sm'}>
+            Method
+          </FormLabel>
+          <Select
+            size="sm"
+            fontSize={'md'}
+            autoComplete="off"
+            aria-label="Method"
+            backgroundColor={'gray.800'}
+            onChange={(e) => setMethod(e.target.value)}
+            value={editingScenario.method}
+            m={0}
+            variant="filled"
+          >
+            {methods.map((method) => {
+              return (
+                <option key={method} value={method}>
+                  {method}
+                </option>
+              )
+            })}
+          </Select>
+        </FormControl>
+      </VStack>
+      <HStack justifyContent={'flex-end'} py={1}>
+        <Button onClick={() => saveScenario(editingScenario)}>Update</Button>
+      </HStack>
     </form>
   )
 }
 
-function RequestScenariosList(props: { runSettings: RunSettings; selectRequest: (requestIndex: number) => void }) {
-  const { runSettings, selectRequest } = props
+function RequestScenariosList(props: { runSettings: RunSettings; selectScenario: (scenario: HTTPScenario) => void }) {
+  const { runSettings, selectScenario } = props
 
   if (runSettings.httpScenarios.length == 0) {
     return <Text>No test requests defined.</Text>
   }
 
   return (
-    <>
-      {runSettings.httpScenarios.map((scenario, i) => {
+    <VStack alignItems={'stretch'} py={2}>
+      {runSettings.httpScenarios.map((scenario) => {
         return (
-          <Button key={i} onClick={() => selectRequest(i)}>
-            {scenario.name}
+          <Button
+            key={scenario.id}
+            backgroundColor={'gray.800'}
+            px={3}
+            py={0}
+            size={'sm'}
+            fontSize={'md'}
+            justifyContent={'space-between'}
+            fontWeight={'normal'}
+            onClick={() => selectScenario(scenario)}
+          >
+            <Box py={0} textOverflow="ellipsis" overflow={'hidden'}>
+              {scenario.name}
+            </Box>
+            <Box py={0}>{scenario.method}</Box>
           </Button>
         )
       })}
-    </>
+    </VStack>
   )
 }
 
 export function TestRequestPanel(props: TestRequestPanelProps) {
   const { project } = props
 
-  const [editingRequest, setEditingRequest] = React.useState<number | null>(null)
+  const [editingScenario, setEditingRequest] = React.useState<HTTPScenario | null>(null)
   const [runSettings, setRunSettings] = React.useState(project.runSettings)
 
   useEffect(() => {
     setRunSettings(project.runSettings)
   }, [project.runSettings])
 
-  const saveRunSettings = (newRunSettings: RunSettings) => {
-    project.setRunSettings(newRunSettings)
-    setRunSettings(newRunSettings)
+  const saveScenario = async (scenario: HTTPScenario) => {
+    const savedScenario = await project.putHTTPScenario(scenario)
+    setEditingRequest(savedScenario)
+    setRunSettings(project.runSettings)
   }
 
-  const newTestRequest = () => {
-    const newRunSettings = { ...project.runSettings }
-    newRunSettings.httpScenarios = [...project.runSettings.httpScenarios, generateEmptyScenario()]
-    saveRunSettings(newRunSettings)
-    setEditingRequest(newRunSettings.httpScenarios.length - 1)
+  const newTestRequest = async () => {
+    const scenario = generateEmptyScenario()
+    const savedScenario = await project.putHTTPScenario(scenario)
+    setRunSettings(project.runSettings)
+    setEditingRequest(savedScenario)
   }
 
-  const selectRequest = (requestIndex: number) => {
-    setEditingRequest(requestIndex)
+  const selectRequest = (scenario: HTTPScenario) => {
+    setEditingRequest(scenario)
   }
 
-  if (editingRequest === null) {
+  if (editingScenario === null) {
     return (
       <div className="test-request-panel">
         <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
@@ -173,7 +190,7 @@ export function TestRequestPanel(props: TestRequestPanelProps) {
           </HStack>
         </Box>
         <Box py={1} px={3}>
-          <RequestScenariosList runSettings={runSettings} selectRequest={selectRequest} />
+          <RequestScenariosList runSettings={runSettings} selectScenario={selectRequest} />
         </Box>
       </div>
     )
@@ -183,19 +200,19 @@ export function TestRequestPanel(props: TestRequestPanelProps) {
     <div className="test-request-panel">
       <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
         <HStack justifyContent={'space-between'}>
-          <Text as={'h2'} color="gray.200">
-            <Button variant={'ghost'} size="sm" onClick={() => setEditingRequest(null)}>
-              Back
-            </Button>
-          </Text>
+          <Button
+            leftIcon={<ChevronLeftIcon fontSize={'xl'} />}
+            variant={'ghost'}
+            size="sm"
+            pl={1}
+            onClick={() => setEditingRequest(null)}
+          >
+            Back
+          </Button>
         </HStack>
       </Box>
       <Box py={1} px={3}>
-        <RequestScenarioEdit
-          runSettings={runSettings}
-          scenarioIndex={editingRequest}
-          setNewRunSettings={saveRunSettings}
-        />
+        <RequestScenarioEdit currentScenario={editingScenario} saveScenario={saveScenario} />
       </Box>
     </div>
   )

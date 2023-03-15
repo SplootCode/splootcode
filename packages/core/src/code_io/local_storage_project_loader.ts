@@ -83,7 +83,13 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const packages = proj.packages.map(async (packRef) => {
       return fileLoader.loadPackage(ownerId, proj.name, packRef.name)
     })
-    return new Project(ownerId, proj, await Promise.all(packages), fileLoader)
+    // Give each of the HTTP Scenarios a unique ID
+    if (proj.runSettings.httpScenarios) {
+      proj.runSettings.httpScenarios.forEach((scenario, idx) => {
+        scenario.id = idx + 1 // Don't have 0 for ID, for truthiness reasons
+      })
+    }
+    return new Project(ownerId, proj, await Promise.all(packages), fileLoader, this)
   }
 
   async newProject(
@@ -106,7 +112,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       packages: [],
     }
 
-    const proj = new Project(ownerId, serialisedProj, [], fileLoader)
+    const proj = new Project(ownerId, serialisedProj, [], fileLoader, this)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
     await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
     await this.saveProject(proj)
@@ -143,7 +149,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       return newPack
     })
     const packages = await Promise.all(packagePromises)
-    const proj = new Project(newOwnerID, serializedProj, packages, fileLoader)
+    const proj = new Project(newOwnerID, serializedProj, packages, fileLoader, this)
 
     await this.saveProject(proj)
     await this.updateProjectMetadata(proj)
@@ -158,6 +164,32 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     }
     const proj = JSON.parse(projStr) as SerializedProject
     return proj.version
+  }
+
+  async saveHTTPScenario(project: Project, scenario: HTTPScenario): Promise<HTTPScenario> {
+    if (!scenario.id) {
+      // Get next ID for scenario
+      const maxID = project.runSettings.httpScenarios.map((scenario) => scenario.id).reduce((a, b) => Math.max(a, b), 0)
+      const newScenario = { ...scenario, id: maxID + 1 }
+      // Add scenario
+      // This logic for updating the project is duplicated with Project
+      // But for local storage, we need to save the whole project in order to save run settings.
+      const updatedScenarios = [...project.runSettings.httpScenarios, newScenario]
+      project.runSettings.httpScenarios = updatedScenarios
+      this.saveProject(project)
+      return newScenario
+    }
+
+    // Find scenario with that ID and update
+    const updatedScenarios = project.runSettings.httpScenarios.map((existingScenario) => {
+      if (existingScenario.id === scenario.id) {
+        return scenario
+      }
+      return existingScenario
+    })
+    project.runSettings.httpScenarios = updatedScenarios
+    this.saveProject(project)
+    return scenario
   }
 
   async isCurrentVersion(project: Project): Promise<boolean> {

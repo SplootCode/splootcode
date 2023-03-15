@@ -5,6 +5,7 @@ export interface HTTP {
 }
 
 export interface HTTPScenario {
+  id?: number
   name: string
   method: string
   path: string
