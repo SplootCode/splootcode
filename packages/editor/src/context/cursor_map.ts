@@ -42,8 +42,7 @@ export class CursorMap {
     this.supplimentaryCursors.push([x, y, nodeCursor])
   }
 
-  registerNodeStart(nodeCursor: NodeCursor, x: number, y: number, marginTop = 0) {
-    // Check if this is a new line
+  addMarginToLine(y: number, marginTop: number) {
     let lineMap: Line
     if (y + marginTop in this.linesIndex) {
       lineMap = this.linesIndex[y + marginTop]
@@ -54,15 +53,24 @@ export class CursorMap {
       lineMap = this.linesIndex[y]
       lineMap.marginTop = Math.max(lineMap.marginTop, marginTop)
       this.linesIndex[y + marginTop] = lineMap
+    }
+  }
+
+  registerNodeStart(nodeCursor: NodeCursor, x: number, y: number) {
+    // Check if this is a new line
+    let lineMap: Line
+    if (y in this.linesIndex) {
+      lineMap = this.linesIndex[y]
+      lineMap.yCoord = y
+      this.linesIndex[y] = lineMap
     } else {
       // new Line
       lineMap = {
         yCoord: y,
-        marginTop: marginTop,
+        marginTop: 0,
         entries: [],
       }
       this.linesIndex[y] = lineMap
-      this.linesIndex[y + marginTop] = lineMap
       this.lines.push(lineMap)
     }
 

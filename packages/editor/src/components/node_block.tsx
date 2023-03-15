@@ -147,6 +147,7 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       <g>
         {this.renderLeftAttachedBreadcrumbsChildSet()}
         {loopAnnotation}
+        {this.renderBeforeStackChildSet()}
         {shape}
         {placeholderLabel}
         {block.renderedInlineComponents.map((renderedComponent: RenderedInlineComponent, idx: number) => {
@@ -312,6 +313,18 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         />
       )
     }
+  }
+
+  renderBeforeStackChildSet() {
+    const { block } = this.props
+    if (block.beforeStackChildSet === null) {
+      return null
+    }
+    const childSetBlock = block.renderedChildSets[block.beforeStackChildSet]
+    if (childSetBlock.nodes.length !== 0) {
+      return <ExpandedListBlockView block={childSetBlock} isSelected={false} />
+    }
+    return null
   }
 
   renderRightAttachedChildSet(): ReactElement {

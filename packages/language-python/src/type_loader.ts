@@ -9,6 +9,7 @@ import { PythonCallVariable } from './nodes/python_call_variable'
 import { PythonComment } from './nodes/python_comment'
 import { PythonContinue } from './nodes/python_continue'
 import { PythonDeclaredIdentifier } from './nodes/declared_identifier'
+import { PythonDecorator } from './nodes/python_decorator'
 import { PythonDictionary } from './nodes/python_dictionary'
 import { PythonElifBlock } from './nodes/python_elif'
 import { PythonElseBlock } from './nodes/python_else'
@@ -52,6 +53,7 @@ export function loadPythonTypes() {
   PythonCallVariable.register()
   PythonComment.register()
   PythonContinue.register()
+  PythonDecorator.register()
   PythonDictionary.register()
   PythonElifBlock.register()
   PythonElseBlock.register()

@@ -6,12 +6,14 @@ import { RenderedTreeIterator } from './rendered_tree_iterator'
 
 export class MultiselectFragmentCreator extends RenderedTreeIterator {
   leftChildSetStack: SerializedNode[][]
+  leftChildNodeCategoryStack: NodeCategory[]
   childSetStack: SerializedNode[][]
   fragment: SplootFragment
 
   constructor(start: NodeCursor, end: NodeCursor) {
     super(start, end)
     this.leftChildSetStack = []
+    this.leftChildNodeCategoryStack = []
     this.childSetStack = []
     this.fragment = null
   }
@@ -31,7 +33,14 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
     if (node.leftBreadcrumbChildSet) {
       // Resolve the left children, now that we know this node is included.
       const leftChildSetStack = this.leftChildSetStack.pop()
+      this.leftChildNodeCategoryStack.pop()
       thisNode.childSets[node.leftBreadcrumbChildSet] = leftChildSetStack
+    }
+    if (node.beforeStackChildSet) {
+      // Resolve the before stack, now that we know this node is included.
+      const leftChildSetStack = this.leftChildSetStack.pop()
+      this.leftChildNodeCategoryStack.pop()
+      thisNode.childSets[node.beforeStackChildSet] = leftChildSetStack
     }
 
     if (this.childSetStack.length !== 0) {
@@ -43,6 +52,7 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
   visitNodeUp(node: NodeBlock): void {
     if (this.leftChildSetStack.length > 0) {
       const leftovers = this.leftChildSetStack.pop()
+      this.leftChildNodeCategoryStack.pop()
       const currentChildSet = this.childSetStack[this.childSetStack.length - 1]
       currentChildSet.push(...leftovers)
     }
@@ -53,6 +63,7 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
     // Move the childset Stack into the left childset stack?
     const children = this.childSetStack.pop()
     this.leftChildSetStack.push(children)
+    this.leftChildNodeCategoryStack.push(listBlock.childSet.nodeCategory)
   }
 
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {
@@ -73,9 +84,9 @@ export class MultiselectFragmentCreator extends RenderedTreeIterator {
   getFragment(): SplootFragment {
     if (this.leftChildSetStack.length !== 0) {
       const leftChildren = this.leftChildSetStack.pop()
+      const category = this.leftChildNodeCategoryStack.pop()
       const nodes = leftChildren.map((serNode) => deserializeNode(serNode))
-      // Currently left children are always python expression tokens
-      const fragment = new SplootFragment(nodes, NodeCategory.PythonExpressionToken, false /* don't trim */)
+      const fragment = new SplootFragment(nodes, category, false /* don't trim */)
       this.fragment = combineFragments(this.fragment, fragment)
     }
     if (this.fragment) {
