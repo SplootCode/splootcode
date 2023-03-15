@@ -4,7 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
-import { Box, Button, ButtonGroup, Select, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Select } from '@chakra-ui/react'
 import {
   CapturePayload,
   HTTPRequestAWSEvent,
@@ -101,19 +101,22 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         <div id="terminal-container">
           <div className="terminal-menu">
             <ButtonGroup size="md" m={1} height={8}>
-              <Select
-                size="sm"
-                value={this.state.selectedHTTPScenario?.name || ''}
-                onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
-              >
-                {this.props.project.runSettings.httpScenarios.map((scenario) => {
-                  return (
-                    <option key={scenario.name} value={JSON.stringify(scenario.event)}>
-                      {scenario.name}
-                    </option>
-                  )
-                })}
-              </Select>
+              {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+                <Select
+                  size="sm"
+                  value={this.state.selectedHTTPScenario?.name || ''}
+                  onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
+                >
+                  {this.props.project.runSettings.httpScenarios.map((scenario) => {
+                    return (
+                      <option key={scenario.name} value={JSON.stringify(scenario.event)}>
+                        {scenario.name}
+                      </option>
+                    )
+                  })}
+                </Select>
+              ) : null}
+
               <Button
                 isLoading={running}
                 loadingText="Running"
@@ -130,13 +133,12 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               </Button>
             </ButtonGroup>
           </div>
+
           {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
             <ResponseViewer response={this.state.responseData} />
           ) : null}
 
           <Box p="1">
-            <Text>Console</Text>
-
             <div id="terminal" ref={this.termRef} />
           </Box>
         </div>

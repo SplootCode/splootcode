@@ -24,8 +24,6 @@ export interface ResponseViewerProps {
 export function ResponseViewer(props: ResponseViewerProps) {
   const { response } = props
 
-  console.log(response)
-
   let body = null
 
   if (response) {
@@ -42,11 +40,12 @@ export function ResponseViewer(props: ResponseViewerProps) {
   return (
     <Box p="1" backgroundColor={'#040810'} borderBottom={'1px solid var(--chakra-colors-gray-800)'}>
       <Text>
-        Response{' '}
         <Text as="span" color={'green.400'}>
           200
         </Text>
       </Text>
+
+      <Text>{response && JSON.stringify(response.headers)}</Text>
 
       {body}
     </Box>
