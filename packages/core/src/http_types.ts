@@ -4,22 +4,15 @@ export interface HTTP {
   protocol: string
 }
 
-export interface RequestContext {
-  http: HTTP
-}
-
-export interface HTTPRequest {
-  version: string
-  rawQueryString: string
-  headers: Record<string, string>
-  requestContext: RequestContext
-  body: string
-  isBase64Encoded: boolean
-}
-
 export interface HTTPScenario {
   name: string
-  event: HTTPRequest
+  method: string
+  path: string
+  protocol: string
+  rawQueryString: string
+  headers: Record<string, string>
+  body: string
+  isBase64Encoded: boolean
 }
 
 export interface HTTPRequestAWSEvent {
@@ -52,13 +45,13 @@ export interface HTTPResponse {
   isBase64Encoded: boolean
 }
 
-export function httpRequestToHTTPRequestEvent(request: HTTPRequest): HTTPRequestAWSEvent {
+export function httpScenarioToHTTPRequestEvent(scenario: HTTPScenario): HTTPRequestAWSEvent {
   const sourceIP = ''
   let userAgent = ''
   let cookies = []
 
   const loweredHeaders = Object.fromEntries(
-    Object.entries(request.headers).map(([key, value]) => [key.toLowerCase(), value])
+    Object.entries(scenario.headers).map(([key, value]) => [key.toLowerCase(), value])
   )
 
   if (loweredHeaders['cookie']) {
@@ -70,21 +63,21 @@ export function httpRequestToHTTPRequestEvent(request: HTTPRequest): HTTPRequest
   }
 
   return {
-    version: request.version,
-    rawPath: request.requestContext.http.path,
-    rawQueryString: request.rawQueryString,
+    version: '2.0',
+    rawPath: scenario.path,
+    rawQueryString: scenario.rawQueryString,
     cookies: cookies,
-    headers: request.headers,
+    headers: scenario.headers,
     requestContext: {
       http: {
-        method: request.requestContext.http.method,
-        path: request.requestContext.http.path,
-        protocol: request.requestContext.http.protocol,
+        method: scenario.method,
+        path: scenario.path,
+        protocol: scenario.protocol,
         sourceIp: sourceIP,
         userAgent: userAgent,
       },
     },
-    body: request.body,
-    isBase64Encoded: request.isBase64Encoded,
+    body: scenario.body,
+    isBase64Encoded: scenario.isBase64Encoded,
   }
 }

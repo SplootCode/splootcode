@@ -1,10 +1,12 @@
 import './editor_side_menu.css'
 import React, { Component } from 'react'
+import { AiOutlineExperiment } from 'react-icons/ai'
 import { BiCog } from 'react-icons/bi'
 import { Box, Icon, IconButton, Text } from '@chakra-ui/react'
 import { ConfigPanel } from './config_panel'
 import { EditorState } from 'src/context/editor_context'
 import { RenderedFragment } from 'src/layout/rendered_fragment'
+import { TestRequestPanel } from './test_request_panel'
 import { Tray } from './tray/tray'
 
 const TRAY_ICON = (
@@ -16,16 +18,17 @@ const TRAY_ICON = (
   </svg>
 )
 
-export type EditorSideMenuView = 'tray' | 'config' | ''
+export type EditorSideMenuView = 'tray' | 'config' | 'test-requests' | ''
 
 export interface EditorSideMenuProps {
   onChangeView: (newView: EditorSideMenuView) => void
   currentView: string
+  enableTestRequests: boolean
 }
 
 export class EditorSideMenu extends Component<EditorSideMenuProps> {
   render() {
-    const { currentView } = this.props
+    const { currentView, enableTestRequests } = this.props
 
     const handleClick = (viewName: EditorSideMenuView) => {
       if (viewName === currentView) {
@@ -65,6 +68,24 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
             icon={<Icon as={BiCog} boxSize={7} />}
           ></IconButton>
         </div>
+        {enableTestRequests ? (
+          <div
+            className={'editor-side-menu-container ' + (currentView === 'config' ? 'editor-side-menu-selected' : '')}
+          >
+            <IconButton
+              aria-label="Test Requests"
+              size="sm"
+              padding={1}
+              width="100%"
+              height={10}
+              borderRadius={0}
+              variant={'ghost'}
+              onClick={() => handleClick('test-requests')}
+              color={currentView === 'test-requests' ? 'gray.300' : 'gray.500'}
+              icon={<Icon as={AiOutlineExperiment} boxSize={7} />}
+            ></IconButton>
+          </div>
+        ) : null}
       </div>
     )
   }
@@ -72,7 +93,7 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
 
 export interface EditorSideMenuPaneProps {
   editorState: EditorState
-  visibleView: 'tray' | 'config' | ''
+  visibleView: 'tray' | 'config' | 'test-requests' | ''
 }
 
 export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
@@ -82,7 +103,8 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
     const fileBlock = editorState.rootNode
     const trayState = visibleView === 'tray' ? {} : { display: 'none' }
     const configState = visibleView === 'config' ? {} : { display: 'none' }
-    const title = { tray: 'Library', config: 'Configuration' }[visibleView]
+    const testRequestState = visibleView === 'test-requests' ? {} : { display: 'none' }
+    const title = { tray: 'Library', config: 'Configuration', 'test-requests': 'Test Requests' }[visibleView]
     return (
       <>
         <div style={trayState} className="editor-side-menu">
@@ -100,6 +122,9 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
             </Text>
           </Box>
           <ConfigPanel project={project} startDrag={this.startDrag} />
+        </div>
+        <div style={testRequestState} className="editor-side-menu">
+          <TestRequestPanel project={project} />
         </div>
       </>
     )
