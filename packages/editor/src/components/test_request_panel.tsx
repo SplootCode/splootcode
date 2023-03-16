@@ -52,6 +52,9 @@ function RequestScenarioEdit(props: {
     const newScenario = { ...editingScenario }
     newScenario[key] = newValue
     setEditingScenario(newScenario)
+    if (key === 'method') {
+      saveScenario(newScenario)
+    }
   }
 
   return (
@@ -92,7 +95,6 @@ function RequestScenarioEdit(props: {
               backgroundColor={'gray.800'}
               onChange={(e) => {
                 setValue('method', e.target.value)
-                saveScenario(editingScenario)
               }}
               value={editingScenario.method}
               m={0}
