@@ -1,5 +1,5 @@
 import { FileLoader, ProjectLoader } from './file_loader'
-import { HTTPScenario } from 'src/http_types'
+import { HTTPScenario } from '../../http_types'
 import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
 import { ProjectMutationType } from '../mutations/project_mutations'
 import { RunSettings, RunType } from './run_settings'
@@ -70,14 +70,25 @@ export class Project {
     return this.packages[0]
   }
 
+  async deleteHTTPScenario(scenarioID: number): Promise<void> {
+    await this.projectLoader.deleteHTTPScenario(this, scenarioID)
+    const newScenarios = this.runSettings.httpScenarios.filter((s) => s.id !== scenarioID)
+    const newSettings = { ...this.runSettings, httpScenarios: newScenarios }
+    this.runSettings = newSettings
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_RUN_SETTINGS,
+      newSettings: newSettings,
+    })
+  }
+
   async putHTTPScenario(scenario: HTTPScenario): Promise<HTTPScenario> {
     const savedScenario = await this.projectLoader.saveHTTPScenario(this, scenario)
 
     let found = false
     const newScenarios = this.runSettings.httpScenarios.map((s) => {
-      if (s.id === scenario.id) {
+      if (s.id === savedScenario.id) {
         found = true
-        return scenario
+        return savedScenario
       }
       return s
     })

@@ -166,6 +166,12 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return proj.version
   }
 
+  async deleteHTTPScenario(project: Project, scenarioID: number): Promise<void> {
+    const updatedScenarios = project.runSettings.httpScenarios.filter((scenario) => scenario.id !== scenarioID)
+    project.runSettings.httpScenarios = updatedScenarios
+    await this.saveProject(project)
+  }
+
   async saveHTTPScenario(project: Project, scenario: HTTPScenario): Promise<HTTPScenario> {
     if (!scenario.id) {
       // Get next ID for scenario

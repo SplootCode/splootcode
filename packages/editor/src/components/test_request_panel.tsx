@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Flex,
   FormControl,
   FormLabel,
   HStack,
@@ -11,6 +12,7 @@ import {
   Input,
   Select,
   Text,
+  Textarea,
   VStack,
 } from '@chakra-ui/react'
 import { HTTPScenario, Project, RunSettings } from '@splootcode/core'
@@ -37,77 +39,126 @@ function generateEmptyScenario(): HTTPScenario {
 function RequestScenarioEdit(props: {
   currentScenario: HTTPScenario
   saveScenario: (newScenario: HTTPScenario) => void
+  deleteScenario: (scenarioID: number) => void
 }) {
-  const { currentScenario, saveScenario } = props
+  const { currentScenario, saveScenario, deleteScenario } = props
   const [editingScenario, setEditingScenario] = React.useState(currentScenario)
 
   useEffect(() => {
     setEditingScenario(currentScenario)
   }, [currentScenario])
 
-  const setName = (newName: string) => {
-    const newScenario = { ...editingScenario, name: newName }
-    setEditingScenario(newScenario)
-  }
-
-  const setMethod = (newMethod: string) => {
-    const newScenario = {
-      ...editingScenario,
-      method: newMethod,
-    }
+  const setValue = (key: string, newValue: string) => {
+    const newScenario = { ...editingScenario }
+    newScenario[key] = newValue
     setEditingScenario(newScenario)
   }
 
   return (
-    <form>
-      <VStack gap={1} py={2}>
-        <FormControl>
-          <FormLabel mb={1} fontSize={'sm'}>
-            Name
-          </FormLabel>
-          <Input
-            type="text"
-            size="sm"
-            fontSize={'md'}
-            autoComplete="off"
-            aria-label="Name"
-            backgroundColor={'gray.800'}
-            placeholder="Name"
-            onChange={(e) => setName(e.target.value)}
-            value={editingScenario.name}
-            m={0}
-            variant="filled"
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel mb={1} fontSize={'sm'}>
-            Method
-          </FormLabel>
-          <Select
-            size="sm"
-            fontSize={'md'}
-            autoComplete="off"
-            aria-label="Method"
-            backgroundColor={'gray.800'}
-            onChange={(e) => setMethod(e.target.value)}
-            value={editingScenario.method}
-            m={0}
-            variant="filled"
-          >
-            {methods.map((method) => {
-              return (
-                <option key={method} value={method}>
-                  {method}
-                </option>
-              )
-            })}
-          </Select>
-        </FormControl>
-      </VStack>
-      <HStack justifyContent={'flex-end'} py={1}>
-        <Button onClick={() => saveScenario(editingScenario)}>Update</Button>
-      </HStack>
-    </form>
+    <>
+      <form>
+        <VStack gap={0.5} py={2} alignItems="start">
+          <Text textAlign="left" as="h4" fontWeight={'bold'}>
+            {editingScenario.name}
+          </Text>
+          <FormControl>
+            <FormLabel mb={0.5} fontSize={'sm'}>
+              Name
+            </FormLabel>
+            <Input
+              type="text"
+              size="sm"
+              fontSize={'md'}
+              autoComplete="off"
+              aria-label="Name"
+              backgroundColor={'gray.800'}
+              placeholder="Name"
+              onChange={(e) => setValue('name', e.target.value)}
+              onBlur={(e) => saveScenario(editingScenario)}
+              value={editingScenario.name}
+              m={0}
+              variant="filled"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel mb={0.5} fontSize={'sm'}>
+              Method
+            </FormLabel>
+            <Select
+              size="sm"
+              fontSize={'md'}
+              autoComplete="off"
+              aria-label="Method"
+              backgroundColor={'gray.800'}
+              onChange={(e) => {
+                setValue('method', e.target.value)
+                saveScenario(editingScenario)
+              }}
+              value={editingScenario.method}
+              m={0}
+              variant="filled"
+            >
+              {methods.map((method) => {
+                return (
+                  <option key={method} value={method}>
+                    {method}
+                  </option>
+                )
+              })}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel mb={0.5} fontSize={'sm'}>
+              Path
+            </FormLabel>
+            <Input
+              type="text"
+              size="sm"
+              fontSize={'md'}
+              autoComplete="off"
+              aria-label="Path"
+              backgroundColor={'gray.800'}
+              placeholder="/"
+              onChange={(e) => setValue('path', e.target.value)}
+              onBlur={(e) => saveScenario(editingScenario)}
+              value={editingScenario.path}
+              m={0}
+              variant="filled"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel mb={1} fontSize={'sm'}>
+              Body
+            </FormLabel>
+            <Textarea
+              fontSize={'md'}
+              aria-label="Name"
+              fontFamily={'Inconsolata, monospace'}
+              backgroundColor={'gray.800'}
+              onChange={(e) => setValue('body', e.target.value)}
+              onBlur={(e) => saveScenario(editingScenario)}
+              value={editingScenario.body}
+              m={0}
+              variant="filled"
+            />
+          </FormControl>
+        </VStack>
+      </form>
+      <Flex py={2}>
+        <Button
+          onClick={() => deleteScenario(editingScenario.id)}
+          width={'100%'}
+          size="sm"
+          fontSize={'md'}
+          colorScheme="red"
+          borderColor={'red.500'}
+          color={'red.500'}
+          variant={'outline'}
+        >
+          Delete test request
+        </Button>
+      </Flex>
+    </>
   )
 }
 
@@ -157,6 +208,12 @@ export function TestRequestPanel(props: TestRequestPanelProps) {
   const saveScenario = async (scenario: HTTPScenario) => {
     const savedScenario = await project.putHTTPScenario(scenario)
     setEditingRequest(savedScenario)
+    setRunSettings(project.runSettings)
+  }
+
+  const deleteScenario = async (scenarioID: number) => {
+    await project.deleteHTTPScenario(scenarioID)
+    setEditingRequest(null)
     setRunSettings(project.runSettings)
   }
 
@@ -212,7 +269,11 @@ export function TestRequestPanel(props: TestRequestPanelProps) {
         </HStack>
       </Box>
       <Box py={1} px={3}>
-        <RequestScenarioEdit currentScenario={editingScenario} saveScenario={saveScenario} />
+        <RequestScenarioEdit
+          currentScenario={editingScenario}
+          saveScenario={saveScenario}
+          deleteScenario={deleteScenario}
+        />
       </Box>
     </div>
   )
