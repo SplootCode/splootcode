@@ -4,6 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
+import { Allotment } from 'allotment'
 import { Box, Button, ButtonGroup, Select } from '@chakra-ui/react'
 import {
   CapturePayload,
@@ -99,11 +100,13 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     return (
       <div id="python-frame-container">
         <div id="terminal-container">
-          <div className="terminal-menu">
-            <ButtonGroup size="md" m={1} height={8}>
+          <Box className="terminal-menu" px="3">
+            <ButtonGroup size="md" my={1} height={8}>
               {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
                 <Select
                   size="sm"
+                  variant={'filled'}
+                  backgroundColor="gray.800"
                   value={this.state.selectedHTTPScenario?.name || ''}
                   onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
                 >
@@ -132,13 +135,21 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 Stop
               </Button>
             </ButtonGroup>
-          </div>
+          </Box>
 
-          {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
-            <ResponseViewer response={this.state.responseData} />
-          ) : null}
+          <Allotment vertical>
+            <Allotment.Pane visible={this.props.project.runSettings.runType === RunType.HTTP_REQUEST}>
+              {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+                <ResponseViewer response={this.state.responseData} />
+              ) : null}
+            </Allotment.Pane>
 
-          <Box p="1" id="terminal" ref={this.termRef}></Box>
+            <Allotment.Pane>
+              <Box px="3" pt="3" height={'100%'} backgroundColor="#040810">
+                <Box id="terminal" ref={this.termRef}></Box>
+              </Box>
+            </Allotment.Pane>
+          </Allotment>
         </div>
 
         <iframe

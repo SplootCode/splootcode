@@ -11,7 +11,6 @@
   height: calc(100% - 42px);
   background-color: var(--chakra-colors-gray-900);
   box-sizing: border-box;
-  padding-top: 5px;
   scrollbar-color: auto;
 }
 
