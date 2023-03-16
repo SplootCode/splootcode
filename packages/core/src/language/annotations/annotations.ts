@@ -63,11 +63,5 @@ export function getSideEffectAnnotations(capture: StatementCapture): NodeAnnotat
   if (stdout.length > 20) {
     stdout = stdout.substring(0, 17) + '...'
   }
-  annotations.push({
-    type: NodeAnnotationType.SideEffect,
-    value: {
-      message: `prints "${stdout}"`,
-    },
-  })
   return annotations
 }

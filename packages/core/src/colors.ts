@@ -20,6 +20,8 @@ export enum HighlightColorCategory {
 export enum ColorUsageType {
   NODE_TEXT = 0,
   CAP_TEXT,
+  NODE_FILL,
+  CAP_FILL,
 }
 
 function colorBase(category: HighlightColorCategory): string {
@@ -52,7 +54,13 @@ export function getColor(category: HighlightColorCategory, usage: ColorUsageType
   // Hardcode for now, but could be configurable in the future
   const base = colorBase(category)
   if (usage == ColorUsageType.CAP_TEXT) {
-    return `var(--${base}-700)`
+    return `var(--${base}-cap-text)`
   }
-  return `var(--${base}-200)`
+  if (usage === ColorUsageType.NODE_FILL) {
+    return `var(--editor-node-block-fill)`
+  }
+  if (usage === ColorUsageType.CAP_FILL) {
+    return `var(--editor-node-block-fill)`
+  }
+  return `var(--${base}-text)`
 }

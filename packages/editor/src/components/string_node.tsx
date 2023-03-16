@@ -20,13 +20,10 @@ export function getLeftCapShape(className: string, x: number, y: number, height:
       <path
         tabIndex={0}
         className={className}
-        d={`M ${x + 4} ${y} q -4,0 -4,4 v ${height - 8} q 0,4 4,4 h ${STRING_CAP_WIDTH - 6} v ${-height} z`}
+        d={`M ${x + 4} ${y} q -4,0 -4,4 v ${height - 8} q 0,4 4,4 h ${STRING_CAP_WIDTH - 7} v ${-height} z`}
       />
-      <g transform={`translate(${x + 4} ${y + 6})`}>
-        <path
-          d="M3.35332 5.18303C3.66921 4.4662 3.99117 3.70077 4.31922 2.88674C4.64726 2.07271 4.92063 1.3498 5.13932 0.718018H6.9071L6.98 0.918488C6.70056 1.56242 6.33607 2.2671 5.88653 3.03254C5.43699 3.79797 4.99353 4.5148 4.55614 5.18303H3.35332ZM0 5.18303C0.315892 4.4662 0.643934 3.70077 0.984125 2.88674C1.32432 2.07271 1.59769 1.3498 1.80423 0.718018H3.55379L3.62668 0.918488C3.33509 1.56242 2.9706 2.2671 2.53321 3.03254C2.09582 3.79797 1.65843 4.5148 1.22104 5.18303H0Z"
-          fill="var(--code-neutral-200)"
-        />
+      <g transform={`translate(${x} ${y + 14})`}>
+        <text className="string-node-cap-text">&apos;</text>
       </g>
     </>
   )
@@ -38,13 +35,10 @@ function getRightCapShape(className: string, x: number, y: number, height: numbe
       <path
         tabIndex={0}
         className={className}
-        d={`M ${x} ${y} v ${height} h ${STRING_CAP_WIDTH - 6} q 4,0 4,-4 v ${-height + 8} q 0,-4 -4,-4 z`}
+        d={`M ${x} ${y} v ${height} h ${STRING_CAP_WIDTH - 7} q 4,0 4,-4 v ${-height + 8} q 0,-4 -4,-4 z`}
       />
-      <g transform={`translate(${x + 3} ${y + 6})`}>
-        <path
-          d="M3.35332 5.18303C3.66921 4.4662 3.99117 3.70077 4.31922 2.88674C4.64726 2.07271 4.92063 1.3498 5.13932 0.718018H6.9071L6.98 0.918488C6.70056 1.56242 6.33607 2.2671 5.88653 3.03254C5.43699 3.79797 4.99353 4.5148 4.55614 5.18303H3.35332ZM0 5.18303C0.315892 4.4662 0.643934 3.70077 0.984125 2.88674C1.32432 2.07271 1.59769 1.3498 1.80423 0.718018H3.55379L3.62668 0.918488C3.33509 1.56242 2.9706 2.2671 2.53321 3.03254C2.09582 3.79797 1.65843 4.5148 1.22104 5.18303H0Z"
-          fill="var(--code-neutral-200)"
-        />
+      <g transform={`translate(${x} ${y + 14})`}>
+        <text className="string-node-cap-text">&apos;</text>
       </g>
     </>
   )
@@ -66,27 +60,24 @@ export class StringNode extends React.Component<StringNodeProps> {
     const topPos = block.y + block.marginTop
 
     const isValid = (block.isValid || block.invalidChildsetID) && !isInvalidBlamed
-    const className = 'svgsplootnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
+    const className = 'svgsplootnode stringnode' + (isSelected ? ' selected' : '') + (isValid ? '' : ' invalid')
 
     const internalWidth = block.blockWidth - STRING_CAP_WIDTH * 2
 
-    let rectangle = null
-    if (isSelected) {
-      rectangle = (
-        <rect
-          ref={this.shapeRef}
-          tabIndex={0}
-          className="string-node-selected-background"
-          x={leftPos + STRING_CAP_WIDTH - 2}
-          y={topPos}
-          width={internalWidth + 4}
-          height={block.rowHeight}
-        />
-      )
-    }
+    const rectangle = (
+      <rect
+        ref={this.shapeRef}
+        tabIndex={0}
+        className={isSelected ? 'string-node-selected-background' : 'string-node-background'}
+        x={leftPos + STRING_CAP_WIDTH - 4}
+        y={topPos}
+        width={internalWidth + 8}
+        height={block.rowHeight}
+      />
+    )
 
     const startCap = getLeftCapShape(className, leftPos, topPos, block.rowHeight)
-    const endCap = getRightCapShape(className, leftPos + STRING_CAP_WIDTH + internalWidth + 2, topPos, block.rowHeight)
+    const endCap = getRightCapShape(className, leftPos + STRING_CAP_WIDTH + internalWidth + 3, topPos, block.rowHeight)
 
     const textContent = block.node.getProperty('value')
 
@@ -94,7 +85,7 @@ export class StringNode extends React.Component<StringNodeProps> {
       <>
         {rectangle}
         {startCap}
-        <foreignObject x={leftPos + STRING_CAP_WIDTH} y={topPos} width={internalWidth} height={block.rowHeight}>
+        <foreignObject x={leftPos + STRING_CAP_WIDTH + 1} y={topPos} width={internalWidth} height={block.rowHeight}>
           <pre tabIndex={0} className="string-node">
             {textContent}
           </pre>

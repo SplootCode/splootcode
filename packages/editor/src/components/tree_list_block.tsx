@@ -85,14 +85,14 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
         <>
           <path
             className={connectorClass}
-            d={`M ${childSetBlock.x + BRACKET_WIDTH} ${childSetBlock.y} v 0.4 a 20 20 0 0 0 0 20 v 0.4`}
+            d={`M ${childSetBlock.x + BRACKET_WIDTH} ${childSetBlock.y} v 0.4 a 18 18 0 0 0 0 18 v 0.4`}
             fill="transparent"
           ></path>
           <path
             className={connectorClass}
             d={`M ${childSetBlock.x + childSetBlock.width - BRACKET_WIDTH} ${
               childSetBlock.y
-            } v 0.4 a 20 20 0 0 1 0 20 v 0.4`}
+            } v 0.4 a 18 18 0 0 1 0 18 v 0.4`}
             fill="transparent"
           ></path>
         </>
@@ -113,14 +113,14 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
             leftBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x} ${nodeBlock.y} v 0.4 a 20 20 0 0 0 0 20 v 0.4`}
+                d={`M ${nodeBlock.x} ${nodeBlock.y} v 0.4 a 18 18 0 0 0 0 18 v 0.4`}
                 fill="transparent"
               ></path>
             )
             rightBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x + width} ${nodeBlock.y} v 0.4 a 20 20 0 0 1 0 20 v 0.4`}
+                d={`M ${nodeBlock.x + width} ${nodeBlock.y} v 0.4 a 18 18 0 0 1 0 18 v 0.4`}
                 fill="transparent"
               ></path>
             )
@@ -128,14 +128,14 @@ export class TreeListBlockBracketsView extends React.Component<TreeListBlockView
             leftBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x} ${prevRowBottom} V ${nodeBlock.y} a 20 20 0 0 0 0 20 v 0.4`}
+                d={`M ${nodeBlock.x} ${prevRowBottom} V ${nodeBlock.y} a 18 18 0 0 0 0 18 v 0.4`}
                 fill="transparent"
               ></path>
             )
             rightBracket = (
               <path
                 className={connectorClass}
-                d={`M ${nodeBlock.x + width} ${prevRowBottom} V ${nodeBlock.y} a 20 20 0 0 1 0 20 v 0.4`}
+                d={`M ${nodeBlock.x + width} ${prevRowBottom} V ${nodeBlock.y} a 18 18 0 0 1 0 18 v 0.4`}
                 fill="transparent"
               ></path>
             )

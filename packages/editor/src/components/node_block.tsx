@@ -51,7 +51,8 @@ export function getNodeShape(
   width: number,
   leftCurve: boolean,
   rightCurve: boolean,
-  ref: React.RefObject<SVGPathElement>
+  ref: React.RefObject<SVGPathElement>,
+  fillColor: string
 ) {
   let leftSide: string
   let rightSide: string
@@ -70,7 +71,21 @@ export function getNodeShape(
     width -= 4
   }
 
-  return <path ref={ref} tabIndex={0} className={className} d={`M ${x} ${y} ${leftSide} h ${width} ${rightSide} z`} />
+  let styles = {}
+  // Don't override the fill and stroke if invalid or selected.
+  if (className === 'svgsplootnode') {
+    styles = { fill: fillColor, stroke: fillColor }
+  }
+
+  return (
+    <path
+      ref={ref}
+      tabIndex={0}
+      className={className}
+      style={styles}
+      d={`M ${x} ${y} ${leftSide} h ${width} ${rightSide} z`}
+    />
+  )
 }
 
 @observer
@@ -137,10 +152,28 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
         shape = null
       }
     } else if (block.layout.boxType === NodeBoxType.SMALL_BLOCK) {
-      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve, this.shapeRef)
+      shape = getNodeShape(
+        classname,
+        leftPos,
+        topPos,
+        width,
+        block.leftCurve,
+        block.rightCurve,
+        this.shapeRef,
+        block.nodeFillColor
+      )
       internalLeftPos = leftPos + NODE_INLINE_SPACING
     } else {
-      shape = getNodeShape(classname, leftPos, topPos, width, block.leftCurve, block.rightCurve, this.shapeRef)
+      shape = getNodeShape(
+        classname,
+        leftPos,
+        topPos,
+        width,
+        block.leftCurve,
+        block.rightCurve,
+        this.shapeRef,
+        block.nodeFillColor
+      )
     }
 
     return (
@@ -297,7 +330,16 @@ export class EditorNodeBlock extends React.Component<NodeBlockProps> {
       const placeholder = childSetBlock.labels.length !== 0 ? childSetBlock.labels[0] : ''
       const invalid = block.invalidChildsetID === block.leftBreadcrumbChildSet
       const classname = 'svgsplootnode gap placeholder-outline ' + (invalid ? ' invalid' : '')
-      const shape = getNodeShape(classname, block.x, block.y, childSetBlock.width, false, false, this.shapeRef)
+      const shape = getNodeShape(
+        classname,
+        block.x,
+        block.y,
+        childSetBlock.width,
+        false,
+        false,
+        this.shapeRef,
+        block.nodeFillColor
+      )
       return (
         <>
           {shape}

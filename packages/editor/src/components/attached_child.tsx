@@ -3,6 +3,7 @@ import './tree_list_block.css'
 import React from 'react'
 import { observer } from 'mobx-react'
 
+import { AttachRightLayoutHandler } from '../layout/attach_right_layout_handler'
 import { BRACKET_WIDTH } from '../layout/layout_constants'
 import { EditorNodeBlock } from './node_block'
 import { NodeBlock } from '../layout/rendered_node'
@@ -24,20 +25,27 @@ export class AttachedChildRightExpressionView extends React.Component<AttachedCh
 
     const connectorClass = 'tree-connector ' + (isSelected ? 'selected' : '')
 
-    const leftBracket = (
-      <path
-        className={connectorClass}
-        d={`M ${bracketLeftPos} ${childSetBlock.y} v 0.4 a 20 20 0 0 0 0 20 v 0.4`}
-        fill="transparent"
-      ></path>
-    )
-    const rightBracket = (
-      <path
-        className={connectorClass}
-        d={`M ${bracketLeftPos + childWidth} ${childSetBlock.y} v 0.4 a 20 20 0 0 1 0 20 v 0.4`}
-        fill="transparent"
-      ></path>
-    )
+    const layoutHandler = childSetBlock.layoutHandler as AttachRightLayoutHandler
+
+    let leftBracket = null
+    let rightBracket = null
+
+    if (layoutHandler.brackets) {
+      leftBracket = (
+        <path
+          className={connectorClass}
+          d={`M ${bracketLeftPos} ${childSetBlock.y} v 0.4 a 18 18 0 0 0 0 18 v 0.4`}
+          fill="transparent"
+        ></path>
+      )
+      rightBracket = (
+        <path
+          className={connectorClass}
+          d={`M ${bracketLeftPos + childWidth} ${childSetBlock.y} v 0.4 a 18 18 0 0 1 0 18 v 0.4`}
+          fill="transparent"
+        ></path>
+      )
+    }
 
     const label = childSetBlock.labels.length > 0 ? childSetBlock.labels[0] : undefined
     return (

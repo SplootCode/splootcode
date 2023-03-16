@@ -52,7 +52,7 @@ export class RepeatedBlockAnnotation extends React.Component<RepeatedBlockAnnota
       const location = (selected / (frames - 1)) * width
       const numLabelWidth = Math.max(stringWidth('end'), stringWidth(`${frames}`)) + 24
       return (
-        <g>
+        <g transform="translate(0, 2)">
           <text x={block.x + 2} y={block.y + 8} className="annotation" xmlSpace="preserve">
             {label}
           </text>
@@ -76,9 +76,9 @@ export class RepeatedBlockAnnotation extends React.Component<RepeatedBlockAnnota
               className="slider-button"
               rx="2"
               x={width + 10}
-              y={-6}
+              y={-5}
               width={15}
-              height={16}
+              height={14}
               onClick={this.decrement}
             />
             <text className="slider-button-label" x={width + 14} y={7}>
@@ -88,9 +88,9 @@ export class RepeatedBlockAnnotation extends React.Component<RepeatedBlockAnnota
               className="slider-button"
               rx="2"
               x={width + 10 + numLabelWidth}
-              y={-6}
+              y={-5}
               width={15}
-              height={16}
+              height={14}
               onClick={this.increment}
             />
             <text className="slider-button-label" x={width + 14 + numLabelWidth} y={7}>
@@ -102,7 +102,7 @@ export class RepeatedBlockAnnotation extends React.Component<RepeatedBlockAnnota
     }
     return (
       <g>
-        <text x={block.x + 2} y={block.y + 8} className="annotation" xmlSpace="preserve">
+        <text x={block.x + 2} y={block.y + 10} className="annotation" xmlSpace="preserve">
           {label}
         </text>
       </g>

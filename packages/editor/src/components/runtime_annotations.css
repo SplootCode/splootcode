@@ -11,25 +11,17 @@
     pointer-events: none;
 }
 
-.loop-annotation-dot {
-    fill: white;
-}
-
-.loop-annotation-dot.selected {
-    fill: blue;
-}
-
 .slider-track {
-    fill: var(--editor-connector-label);
+    fill: var(--chakra-colors-gray-600);
 }
 
 .slider-fill {
-    fill: white;
+    fill: var(--chakra-colors-gray-400);
     transition: width 0.5s;
 }
 
 .slider-handle {
-    fill: white;
+    fill: var(--chakra-colors-gray-400);
     transition: cx 0.5s;
 }
 
@@ -42,6 +34,7 @@
 }
 
 .slider-button-label {
+    fill: var(--chakra-colors-gray-400);
     pointer-events: none;
     -webkit-user-select: none;
     -moz-user-select: none;
