@@ -100,8 +100,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     return (
       <div id="python-frame-container">
         <div id="terminal-container">
-          <div className="terminal-menu">
-            <ButtonGroup size="md" m={1} height={8}>
+          <Box className="terminal-menu" px="3">
+            <ButtonGroup size="md" my={1} height={8}>
               {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
                 <Select
                   size="sm"
@@ -133,7 +133,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 Stop
               </Button>
             </ButtonGroup>
-          </div>
+          </Box>
 
           <Allotment vertical>
             <Allotment.Pane visible={this.props.project.runSettings.runType === RunType.HTTP_REQUEST}>
