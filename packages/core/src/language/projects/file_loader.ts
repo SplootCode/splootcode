@@ -1,3 +1,4 @@
+import { HTTPScenario } from '../../http_types'
 import { Project } from './project'
 import { RunType } from './run_settings'
 import { SplootFile } from './file'
@@ -40,6 +41,8 @@ export interface ProjectLoader {
   deleteProject: (ownerId: string, projectId: string) => Promise<boolean>
   cloneProject: (newOwnerId: string, newProjectId: string, title: string, existingProject: Project) => Promise<Project>
   saveProject: (project: Project) => Promise<string>
+  deleteHTTPScenario: (project: Project, scenarioID: number) => Promise<void>
+  saveHTTPScenario: (project: Project, scenario: HTTPScenario) => Promise<HTTPScenario>
   isCurrentVersion: (project: Project) => Promise<boolean>
 }
 

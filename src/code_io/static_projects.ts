@@ -1,4 +1,4 @@
-import { Project, SerializedProject, StaticFileLoader } from '@splootcode/core'
+import { LocalStorageProjectLoader, Project, SerializedProject, StaticFileLoader } from '@splootcode/core'
 
 export async function loadExampleProject(projectId: string): Promise<Project> {
   const rootUrl = '/static/projects/' + projectId + '/'
@@ -8,5 +8,5 @@ export async function loadExampleProject(projectId: string): Promise<Project> {
   const packages = proj.packages.map(async (packRef) => {
     return fileLoader.loadPackage('examples', proj.name, packRef.name)
   })
-  return new Project('examples', proj, await Promise.all(packages), fileLoader)
+  return new Project('examples', proj, await Promise.all(packages), fileLoader, new LocalStorageProjectLoader())
 }

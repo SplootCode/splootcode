@@ -1,4 +1,5 @@
-import { FileLoader } from './file_loader'
+import { FileLoader, ProjectLoader } from './file_loader'
+import { HTTPScenario } from '../../http_types'
 import { PackageBuildType, SerializedSplootPackage, SerializedSplootPackageRef, SplootPackage } from './package'
 import { ProjectMutationType } from '../mutations/project_mutations'
 import { RunSettings, RunType } from './run_settings'
@@ -26,19 +27,25 @@ export class Project {
   isReadOnly: boolean
   layoutType: ProjectLayoutType
   runSettings: RunSettings
-  runSettingsChanged: boolean
   title: string
   splootversion: string
   version: string
   packages: SplootPackage[]
+  projectLoader: ProjectLoader
   fileLoader: FileLoader
   environmentVars: Map<string, [string, boolean]>
   environmentVarsChanged: boolean
 
-  constructor(owner: string, proj: SerializedProject, packages: SplootPackage[], fileLoader: FileLoader) {
+  constructor(
+    owner: string,
+    proj: SerializedProject,
+    packages: SplootPackage[],
+    fileLoader: FileLoader,
+    projectLoader: ProjectLoader
+  ) {
     this.owner = owner
     this.name = proj.name
-    this.isReadOnly = fileLoader.isReadOnly()
+    this.isReadOnly = fileLoader.isReadOnly() || !projectLoader
     this.title = proj.title
     this.version = proj.version
     this.runSettings = proj.runSettings || { runType: RunType.COMMAND_LINE, httpScenarios: [] }
@@ -46,10 +53,10 @@ export class Project {
       this.runSettings.httpScenarios = []
     }
     this.fileLoader = fileLoader
+    this.projectLoader = projectLoader
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
     this.environmentVarsChanged = false
-    this.runSettingsChanged = false
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -63,13 +70,40 @@ export class Project {
     return this.packages[0]
   }
 
-  setRunSettings(newSettings: RunSettings) {
+  async deleteHTTPScenario(scenarioID: number): Promise<void> {
+    await this.projectLoader.deleteHTTPScenario(this, scenarioID)
+    const newScenarios = this.runSettings.httpScenarios.filter((s) => s.id !== scenarioID)
+    const newSettings = { ...this.runSettings, httpScenarios: newScenarios }
     this.runSettings = newSettings
-    this.runSettingsChanged = true
     globalMutationDispatcher.handleProjectMutation({
       type: ProjectMutationType.UPDATE_RUN_SETTINGS,
       newSettings: newSettings,
     })
+  }
+
+  async putHTTPScenario(scenario: HTTPScenario): Promise<HTTPScenario> {
+    const savedScenario = await this.projectLoader.saveHTTPScenario(this, scenario)
+
+    let found = false
+    const newScenarios = this.runSettings.httpScenarios.map((s) => {
+      if (s.id === savedScenario.id) {
+        found = true
+        return savedScenario
+      }
+      return s
+    })
+
+    if (!found) {
+      newScenarios.push(savedScenario)
+    }
+
+    const newSettings = { ...this.runSettings, httpScenarios: newScenarios }
+    this.runSettings = newSettings
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_RUN_SETTINGS,
+      newSettings: newSettings,
+    })
+    return savedScenario
   }
 
   addNewPackage(name: string, buildType: PackageBuildType): SplootPackage {
@@ -105,7 +139,6 @@ export class Project {
 
   clearChangedState() {
     this.environmentVarsChanged = false
-    this.runSettingsChanged = false
   }
 
   serialize(includeSecrets = false): string {

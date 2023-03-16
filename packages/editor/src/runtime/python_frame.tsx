@@ -88,13 +88,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     }
   }
 
-  setProjectRunType = (runType: string) => {
-    this.props.project.setRunSettings({
-      ...this.props.project.runSettings,
-      runType: runType as RunType,
-    })
-  }
-
   render() {
     const { ready, running } = this.state
     return (
