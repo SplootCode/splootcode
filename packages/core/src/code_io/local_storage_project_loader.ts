@@ -84,7 +84,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       return fileLoader.loadPackage(ownerId, proj.name, packRef.name)
     })
     // Give each of the HTTP Scenarios a unique ID
-    if (proj.runSettings.httpScenarios) {
+    if (proj.runSettings?.httpScenarios) {
       proj.runSettings.httpScenarios.forEach((scenario, idx) => {
         scenario.id = idx + 1 // Don't have 0 for ID, for truthiness reasons
       })

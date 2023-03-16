@@ -6,6 +6,7 @@ import { Box, Icon, IconButton, Text } from '@chakra-ui/react'
 import { ConfigPanel } from './config_panel'
 import { EditorState } from 'src/context/editor_context'
 import { RenderedFragment } from 'src/layout/rendered_fragment'
+import { RunType } from '@splootcode/core'
 import { TestRequestPanel } from './test_request_panel'
 import { Tray } from './tray/tray'
 
@@ -23,12 +24,13 @@ export type EditorSideMenuView = 'tray' | 'config' | 'test-requests' | ''
 export interface EditorSideMenuProps {
   onChangeView: (newView: EditorSideMenuView) => void
   currentView: string
-  enableTestRequests: boolean
+  editorState: EditorState
 }
 
 export class EditorSideMenu extends Component<EditorSideMenuProps> {
   render() {
-    const { currentView, enableTestRequests } = this.props
+    const { currentView, editorState } = this.props
+    const enableTestRequests = editorState.project.runSettings.runType === RunType.HTTP_REQUEST
 
     const handleClick = (viewName: EditorSideMenuView) => {
       if (viewName === currentView) {

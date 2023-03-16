@@ -11,7 +11,7 @@ import {
   EditorState,
   PythonRuntimePanel,
 } from '@splootcode/editor'
-import { RunType, SplootPackage } from '@splootcode/core'
+import { SplootPackage } from '@splootcode/core'
 
 interface PythonEditorProps {
   editorState: EditorState
@@ -26,14 +26,13 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
 
   const editorHostingConfig = editorState.hostingConfig
   const validationWatcher = editorState.validationWatcher
-  const enableTestRequests = editorState.project.runSettings.runType === RunType.HTTP_REQUEST
 
   return (
     <div className="editor">
       <EditorSideMenu
         currentView={visibleView}
         onChangeView={(newView: EditorSideMenuView) => setVisibleView(newView)}
-        enableTestRequests={enableTestRequests}
+        editorState={editorState}
       />
       <Allotment defaultSizes={[300, startSize, 360]} minSize={180} proportionalLayout={false}>
         <Allotment.Pane visible={visibleView !== ''} snap>
