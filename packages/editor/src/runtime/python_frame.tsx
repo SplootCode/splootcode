@@ -139,7 +139,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
           <Allotment vertical>
             <Allotment.Pane visible={this.props.project.runSettings.runType === RunType.HTTP_REQUEST}>
-              <ResponseViewer response={this.state.responseData} />
+              {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+                <ResponseViewer response={this.state.responseData} />
+              ) : null}
             </Allotment.Pane>
 
             <Allotment.Pane>
