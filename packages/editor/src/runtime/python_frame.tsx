@@ -143,7 +143,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
             </Allotment.Pane>
 
             <Allotment.Pane>
-              <Box p="3" height={'100%'} backgroundColor="#040810">
+              <Box px="3" pt="3" height={'100%'} backgroundColor="#040810">
                 <Box id="terminal" ref={this.termRef}></Box>
               </Box>
             </Allotment.Pane>

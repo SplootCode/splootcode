@@ -54,15 +54,27 @@ export function ResponseViewer(props: ResponseViewerProps) {
 
   const { isOpen, onToggle } = useDisclosure()
 
+  const statusColour = (code) => {
+    if (code >= 200 && code < 300) {
+      return 'green.400'
+    } else if (code >= 400 && code < 600) {
+      return 'red.400'
+    }
+
+    return 'white'
+  }
+
   return (
     <Box height={'100%'} backgroundColor={'#040810'}>
       <Box p="3" overflowY={'scroll'} height={'100%'}>
         <Box mb="4">
-          <Text fontWeight={'bold'}>Status code</Text>
+          <Text as="h2" fontWeight={'bold'}>
+            Status code
+          </Text>
           <Text fontFamily={'Inconsolata'}>
             {response ? (
               <>
-                <Text as="span" color={'green.400'}>
+                <Text as="span" color={statusColour(response.statusCode)}>
                   {response.statusCode}
                 </Text>
                 {' | '}
@@ -78,7 +90,9 @@ export function ResponseViewer(props: ResponseViewerProps) {
 
         <Box mb="4">
           <Flex alignItems={'center'}>
-            <Text fontWeight={'bold'}>Headers</Text>
+            <Text as="h2" fontWeight={'bold'}>
+              Headers
+            </Text>
             <IconButton
               aria-label="Expand headers"
               icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}
@@ -119,7 +133,7 @@ export function ResponseViewer(props: ResponseViewerProps) {
         </Box>
 
         <Box>
-          <Text fontWeight={'bold'} mt="1">
+          <Text as="h2" fontWeight={'bold'}>
             Body
           </Text>
 
