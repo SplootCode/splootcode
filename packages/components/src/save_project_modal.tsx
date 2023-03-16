@@ -101,7 +101,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const httpsAppsEnable = featureFlags.get(ENABLE_HTTP_APPS_FLAG)
 
   let validType = true
-  if (httpsAppsEnable) {
+  if (httpsAppsEnable && !clonedFrom) {
     validType = projectType === RunType.COMMAND_LINE || projectType === RunType.HTTP_REQUEST
   }
 
