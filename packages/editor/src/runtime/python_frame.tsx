@@ -105,6 +105,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
                 <Select
                   size="sm"
+                  variant={'filled'}
+                  backgroundColor="gray.800"
                   value={this.state.selectedHTTPScenario?.name || ''}
                   onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
                 >

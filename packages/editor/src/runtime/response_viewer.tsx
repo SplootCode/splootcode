@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Collapse, Flex, IconButton, Input, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Collapse, Flex, HStack, IconButton, Input, Text, useClipboard, useDisclosure } from '@chakra-ui/react'
 import { HTTPResponse } from '@splootcode/core'
 import { parse as parseContentType } from 'content-type'
 
+import { CopyIcon } from '@chakra-ui/icons'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { getReasonPhrase } from 'http-status-codes'
 
@@ -64,11 +65,13 @@ export function ResponseViewer(props: ResponseViewerProps) {
     return 'white'
   }
 
+  const { onCopy } = useClipboard(response?.body)
+
   return (
     <Box height={'100%'} backgroundColor={'#040810'}>
       <Box p="3" overflowY={'scroll'} height={'100%'}>
         <Box mb="4">
-          <Text as="h2" fontWeight={'bold'}>
+          <Text as="h2" fontWeight={'bold'} mb="1">
             Status code
           </Text>
           <Text fontFamily={'Inconsolata'}>
@@ -90,7 +93,7 @@ export function ResponseViewer(props: ResponseViewerProps) {
 
         <Box mb="4">
           <Flex alignItems={'center'}>
-            <Text as="h2" fontWeight={'bold'}>
+            <Text as="h2" fontWeight={'bold'} mb="1">
               Headers
             </Text>
             <IconButton
@@ -133,9 +136,13 @@ export function ResponseViewer(props: ResponseViewerProps) {
         </Box>
 
         <Box>
-          <Text as="h2" fontWeight={'bold'}>
-            Body
-          </Text>
+          <HStack justifyContent={'space-between'} mb="1">
+            <Text as="h2" fontWeight={'bold'}>
+              Body
+            </Text>
+
+            <IconButton aria-label="Copy body" icon={<CopyIcon />} size="sm" onClick={onCopy}></IconButton>
+          </HStack>
 
           {body}
         </Box>
