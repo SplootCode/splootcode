@@ -20,7 +20,7 @@ interface PythonEditorProps {
 
 export const PythonEditorPanels = (props: PythonEditorProps) => {
   const { editorState, onSaveAs } = props
-  const [visibleView, setVisibleView] = useState('test-requests' as EditorSideMenuView)
+  const [visibleView, setVisibleView] = useState('tray' as EditorSideMenuView)
   const onlyPackage: SplootPackage = editorState.project.packages[0]
   const startSize = window.outerWidth - 270 - 360
 
