@@ -4,6 +4,7 @@ import 'tslib'
 import 'xterm/css/xterm.css'
 import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
+import { Allotment } from 'allotment'
 import { Box, Button, ButtonGroup, Select } from '@chakra-ui/react'
 import {
   CapturePayload,
@@ -134,11 +135,19 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
             </ButtonGroup>
           </div>
 
-          {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
-            <ResponseViewer response={this.state.responseData} />
-          ) : null}
+          <Allotment vertical>
+            <Allotment.Pane visible={this.props.project.runSettings.runType === RunType.HTTP_REQUEST}>
+              {/* <div style={{ backgroundColor: '#040810', height: '100%' }}> */}
+              <ResponseViewer response={this.state.responseData} />
+              {/* </div> */}
+            </Allotment.Pane>
 
-          <Box p="1" id="terminal" ref={this.termRef}></Box>
+            <Allotment.Pane>
+              <Box p="3" height={'100%'} backgroundColor="#040810">
+                <Box id="terminal" ref={this.termRef}></Box>
+              </Box>
+            </Allotment.Pane>
+          </Allotment>
         </div>
 
         <iframe

@@ -58,6 +58,7 @@
     "allotment": "^1.11.1",
     "content-type": "^1.0.5",
     "fuse.js": "^6.6.2",
+    "http-status-codes": "^2.2.0",
     "mobx": "^5.15.0",
     "mobx-react": "^6.2.5",
     "react-icons": "^4.4.0",

@@ -1,7 +1,10 @@
 import React from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Collapse, Flex, IconButton, Input, Text, useDisclosure } from '@chakra-ui/react'
 import { HTTPResponse } from '@splootcode/core'
 import { parse as parseContentType } from 'content-type'
+
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
+import { getReasonPhrase } from 'http-status-codes'
 
 interface TextBasedProps {
   content: string
@@ -9,11 +12,18 @@ interface TextBasedProps {
 
 function TextBased(props: TextBasedProps) {
   return (
-    <pre>
-      <Text fontSize={'sm'} fontFamily={'Inconsolata, monospace'}>
-        {props.content}
-      </Text>
-    </pre>
+    <Text
+      as="pre"
+      whiteSpace={'pre-wrap'}
+      fontSize={'15px'}
+      fontFamily={'Inconsolata, monospace'}
+      backgroundColor={'gray.800'}
+      px="1"
+      borderRadius={'sm'}
+      width="100%"
+    >
+      {props.content}
+    </Text>
   )
 }
 
@@ -26,6 +36,8 @@ export function ResponseViewer(props: ResponseViewerProps) {
 
   let body = null
 
+  let headers = []
+
   if (response) {
     const contentType = parseContentType(response.headers['Content-Type'])
 
@@ -34,26 +46,86 @@ export function ResponseViewer(props: ResponseViewerProps) {
     } else {
       body = <TextBased content={response.body} />
     }
+
+    headers = Object.entries(response.headers)
   } else {
     body = <Text>No content...</Text>
   }
+
+  const { isOpen, onToggle } = useDisclosure()
+
   return (
-    <Box
-      p="1"
-      backgroundColor={'#040810'}
-      borderBottom={'1px solid var(--chakra-colors-gray-800)'}
-      maxHeight={'40vh'}
-      overflow={'scroll'}
-    >
-      <Text>
-        <Text as="span" color={'green.400'}>
-          200
-        </Text>
-      </Text>
+    <Box height={'100%'} backgroundColor={'#040810'}>
+      <Box p="3" overflowY={'scroll'} height={'100%'}>
+        <Box mb="4">
+          <Text fontWeight={'bold'}>Status code</Text>
+          <Text fontFamily={'Inconsolata'}>
+            {response ? (
+              <>
+                <Text as="span" color={'green.400'}>
+                  {response.statusCode}
+                </Text>
+                {' | '}
+                {getReasonPhrase(response?.statusCode)}
+              </>
+            ) : (
+              <Text as="span" color={'gray.400'}>
+                Loading...
+              </Text>
+            )}
+          </Text>
+        </Box>
 
-      <Text>{response && JSON.stringify(response.headers)}</Text>
+        <Box mb="4">
+          <Flex alignItems={'center'}>
+            <Text fontWeight={'bold'}>Headers</Text>
+            <IconButton
+              aria-label="Expand headers"
+              icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}
+              onClick={onToggle}
+              variant="ghost"
+              size={'xs'}
+              fontSize="md"
+            >
+              {' '}
+            </IconButton>
+          </Flex>
 
-      {body}
+          <Collapse in={isOpen} animateOpacity>
+            {headers.map(([key, value], i) => {
+              return (
+                <Box mb="2" key={i}>
+                  <Input
+                    px="1"
+                    size={'sm'}
+                    variant="filled"
+                    readOnly
+                    value={key}
+                    mb="1"
+                    backgroundColor={'gray.800'}
+                  ></Input>
+                  <Input
+                    px="1"
+                    size={'sm'}
+                    variant="filled"
+                    readOnly
+                    value={value}
+                    backgroundColor={'gray.800'}
+                  ></Input>
+                </Box>
+              )
+            })}
+          </Collapse>
+        </Box>
+
+        <Box>
+          <Text fontWeight={'bold'} mt="1">
+            Body
+          </Text>
+
+          {body}
+        </Box>
+      </Box>
     </Box>
   )
 }
