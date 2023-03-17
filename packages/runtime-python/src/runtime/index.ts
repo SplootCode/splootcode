@@ -1,6 +1,6 @@
 import 'tslib'
-import { EditorMessage, FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, RunType } from './common'
-import { HTTPRequestAWSEvent } from '@splootcode/core'
+import { EditorMessage, FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
+import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 import { WorkerManager, WorkerState } from './worker-manager'
 

@@ -94,9 +94,11 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
           onComplete(newOwner, projectID)
         })
       } else {
-        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', projectType).then(() => {
-          onComplete(newOwner, projectID)
-        })
+        props.projectLoader
+          .newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', projectType || RunType.COMMAND_LINE)
+          .then(() => {
+            onComplete(newOwner, projectID)
+          })
       }
     }
   }

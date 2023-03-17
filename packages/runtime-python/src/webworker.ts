@@ -1,12 +1,5 @@
-import {
-  FetchSyncErrorType,
-  FileSpec,
-  ResponseData,
-  RunType,
-  WorkerManagerMessage,
-  WorkerMessage,
-} from './runtime/common'
-import { HTTPRequestAWSEvent } from '@splootcode/core'
+import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
