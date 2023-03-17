@@ -107,7 +107,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const showProjectTypeSelect = httpsAppsEnable && !clonedFrom
 
   let validType = true
-  if (!clonedFrom) {
+  if (showProjectTypeSelect) {
     validType = !!projectType
   }
 
