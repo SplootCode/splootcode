@@ -28,6 +28,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     const projectsMeta = JSON.parse(projectsJSON) as ProjectMetadata[]
     projectsMeta.forEach((proj) => {
       proj.owner = proj.owner ?? 'local'
+      proj.runType = proj.runType ?? RunType.COMMAND_LINE
     })
 
     // Only list 'local' owner projects
@@ -257,6 +258,8 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         title: project.title,
         lastModified: '',
         live: false,
+        shared: false,
+        runType: project.runSettings.runType,
       })
       this.overwriteProjectMetadata(allMeta)
       return
@@ -266,6 +269,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         if (projectMetadata.id === project.name && projectMetadata.owner === project.owner) {
           projectMetadata.title = project.title
           projectMetadata.lastModified = ''
+          projectMetadata.runType = project.runSettings.runType
         }
         return projectMetadata
       })

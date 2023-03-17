@@ -24,6 +24,8 @@ export interface ProjectMetadata {
   title: string
   lastModified: string
   live?: boolean
+  shared?: boolean
+  runType: RunType
 }
 
 export interface ProjectLoader {

@@ -3,8 +3,8 @@ import { Box, Container, Flex, HStack, Heading, Spacer, Text, VStack } from '@ch
 import { Button, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
-import { MainMenuItem, MenuBar, SaveProjectModal } from '@splootcode/components'
-import { Project, ProjectLoader, ProjectMetadata, loadProjectFromFolder } from '@splootcode/core'
+import { MainMenuItem, MenuBar, RunTypeIcon, SaveProjectModal } from '@splootcode/components'
+import { Project, ProjectLoader, ProjectMetadata, RunType, loadProjectFromFolder } from '@splootcode/core'
 
 interface UserHomePageProps {
   projectLoader: ProjectLoader
@@ -33,14 +33,16 @@ const ProjectCard = (props: {
   projectID: string
   title: string
   description: string
+  runType: RunType
   onDelete: () => void
 }) => {
-  const { ownerID, projectID, title, description, onDelete } = props
+  const { ownerID, projectID, title, description, onDelete, runType } = props
   return (
-    <Flex borderWidth="1px" borderRadius="md" bg="gray.800" borderColor="gray.500">
-      <Link to={`/p/${ownerID}/${projectID}`}>
-        <Box py={2} px={2}>
-          <Heading as="h4" size="sm" pb={1}>
+    <Flex borderWidth="1px" borderRadius="md" bg="gray.800" borderColor="gray.500" alignItems={'center'}>
+      <HStack px={2} py={1} alignItems={'center'} as={Link} to={`/p/${ownerID}/${projectID}`} flexGrow={1}>
+        <RunTypeIcon runType={runType} />
+        <Box py={2} px={2} flexDirection="row">
+          <Heading as="h4" size="sm">
             {title}
           </Heading>
           {description ? (
@@ -49,13 +51,13 @@ const ProjectCard = (props: {
             </Text>
           ) : null}
         </Box>
-      </Link>
+      </HStack>
       <Spacer />
       <IconButton
         size="sm"
         aria-label="Delete project"
         variant={'ghost'}
-        m={1}
+        mx={1}
         color={'gray.500'}
         icon={<DeleteIcon />}
         onClick={(event) => {
@@ -145,6 +147,7 @@ export const UserHomePage = (props: UserHomePageProps) => {
                     projectID={projectMeta.id}
                     title={projectMeta.title}
                     description={''}
+                    runType={projectMeta.runType}
                     onDelete={() => {
                       props.projectLoader.deleteProject(projectMeta.owner, projectMeta.id).then(() => {
                         props.projectLoader.listProjectMetadata().then((projects) => {

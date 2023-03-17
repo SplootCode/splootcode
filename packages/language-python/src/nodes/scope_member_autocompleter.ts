@@ -47,6 +47,7 @@ function getAttributesFromType(scope: PythonScope, type: Type): [string, Variabl
 
   switch (type.category) {
     case TC.Class:
+      console.log(type.details.fields)
       return getAttributesForType(scope, type.details.fullName)
     case TC.Module:
       return getAttributesForModule(scope, type.moduleName)
