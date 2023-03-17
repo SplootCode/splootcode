@@ -1,6 +1,5 @@
 import { initialize } from '@splootcode/runtime-python'
 
-// @ts-ignore
-import WorkerURL from './webworker?worker&url'
+import RuntimeWorker from './webworker?worker'
 
-initialize(import.meta.env.SPLOOT_EDITOR_DOMAIN, WorkerURL)
+initialize(import.meta.env.SPLOOT_EDITOR_DOMAIN, RuntimeWorker)
