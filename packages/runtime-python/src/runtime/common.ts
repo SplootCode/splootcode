@@ -1,6 +1,6 @@
 import { FrameState } from '.'
 
-import { HTTPRequestAWSEvent, HTTPResponse } from '@splootcode/core'
+import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
   NO_RECORDED_REQUEST = 'NO_RECORDED_REQUEST',
@@ -136,9 +136,3 @@ export type EditorMessage =
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerWebResponseMessage
-
-export enum RunType {
-  COMMAND_LINE = 'COMMAND_LINE',
-  HTTP_REQUEST = 'HTTP_REQUEST',
-  SCHEDULE = 'SCHEDULE',
-}
