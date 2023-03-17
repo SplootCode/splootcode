@@ -1,0 +1,9 @@
+#response-viewer::-webkit-scrollbar {
+    background-color: var(--chakra-colors-gray-900);
+    width: 8px;
+}
+
+#response-viewer::-webkit-scrollbar-thumb {
+    background: var(--chakra-colors-gray-500);
+    border-radius: 4px;
+}
