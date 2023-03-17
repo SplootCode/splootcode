@@ -1,6 +1,6 @@
 import React from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import { FiTerminal } from 'react-icons/fi'
+import { FaTerminal } from 'react-icons/fa'
 import { Icon } from '@chakra-ui/react'
 import { RunType } from '@splootcode/core'
 import { SiAiohttp } from 'react-icons/si'
@@ -8,7 +8,7 @@ import { SiAiohttp } from 'react-icons/si'
 export function RunTypeIcon(props: { runType: RunType }) {
   switch (props.runType) {
     case RunType.COMMAND_LINE:
-      return <Icon as={FiTerminal} boxSize={6} backgroundColor="pink.700" p={1} borderRadius={3} />
+      return <Icon as={FaTerminal} boxSize={6} backgroundColor="pink.700" p={1} borderRadius={3} />
     case RunType.HTTP_REQUEST:
       return <Icon as={SiAiohttp} boxSize={6} backgroundColor="blue.700" p={1} borderRadius={3} />
     case RunType.SCHEDULE:
