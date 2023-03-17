@@ -3,8 +3,7 @@ import { Box, Collapse, Flex, HStack, IconButton, Input, Text, useClipboard, use
 import { HTTPResponse } from '@splootcode/core'
 import { parse as parseContentType } from 'content-type'
 
-import { CopyIcon } from '@chakra-ui/icons'
-import { MdExpandLess, MdExpandMore } from 'react-icons/md'
+import { ChevronDownIcon, ChevronUpIcon, CopyIcon } from '@chakra-ui/icons'
 import { getReasonPhrase } from 'http-status-codes'
 
 import './response_viewer.css'
@@ -100,7 +99,7 @@ export function ResponseViewer(props: ResponseViewerProps) {
             </Text>
             <IconButton
               aria-label="Expand headers"
-              icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}
+              icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
               onClick={onToggle}
               variant="ghost"
               size={'xs'}
