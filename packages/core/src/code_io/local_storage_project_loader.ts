@@ -4,7 +4,8 @@ import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../lan
 import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
 import { RunType } from '../language/projects/run_settings'
-import { SerializedNode, deserializeNode } from '../language/type_registry'
+import { deserializeNode } from '../language/type_registry'
+import { startingPythonFile, startingPythonFileHTTP } from './starting_files'
 
 const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
   name: 'Test Request',
@@ -15,12 +16,6 @@ const DEFAULT_HTTP_SCENARIO: HTTPScenario = {
   protocol: 'HTTP/1.1',
   body: '',
   isBase64Encoded: false,
-}
-
-const startingPythonFile: SerializedNode = {
-  type: 'PYTHON_FILE',
-  properties: {},
-  childSets: { body: [] },
 }
 
 export class LocalStorageProjectLoader implements ProjectLoader {
@@ -114,7 +109,13 @@ export class LocalStorageProjectLoader implements ProjectLoader {
 
     const proj = new Project(ownerId, serialisedProj, [], fileLoader, this)
     const mainPackage = proj.addNewPackage('main', PackageBuildType.PYTHON)
-    await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingPythonFile))
+
+    let startingFile = startingPythonFile
+    if (proj.runSettings.runType === RunType.HTTP_REQUEST) {
+      startingFile = startingPythonFileHTTP
+    }
+
+    await mainPackage.addFile('main.py', 'PYTHON_FILE', deserializeNode(startingFile))
     await this.saveProject(proj)
 
     return proj
