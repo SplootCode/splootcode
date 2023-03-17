@@ -1,6 +1,16 @@
 import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
+// If we're not in a module context (prod build is non-module)
+// Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
+if (importScripts) {
+  try {
+    importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
+  } catch (e) {
+    console.warn(e)
+  }
+}
+
 let pyodide = null
 let stdinbuffer: Int32Array = null
 let fetchBuffer: Uint8Array = null
@@ -223,10 +233,15 @@ interface StaticURLs {
 
 export const initialize = async (urls: StaticURLs) => {
   // @ts-ignore
-  await import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
+  if (typeof loadPyodide == 'undefined') {
+    // import is a syntax error in non-module context (which we need to be in for Firefox...)
+    // But we use module context for local dev because... Vite does that.
+    await eval("import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')")
+  }
 
   executorCode = await (await fetch(urls.executorURL)).text()
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
+
   // @ts-ignore
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
   pyodide.registerJsModule('fakeprint', {

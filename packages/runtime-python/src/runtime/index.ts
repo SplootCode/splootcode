@@ -14,7 +14,7 @@ export enum FrameState {
 class RuntimeStateManager {
   private parentWindowDomain: string
   private parentWindowDomainRegex: string
-  private workerURL: string
+  private RuntimeWorker: new () => Worker
   private workerManager: WorkerManager
   private workspace: Map<string, FileSpec>
   private envVars: Map<string, string>
@@ -24,10 +24,10 @@ class RuntimeStateManager {
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
 
-  constructor(parentWindowDomainRegex: string, workerURL: string, fetchHandler: FetchHandler) {
+  constructor(parentWindowDomainRegex: string, RuntimeWorker: new () => Worker, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
     this.parentWindowDomainRegex = parentWindowDomainRegex
-    this.workerURL = workerURL
+    this.RuntimeWorker = RuntimeWorker
     this.initialFilesLoaded = false
     this.workspace = new Map()
     this.envVars = new Map()
@@ -61,7 +61,7 @@ class RuntimeStateManager {
 
   initialiseWorkerManager = () => {
     this.workerManager = new WorkerManager(
-      this.workerURL,
+      this.RuntimeWorker,
       {
         stdin: this.getTerminalInput,
         stdout: (s: string) => {
@@ -228,10 +228,10 @@ const defaultFetchHandler: FetchHandler = {
 
 export function initialize(
   editorDomainRegex: string,
-  workerURL: string,
+  RuntimeWorker: new () => Worker,
   requestHandler: FetchHandler = defaultFetchHandler
 ) {
-  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, workerURL, requestHandler)
+  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManager()
 }

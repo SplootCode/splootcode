@@ -16,7 +16,7 @@ export enum WorkerState {
 }
 
 export class WorkerManager {
-  private workerURL: string
+  private RuntimeWorker: new () => Worker
   private worker: Worker
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
@@ -36,14 +36,14 @@ export class WorkerManager {
   }
 
   constructor(
-    workerURL: string,
+    RuntimeWorker: new () => Worker,
     standardIO: StandardIO,
     stateCallback: (state: WorkerState) => void,
     sendToParentWindow: (payload: EditorMessage) => void,
     fetchHandler: FetchHandler
   ) {
     this.sendToParentWindow = sendToParentWindow
-    this.workerURL = workerURL
+    this.RuntimeWorker = RuntimeWorker
     this.worker = null
     this.standardIO = standardIO
     this.inputPlayback = []
@@ -57,7 +57,7 @@ export class WorkerManager {
 
   initialiseWorker() {
     if (!this.worker) {
-      this.worker = new Worker(this.workerURL, { type: 'module' })
+      this.worker = new this.RuntimeWorker()
       this.worker.addEventListener('message', this.handleMessageFromWorker)
     }
   }
