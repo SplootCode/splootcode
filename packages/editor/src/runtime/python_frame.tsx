@@ -100,7 +100,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                   variant={'filled'}
                   backgroundColor="gray.800"
                   value={this.state.selectedHTTPScenarioID || ''}
-                  placeholder="Choose scenario"
+                  placeholder="Choose test request"
                   onChange={(e) => {
                     this.setState({ responseData: null })
                     if (!e.target.value) {
@@ -112,10 +112,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                     }
 
                     const id = parseInt(e.target.value)
-                    const scenario = this.props.project.runSettings.httpScenarios.find((scenario) => scenario.id === id)
 
                     this.setState({
-                      selectedHTTPScenarioID: scenario.id,
+                      selectedHTTPScenarioID: id,
                     })
 
                     this.setDirty()
@@ -132,6 +131,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               ) : null}
 
               <Button
+                size={'sm'}
                 isLoading={running}
                 loadingText="Running"
                 colorScheme="blue"
@@ -142,7 +142,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               >
                 Run
               </Button>
-              <Button disabled={!running} onClick={this.stop} height={8}>
+              <Button size="sm" disabled={!running} onClick={this.stop} height={8}>
                 Stop
               </Button>
             </ButtonGroup>
