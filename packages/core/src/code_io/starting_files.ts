@@ -287,7 +287,7 @@ export const startingPythonFileHTTP: SerializedNode = {
                                                                         {
                                                                           type: 'PYTHON_BOOL',
                                                                           properties: {
-                                                                            value: 'true',
+                                                                            value: 'True',
                                                                           },
                                                                           childSets: {},
                                                                         },
