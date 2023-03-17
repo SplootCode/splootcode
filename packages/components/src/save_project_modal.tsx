@@ -1,11 +1,13 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 
 import {
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -14,9 +16,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
+  Text,
+  UseRadioProps,
+  VStack,
+  useRadio,
+  useRadioGroup,
 } from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
 import { ENABLE_HTTP_APPS_FLAG, Project, ProjectLoader, RunType, loadFeatureFlags } from '@splootcode/core'
+import { RunTypeIcon } from './run_type_icon'
 
 function convertToURL(title: string) {
   return title
@@ -39,7 +47,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
   const [projectID, setProjectID] = useState('')
   const [projectTitle, setProjectTitle] = useState('')
   const [validID, setValidID] = useState(true)
-  const [projectType, setProjectType] = useState('')
+  const [projectType, setProjectType] = useState(null as RunType | null)
 
   const featureFlags = loadFeatureFlags()
 
@@ -86,23 +94,21 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
           onComplete(newOwner, projectID)
         })
       } else {
-        let runType = RunType.COMMAND_LINE
-        if (httpsAppsEnable) {
-          runType = projectType as RunType
-        }
-
-        props.projectLoader.newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', runType).then(() => {
-          onComplete(newOwner, projectID)
-        })
+        props.projectLoader
+          .newProject(newOwner, projectID, projectTitle, 'PYTHON_CLI', projectType || RunType.COMMAND_LINE)
+          .then(() => {
+            onComplete(newOwner, projectID)
+          })
       }
     }
   }
 
   const httpsAppsEnable = featureFlags.get(ENABLE_HTTP_APPS_FLAG)
+  const showProjectTypeSelect = httpsAppsEnable && !clonedFrom
 
   let validType = true
-  if (httpsAppsEnable && !clonedFrom) {
-    validType = projectType === RunType.COMMAND_LINE || projectType === RunType.HTTP_REQUEST
+  if (!clonedFrom) {
+    validType = !!projectType
   }
 
   return (
@@ -114,25 +120,16 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>
-              <FormControl isInvalid={!validID}>
-                <FormLabel htmlFor="title">Project Title</FormLabel>
+              <FormControl isInvalid={!validID} py={2}>
+                <FormLabel htmlFor="title">Title</FormLabel>
                 <Input id="title" type="text" value={projectTitle} onChange={handleTitleChange} autoFocus />
                 <FormHelperText>Unique project ID: {projectID}</FormHelperText>
                 <FormErrorMessage>{errorMessage}</FormErrorMessage>
               </FormControl>
-
-              {httpsAppsEnable && !clonedFrom ? (
-                <FormControl mt="4">
+              {showProjectTypeSelect ? (
+                <FormControl py="3">
                   <FormLabel>Project type</FormLabel>
-
-                  <Select
-                    placeholder="Choose a project type"
-                    onChange={(ev) => setProjectType(ev.target.value)}
-                    value={projectType}
-                  >
-                    <option value={RunType.COMMAND_LINE}>Script app</option>
-                    <option value={RunType.HTTP_REQUEST}>Webhook app</option>
-                  </Select>
+                  <ProjectTypeRadioGroup value={projectType} onChange={setProjectType} />
                 </FormControl>
               ) : null}
             </ModalBody>
@@ -149,5 +146,64 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
         </ModalContent>
       </Modal>
     </>
+  )
+}
+
+function ProjectTypeRadioOption(props: UseRadioProps & { children: React.ReactNode }) {
+  const { getInputProps, getCheckboxProps } = useRadio(props)
+
+  const input = getInputProps()
+  const checkbox = getCheckboxProps()
+
+  return (
+    <Box as="label" width={'100%'}>
+      <input {...input} />
+      <HStack
+        {...checkbox}
+        cursor="pointer"
+        borderWidth="1px"
+        borderRadius="md"
+        justifyContent={'space-between'}
+        boxShadow="md"
+        _checked={{
+          bg: 'blue.800',
+          color: 'white',
+        }}
+        _focus={{
+          boxShadow: 'outline',
+        }}
+        px={3}
+        py={2}
+      >
+        <HStack>{props.children}</HStack>
+        {props.isChecked ? <CheckIcon /> : null}
+      </HStack>
+    </Box>
+  )
+}
+
+function ProjectTypeRadioGroup(props: { value: RunType | null; onChange: (value: RunType | null) => void }) {
+  const { value, onChange } = props
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: 'project-type',
+    value: value,
+    onChange: onChange,
+  })
+
+  const group = getRootProps()
+
+  return (
+    <VStack {...group}>
+      <ProjectTypeRadioOption key={RunType.COMMAND_LINE} {...getRadioProps({ value: RunType.COMMAND_LINE })}>
+        <RunTypeIcon runType={RunType.COMMAND_LINE} /> <Text>Command line program</Text>
+      </ProjectTypeRadioOption>
+      <ProjectTypeRadioOption key={RunType.HTTP_REQUEST} {...getRadioProps({ value: RunType.HTTP_REQUEST })}>
+        <RunTypeIcon runType={RunType.HTTP_REQUEST} /> <Text>Web server (Flask)</Text>
+      </ProjectTypeRadioOption>
+      <ProjectTypeRadioOption key={RunType.SCHEDULE} {...getRadioProps({ value: RunType.SCHEDULE })}>
+        <RunTypeIcon runType={RunType.SCHEDULE} /> <Text>Scheduled script</Text>
+      </ProjectTypeRadioOption>
+    </VStack>
   )
 }
