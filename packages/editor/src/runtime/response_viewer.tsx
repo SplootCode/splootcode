@@ -7,6 +7,8 @@ import { CopyIcon } from '@chakra-ui/icons'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { getReasonPhrase } from 'http-status-codes'
 
+import './response_viewer.css'
+
 interface TextBasedProps {
   content: string
 }
@@ -69,7 +71,7 @@ export function ResponseViewer(props: ResponseViewerProps) {
 
   return (
     <Box height={'100%'} backgroundColor={'#040810'}>
-      <Box p="3" overflowY={'scroll'} height={'100%'}>
+      <Box p="3" overflowY={'auto'} height={'100%'} id="response-viewer">
         <Box mb="4">
           <Text as="h2" fontWeight={'bold'} mb="1">
             Status code

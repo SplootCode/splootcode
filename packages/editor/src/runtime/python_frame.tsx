@@ -10,7 +10,6 @@ import {
   CapturePayload,
   HTTPRequestAWSEvent,
   HTTPResponse,
-  HTTPScenario,
   Project,
   RunType,
   httpScenarioToHTTPRequestEvent,
@@ -39,7 +38,7 @@ interface ConsoleState {
   running: boolean
   runtimeCapture: boolean
   frameSrc: string
-  selectedHTTPScenario?: HTTPScenario
+  selectedHTTPScenarioID: number
   projectRunType: RunType
 
   responseData?: HTTPResponse
@@ -72,9 +71,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.handleResize()
     })
 
-    let httpScenario: HTTPScenario | null = null
+    let httpScenarioID: number | null = null
     if (this.props.project.runSettings.httpScenarios.length > 0) {
-      httpScenario = this.props.project.runSettings.httpScenarios[0]
+      httpScenarioID = this.props.project.runSettings.httpScenarios[0].id
     }
 
     this.state = {
@@ -83,7 +82,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
       projectRunType: this.props.project.runSettings.runType,
-      selectedHTTPScenario: httpScenario,
+      selectedHTTPScenarioID: httpScenarioID,
       responseData: null,
     }
   }
@@ -100,12 +99,30 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                   size="sm"
                   variant={'filled'}
                   backgroundColor="gray.800"
-                  value={this.state.selectedHTTPScenario?.name || ''}
-                  onChange={(e) => this.setState({ selectedHTTPScenario: JSON.parse(e.target.value) as HTTPScenario })}
+                  value={this.state.selectedHTTPScenarioID || ''}
+                  placeholder="Choose test request"
+                  onChange={(e) => {
+                    this.setState({ responseData: null })
+                    if (!e.target.value) {
+                      this.setState({
+                        selectedHTTPScenarioID: null,
+                      })
+
+                      return
+                    }
+
+                    const id = parseInt(e.target.value)
+
+                    this.setState({
+                      selectedHTTPScenarioID: id,
+                    })
+
+                    this.setDirty()
+                  }}
                 >
                   {this.props.project.runSettings.httpScenarios.map((scenario, i) => {
                     return (
-                      <option key={i} value={JSON.stringify(scenario)}>
+                      <option key={i} value={scenario.id}>
                         {scenario.name}
                       </option>
                     )
@@ -114,6 +131,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               ) : null}
 
               <Button
+                size={'sm'}
                 isLoading={running}
                 loadingText="Running"
                 colorScheme="blue"
@@ -124,7 +142,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               >
                 Run
               </Button>
-              <Button disabled={!running} onClick={this.stop} height={8}>
+              <Button size="sm" disabled={!running} onClick={this.stop} height={8}>
                 Stop
               </Button>
             </ButtonGroup>
@@ -138,7 +156,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
             </Allotment.Pane>
 
             <Allotment.Pane>
-              <Box px="3" pt="3" height={'100%'} backgroundColor="#040810">
+              <Box ml="3" mt="3" mr="0" height={'100%'} backgroundColor="#040810">
                 <Box id="terminal" ref={this.termRef}></Box>
               </Box>
             </Allotment.Pane>
@@ -458,8 +476,19 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const envVars = this.props.fileChangeWatcher.getEnvVars()
 
     let event: HTTPRequestAWSEvent = null
-    if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST && this.state.selectedHTTPScenario) {
-      event = httpScenarioToHTTPRequestEvent(this.state.selectedHTTPScenario)
+    if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST) {
+      const scenario = this.props.project.runSettings.httpScenarios.find(
+        (scenario) => scenario.id === this.state.selectedHTTPScenarioID
+      )
+
+      if (!scenario) {
+        this.setState({ ready: false })
+        this.frameStateManager.setNeedsNewNodeTree(false)
+
+        return
+      }
+
+      event = httpScenarioToHTTPRequestEvent(scenario)
     }
 
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
