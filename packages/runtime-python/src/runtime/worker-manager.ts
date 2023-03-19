@@ -1,4 +1,5 @@
-import { EditorMessage, FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
+import { EditorMessage } from '../message_types'
+import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 const INPUT_BUF_SIZE = 100

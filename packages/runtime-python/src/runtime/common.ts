@@ -1,5 +1,4 @@
-import { FrameState } from '.'
-
+import { EditorMessage } from '../message_types'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
@@ -93,7 +92,7 @@ export type WorkerMessage =
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
 
-export interface RunMessage {
+export interface WorkerRunMessage {
   type: 'run'
   runType: RunType
   eventData: HTTPRequestAWSEvent
@@ -104,7 +103,7 @@ export interface RunMessage {
   fetchBufferMeta: Int32Array
 }
 
-export interface RerunMessage {
+export interface WorkerRerunMessage {
   type: 'rerun'
   runType: RunType
   eventData: HTTPRequestAWSEvent
@@ -119,20 +118,4 @@ export interface LoadModuleMessage {
   moduleName: string
 }
 
-export type WorkerManagerMessage = RunMessage | RerunMessage | LoadModuleMessage
-
-/** Messages to send to the Editor window */
-
-export interface HeartbeatMessage {
-  type: 'heartbeat'
-  data: { state: FrameState }
-}
-
-export type EditorMessage =
-  | { type: 'ready' | 'disabled' | 'running' | 'stdin' | 'refresh_token' }
-  | HeartbeatMessage
-  | WorkerRuntimeCaptureMessage
-  | WorkerModuleInfoMessage
-  | WorkerStdoutMessage
-  | WorkerStderrMessage
-  | WorkerWebResponseMessage
+export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage

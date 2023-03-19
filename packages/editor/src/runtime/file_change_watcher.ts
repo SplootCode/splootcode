@@ -1,5 +1,4 @@
-import { CapturePayload, SerializedNode } from '@splootcode/core'
-import { PythonModuleSpec } from '@splootcode/language-python'
+import { SerializedNode } from '@splootcode/core'
 
 export type FileSpec = SplootFile | BlobFile
 export interface SplootFile {
@@ -13,15 +12,8 @@ export interface BlobFile {
 }
 
 export interface FileChangeWatcher {
-  onPythonRuntimeIsReady: () => Promise<void>
-  updateRuntimeCaptures: (captures: Map<string, CapturePayload>) => void
-  registerObservers: (
-    setDirty: () => void,
-    loadModule: (moduleName: string) => void,
-    refreshProjectRunSettings: () => void
-  ) => void
+  registerObservers: (setDirty: () => void) => void
   deregisterObservers: () => void
-  recievedModuleInfo: (payload: PythonModuleSpec) => void
   isValid: () => boolean
   getUpdatedFileState: () => Promise<Map<string, FileSpec>>
   getAllFileState: () => Promise<Map<string, FileSpec>>

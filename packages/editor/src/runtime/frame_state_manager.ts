@@ -1,18 +1,13 @@
+import { FrameState, RuntimeMessage } from '@splootcode/runtime-python'
+
 const HeartbeatCheckInterval = 1000 // Check every 1s
 const HeartbeatSendInterval = 20000 // Request heartbeat every 20s
 const HeartbeatTimeout = 60000 // Die if no heartbeat for 1 min
 
-export enum FrameState {
-  DEAD = 0,
-  REQUESTING_INITIAL_FILES,
-  LIVE,
-  UNMOUNTED,
-}
-
 export class FrameStateManager {
   private lastHeartbeatTimestamp: Date
   private frameState: FrameState
-  private postMessageToFrame: (message: any) => void
+  private postMessageToFrame: (message: RuntimeMessage) => void
   private sendNodeTreeToHiddenFrame: (initialSend: boolean) => void
   private reloadFrame: () => void
   private currentHeartbeat = null
@@ -20,7 +15,7 @@ export class FrameStateManager {
   private lastSentNodeTree = new Date()
 
   constructor(
-    postMessageToFrame: (message: any) => void,
+    postMessageToFrame: (message: RuntimeMessage) => void,
     reloadFrame: () => void,
     sendNodeTreeToHiddenFrame: (initialSend: boolean) => void
   ) {
@@ -33,12 +28,16 @@ export class FrameStateManager {
   }
 
   sendHeartbeatRequest() {
-    const payload = { type: 'heartbeat' }
+    const payload: RuntimeMessage = { type: 'heartbeat' }
     this.postMessageToFrame(payload)
   }
 
-  handleHeartbeat(payload: any) {
-    this.frameState = payload['state']
+  postMessage(message: RuntimeMessage) {
+    this.postMessageToFrame(message)
+  }
+
+  handleHeartbeat(frameState: FrameState) {
+    this.frameState = frameState
     this.lastHeartbeatTimestamp = new Date()
     if (this.frameState == FrameState.REQUESTING_INITIAL_FILES) {
       this.needsNewNodeTree = false

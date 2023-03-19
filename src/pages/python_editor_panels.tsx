@@ -25,7 +25,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
   const startSize = window.outerWidth - 270 - 360
 
   const editorHostingConfig = editorState.hostingConfig
-  const validationWatcher = editorState.validationWatcher
+  const runtimeContextManager = editorState.runtimeContextManager
 
   return (
     <div className="editor">
@@ -55,11 +55,9 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
         <Allotment.Pane preferredSize={360} priority={LayoutPriority.Low}>
           <div className="python-preview-panel">
             <PythonRuntimePanel
-              project={editorState.project}
-              pkg={onlyPackage}
-              validationWatcher={validationWatcher}
               frameScheme={editorHostingConfig.FRAME_VIEW_SCHEME}
               frameDomain={editorHostingConfig.FRAME_VIEW_DOMAIN}
+              runtimeContextManager={runtimeContextManager}
             />
           </div>
         </Allotment.Pane>
