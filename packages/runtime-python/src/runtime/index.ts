@@ -1,25 +1,19 @@
 import 'tslib'
-import { EditorMessage, FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
+import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
+import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
 import { WorkerManager, WorkerState } from './worker-manager'
 
-export enum FrameState {
-  DEAD = 0,
-  REQUESTING_INITIAL_FILES,
-  LIVE,
-  UNMOUNTED,
-}
-
 class RuntimeStateManager {
-  private parentWindowDomain: string
+  private parentWindowDomain: string | null
   private parentWindowDomainRegex: string
   private RuntimeWorker: new () => Worker
   private workerManager: WorkerManager
   private workspace: Map<string, FileSpec>
   private envVars: Map<string, string>
   private initialFilesLoaded: boolean
-  private stdinPromiseResolve: (s: string) => void
+  private stdinPromiseResolve: null | ((s: string) => void)
   private fetchHandler: FetchHandler
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
@@ -107,7 +101,7 @@ class RuntimeStateManager {
   }
 
   handleMessage = (event: MessageEvent) => {
-    const data = event.data
+    const data = event.data as RuntimeMessage
     if (data.type && data.type.startsWith('webpack')) {
       // Ignore webpack devserver
       return
@@ -133,7 +127,7 @@ class RuntimeStateManager {
         this.runType = data.runType
         this.eventData = data.eventData
 
-        this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, false)
+        this.addFilesToWorkspace(data.data.files, false)
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
           this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
@@ -141,7 +135,6 @@ class RuntimeStateManager {
         break
       case 'initialfiles':
         this.runType = data.runType
-
         this.eventData = data.eventData
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
@@ -160,8 +153,6 @@ class RuntimeStateManager {
         this.fetchHandler.setToken(event.data.token, event.data.expiry)
         break
       case 'run':
-        this.runType = data.runType
-
         if (this.initialFilesLoaded) {
           this.workerManager.run(this.runType, this.eventData, this.workspace, this.envVars)
         } else {

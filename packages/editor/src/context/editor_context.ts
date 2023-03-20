@@ -4,7 +4,9 @@ import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
+import { ProjectFileChangeWatcher } from 'src/runtime/project_file_change_watcher'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
+import { RuntimeContextManager } from './runtime_context_manager'
 import { UndoWatcher } from './undoWatcher'
 import { action, observable } from 'mobx'
 import { awaitFontsLoaded } from 'src/layout/layout_constants'
@@ -21,6 +23,7 @@ export class EditorState {
   featureFlags: Map<string, boolean>
   autosaveWatcher: AutosaveWatcher
   undoWatcher: UndoWatcher
+  runtimeContextManager: RuntimeContextManager
 
   constructor(
     project: Project,
@@ -43,6 +46,10 @@ export class EditorState {
 
     this.undoWatcher = new UndoWatcher()
     this.undoWatcher.registerSelf()
+
+    const fileChangeWatcher = new ProjectFileChangeWatcher(project, project.getDefaultPackage(), this.validationWatcher)
+    this.runtimeContextManager = new RuntimeContextManager(project, fileChangeWatcher)
+    this.runtimeContextManager.registerSelf()
   }
 
   async loadDefaultFile() {
@@ -90,6 +97,7 @@ export class EditorState {
 
   cleanup() {
     // Must be called before loading a new EditorState
+    this.runtimeContextManager.deregisterSelf()
     this.validationWatcher.deregisterSelf()
     this.analyser.deregisterSelf()
     this.autosaveWatcher.deregisterSelf()

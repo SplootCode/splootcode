@@ -6,19 +6,13 @@ import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { Allotment } from 'allotment'
 import { Box, Button, ButtonGroup, Select } from '@chakra-ui/react'
-import {
-  CapturePayload,
-  HTTPRequestAWSEvent,
-  HTTPResponse,
-  Project,
-  RunType,
-  httpScenarioToHTTPRequestEvent,
-} from '@splootcode/core'
-import { FileChangeWatcher, FileSpec } from './file_change_watcher'
+import { EditorMessage } from '@splootcode/runtime-python'
 import { FitAddon } from 'xterm-addon-fit'
-import { FrameStateManager } from './frame_state_manager'
+import { HTTPResponse, RunType } from '@splootcode/core'
 import { ResponseViewer } from './response_viewer'
+import { RuntimeContextManager } from 'src/context/runtime_context_manager'
 import { Terminal } from 'xterm'
+import { observer } from 'mobx-react'
 
 export interface RuntimeToken {
   token: string
@@ -26,27 +20,20 @@ export interface RuntimeToken {
 }
 
 type PythonFrameProps = {
-  project: Project
-  fileChangeWatcher: FileChangeWatcher
+  runtimeContextManager: RuntimeContextManager
   frameScheme: 'http' | 'https'
   frameDomain: string
   refreshToken?: () => Promise<RuntimeToken>
 }
 
 interface ConsoleState {
-  ready: boolean
-  running: boolean
-  runtimeCapture: boolean
   frameSrc: string
-  selectedHTTPScenarioID: number
-  projectRunType: RunType
-
   responseData?: HTTPResponse
 }
 
+@observer
 export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   private frameRef: React.RefObject<HTMLIFrameElement>
-  private frameStateManager: FrameStateManager
   private termRef: React.RefObject<HTMLDivElement>
   private term: Terminal
   private terminalFitAddon: FitAddon
@@ -58,11 +45,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   constructor(props: PythonFrameProps) {
     super(props)
     this.frameRef = React.createRef()
-    this.frameStateManager = new FrameStateManager(
-      this.postMessageToFrame,
-      this.reloadFrame,
-      this.sendNodeTreeToHiddenFrame
-    )
     this.termRef = React.createRef()
     this.resolveActiveInput = null
     this.wasmTty = null
@@ -71,56 +53,42 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.handleResize()
     })
 
-    let httpScenarioID: number | null = null
-    if (this.props.project.runSettings.httpScenarios.length > 0) {
-      httpScenarioID = this.props.project.runSettings.httpScenarios[0].id
-    }
-
     this.state = {
-      ready: false,
-      running: false,
-      runtimeCapture: true,
       frameSrc: this.getFrameSrc(),
-      projectRunType: this.props.project.runSettings.runType,
-      selectedHTTPScenarioID: httpScenarioID,
       responseData: null,
     }
   }
 
   render() {
-    const { ready, running } = this.state
+    const { runtimeContextManager } = this.props
+    const ready = runtimeContextManager.ready
+    const running = runtimeContextManager.running
+    const runSettings = runtimeContextManager.runSettings
+
     return (
       <div id="python-frame-container">
         <div id="terminal-container">
           <Box className="terminal-menu" px="3">
             <ButtonGroup size="md" my={1} height={8}>
-              {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+              {runSettings.runType === RunType.HTTP_REQUEST ? (
                 <Select
                   size="sm"
                   variant={'filled'}
                   backgroundColor="gray.800"
-                  value={this.state.selectedHTTPScenarioID || ''}
+                  value={runtimeContextManager.selectedHTTPScenarioID || ''}
                   placeholder="Choose test request"
                   onChange={(e) => {
                     this.setState({ responseData: null })
                     if (!e.target.value) {
-                      this.setState({
-                        selectedHTTPScenarioID: null,
-                      })
-
+                      runtimeContextManager.updateSelectedHTTPScenarioID(null)
                       return
                     }
 
                     const id = parseInt(e.target.value)
-
-                    this.setState({
-                      selectedHTTPScenarioID: id,
-                    })
-
-                    this.setDirty()
+                    runtimeContextManager.updateSelectedHTTPScenarioID(id)
                   }}
                 >
-                  {this.props.project.runSettings.httpScenarios.map((scenario, i) => {
+                  {runSettings.httpScenarios.map((scenario, i) => {
                     return (
                       <option key={i} value={scenario.id}>
                         {scenario.name}
@@ -149,8 +117,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
           </Box>
 
           <Allotment vertical>
-            <Allotment.Pane visible={this.props.project.runSettings.runType === RunType.HTTP_REQUEST}>
-              {this.props.project.runSettings.runType === RunType.HTTP_REQUEST ? (
+            <Allotment.Pane visible={runSettings.runType === RunType.HTTP_REQUEST}>
+              {runSettings.runType === RunType.HTTP_REQUEST ? (
                 <ResponseViewer response={this.state.responseData} />
               ) : null}
             </Allotment.Pane>
@@ -178,24 +146,20 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   run = async () => {
     this.term.clear()
     this.wasmTty.clearTty()
-    this.postMessageToFrame({ type: 'run', runType: this.props.project.runSettings.runType })
-    this.setState({ running: true })
+    this.props.runtimeContextManager.run()
   }
 
   rerun = async () => {
     this.wasmTty.clearTty()
     this.term.clear()
-    this.postMessageToFrame({ type: 'run', runType: this.props.project.runSettings.runType })
-
-    this.setState({ running: true })
+    this.props.runtimeContextManager.run()
   }
 
   stop = () => {
     if (this.resolveActiveInput) {
       this.resolveActiveInput('')
     }
-    this.postMessageToFrame({ type: 'stop' })
-    this.setState({ running: false, ready: false })
+    this.props.runtimeContextManager.stop()
   }
 
   handleTermData = (data: string) => {
@@ -361,32 +325,28 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   handleMessageFromFrame(event: MessageEvent) {
-    const type = event.data.type as string
+    const data = event.data as EditorMessage
     if (event.origin !== this.getFrameDomain()) {
       return
     }
-    if (!event.data.type) {
+    if (!data.type) {
       return
     }
-    if (type.startsWith('webpack')) {
+    if (data.type.startsWith('webpack')) {
       // Ignore webpack devserver events for local dev
       return
     }
-    switch (type) {
-      case 'heartbeat':
-        this.frameStateManager.handleHeartbeat(event.data.data)
-        break
+    switch (data.type) {
       case 'ready':
-        this.setState({ ready: true, running: false })
-        this.props.fileChangeWatcher.onPythonRuntimeIsReady()
+        this.props.runtimeContextManager.setReady()
         break
       case 'running':
         this.term.clear()
         this.wasmTty.clearTty()
-        this.setState({ running: true })
+        this.props.runtimeContextManager.setRunning()
         break
       case 'disabled':
-        this.setState({ ready: false, running: false })
+        this.props.runtimeContextManager.setDisabled()
         break
       case 'stdin':
         this.getTerminalInput().then((input) => {
@@ -397,23 +357,21 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         })
         break
       case 'stdout':
-        this.wasmTty.print(event.data.stdout)
+        this.wasmTty.print(data.stdout)
         break
       case 'stderr':
-        this.wasmTty.print(event.data.stderr)
+        this.wasmTty.print(data.stderr)
         break
+      case 'heartbeat':
       case 'runtime_capture':
-        const captures = event.data.captures as Map<string, CapturePayload>
-        this.props.fileChangeWatcher.updateRuntimeCaptures(captures)
-        break
       case 'module_info':
-        this.props.fileChangeWatcher.recievedModuleInfo(event.data.info)
+        this.props.runtimeContextManager.handleMessageFromRuntime(data)
         break
       case 'refresh_token':
         this.refreshToken()
         break
       case 'web_response':
-        const response = event.data.response as HTTPResponse
+        const response = data.response as HTTPResponse
 
         this.setState({
           responseData: response,
@@ -451,57 +409,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     })
   }
 
-  sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    let isValid = this.props.fileChangeWatcher.isValid()
-    if (!isValid) {
-      this.setState({ ready: false })
-      this.frameStateManager.setNeedsNewNodeTree(false)
-      return
-    }
-    let fileState: Map<string, FileSpec>
-    if (isInitial) {
-      fileState = await this.props.fileChangeWatcher.getAllFileState()
-    } else {
-      fileState = await this.props.fileChangeWatcher.getUpdatedFileState()
-    }
-
-    // Check validity again - if it's not valid, bail out
-    isValid = this.props.fileChangeWatcher.isValid()
-    if (!isValid) {
-      this.setState({ ready: false })
-      this.frameStateManager.setNeedsNewNodeTree(false)
-      return
-    }
-
-    const envVars = this.props.fileChangeWatcher.getEnvVars()
-
-    let event: HTTPRequestAWSEvent = null
-    if (this.props.project.runSettings.runType === RunType.HTTP_REQUEST) {
-      const scenario = this.props.project.runSettings.httpScenarios.find(
-        (scenario) => scenario.id === this.state.selectedHTTPScenarioID
-      )
-
-      if (!scenario) {
-        this.setState({ ready: false })
-        this.frameStateManager.setNeedsNewNodeTree(false)
-
-        return
-      }
-
-      event = httpScenarioToHTTPRequestEvent(scenario)
-    }
-
-    const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
-    const payload = {
-      type: messageType,
-      data: { files: fileState, envVars: envVars },
-      runType: this.state.projectRunType,
-      eventData: event,
-    }
-    this.postMessageToFrame(payload)
-    this.frameStateManager.setNeedsNewNodeTree(false)
-  }
-
   reloadFrame = () => {
     this.frameRef.current.src = this.getFrameSrc()
   }
@@ -534,17 +441,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     }
   }
 
-  setDirty = () => {
-    this.frameStateManager.setNeedsNewNodeTree(true)
-  }
-
-  refreshProjectRunSettings = () => {
-    const runType = this.props.project.runSettings.runType
-    this.setState({
-      projectRunType: runType,
-    })
-  }
-
   componentDidMount() {
     this.term = new Terminal({
       scrollback: 10000,
@@ -561,24 +457,22 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.terminalFitAddon.fit()
     }, 1)
 
-    this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule, this.refreshProjectRunSettings)
-
+    this.props.runtimeContextManager.registerIFrameAccess(this.postMessageToFrame, this.reloadFrame)
     window.addEventListener('message', this.processMessage, false)
-    this.frameStateManager.startHeartbeat()
+
     this.resizeObserver.observe(this.termRef.current)
   }
 
   componentDidUpdate(prevProps: Readonly<PythonFrameProps>, prevState: Readonly<ConsoleState>, snapshot?: any): void {
-    if (prevProps.fileChangeWatcher !== this.props.fileChangeWatcher) {
-      prevProps.fileChangeWatcher.deregisterObservers()
-      this.props.fileChangeWatcher.registerObservers(this.setDirty, this.loadModule, this.refreshProjectRunSettings)
+    if (this.props.runtimeContextManager !== prevProps.runtimeContextManager) {
+      prevProps.runtimeContextManager.deregisterIFrameAccess()
+      this.props.runtimeContextManager.registerIFrameAccess(this.postMessageToFrame, this.reloadFrame)
     }
   }
 
   componentWillUnmount() {
     this.resizeObserver.disconnect()
-    this.frameStateManager.stopHeartbeat()
     window.removeEventListener('message', this.processMessage, false)
-    this.props.fileChangeWatcher.deregisterObservers()
+    this.props.runtimeContextManager.deregisterIFrameAccess()
   }
 }

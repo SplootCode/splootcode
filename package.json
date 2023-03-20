@@ -21,8 +21,8 @@
       "packages/components",
       "packages/language-python",
       "packages/language-web",
-      "packages/editor",
-      "packages/runtime-python"
+      "packages/runtime-python",
+      "packages/editor"
     ]
   },
   "dependencies": {
