@@ -75,9 +75,9 @@ export class RenderedTreeIterator {
 
   visitNodeUp(node: NodeBlock) {}
 
-  startRangeLeft() {}
+  startRangeLeft(listBlock: RenderedChildSetBlock) {}
   visitedRangeLeft(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
-  startRangeRight() {}
+  startRangeRight(listBlock: RenderedChildSetBlock) {}
   visitedRangeRight(listBlock: RenderedChildSetBlock, startIndex: number, endIndex: number) {}
 
   walkNodeLeft(node: NodeBlock) {
@@ -105,9 +105,9 @@ export class RenderedTreeIterator {
       listBlock.parentRef.childSetId === listBlock.parentRef.node.leftBreadcrumbChildSet ||
       listBlock.parentRef.childSetId === listBlock.parentRef.node.beforeStackChildSet
     if (isLeft) {
-      this.startRangeLeft()
+      this.startRangeLeft(listBlock)
     } else {
-      this.startRangeRight()
+      this.startRangeRight(listBlock)
     }
 
     let end = listBlock.nodes.length
