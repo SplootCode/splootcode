@@ -31,7 +31,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'splootframepythonclient.html'),
-        streamlit: resolve(__dirname, 'splootframepythonclient.html'),
+        streamlit: resolve(__dirname, 'splootstreamlitpythonclient.html'),
       },
       plugins: [
         {
