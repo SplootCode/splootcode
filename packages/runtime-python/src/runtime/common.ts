@@ -125,7 +125,7 @@ export interface LoadModuleMessage {
 }
 
 export interface TextContentRequestMessage {
-  type: 'gegenerate_text_code'
+  type: 'generate_text_code'
   runType: RunType
   workspace: Map<string, FileSpec>
 }

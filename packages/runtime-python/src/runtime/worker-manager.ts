@@ -120,7 +120,7 @@ export class WorkerManager {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
     this.sendMessage({
-      type: 'gegenerate_text_code',
+      type: 'generate_text_code',
       runType: runType,
       workspace: workspace,
     })

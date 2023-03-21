@@ -350,7 +350,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       envVars = e.data.envVars || new Map<string, string>()
       run()
       break
-    case 'gegenerate_text_code':
+    case 'generate_text_code':
       workspace = e.data.workspace
       generateTextContent()
       break

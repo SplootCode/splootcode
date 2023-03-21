@@ -10,7 +10,6 @@ const supportedFlags = new Map<string, boolean>([
 
 /*
 To enable:
-
 localStorage.setItem('SPLOOT_FEATURE_FLAGS', JSON.stringify({'ENABLE_HTTP_APPS_FLAG': true, 'ENABLE_STREAMLIT_APPS_FLAG': true}))
 */
 
