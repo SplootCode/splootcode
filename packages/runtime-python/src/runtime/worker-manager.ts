@@ -31,6 +31,7 @@ export class WorkerManager {
   private stateCallBack: (state: WorkerState) => void
   private sendToParentWindow: (payload: EditorMessage) => void
   private _workerState: WorkerState
+  private textFileValueCallback: (fileContents: Map<string, string>) => void
 
   public get workerState() {
     return this._workerState
@@ -41,7 +42,8 @@ export class WorkerManager {
     standardIO: StandardIO,
     stateCallback: (state: WorkerState) => void,
     sendToParentWindow: (payload: EditorMessage) => void,
-    fetchHandler: FetchHandler
+    fetchHandler: FetchHandler,
+    textFileValueCallback: (fileContents: Map<string, string>) => void
   ) {
     this.sendToParentWindow = sendToParentWindow
     this.RuntimeWorker = RuntimeWorker
@@ -52,6 +54,7 @@ export class WorkerManager {
     this._workerState = WorkerState.DISABLED
     this.stateCallBack = stateCallback
     this.fetchHandler = fetchHandler
+    this.textFileValueCallback = textFileValueCallback
 
     this.initialiseWorker()
   }
@@ -110,6 +113,16 @@ export class WorkerManager {
       envVars: envVars,
       readlines: this.inputPlayback,
       requestPlayback: this.requestPlayback,
+    })
+  }
+
+  generateTextCode(runType: RunType, workspace: Map<string, FileSpec>) {
+    this._workerState = WorkerState.RUNNING
+    this.stateCallBack(this._workerState)
+    this.sendMessage({
+      type: 'gegenerate_text_code',
+      runType: runType,
+      workspace: workspace,
     })
   }
 
@@ -246,6 +259,10 @@ export class WorkerManager {
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
+    } else if (type === 'text_code_content') {
+      this._workerState = WorkerState.READY
+      this.stateCallBack(WorkerState.READY)
+      this.textFileValueCallback(event.data.fileContents)
     } else {
       console.warn(`Unrecognised message from worker: ${type}`)
     }

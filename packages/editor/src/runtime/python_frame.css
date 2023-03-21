@@ -5,10 +5,17 @@
   background-color: inherit;
 }
 
-#view-python-frame {
+.view-python-frame {
   position: absolute;
   border: none;
   display: block;
   width: 0;
   height: 0;
+}
+
+.streamlit-frame {
+  height: calc(100% - 42px);
+  width: 100%;
+  border: none;
+  display: block;
 }
