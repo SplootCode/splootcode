@@ -23,7 +23,14 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
-import { ENABLE_HTTP_APPS_FLAG, Project, ProjectLoader, RunType, loadFeatureFlags } from '@splootcode/core'
+import {
+  ENABLE_HTTP_APPS_FLAG,
+  ENABLE_STREAMLIT_APPS_FLAG,
+  Project,
+  ProjectLoader,
+  RunType,
+  loadFeatureFlags,
+} from '@splootcode/core'
 import { RunTypeIcon } from './run_type_icon'
 
 function convertToURL(title: string) {
@@ -103,8 +110,9 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
     }
   }
 
-  const httpsAppsEnable = featureFlags.get(ENABLE_HTTP_APPS_FLAG)
-  const showProjectTypeSelect = httpsAppsEnable && !clonedFrom
+  const httpAppsEnable = featureFlags.get(ENABLE_HTTP_APPS_FLAG)
+  const streamlitAppsEnable = featureFlags.get(ENABLE_STREAMLIT_APPS_FLAG)
+  const showProjectTypeSelect = (httpAppsEnable || streamlitAppsEnable) && !clonedFrom
 
   let validType = true
   if (showProjectTypeSelect) {
@@ -129,7 +137,12 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
               {showProjectTypeSelect ? (
                 <FormControl py="3">
                   <FormLabel>Project type</FormLabel>
-                  <ProjectTypeRadioGroup value={projectType} onChange={setProjectType} />
+                  <ProjectTypeRadioGroup
+                    httpAppsEnable={httpAppsEnable}
+                    streamlitAppsEnable={streamlitAppsEnable}
+                    value={projectType}
+                    onChange={setProjectType}
+                  />
                 </FormControl>
               ) : null}
             </ModalBody>
@@ -182,8 +195,13 @@ function ProjectTypeRadioOption(props: UseRadioProps & { children: React.ReactNo
   )
 }
 
-function ProjectTypeRadioGroup(props: { value: RunType | null; onChange: (value: RunType | null) => void }) {
-  const { value, onChange } = props
+function ProjectTypeRadioGroup(props: {
+  httpAppsEnable: boolean
+  streamlitAppsEnable: boolean
+  value: RunType | null
+  onChange: (value: RunType | null) => void
+}) {
+  const { value, onChange, httpAppsEnable, streamlitAppsEnable } = props
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'project-type',
@@ -195,12 +213,19 @@ function ProjectTypeRadioGroup(props: { value: RunType | null; onChange: (value:
 
   return (
     <VStack {...group}>
+      {streamlitAppsEnable ? (
+        <ProjectTypeRadioOption key={RunType.STREAMLIT} {...getRadioProps({ value: RunType.STREAMLIT })}>
+          <RunTypeIcon runType={RunType.STREAMLIT} /> <Text>Web app (Streamlit)</Text>
+        </ProjectTypeRadioOption>
+      ) : null}
       <ProjectTypeRadioOption key={RunType.COMMAND_LINE} {...getRadioProps({ value: RunType.COMMAND_LINE })}>
         <RunTypeIcon runType={RunType.COMMAND_LINE} /> <Text>Command line program</Text>
       </ProjectTypeRadioOption>
-      <ProjectTypeRadioOption key={RunType.HTTP_REQUEST} {...getRadioProps({ value: RunType.HTTP_REQUEST })}>
-        <RunTypeIcon runType={RunType.HTTP_REQUEST} /> <Text>Web server (Flask)</Text>
-      </ProjectTypeRadioOption>
+      {httpAppsEnable ? (
+        <ProjectTypeRadioOption key={RunType.HTTP_REQUEST} {...getRadioProps({ value: RunType.HTTP_REQUEST })}>
+          <RunTypeIcon runType={RunType.HTTP_REQUEST} /> <Text>Web server (Flask)</Text>
+        </ProjectTypeRadioOption>
+      ) : null}
       <ProjectTypeRadioOption key={RunType.SCHEDULE} {...getRadioProps({ value: RunType.SCHEDULE })}>
         <RunTypeIcon runType={RunType.SCHEDULE} /> <Text>Scheduled script</Text>
       </ProjectTypeRadioOption>

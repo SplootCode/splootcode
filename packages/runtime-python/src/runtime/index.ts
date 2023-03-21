@@ -5,6 +5,14 @@ import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
 import { WorkerManager, WorkerState } from './worker-manager'
 
+const streamlit_config = `
+[server]
+runOnSave = true
+
+[browser]
+gatherUsageStats = false
+`
+
 class RuntimeStateManager {
   private parentWindowDomain: string | null
   private parentWindowDomainRegex: string
@@ -17,6 +25,7 @@ class RuntimeStateManager {
   private fetchHandler: FetchHandler
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
+  private stlite_app: any
 
   constructor(parentWindowDomainRegex: string, RuntimeWorker: new () => Worker, fetchHandler: FetchHandler) {
     this.parentWindowDomain = null
@@ -27,6 +36,7 @@ class RuntimeStateManager {
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
     this.eventData = null
+    this.stlite_app = null
   }
 
   sendToParent = (payload: EditorMessage) => {
@@ -81,8 +91,45 @@ class RuntimeStateManager {
         }
       },
       this.sendToParent,
-      this.fetchHandler
+      this.fetchHandler,
+      this.textFileValueCallback
     )
+  }
+
+  initializeStlite(files: Map<string, string>) {
+    const initialFiles: { [key: string]: string } = {}
+    for (const [fileName, text] of files) {
+      if (fileName.endsWith('.py')) {
+        initialFiles[fileName] = text
+      }
+    }
+    initialFiles['/home/pyodide/.streamlit/config.toml'] = streamlit_config
+
+    // @ts-ignore
+    this.stlite_app = stlite.mount(
+      {
+        requirements: [],
+        entrypoint: 'main.py',
+        files: initialFiles,
+      },
+      document.getElementById('root')
+    )
+  }
+
+  textFileValueCallback = (fileContents: Map<string, string>) => {
+    if (!this.stlite_app) {
+      this.initializeStlite(fileContents)
+    } else {
+      this.updateStliteFiles(fileContents)
+    }
+  }
+
+  updateStliteFiles = (fileContents: Map<string, string>) => {
+    for (const [fileName, text] of fileContents) {
+      if (fileName.endsWith('.py')) {
+        this.stlite_app.writeFile(fileName, text)
+      }
+    }
   }
 
   addFilesToWorkspace(files: Map<string, FileSpec>, isInitial: boolean) {
@@ -130,7 +177,11 @@ class RuntimeStateManager {
         this.addFilesToWorkspace(data.data.files, false)
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+          if (this.runType === RunType.STREAMLIT) {
+            this.workerManager.generateTextCode(this.runType, this.workspace)
+          } else {
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+          }
         }
         break
       case 'initialfiles':
@@ -142,7 +193,11 @@ class RuntimeStateManager {
         this.initialFilesLoaded = true
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
-          this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+          if (this.runType === RunType.STREAMLIT) {
+            this.workerManager.generateTextCode(this.runType, this.workspace)
+          } else {
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+          }
         }
         break
       case 'stdin':

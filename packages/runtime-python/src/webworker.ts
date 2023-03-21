@@ -166,6 +166,7 @@ const syncFetch = (method: string, url: string, headers: any, body: any): Respon
 
 let executorCode = null
 let moduleLoaderCode = null
+let textGenerationCode = null
 let workspace: Map<string, FileSpec> = new Map()
 let runType: RunType | null = null
 let eventData: HTTPRequestAWSEvent | null = null
@@ -200,6 +201,25 @@ const run = async () => {
   })
 }
 
+const generateTextContent = async () => {
+  try {
+    const res = await pyodide.runPython(textGenerationCode)
+    const results = new Map()
+    results.set('main.py', res)
+    if (res) {
+      sendMessage({
+        type: 'text_code_content',
+        fileContents: results,
+      })
+    }
+  } catch (err) {
+    sendMessage({
+      type: 'stderr',
+      stderr: err.toString(),
+    })
+  }
+}
+
 const loadModule = async (moduleName) => {
   try {
     const res = pyodide.runPython(`generate_module_info("${moduleName}")`)
@@ -229,6 +249,7 @@ interface StaticURLs {
   requestsPackageURL: string
   flaskPackageURL: string
   serverlessWSGIPackageURL: string
+  textGeneratorURL: string
 }
 
 export const initialize = async (urls: StaticURLs) => {
@@ -241,6 +262,7 @@ export const initialize = async (urls: StaticURLs) => {
 
   executorCode = await (await fetch(urls.executorURL)).text()
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
+  textGenerationCode = await (await fetch(urls.textGeneratorURL)).text()
 
   // @ts-ignore
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
@@ -327,6 +349,10 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       rerun = true
       envVars = e.data.envVars || new Map<string, string>()
       run()
+      break
+    case 'generate_text_code':
+      workspace = e.data.workspace
+      generateTextContent()
       break
     case 'loadModule':
       loadModule(e.data.moduleName)

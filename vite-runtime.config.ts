@@ -1,4 +1,8 @@
+import inject from '@rollup/plugin-inject'
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 import react from '@vitejs/plugin-react'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
@@ -9,16 +13,38 @@ export default defineConfig({
     strictPort: true,
   },
   assetsInclude: ['**/*.py', '**/*.whl'],
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+        }),
+        NodeModulesPolyfillPlugin(),
+      ],
+    },
+  },
   build: {
     outDir: 'dist-runtime',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'splootframepythonclient.html'),
+        streamlit: resolve(__dirname, 'splootstreamlitpythonclient.html'),
       },
+      plugins: [
+        {
+          ...inject({
+            Buffer: ['buffer/', 'Buffer'],
+            process: 'process-es6/',
+          }),
+        },
+        nodePolyfills(),
+      ],
       output: {
         manualChunks: {
           xterm: ['xterm'],
-          chakra: ['@chakra-ui/react', '@chakra-ui/icons'],
         },
       },
     },

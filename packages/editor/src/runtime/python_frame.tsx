@@ -53,8 +53,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       this.handleResize()
     })
 
+    const runType = this.props.runtimeContextManager.runSettings.runType
     this.state = {
-      frameSrc: this.getFrameSrc(),
+      frameSrc: this.getFrameSrc(runType),
       responseData: null,
     }
   }
@@ -64,6 +65,19 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const ready = runtimeContextManager.ready
     const running = runtimeContextManager.running
     const runSettings = runtimeContextManager.runSettings
+
+    const iframeClass = runSettings.runType === RunType.STREAMLIT ? 'streamlit-frame' : 'view-python-frame'
+
+    if (runSettings.runType === RunType.STREAMLIT) {
+      return (
+        <div id="python-frame-container">
+          <iframe ref={this.frameRef} className={iframeClass} src={this.state.frameSrc} allow="cross-origin-isolated" />
+          <Box pl="3" pt="3" height={'100%'} backgroundColor="#040810">
+            <Box id="terminal" ref={this.termRef}></Box>
+          </Box>
+        </div>
+      )
+    }
 
     return (
       <div id="python-frame-container">
@@ -133,7 +147,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
 
         <iframe
           ref={this.frameRef}
-          id="view-python-frame"
+          className={iframeClass}
           src={this.state.frameSrc}
           width={480}
           height={700}
@@ -305,8 +319,11 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     return this.props.frameScheme + '://' + this.props.frameDomain
   }
 
-  getFrameSrc = () => {
+  getFrameSrc = (runType: RunType) => {
     const rand = Math.floor(Math.random() * 1000000 + 1)
+    if (runType === RunType.STREAMLIT) {
+      return this.getFrameDomain() + '/splootstreamlitpythonclient.html' + '?a=' + rand
+    }
     return this.getFrameDomain() + '/splootframepythonclient.html' + '?a=' + rand
   }
 
@@ -325,6 +342,10 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   handleMessageFromFrame(event: MessageEvent) {
+    if (event.data.stCommVersion) {
+      // Ignore stlite messages.
+      return
+    }
     const data = event.data as EditorMessage
     if (event.origin !== this.getFrameDomain()) {
       return
@@ -332,10 +353,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     if (!data.type) {
       return
     }
-    if (data.type.startsWith('webpack')) {
-      // Ignore webpack devserver events for local dev
-      return
-    }
+
     switch (data.type) {
       case 'ready':
         this.props.runtimeContextManager.setReady()
@@ -410,7 +428,8 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
   }
 
   reloadFrame = () => {
-    this.frameRef.current.src = this.getFrameSrc()
+    const runType = this.props.runtimeContextManager.runSettings.runType
+    this.frameRef.current.src = this.getFrameSrc(runType)
   }
 
   getTerminalInput: () => Promise<string> = async () => {

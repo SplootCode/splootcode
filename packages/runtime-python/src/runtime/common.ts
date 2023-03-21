@@ -82,6 +82,11 @@ export interface WorkerModuleInfoMessage {
   info: any
 }
 
+export interface WorkerTextConvertResultMessage {
+  type: 'text_code_content'
+  fileContents: Map<string, string>
+}
+
 export type WorkerMessage =
   | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
@@ -91,6 +96,7 @@ export type WorkerMessage =
   | WorkerRuntimeCaptureMessage
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
+  | WorkerTextConvertResultMessage
 
 export interface WorkerRunMessage {
   type: 'run'
@@ -118,4 +124,10 @@ export interface LoadModuleMessage {
   moduleName: string
 }
 
-export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage
+export interface TextContentRequestMessage {
+  type: 'generate_text_code'
+  runType: RunType
+  workspace: Map<string, FileSpec>
+}
+
+export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage | TextContentRequestMessage
