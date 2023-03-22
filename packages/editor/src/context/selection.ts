@@ -62,6 +62,9 @@ export class NodeSelection {
   cursor: CursorPosition
 
   @observable
+  isHidden: boolean
+
+  @observable
   state: SelectionState
 
   @observable
@@ -559,6 +562,42 @@ export class NodeSelection {
     if (this.state == SelectionState.Inserting) {
       this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
       this.updateRenderPositions()
+    }
+  }
+
+  @action
+  onEditorBlur() {
+    // Hide the selection state (tell the list blocks they're not selected).
+    this.isHidden = true
+    this.clearSelectedListBlocks()
+    if (this.selectionStart) {
+      this.selectionStart.listBlock.selectionState = SelectionState.Empty
+    }
+  }
+
+  @action
+  onEditorFocus() {
+    // Show the selection again.
+    if (this.isHidden) {
+      this.isHidden = false
+      switch (this.state) {
+        case SelectionState.SingleNode:
+          const nodeCursor = this.cursorMap.getSingleNodeForCursorPosition(this.cursor)
+          nodeCursor.listBlock.selectedIndexStart = nodeCursor.index
+          nodeCursor.listBlock.selectedIndexEnd = nodeCursor.index + 1
+          nodeCursor.listBlock.selectionState = SelectionState.SingleNode
+          return
+        case SelectionState.Editing:
+          const editingCursor = this.cursorMap.getSingleNodeForCursorPosition(this.cursor)
+          editingCursor.listBlock.selectedIndexStart = editingCursor.index
+          editingCursor.listBlock.selectedIndexEnd = editingCursor.index + 1
+          editingCursor.listBlock.selectionState = SelectionState.Editing
+          return
+        case SelectionState.MultiNode:
+          const treeWalker = new MultiselectTreeWalker(this.selectionStart, this.selectionEnd)
+          treeWalker.walkToEnd()
+          return
+      }
     }
   }
 

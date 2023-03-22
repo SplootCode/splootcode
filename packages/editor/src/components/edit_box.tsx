@@ -37,13 +37,17 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
 
   render() {
     const { userInput } = this.state
-    const { editorX, editorY, editBoxData } = this.props
+    const { editorX, editorY, editBoxData, selection } = this.props
     const { x, y } = editBoxData
+
+    const hidden = selection.isHidden
     const positionStyles: React.CSSProperties = {
       position: 'absolute',
       left: x + editorX - 1 + 'px',
       top: y + editorY + 'px',
+      opacity: hidden ? 0 : 1,
     }
+
     if (editBoxData.node.layout.boxType === NodeBoxType.STRING) {
       return (
         <div style={positionStyles}>
@@ -54,7 +58,6 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
               defaultValue={userInput}
               onChange={this.onChange}
               onKeyDown={this.onKeyDown}
-              onBlur={this.onBlur}
             />
           </div>
         </div>
@@ -71,7 +74,6 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
             value={userInput}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
-            onBlur={this.onBlur}
           />
         </div>
       </div>
@@ -105,11 +107,6 @@ export class EditBox extends React.Component<EditBoxProps, EditBoxState> {
 
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
-  }
-
-  onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const selection = this.props.selection
-    selection.exitEdit()
   }
 
   onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
