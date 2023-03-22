@@ -4,6 +4,7 @@ import {
   WorkerRuntimeCaptureMessage,
   WorkerStderrMessage,
   WorkerStdoutMessage,
+  WorkerTextConvertResultMessage,
   WorkerWebResponseMessage,
 } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
@@ -42,7 +43,7 @@ export interface GetModuleInfoMessage {
 }
 
 export type RuntimeMessage =
-  | { type: 'heartbeat' | 'stop' | 'run' }
+  | { type: 'heartbeat' | 'stop' | 'run' | 'export_text_code' }
   | StdinMessage
   | WorkspaceFilesMessage
   | ProxyTokenMessage
@@ -62,3 +63,4 @@ export type EditorMessage =
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerWebResponseMessage
+  | WorkerTextConvertResultMessage

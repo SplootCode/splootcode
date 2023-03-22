@@ -2,7 +2,7 @@ import './project_editor.css'
 
 import React, { useEffect, useState } from 'react'
 import { AutosaveInfo, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
-import { MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
+import { ExportTextModal, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
 import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
@@ -24,6 +24,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
   const [editorState, setEditorState] = useState<EditorState>(null)
+  const [exportTextModalOpen, setExportTextModalOpen] = useState(false)
 
   const history = useHistory()
 
@@ -87,6 +88,12 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
         setSaveProjectModalState({ open: true, clonedFrom: proj })
       },
     },
+    {
+      name: 'Export Python Code',
+      onClick: async () => {
+        setExportTextModalOpen(true)
+      },
+    },
   ]
 
   return (
@@ -101,6 +108,11 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
           setSaveProjectModalState({ open: false, clonedFrom: null })
           history.push(`/p/${owner}/${projectID}`)
         }}
+      />
+      <ExportTextModal
+        runtimeManager={editorState?.runtimeContextManager}
+        isOpen={exportTextModalOpen}
+        onClose={() => setExportTextModalOpen(false)}
       />
       <MenuBar menuItems={menuItems}>
         <MenuBarItem>{loadedProject === null ? '' : `${ownerID} - ${loadedProject.title}`} </MenuBarItem>

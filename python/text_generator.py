@@ -1,8 +1,10 @@
 import ast
 import sys
 import json
+import re
 
 import ast
+import ast_comments
 
 def generateArgs(callNode):
     args = []
@@ -405,7 +407,7 @@ def generateAstStatement(sploot_node):
     if sploot_node["type"] == "PYTHON_STATEMENT":
         if len(sploot_node['childSets']['statement']) != 0:
             return generateAstStatement(sploot_node['childSets']['statement'][0])
-        return None
+        return [ast_comments.Comment("##SPLOOTCODEEMPTYLINE")]
     elif sploot_node["type"] == "PYTHON_EXPRESSION":
         exp = generateAstExpressionStatement(sploot_node)
         return [exp]
@@ -430,10 +432,12 @@ def generateAstStatement(sploot_node):
     elif sploot_node["type"] == "PY_CONTINUE":
         return generateContinueStatement(sploot_node)
     elif sploot_node["type"] == "PY_COMMENT":
-        return None
+        return [ast_comments.Comment('# ' + sploot_node['properties']['value'])]
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
+
+empty_lines = re.compile('^##SPLOOTCODEEMPTYLINE$', flags=re.MULTILINE)
 
 def convertSplootToText(tree: dict) -> str:
     if tree["type"] != "PYTHON_FILE":
@@ -443,12 +447,16 @@ def convertSplootToText(tree: dict) -> str:
 
     mods = ast.Module(body=statements, type_ignores=[])
     ast.fix_missing_locations(mods)
-    code_string = ast.unparse(mods)
+    code_string = ast_comments.unparse(mods)
+    code_string = re.sub(empty_lines, '', code_string)
     return code_string
 
-import nodetree
-tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
-runType = nodetree.getRunType()
 
+result = None
 # Must be last line to return result to pyodide
-convertSplootToText(tree)
+if __name__  == '__main__':
+    import nodetree
+    tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
+    result = convertSplootToText(tree)
+
+result

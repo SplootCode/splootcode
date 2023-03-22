@@ -383,6 +383,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       case 'heartbeat':
       case 'runtime_capture':
       case 'module_info':
+      case 'text_code_content':
         this.props.runtimeContextManager.handleMessageFromRuntime(data)
         break
       case 'refresh_token':
