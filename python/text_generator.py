@@ -437,7 +437,7 @@ def generateAstStatement(sploot_node):
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
 
-empty_lines = re.compile('^##SPLOOTCODEEMPTYLINE$', flags=re.MULTILINE)
+empty_lines = re.compile('^\s*##SPLOOTCODEEMPTYLINE$', flags=re.MULTILINE)
 
 def convertSplootToText(tree: dict) -> str:
     if tree["type"] != "PYTHON_FILE":
