@@ -223,6 +223,14 @@ class RuntimeStateManager {
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break
+      case 'sendParseTree':
+        this.workerManager.sendParseTree(data.path, data.module, data.imports)
+
+        break
+      case 'requestExpressionTypeInfo':
+        this.workerManager.requestExpressionTypeInfo(data.expression)
+
+        break
       default:
         console.warn('Unrecognised message recieved:', event.data)
     }
