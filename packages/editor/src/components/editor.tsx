@@ -12,7 +12,7 @@ import { EditorSideMenuView } from './editor_side_menu'
 import { ExpandedListBlockView } from './list_block'
 import { InsertBox } from './insert_box'
 import { NodeBlock } from '../layout/rendered_node'
-import { NodeSelection } from '../context/selection'
+import { NodeSelection, SelectionState } from '../context/selection'
 import { Project, SplootPackage, ValidationWatcher, deserializeFragment } from '@splootcode/core'
 import { UndoWatcher } from '../context/undoWatcher'
 
@@ -60,6 +60,7 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     if (selection.isCursor() && selection.insertBox !== null) {
       insertBox = (
         <InsertBox
+          hidden={selection.isHidden}
           editorX={0}
           editorY={0}
           selection={selection}
@@ -110,21 +111,24 @@ export class Editor extends React.Component<EditorProps, EditorState> {
 
   onBlurHandler = (event: React.FocusEvent) => {
     if (!this.editorColumnRef.current.contains(event.relatedTarget)) {
-      this.props.selection.clearSelection()
+      this.props.selection.onEditorBlur()
     }
   }
 
   onFocusHandler = (event: React.FocusEvent) => {
-    if (this.props.selection.isEmpty()) {
-      this.props.selection.placeCursorByXYCoordinate(0, 0)
-    }
+    this.props.selection.onEditorFocus()
   }
 
   clipboardHandler = (event: ClipboardEvent) => {
     const { selection } = this.props
 
-    // If the selection is empty, we don't have focus.
-    if (this.props.selection.isEmpty()) {
+    // If the selection is hidden, we don't have focus.
+    // Also, don't intercept copy/cut if we're in the middle of an edit/insert.
+    if (
+      selection.isHidden ||
+      selection.state === SelectionState.Editing ||
+      selection.state === SelectionState.Inserting
+    ) {
       return
     }
 
@@ -157,12 +161,13 @@ export class Editor extends React.Component<EditorProps, EditorState> {
   }
 
   keyHandler = (event: KeyboardEvent) => {
+    const { selection } = this.props
+
     // If the selection is empty then the editor does not have focus.
-    if (this.props.selection.isEmpty()) {
+    if (selection.isEmpty() || selection.isHidden) {
       return
     }
 
-    const { selection } = this.props
     if (event.isComposing) {
       // IME composition, let it be captured by the insert box.
       return
@@ -170,7 +175,7 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     if (event.key === 'Backspace' || event.key === 'Delete') {
       // Must stop backspace propagation for people who use 'Go back with backspace' browser extension.
       event.stopPropagation()
-      this.props.selection.deleteSelectedNode()
+      selection.deleteSelectedNode()
     }
 
     if (event.key === 'Enter') {

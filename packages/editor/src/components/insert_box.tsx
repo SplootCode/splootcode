@@ -134,6 +134,7 @@ interface InsertBoxState {
 }
 
 interface InsertBoxProps {
+  hidden: boolean
   editorX: number
   editorY: number
   cursorPosition: CursorPosition
@@ -200,7 +201,10 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         state.userInput
       )
 
+      const userInput = selection.state === SelectionState.Cursor ? '' : state.userInput
+
       return {
+        userInput: userInput,
         filteredSuggestions: filteredSuggestions,
         cursorPosition: cursorPosition,
         staticSuggestions: staticSuggestions,
@@ -221,7 +225,10 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       ;(this.suggestionsRef.current.children[this.state.activeSuggestion] as HTMLElement).scrollIntoView({
         block: 'nearest',
       })
-    } else {
+    } else if (this.props.hidden && prevProps.hidden) {
+      // I know this seems counter intuitive, to focus when the selection is hidden.
+      // But any of the props/state have changed it means the editor is being interacted with
+      // via keyboard or clicks and that means the editor should be re-focused, and un-hidden.
       this.inputRef.current.focus()
     }
   }
@@ -229,7 +236,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   render() {
     const { userInput, autoWidth, filteredSuggestions, activeSuggestion } = this.state
     const { selection, insertBoxData } = this.props
-    const isInserting = selection.state === SelectionState.Inserting
+    const isInserting = selection.state === SelectionState.Inserting && !this.props.hidden
 
     let suggestionsListComponent: JSX.Element
     if (selection.state === SelectionState.Inserting) {
@@ -308,14 +315,14 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
             type="text"
             id="insertbox"
             ref={this.inputRef}
-            defaultValue={userInput}
+            value={userInput}
             onChange={this.onChange}
             onClick={this.onClick}
             onKeyDown={this.onKeyDown}
             style={{ width: autoWidth }}
           />
         </div>
-        {suggestionsListComponent}
+        {isInserting ? suggestionsListComponent : null}
       </div>
     )
   }
@@ -342,7 +349,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     // Escape
     if (e.key === 'Escape' || (e.key == 'Backspace' && this.state.userInput === '')) {
-      this.inputRef.current.value = ''
       selection.exitEdit()
       e.stopPropagation()
     }
@@ -514,19 +520,20 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
   }
 
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value === ' ') {
-      e.currentTarget.value = ''
+    let newValue = e.currentTarget.value
+    if (newValue === ' ') {
+      newValue = ''
     }
-    const userInput = this.handleEarlyInsert(e.currentTarget.value)
+    const userInput = this.handleEarlyInsert(newValue)
     if (userInput !== '') {
       const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
       const filteredSuggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, userInput)
 
       this.props.selection.startInsertAtCurrentCursor()
       this.setState({
-        userInput: e.currentTarget.value,
+        userInput: userInput,
         activeSuggestion: 0,
-        autoWidth: this.getWidth(e.currentTarget.value),
+        autoWidth: this.getWidth(userInput),
         filteredSuggestions: filteredSuggestions,
       })
     } else {
@@ -534,7 +541,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       selection.exitEdit()
       this.setState({
         userInput: '',
-        autoWidth: this.getWidth(e.currentTarget.value),
+        autoWidth: this.getWidth(''),
         filteredSuggestions: [],
         activeSuggestion: 0,
       })
@@ -560,7 +567,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     } else {
       selection.insertNodeByChildSet(suggestion.childSet, suggestion.index, node)
     }
-    this.inputRef.current.value = leftoverText
+    this.setState({ userInput: leftoverText })
   }
 
   // Event fired when the user clicks on a suggestion
