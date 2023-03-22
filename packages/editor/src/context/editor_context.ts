@@ -36,9 +36,6 @@ export class EditorState {
     this.selection = new NodeSelection()
     this.validationWatcher = new ValidationWatcher()
     this.validationWatcher.registerSelf()
-    this.analyser = new PythonAnalyzer()
-    this.analyser.registerSelf()
-    this.analyser.initialise(hostingConfig.TYPESHED_PATH)
     this.hostingConfig = hostingConfig
     this.featureFlags = featureFlags || new Map()
     this.autosaveWatcher = new AutosaveWatcher(project, projectLoader)
@@ -50,6 +47,10 @@ export class EditorState {
     const fileChangeWatcher = new ProjectFileChangeWatcher(project, project.getDefaultPackage(), this.validationWatcher)
     this.runtimeContextManager = new RuntimeContextManager(project, fileChangeWatcher)
     this.runtimeContextManager.registerSelf()
+
+    this.analyser = new PythonAnalyzer(this.runtimeContextManager)
+    this.analyser.registerSelf()
+    this.analyser.initialise(hostingConfig.TYPESHED_PATH)
   }
 
   async loadDefaultFile() {

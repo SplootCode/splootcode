@@ -12,8 +12,19 @@ export default defineConfig({
     port: 3001,
     strictPort: true,
   },
+  resolve: {
+    preserveSymlinks: true,
+
+    // alias: [
+    //   {
+    //     find: '@splootcode/runtime-python/worker',
+    //     replacement: './packages/runtime-python/src/runtime/index.ts',
+    //   },
+    // ],
+  },
   assetsInclude: ['**/*.py', '**/*.whl'],
   optimizeDeps: {
+    // disabled: 'dev',
     esbuildOptions: {
       define: {
         global: 'globalThis',

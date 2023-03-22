@@ -13,15 +13,15 @@ import { PythonNode } from './python_node'
 
 class ScopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
+    // return []
+
     const scope = (parent.node as PythonNode).getScope()
     const inScopeVars = scope.getAllInScopeVariables()
-
     const suggestions = []
     for (const [name, entry] of inScopeVars.entries()) {
       const varName = name
       let varDoc = ''
       let funcMeta: FunctionSignature = null
-
       for (const varMetadata of entry.declarers.values()) {
         if (varMetadata.typeInfo?.category === TypeCategory.Function) {
           funcMeta = varMetadata.typeInfo
@@ -53,7 +53,6 @@ class ScopeAutocompleter implements SuggestionGenerator {
         suggestions.push(new SuggestedNode(newCall, `${varName}`, varName, true, doc))
       }
     }
-
     return suggestions
   }
 }
@@ -83,6 +82,8 @@ class AssignableSopeAutocompleter implements SuggestionGenerator {
 
 class ModuleAttributeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
+    // return []
+
     const importNode = parent.node as PythonFromImport
     const moduleName = importNode.getModuleName()
     if (moduleName) {

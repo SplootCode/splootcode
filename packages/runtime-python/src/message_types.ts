@@ -6,6 +6,8 @@ import {
   WorkerStdoutMessage,
   WorkerWebResponseMessage,
 } from './runtime/common'
+
+import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
@@ -41,8 +43,22 @@ export interface GetModuleInfoMessage {
   moduleName: string
 }
 
+export interface SendParseTreeMessage {
+  type: 'sendParseTree'
+  path: string
+  module: ModuleNode
+  imports: ModuleImport[]
+}
+
+export interface RequestExpressionTypeInfoMessage {
+  type: 'requestExpressionTypeInfo'
+  expression: ExpressionNode
+}
+
 export type RuntimeMessage =
   | { type: 'heartbeat' | 'stop' | 'run' }
+  | SendParseTreeMessage
+  | RequestExpressionTypeInfoMessage
   | StdinMessage
   | WorkspaceFilesMessage
   | ProxyTokenMessage

@@ -94,6 +94,8 @@ function getAvailableFunctionArgs(callNode: PythonCallVariable, argNode: PythonA
 
 class KeywordArgGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
+    return []
+
     const argNode = parent.node as PythonArgument
     if (!argNode.allowKeyword()) {
       return []
@@ -128,6 +130,8 @@ class KeywordArgGenerator implements SuggestionGenerator {
   }
 
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+    return []
+
     const argNode = parent.node as PythonArgument
     if (!argNode.allowKeyword()) {
       return []

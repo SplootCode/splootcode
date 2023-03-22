@@ -1,4 +1,5 @@
 import { EditorMessage } from '../message_types'
+import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
@@ -130,6 +131,22 @@ export class WorkerManager {
     this.sendMessage({
       type: 'loadModule',
       moduleName: moduleName,
+    })
+  }
+
+  sendParseTree(path: string, module: ModuleNode, imports: ModuleImport[]) {
+    this.sendMessage({
+      type: 'parseTree',
+      path,
+      module,
+      imports,
+    })
+  }
+
+  requestExpressionTypeInfo(expr: ExpressionNode) {
+    this.sendMessage({
+      type: 'requestExpressionTypeInfo',
+      expression: expr,
     })
   }
 

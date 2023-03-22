@@ -3,6 +3,7 @@ import {
   CallSignatureInfo,
   ExpressionNode,
   ModuleImport,
+  ModuleNode,
   ParseNode,
   StructuredEditorProgram,
   Type,
@@ -18,6 +19,11 @@ import {
   globalMutationDispatcher,
 } from '@splootcode/core'
 import { PythonFile } from '../nodes/python_file'
+
+export interface ParseTreeSender {
+  sendParseTree(path: string, parseTree: ModuleNode, modules: ModuleImport[]): void
+  requestExpressionTypeInfo(expression: ExpressionNode): void
+}
 
 export class ParseMapper {
   nodeMap: Map<SplootNode, ParseNode>
@@ -50,17 +56,21 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   currentParseID: number
   latestParseID: number
   dirtyPaths: Set<string>
+  sender: ParseTreeSender
 
-  constructor() {
+  constructor(sender: ParseTreeSender) {
     this.program = null
     this.nodeMaps = new Map()
     this.files = new Map()
     this.currentParseID = null
     this.latestParseID = null
     this.dirtyPaths = new Set()
+    this.sender = sender
   }
 
   initialise(typeshedPath: string) {
+    console.log(typeshedPath)
+
     try {
       this.program = createStructuredProgram(typeshedPath)
     } catch (e) {
@@ -131,14 +141,26 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     this.currentParseID = this.latestParseID
 
     for (const path of paths) {
+      // console.log('sending parse')
       const pathForFile = '/' + path
       const parseMapper = new ParseMapper()
       const rootNode = this.files.get(path)
+
       const moduleNode = rootNode.generateParseTree(parseMapper)
-      this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
-      await this.program.parseRecursively(pathForFile)
-      this.program.getBoundSourceFile(pathForFile)
+
+      this.sender.sendParseTree(pathForFile, moduleNode, parseMapper.modules)
+
       this.nodeMaps.set(path, parseMapper)
+
+      // // TODO(harrison): send parse tree to pyright
+      // console.log(
+      //   'main thread source file',
+      //   this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
+      // )
+      // await this.program.parseRecursively(pathForFile)
+      // this.program.getBoundSourceFile(pathForFile)
+      //
+      // console.log('from main', moduleNode)
     }
 
     if (this.latestParseID !== this.currentParseID) {

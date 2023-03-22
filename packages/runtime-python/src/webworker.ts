@@ -1,5 +1,16 @@
-import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import { ExpressionNode, ModuleNode, StructuredEditorProgram, createStructuredProgram2 } from 'structured-pyright'
+import {
+  FetchSyncErrorType,
+  FileSpec,
+  LoadParseTreeMessage,
+  ResponseData,
+  WorkerManagerMessage,
+  WorkerMessage,
+} from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
+import { IDFinderWalker, PyodideFakeFileSystem } from './structured'
+
+console.log('PEANUT PEANUT PEAUNT')
 
 // If we're not in a module context (prod build is non-module)
 // Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
@@ -19,6 +30,10 @@ let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
+
+// console.log(createStructuredProgram)
+
+let structuredProgram: StructuredEditorProgram = null
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -310,16 +325,41 @@ export const initialize = async (urls: StaticURLs) => {
   pyodide.registerJsModule('__splootcode_internal', {
     sync_fetch: syncFetch,
   })
+
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(urls.requestsPackageURL)
   await micropip.install(urls.flaskPackageURL)
   await micropip.install(urls.serverlessWSGIPackageURL)
+  await pyodide.loadPackage('numpy')
+
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
+
+  structuredProgram = createStructuredProgram2(new PyodideFakeFileSystem('/static/typeshed/', pyodide))
+
   sendMessage({
     type: 'ready',
   })
+}
+
+let finalModule: ModuleNode = null
+
+const updateParseTree = async (message: LoadParseTreeMessage) => {
+  if (!structuredProgram) {
+    console.error('structuredProgram is not defined yet')
+  }
+
+  // console.log('updating structured file', message)
+
+  finalModule = message.module
+
+  structuredProgram.updateStructuredFile(message.path, finalModule, message.imports)
+  await structuredProgram.parseRecursively(message.path)
+  const sourceFile = structuredProgram.getBoundSourceFile(message.path)
+  console.log('nice! got source file', sourceFile.isBindingRequired())
+
+  console.log('final module', finalModule)
 }
 
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
@@ -356,6 +396,27 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       break
     case 'loadModule':
       loadModule(e.data.moduleName)
+      break
+    case 'parseTree':
+      console.log('parsing tree')
+
+      updateParseTree(e.data)
+
+      break
+    case 'requestExpressionTypeInfo':
+      console.log('tracking down', e.data.expression)
+
+      const walker = new IDFinderWalker(e.data.expression.id)
+      walker.walk(finalModule)
+
+      console.log('found item', walker.found)
+
+      if (walker.found) {
+        console.log(structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode))
+      } else {
+        console.log('could not find node in tree')
+      }
+
       break
     default:
       // @ts-ignore

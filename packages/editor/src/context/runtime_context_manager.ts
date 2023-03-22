@@ -14,7 +14,15 @@ import {
   globalMutationDispatcher,
   httpScenarioToHTTPRequestEvent,
 } from '@splootcode/core'
-import { EditorMessage, RuntimeMessage, WorkspaceFilesMessage } from '@splootcode/runtime-python'
+
+import {
+  EditorMessage,
+  RequestExpressionTypeInfoMessage,
+  RuntimeMessage,
+  SendParseTreeMessage,
+  WorkspaceFilesMessage,
+} from '@splootcode/runtime-python'
+import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
 import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
 import { FrameStateManager } from 'src/runtime/frame_state_manager'
 import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
@@ -220,6 +228,38 @@ export class RuntimeContextManager {
     }
     this.frameStateManager.postMessage(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
+  }
+
+  sendParseTree = async (path: string, module: ModuleNode, imports: ModuleImport[]) => {
+    console.log('sending parse tree message')
+
+    const payload: SendParseTreeMessage = {
+      type: 'sendParseTree',
+      path,
+      module,
+      imports,
+    }
+
+    if (!this.frameStateManager) {
+      console.warn('FrameStateManager not initialized')
+      return
+    }
+
+    this.frameStateManager.postMessage(payload)
+  }
+
+  requestExpressionTypeInfo = (expression: ExpressionNode) => {
+    if (!this.frameStateManager) {
+      console.warn('FrameStateManager not initialized')
+      return
+    }
+
+    const payload: RequestExpressionTypeInfoMessage = {
+      type: 'requestExpressionTypeInfo',
+      expression,
+    }
+
+    this.frameStateManager.postMessage(payload)
   }
 
   handleProjectMutation(mutation: ProjectMutation) {

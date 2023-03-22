@@ -1,0 +1,289 @@
+import type { Dirent, ReadStream, WriteStream } from 'fs'
+
+import {
+  FileSystem,
+  FileWatcher,
+  FileWatcherEventHandler,
+  MkDirOptions,
+  ParseNode,
+  ParseTreeWalker,
+  Stats,
+  TmpfileOptions,
+  typeshedDirEntries,
+} from 'structured-pyright'
+
+function file(name: string): Dirent {
+  return {
+    name: name,
+    isFile: () => true,
+    isDirectory: () => false,
+    isBlockDevice: () => false,
+    isCharacterDevice: () => false,
+    isSymbolicLink: () => false,
+    isFIFO: () => false,
+    isSocket: () => false,
+  }
+}
+
+function dir(name: string): Dirent {
+  return {
+    name: name,
+    isFile: () => false,
+    isDirectory: () => true,
+    isBlockDevice: () => false,
+    isCharacterDevice: () => false,
+    isSymbolicLink: () => false,
+    isFIFO: () => false,
+    isSocket: () => false,
+  }
+}
+
+const BASE = '/lib/python3.10/site-packages'
+
+export class PyodideFakeFileSystem implements FileSystem {
+  private _hostedTypeshedBasePath: string
+  private _knownStructuredFilePaths: Set<string>
+  private _pyodide: any
+
+  constructor(hostedTypeshedBasePath: string, pyodide: any) {
+    this._hostedTypeshedBasePath = hostedTypeshedBasePath
+    this._knownStructuredFilePaths = new Set()
+    this._pyodide = pyodide
+  }
+
+  existsSync(path: string): boolean {
+    switch (path) {
+      case '/':
+      case '/typeshed/typeshed-fallback':
+        return true
+    }
+
+    if (this._knownStructuredFilePaths.has(path)) {
+      return true
+    }
+
+    // TODO(go to pyodide here)
+    return false
+  }
+  mkdirSync(path: string, options?: MkDirOptions): void {
+    throw new Error('Method not implemented.')
+  }
+  chdir(path: string): void {
+    throw new Error('Method not implemented.')
+  }
+
+  readdirEntriesSync(path: string): Dirent[] {
+    console.log('getting', path)
+
+    if (path.startsWith('/typeshed/typeshed-fallback')) {
+      let newPath = path.substring('/typeshed/typeshed-fallback/'.length)
+      if (newPath.endsWith('/')) {
+        newPath = newPath.substring(0, newPath.length - 1)
+      }
+      return typeshedDirEntries[newPath].map((entry) => {
+        if (entry.isDir) {
+          return dir(entry.name)
+        }
+        return file(entry.name)
+      })
+    }
+
+    console.log('USING FS INTERFACE', 'readdirEntriesSync', path)
+    // console.log('pyodide:', this._pyodide.FS.readdir(path))
+
+    let out: Dirent[] = []
+
+    console.log('resolving as', BASE + path)
+
+    try {
+      out = [
+        ...out,
+        ...(this._pyodide.FS.readdir(BASE + path) as string[])
+          .filter((entry) => !['.', '..'].includes(entry))
+          .map((entry): Dirent => {
+            const out = this._pyodide.FS.analyzePath(BASE + path + '/' + entry)
+            console.log('test', out)
+
+            const mode = out.object.mode
+
+            return {
+              name: out.name,
+              isFile: () => this._pyodide.FS.isFile(mode),
+              isDirectory: () => this._pyodide.FS.isDir(mode),
+              isBlockDevice: () => false,
+              isSocket: () => false,
+              isSymbolicLink: () => false,
+              isCharacterDevice: () => false,
+              isFIFO: () => false,
+            }
+          }),
+      ]
+
+      console.log(out)
+    } catch (e) {
+      console.warn(e)
+    }
+
+    if (path === '/') {
+      out = [
+        ...out,
+        ...[...this._knownStructuredFilePaths]
+          .filter((key) => {
+            if (key.startsWith(path)) {
+              return key.substring(path.length).indexOf('/') === -1
+            }
+            return false
+          })
+          .map((key) => {
+            return file(key.substring(path.length))
+          }),
+      ]
+    }
+
+    console.log('got', out)
+
+    return out
+
+    throw new Error(`Unexpected readdirEntriesSync for path ${path}`)
+  }
+  readdirSync(path: string): string[] {
+    throw new Error('Method not implemented.')
+  }
+  readFileSync(path: string, encoding?: null): Buffer
+  readFileSync(path: string, encoding: BufferEncoding): string
+  readFileSync(path: string, encoding?: BufferEncoding | null): string | Buffer
+  readFileSync(path: any, encoding?: any): string | Buffer {
+    // Choosing to return an empty VERSIONS file rather than editing
+    // the code to fetch it asynchronously like all the other typeshed files.
+    if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
+      return ''
+    }
+
+    console.log('tried to read', path)
+
+    throw new Error(`Unexpected readFileSync of path ${path}.`)
+  }
+  writeFileSync(path: string, data: string | Buffer, encoding: BufferEncoding | null): void {
+    this._knownStructuredFilePaths.add(path)
+  }
+  statSync(path: string): Stats {
+    if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
+      return {
+        size: 100,
+        isFile: () => true,
+        isDirectory: () => false,
+        isBlockDevice: () => false,
+        isCharacterDevice: () => false,
+        isFIFO: () => false,
+        isSocket: () => false,
+        isSymbolicLink: () => false,
+      }
+    }
+
+    const out = this._pyodide.FS.stat(BASE + path)
+    // console.log('test', out)
+
+    const mode = out.mode
+
+    const stat = {
+      size: out.size,
+      isFile: () => this._pyodide.FS.isFile(mode),
+      isDirectory: () => this._pyodide.FS.isDir(mode),
+      isBlockDevice: () => false,
+      isSocket: () => false,
+      isSymbolicLink: () => false,
+      isCharacterDevice: () => false,
+      isFIFO: () => false,
+    }
+
+    console.log('statted and got', path, stat)
+
+    return stat
+
+    console.log('tried to stat', path)
+    throw new Error(`Unexpected statSync of path ${path}.`)
+  }
+  unlinkSync(path: string): void {
+    throw new Error('Method not implemented.')
+  }
+  realpathSync(path: string): string {
+    throw new Error('Method not implemented.')
+  }
+  getModulePath(): string {
+    return '/typeshed/'
+  }
+  createFileSystemWatcher(paths: string[], listener: FileWatcherEventHandler): FileWatcher {
+    throw new Error('Method not implemented.')
+  }
+  createReadStream(path: string): ReadStream {
+    throw new Error('Method not implemented.')
+  }
+  createWriteStream(path: string): WriteStream {
+    throw new Error('Method not implemented.')
+  }
+  copyFileSync(src: string, dst: string): void {
+    throw new Error('Method not implemented.')
+  }
+  readFile(path: string): Promise<Buffer> {
+    throw new Error('Method not implemented.')
+  }
+  readFileText = async (path: string, encoding?: BufferEncoding) => {
+    if (path.startsWith('/typeshed/typeshed-fallback/')) {
+      const newPath = path.substring('/typeshed/typeshed-fallback/'.length)
+      const response = await fetch(this._hostedTypeshedBasePath + newPath)
+      const text = await response.text()
+      return text
+    }
+
+    console.log('trying to read', path)
+
+    return this._pyodide.FS.readFile(BASE + path, { encoding: 'utf8' })
+  }
+  tmpdir(): string {
+    throw new Error('Method not implemented.')
+  }
+  tmpfile(options?: TmpfileOptions): string {
+    throw new Error('Method not implemented.')
+  }
+  realCasePath(path: string): string {
+    throw new Error('Method not implemented.')
+  }
+  isMappedFilePath(filepath: string): boolean {
+    return false
+  }
+  getOriginalFilePath(mappedFilePath: string): string {
+    // No file mapping
+    return mappedFilePath
+  }
+  getMappedFilePath(originalFilepath: string): string {
+    throw new Error('Method not implemented.')
+  }
+  getUri(path: string): string {
+    throw new Error('Method not implemented.')
+  }
+  isInZipOrEgg(path: string): boolean {
+    throw new Error('Method not implemented.')
+  }
+}
+
+export class IDFinderWalker extends ParseTreeWalker {
+  toFind: number
+  found: ParseNode | undefined
+
+  constructor(toFind: number) {
+    super()
+
+    this.toFind = toFind
+    this.found = null
+  }
+
+  walk(node: ParseNode): void {
+    if (node.id == this.toFind) {
+      this.found = node
+
+      console.log('found node!', node)
+    }
+
+    super.walk(node)
+  }
+}
