@@ -31,7 +31,7 @@ class StringGenerator implements SuggestionGenerator {
     return [suggestedNode]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     if (textInput.startsWith("'") || textInput.startsWith('"')) {
       let value = textInput.slice(1)
       if (value.length !== 0 && value[value.length - 1] === textInput[0]) {

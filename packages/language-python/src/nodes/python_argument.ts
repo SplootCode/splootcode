@@ -36,7 +36,7 @@ class ExpressionArgumentGenerator implements SuggestionGenerator {
     return autocompleter.getStaticSuggestions(parent, index)
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     const argNode = parent.node as PythonArgument
     if (!argNode.allowPositional()) {
       return []

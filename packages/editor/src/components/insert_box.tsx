@@ -24,12 +24,12 @@ interface RenderedSuggestion extends SuggestedNode {
   index: number
 }
 
-function filterSuggestions(
+async function filterSuggestions(
   staticSuggestions: RenderedSuggestion[],
   staticSuggestionsKeys: Set<string>,
   autocompleters: CursorAutocompleter[],
   userInput: string
-): RenderedSuggestion[] {
+): Promise<RenderedSuggestion[]> {
   if (autocompleters.length === 0) {
     return []
   }
@@ -37,7 +37,7 @@ function filterSuggestions(
   const dynamicSuggestions: RenderedSuggestion[] = []
   const dynamicSuggestionsKeys: Set<string> = new Set()
   for (const autocompleter of autocompleters) {
-    const prefixSuggestions = autocompleter.getPrefixSuggestions(userInput)
+    const prefixSuggestions = await autocompleter.getPrefixSuggestions(userInput)
     if (prefixSuggestions) {
       if (userInput.length <= 1) {
         return prefixSuggestions
@@ -59,7 +59,7 @@ function filterSuggestions(
       const results = fuse.search(userInput).map((res) => res.item)
       return results
     }
-    const newDynamicSuggestions = autocompleter.getDynamicSuggestions(userInput).filter((suggestion) => {
+    const newDynamicSuggestions = (await autocompleter.getDynamicSuggestions(userInput)).filter((suggestion) => {
       const isNew = !staticSuggestionsKeys.has(suggestion.key) && !dynamicSuggestionsKeys.has(suggestion.key)
       dynamicSuggestionsKeys.add(suggestion.key)
       return isNew
@@ -113,12 +113,16 @@ class CursorAutocompleter {
     return this.autocompleter.getStaticSuggestions(this.parentRef, this.index).map(this.renderSuggestion)
   }
 
-  getDynamicSuggestions(userInput: string): RenderedSuggestion[] {
-    return this.autocompleter.getDynamicSuggestions(this.parentRef, this.index, userInput).map(this.renderSuggestion)
+  async getDynamicSuggestions(userInput: string): Promise<RenderedSuggestion[]> {
+    return (await this.autocompleter.getDynamicSuggestions(this.parentRef, this.index, userInput)).map(
+      this.renderSuggestion
+    )
   }
 
-  getPrefixSuggestions(userInput: string): RenderedSuggestion[] {
-    return this.autocompleter.getPrefixSuggestions(this.parentRef, this.index, userInput)?.map(this.renderSuggestion)
+  async getPrefixSuggestions(userInput: string): Promise<RenderedSuggestion[]> {
+    return (await this.autocompleter.getPrefixSuggestions(this.parentRef, this.index, userInput))?.map(
+      this.renderSuggestion
+    )
   }
 }
 
@@ -193,15 +197,15 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         staticSuggestionKeys.add(suggestion.key)
       })
 
-      const filteredSuggestions = filterSuggestions(
-        staticSuggestions,
-        staticSuggestionKeys,
-        autocompleters,
-        state.userInput
-      )
+      // const filteredSuggestions = filterSuggestions(
+      //   staticSuggestions,
+      //   staticSuggestionKeys,
+      //   autocompleters,
+      //   state.userInput
+      // )
 
       return {
-        filteredSuggestions: filteredSuggestions,
+        // filteredSuggestions: [],
         cursorPosition: cursorPosition,
         staticSuggestions: staticSuggestions,
         staticSuggestionKeys: staticSuggestionKeys,
@@ -393,7 +397,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // e.stopPropagation();
   }
 
-  prefixMatch(userInput: string, prefix: string, remainder: string): RenderedSuggestion {
+  async prefixMatch(userInput: string, prefix: string, remainder: string): Promise<RenderedSuggestion> {
     prefix = prefix.trim()
     if (prefix.length === userInput.length) {
       return null
@@ -402,7 +406,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     const prefixNoSpaces = prefix.replace(/\s/g, '')
 
     const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
-    const suggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, prefix)
+    const suggestions = await filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, prefix)
     if (suggestions.length === 0) {
       return null
     }
@@ -425,7 +429,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     return null
   }
 
-  handleEarlyInsert(userInput: string): string {
+  async handleEarlyInsert(userInput: string): Promise<string> {
     if (userInput.length < 2) {
       return userInput
     }
@@ -438,7 +442,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // Numbers
     const numericMatch = userInput.match(/^([0-9][0-9.]*)(.*)/)
     if (numericMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, numericMatch[1], numericMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, numericMatch[1], numericMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, numericMatch[2].trim())
         return numericMatch[2].trim()
@@ -448,7 +452,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     const assignmentMatch = userInput.match(/^([\p{L}_][\p{L}_0-9\s]*=)\(?([^\(=]*)$/iu)
     if (assignmentMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, assignmentMatch[1], assignmentMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, assignmentMatch[1], assignmentMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, assignmentMatch[2].trim())
         return assignmentMatch[2].trim()
@@ -458,7 +462,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     const functionMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9\s]*)\(/iu)
     if (functionMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, functionMatch[1], '')
+      const matchingSuggestion = await this.prefixMatch(userInput, functionMatch[1], '')
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, '')
         return ''
@@ -468,7 +472,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
 
     const notInMatch = userInput.match(/^(not in\s)([^\s])/iu)
     if (notInMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, notInMatch[1], notInMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, notInMatch[1], notInMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, notInMatch[2].trim())
         return notInMatch[2].trim()
@@ -480,7 +484,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // Also includes identifier and an = (for assignment)
     const alphaMatch = userInput.match(/^(\.?[\p{L}_][\p{L}_0-9]*\s*)((?:\s[^\s]+)|[^\p{L}_0-9\s]+)/iu)
     if (alphaMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, alphaMatch[1], alphaMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, alphaMatch[1], alphaMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, alphaMatch[2].trim())
         return alphaMatch[2].trim()
@@ -491,7 +495,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // operators
     const operatorMatch = userInput.match(/^([+\-*\/><%^~!=]+)(.*)/)
     if (operatorMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, operatorMatch[1], operatorMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, operatorMatch[1], operatorMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, operatorMatch[2].trim())
         return operatorMatch[2].trim()
@@ -502,7 +506,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     // Specifically brackets
     const bracketMatch = userInput.match(/^(\()(.*)/)
     if (bracketMatch) {
-      const matchingSuggestion = this.prefixMatch(userInput, bracketMatch[1], bracketMatch[2])
+      const matchingSuggestion = await this.prefixMatch(userInput, bracketMatch[1], bracketMatch[2])
       if (matchingSuggestion) {
         this.onSelected(matchingSuggestion, bracketMatch[2])
         return bracketMatch[2].trim()
@@ -513,20 +517,29 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     return userInput
   }
 
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value === ' ') {
-      e.currentTarget.value = ''
+  onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.value
+    console.log('hello', value)
+    if (value === ' ') {
+      value = ''
     }
-    const userInput = this.handleEarlyInsert(e.currentTarget.value)
+    const userInput = await this.handleEarlyInsert(value)
     if (userInput !== '') {
+      console.log('userInput', userInput)
+
       const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
-      const filteredSuggestions = filterSuggestions(staticSuggestions, staticSuggestionKeys, autocompleters, userInput)
+      const filteredSuggestions = await filterSuggestions(
+        staticSuggestions,
+        staticSuggestionKeys,
+        autocompleters,
+        userInput
+      )
 
       this.props.selection.startInsertAtCurrentCursor()
       this.setState({
-        userInput: e.currentTarget.value,
+        userInput: value,
         activeSuggestion: 0,
-        autoWidth: this.getWidth(e.currentTarget.value),
+        autoWidth: this.getWidth(value),
         filteredSuggestions: filteredSuggestions,
       })
     } else {
@@ -534,7 +547,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       selection.exitEdit()
       this.setState({
         userInput: '',
-        autoWidth: this.getWidth(e.currentTarget.value),
+        autoWidth: this.getWidth(value),
         filteredSuggestions: [],
         activeSuggestion: 0,
       })

@@ -28,20 +28,27 @@ export class Autocompleter {
     return suggestions
   }
 
-  getDynamicSuggestions(parent: ParentReference, index: number, userInput: string): SuggestedNode[] {
+  async getDynamicSuggestions(parent: ParentReference, index: number, userInput: string): Promise<SuggestedNode[]> {
     let suggestions: SuggestedNode[] = []
-    this.dynamicFunctions.forEach((generator: SuggestionGenerator) => {
-      suggestions = suggestions.concat(generator.dynamicSuggestions(parent, index, userInput))
-    })
+    await Promise.all(
+      this.dynamicFunctions.map(async (generator: SuggestionGenerator) => {
+        suggestions = suggestions.concat(await generator.dynamicSuggestions(parent, index, userInput))
+      })
+    )
+
     return suggestions
   }
 
-  getPrefixSuggestions(parent: ParentReference, index: number, userInput: string): SuggestedNode[] {
+  async getPrefixSuggestions(parent: ParentReference, index: number, userInput: string): Promise<SuggestedNode[]> {
     if (this.prefixOverrides.has(userInput[0])) {
       let suggestions: SuggestedNode[] = []
-      this.prefixOverrides.get(userInput[0]).forEach((generator: SuggestionGenerator) => {
-        suggestions = suggestions.concat(generator.dynamicSuggestions(parent, index, userInput))
-      })
+
+      await Promise.all(
+        this.prefixOverrides.get(userInput[0]).map(async (generator: SuggestionGenerator) => {
+          suggestions = suggestions.concat(await generator.dynamicSuggestions(parent, index, userInput))
+        })
+      )
+
       return suggestions
     }
     return null

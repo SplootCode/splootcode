@@ -266,7 +266,7 @@ export class ModuleSuggestionGenerator implements SuggestionGenerator {
     })
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     const varName = sanitizeIdentifier(textInput)
     if (allowedModules.includes(varName)) {
       return []
