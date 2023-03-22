@@ -316,6 +316,7 @@ export const initialize = async (urls: StaticURLs) => {
   await micropip.install(urls.requestsPackageURL)
   await micropip.install(urls.flaskPackageURL)
   await micropip.install(urls.serverlessWSGIPackageURL)
+  await micropip.install('ast-comments')
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
   sendMessage({

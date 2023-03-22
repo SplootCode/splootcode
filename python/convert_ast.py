@@ -1,6 +1,7 @@
 from re import S, sub
 from executor import OPERATORS, UNARY_OPERATORS
 import ast
+import ast_comments
 
 AST_OPERATORS = {type(value["ast"]): key for key, value in OPERATORS.items()}
 UNARY_AST_OPERATORS = {type(value["ast"]): key for key, value in UNARY_OPERATORS.items()}
@@ -298,12 +299,16 @@ def generateSplootStatement(statement):
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImport(statement)]})
   elif type(statement) == ast.ImportFrom:
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImportFrom(statement)]})
+  elif type(statement) == ast_comments.Comment:
+    if statement.value == "##SPLOOTCODEEMPTYLINE":
+      return SplootNode("PYTHON_STATEMENT", {"statement": []})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode("PY_COMMENT", {}, {"value": statement.value.lstrip().lstrip('#').lstrip()})]})
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   
 
 def splootFromPython(codeString):
-  tree = ast.parse(codeString)
+  tree = ast_comments.parse(codeString)
   fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
   
   for statement in tree.body:
@@ -313,7 +318,7 @@ def splootFromPython(codeString):
   return fileNode
 
 def splootNodeFromPython(codeString):
-  tree = ast.parse(codeString)
+  tree = ast_comments.parse(codeString)
   
   if len(tree.body) > 1:
     fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
