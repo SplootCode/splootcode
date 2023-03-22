@@ -201,7 +201,7 @@ const run = async () => {
   })
 }
 
-const generateTextContent = async () => {
+const generateTextContent = async (returnToEditor: boolean) => {
   try {
     const res = await pyodide.runPython(textGenerationCode)
     const results = new Map()
@@ -210,6 +210,7 @@ const generateTextContent = async () => {
       sendMessage({
         type: 'text_code_content',
         fileContents: results,
+        return_to_editor: returnToEditor,
       })
     }
   } catch (err) {
@@ -352,7 +353,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       break
     case 'generate_text_code':
       workspace = e.data.workspace
-      generateTextContent()
+      generateTextContent(e.data.return_to_editor)
       break
     case 'loadModule':
       loadModule(e.data.moduleName)

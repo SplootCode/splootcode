@@ -25,6 +25,7 @@ export class RuntimeContextManager {
   pkg: SplootPackage
   frameStateManager: FrameStateManager
   fileChangeWatcher: FileChangeWatcher
+  textCodePromise: Promise<string>
   onTextCodeRecieved: (code: string) => void
   loadedInitialModules: boolean
 
@@ -42,7 +43,6 @@ export class RuntimeContextManager {
     this.pkg = project.getDefaultPackage()
     this.frameStateManager = null
     this.fileChangeWatcher = fileChangeWatcher
-
     this.ready = false
     this.running = false
     this.selectedHTTPScenarioID = null
@@ -63,6 +63,43 @@ export class RuntimeContextManager {
     this.frameStateManager = new FrameStateManager(postMessageToFrame, reloadFrame, this.sendNodeTreeToHiddenFrame)
     this.fileChangeWatcher.registerObservers(this.setDirty)
     this.frameStateManager.startHeartbeat()
+  }
+
+  async getTextCode(): Promise<string> {
+    if (this.frameStateManager === null || !this.ready) {
+      throw new Error('Cannot get text code until runtime is ready.')
+    }
+
+    if (this.running) {
+      throw new Error('Cannot get text code while code is running.')
+    }
+
+    if (!this.fileChangeWatcher.isValid()) {
+      throw new Error(
+        'The project code is currently not valid for generating Python code. Please fix the errors or remove the incomplete code.'
+      )
+    }
+
+    if (this.textCodePromise) {
+      return this.textCodePromise
+    }
+
+    this.textCodePromise = new Promise<string>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        this.onTextCodeRecieved = null
+        this.textCodePromise = null
+        reject(new Error('Timed out while waiting for generation of text code.'))
+      }, 5000)
+      this.onTextCodeRecieved = (code: string) => {
+        clearTimeout(timer)
+        this.onTextCodeRecieved = null
+        this.textCodePromise = null
+        resolve(code)
+      }
+    })
+
+    this.frameStateManager.postMessage({ type: 'export_text_code' })
+    return this.textCodePromise
   }
 
   // Called if the iframe is to be unmounted, or a new runtime context is passed to the iframe.
@@ -131,6 +168,13 @@ export class RuntimeContextManager {
       case 'module_info':
         this.recievedModuleInfo(data.info)
         break
+      case 'text_code_content':
+        if (this.onTextCodeRecieved) {
+          this.onTextCodeRecieved(data.fileContents.get('main.py'))
+        } else {
+          console.warn('Recieved text code content message unexpectedly.')
+        }
+        break
       default:
         console.warn('Unexpected message from frame: ', data)
     }
@@ -143,6 +187,10 @@ export class RuntimeContextManager {
     if (!this.loadedInitialModules) {
       this.loadAllImportedModules()
     }
+  }
+
+  isValid() {
+    return this.fileChangeWatcher.isValid()
   }
 
   @action

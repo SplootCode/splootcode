@@ -116,13 +116,17 @@ export class WorkerManager {
     })
   }
 
-  generateTextCode(runType: RunType, workspace: Map<string, FileSpec>) {
-    this._workerState = WorkerState.RUNNING
-    this.stateCallBack(this._workerState)
+  generateTextCode(runType: RunType, workspace: Map<string, FileSpec>, returnToEditor: boolean) {
+    if (!returnToEditor) {
+      // Don't mark as 'RUNNING' just for text code generation.
+      this._workerState = WorkerState.RUNNING
+      this.stateCallBack(this._workerState)
+    }
     this.sendMessage({
       type: 'generate_text_code',
       runType: runType,
       workspace: workspace,
+      return_to_editor: returnToEditor,
     })
   }
 
@@ -260,9 +264,13 @@ export class WorkerManager {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
     } else if (type === 'text_code_content') {
-      this._workerState = WorkerState.READY
-      this.stateCallBack(WorkerState.READY)
-      this.textFileValueCallback(event.data.fileContents)
+      if (event.data.return_to_editor) {
+        this.sendToParentWindow(event.data)
+      } else {
+        this._workerState = WorkerState.READY
+        this.stateCallBack(WorkerState.READY)
+        this.textFileValueCallback(event.data.fileContents)
+      }
     } else {
       console.warn(`Unrecognised message from worker: ${type}`)
     }
