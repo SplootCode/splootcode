@@ -127,7 +127,13 @@ class KeywordArgGenerator implements SuggestionGenerator {
     return suggestions
   }
 
+<<<<<<< HEAD
   dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+=======
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+    return []
+
+>>>>>>> dea0f21 (Work on async dynamic suggestions)
     const argNode = parent.node as PythonArgument
     if (!argNode.allowKeyword()) {
       return []
