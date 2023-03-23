@@ -205,8 +205,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       //   state.userInput
       // )
 
-      console.log(state)
-
       const userInput = selection.state === SelectionState.Cursor ? '' : state.userInput
 
       return {
