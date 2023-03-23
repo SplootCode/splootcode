@@ -1,4 +1,3 @@
-import { ExpressionNode, TypeCategory as TC, Type } from 'structured-pyright'
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
@@ -10,11 +9,18 @@ import {
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
+import { PYTHON_DICT } from './python_dictionary'
 import { PYTHON_IDENTIFIER } from './python_identifier'
+import { PYTHON_LIST } from './python_list'
 import { PYTHON_MEMBER, PythonMember } from './python_member'
+import { PYTHON_NUMBER_LITERAL } from './literals'
+import { PYTHON_SET } from './python_set'
+import { PYTHON_STRING } from './python_string'
 import { PYTHON_SUBSCRIPT } from './python_subscript'
+import { PYTHON_TUPLE } from './python_tuple'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
+import { TypeCategory as TC, Type } from 'structured-pyright'
 
 function getAttributesForType(scope: PythonScope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -57,71 +63,10 @@ class MemberGenerator implements SuggestionGenerator {
     const leftChild = parent.getChildSet().getChild(index - 1)
     const scope = (parent.node as PythonNode).getScope(false)
     const filePath = scope.getFilePath()
-    // const attributes: [string, VariableTypeInfo][] = []
-    const allowWrap = false
+    let attributes: [string, VariableTypeInfo][] = []
+    let allowWrap = false
 
     const analyzer = scope.getAnalyzer()
-
-    let suggestions: SuggestedNode[] = []
-
-    if (leftChild) {
-      switch (leftChild.type) {
-        case PYTHON_IDENTIFIER:
-        case PYTHON_CALL_MEMBER:
-        case PYTHON_CALL_VARIABLE:
-        case PYTHON_SUBSCRIPT:
-        case PYTHON_BRACKETS:
-        case PYTHON_MEMBER:
-          // const typeResult = analyzer.getPyrightTypeForExpression(filePath, leftChild)
-          // if (typeResult) {
-          //   attributes = getAttributesFromType(scope, typeResult)
-          // } else {
-          //   attributes = []
-          // }
-          const nodes = analyzer.nodeMaps.get(filePath).nodeMap
-          const exprNode = nodes.get(leftChild) as ExpressionNode
-
-          analyzer.sender.requestExpressionTypeInfo(exprNode)
-      }
-    }
-
-    const inputName = textInput.substring(1) // Cut the '.' off
-
-    // if (attributes.length === 0) {
-    const callMemberNode = new PythonCallMember(null, {
-      category: TypeCategory.Function,
-      arguments: [{ name: '', type: FunctionArgType.PositionalOrKeyword }],
-      shortDoc: '',
-    })
-    callMemberNode.setMember(inputName)
-    const memberNode = new PythonMember(null, {
-      category: TypeCategory.Value,
-      typeName: null,
-      shortDoc: '',
-    })
-    memberNode.setMember(inputName)
-    suggestions = [
-      new SuggestedNode(
-        callMemberNode,
-        `.${inputName}`,
-        inputName,
-        true,
-        'Missing type information, cannot autocomplete methods',
-        !allowWrap ? 'object' : undefined
-      ),
-      new SuggestedNode(
-        memberNode,
-        `.${inputName}`,
-        inputName,
-        true,
-        'Missing type information, cannot autocomplete attributes',
-        !allowWrap ? 'object' : undefined
-      ),
-    ]
-    // }
-
-    return suggestions
-    /*
 
     if (leftChild) {
       allowWrap = true
@@ -150,9 +95,11 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_SUBSCRIPT:
         case PYTHON_BRACKETS:
         case PYTHON_MEMBER:
-          const typeResult = analyzer.getPyrightTypeForExpression(filePath, leftChild)
+          const typeResult = await analyzer.getPyrightTypeForExpressionWorker(filePath, leftChild)
+          console.log('woohoo', typeResult)
+
           if (typeResult) {
-            attributes = getAttributesFromType(scope, typeResult)
+            attributes = getAttributesFromType(scope, typeResult.type)
           } else {
             attributes = []
           }
@@ -161,7 +108,7 @@ class MemberGenerator implements SuggestionGenerator {
           break
       }
     }
-
+    const suggestions: SuggestedNode[] = []
     const inputName = textInput.substring(1) // Cut the '.' off
 
     if (attributes.length === 0) {
@@ -198,7 +145,6 @@ class MemberGenerator implements SuggestionGenerator {
     }
 
     const allowUnderscore = textInput.startsWith('._')
-    const suggestions = []
     const seen = new Set<string>()
     for (const [name, attr] of attributes) {
       if (seen.has(name)) {
@@ -221,7 +167,6 @@ class MemberGenerator implements SuggestionGenerator {
     }
 
     return suggestions
-    */
   }
 }
 

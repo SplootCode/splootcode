@@ -1,5 +1,6 @@
 import {
   FileSpec,
+  WorkerExpressionTypeResultMessage,
   WorkerModuleInfoMessage,
   WorkerRuntimeCaptureMessage,
   WorkerStderrMessage,
@@ -80,3 +81,4 @@ export type EditorMessage =
   | WorkerStderrMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
+  | WorkerExpressionTypeResultMessage

@@ -118,6 +118,7 @@ export class WorkerManager {
   }
 
   generateTextCode(runType: RunType, workspace: Map<string, FileSpec>, returnToEditor: boolean) {
+    console.log('generating text code hello? lol what')
     if (!returnToEditor) {
       // Don't mark as 'RUNNING' just for text code generation.
       this._workerState = WorkerState.RUNNING
@@ -275,12 +276,18 @@ export class WorkerManager {
       this.handleFetch(fetchData)
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
-    } else if (type === 'runtime_capture' || type === 'module_info' || type === 'web_response') {
+    } else if (
+      type === 'runtime_capture' ||
+      type === 'module_info' ||
+      type === 'web_response' ||
+      type === 'expression_type_info'
+    ) {
       this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
     } else if (type === 'text_code_content') {
+      console.log('sending to parent editor', event)
       if (event.data.return_to_editor) {
         this.sendToParentWindow(event.data)
       } else {

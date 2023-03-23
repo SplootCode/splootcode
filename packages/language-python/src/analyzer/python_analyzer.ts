@@ -5,6 +5,7 @@ import {
   ModuleImport,
   ModuleNode,
   ParseNode,
+  SimpleTypeResult,
   StructuredEditorProgram,
   Type,
   createStructuredProgram,
@@ -19,6 +20,7 @@ export interface ParseTreeCommunicator {
 
   // initialisation
   setSendParseTreeHandler(handler: () => void): void
+  setRequestExpressionTypeInfoHandler(handler: (type: SimpleTypeResult) => void): void
 }
 
 export class ParseMapper {
@@ -74,6 +76,8 @@ export class PythonAnalyzer {
       console.warn(e)
     }
 
+    this.sender.setRequestExpressionTypeInfoHandler(this.requestExpressionTypeInfoHandler.bind(this))
+
     this.sender.setSendParseTreeHandler(() => {
       this.files.forEach((file, path) => {
         this.updateParse(path)
@@ -84,6 +88,53 @@ export class PythonAnalyzer {
   async loadFile(path: string, rootNode: PythonFile) {
     this.files.set(path, rootNode)
     this.updateParse(path)
+  }
+
+  requestExpressionTypeInfoHandler(type: SimpleTypeResult) {
+    if (this.promiseResolver) {
+      this.promiseResolver(type)
+    }
+  }
+
+  promise: Promise<SimpleTypeResult> = null
+  promiseID: string = null
+  promiseResolver: (type: SimpleTypeResult) => void = null
+
+  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<SimpleTypeResult> {
+    const nodes = this.nodeMaps.get(path).nodeMap
+    const exprNode = nodes.get(node) as ExpressionNode
+
+    if (this.promise) {
+      console.warn('already fetching type')
+      return null
+    }
+
+    const myPromiseID = Math.random().toFixed(10).toString()
+
+    this.promiseID = myPromiseID
+    this.promise = new Promise<SimpleTypeResult>((resolve, reject) => {
+      this.sender.requestExpressionTypeInfo(exprNode)
+
+      this.promiseResolver = (type: SimpleTypeResult) => {
+        resolve(type)
+
+        this.promise = null
+        this.promiseID = null
+      }
+
+      setTimeout(() => {
+        if (this.promiseID === myPromiseID) {
+          console.warn('Pyright type request timed out')
+          this.promise = null
+          this.promiseID = null
+          this.promiseResolver = null
+
+          reject('Pyright type request timed out')
+        }
+      }, 1000)
+    })
+
+    return this.promise
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {
@@ -140,12 +191,14 @@ export class PythonAnalyzer {
       const moduleNode = rootNode.generateParseTree(parseMapper)
 
       this.sender.sendParseTree(pathForFile, moduleNode, parseMapper.modules)
+      this.nodeMaps.set(path, parseMapper)
 
+      // const clonedMapper = structuredClone(parseMapper)
+      //
       // // TODO(harrison): strip out these main thread calls to pyright
-      // this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
+      // this.program.updateStructuredFile(pathForFile, moduleNode, clonedMapper.modules)
       // await this.program.parseRecursively(pathForFile)
       // this.program.getBoundSourceFile(pathForFile)
-      this.nodeMaps.set(path, parseMapper)
     }
 
     if (this.latestParseID !== this.currentParseID) {

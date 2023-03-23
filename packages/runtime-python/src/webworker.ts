@@ -412,7 +412,24 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       walker.walk(sourceFile.getParseResults().parseTree)
 
       if (walker.found) {
-        console.log('types found', structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode))
+        const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
+        console.log('types found', type)
+
+        const result: any = {
+          type: type.type,
+          isIncomplete: type.isIncomplete,
+        }
+
+        if (result.type.fields) {
+          result.type.fields = null
+        }
+
+        console.log(result)
+
+        sendMessage({
+          type: 'expression_type_info',
+          expressionType: result,
+        })
       } else {
         console.error('could not find node in tree')
       }

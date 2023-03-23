@@ -22,7 +22,7 @@ import {
   SendParseTreeMessage,
   WorkspaceFilesMessage,
 } from '@splootcode/runtime-python'
-import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
+import { ExpressionNode, ModuleImport, ModuleNode, SimpleTypeResult } from 'structured-pyright'
 import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
 import { FrameStateManager } from 'src/runtime/frame_state_manager'
 import { ParseTreeCommunicator, PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
@@ -47,6 +47,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   runSettings: RunSettings
 
   sendParseTreeHandler: () => void
+  requestExpressionTypeInfoHandler: (type: SimpleTypeResult) => void
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -61,6 +62,10 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     if (this.project.runSettings.httpScenarios.length > 0) {
       this.selectedHTTPScenarioID = this.project.runSettings.httpScenarios[0].id
     }
+  }
+
+  setRequestExpressionTypeInfoHandler(handler: (type: SimpleTypeResult) => void): void {
+    this.requestExpressionTypeInfoHandler = handler
   }
 
   setSendParseTreeHandler(handler: () => void): void {
@@ -168,6 +173,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   }
 
   handleMessageFromRuntime(data: EditorMessage) {
+    console.log(data)
     const type = data.type
     switch (type) {
       case 'heartbeat':

@@ -1,5 +1,5 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
+import { ExpressionNode, ModuleImport, ModuleNode, SimpleTypeResult } from 'structured-pyright'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
@@ -89,6 +89,11 @@ export interface WorkerTextConvertResultMessage {
   return_to_editor: boolean
 }
 
+export interface WorkerExpressionTypeResultMessage {
+  type: 'expression_type_info'
+  expressionType: SimpleTypeResult
+}
+
 export type WorkerMessage =
   | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
@@ -99,6 +104,7 @@ export type WorkerMessage =
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
+  | WorkerExpressionTypeResultMessage
 
 export interface WorkerRunMessage {
   type: 'run'
