@@ -62,7 +62,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       return true
     }
 
-    console.warn('existsSync', 'hi')
+    console.warn('existsSync', path)
 
     return false
   }
@@ -74,14 +74,11 @@ export class PyodideFakeFileSystem implements FileSystem {
   }
 
   readdirEntriesSync(path: string): Dirent[] {
-    console.log('getting', path)
-
     if (path.startsWith('/typeshed/typeshed-fallback')) {
       let newPath = path.substring('/typeshed/typeshed-fallback/'.length)
       if (newPath.endsWith('/')) {
         newPath = newPath.substring(0, newPath.length - 1)
       }
-      console.log(typeshedDirEntries[newPath])
       return typeshedDirEntries[newPath].map((entry) => {
         if (entry.isDir) {
           return dir(entry.name)
@@ -90,12 +87,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       })
     }
 
-    console.log('USING FS INTERFACE', 'readdirEntriesSync', path)
-    // console.log('pyodide:', this._pyodide.FS.readdir(path))
-
     let out: Dirent[] = []
-
-    console.log('resolving as', BASE + path)
 
     try {
       out = [
@@ -119,8 +111,6 @@ export class PyodideFakeFileSystem implements FileSystem {
             }
           }),
       ]
-
-      console.log(out)
     } catch (e) {
       console.warn(e)
     }
@@ -141,8 +131,6 @@ export class PyodideFakeFileSystem implements FileSystem {
       ]
     }
 
-    console.log('got', out)
-
     return out
 
     throw new Error(`Unexpected readdirEntriesSync for path ${path}`)
@@ -154,8 +142,6 @@ export class PyodideFakeFileSystem implements FileSystem {
   readFileSync(path: string, encoding: BufferEncoding): string
   readFileSync(path: string, encoding?: BufferEncoding | null): string | Buffer
   readFileSync(path: any, encoding?: any): string | Buffer {
-    console.log('readFileSync', path)
-
     // Choosing to return an empty VERSIONS file rather than editing
     // the code to fetch it asynchronously like all the other typeshed files.
     if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
@@ -170,7 +156,6 @@ export class PyodideFakeFileSystem implements FileSystem {
     this._knownStructuredFilePaths.add(path)
   }
   statSync(path: string): Stats {
-    console.log('statSync', path)
     if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
       return {
         size: 100,
@@ -185,7 +170,6 @@ export class PyodideFakeFileSystem implements FileSystem {
     }
 
     const out = this._pyodide.FS.stat(BASE + path)
-    // console.log('test', out)
 
     const mode = out.mode
 
@@ -200,12 +184,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       isFIFO: () => false,
     }
 
-    console.log('statted and got', BASE + path, stat)
-
     return stat
-
-    console.log('tried to stat', path)
-    throw new Error(`Unexpected statSync of path ${path}.`)
   }
   unlinkSync(path: string): void {
     throw new Error('Method not implemented.')
@@ -232,8 +211,6 @@ export class PyodideFakeFileSystem implements FileSystem {
     throw new Error('Method not implemented.')
   }
   readFileText = async (path: string, encoding?: BufferEncoding) => {
-    console.log('reading text file', path)
-
     if (path.startsWith('/typeshed/typeshed-fallback/')) {
       const newPath = path.substring('/typeshed/typeshed-fallback/'.length)
       const response = await fetch(this._hostedTypeshedBasePath + newPath)

@@ -81,8 +81,6 @@ class MemberGenerator implements SuggestionGenerator {
           const nodes = analyzer.nodeMaps.get(filePath).nodeMap
           const exprNode = nodes.get(leftChild) as ExpressionNode
 
-          console.log('tried to get expression', exprNode)
-
           analyzer.sender.requestExpressionTypeInfo(exprNode)
       }
     }

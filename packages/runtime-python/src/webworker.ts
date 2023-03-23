@@ -16,8 +16,6 @@ import {
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { IDFinderWalker, PyodideFakeFileSystem } from './structured'
 
-console.log('PEANUT PEANUT PEAUNT')
-
 // If we're not in a module context (prod build is non-module)
 // Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
 if (importScripts) {
@@ -36,8 +34,6 @@ let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
-
-// console.log(createStructuredProgram)
 
 let structuredProgram: StructuredEditorProgram = null
 
@@ -410,28 +406,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
 
       break
     case 'requestExpressionTypeInfo':
-      // const problematicFile = structuredProgram.getBoundSourceFile(
-      //   '/typeshed/typeshed-fallback/stdlib/typing_extensions.pyi'
-      // )
-
-      // console.log(structuredProgram)
-
-      // console.log(problematicFile, structuredProgram.getBoundSourceFile('/main.py'))
-
-      // console.log(
-      //   'picky file?',
-      //   structuredProgram.getSourceFile('/typeshed/typeshed-fallback/stdlib/typing_extensions.pyi')
-      // )
-
-      // console.log('picky file?', structuredProgram.getSourceFile('/main.py'))
-
-      // console.log('hello(?')
-      // console.log(sourceFile.isParseRequired(), 'parse required')
-      // console.log(sourceFile.isBindingRequired(), 'binding required')
-      // console.log(sourceFile.getParseResults().parseTree, parsing)
-
-      // // structuredProgram.printDependencies('/', true)
-
       const walker = new IDFinderWalker(e.data.expression.id)
       walker.walk(sourceFile.getParseResults().parseTree)
 
