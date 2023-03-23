@@ -18,7 +18,7 @@ export interface ParseTreeCommunicator {
   requestExpressionTypeInfo(expression: ExpressionNode): void
 
   // initialisation
-  setOnLoadHandler(handler: () => void): void
+  setSendParseTreeHandler(handler: () => void): void
 }
 
 export class ParseMapper {
@@ -74,7 +74,7 @@ export class PythonAnalyzer {
       console.warn(e)
     }
 
-    this.sender.setOnLoadHandler(() => {
+    this.sender.setSendParseTreeHandler(() => {
       this.files.forEach((file, path) => {
         this.updateParse(path)
       })
@@ -111,16 +111,6 @@ export class PythonAnalyzer {
       return sig
     }
     return null
-  }
-
-  registerSelf() {
-    // globalMutationDispatcher.registerNodeObserver(this)
-    // globalMutationDispatcher.registerChildSetObserver(this)
-  }
-
-  deregisterSelf() {
-    // globalMutationDispatcher.deregisterNodeObserver(this)
-    // globalMutationDispatcher.deregisterChildSetObserver(this)
   }
 
   updateParse(path: string) {
@@ -165,21 +155,4 @@ export class PythonAnalyzer {
       this.currentParseID = null
     }
   }
-
-  // handleNodeMutation(nodeMutation: NodeMutation): void {
-  //   // Don't update on validation mutations or runtime annotations.
-  //   if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
-  //     // TODO: Handle mutations per file.
-  //     for (const path of this.files.keys()) {
-  //       this.updateParse(path)
-  //     }
-  //   }
-  // }
-
-  // handleChildSetMutation(mutations: ChildSetMutation): void {
-  //   // TODO: Handle mutations per file.
-  //   for (const path of this.files.keys()) {
-  //     this.updateParse(path)
-  //   }
-  // }
 }

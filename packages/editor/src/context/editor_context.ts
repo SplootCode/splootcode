@@ -49,7 +49,6 @@ export class EditorState {
     this.runtimeContextManager.registerSelf()
 
     this.analyser = new PythonAnalyzer(this.runtimeContextManager)
-    this.analyser.registerSelf()
     this.analyser.initialise(hostingConfig.TYPESHED_PATH)
   }
 
@@ -100,7 +99,6 @@ export class EditorState {
     // Must be called before loading a new EditorState
     this.runtimeContextManager.deregisterSelf()
     this.validationWatcher.deregisterSelf()
-    this.analyser.deregisterSelf()
     this.autosaveWatcher.deregisterSelf()
     this.undoWatcher.deregisterSelf()
   }

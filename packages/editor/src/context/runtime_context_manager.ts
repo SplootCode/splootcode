@@ -46,7 +46,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   @observable
   runSettings: RunSettings
 
-  onLoadHandler: () => void
+  sendParseTreeHandler: () => void
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -63,8 +63,8 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     }
   }
 
-  setOnLoadHandler(handler: () => void): void {
-    this.onLoadHandler = handler
+  setSendParseTreeHandler(handler: () => void): void {
+    this.sendParseTreeHandler = handler
   }
 
   updateSelectedHTTPScenarioID(id: number) {
@@ -231,13 +231,10 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
 
   setDirty = () => {
     this.frameStateManager.setNeedsNewNodeTree(true)
-    this.onLoadHandler()
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    if (isInitial) {
-      this.onLoadHandler()
-    }
+    this.sendParseTreeHandler()
 
     let isValid = this.fileChangeWatcher.isValid()
     if (!isValid) {

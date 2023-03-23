@@ -64,7 +64,9 @@ export class PyodideFakeFileSystem implements FileSystem {
 
     console.warn('existsSync', path)
 
-    return false
+    const analysis = this._pyodide.FS.analyzePath(BASE + path)
+
+    return analysis.exists
   }
   mkdirSync(path: string, options?: MkDirOptions): void {
     throw new Error('Method not implemented.')
