@@ -57,7 +57,7 @@ function getAttributesFromType(scope: PythonScope, type: Type): [string, Variabl
 }
 
 class MemberGenerator implements SuggestionGenerator {
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
     const scope = (parent.node as PythonNode).getScope(false)

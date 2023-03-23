@@ -25,11 +25,12 @@ export const PYTHON_BOOL = 'PYTHON_BOOL'
 export const PYTHON_NUMBER_LITERAL = 'NUMERIC_LITERAL'
 
 class NumberGenerator implements SuggestionGenerator {
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     if (isValidNumber(textInput)) {
       const sanitisedValue = sanitiseNumberOnSave(textInput)
       const num = new PythonNumberLiteral(null, sanitisedValue)
       const suggestedNode = new SuggestedNode(num, textInput, '', true, 'number')
+
       return [suggestedNode]
     }
     return []

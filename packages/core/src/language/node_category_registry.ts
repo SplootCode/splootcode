@@ -58,7 +58,7 @@ export enum NodeCategory {
 export interface SuggestionGenerator {
   constantSuggestions?: () => SuggestedNode[]
   staticSuggestions?: (parent: ParentReference, index: number) => SuggestedNode[]
-  dynamicSuggestions?: (parent: ParentReference, index: number, textInput: string) => SuggestedNode[]
+  dynamicSuggestions?: (parent: ParentReference, index: number, textInput: string) => Promise<SuggestedNode[]>
 }
 
 const CategoryMap = new Map<NodeCategory, Set<string>>()

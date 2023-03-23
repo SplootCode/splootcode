@@ -28,7 +28,7 @@ class Generator implements SuggestionGenerator {
     return [new SuggestedNode(new LookupExpression(null), 'item', 'item index get', true)]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     return []
   }
 }

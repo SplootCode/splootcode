@@ -30,7 +30,7 @@ class Generator implements SuggestionGenerator {
     return [new SuggestedNode(new ObjectProperty(null, ''), 'property', '', true)]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     return [new SuggestedNode(new ObjectProperty(null, textInput), 'property ' + textInput, 'object pro', true)]
   }
 }

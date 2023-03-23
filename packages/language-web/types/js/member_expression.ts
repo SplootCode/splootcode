@@ -37,7 +37,7 @@ class Generator implements SuggestionGenerator {
     return []
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     // need dynamic suggestions for when we can't infer the type.
     if (textInput.startsWith('.')) {
       const leftChild = parent.getChildSet().getChild(index - 1)

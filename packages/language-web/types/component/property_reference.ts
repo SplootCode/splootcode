@@ -9,6 +9,7 @@ import {
   ParentReference,
   SerializedNode,
   SplootNode,
+  SuggestedNode,
   SuggestionGenerator,
   TypeRegistration,
   registerAutocompleter,
@@ -47,7 +48,7 @@ export class Generator implements SuggestionGenerator {
     return []
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     // TODO: Generate new properties - but only when inside a component scope.
     return []
   }
