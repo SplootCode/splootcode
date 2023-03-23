@@ -201,7 +201,7 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       const userInput = selection.state === SelectionState.Cursor ? '' : state.userInput
 
       return {
-        filterSuggestions: state.filteredSuggestions,
+        filteredSuggestions: [],
         userInput: userInput,
         cursorPosition: cursorPosition,
         staticSuggestions: staticSuggestions,
