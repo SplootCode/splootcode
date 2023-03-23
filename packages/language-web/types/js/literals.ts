@@ -32,7 +32,7 @@ class StringGenerator implements SuggestionGenerator {
     return [suggestedNode]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     if (textInput.startsWith("'") || textInput.startsWith('"')) {
       let value = textInput.slice(1)
       if (value.length !== 0 && value[value.length - 1] === textInput[0]) {
@@ -103,7 +103,7 @@ export class StringLiteral extends JavaScriptSplootNode {
 }
 
 class NumberGenerator implements SuggestionGenerator {
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     const val = parseStringToNum(textInput)
     if (!isNaN(val)) {
       const num = new NumericLiteral(null, val)

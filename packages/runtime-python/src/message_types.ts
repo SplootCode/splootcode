@@ -4,6 +4,7 @@ import {
   WorkerRuntimeCaptureMessage,
   WorkerStderrMessage,
   WorkerStdoutMessage,
+  WorkerTextConvertResultMessage,
   WorkerWebResponseMessage,
 } from './runtime/common'
 
@@ -56,7 +57,7 @@ export interface RequestExpressionTypeInfoMessage {
 }
 
 export type RuntimeMessage =
-  | { type: 'heartbeat' | 'stop' | 'run' }
+  | { type: 'heartbeat' | 'stop' | 'run' | 'export_text_code' }
   | SendParseTreeMessage
   | RequestExpressionTypeInfoMessage
   | StdinMessage
@@ -78,3 +79,4 @@ export type EditorMessage =
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerWebResponseMessage
+  | WorkerTextConvertResultMessage

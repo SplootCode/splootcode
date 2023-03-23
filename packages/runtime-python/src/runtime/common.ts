@@ -86,6 +86,7 @@ export interface WorkerModuleInfoMessage {
 export interface WorkerTextConvertResultMessage {
   type: 'text_code_content'
   fileContents: Map<string, string>
+  return_to_editor: boolean
 }
 
 export type WorkerMessage =
@@ -129,6 +130,7 @@ export interface TextContentRequestMessage {
   type: 'generate_text_code'
   runType: RunType
   workspace: Map<string, FileSpec>
+  return_to_editor: boolean
 }
 
 export interface LoadParseTreeMessage {

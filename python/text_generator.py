@@ -1,8 +1,10 @@
 import ast
 import sys
 import json
+import re
 
 import ast
+import ast_comments
 
 def generateArgs(callNode):
     args = []
@@ -272,12 +274,16 @@ def generateAssignmentStatement(assign_node):
     return ast.Assign([target], value)
 
 
-def getStatementsFromBlock(blockChildSet):
+def getStatementsFromBlock(blockChildSet, insert_pass=True):
     statements = []
     for node in blockChildSet:
         new_statements = generateAstStatement(node)
         if new_statements:
             statements.extend(new_statements)
+
+    # If all nodes in this block are comments, add a pass statement
+    if insert_pass and not any(not isinstance(s, ast_comments.Comment) for s in statements):
+        statements.append(ast.Pass())
     return statements
 
 
@@ -374,8 +380,6 @@ def generateFunctionArguments(arg_list):
 def generateFunctionStatement(func_node):
     nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
     statements = getStatementsFromBlock(func_node["childSets"]["body"])
-    if len(statements) == 0:
-        statements = [ast.Pass()]
     decorators = []
     if 'decorators' in func_node['childSets']:
         decorators = [generateAstExpression(dec['childSets']['expression'][0]) for dec in func_node['childSets']['decorators']]
@@ -405,7 +409,7 @@ def generateAstStatement(sploot_node):
     if sploot_node["type"] == "PYTHON_STATEMENT":
         if len(sploot_node['childSets']['statement']) != 0:
             return generateAstStatement(sploot_node['childSets']['statement'][0])
-        return None
+        return [ast_comments.Comment("##SPLOOTCODEEMPTYLINE")]
     elif sploot_node["type"] == "PYTHON_EXPRESSION":
         exp = generateAstExpressionStatement(sploot_node)
         return [exp]
@@ -430,25 +434,31 @@ def generateAstStatement(sploot_node):
     elif sploot_node["type"] == "PY_CONTINUE":
         return generateContinueStatement(sploot_node)
     elif sploot_node["type"] == "PY_COMMENT":
-        return None
+        return [ast_comments.Comment('# ' + sploot_node['properties']['value'])]
     else:
         print("Error: Unrecognised statement type: ", sploot_node["type"])
         return None
+
+empty_lines = re.compile('^\s*##SPLOOTCODEEMPTYLINE$', flags=re.MULTILINE)
 
 def convertSplootToText(tree: dict) -> str:
     if tree["type"] != "PYTHON_FILE":
       raise Exception("Invalid file type")
 
-    statements = getStatementsFromBlock(tree["childSets"]["body"])
+    statements = getStatementsFromBlock(tree["childSets"]["body"], insert_pass=False)
 
     mods = ast.Module(body=statements, type_ignores=[])
     ast.fix_missing_locations(mods)
-    code_string = ast.unparse(mods)
+    code_string = ast_comments.unparse(mods)
+    code_string = re.sub(empty_lines, '', code_string)
     return code_string
 
-import nodetree
-tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
-runType = nodetree.getRunType()
+
+result = None
+if __name__  == '__main__':
+    import nodetree
+    tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
+    result = convertSplootToText(tree)
 
 # Must be last line to return result to pyodide
-convertSplootToText(tree)
+result

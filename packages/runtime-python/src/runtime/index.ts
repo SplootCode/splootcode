@@ -178,7 +178,7 @@ class RuntimeStateManager {
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
           if (this.runType === RunType.STREAMLIT) {
-            this.workerManager.generateTextCode(this.runType, this.workspace)
+            this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
             this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
           }
@@ -194,7 +194,7 @@ class RuntimeStateManager {
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
           if (this.runType === RunType.STREAMLIT) {
-            this.workerManager.generateTextCode(this.runType, this.workspace)
+            this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
             this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
           }
@@ -223,13 +223,15 @@ class RuntimeStateManager {
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break
+
       case 'sendParseTree':
         this.workerManager.sendParseTree(data.path, data.module, data.imports)
 
         break
       case 'requestExpressionTypeInfo':
         this.workerManager.requestExpressionTypeInfo(data.expression)
-
+      case 'export_text_code':
+        this.workerManager.generateTextCode(this.runType, this.workspace, true)
         break
       default:
         console.warn('Unrecognised message recieved:', event.data)

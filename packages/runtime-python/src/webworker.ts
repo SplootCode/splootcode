@@ -218,7 +218,7 @@ const run = async () => {
   })
 }
 
-const generateTextContent = async () => {
+const generateTextContent = async (returnToEditor: boolean) => {
   try {
     const res = await pyodide.runPython(textGenerationCode)
     const results = new Map()
@@ -227,6 +227,7 @@ const generateTextContent = async () => {
       sendMessage({
         type: 'text_code_content',
         fileContents: results,
+        return_to_editor: returnToEditor,
       })
     }
   } catch (err) {
@@ -334,6 +335,7 @@ export const initialize = async (urls: StaticURLs) => {
   await micropip.install(urls.flaskPackageURL)
   await micropip.install(urls.serverlessWSGIPackageURL)
   await pyodide.loadPackage('numpy')
+  await micropip.install('ast-comments')
 
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
@@ -396,7 +398,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       break
     case 'generate_text_code':
       workspace = e.data.workspace
-      generateTextContent()
+      generateTextContent(e.data.return_to_editor)
       break
     case 'loadModule':
       loadModule(e.data.moduleName)

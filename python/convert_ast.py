@@ -1,6 +1,7 @@
 from re import S, sub
 from executor import OPERATORS, UNARY_OPERATORS
 import ast
+import ast_comments
 
 AST_OPERATORS = {type(value["ast"]): key for key, value in OPERATORS.items()}
 UNARY_AST_OPERATORS = {type(value["ast"]): key for key, value in UNARY_OPERATORS.items()}
@@ -192,22 +193,28 @@ def generateExpression(expr, tokens=None):
   tokens = generateExpressionTokens(expr, tokens)
   return SplootNode("PYTHON_EXPRESSION", {"tokens": tokens})
 
+def getBlockBodyFromStatements(blockStatements):
+  body = [generateSplootStatement(s) for s in blockStatements]
+  body = [s for s in body if s is not None]
+  return body
+
+
 def generateIf(statement):
   test = generateExpression(statement.test)
-  body = [generateSplootStatement(s) for s in statement.body]
+  body = getBlockBodyFromStatements(statement.body)
   elseblocks = []
 
   orelse = statement.orelse
   while len(orelse) == 1 and type(orelse[0]) == ast.If:
     # It's one if in an else, make it an elif.
     ifstatement = orelse[0]
-    elifbody = [generateSplootStatement(s) for s in ifstatement.body]
+    elifbody = getBlockBodyFromStatements(ifstatement.body)
     elifcondition = generateExpression(ifstatement.test)
     elseblocks.append(SplootNode('PYTHON_ELIF_STATEMENT', {'block': elifbody, 'condition': [elifcondition]}))
     orelse = ifstatement.orelse
 
   if len(orelse) != 0:
-    elsebody = [generateSplootStatement(s) for s in orelse]
+    elsebody = getBlockBodyFromStatements(orelse)
     elseblocks.append(SplootNode('PYTHON_ELSE_STATEMENT', {'block': elsebody}))
 
   return SplootNode("PYTHON_IF_STATEMENT", {
@@ -218,14 +225,14 @@ def generateIf(statement):
 
 def generateWhile(whileStatement):
   test = generateExpression(whileStatement.test)
-  body = [generateSplootStatement(s) for s in whileStatement.body]
+  body = getBlockBodyFromStatements(whileStatement.body)
   return SplootNode("PYTHON_WHILE_LOOP", {
     'condition': [test],
     'block': body
   })
 
 def generateFor(forStatement):
-  body = [generateSplootStatement(s) for s in forStatement.body]
+  body = getBlockBodyFromStatements(forStatement.body)
   iterable = generateExpression(forStatement.iter)
   targets = generateAssignmentTargets([forStatement.target])
 
@@ -262,7 +269,7 @@ def generateFunction(func):
     'decorators': [SplootNode('PY_DECORATOR', {'expression': [generateExpression(d)]}) for d in func.decorator_list],
     'identifier': [SplootNode('PY_IDENTIFIER', {}, {'identifier': func.name})],
     'params': generateArgs(func.args),
-    'body': [generateSplootStatement(s) for s in func.body],
+    'body': getBlockBodyFromStatements(func.body),
   }, {'id': None})
 
 def generateSplootStatement(statement):
@@ -298,30 +305,29 @@ def generateSplootStatement(statement):
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImport(statement)]})
   elif type(statement) == ast.ImportFrom:
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImportFrom(statement)]})
+  elif type(statement) == ast_comments.Comment:
+    if statement.value == "##SPLOOTCODEEMPTYLINE":
+      return SplootNode("PYTHON_STATEMENT", {"statement": []})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode("PY_COMMENT", {}, {"value": statement.value.lstrip().lstrip('#').lstrip()})]})
+  elif type(statement) == ast.Pass:
+    return None
   else:
     raise Exception(f'Unrecognised statement type: {type(statement)}')
   
 
 def splootFromPython(codeString):
-  tree = ast.parse(codeString)
+  tree = ast_comments.parse(codeString)
   fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
-  
-  for statement in tree.body:
-    statementNode = generateSplootStatement(statement)
-    fileNode["childSets"]["body"].append(statementNode)
+  fileNode["childSets"]["body"] = getBlockBodyFromStatements(tree.body)
 
   return fileNode
 
 def splootNodeFromPython(codeString):
-  tree = ast.parse(codeString)
+  tree = ast_comments.parse(codeString)
   
   if len(tree.body) > 1:
     fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
-  
-    for statement in tree.body:
-      statementNode = generateSplootStatement(statement)
-      fileNode["childSets"]["body"].append(statementNode)
-
+    fileNode["childSets"]["body"] = getBlockBodyFromStatements(tree.body)
     return fileNode
 
   statement = tree.body[0]
@@ -338,7 +344,8 @@ def splootNodesFromPython(codeString):
   tree = ast.parse(codeString)
 
   if len(tree.body) > 1:
-    return ([generateSplootStatement(statement) for statement in tree.body], NodeCateogry.PythonStatement)
+    statements = getBlockBodyFromStatements(tree.body)
+    return (statements, NodeCateogry.PythonStatement)
 
   statement = tree.body[0]
   if type(statement) == ast.Expr:

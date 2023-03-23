@@ -40,7 +40,7 @@ class AssignmentGenerator implements SuggestionGenerator {
     return [suggestedNode]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     if (textInput.includes('=')) {
       const identifier = sanitizeIdentifier(textInput.split('=')[0].trim())
       if (identifier) {
@@ -103,7 +103,7 @@ export class AssignmentWrapGenerator implements SuggestionGenerator {
     return []
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     if (parent.node.type === PYTHON_EXPRESSION && index === 0 && textInput.includes('=')) {
       // parent of this expression *must* be a statement
       if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
@@ -134,7 +134,7 @@ export class PythonAssignment extends PythonNode {
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_ASSIGNMENT)
-    this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable, 0, 1)
+    this.addChildSet('left', ChildSetType.Many, NodeCategory.PythonAssignable)
     this.addChildSet('right', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('right').addChild(new PythonExpression(null))
     this.scopedVariables = new Set()

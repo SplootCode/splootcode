@@ -48,7 +48,7 @@ class NewIdentifierGenerator implements SuggestionGenerator {
   constructor(description: string) {
     this.description = description
   }
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     let varName = sanitizeIdentifier(textInput)
     if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
       varName = '_' + varName
