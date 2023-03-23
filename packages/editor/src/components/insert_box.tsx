@@ -205,15 +205,13 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       //   state.userInput
       // )
 
+      console.log(state)
+
       const userInput = selection.state === SelectionState.Cursor ? '' : state.userInput
 
       return {
-<<<<<<< HEAD
+        filterSuggestions: state.filteredSuggestions,
         userInput: userInput,
-        filteredSuggestions: filteredSuggestions,
-=======
-        // filteredSuggestions: [],
->>>>>>> 78c7c32 (Work on async dynamic suggestions)
         cursorPosition: cursorPosition,
         staticSuggestions: staticSuggestions,
         staticSuggestionKeys: staticSuggestionKeys,
@@ -527,13 +525,19 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
     return userInput
   }
 
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.currentTarget.value
     if (newValue === ' ') {
       newValue = ''
     }
     const userInput = await this.handleEarlyInsert(newValue)
     if (userInput !== '') {
+      this.props.selection.startInsertAtCurrentCursor()
+      this.setState({
+        userInput: userInput,
+        autoWidth: this.getWidth(userInput),
+      })
+
       console.log('userInput', userInput)
 
       const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
@@ -544,11 +548,9 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         userInput
       )
 
-      this.props.selection.startInsertAtCurrentCursor()
       this.setState({
-        userInput: userInput,
+        // userInput: userInput,
         activeSuggestion: 0,
-        autoWidth: this.getWidth(userInput),
         filteredSuggestions: filteredSuggestions,
       })
     } else {
