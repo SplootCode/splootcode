@@ -274,12 +274,16 @@ def generateAssignmentStatement(assign_node):
     return ast.Assign([target], value)
 
 
-def getStatementsFromBlock(blockChildSet):
+def getStatementsFromBlock(blockChildSet, insert_pass=True):
     statements = []
     for node in blockChildSet:
         new_statements = generateAstStatement(node)
         if new_statements:
             statements.extend(new_statements)
+
+    # If all nodes in this block are comments, add a pass statement
+    if insert_pass and not any(not isinstance(s, ast_comments.Comment) for s in statements):
+        statements.append(ast.Pass())
     return statements
 
 
@@ -376,8 +380,6 @@ def generateFunctionArguments(arg_list):
 def generateFunctionStatement(func_node):
     nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
     statements = getStatementsFromBlock(func_node["childSets"]["body"])
-    if len(statements) == 0:
-        statements = [ast.Pass()]
     decorators = []
     if 'decorators' in func_node['childSets']:
         decorators = [generateAstExpression(dec['childSets']['expression'][0]) for dec in func_node['childSets']['decorators']]
@@ -443,7 +445,7 @@ def convertSplootToText(tree: dict) -> str:
     if tree["type"] != "PYTHON_FILE":
       raise Exception("Invalid file type")
 
-    statements = getStatementsFromBlock(tree["childSets"]["body"])
+    statements = getStatementsFromBlock(tree["childSets"]["body"], insert_pass=False)
 
     mods = ast.Module(body=statements, type_ignores=[])
     ast.fix_missing_locations(mods)
@@ -453,10 +455,10 @@ def convertSplootToText(tree: dict) -> str:
 
 
 result = None
-# Must be last line to return result to pyodide
 if __name__  == '__main__':
     import nodetree
     tree = nodetree.getNodeTree()  # pylint: disable=undefined-variable
     result = convertSplootToText(tree)
 
+# Must be last line to return result to pyodide
 result

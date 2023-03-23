@@ -33,3 +33,14 @@ class TextGeneratorTest(unittest.TestCase):
     result = convertSplootToText(sploot)
     self.assertEqual(result, expected)
 
+  def test_empty_if_block(self):
+    original = "if True:\n    pass"
+    sploot = splootFromPython(original)
+    result = convertSplootToText(sploot)
+    self.assertEqual(result, original)
+
+  def test_empty_function_block(self):
+    original = "def myfunc():\n    # Some comment\n    pass"
+    sploot = splootFromPython(original)
+    result = convertSplootToText(sploot)
+    self.assertEqual(result, original)
