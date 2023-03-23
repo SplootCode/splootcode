@@ -1,4 +1,10 @@
-import { ExpressionNode, ModuleNode, StructuredEditorProgram, createStructuredProgram2 } from 'structured-pyright'
+import {
+  ExpressionNode,
+  ModuleNode,
+  SourceFile,
+  StructuredEditorProgram,
+  createStructuredProgramWorker,
+} from 'structured-pyright'
 import {
   FetchSyncErrorType,
   FileSpec,
@@ -336,30 +342,32 @@ export const initialize = async (urls: StaticURLs) => {
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
 
-  structuredProgram = createStructuredProgram2(new PyodideFakeFileSystem('/static/typeshed/', pyodide))
+  structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem('/static/typeshed/', pyodide))
 
   sendMessage({
     type: 'ready',
   })
 }
 
+let parsing = false
 let finalModule: ModuleNode = null
+
+let sourceFile: SourceFile = null
 
 const updateParseTree = async (message: LoadParseTreeMessage) => {
   if (!structuredProgram) {
     console.error('structuredProgram is not defined yet')
   }
-
-  // console.log('updating structured file', message)
+  parsing = true
 
   finalModule = message.module
 
   structuredProgram.updateStructuredFile(message.path, finalModule, message.imports)
   await structuredProgram.parseRecursively(message.path)
-  const sourceFile = structuredProgram.getBoundSourceFile(message.path)
-  console.log('nice! got source file', sourceFile.isBindingRequired())
+  sourceFile = structuredProgram.getBoundSourceFile(message.path)
+  // structuredProgram.getBoundSourceFile(message.path)
 
-  console.log('final module', finalModule)
+  parsing = false
 }
 
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
@@ -398,23 +406,39 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       loadModule(e.data.moduleName)
       break
     case 'parseTree':
-      console.log('parsing tree')
-
       updateParseTree(e.data)
 
       break
     case 'requestExpressionTypeInfo':
-      console.log('tracking down', e.data.expression)
+      // const problematicFile = structuredProgram.getBoundSourceFile(
+      //   '/typeshed/typeshed-fallback/stdlib/typing_extensions.pyi'
+      // )
+
+      // console.log(structuredProgram)
+
+      // console.log(problematicFile, structuredProgram.getBoundSourceFile('/main.py'))
+
+      // console.log(
+      //   'picky file?',
+      //   structuredProgram.getSourceFile('/typeshed/typeshed-fallback/stdlib/typing_extensions.pyi')
+      // )
+
+      // console.log('picky file?', structuredProgram.getSourceFile('/main.py'))
+
+      // console.log('hello(?')
+      // console.log(sourceFile.isParseRequired(), 'parse required')
+      // console.log(sourceFile.isBindingRequired(), 'binding required')
+      // console.log(sourceFile.getParseResults().parseTree, parsing)
+
+      // // structuredProgram.printDependencies('/', true)
 
       const walker = new IDFinderWalker(e.data.expression.id)
-      walker.walk(finalModule)
-
-      console.log('found item', walker.found)
+      walker.walk(sourceFile.getParseResults().parseTree)
 
       if (walker.found) {
-        console.log(structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode))
+        console.log('types found', structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode))
       } else {
-        console.log('could not find node in tree')
+        console.error('could not find node in tree')
       }
 
       break

@@ -25,10 +25,10 @@ import {
 import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
 import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
 import { FrameStateManager } from 'src/runtime/frame_state_manager'
-import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
+import { ParseTreeCommunicator, PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
-export class RuntimeContextManager {
+export class RuntimeContextManager implements ParseTreeCommunicator {
   project: Project
   pkg: SplootPackage
   frameStateManager: FrameStateManager
@@ -45,6 +45,8 @@ export class RuntimeContextManager {
   @observable
   runSettings: RunSettings
 
+  onLoadHandler: () => void
+
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
     this.pkg = project.getDefaultPackage()
@@ -59,6 +61,10 @@ export class RuntimeContextManager {
     if (this.project.runSettings.httpScenarios.length > 0) {
       this.selectedHTTPScenarioID = this.project.runSettings.httpScenarios[0].id
     }
+  }
+
+  setOnLoadHandler(handler: () => void): void {
+    this.onLoadHandler = handler
   }
 
   updateSelectedHTTPScenarioID(id: number) {
@@ -177,9 +183,14 @@ export class RuntimeContextManager {
 
   setDirty = () => {
     this.frameStateManager.setNeedsNewNodeTree(true)
+    this.onLoadHandler()
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
+    if (isInitial) {
+      this.onLoadHandler()
+    }
+
     let isValid = this.fileChangeWatcher.isValid()
     if (!isValid) {
       this.ready = false
@@ -231,8 +242,6 @@ export class RuntimeContextManager {
   }
 
   sendParseTree = async (path: string, module: ModuleNode, imports: ModuleImport[]) => {
-    console.log('sending parse tree message')
-
     const payload: SendParseTreeMessage = {
       type: 'sendParseTree',
       path,

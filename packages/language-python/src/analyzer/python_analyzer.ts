@@ -9,20 +9,16 @@ import {
   Type,
   createStructuredProgram,
 } from 'structured-pyright'
-import {
-  ChildSetMutation,
-  ChildSetObserver,
-  NodeMutation,
-  NodeMutationType,
-  NodeObserver,
-  SplootNode,
-  globalMutationDispatcher,
-} from '@splootcode/core'
 import { PythonFile } from '../nodes/python_file'
+import { SplootNode } from '@splootcode/core'
 
-export interface ParseTreeSender {
+export interface ParseTreeCommunicator {
+  // messages
   sendParseTree(path: string, parseTree: ModuleNode, modules: ModuleImport[]): void
   requestExpressionTypeInfo(expression: ExpressionNode): void
+
+  // initialisation
+  setOnLoadHandler(handler: () => void): void
 }
 
 export class ParseMapper {
@@ -49,16 +45,16 @@ export class ParseMapper {
   }
 }
 
-export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
+export class PythonAnalyzer {
   files: Map<string, PythonFile>
   program: StructuredEditorProgram
   nodeMaps: Map<string, ParseMapper>
   currentParseID: number
   latestParseID: number
   dirtyPaths: Set<string>
-  sender: ParseTreeSender
+  sender: ParseTreeCommunicator
 
-  constructor(sender: ParseTreeSender) {
+  constructor(sender: ParseTreeCommunicator) {
     this.program = null
     this.nodeMaps = new Map()
     this.files = new Map()
@@ -77,6 +73,12 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       console.warn('Failed to initialize Pyright program')
       console.warn(e)
     }
+
+    this.sender.setOnLoadHandler(() => {
+      this.files.forEach((file, path) => {
+        this.updateParse(path)
+      })
+    })
   }
 
   async loadFile(path: string, rootNode: PythonFile) {
@@ -112,13 +114,13 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
   }
 
   registerSelf() {
-    globalMutationDispatcher.registerNodeObserver(this)
-    globalMutationDispatcher.registerChildSetObserver(this)
+    // globalMutationDispatcher.registerNodeObserver(this)
+    // globalMutationDispatcher.registerChildSetObserver(this)
   }
 
   deregisterSelf() {
-    globalMutationDispatcher.deregisterNodeObserver(this)
-    globalMutationDispatcher.deregisterChildSetObserver(this)
+    // globalMutationDispatcher.deregisterNodeObserver(this)
+    // globalMutationDispatcher.deregisterChildSetObserver(this)
   }
 
   updateParse(path: string) {
@@ -141,7 +143,6 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     this.currentParseID = this.latestParseID
 
     for (const path of paths) {
-      // console.log('sending parse')
       const pathForFile = '/' + path
       const parseMapper = new ParseMapper()
       const rootNode = this.files.get(path)
@@ -150,17 +151,11 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
 
       this.sender.sendParseTree(pathForFile, moduleNode, parseMapper.modules)
 
-      this.nodeMaps.set(path, parseMapper)
-
-      // // TODO(harrison): send parse tree to pyright
-      // console.log(
-      //   'main thread source file',
-      //   this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
-      // )
+      // // TODO(harrison): strip out these main thread calls to pyright
+      // this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
       // await this.program.parseRecursively(pathForFile)
       // this.program.getBoundSourceFile(pathForFile)
-      //
-      // console.log('from main', moduleNode)
+      this.nodeMaps.set(path, parseMapper)
     }
 
     if (this.latestParseID !== this.currentParseID) {
@@ -171,20 +166,20 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     }
   }
 
-  handleNodeMutation(nodeMutation: NodeMutation): void {
-    // Don't update on validation mutations or runtime annotations.
-    if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
-      // TODO: Handle mutations per file.
-      for (const path of this.files.keys()) {
-        this.updateParse(path)
-      }
-    }
-  }
+  // handleNodeMutation(nodeMutation: NodeMutation): void {
+  //   // Don't update on validation mutations or runtime annotations.
+  //   if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
+  //     // TODO: Handle mutations per file.
+  //     for (const path of this.files.keys()) {
+  //       this.updateParse(path)
+  //     }
+  //   }
+  // }
 
-  handleChildSetMutation(mutations: ChildSetMutation): void {
-    // TODO: Handle mutations per file.
-    for (const path of this.files.keys()) {
-      this.updateParse(path)
-    }
-  }
+  // handleChildSetMutation(mutations: ChildSetMutation): void {
+  //   // TODO: Handle mutations per file.
+  //   for (const path of this.files.keys()) {
+  //     this.updateParse(path)
+  //   }
+  // }
 }

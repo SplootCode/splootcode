@@ -62,7 +62,8 @@ export class PyodideFakeFileSystem implements FileSystem {
       return true
     }
 
-    // TODO(go to pyodide here)
+    console.warn('existsSync', 'hi')
+
     return false
   }
   mkdirSync(path: string, options?: MkDirOptions): void {
@@ -80,6 +81,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       if (newPath.endsWith('/')) {
         newPath = newPath.substring(0, newPath.length - 1)
       }
+      console.log(typeshedDirEntries[newPath])
       return typeshedDirEntries[newPath].map((entry) => {
         if (entry.isDir) {
           return dir(entry.name)
@@ -102,7 +104,6 @@ export class PyodideFakeFileSystem implements FileSystem {
           .filter((entry) => !['.', '..'].includes(entry))
           .map((entry): Dirent => {
             const out = this._pyodide.FS.analyzePath(BASE + path + '/' + entry)
-            console.log('test', out)
 
             const mode = out.object.mode
 
@@ -153,13 +154,15 @@ export class PyodideFakeFileSystem implements FileSystem {
   readFileSync(path: string, encoding: BufferEncoding): string
   readFileSync(path: string, encoding?: BufferEncoding | null): string | Buffer
   readFileSync(path: any, encoding?: any): string | Buffer {
+    console.log('readFileSync', path)
+
     // Choosing to return an empty VERSIONS file rather than editing
     // the code to fetch it asynchronously like all the other typeshed files.
     if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
       return ''
     }
 
-    console.log('tried to read', path)
+    console.warn('shouldnt have gotten here')
 
     throw new Error(`Unexpected readFileSync of path ${path}.`)
   }
@@ -167,6 +170,7 @@ export class PyodideFakeFileSystem implements FileSystem {
     this._knownStructuredFilePaths.add(path)
   }
   statSync(path: string): Stats {
+    console.log('statSync', path)
     if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
       return {
         size: 100,
@@ -196,7 +200,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       isFIFO: () => false,
     }
 
-    console.log('statted and got', path, stat)
+    console.log('statted and got', BASE + path, stat)
 
     return stat
 
@@ -228,14 +232,14 @@ export class PyodideFakeFileSystem implements FileSystem {
     throw new Error('Method not implemented.')
   }
   readFileText = async (path: string, encoding?: BufferEncoding) => {
+    console.log('reading text file', path)
+
     if (path.startsWith('/typeshed/typeshed-fallback/')) {
       const newPath = path.substring('/typeshed/typeshed-fallback/'.length)
       const response = await fetch(this._hostedTypeshedBasePath + newPath)
       const text = await response.text()
       return text
     }
-
-    console.log('trying to read', path)
 
     return this._pyodide.FS.readFile(BASE + path, { encoding: 'utf8' })
   }
@@ -280,8 +284,6 @@ export class IDFinderWalker extends ParseTreeWalker {
   walk(node: ParseNode): void {
     if (node.id == this.toFind) {
       this.found = node
-
-      console.log('found node!', node)
     }
 
     super.walk(node)
