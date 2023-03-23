@@ -32,7 +32,7 @@ class Generator implements SuggestionGenerator {
     return res
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     return []
   }
 }

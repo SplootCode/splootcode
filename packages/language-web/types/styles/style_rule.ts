@@ -26,7 +26,7 @@ class Generator implements SuggestionGenerator {
     return [new SuggestedNode(new StyleRule(null), 'style-rule', 'style rule', true, 'Set of styling properties.')]
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string): SuggestedNode[] {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     return []
   }
 }

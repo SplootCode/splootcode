@@ -48,7 +48,7 @@ export class VariableDeclarationGenerator implements SuggestionGenerator {
     return []
   }
 
-  dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
+  async dynamicSuggestions(parent: ParentReference, index: number, textInput: string): Promise<SuggestedNode[]> {
     let varName = sanitizeIdentifier(textInput)
     if (varName.length === 0 || (varName[0] <= '9' && varName[0] >= '0')) {
       varName = '_' + varName
