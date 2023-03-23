@@ -31,8 +31,6 @@ class NumberGenerator implements SuggestionGenerator {
       const num = new PythonNumberLiteral(null, sanitisedValue)
       const suggestedNode = new SuggestedNode(num, textInput, '', true, 'number')
 
-      console.log('found number', suggestedNode)
-
       return [suggestedNode]
     }
     return []

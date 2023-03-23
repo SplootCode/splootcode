@@ -198,13 +198,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         staticSuggestionKeys.add(suggestion.key)
       })
 
-      // const filteredSuggestions = filterSuggestions(
-      //   staticSuggestions,
-      //   staticSuggestionKeys,
-      //   autocompleters,
-      //   state.userInput
-      // )
-
       const userInput = selection.state === SelectionState.Cursor ? '' : state.userInput
 
       return {
@@ -536,8 +529,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
         autoWidth: this.getWidth(userInput),
       })
 
-      console.log('userInput', userInput)
-
       const { staticSuggestions, staticSuggestionKeys, autocompleters } = this.state
       const filteredSuggestions = await filterSuggestions(
         staticSuggestions,
@@ -547,7 +538,6 @@ export class InsertBox extends React.Component<InsertBoxProps, InsertBoxState> {
       )
 
       this.setState({
-        // userInput: userInput,
         activeSuggestion: 0,
         filteredSuggestions: filteredSuggestions,
       })
