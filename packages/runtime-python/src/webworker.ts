@@ -6,7 +6,7 @@ import {
   TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
-import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
+import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
@@ -342,37 +342,48 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   })
 }
 
-let currentParseID: number = null
-let sourceFile: SourceFile = null
-
-let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
-
-const updateParseTree = async (parseTreeInfo: ParseTreeInfo) => {
-  if (!structuredProgram) {
-    console.error('structuredProgram is not defined yet')
-  }
-
+const updateParseTree = async (parseTreeInfo: ParseTreeInfo): Promise<SourceFile> => {
   const { parseTree, path, modules } = parseTreeInfo
 
   structuredProgram.updateStructuredFile(path, parseTree, modules)
   await structuredProgram.parseRecursively(path)
 
-  sourceFile = structuredProgram.getBoundSourceFile(path)
-  currentParseID = parseTreeInfo.treeID
+  return structuredProgram.getBoundSourceFile(path)
+}
 
-  if (expressionTypeRequestsToResolve.length > 0) {
-    const toResolve = expressionTypeRequestsToResolve.filter((request) => request.treeID === currentParseID)
+let currentParseID: number = null
+let sourceMap: Map<string, SourceFile> = new Map()
+const expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
 
-    toResolve.forEach((request) => getExpressionTypeInfo(request))
-
-    expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
-      (request) => request.treeID !== currentParseID
-    )
-
-    if (expressionTypeRequestsToResolve.length > 0) {
-      console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
-    }
+const updateParseTrees = async (trees: ParseTrees) => {
+  console.log(trees)
+  if (!structuredProgram) {
+    console.error('structuredProgram is not defined yet')
   }
+
+  const newSourceMap: Map<string, SourceFile> = new Map()
+  for (const tree of trees.parseTrees) {
+    newSourceMap.set(tree.path, await updateParseTree(tree))
+  }
+
+  sourceMap = newSourceMap
+  currentParseID = trees.parseID
+
+  console.log('updated sourcemap and parseid', sourceMap, currentParseID)
+
+  // if (expressionTypeRequestsToResolve.length > 0) {
+  //   const toResolve = expressionTypeRequestsToResolve.filter((request) => request.treeID === currentParseID)
+
+  //   toResolve.forEach((request) => getExpressionTypeInfo(request))
+
+  //   expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
+  //     (request) => request.treeID !== currentParseID
+  //   )
+
+  //   if (expressionTypeRequestsToResolve.length > 0) {
+  //     console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
+  //   }
+  // }
 }
 
 const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
@@ -397,6 +408,13 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
 }
 
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
+  console.log('asking for', request)
+  const sourceFile = sourceMap.get(request.path)
+  if (!sourceFile) {
+    console.error('source file not found!')
+    return
+  }
+
   const walker = new IDFinderWalker(request.expression.id)
   walker.walk(sourceFile.getParseResults().parseTree)
 
@@ -406,7 +424,7 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
     sendMessage({
       type: 'expression_type_info',
       response: {
-        treeID: currentParseID,
+        parseID: currentParseID,
         type: toExpressionTypeInfo(type.type),
         requestID: request.requestID,
       },
@@ -451,14 +469,18 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
     case 'loadModule':
       loadModule(e.data.moduleName)
       break
-    case 'parseTree':
-      updateParseTree(e.data.parseTree)
+    // case 'parseTree':
+    //   updateParseTree(e.data.parseTree)
+
+    //   break
+    case 'parse_trees':
+      updateParseTrees(e.data.parseTrees)
 
       break
-    case 'requestExpressionTypeInfo':
-      if (e.data.request.treeID < currentParseID) {
-        console.warn('issued request for expression type for old parse tree', e.data.request.treeID, currentParseID)
-      } else if (e.data.request.treeID > currentParseID) {
+    case 'request_expression_type_info':
+      if (e.data.request.parseID < currentParseID) {
+        console.warn('issued request for expression type for old parse tree', e.data.request.parseID, currentParseID)
+      } else if (e.data.request.parseID > currentParseID) {
         console.warn('issued request for expression type for future parse tree')
 
         expressionTypeRequestsToResolve.push(e.data.request)

@@ -1,5 +1,5 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
+import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
@@ -138,16 +138,23 @@ export class WorkerManager {
     })
   }
 
-  sendParseTree(parseTree: ParseTreeInfo) {
+  // sendParseTree(parseTree: ParseTreeInfo) {
+  //   this.sendMessage({
+  //     type: 'parseTree',
+  //     parseTree,
+  //   })
+  // }
+
+  sendParseTrees(parseTrees: ParseTrees) {
     this.sendMessage({
-      type: 'parseTree',
-      parseTree,
+      type: 'parse_trees',
+      parseTrees,
     })
   }
 
   requestExpressionTypeInfo(request: ExpressionTypeRequest) {
     this.sendMessage({
-      type: 'requestExpressionTypeInfo',
+      type: 'request_expression_type_info',
       request,
     })
   }

@@ -9,7 +9,7 @@ import {
   WorkerWebResponseMessage,
 } from './runtime/common'
 
-import { ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
+import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
@@ -50,14 +50,19 @@ export interface SendParseTreeMessage {
   parseTree: ParseTreeInfo
 }
 
+export interface SendParseTreesMessage {
+  type: 'parse_trees'
+  parseTrees: ParseTrees
+}
+
 export interface RequestExpressionTypeInfoMessage {
-  type: 'requestExpressionTypeInfo'
+  type: 'request_expression_type_info'
   request: ExpressionTypeRequest
 }
 
 export type RuntimeMessage =
   | { type: 'heartbeat' | 'stop' | 'run' | 'export_text_code' }
-  | SendParseTreeMessage
+  | SendParseTreesMessage
   | RequestExpressionTypeInfoMessage
   | StdinMessage
   | WorkspaceFilesMessage

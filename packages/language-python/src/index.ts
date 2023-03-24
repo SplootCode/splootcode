@@ -30,4 +30,5 @@ export type {
   ExpressionTypeRequest,
   ExpressionTypeResponse,
   ExpressionTypeInfo,
+  ParseTrees,
 } from './analyzer/python_analyzer'

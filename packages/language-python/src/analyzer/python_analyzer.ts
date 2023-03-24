@@ -17,14 +17,13 @@ export interface ParseTreeInfo {
   path: string
   parseTree: ModuleNode
   modules: ModuleImport[]
-
-  treeID: number
 }
 
 export interface ExpressionTypeRequest {
-  treeID: number
+  parseID: number
   requestID: string
 
+  path: string
   expression: ExpressionNode
 }
 
@@ -37,20 +36,23 @@ export interface ExpressionTypeInfo {
 }
 
 export interface ExpressionTypeResponse {
-  treeID: number
+  parseID: number
   requestID: string
 
   type: ExpressionTypeInfo
 }
 
-export interface ParseTreeCommunicator {
-  // messages
-  sendParseTree(parseTreeInfo: ParseTreeInfo): void
-  requestExpressionTypeInfo(req: ExpressionTypeRequest): void
+export interface ParseTrees {
+  parseTrees: ParseTreeInfo[]
+  parseID: number
+}
 
+export interface ParseTreeCommunicator {
   // initialisation
-  setSendParseTreeHandler(handler: () => void): void
-  setRequestExpressionTypeInfoHandler(handler: (type: ExpressionTypeResponse) => void): void
+  setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void
+
+  // messages
+  getPyrightTypeForExpression(path: string, node: ExpressionNode, parseID: number): Promise<ExpressionTypeInfo>
 }
 
 export class ParseMapper {
@@ -110,12 +112,17 @@ export class PythonAnalyzer {
       console.warn(e)
     }
 
-    this.sender.setRequestExpressionTypeInfoHandler(this.requestExpressionTypeInfoHandler.bind(this))
+    this.sender.setGetParseTreesCallback((filePaths: Set<string>) => {
+      this.currentAtomicID += 1
 
-    this.sender.setSendParseTreeHandler(() => {
-      this.files.forEach((file, path) => {
-        this.updateParse(path)
-      })
+      const parseTrees: ParseTreeInfo[] = []
+      for (const path of filePaths) {
+        parseTrees.push(this.doParse(path))
+      }
+
+      this.runParse()
+
+      return { parseTrees, parseID: this.currentAtomicID }
     })
   }
 
@@ -123,23 +130,6 @@ export class PythonAnalyzer {
     this.files.set(path, rootNode)
     this.updateParse(path)
   }
-
-  requestExpressionTypeInfoHandler(resp: ExpressionTypeResponse) {
-    if (resp.requestID !== this.promiseID) {
-      console.warn('Received stale promise response')
-
-      return
-    }
-
-    if (this.promiseResolver) {
-      this.promiseResolver(resp.type)
-    }
-  }
-
-  promise: Promise<ExpressionTypeInfo> = null
-  promiseID: string = null
-  promiseResolver: (type: ExpressionTypeInfo) => void = null
-  promiseRejecter: (reason: string) => void = null
 
   async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
     const nodes = this.lookupNodeMaps.get(path).nodeMap
@@ -151,45 +141,7 @@ export class PythonAnalyzer {
       return null
     }
 
-    if (this.promise) {
-      this.promiseRejecter('Promise has become stale')
-    }
-
-    const myPromiseID = Math.random().toFixed(10).toString()
-
-    this.promiseID = myPromiseID
-    this.promise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
-      this.sender.requestExpressionTypeInfo({
-        treeID: this.currentAtomicID,
-        requestID: this.promiseID,
-        expression: exprNode,
-      })
-
-      this.promiseResolver = (type: ExpressionTypeInfo) => {
-        resolve(type)
-
-        this.promise = null
-        this.promiseID = null
-      }
-
-      this.promiseRejecter = (reason: string) => {
-        this.promise = null
-        this.promiseID = null
-        this.promiseResolver = null
-
-        reject(reason)
-      }
-
-      setTimeout(() => {
-        if (this.promiseID === myPromiseID) {
-          console.warn('Pyright request timed out')
-
-          this.promiseRejecter('Pyright request timed out')
-        }
-      }, 1000)
-    })
-
-    return this.promise
+    return this.sender.getPyrightTypeForExpression(path, exprNode, this.currentAtomicID)
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {
@@ -226,6 +178,22 @@ export class PythonAnalyzer {
     this.runParse()
   }
 
+  doParse(path: string): ParseTreeInfo {
+    const pathForFile = '/' + path
+
+    const rootNode = this.files.get(path)
+
+    const parseMapper = new ParseMapper()
+    const moduleNode = rootNode.generateParseTree(parseMapper)
+    this.lookupNodeMaps.set(path, parseMapper)
+
+    return {
+      path: pathForFile,
+      parseTree: moduleNode,
+      modules: parseMapper.modules,
+    }
+  }
+
   async runParse() {
     if (!this.program) {
       return
@@ -244,28 +212,14 @@ export class PythonAnalyzer {
       const pathForFile = '/' + path
       const rootNode = this.files.get(path)
 
-      {
-        const parseMapper = new ParseMapper()
-        const moduleNode = rootNode.generateParseTree(parseMapper)
-        this.sender.sendParseTree({
-          path: pathForFile,
-          parseTree: moduleNode,
-          modules: parseMapper.modules,
-          treeID: this.currentAtomicID,
-        })
-        this.lookupNodeMaps.set(path, parseMapper)
-      }
+      // TODO(harrison): strip out these main thread calls to pyright
+      const parseMapper = new ParseMapper()
+      const moduleNode = rootNode.generateParseTree(parseMapper)
 
-      {
-        // TODO(harrison): strip out these main thread calls to pyright
-        const parseMapper = new ParseMapper()
-        const moduleNode = rootNode.generateParseTree(parseMapper)
-
-        this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
-        await this.program.parseRecursively(pathForFile)
-        this.program.getBoundSourceFile(pathForFile)
-        this.nodeMaps.set(path, parseMapper)
-      }
+      this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
+      await this.program.parseRecursively(pathForFile)
+      this.program.getBoundSourceFile(pathForFile)
+      this.nodeMaps.set(path, parseMapper)
     }
 
     if (this.latestParseID !== this.currentParseID) {

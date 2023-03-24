@@ -384,6 +384,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       case 'runtime_capture':
       case 'module_info':
       case 'text_code_content':
+      case 'expression_type_info':
         this.props.runtimeContextManager.handleMessageFromRuntime(data)
         break
       case 'refresh_token':
@@ -397,11 +398,10 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         })
 
         break
-      case 'expression_type_info':
-        if (this.props.runtimeContextManager.requestExpressionTypeInfoHandler) {
-          this.props.runtimeContextManager.requestExpressionTypeInfoHandler(data.response)
-        }
-        break
+      // if (this.props.runtimeContextManager.requestExpressionTypeInfoHandler) {
+      //   this.props.runtimeContextManager.requestExpressionTypeInfoHandler(data.response)
+      // }
+      // break
       default:
         console.warn('Unknown event from frame: ', event)
     }

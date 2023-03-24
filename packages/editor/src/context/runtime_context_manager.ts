@@ -19,14 +19,15 @@ import {
   EditorMessage,
   RequestExpressionTypeInfoMessage,
   RuntimeMessage,
-  SendParseTreeMessage,
   WorkspaceFilesMessage,
 } from '@splootcode/runtime-python'
+import { ExpressionNode } from 'structured-pyright'
 import {
+  ExpressionTypeInfo,
   ExpressionTypeRequest,
   ExpressionTypeResponse,
   ParseTreeCommunicator,
-  ParseTreeInfo,
+  ParseTrees,
   PythonFile,
   PythonModuleSpec,
   PythonScope,
@@ -55,6 +56,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
 
   sendParseTreeHandler: () => void
   requestExpressionTypeInfoHandler: (resp: ExpressionTypeResponse) => void
+  getParseTreesCallback: (filePaths: Set<string>) => ParseTrees
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -69,6 +71,65 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     if (this.project.runSettings.httpScenarios.length > 0) {
       this.selectedHTTPScenarioID = this.project.runSettings.httpScenarios[0].id
     }
+  }
+
+  promise: Promise<ExpressionTypeInfo> = null
+  promiseID: string = null
+  promiseResolver: (type: ExpressionTypeInfo) => void = null
+  promiseRejecter: (reason: string) => void = null
+
+  async getPyrightTypeForExpression(
+    path: string,
+    expression: ExpressionNode,
+    latestID: number
+  ): Promise<ExpressionTypeInfo> {
+    if (this.promise) {
+      this.promiseRejecter('Promise has become stale')
+    }
+
+    const myPromiseID = Math.random().toFixed(10).toString()
+
+    this.promiseID = myPromiseID
+    this.promise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
+      this.frameStateManager.postMessage({
+        type: 'request_expression_type_info',
+        request: {
+          parseID: latestID,
+          requestID: this.promiseID,
+          path: '/' + path,
+          expression: expression,
+        },
+      })
+
+      this.promiseResolver = (type: ExpressionTypeInfo) => {
+        resolve(type)
+
+        this.promise = null
+        this.promiseID = null
+      }
+
+      this.promiseRejecter = (reason: string) => {
+        this.promise = null
+        this.promiseID = null
+        this.promiseResolver = null
+
+        reject(reason)
+      }
+
+      setTimeout(() => {
+        if (this.promiseID === myPromiseID) {
+          console.warn('Pyright request timed out')
+
+          this.promiseRejecter('Pyright request timed out')
+        }
+      }, 1000)
+    })
+
+    return this.promise
+  }
+
+  setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void {
+    this.getParseTreesCallback = callback
   }
 
   setRequestExpressionTypeInfoHandler(handler: (resp: ExpressionTypeResponse) => void): void {
@@ -201,6 +262,19 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
           console.warn('Recieved text code content message unexpectedly.')
         }
         break
+      case 'expression_type_info':
+        const resp = data.response
+        if (resp.requestID !== this.promiseID) {
+          console.warn('Received stale promise response')
+
+          return
+        }
+
+        if (this.promiseResolver) {
+          this.promiseResolver(resp.type)
+        }
+
+        break
       default:
         console.warn('Unexpected message from frame: ', data)
     }
@@ -245,8 +319,23 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.setNeedsNewNodeTree(true)
   }
 
+  sendParseTrees = () => {
+    if (!this.frameStateManager) {
+      console.warn('FrameStateManager not initialized')
+      return
+    }
+
+    const parseTrees = this.getParseTreesCallback(new Set(['main.py']))
+
+    this.frameStateManager.postMessage({
+      type: 'parse_trees',
+      parseTrees,
+    })
+  }
+
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    this.sendParseTreeHandler()
+    // this.sendParseTreeHandler()
+    this.sendParseTrees()
 
     let isValid = this.fileChangeWatcher.isValid()
     if (!isValid) {
@@ -298,19 +387,14 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.setNeedsNewNodeTree(false)
   }
 
-  sendParseTree = async (parseTree: ParseTreeInfo) => {
-    const payload: SendParseTreeMessage = {
-      type: 'sendParseTree',
-      parseTree,
-    }
+  // sendParseTree = async (parseTree: ParseTreeInfo) => {
+  //   const payload: SendParseTreeMessage = {
+  //     type: 'sendParseTree',
+  //     parseTree,
+  //   }
 
-    if (!this.frameStateManager) {
-      console.warn('FrameStateManager not initialized')
-      return
-    }
-
-    this.frameStateManager.postMessage(payload)
-  }
+  //   this.frameStateManager.postMessage(payload)
+  // }
 
   requestExpressionTypeInfo = (request: ExpressionTypeRequest) => {
     if (!this.frameStateManager) {
@@ -319,7 +403,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     }
 
     const payload: RequestExpressionTypeInfoMessage = {
-      type: 'requestExpressionTypeInfo',
+      type: 'request_expression_type_info',
       request,
     }
 
