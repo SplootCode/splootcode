@@ -284,7 +284,6 @@ export class WorkerManager {
       this._workerState = WorkerState.READY
       this.stateCallBack(WorkerState.READY)
     } else if (type === 'text_code_content') {
-      console.log('sending to parent editor', event)
       if (event.data.return_to_editor) {
         this.sendToParentWindow(event.data)
       } else {

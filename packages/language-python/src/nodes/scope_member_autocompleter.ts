@@ -109,7 +109,6 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_BRACKETS:
         case PYTHON_MEMBER:
           const typeResult = await analyzer.getPyrightTypeForExpressionWorker(filePath, leftChild)
-          console.log(typeResult, 'woohoo!')
 
           if (typeResult) {
             attributes = getAttributesFromType(scope, typeResult)

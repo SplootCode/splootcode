@@ -265,7 +265,7 @@ interface StaticURLs {
   textGeneratorURL: string
 }
 
-export const initialize = async (urls: StaticURLs) => {
+export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   // @ts-ignore
   if (typeof loadPyodide == 'undefined') {
     // import is a syntax error in non-module context (which we need to be in for Firefox...)
@@ -335,7 +335,9 @@ export const initialize = async (urls: StaticURLs) => {
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
 
-  structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem('/static/typeshed/', pyodide))
+  console.log(import.meta)
+
+  structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
   sendMessage({
     type: 'ready',
@@ -351,8 +353,6 @@ const updateParseTree = async (parseTreeInfo: ParseTreeInfo) => {
   if (!structuredProgram) {
     console.error('structuredProgram is not defined yet')
   }
-
-  console.log('hello world')
 
   const { parseTree, path, modules } = parseTreeInfo
 
@@ -466,6 +466,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
         expressionTypeRequestsToResolve.push(e.data.request)
       } else {
         // treeID and currentParseTree match
+
         getExpressionTypeInfo(e.data.request)
       }
 

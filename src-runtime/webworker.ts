@@ -16,4 +16,4 @@ const staticURLs = {
   textGeneratorURL: textGeneratorURL,
 }
 
-initialize(staticURLs)
+initialize(staticURLs, import.meta.env.SPLOOT_TYPESHED_PATH)

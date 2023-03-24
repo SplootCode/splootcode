@@ -178,7 +178,6 @@ class RuntimeStateManager {
         this.setEnvironmentVars(data.data.envVars)
         if (this.workerManager.workerState === WorkerState.READY) {
           if (this.runType === RunType.STREAMLIT) {
-            console.log('i am a streamlit app, so generating text code')
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
             this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
@@ -195,7 +194,6 @@ class RuntimeStateManager {
         this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         if (this.workerManager.workerState === WorkerState.READY) {
           if (this.runType === RunType.STREAMLIT) {
-            console.log('i am a streamlit app, so generating text code')
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
             this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)

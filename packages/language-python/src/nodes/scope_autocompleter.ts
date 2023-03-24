@@ -13,8 +13,6 @@ import { PythonNode } from './python_node'
 
 class ScopeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number): SuggestedNode[] {
-    // return []
-
     const scope = (parent.node as PythonNode).getScope()
     const inScopeVars = scope.getAllInScopeVariables()
     const suggestions = []
@@ -82,8 +80,6 @@ class AssignableSopeAutocompleter implements SuggestionGenerator {
 
 class ModuleAttributeAutocompleter implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    // return []
-
     const importNode = parent.node as PythonFromImport
     const moduleName = importNode.getModuleName()
     if (moduleName) {

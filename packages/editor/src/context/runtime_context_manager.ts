@@ -180,7 +180,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   }
 
   handleMessageFromRuntime(data: EditorMessage) {
-    console.log(data)
     const type = data.type
     switch (type) {
       case 'heartbeat':
