@@ -335,8 +335,6 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
 
-  console.log(import.meta)
-
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
   sendMessage({

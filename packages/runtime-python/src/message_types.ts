@@ -33,7 +33,6 @@ export interface WorkspaceFilesMessage {
     files: Map<string, FileSpec>
     envVars: Map<string, string>
   }
-  typeshedPath: string
 }
 
 export interface ProxyTokenMessage {
