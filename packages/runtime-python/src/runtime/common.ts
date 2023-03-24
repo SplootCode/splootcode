@@ -1,5 +1,5 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
+import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
@@ -137,11 +137,6 @@ export interface TextContentRequestMessage {
   runType: RunType
   workspace: Map<string, FileSpec>
   return_to_editor: boolean
-}
-
-export interface LoadParseTreeMessage {
-  type: 'parseTree'
-  parseTree: ParseTreeInfo
 }
 
 export interface LoadParseTreesMessage {
