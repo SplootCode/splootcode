@@ -13,9 +13,6 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
   },
-  resolve: {
-    preserveSymlinks: true,
-  },
   publicDir: 'public',
   plugins: [
     viteStaticCopy({

@@ -14,9 +14,6 @@ export default defineConfig({
     strictPort: true,
   },
   assetsInclude: ['**/*.py', '**/*.whl'],
-  resolve: {
-    preserveSymlinks: true,
-  },
   optimizeDeps: {
     esbuildOptions: {
       define: {
