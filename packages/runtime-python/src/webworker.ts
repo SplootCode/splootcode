@@ -405,7 +405,6 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
 }
 
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
-  console.log('asking for', request)
   const sourceFile = sourceMap.get(request.path)
   if (!sourceFile) {
     console.error('source file not found!')
