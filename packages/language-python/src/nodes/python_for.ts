@@ -109,9 +109,9 @@ export class PythonForLoop extends PythonNode {
   }
 
   addSelfToScope() {
-    const identifierChildSet = this.getTarget()
+    const targetChildset = this.getTarget()
     const currentNames: Set<string> = new Set()
-    for (const leftChild of identifierChildSet.children) {
+    for (const leftChild of targetChildset.children) {
       if (leftChild.type === PYTHON_IDENTIFIER) {
         const name = (leftChild as PythonIdentifier).getName()
         currentNames.add(name)
