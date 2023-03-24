@@ -330,6 +330,7 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   await micropip.install(urls.flaskPackageURL)
   await micropip.install(urls.serverlessWSGIPackageURL)
   await pyodide.loadPackage('numpy')
+  await micropip.install('types-requests')
   await micropip.install('ast-comments')
 
   pyodide.globals.set('__name__', '__main__')
@@ -399,9 +400,15 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
       category: type.category,
       subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
     }
+  } else if (
+    type.category === TypeCategory.Unknown ||
+    type.category === TypeCategory.Any ||
+    type.category === TypeCategory.None
+  ) {
+    return null
   }
 
-  throw new Error('unhandled type category')
+  throw new Error('unhandled type category ' + type.category)
 }
 
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
