@@ -55,10 +55,10 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
 
   getParseTreesCallback: (filePaths: Set<string>) => ParseTrees
 
-  promise: Promise<ExpressionTypeInfo> = null
-  promiseID: string = null
-  promiseResolver: (type: ExpressionTypeInfo) => void = null
-  promiseRejecter: (reason: string) => void = null
+  typeInfoPromise: Promise<ExpressionTypeInfo> = null
+  typeInfoPromiseID: string = null
+  typeInfoPromiseResolver: (type: ExpressionTypeInfo) => void = null
+  typeInfoPromiseRejecter: (reason: string) => void = null
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -80,49 +80,49 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     expression: ExpressionNode,
     latestID: number
   ): Promise<ExpressionTypeInfo> {
-    if (this.promise) {
-      this.promiseRejecter('Promise has become stale')
+    if (this.typeInfoPromise) {
+      this.typeInfoPromiseRejecter('Promise has become stale')
     }
 
     const myPromiseID = Math.random().toFixed(10).toString()
 
-    this.promiseID = myPromiseID
-    this.promise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
+    this.typeInfoPromiseID = myPromiseID
+    this.typeInfoPromise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
       this.frameStateManager.postMessage({
         type: 'request_expression_type_info',
         request: {
           parseID: latestID,
-          requestID: this.promiseID,
+          requestID: this.typeInfoPromiseID,
           path: '/' + path,
           expression: expression,
         },
       })
 
-      this.promiseResolver = (type: ExpressionTypeInfo) => {
+      this.typeInfoPromiseResolver = (type: ExpressionTypeInfo) => {
         resolve(type)
 
-        this.promise = null
-        this.promiseID = null
+        this.typeInfoPromise = null
+        this.typeInfoPromiseID = null
       }
 
-      this.promiseRejecter = (reason: string) => {
-        this.promise = null
-        this.promiseID = null
-        this.promiseResolver = null
+      this.typeInfoPromiseRejecter = (reason: string) => {
+        this.typeInfoPromise = null
+        this.typeInfoPromiseID = null
+        this.typeInfoPromiseResolver = null
 
         reject(reason)
       }
 
       setTimeout(() => {
-        if (this.promiseID === myPromiseID) {
+        if (this.typeInfoPromiseID === myPromiseID) {
           console.warn('Pyright request timed out')
 
-          this.promiseRejecter('Pyright request timed out')
+          this.typeInfoPromiseRejecter('Pyright request timed out')
         }
       }, 1000)
     })
 
-    return this.promise
+    return this.typeInfoPromise
   }
 
   setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void {
@@ -253,14 +253,14 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
         break
       case 'expression_type_info':
         const resp = data.response
-        if (resp.requestID !== this.promiseID) {
+        if (resp.requestID !== this.typeInfoPromiseID) {
           console.warn('Received stale promise response')
 
           return
         }
 
-        if (this.promiseResolver) {
-          this.promiseResolver(resp.type)
+        if (this.typeInfoPromiseResolver) {
+          this.typeInfoPromiseResolver(resp.type)
         }
 
         break
