@@ -195,6 +195,7 @@ export class PythonAnalyzer {
     }
   }
 
+  // TODO(harrison): remove this function once we have all pyright stuff on the worker
   async runParse() {
     if (!this.program) {
       return
@@ -213,7 +214,6 @@ export class PythonAnalyzer {
       const pathForFile = '/' + path
       const rootNode = this.files.get(path)
 
-      // TODO(harrison): strip out these main thread calls to pyright
       const parseMapper = new ParseMapper()
       const moduleNode = rootNode.generateParseTree(parseMapper)
 
