@@ -9,7 +9,7 @@ import {
 import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
 import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
-import { IDFinderWalker, PyodideFakeFileSystem } from './structured'
+import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 
 // If we're not in a module context (prod build is non-module)
 // Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).

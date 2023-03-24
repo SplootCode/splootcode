@@ -62,11 +62,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       return true
     }
 
-    console.warn('existsSync', path)
-
-    const analysis = this._pyodide.FS.analyzePath(BASE + path)
-
-    return analysis.exists
+    return this._pyodide.FS.analyzePath(BASE + path)
   }
   mkdirSync(path: string, options?: MkDirOptions): void {
     throw new Error('Method not implemented.')
@@ -92,50 +88,48 @@ export class PyodideFakeFileSystem implements FileSystem {
     let out: Dirent[] = []
 
     try {
-      out = [
-        ...out,
-        ...(this._pyodide.FS.readdir(BASE + path) as string[])
-          .filter((entry) => !['.', '..'].includes(entry))
-          .map((entry): Dirent => {
-            const out = this._pyodide.FS.analyzePath(BASE + path + '/' + entry)
+      // seasrch filesystem
+      const results = (this._pyodide.FS.readdir(BASE + path) as string[])
+        .filter((entry) => !['.', '..'].includes(entry))
+        .map((entry): Dirent => {
+          const out = this._pyodide.FS.analyzePath(BASE + path + '/' + entry)
 
-            const mode = out.object.mode
+          const mode = out.object.mode
 
-            return {
-              name: out.name,
-              isFile: () => this._pyodide.FS.isFile(mode),
-              isDirectory: () => this._pyodide.FS.isDir(mode),
-              isBlockDevice: () => false,
-              isSocket: () => false,
-              isSymbolicLink: () => false,
-              isCharacterDevice: () => false,
-              isFIFO: () => false,
-            }
-          }),
-      ]
+          return {
+            name: out.name,
+            isFile: () => this._pyodide.FS.isFile(mode),
+            isDirectory: () => this._pyodide.FS.isDir(mode),
+            isBlockDevice: () => false,
+            isSocket: () => false,
+            isSymbolicLink: () => false,
+            isCharacterDevice: () => false,
+            isFIFO: () => false,
+          }
+        })
+
+      out = out.concat(results)
     } catch (e) {
       console.warn(e)
     }
 
     if (path === '/') {
-      out = [
-        ...out,
-        ...[...this._knownStructuredFilePaths]
-          .filter((key) => {
-            if (key.startsWith(path)) {
-              return key.substring(path.length).indexOf('/') === -1
-            }
-            return false
-          })
-          .map((key) => {
-            return file(key.substring(path.length))
-          }),
-      ]
+      // add typeshed files
+      const results = [...this._knownStructuredFilePaths]
+        .filter((key) => {
+          if (key.startsWith(path)) {
+            return key.substring(path.length).indexOf('/') === -1
+          }
+          return false
+        })
+        .map((key) => {
+          return file(key.substring(path.length))
+        })
+
+      out = out.concat(results)
     }
 
     return out
-
-    throw new Error(`Unexpected readdirEntriesSync for path ${path}`)
   }
   readdirSync(path: string): string[] {
     throw new Error('Method not implemented.')
@@ -149,8 +143,6 @@ export class PyodideFakeFileSystem implements FileSystem {
     if (path === '/typeshed/typeshed-fallback/stdlib/VERSIONS') {
       return ''
     }
-
-    console.warn('shouldnt have gotten here')
 
     throw new Error(`Unexpected readFileSync of path ${path}.`)
   }
@@ -261,6 +253,10 @@ export class IDFinderWalker extends ParseTreeWalker {
   }
 
   walk(node: ParseNode): void {
+    if (this.found) {
+      return
+    }
+
     if (node.id == this.toFind) {
       this.found = node
     }
