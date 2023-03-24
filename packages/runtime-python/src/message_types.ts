@@ -9,7 +9,7 @@ import {
   WorkerWebResponseMessage,
 } from './runtime/common'
 
-import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
+import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
@@ -43,11 +43,6 @@ export interface ProxyTokenMessage {
 export interface GetModuleInfoMessage {
   type: 'module_info'
   moduleName: string
-}
-
-export interface SendParseTreeMessage {
-  type: 'sendParseTree'
-  parseTree: ParseTreeInfo
 }
 
 export interface SendParseTreesMessage {

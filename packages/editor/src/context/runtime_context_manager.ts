@@ -25,7 +25,6 @@ import { ExpressionNode } from 'structured-pyright'
 import {
   ExpressionTypeInfo,
   ExpressionTypeRequest,
-  ExpressionTypeResponse,
   ParseTreeCommunicator,
   ParseTrees,
   PythonFile,
@@ -54,9 +53,12 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   @observable
   runSettings: RunSettings
 
-  sendParseTreeHandler: () => void
-  requestExpressionTypeInfoHandler: (resp: ExpressionTypeResponse) => void
   getParseTreesCallback: (filePaths: Set<string>) => ParseTrees
+
+  promise: Promise<ExpressionTypeInfo> = null
+  promiseID: string = null
+  promiseResolver: (type: ExpressionTypeInfo) => void = null
+  promiseRejecter: (reason: string) => void = null
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -72,11 +74,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
       this.selectedHTTPScenarioID = this.project.runSettings.httpScenarios[0].id
     }
   }
-
-  promise: Promise<ExpressionTypeInfo> = null
-  promiseID: string = null
-  promiseResolver: (type: ExpressionTypeInfo) => void = null
-  promiseRejecter: (reason: string) => void = null
 
   async getPyrightTypeForExpression(
     path: string,
