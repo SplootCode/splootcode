@@ -45,14 +45,14 @@ class ForGenerator implements SuggestionGenerator {
 export class PythonForLoop extends PythonNode {
   runtimeCapture: ForLoopData
   runtimeCaptureFrame: number
-  scopedVariable: string
+  scopedVariables: Set<string>
 
   constructor(parentReference: ParentReference) {
     super(parentReference, PYTHON_FOR_LOOP)
     this.isRepeatableBlock = true
     this.runtimeCapture = null
     this.runtimeCaptureFrame = 0
-    this.scopedVariable = null
+    this.scopedVariables = new Set()
     this.addChildSet('target', ChildSetType.Many, NodeCategory.PythonLoopVariable)
     this.addChildSet('iterable', ChildSetType.Immutable, NodeCategory.PythonExpression, 1)
     this.getChildSet('iterable').addChild(new PythonExpression(null))
@@ -109,31 +109,39 @@ export class PythonForLoop extends PythonNode {
   }
 
   addSelfToScope() {
-    const identifierChildSet = this.getTarget()
-    if (identifierChildSet.getCount() === 1 && identifierChildSet.getChild(0).type === PYTHON_IDENTIFIER) {
-      const name = (this.getTarget().getChild(0) as PythonIdentifier).getName()
-      if (this.scopedVariable && name !== this.scopedVariable) {
-        this.getScope(true).removeVariable(this.scopedVariable, this)
+    const targetChildset = this.getTarget()
+    const currentNames: Set<string> = new Set()
+    for (const leftChild of targetChildset.children) {
+      if (leftChild.type === PYTHON_IDENTIFIER) {
+        const name = (leftChild as PythonIdentifier).getName()
+        currentNames.add(name)
       }
-
-      this.getScope().addVariable(
-        name,
-        {
-          documentation: 'for-loop variable',
-        },
-        this
-      )
-      this.scopedVariable = name
-    } else if (this.scopedVariable) {
-      this.getScope().removeVariable(this.scopedVariable, this)
-      this.scopedVariable = null
     }
+    currentNames.forEach((name) => {
+      if (!this.scopedVariables.has(name)) {
+        this.getScope().addVariable(
+          name,
+          {
+            documentation: 'for-loop variable',
+          },
+          this
+        )
+        this.scopedVariables.add(name)
+      }
+    })
+    this.scopedVariables.forEach((name) => {
+      if (!currentNames.has(name)) {
+        this.getScope().removeVariable(name, this)
+        this.scopedVariables.delete(name)
+      }
+    })
   }
+
   removeSelfFromScope(): void {
-    if (this.scopedVariable) {
-      this.getScope().removeVariable(this.scopedVariable, this)
-      this.scopedVariable = null
-    }
+    this.scopedVariables.forEach((name) => {
+      this.getScope().removeVariable(name, this)
+      this.scopedVariables.delete(name)
+    })
   }
 
   getIterable() {
