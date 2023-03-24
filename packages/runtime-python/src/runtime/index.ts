@@ -223,6 +223,14 @@ class RuntimeStateManager {
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break
+
+      case 'parse_trees':
+        this.workerManager.sendParseTrees(data.parseTrees)
+
+        break
+      case 'request_expression_type_info':
+        this.workerManager.requestExpressionTypeInfo(data.request)
+        break
       case 'export_text_code':
         this.workerManager.generateTextCode(this.runType, this.workspace, true)
         break

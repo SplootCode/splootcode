@@ -5,6 +5,7 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
   envPrefix: 'SPLOOT_',
@@ -50,6 +51,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    viteStaticCopy({
+      targets: [{ src: resolve(__dirname, 'node_modules', 'structured-pyright', 'dist', 'static'), dest: '' }],
+    }),
     react(),
     {
       name: 'configure-response-headers',

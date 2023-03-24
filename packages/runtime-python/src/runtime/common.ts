@@ -1,4 +1,5 @@
 import { EditorMessage } from '../message_types'
+import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
@@ -88,6 +89,11 @@ export interface WorkerTextConvertResultMessage {
   return_to_editor: boolean
 }
 
+export interface WorkerExpressionTypeResultMessage {
+  type: 'expression_type_info'
+  response: ExpressionTypeResponse
+}
+
 export type WorkerMessage =
   | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
@@ -98,6 +104,7 @@ export type WorkerMessage =
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
+  | WorkerExpressionTypeResultMessage
 
 export interface WorkerRunMessage {
   type: 'run'
@@ -132,4 +139,20 @@ export interface TextContentRequestMessage {
   return_to_editor: boolean
 }
 
-export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage | TextContentRequestMessage
+export interface LoadParseTreesMessage {
+  type: 'parse_trees'
+  parseTrees: ParseTrees
+}
+
+export interface RequestExpressionTypeInfoMessage {
+  type: 'request_expression_type_info'
+  request: ExpressionTypeRequest
+}
+
+export type WorkerManagerMessage =
+  | WorkerRunMessage
+  | WorkerRerunMessage
+  | LoadModuleMessage
+  | LoadParseTreesMessage
+  | TextContentRequestMessage
+  | RequestExpressionTypeInfoMessage

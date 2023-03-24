@@ -3,21 +3,57 @@ import {
   CallSignatureInfo,
   ExpressionNode,
   ModuleImport,
+  ModuleNode,
   ParseNode,
   StructuredEditorProgram,
   Type,
+  TypeCategory,
   createStructuredProgram,
 } from 'structured-pyright'
-import {
-  ChildSetMutation,
-  ChildSetObserver,
-  NodeMutation,
-  NodeMutationType,
-  NodeObserver,
-  SplootNode,
-  globalMutationDispatcher,
-} from '@splootcode/core'
 import { PythonFile } from '../nodes/python_file'
+import { SplootNode } from '@splootcode/core'
+
+export interface ParseTreeInfo {
+  path: string
+  parseTree: ModuleNode
+  modules: ModuleImport[]
+}
+
+export interface ExpressionTypeRequest {
+  parseID: number
+  requestID: string
+
+  path: string
+  expression: ExpressionNode
+}
+
+// TODO(harrison): pyright's Type interface is not serializable, so we have to do this. In the future this interface should be replaced
+// with a generic 'autocomplete response' interface.
+export interface ExpressionTypeInfo {
+  category: TypeCategory
+  name?: string
+  subtypes?: ExpressionTypeInfo[]
+}
+
+export interface ExpressionTypeResponse {
+  parseID: number
+  requestID: string
+
+  type: ExpressionTypeInfo
+}
+
+export interface ParseTrees {
+  parseTrees: ParseTreeInfo[]
+  parseID: number
+}
+
+export interface ParseTreeCommunicator {
+  // initialisation
+  setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void
+
+  // messages
+  getPyrightTypeForExpression(path: string, node: ExpressionNode, parseID: number): Promise<ExpressionTypeInfo>
+}
 
 export class ParseMapper {
   nodeMap: Map<SplootNode, ParseNode>
@@ -43,21 +79,29 @@ export class ParseMapper {
   }
 }
 
-export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
+export class PythonAnalyzer {
   files: Map<string, PythonFile>
   program: StructuredEditorProgram
   nodeMaps: Map<string, ParseMapper>
+  lookupNodeMaps: Map<string, ParseMapper>
   currentParseID: number
   latestParseID: number
   dirtyPaths: Set<string>
+  sender: ParseTreeCommunicator
 
-  constructor() {
+  currentAtomicID: number
+
+  constructor(sender: ParseTreeCommunicator) {
     this.program = null
     this.nodeMaps = new Map()
+    this.lookupNodeMaps = new Map()
     this.files = new Map()
     this.currentParseID = null
     this.latestParseID = null
     this.dirtyPaths = new Set()
+    this.sender = sender
+
+    this.currentAtomicID = 0
   }
 
   initialise(typeshedPath: string) {
@@ -67,11 +111,39 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       console.warn('Failed to initialize Pyright program')
       console.warn(e)
     }
+
+    this.sender.setGetParseTreesCallback(this.getParseTrees)
+  }
+
+  getParseTrees = (filePaths: Set<string>) => {
+    this.currentAtomicID += 1
+
+    const parseTrees: ParseTreeInfo[] = []
+    for (const path of filePaths) {
+      parseTrees.push(this.doParse(path))
+    }
+
+    this.runParse()
+
+    return { parseTrees, parseID: this.currentAtomicID }
   }
 
   async loadFile(path: string, rootNode: PythonFile) {
     this.files.set(path, rootNode)
     this.updateParse(path)
+  }
+
+  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
+    const nodes = this.lookupNodeMaps.get(path).nodeMap
+    const exprNode = nodes.get(node) as ExpressionNode
+
+    if (!exprNode) {
+      console.warn('Could not find SplootNode in nodeMap. Parse is probably ongoing.')
+
+      return null
+    }
+
+    return this.sender.getPyrightTypeForExpression(path, exprNode, this.currentAtomicID)
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {
@@ -101,22 +173,29 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
     return null
   }
 
-  registerSelf() {
-    globalMutationDispatcher.registerNodeObserver(this)
-    globalMutationDispatcher.registerChildSetObserver(this)
-  }
-
-  deregisterSelf() {
-    globalMutationDispatcher.deregisterNodeObserver(this)
-    globalMutationDispatcher.deregisterChildSetObserver(this)
-  }
-
   updateParse(path: string) {
     this.dirtyPaths.add(path)
     this.latestParseID = Math.random()
     this.runParse()
   }
 
+  doParse(path: string): ParseTreeInfo {
+    const pathForFile = '/' + path
+
+    const rootNode = this.files.get(path)
+
+    const parseMapper = new ParseMapper()
+    const moduleNode = rootNode.generateParseTree(parseMapper)
+    this.lookupNodeMaps.set(path, parseMapper)
+
+    return {
+      path: pathForFile,
+      parseTree: moduleNode,
+      modules: parseMapper.modules,
+    }
+  }
+
+  // TODO(harrison): remove this function once we have all pyright stuff on the worker
   async runParse() {
     if (!this.program) {
       return
@@ -126,15 +205,18 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       // Parse already in progress - avoid concurrent parses
       return
     }
+
     const paths = this.dirtyPaths
     this.dirtyPaths = new Set()
     this.currentParseID = this.latestParseID
 
     for (const path of paths) {
       const pathForFile = '/' + path
-      const parseMapper = new ParseMapper()
       const rootNode = this.files.get(path)
+
+      const parseMapper = new ParseMapper()
       const moduleNode = rootNode.generateParseTree(parseMapper)
+
       this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
       await this.program.parseRecursively(pathForFile)
       this.program.getBoundSourceFile(pathForFile)
@@ -146,23 +228,6 @@ export class PythonAnalyzer implements NodeObserver, ChildSetObserver {
       this.runParse()
     } else {
       this.currentParseID = null
-    }
-  }
-
-  handleNodeMutation(nodeMutation: NodeMutation): void {
-    // Don't update on validation mutations or runtime annotations.
-    if (nodeMutation.type == NodeMutationType.SET_PROPERTY) {
-      // TODO: Handle mutations per file.
-      for (const path of this.files.keys()) {
-        this.updateParse(path)
-      }
-    }
-  }
-
-  handleChildSetMutation(mutations: ChildSetMutation): void {
-    // TODO: Handle mutations per file.
-    for (const path of this.files.keys()) {
-      this.updateParse(path)
     }
   }
 }

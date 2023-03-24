@@ -1,5 +1,6 @@
 import {
   FileSpec,
+  WorkerExpressionTypeResultMessage,
   WorkerModuleInfoMessage,
   WorkerRuntimeCaptureMessage,
   WorkerStderrMessage,
@@ -7,6 +8,8 @@ import {
   WorkerTextConvertResultMessage,
   WorkerWebResponseMessage,
 } from './runtime/common'
+
+import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
@@ -42,8 +45,20 @@ export interface GetModuleInfoMessage {
   moduleName: string
 }
 
+export interface SendParseTreesMessage {
+  type: 'parse_trees'
+  parseTrees: ParseTrees
+}
+
+export interface RequestExpressionTypeInfoMessage {
+  type: 'request_expression_type_info'
+  request: ExpressionTypeRequest
+}
+
 export type RuntimeMessage =
   | { type: 'heartbeat' | 'stop' | 'run' | 'export_text_code' }
+  | SendParseTreesMessage
+  | RequestExpressionTypeInfoMessage
   | StdinMessage
   | WorkspaceFilesMessage
   | ProxyTokenMessage
@@ -64,3 +79,4 @@ export type EditorMessage =
   | WorkerStderrMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
+  | WorkerExpressionTypeResultMessage

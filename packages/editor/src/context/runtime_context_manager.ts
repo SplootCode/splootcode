@@ -14,13 +14,28 @@ import {
   globalMutationDispatcher,
   httpScenarioToHTTPRequestEvent,
 } from '@splootcode/core'
-import { EditorMessage, RuntimeMessage, WorkspaceFilesMessage } from '@splootcode/runtime-python'
+
+import {
+  EditorMessage,
+  RequestExpressionTypeInfoMessage,
+  RuntimeMessage,
+  WorkspaceFilesMessage,
+} from '@splootcode/runtime-python'
+import { ExpressionNode } from 'structured-pyright'
+import {
+  ExpressionTypeInfo,
+  ExpressionTypeRequest,
+  ParseTreeCommunicator,
+  ParseTrees,
+  PythonFile,
+  PythonModuleSpec,
+  PythonScope,
+} from '@splootcode/language-python'
 import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
 import { FrameStateManager } from 'src/runtime/frame_state_manager'
-import { PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
-export class RuntimeContextManager {
+export class RuntimeContextManager implements ParseTreeCommunicator {
   project: Project
   pkg: SplootPackage
   frameStateManager: FrameStateManager
@@ -38,6 +53,13 @@ export class RuntimeContextManager {
   @observable
   runSettings: RunSettings
 
+  getParseTreesCallback: (filePaths: Set<string>) => ParseTrees
+
+  typeInfoPromise: Promise<ExpressionTypeInfo> = null
+  typeInfoPromiseID: string = null
+  typeInfoPromiseResolver: (type: ExpressionTypeInfo) => void = null
+  typeInfoPromiseRejecter: (reason: string) => void = null
+
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
     this.pkg = project.getDefaultPackage()
@@ -51,6 +73,60 @@ export class RuntimeContextManager {
     if (this.project.runSettings.httpScenarios.length > 0) {
       this.selectedHTTPScenarioID = this.project.runSettings.httpScenarios[0].id
     }
+  }
+
+  async getPyrightTypeForExpression(
+    path: string,
+    expression: ExpressionNode,
+    latestID: number
+  ): Promise<ExpressionTypeInfo> {
+    if (this.typeInfoPromise) {
+      this.typeInfoPromiseRejecter('Promise has become stale')
+    }
+
+    const myPromiseID = Math.random().toFixed(10).toString()
+
+    this.typeInfoPromiseID = myPromiseID
+    this.typeInfoPromise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
+      this.frameStateManager.postMessage({
+        type: 'request_expression_type_info',
+        request: {
+          parseID: latestID,
+          requestID: this.typeInfoPromiseID,
+          path: '/' + path,
+          expression: expression,
+        },
+      })
+
+      this.typeInfoPromiseResolver = (type: ExpressionTypeInfo) => {
+        resolve(type)
+
+        this.typeInfoPromise = null
+        this.typeInfoPromiseID = null
+      }
+
+      this.typeInfoPromiseRejecter = (reason: string) => {
+        this.typeInfoPromise = null
+        this.typeInfoPromiseID = null
+        this.typeInfoPromiseResolver = null
+
+        reject(reason)
+      }
+
+      setTimeout(() => {
+        if (this.typeInfoPromiseID === myPromiseID) {
+          console.warn('Pyright request timed out')
+
+          this.typeInfoPromiseRejecter('Pyright request timed out')
+        }
+      }, 1000)
+    })
+
+    return this.typeInfoPromise
+  }
+
+  setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void {
+    this.getParseTreesCallback = callback
   }
 
   updateSelectedHTTPScenarioID(id: number) {
@@ -175,6 +251,19 @@ export class RuntimeContextManager {
           console.warn('Recieved text code content message unexpectedly.')
         }
         break
+      case 'expression_type_info':
+        const resp = data.response
+        if (resp.requestID !== this.typeInfoPromiseID) {
+          console.warn('Received stale promise response')
+
+          return
+        }
+
+        if (this.typeInfoPromiseResolver) {
+          this.typeInfoPromiseResolver(resp.type)
+        }
+
+        break
       default:
         console.warn('Unexpected message from frame: ', data)
     }
@@ -219,7 +308,23 @@ export class RuntimeContextManager {
     this.frameStateManager.setNeedsNewNodeTree(true)
   }
 
+  sendParseTrees = () => {
+    if (!this.frameStateManager) {
+      console.warn('FrameStateManager not initialized')
+      return
+    }
+
+    const parseTrees = this.getParseTreesCallback(new Set(['main.py']))
+
+    this.frameStateManager.postMessage({
+      type: 'parse_trees',
+      parseTrees,
+    })
+  }
+
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
+    this.sendParseTrees()
+
     let isValid = this.fileChangeWatcher.isValid()
     if (!isValid) {
       this.ready = false
@@ -268,6 +373,20 @@ export class RuntimeContextManager {
     }
     this.frameStateManager.postMessage(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
+  }
+
+  requestExpressionTypeInfo = (request: ExpressionTypeRequest) => {
+    if (!this.frameStateManager) {
+      console.warn('FrameStateManager not initialized')
+      return
+    }
+
+    const payload: RequestExpressionTypeInfoMessage = {
+      type: 'request_expression_type_info',
+      request,
+    }
+
+    this.frameStateManager.postMessage(payload)
   }
 
   handleProjectMutation(mutation: ProjectMutation) {

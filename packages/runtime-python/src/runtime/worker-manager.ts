@@ -1,4 +1,5 @@
 import { EditorMessage } from '../message_types'
+import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
@@ -137,6 +138,20 @@ export class WorkerManager {
     })
   }
 
+  sendParseTrees(parseTrees: ParseTrees) {
+    this.sendMessage({
+      type: 'parse_trees',
+      parseTrees,
+    })
+  }
+
+  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
+    this.sendMessage({
+      type: 'request_expression_type_info',
+      request,
+    })
+  }
+
   async provideStdin() {
     let inputValue = this.leftoverInput
     if (!inputValue) {
@@ -258,7 +273,12 @@ export class WorkerManager {
       this.handleFetch(fetchData)
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
-    } else if (type === 'runtime_capture' || type === 'module_info' || type === 'web_response') {
+    } else if (
+      type === 'runtime_capture' ||
+      type === 'module_info' ||
+      type === 'web_response' ||
+      type === 'expression_type_info'
+    ) {
       this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY

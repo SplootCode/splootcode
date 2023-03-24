@@ -384,6 +384,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
       case 'runtime_capture':
       case 'module_info':
       case 'text_code_content':
+      case 'expression_type_info':
         this.props.runtimeContextManager.handleMessageFromRuntime(data)
         break
       case 'refresh_token':

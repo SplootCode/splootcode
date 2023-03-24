@@ -24,3 +24,11 @@ export type { PotentialHandlers } from './nodes/python_file'
 export { PythonBinaryOperator } from './nodes/python_binary_operator'
 export { PythonIdentifier } from './nodes/python_identifier'
 export type { PythonModuleSpec } from './scope/python'
+export type {
+  ParseTreeCommunicator,
+  ParseTreeInfo,
+  ExpressionTypeRequest,
+  ExpressionTypeResponse,
+  ExpressionTypeInfo,
+  ParseTrees,
+} from './analyzer/python_analyzer'
