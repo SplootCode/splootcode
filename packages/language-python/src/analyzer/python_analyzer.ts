@@ -112,18 +112,20 @@ export class PythonAnalyzer {
       console.warn(e)
     }
 
-    this.sender.setGetParseTreesCallback((filePaths: Set<string>) => {
-      this.currentAtomicID += 1
+    this.sender.setGetParseTreesCallback(this.getParseTrees)
+  }
 
-      const parseTrees: ParseTreeInfo[] = []
-      for (const path of filePaths) {
-        parseTrees.push(this.doParse(path))
-      }
+  getParseTrees = (filePaths: Set<string>) => {
+    this.currentAtomicID += 1
 
-      this.runParse()
+    const parseTrees: ParseTreeInfo[] = []
+    for (const path of filePaths) {
+      parseTrees.push(this.doParse(path))
+    }
 
-      return { parseTrees, parseID: this.currentAtomicID }
-    })
+    this.runParse()
+
+    return { parseTrees, parseID: this.currentAtomicID }
   }
 
   async loadFile(path: string, rootNode: PythonFile) {
@@ -174,7 +176,6 @@ export class PythonAnalyzer {
   updateParse(path: string) {
     this.dirtyPaths.add(path)
     this.latestParseID = Math.random()
-    this.currentAtomicID += 1
     this.runParse()
   }
 
