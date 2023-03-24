@@ -132,14 +132,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.getParseTreesCallback = callback
   }
 
-  setRequestExpressionTypeInfoHandler(handler: (resp: ExpressionTypeResponse) => void): void {
-    this.requestExpressionTypeInfoHandler = handler
-  }
-
-  setSendParseTreeHandler(handler: () => void): void {
-    this.sendParseTreeHandler = handler
-  }
-
   updateSelectedHTTPScenarioID(id: number) {
     this.selectedHTTPScenarioID = id
     this.setDirty()
