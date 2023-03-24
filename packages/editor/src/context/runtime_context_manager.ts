@@ -334,7 +334,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   }
 
   sendNodeTreeToHiddenFrame = async (isInitial: boolean) => {
-    // this.sendParseTreeHandler()
     this.sendParseTrees()
 
     let isValid = this.fileChangeWatcher.isValid()
@@ -386,15 +385,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.postMessage(payload)
     this.frameStateManager.setNeedsNewNodeTree(false)
   }
-
-  // sendParseTree = async (parseTree: ParseTreeInfo) => {
-  //   const payload: SendParseTreeMessage = {
-  //     type: 'sendParseTree',
-  //     parseTree,
-  //   }
-
-  //   this.frameStateManager.postMessage(payload)
-  // }
 
   requestExpressionTypeInfo = (request: ExpressionTypeRequest) => {
     if (!this.frameStateManager) {

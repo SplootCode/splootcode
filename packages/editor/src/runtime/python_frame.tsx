@@ -398,10 +398,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         })
 
         break
-      // if (this.props.runtimeContextManager.requestExpressionTypeInfoHandler) {
-      //   this.props.runtimeContextManager.requestExpressionTypeInfoHandler(data.response)
-      // }
-      // break
       default:
         console.warn('Unknown event from frame: ', event)
     }

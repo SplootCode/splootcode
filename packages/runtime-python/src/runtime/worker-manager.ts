@@ -138,13 +138,6 @@ export class WorkerManager {
     })
   }
 
-  // sendParseTree(parseTree: ParseTreeInfo) {
-  //   this.sendMessage({
-  //     type: 'parseTree',
-  //     parseTree,
-  //   })
-  // }
-
   sendParseTrees(parseTrees: ParseTrees) {
     this.sendMessage({
       type: 'parse_trees',

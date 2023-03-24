@@ -353,10 +353,9 @@ const updateParseTree = async (parseTreeInfo: ParseTreeInfo): Promise<SourceFile
 
 let currentParseID: number = null
 let sourceMap: Map<string, SourceFile> = new Map()
-const expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
+let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
 
 const updateParseTrees = async (trees: ParseTrees) => {
-  console.log(trees)
   if (!structuredProgram) {
     console.error('structuredProgram is not defined yet')
   }
@@ -369,21 +368,19 @@ const updateParseTrees = async (trees: ParseTrees) => {
   sourceMap = newSourceMap
   currentParseID = trees.parseID
 
-  console.log('updated sourcemap and parseid', sourceMap, currentParseID)
+  if (expressionTypeRequestsToResolve.length > 0) {
+    const toResolve = expressionTypeRequestsToResolve.filter((request) => request.parseID === currentParseID)
 
-  // if (expressionTypeRequestsToResolve.length > 0) {
-  //   const toResolve = expressionTypeRequestsToResolve.filter((request) => request.treeID === currentParseID)
+    toResolve.forEach((request) => getExpressionTypeInfo(request))
 
-  //   toResolve.forEach((request) => getExpressionTypeInfo(request))
+    expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
+      (request) => request.parseID !== currentParseID
+    )
 
-  //   expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
-  //     (request) => request.treeID !== currentParseID
-  //   )
-
-  //   if (expressionTypeRequestsToResolve.length > 0) {
-  //     console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
-  //   }
-  // }
+    if (expressionTypeRequestsToResolve.length > 0) {
+      console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
+    }
+  }
 }
 
 const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
@@ -469,10 +466,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
     case 'loadModule':
       loadModule(e.data.moduleName)
       break
-    // case 'parseTree':
-    //   updateParseTree(e.data.parseTree)
-
-    //   break
     case 'parse_trees':
       updateParseTrees(e.data.parseTrees)
 
