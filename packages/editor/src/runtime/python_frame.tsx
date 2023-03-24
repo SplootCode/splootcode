@@ -399,7 +399,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
         break
       case 'expression_type_info':
         if (this.props.runtimeContextManager.requestExpressionTypeInfoHandler) {
-          this.props.runtimeContextManager.requestExpressionTypeInfoHandler(data.expressionType)
+          this.props.runtimeContextManager.requestExpressionTypeInfoHandler(data.response)
         }
         break
       default:

@@ -1,3 +1,4 @@
+import { ExpressionTypeInfo } from '../analyzer/python_analyzer'
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
@@ -20,7 +21,7 @@ import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { PYTHON_TUPLE } from './python_tuple'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
-import { TypeCategory as TC, Type } from 'structured-pyright'
+import { TypeCategory as TC } from 'structured-pyright'
 
 function getAttributesForType(scope: PythonScope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -41,17 +42,29 @@ function getAttributesForModule(scope: PythonScope, moduleName: string): [string
   return []
 }
 
-function getAttributesFromType(scope: PythonScope, type: Type): [string, VariableTypeInfo][] {
+function getAttributesFromType(scope: PythonScope, type: ExpressionTypeInfo): [string, VariableTypeInfo][] {
   if (!type) {
     return []
   }
 
   switch (type.category) {
     case TC.Class:
-      return getAttributesForType(scope, type.details.fullName)
+      if (!type.name) {
+        return []
+      }
+
+      return getAttributesForType(scope, type.name)
     case TC.Module:
-      return getAttributesForModule(scope, type.moduleName)
+      if (!type.name) {
+        return []
+      }
+
+      return getAttributesForModule(scope, type.name)
     case TC.Union:
+      if (!type.subtypes) {
+        return []
+      }
+
       return type.subtypes.map((subtype) => getAttributesFromType(scope, subtype)).flat()
   }
   return []
@@ -96,10 +109,10 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_BRACKETS:
         case PYTHON_MEMBER:
           const typeResult = await analyzer.getPyrightTypeForExpressionWorker(filePath, leftChild)
-          console.log('woohoo', typeResult)
+          console.log(typeResult, 'woohoo!')
 
           if (typeResult) {
-            attributes = getAttributesFromType(scope, typeResult.type)
+            attributes = getAttributesFromType(scope, typeResult)
           } else {
             attributes = []
           }

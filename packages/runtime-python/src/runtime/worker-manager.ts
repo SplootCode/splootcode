@@ -1,5 +1,5 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
+import { ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
@@ -118,7 +118,6 @@ export class WorkerManager {
   }
 
   generateTextCode(runType: RunType, workspace: Map<string, FileSpec>, returnToEditor: boolean) {
-    console.log('generating text code hello? lol what')
     if (!returnToEditor) {
       // Don't mark as 'RUNNING' just for text code generation.
       this._workerState = WorkerState.RUNNING
@@ -139,19 +138,17 @@ export class WorkerManager {
     })
   }
 
-  sendParseTree(path: string, module: ModuleNode, imports: ModuleImport[]) {
+  sendParseTree(parseTree: ParseTreeInfo) {
     this.sendMessage({
       type: 'parseTree',
-      path,
-      module,
-      imports,
+      parseTree,
     })
   }
 
-  requestExpressionTypeInfo(expr: ExpressionNode) {
+  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
     this.sendMessage({
       type: 'requestExpressionTypeInfo',
-      expression: expr,
+      request,
     })
   }
 

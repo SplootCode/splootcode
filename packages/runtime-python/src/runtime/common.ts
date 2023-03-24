@@ -1,5 +1,5 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionNode, ModuleImport, ModuleNode, SimpleTypeResult } from 'structured-pyright'
+import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTreeInfo } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
@@ -91,7 +91,7 @@ export interface WorkerTextConvertResultMessage {
 
 export interface WorkerExpressionTypeResultMessage {
   type: 'expression_type_info'
-  expressionType: SimpleTypeResult
+  response: ExpressionTypeResponse
 }
 
 export type WorkerMessage =
@@ -141,14 +141,12 @@ export interface TextContentRequestMessage {
 
 export interface LoadParseTreeMessage {
   type: 'parseTree'
-  module: ModuleNode
-  imports: ModuleImport[]
-  path: string
+  parseTree: ParseTreeInfo
 }
 
 export interface RequestExpressionTypeInfoMessage {
   type: 'requestExpressionTypeInfo'
-  expression: ExpressionNode
+  request: ExpressionTypeRequest
 }
 
 export type WorkerManagerMessage =

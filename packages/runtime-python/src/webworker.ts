@@ -1,18 +1,13 @@
 import {
   ExpressionNode,
-  ModuleNode,
   SourceFile,
   StructuredEditorProgram,
+  Type,
+  TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
-import {
-  FetchSyncErrorType,
-  FileSpec,
-  LoadParseTreeMessage,
-  ResponseData,
-  WorkerManagerMessage,
-  WorkerMessage,
-} from './runtime/common'
+import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
+import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { IDFinderWalker, PyodideFakeFileSystem } from './structured'
 
@@ -347,25 +342,80 @@ export const initialize = async (urls: StaticURLs) => {
   })
 }
 
-let parsing = false
-let finalModule: ModuleNode = null
-
+let currentParseID: number = null
 let sourceFile: SourceFile = null
 
-const updateParseTree = async (message: LoadParseTreeMessage) => {
+let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
+
+const updateParseTree = async (parseTreeInfo: ParseTreeInfo) => {
   if (!structuredProgram) {
     console.error('structuredProgram is not defined yet')
   }
-  parsing = true
 
-  finalModule = message.module
+  console.log('hello world')
 
-  structuredProgram.updateStructuredFile(message.path, finalModule, message.imports)
-  await structuredProgram.parseRecursively(message.path)
-  sourceFile = structuredProgram.getBoundSourceFile(message.path)
-  // structuredProgram.getBoundSourceFile(message.path)
+  const { parseTree, path, modules } = parseTreeInfo
 
-  parsing = false
+  structuredProgram.updateStructuredFile(path, parseTree, modules)
+  await structuredProgram.parseRecursively(path)
+
+  sourceFile = structuredProgram.getBoundSourceFile(path)
+  currentParseID = parseTreeInfo.treeID
+
+  if (expressionTypeRequestsToResolve.length > 0) {
+    const toResolve = expressionTypeRequestsToResolve.filter((request) => request.treeID === currentParseID)
+
+    toResolve.forEach((request) => getExpressionTypeInfo(request))
+
+    expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
+      (request) => request.treeID !== currentParseID
+    )
+
+    if (expressionTypeRequestsToResolve.length > 0) {
+      console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
+    }
+  }
+}
+
+const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
+  if (type.category === TypeCategory.Class) {
+    return {
+      category: type.category,
+      name: type.details.fullName,
+    }
+  } else if (type.category === TypeCategory.Module) {
+    return {
+      category: type.category,
+      name: type.moduleName,
+    }
+  } else if (type.category === TypeCategory.Union) {
+    return {
+      category: type.category,
+      subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
+    }
+  }
+
+  throw new Error('unhandled type category')
+}
+
+const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
+  const walker = new IDFinderWalker(request.expression.id)
+  walker.walk(sourceFile.getParseResults().parseTree)
+
+  if (walker.found) {
+    const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
+
+    sendMessage({
+      type: 'expression_type_info',
+      response: {
+        treeID: currentParseID,
+        type: toExpressionTypeInfo(type.type),
+        requestID: request.requestID,
+      },
+    })
+  } else {
+    console.error('could not find node in tree')
+  }
 }
 
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
@@ -404,34 +454,19 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       loadModule(e.data.moduleName)
       break
     case 'parseTree':
-      updateParseTree(e.data)
+      updateParseTree(e.data.parseTree)
 
       break
     case 'requestExpressionTypeInfo':
-      const walker = new IDFinderWalker(e.data.expression.id)
-      walker.walk(sourceFile.getParseResults().parseTree)
+      if (e.data.request.treeID < currentParseID) {
+        console.warn('issued request for expression type for old parse tree', e.data.request.treeID, currentParseID)
+      } else if (e.data.request.treeID > currentParseID) {
+        console.warn('issued request for expression type for future parse tree')
 
-      if (walker.found) {
-        const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
-        console.log('types found', type)
-
-        const result: any = {
-          type: type.type,
-          isIncomplete: type.isIncomplete,
-        }
-
-        if (result.type.fields) {
-          result.type.fields = null
-        }
-
-        console.log(result)
-
-        sendMessage({
-          type: 'expression_type_info',
-          expressionType: result,
-        })
+        expressionTypeRequestsToResolve.push(e.data.request)
       } else {
-        console.error('could not find node in tree')
+        // treeID and currentParseTree match
+        getExpressionTypeInfo(e.data.request)
       }
 
       break

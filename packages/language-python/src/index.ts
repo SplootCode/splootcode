@@ -1,5 +1,4 @@
 export { PythonAnalyzer } from './analyzer/python_analyzer'
-export type { ParseTreeCommunicator } from './analyzer/python_analyzer'
 export { PythonLanguageTray } from './tray/language'
 export { generatePythonScope } from './scope/python_scope'
 export { formatPythonAssingment, formatPythonReturnValue } from './nodes/utils'
@@ -25,4 +24,10 @@ export type { PotentialHandlers } from './nodes/python_file'
 export { PythonBinaryOperator } from './nodes/python_binary_operator'
 export { PythonIdentifier } from './nodes/python_identifier'
 export type { PythonModuleSpec } from './scope/python'
-export type { ParseTreeCommunicator as ParseTreeSender } from './analyzer/python_analyzer'
+export type {
+  ParseTreeCommunicator,
+  ParseTreeInfo,
+  ExpressionTypeRequest,
+  ExpressionTypeResponse,
+  ExpressionTypeInfo,
+} from './analyzer/python_analyzer'

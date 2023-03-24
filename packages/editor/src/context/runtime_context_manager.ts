@@ -22,10 +22,17 @@ import {
   SendParseTreeMessage,
   WorkspaceFilesMessage,
 } from '@splootcode/runtime-python'
-import { ExpressionNode, ModuleImport, ModuleNode, SimpleTypeResult } from 'structured-pyright'
+import {
+  ExpressionTypeRequest,
+  ExpressionTypeResponse,
+  ParseTreeCommunicator,
+  ParseTreeInfo,
+  PythonFile,
+  PythonModuleSpec,
+  PythonScope,
+} from '@splootcode/language-python'
 import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
 import { FrameStateManager } from 'src/runtime/frame_state_manager'
-import { ParseTreeCommunicator, PythonFile, PythonModuleSpec, PythonScope } from '@splootcode/language-python'
 import { action, observable } from 'mobx'
 
 export class RuntimeContextManager implements ParseTreeCommunicator {
@@ -47,7 +54,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   runSettings: RunSettings
 
   sendParseTreeHandler: () => void
-  requestExpressionTypeInfoHandler: (type: SimpleTypeResult) => void
+  requestExpressionTypeInfoHandler: (resp: ExpressionTypeResponse) => void
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
     this.project = project
@@ -64,7 +71,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     }
   }
 
-  setRequestExpressionTypeInfoHandler(handler: (type: SimpleTypeResult) => void): void {
+  setRequestExpressionTypeInfoHandler(handler: (resp: ExpressionTypeResponse) => void): void {
     this.requestExpressionTypeInfoHandler = handler
   }
 
@@ -292,12 +299,10 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.setNeedsNewNodeTree(false)
   }
 
-  sendParseTree = async (path: string, module: ModuleNode, imports: ModuleImport[]) => {
+  sendParseTree = async (parseTree: ParseTreeInfo) => {
     const payload: SendParseTreeMessage = {
       type: 'sendParseTree',
-      path,
-      module,
-      imports,
+      parseTree,
     }
 
     if (!this.frameStateManager) {
@@ -308,7 +313,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.postMessage(payload)
   }
 
-  requestExpressionTypeInfo = (expression: ExpressionNode) => {
+  requestExpressionTypeInfo = (request: ExpressionTypeRequest) => {
     if (!this.frameStateManager) {
       console.warn('FrameStateManager not initialized')
       return
@@ -316,7 +321,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
 
     const payload: RequestExpressionTypeInfoMessage = {
       type: 'requestExpressionTypeInfo',
-      expression,
+      request,
     }
 
     this.frameStateManager.postMessage(payload)

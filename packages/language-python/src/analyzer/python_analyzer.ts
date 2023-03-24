@@ -5,22 +5,52 @@ import {
   ModuleImport,
   ModuleNode,
   ParseNode,
-  SimpleTypeResult,
   StructuredEditorProgram,
   Type,
+  TypeCategory,
   createStructuredProgram,
 } from 'structured-pyright'
 import { PythonFile } from '../nodes/python_file'
 import { SplootNode } from '@splootcode/core'
 
+export interface ParseTreeInfo {
+  path: string
+  parseTree: ModuleNode
+  modules: ModuleImport[]
+
+  treeID: number
+}
+
+export interface ExpressionTypeRequest {
+  treeID: number
+  requestID: string
+
+  expression: ExpressionNode
+}
+
+// TODO(harrison): pyright's Type interface is not serializable, so we have to do this. In the future this interface should be replaced
+// with a generic 'autocomplete response' interface.
+export interface ExpressionTypeInfo {
+  category: TypeCategory
+  name?: string
+  subtypes?: ExpressionTypeInfo[]
+}
+
+export interface ExpressionTypeResponse {
+  treeID: number
+  requestID: string
+
+  type: ExpressionTypeInfo
+}
+
 export interface ParseTreeCommunicator {
   // messages
-  sendParseTree(path: string, parseTree: ModuleNode, modules: ModuleImport[]): void
-  requestExpressionTypeInfo(expression: ExpressionNode): void
+  sendParseTree(parseTreeInfo: ParseTreeInfo): void
+  requestExpressionTypeInfo(req: ExpressionTypeRequest): void
 
   // initialisation
   setSendParseTreeHandler(handler: () => void): void
-  setRequestExpressionTypeInfoHandler(handler: (type: SimpleTypeResult) => void): void
+  setRequestExpressionTypeInfoHandler(handler: (type: ExpressionTypeResponse) => void): void
 }
 
 export class ParseMapper {
@@ -51,24 +81,28 @@ export class PythonAnalyzer {
   files: Map<string, PythonFile>
   program: StructuredEditorProgram
   nodeMaps: Map<string, ParseMapper>
+  lookupNodeMaps: Map<string, ParseMapper>
   currentParseID: number
   latestParseID: number
   dirtyPaths: Set<string>
   sender: ParseTreeCommunicator
 
+  currentAtomicID: number
+
   constructor(sender: ParseTreeCommunicator) {
     this.program = null
     this.nodeMaps = new Map()
+    this.lookupNodeMaps = new Map()
     this.files = new Map()
     this.currentParseID = null
     this.latestParseID = null
     this.dirtyPaths = new Set()
     this.sender = sender
+
+    this.currentAtomicID = 0
   }
 
   initialise(typeshedPath: string) {
-    console.log(typeshedPath)
-
     try {
       this.program = createStructuredProgram(typeshedPath)
     } catch (e) {
@@ -90,46 +124,67 @@ export class PythonAnalyzer {
     this.updateParse(path)
   }
 
-  requestExpressionTypeInfoHandler(type: SimpleTypeResult) {
+  requestExpressionTypeInfoHandler(resp: ExpressionTypeResponse) {
+    if (resp.requestID !== this.promiseID) {
+      console.warn('Received stale promise response')
+
+      return
+    }
+
     if (this.promiseResolver) {
-      this.promiseResolver(type)
+      this.promiseResolver(resp.type)
     }
   }
 
-  promise: Promise<SimpleTypeResult> = null
+  promise: Promise<ExpressionTypeInfo> = null
   promiseID: string = null
-  promiseResolver: (type: SimpleTypeResult) => void = null
+  promiseResolver: (type: ExpressionTypeInfo) => void = null
+  promiseRejecter: (reason: string) => void = null
 
-  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<SimpleTypeResult> {
-    const nodes = this.nodeMaps.get(path).nodeMap
+  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
+    const nodes = this.lookupNodeMaps.get(path).nodeMap
     const exprNode = nodes.get(node) as ExpressionNode
 
-    if (this.promise) {
-      console.warn('already fetching type')
+    if (!exprNode) {
+      console.warn('Could not find SplootNode in nodeMap. Parse is probably ongoing.')
+
       return null
+    }
+
+    if (this.promise) {
+      this.promiseRejecter('Promise has become stale')
     }
 
     const myPromiseID = Math.random().toFixed(10).toString()
 
     this.promiseID = myPromiseID
-    this.promise = new Promise<SimpleTypeResult>((resolve, reject) => {
-      this.sender.requestExpressionTypeInfo(exprNode)
+    this.promise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
+      this.sender.requestExpressionTypeInfo({
+        treeID: this.currentAtomicID,
+        requestID: this.promiseID,
+        expression: exprNode,
+      })
 
-      this.promiseResolver = (type: SimpleTypeResult) => {
+      this.promiseResolver = (type: ExpressionTypeInfo) => {
         resolve(type)
 
         this.promise = null
         this.promiseID = null
       }
 
+      this.promiseRejecter = (reason: string) => {
+        this.promise = null
+        this.promiseID = null
+        this.promiseResolver = null
+
+        reject(reason)
+      }
+
       setTimeout(() => {
         if (this.promiseID === myPromiseID) {
-          console.warn('Pyright type request timed out')
-          this.promise = null
-          this.promiseID = null
-          this.promiseResolver = null
+          console.warn('Pyright request timed out')
 
-          reject('Pyright type request timed out')
+          this.promiseRejecter('Pyright request timed out')
         }
       }, 1000)
     })
@@ -167,6 +222,7 @@ export class PythonAnalyzer {
   updateParse(path: string) {
     this.dirtyPaths.add(path)
     this.latestParseID = Math.random()
+    this.currentAtomicID += 1
     this.runParse()
   }
 
@@ -179,26 +235,37 @@ export class PythonAnalyzer {
       // Parse already in progress - avoid concurrent parses
       return
     }
+
     const paths = this.dirtyPaths
     this.dirtyPaths = new Set()
     this.currentParseID = this.latestParseID
 
     for (const path of paths) {
       const pathForFile = '/' + path
-      const parseMapper = new ParseMapper()
       const rootNode = this.files.get(path)
 
-      const moduleNode = rootNode.generateParseTree(parseMapper)
+      {
+        const parseMapper = new ParseMapper()
+        const moduleNode = rootNode.generateParseTree(parseMapper)
+        this.sender.sendParseTree({
+          path: pathForFile,
+          parseTree: moduleNode,
+          modules: parseMapper.modules,
+          treeID: this.currentAtomicID,
+        })
+        this.lookupNodeMaps.set(path, parseMapper)
+      }
 
-      this.sender.sendParseTree(pathForFile, moduleNode, parseMapper.modules)
-      this.nodeMaps.set(path, parseMapper)
+      {
+        // TODO(harrison): strip out these main thread calls to pyright
+        const parseMapper = new ParseMapper()
+        const moduleNode = rootNode.generateParseTree(parseMapper)
 
-      // const clonedMapper = structuredClone(parseMapper)
-      //
-      // // TODO(harrison): strip out these main thread calls to pyright
-      // this.program.updateStructuredFile(pathForFile, moduleNode, clonedMapper.modules)
-      // await this.program.parseRecursively(pathForFile)
-      // this.program.getBoundSourceFile(pathForFile)
+        this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
+        await this.program.parseRecursively(pathForFile)
+        this.program.getBoundSourceFile(pathForFile)
+        this.nodeMaps.set(path, parseMapper)
+      }
     }
 
     if (this.latestParseID !== this.currentParseID) {

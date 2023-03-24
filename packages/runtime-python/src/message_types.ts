@@ -9,7 +9,7 @@ import {
   WorkerWebResponseMessage,
 } from './runtime/common'
 
-import { ExpressionNode, ModuleImport, ModuleNode } from 'structured-pyright'
+import { ExpressionTypeRequest, ParseTreeInfo } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
@@ -47,14 +47,12 @@ export interface GetModuleInfoMessage {
 
 export interface SendParseTreeMessage {
   type: 'sendParseTree'
-  path: string
-  module: ModuleNode
-  imports: ModuleImport[]
+  parseTree: ParseTreeInfo
 }
 
 export interface RequestExpressionTypeInfoMessage {
   type: 'requestExpressionTypeInfo'
-  expression: ExpressionNode
+  request: ExpressionTypeRequest
 }
 
 export type RuntimeMessage =
