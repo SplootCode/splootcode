@@ -152,10 +152,15 @@ def appendDictToken(dict, tokens):
 def appendSubscriptExpression(subscript, tokens):
   target = generateExpressionTokens(subscript.value)
   if type(subscript.slice) == ast.Slice:
-    raise Exception('Slice syntax is not supported')
-  key = generateExpression(subscript.slice)
-  node = SplootNode('PYTHON_SUBSCRIPT', {'target': target, 'key': [key]})
-  tokens.append(node)
+    start = generateExpression(subscript.slice.lower)
+    end = generateExpression(subscript.slice.upper)
+    slicerangenode = SplootNode('PY_SLICE_RANGE', {'start': [start], 'end': [end]})
+    slicenode = SplootNode('PY_SLICE', {'target': target, 'slicerange': [slicerangenode]})
+    tokens.append(slicenode)
+  else:
+    key = generateExpression(subscript.slice)
+    node = SplootNode('PYTHON_SUBSCRIPT', {'target': target, 'key': [key]})
+    tokens.append(node)
 
 def appendIdentifier(name, tokens):
   tokens.append(SplootNode('PY_IDENTIFIER', {}, {'identifier': name.id}))

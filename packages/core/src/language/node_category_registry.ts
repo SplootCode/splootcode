@@ -53,6 +53,7 @@ export enum NodeCategory {
 
   // 40
   PythonDecorator,
+  PythonSliceRange,
 }
 
 export interface SuggestionGenerator {

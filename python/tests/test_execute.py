@@ -455,3 +455,15 @@ True
 True
 False
 """)
+
+    def testSlice(self):
+        splootFile = splootFromPython('''x = [1, 2, 3, 4, 5]\nprint(x[1:3])''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        res = f.read()
+        self.assertEqual(res, """[2, 3]\n""")
