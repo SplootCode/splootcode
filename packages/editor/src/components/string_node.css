@@ -20,6 +20,17 @@
   stroke: var(--editor-selected-node-block-edge);
 }
 
+.svgsplootnode.stringnode.selected.invalid {
+  fill: var(--editor-selected-node-block-fill);
+  stroke: var(--editor-invalid-node-block-edge);
+}
+
+
+.svgsplootnode.stringnode.invalid {
+  fill: var(--editor-string-block-outline);
+  stroke: var(--editor-invalid-node-block-edge);
+}
+
 
 .string-node.measurement {
   position: absolute;
