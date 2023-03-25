@@ -88,10 +88,7 @@ export class PythonElseBlock extends PythonNode {
   }
 
   recursivelyClearRuntimeCapture() {
-    const blockChildren = this.getBlock().children
-    for (let i = 0; i < blockChildren.length; i++) {
-      blockChildren[i].recursivelyClearRuntimeCapture()
-    }
+    this.getBlock().recursivelyClearRuntimeCapture()
   }
 
   static deserializer(serializedNode: SerializedNode): PythonElseBlock {

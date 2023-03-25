@@ -7,7 +7,7 @@ HELLO_NAME_SPLOOT = {
     "properties":{},
     "childSets":{
         "body":[
-            {"type":"PYTHON_STATEMENT","properties":{},"childSets":{"statement":[
+            {"type":"PYTHON_STATEMENT","meta":{"lineno": 1},"properties":{},"childSets":{"statement":[
                 {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
                     "tokens":[
                         {"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"print"},
@@ -21,7 +21,7 @@ HELLO_NAME_SPLOOT = {
                     ]
                 }}
             ]}},
-            {"type":"PYTHON_STATEMENT","properties":{},"childSets":{"statement":[
+            {"type":"PYTHON_STATEMENT","meta":{"lineno": 2},"properties":{},"childSets":{"statement":[
                 {"type":"PYTHON_ASSIGNMENT","properties":{},"childSets":{
                     "left":[{"type":"PY_IDENTIFIER","properties":{"identifier":"name"},"childSets":{}}],
                     "right":[{"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
@@ -37,7 +37,7 @@ HELLO_NAME_SPLOOT = {
                     }}]
                 }},
         ]}},
-            {"type":"PYTHON_STATEMENT","properties":{},"childSets":{"statement":[
+            {"type":"PYTHON_STATEMENT","meta":{"lineno": 3},"properties":{},"childSets":{"statement":[
                 {"type":"PYTHON_EXPRESSION","properties":{},"childSets":{
                     "tokens":[
                         {"type":"PYTHON_CALL_VARIABLE","properties":{"identifier":"print"},"childSets":{
@@ -93,6 +93,7 @@ add(3, 4)
     "body": [
         {
             "type": "PYTHON_STATEMENT",
+            "meta": {"lineno": 1},
             "childSets": {
                 "statement": [{
                     "type": "PYTHON_FUNCTION_DECLARATION",
@@ -103,6 +104,7 @@ add(3, 4)
                         "body": [
                             {
                                 "type": "PYTHON_STATEMENT",
+                                "meta": {"lineno": 2},
                                 "childSets": {
                                     "statement": [{
                                         "type": "PYTHON_EXPRESSION",
@@ -140,6 +142,7 @@ add(3, 4)
         },
         {
             "type": "PYTHON_STATEMENT",
+            "meta": {"lineno": 3},
             "childSets": {
                 "statement": [{
                     "type": "PYTHON_EXPRESSION",
@@ -181,6 +184,7 @@ add(3, 4)
     "body": [
         {
             "type": "PYTHON_STATEMENT",
+            'meta': {'lineno': 1},
             "childSets": {
                 "statement": [{
                     "type": 'PYTHON_ASSIGNMENT',
@@ -293,6 +297,7 @@ add(3, 4)
             'childSets': {'body': [
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 1},
                     'childSets': {'statement': [
                             {'type': 'PYTHON_ASSIGNMENT', 'childSets': {
                                 'left': [
@@ -311,6 +316,7 @@ add(3, 4)
                 },
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 2},
                     'childSets': {'statement': [
                             {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
                                 {'type': 'PY_TUPLE', 'childSets': {'elements': [
@@ -324,6 +330,7 @@ add(3, 4)
                 },
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 3},
                     'childSets': {'statement': [
                             {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
                                 {'type': 'PY_TUPLE', 'childSets': {'elements': [
@@ -350,6 +357,7 @@ add(3, 4)
             'childSets': {'body': [
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 1},
                     'childSets': {'statement': [
                             {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
                                 {'type': 'PY_SET', 'childSets': {'elements': [
@@ -363,6 +371,7 @@ add(3, 4)
                 },
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 2},
                     'childSets': {'statement': [
                             {'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [
                                 {'type': 'PY_SET', 'childSets': {'elements': [
@@ -398,22 +407,23 @@ else:
             'childSets': {'body': [
                 {
                     'type': 'PYTHON_STATEMENT',
+                    'meta': {'lineno': 1},
                     'childSets': {
                         'statement': [
                             {'type': 'PYTHON_IF_STATEMENT', 'childSets': {
                                 'condition': [{'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'PYTHON_BOOL', 'childSets': {}, 'properties': {'value': True}, }]}, 'properties': {}}],
-                                'trueblock': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                'trueblock': [{'type': 'PYTHON_STATEMENT', 'meta': {'lineno': 2}, 'childSets': {'statement': [
                                     {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
                                 ]}, 'properties': {}}],
                                 'elseblocks': [
                                     {'type': 'PYTHON_ELIF_STATEMENT', 'childSets': {
                                         'condition': [{'type': 'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'PYTHON_BOOL', 'childSets': {}, 'properties': {'value': False}, }]}, 'properties': {}}],
-                                        'block': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                        'block': [{'type': 'PYTHON_STATEMENT', 'meta': {'lineno': 3}, 'childSets': {'statement': [
                                             {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
                                 ]}, 'properties': {}}]
                                     }, 'properties': {}},
                                     {'type': 'PYTHON_ELSE_STATEMENT', 'childSets': {
-                                        'block': [{'type': 'PYTHON_STATEMENT', 'childSets': {'statement': [
+                                        'block': [{'type': 'PYTHON_STATEMENT', 'meta': {'lineno': 4}, 'childSets': {'statement': [
                                     {'type':'PYTHON_EXPRESSION', 'childSets': {'tokens': [{'type': 'STRING_LITERAL', 'childSets': {}, 'properties': {'value': 'hi'}}]}, 'properties': {} }
                                 ]}, 'properties': {}}]
                                     }, 'properties': {}},

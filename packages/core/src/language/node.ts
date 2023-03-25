@@ -206,15 +206,33 @@ export class SplootNode {
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
-    mutation.annotations = [
-      {
-        type: NodeAnnotationType.RuntimeError,
-        value: {
-          errorType: capture.exceptionType,
-          errorMessage: capture.exceptionMessage,
+    if (capture.exceptionInFunction) {
+      mutation.annotations = [
+        {
+          type: NodeAnnotationType.SideEffect,
+          value: {
+            message: `Exception in ${capture.exceptionInFunction}`,
+          },
         },
-      },
-    ]
+        {
+          type: NodeAnnotationType.RuntimeError,
+          value: {
+            errorType: capture.exceptionType,
+            errorMessage: capture.exceptionMessage,
+          },
+        },
+      ]
+    } else {
+      mutation.annotations = [
+        {
+          type: NodeAnnotationType.RuntimeError,
+          value: {
+            errorType: capture.exceptionType,
+            errorMessage: capture.exceptionMessage,
+          },
+        },
+      ]
+    }
     this.fireMutation(mutation)
   }
 
@@ -296,6 +314,14 @@ export class SplootNode {
       childSets: {},
     }
     return serNode
+  }
+
+  recursivelySetLineNumbers(lineNumber: number): number {
+    throw new Error('Method not implemented.')
+  }
+
+  getChildNodeByLineNumber(lineNumber: number): SplootNode {
+    throw new Error('Method not implemented.')
   }
 
   serialize(includeMatchingID = false): SerializedNode {

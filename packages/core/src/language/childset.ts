@@ -166,6 +166,12 @@ export class ChildSet {
     return true
   }
 
+  recursivelyClearRuntimeCapture() {
+    this.children.forEach((node) => {
+      node.recursivelyClearRuntimeCapture()
+    })
+  }
+
   addChild(child: SplootNode) {
     this.insertNode(child, this.children.length)
     child.parent = this.childParentRef

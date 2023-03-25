@@ -1,6 +1,6 @@
 import { ParseNode } from 'structured-pyright'
 
-import { ParentReference, SplootNode, isScopedNodeType } from '@splootcode/core'
+import { NodeCategory, ParentReference, SplootNode, isScopedNodeType } from '@splootcode/core'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonScope } from '../scope/python_scope'
 
@@ -39,6 +39,48 @@ export abstract class PythonNode extends SplootNode {
   removeSelfFromScope() {
     // No-op default implementation.
     // Variable declarations and named function declarations will do this.
+  }
+
+  recursivelySetLineNumbers(lineNumber: number): number {
+    lineNumber += 1
+    for (const childSetID of this.childSetOrder) {
+      const childSet = this.getChildSet(childSetID)
+      // Only give numbers to Python Statements
+      if (childSet.nodeCategory === NodeCategory.PythonStatement) {
+        for (const child of childSet.getChildren()) {
+          lineNumber = child.recursivelySetLineNumbers(lineNumber)
+        }
+      }
+      if (childSet.nodeCategory === NodeCategory.PythonElseBlock) {
+        for (const child of childSet.getChildren()) {
+          lineNumber = child.recursivelySetLineNumbers(lineNumber)
+        }
+      }
+    }
+    return lineNumber
+  }
+
+  getChildNodeByLineNumber(lineNumber: number): SplootNode {
+    for (const childSetID of this.childSetOrder) {
+      const childSet = this.getChildSet(childSetID)
+      if (childSet.nodeCategory === NodeCategory.PythonStatement) {
+        for (const child of childSet.getChildren()) {
+          const res = child.getChildNodeByLineNumber(lineNumber)
+          if (res) {
+            return res
+          }
+        }
+      }
+      if (childSet.nodeCategory === NodeCategory.PythonElseBlock) {
+        for (const child of childSet.getChildren()) {
+          const res = child.getChildNodeByLineNumber(lineNumber)
+          if (res) {
+            return res
+          }
+        }
+      }
+    }
+    return null
   }
 
   afterInsert() {

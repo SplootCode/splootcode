@@ -31,6 +31,7 @@ export class ProjectFileChangeWatcher implements FileChangeWatcher {
     const result = new Map<string, FileSpec>()
     for (const filename of this.pkg.fileOrder) {
       const file = await this.pkg.getLoadedFile(this.project.fileLoader, filename)
+      file.rootNode.recursivelySetLineNumbers(1)
       const content: SerializedNode = file.rootNode.serialize()
       result.set(filename, { type: 'sploot', content: content })
     }

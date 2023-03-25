@@ -254,7 +254,11 @@ export class PythonFunctionDeclaration extends PythonNode {
     }
     const data = capture.data as FunctionDeclarationData
     this.runtimeCapture = data
-    this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    if (data.exception) {
+      this.selectRuntimeCaptureFrame(data.exception.frameno)
+    } else {
+      this.selectRuntimeCaptureFrame(this.runtimeCaptureFrame)
+    }
     return true
   }
 
@@ -264,33 +268,53 @@ export class PythonFunctionDeclaration extends PythonNode {
       return
     }
     this.runtimeCaptureFrame = index
-    index = Math.min(this.runtimeCapture.calls.length - 1, index)
+    index = Math.min(this.runtimeCapture.count - 1, index)
     if (index == -1) {
       index = this.runtimeCapture.calls.length - 1
     }
     const annotation: NodeAnnotation[] = []
 
-    const frames = this.runtimeCapture.calls
-    const frame = frames[index]
-
-    if (frame.type === 'EXCEPTION') {
-      annotation.push({
-        type: NodeAnnotationType.RuntimeError,
-        value: {
-          errorType: frame.exceptionType,
-          errorMessage: frame.exceptionMessage,
-        },
-      })
-    } else {
-      const frameData = frame.data as FunctionCallData
-      this.getBody().recursivelyApplyRuntimeCapture(frameData.body)
-    }
     const mutation = new NodeMutation()
     mutation.node = this
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = annotation
-    mutation.loopAnnotation = { label: 'Called', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
+    mutation.loopAnnotation = {
+      label: 'Called',
+      iterations: this.runtimeCapture.count,
+      currentFrame: this.runtimeCaptureFrame,
+    }
     this.fireMutation(mutation)
+
+    const frames = this.runtimeCapture.calls
+    if (index >= frames.length) {
+      this.getBody().recursivelyClearRuntimeCapture()
+    } else {
+      const frame = frames[index]
+
+      if (frame.type === 'EXCEPTION') {
+        annotation.push({
+          type: NodeAnnotationType.RuntimeError,
+          value: {
+            errorType: frame.exceptionType,
+            errorMessage: frame.exceptionMessage,
+          },
+        })
+      } else {
+        const frameData = frame.data as FunctionCallData
+        this.getBody().recursivelyApplyRuntimeCapture(frameData.body)
+      }
+    }
+    if (this.runtimeCapture.exception && this.runtimeCapture.exception.frameno === index) {
+      const childNode = this.getChildNodeByLineNumber(this.runtimeCapture.exception.lineno)
+      if (childNode) {
+        const errorCapture = {
+          type: 'EXCEPTION',
+          exceptionType: this.runtimeCapture.exception.type,
+          exceptionMessage: this.runtimeCapture.exception.message,
+        }
+        childNode.applyRuntimeError(errorCapture)
+      }
+    }
   }
 
   recursivelyClearRuntimeCapture() {
@@ -304,7 +328,7 @@ export class PythonFunctionDeclaration extends PythonNode {
       iterations: 0,
     }
     this.fireMutation(mutation)
-    this.getBody().recursivelyApplyRuntimeCapture([])
+    this.getBody().recursivelyClearRuntimeCapture()
   }
 
   static deserializer(serializedNode: SerializedNode): PythonFunctionDeclaration {

@@ -80,6 +80,31 @@ export class PythonStatement extends PythonNode {
     return this.getStatement().children.length === 0
   }
 
+  recursivelySetLineNumbers(lineNumber: number) {
+    this.metadata.set('lineno', lineNumber)
+    if (this.getStatement().getCount() !== 0) {
+      const child = this.getStatement().getChild(0)
+      lineNumber = child.recursivelySetLineNumbers(lineNumber)
+    } else {
+      lineNumber += 1
+    }
+    return lineNumber
+  }
+
+  getChildNodeByLineNumber(lineNumber: number): SplootNode {
+    if (this.metadata.get('lineno') === lineNumber) {
+      return this
+    }
+    if (this.getStatement().getCount() !== 0) {
+      const child = this.getStatement().getChild(0)
+      const res = child.getChildNodeByLineNumber(lineNumber)
+      if (res) {
+        return res
+      }
+    }
+    return null
+  }
+
   static deserializer(serializedNode: SerializedNode): PythonStatement {
     const res = new PythonStatement(null)
     res.deserializeChildSet('statement', serializedNode)
@@ -93,6 +118,13 @@ export class PythonStatement extends PythonNode {
       return child.recursivelyApplyRuntimeCapture(capture)
     }
     return false
+  }
+
+  applyRuntimeError(capture: StatementCapture): void {
+    if (this.getStatement().getCount() !== 0) {
+      const child = this.getStatement().getChild(0)
+      child.applyRuntimeError(capture)
+    }
   }
 
   recursivelyClearRuntimeCapture() {

@@ -121,6 +121,8 @@ export class PythonIfStatement extends PythonNode {
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
+      this.getTrueBlock().recursivelyApplyRuntimeCapture([])
+      this.getElseBlocks().recursivelyApplyRuntimeCapture([])
       return true
     }
     if (capture.type != this.type) {
