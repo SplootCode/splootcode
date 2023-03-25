@@ -359,6 +359,7 @@ let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
 const updateParseTrees = async (trees: ParseTrees) => {
   if (!structuredProgram) {
     console.error('structuredProgram is not defined yet')
+    return
   }
 
   const newSourceMap: Map<string, SourceFile> = new Map()
