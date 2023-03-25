@@ -20,6 +20,7 @@ import { PythonMember } from '../python_member'
 import { PythonNode } from '../python_node'
 import { PythonReturn } from '../python_return'
 import { PythonSet } from '../python_set'
+import { PythonSlice } from '../python_slice'
 import { PythonStringLiteral } from '../python_string'
 import { PythonSubscript } from '../python_subscript'
 import { PythonTuple } from '../python_tuple'
@@ -79,5 +80,6 @@ export function getExpressionTokenNodes(): SplootNode[] {
     new PythonSet(null),
     new PythonDictionary(null),
     new PythonSubscript(null),
+    new PythonSlice(null),
   ]
 }

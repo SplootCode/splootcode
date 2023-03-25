@@ -73,6 +73,16 @@ def generateSubscript(node, context=ast.Load()):
     index = generateAstExpression(node['childSets']['key'][0])
     return ast.Subscript(value, index, context)
 
+def generateSlice(node, context=ast.Load()):
+    value = generateAstExpressionToken(node['childSets']['target'][0])
+    sliceRange = generateSliceRange(node['childSets']['slicerange'][0])
+    return ast.Subscript(value, sliceRange, context)
+
+def generateSliceRange(node):
+    lower = generateAstExpression(node['childSets']['start'][0])
+    upper = generateAstExpression(node['childSets']['end'][0])
+    return ast.Slice(lower, upper, None)
+
 def generateAstExpressionToken(node):
     if node["type"] == "PYTHON_CALL_VARIABLE":
         return generateCallVariable(node)
@@ -105,6 +115,8 @@ def generateAstExpressionToken(node):
         return generateSubscript(node)
     elif node["type"] == "PY_BRACKET":
         return generateAstExpression(node['childSets']['expr'][0])
+    elif node["type"] == "PY_SLICE":
+        return generateSlice(node)
     else:
         raise Exception(f'Unrecognised expression token type: {node["type"]}')
 

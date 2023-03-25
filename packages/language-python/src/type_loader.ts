@@ -28,6 +28,8 @@ import { PythonMember } from './nodes/python_member'
 import { PythonModuleIdentifier } from './nodes/python_module_identifier'
 import { PythonReturn } from './nodes/python_return'
 import { PythonSet } from './nodes/python_set'
+import { PythonSlice } from './nodes/python_slice'
+import { PythonSliceRange } from './nodes/python_slice_range'
 import { PythonStatement } from './nodes/python_statement'
 import { PythonStringLiteral } from './nodes/python_string'
 import { PythonSubscript } from './nodes/python_subscript'
@@ -72,6 +74,8 @@ export function loadPythonTypes() {
   PythonModuleIdentifier.register()
   PythonReturn.register()
   PythonSet.register()
+  PythonSlice.register()
+  PythonSliceRange.register()
   PythonStatement.register()
   PythonSubscript.register()
   PythonTuple.register()
