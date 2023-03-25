@@ -279,6 +279,18 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
 
   // @ts-ignore
   pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
+
+  await pyodide.loadPackage('micropip')
+  const micropip = pyodide.pyimport('micropip')
+  const promises = [
+    micropip.install(urls.requestsPackageURL),
+    micropip.install(urls.flaskPackageURL),
+    micropip.install(urls.serverlessWSGIPackageURL),
+    pyodide.loadPackage('numpy'),
+    micropip.install('types-requests'),
+    micropip.install('ast-comments'),
+  ]
+  await Promise.all(promises)
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
     stderr: stderr,
@@ -323,15 +335,6 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   pyodide.registerJsModule('__splootcode_internal', {
     sync_fetch: syncFetch,
   })
-
-  await pyodide.loadPackage('micropip')
-  const micropip = pyodide.pyimport('micropip')
-  await micropip.install(urls.requestsPackageURL)
-  await micropip.install(urls.flaskPackageURL)
-  await micropip.install(urls.serverlessWSGIPackageURL)
-  await pyodide.loadPackage('numpy')
-  await micropip.install('types-requests')
-  await micropip.install('ast-comments')
 
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
