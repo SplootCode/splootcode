@@ -116,13 +116,18 @@ export class PythonAnalyzer {
   }
 
   getParseTrees = (filePaths: Set<string>) => {
+    // Trigger new worker-based parse
     this.currentAtomicID += 1
-
     const parseTrees: ParseTreeInfo[] = []
     for (const path of filePaths) {
-      parseTrees.push(this.doParse(path))
+      parseTrees.push(this.getParseTreeForFile(path))
     }
 
+    // Old style parse
+    for (const path of filePaths) {
+      this.dirtyPaths.add(path)
+    }
+    this.latestParseID = Math.random()
     this.runParse()
 
     return { parseTrees, parseID: this.currentAtomicID }
@@ -130,10 +135,13 @@ export class PythonAnalyzer {
 
   async loadFile(path: string, rootNode: PythonFile) {
     this.files.set(path, rootNode)
-    this.updateParse(path)
   }
 
   async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
+    if (!this.lookupNodeMaps.has(path)) {
+      console.warn('Could not find path in nodeMap. Parse is probably ongoing.')
+      return null
+    }
     const nodes = this.lookupNodeMaps.get(path).nodeMap
     const exprNode = nodes.get(node) as ExpressionNode
 
@@ -173,13 +181,7 @@ export class PythonAnalyzer {
     return null
   }
 
-  updateParse(path: string) {
-    this.dirtyPaths.add(path)
-    this.latestParseID = Math.random()
-    this.runParse()
-  }
-
-  doParse(path: string): ParseTreeInfo {
+  getParseTreeForFile(path: string): ParseTreeInfo {
     const pathForFile = '/' + path
 
     const rootNode = this.files.get(path)
