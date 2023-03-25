@@ -133,6 +133,14 @@ export class PythonWhileLoop extends PythonNode {
     const frame = frames[index]
 
     if (frame.type === 'EXCEPTION') {
+      if (frame.exceptionInFunction) {
+        annotation.push({
+          type: NodeAnnotationType.SideEffect,
+          value: {
+            message: `Exception in ${frame.exceptionInFunction}`,
+          },
+        })
+      }
       annotation.push({
         type: NodeAnnotationType.RuntimeError,
         value: {

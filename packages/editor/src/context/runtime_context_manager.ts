@@ -205,8 +205,12 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
             const funcDeclarationStatement: StatementCapture = {
               type: 'PYTHON_FUNCTION_DECLARATION',
               data: {
-                calls: capture.detached[funcID],
+                count: capture.detached[funcID].count,
+                calls: capture.detached[funcID].frames,
               } as FunctionDeclarationData,
+            }
+            if (capture.lastException?.func_id === funcID) {
+              ;(funcDeclarationStatement.data as FunctionDeclarationData).exception = capture.lastException
             }
             funcNode.recursivelyApplyRuntimeCapture(funcDeclarationStatement)
           }

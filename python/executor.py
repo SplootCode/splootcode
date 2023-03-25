@@ -265,98 +265,113 @@ def generateAstExpression(exp_node):
     return top_expr
 
 
-def generateAstExpressionStatement(exp_node):
+def generateAstExpressionStatement(exp_node, traced, lineno):
     top_expr = generateAstExpression(exp_node)
     if not top_expr:
         return None
+
+    if not traced:
+        expr = ast.Expr(value=top_expr, lineno=lineno, col_offset=0)
+        return expr
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="logExpressionResult", ctx=ast.Load())
     args = [ast.Constant("PYTHON_EXPRESSION"), ast.Dict([], []), top_expr]
     wrapped = ast.Call(func, args=args, keywords=[])
-    expr = ast.Expr(value=wrapped, lineno=1, col_offset=0)
+    expr = ast.Expr(value=wrapped, lineno=lineno, col_offset=0)
     return expr
 
 
-def generateAssignmentStatement(assign_node):
+def generateAssignmentStatement(assign_node, traced, lineno):
     target = generateAstAssignableExpression(assign_node["childSets"]["left"])
     value = generateAstExpression(assign_node["childSets"]["right"][0])
+    if not traced:
+        return ast.Assign([target], value, lineno=lineno)
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="logExpressionResult", ctx=ast.Load())
     args = [ast.Constant("PYTHON_ASSIGNMENT"), ast.Dict([], []), value]
     wrapped = ast.Call(func, args=args, keywords=[])
-    return ast.Assign([target], wrapped)
+    return ast.Assign([target], wrapped, lineno=lineno)
 
 
-def getStatementsFromBlock(blockChildSet):
+def getStatementsFromBlock(blockChildSet, traced):
     statements = []
     for node in blockChildSet:
-        new_statements = generateAstStatement(node)
+        new_statements = generateAstStatement(node, traced)
         if new_statements:
             statements.extend(new_statements)
+    if len(statements) == 0:
+        return [ast.Pass()]
     return statements
 
 
-def generateIfStatementFromElif(elif_node, else_nodes):
+def generateIfStatementFromElif(elif_node, else_nodes, traced):
     condition = generateAstExpression(elif_node["childSets"]["condition"][0])
+    lineno = 1
+    if 'meta' in elif_node and 'lineno' in elif_node['meta']:
+        lineno = elif_node['meta']['lineno']
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_ELIF_STATEMENT"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
+    if traced:
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(
+            value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
+        )
+        args = [
+            ast.Constant("PYTHON_ELIF_STATEMENT"),
+            ast.Constant("condition"),
+            condition,
+        ]
+        condition = ast.Call(func, args=args, keywords=[])
 
-    statements = getStatementsFromBlock(elif_node["childSets"]["block"])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
+    statements = getStatementsFromBlock(elif_node["childSets"]["block"], traced)
 
     else_statements = []
     if len(else_nodes) != 0:
-        else_statements = generateElifNestedChain(else_nodes)
+        else_statements = generateElifNestedChain(else_nodes, traced)
 
-    # End the elif frame before starting the next else/elif block
-    else_statements.insert(0, ast.Expr(call_end_frame, lineno=1, col_offset=0))
+    if traced:
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+        call_end_frame = ast.Call(func, args=[], keywords=[])
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
-    args = [ast.Constant("block")]
-    call_start_childset = ast.Call(func, args=args, keywords=[])
+        # End the elif frame before starting the next else/elif block
+        else_statements.insert(0, ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(value=key, attr="startChildSet", ctx=ast.Load())
+        args = [ast.Constant("block")]
+        call_start_childset = ast.Call(func, args=args, keywords=[])
 
-    statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
+        call_end_frame = ast.Call(func, args=[], keywords=[])
+
+        statements.insert(0, ast.Expr(call_start_childset, lineno=1, col_offset=0))
+        statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
 
     return [
-        ast.If(wrapped_condition, statements, else_statements),
+        ast.If(condition, statements, else_statements, lineno=lineno),
     ]
 
 
-def generateElifNestedChain(else_nodes):
+def generateElifNestedChain(else_nodes, traced):
     if len(else_nodes) == 1 and else_nodes[0]["type"] == 'PYTHON_ELSE_STATEMENT':
-        return generateElseStatement(else_nodes[0])
+        return generateElseStatement(else_nodes[0], traced)
 
     first = else_nodes[0]
     if first["type"] == 'PYTHON_ELIF_STATEMENT':
-        return generateIfStatementFromElif(first, else_nodes[1:])
+        return generateIfStatementFromElif(first, else_nodes[1:], traced)
     elif first["type"] == "PYTHON_ELSE_STATEMENT":
         raise Exception(f'Unexpected else node in middle of else/elif chain')
     else:
         raise Exception(f'Unrecognised node type in elif/else chain: {first["type"]}')
 
 
-def generateElseStatement(else_node):
-    statements = getStatementsFromBlock(else_node["childSets"]["block"])
+def generateElseStatement(else_node, traced):
+    statements = getStatementsFromBlock(else_node["childSets"]["block"], traced)
+    if not traced:
+        return statements
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
@@ -377,13 +392,15 @@ def generateElseStatement(else_node):
 
     return statements
 
-def generateFromImportStatement(import_node):
+def generateFromImportStatement(import_node, traced, lineno):
     moduleName = import_node['childSets']['module'][0]['properties']['identifier']
     attrNames = []
     for attrNode in import_node['childSets']['attrs']:
         attrNames.append(ast.alias(attrNode['properties']['identifier']))
 
     statements = [ast.ImportFrom(moduleName, attrNames, 0)]
+    if not traced:
+        return statements
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
@@ -395,7 +412,7 @@ def generateFromImportStatement(import_node):
         ],
         keywords=[],
     )
-    statements.insert(0, ast.Expr(import_start_frame, lineno=1, col_offset=0))
+    statements.insert(0, ast.Expr(import_start_frame, lineno=lineno, col_offset=0))
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
@@ -403,13 +420,15 @@ def generateFromImportStatement(import_node):
     statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
     return statements
 
-def generateImportStatement(import_node):
+def generateImportStatement(import_node, traced, lineno):
     aliases = []
     moduleNames = import_node['childSets']['modules']
     for moduleName in moduleNames:
         aliases.append(ast.alias(moduleName['properties']['identifier']))
 
     statements = [ast.Import(aliases)]
+    if not traced:
+        return statements
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="startFrame", ctx=ast.Load())
@@ -421,7 +440,7 @@ def generateImportStatement(import_node):
         ],
         keywords=[],
     )
-    statements.insert(0, ast.Expr(import_start_frame, lineno=1, col_offset=0))
+    statements.insert(0, ast.Expr(import_start_frame, lineno=lineno, col_offset=0))
 
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
@@ -429,33 +448,38 @@ def generateImportStatement(import_node):
     statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
     return statements
 
-def generateIfStatement(if_node):
+def generateIfStatement(if_node, traced, lineno):
     condition = generateAstExpression(if_node["childSets"]["condition"][0])
 
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_IF_STATEMENT"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
+    if traced:
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(
+            value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
+        )
+        args = [
+            ast.Constant("PYTHON_IF_STATEMENT"),
+            ast.Constant("condition"),
+            condition,
+        ]
+        condition = ast.Call(func, args=args, keywords=[])
 
-    statements = getStatementsFromBlock(if_node["childSets"]["trueblock"])
+    statements = getStatementsFromBlock(if_node["childSets"]["trueblock"], traced)
 
     else_statements = []
     if "elseblocks" in if_node["childSets"] and len(if_node["childSets"]["elseblocks"]) != 0:
-        else_statements = generateElifNestedChain(if_node["childSets"]["elseblocks"])
-        else_statements.insert(0, startChildSetStatement('elseblocks'))
+        else_statements = generateElifNestedChain(if_node["childSets"]["elseblocks"], traced)
+        if traced:
+            else_statements.insert(0, startChildSetStatement('elseblocks'))
+
+    if not traced:
+        return [ast.If(condition, statements, else_statements)]
 
     statements.insert(0, startChildSetStatement('trueblock'))
-
     return [
-        ast.If(wrapped_condition, statements, else_statements),
+        ast.If(condition, statements, else_statements, lineno=lineno),
         endFrame(),
     ]
+
 
 def startFrameStatement(nodeType, childSetName):
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
@@ -511,45 +535,54 @@ def startChildSetStatement(childSetName):
     return ast.Expr(call_start_childset, lineno=1, col_offset=0)
 
 
-def generateForStatement(for_node):
+def generateForStatement(for_node, traced, lineno):
     target = generateAstAssignableExpression(for_node["childSets"]["target"])
     iterable = generateAstExpression(for_node["childSets"]["iterable"][0])
-    iterable = iterableLogExpressionResultAndStartFrame('PYTHON_FOR_LOOP_ITERATION', 'iterable', iterable)
-    blockStatements = getStatementsFromBlock(for_node["childSets"]["block"])
+    if traced:
+        iterable = iterableLogExpressionResultAndStartFrame('PYTHON_FOR_LOOP_ITERATION', 'iterable', iterable)
+
+    blockStatements = getStatementsFromBlock(for_node["childSets"]["block"], traced)
     if len(blockStatements) == 0:
         blockStatements = [ast.Pass()]
+
+    if not traced:
+        return [ast.For(target, iterable, blockStatements, [], lineno=lineno)]
 
     blockStatements.insert(0, startChildSetStatement('block'))
     blockStatements.append(endFrame())
 
     return [
         startFrameStatement('PYTHON_FOR_LOOP', 'frames'),
-        ast.For(target, iterable, blockStatements, []),
+        ast.For(target, iterable, blockStatements, [], lineno=lineno),
         endFrame()
     ]
 
 
-def generateWhileStatement(while_node):
+def generateWhileStatement(while_node, traced, lineno):
     condition = generateAstExpression(while_node["childSets"]["condition"][0])
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(
-        value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
-    )
-    args = [
-        ast.Constant("PYTHON_WHILE_LOOP_ITERATION"),
-        ast.Constant("condition"),
-        condition,
-    ]
-    wrapped_condition = ast.Call(func, args=args, keywords=[])
 
-    statements = getStatementsFromBlock(while_node["childSets"]["block"])
+    if traced:
+        key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
+        func = ast.Attribute(
+            value=key, attr="logExpressionResultAndStartFrame", ctx=ast.Load()
+        )
+        args = [
+            ast.Constant("PYTHON_WHILE_LOOP_ITERATION"),
+            ast.Constant("condition"),
+            condition,
+        ]
+        condition = ast.Call(func, args=args, keywords=[])
+
+    statements = getStatementsFromBlock(while_node["childSets"]["block"], traced)
+    if not traced:
+        return statements
 
     statements.insert(0, startChildSetStatement('block'))
     statements.append(endFrame())
 
     return [
         startFrameStatement('PYTHON_WHILE_LOOP', 'frames'),
-        ast.While(wrapped_condition, statements, []),
+        ast.While(condition, statements, [], lineno=lineno),
         endLoop(),
         endFrame()
     ]
@@ -566,88 +599,112 @@ def generateFunctionArguments(arg_list):
         kw_defaults=[],
         defaults=[])
 
-def generateFunctionStatement(func_node):
-    nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
-    func_id = func_node['properties']['id']
-
+def generateTracedFunctionBlock(func_id, block_nodes):
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
     func = ast.Attribute(
-        value=key, attr="startDetachedFrame", ctx=ast.Load()
+        value=key, attr="func", ctx=ast.Load()
     )
     args = [
-        ast.Constant("PYTHON_FUNCTION_CALL"),
-        ast.Constant("body"),
         ast.Constant(func_id)
     ]
+    constructor = ast.Call(func, args, keywords=[])
+    assign_node = ast.Assign([ast.Name('t', ast.Store())], constructor)
+    traced_statements = getStatementsFromBlock(block_nodes, True)
+    statements = getStatementsFromBlock(block_nodes, False)
+
+    cap_expr = ast.Attribute(value=ast.Name('t', ast.Load()), attr="cap", ctx=ast.Load())
+    if_node = ast.If(cap_expr, traced_statements, statements)
+
+    with_node = ast.With([ast.withitem(ast.Name('t', ast.Load()))], [if_node])
+
+    return [assign_node, with_node]
+
+def generateFunctionStatement(func_node, traced, lineno):
+    nameIdentifier = func_node['childSets']['identifier'][0]['properties']['identifier']
+    func_id = func_node['properties']['id']
     decorators = [generateAstExpression(dec['childSets']['expression'][0]) for dec in func_node['childSets']['decorators']]
-    call_start_frame = ast.Call(func, args, keywords=[])
 
-    statements = getStatementsFromBlock(func_node["childSets"]["body"])
-
-    key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="endFrame", ctx=ast.Load())
-    call_end_frame = ast.Call(func, args=[], keywords=[])
-
-    statements.insert(0, ast.Expr(call_start_frame, lineno=1, col_offset=0))
-    statements.append(ast.Expr(call_end_frame, lineno=1, col_offset=0))
+    if traced:
+        statements = generateTracedFunctionBlock(func_id, func_node["childSets"]["body"])
+    else:
+        statements = getStatementsFromBlock(func_node["childSets"]["body"], traced)
 
     funcArgs = generateFunctionArguments(func_node['childSets']['params'])
 
-    return [ast.FunctionDef(nameIdentifier, funcArgs, statements, decorators)]
+    return [ast.FunctionDef(nameIdentifier, funcArgs, statements, decorators, lineno=lineno)]
 
 
-def generateReturnStatement(return_node):
+def generateReturnStatement(return_node, traced, lineno):
     ret_expr = generateAstExpression(return_node['childSets']['value'][0])
     if ret_expr is None:
         ret_expr = ast.Constant(None)
+
+    if not traced:
+        return [ast.Return(ret_expr, lineno=lineno)]
+
     key = ast.Name(id=SPLOOT_KEY, ctx=ast.Load())
-    func = ast.Attribute(value=key, attr="logExpressionResultAndEndFrames", ctx=ast.Load())
-    args = [ast.Constant("PYTHON_RETURN"), ast.Constant("PYTHON_FUNCTION_CALL"), ret_expr]
+    func = ast.Attribute(value=key, attr="logExpressionResult", ctx=ast.Load())
+    args = [ast.Constant("PYTHON_RETURN"), ast.Dict([], []), ret_expr]
     wrapped = ast.Call(func, args=args, keywords=[])
     return [
-        ast.Return(wrapped)
+        ast.Return(wrapped, lineno=lineno)
     ]
 
-def generateBreakStatement(node):
+def generateBreakStatement(node, traced, lineno):
+    if not traced:
+        return ast.Break(lineno=lineno)
+
     return [
         endLoop(),
-        ast.Break()
+        ast.Break(lineno=lineno)
     ]
 
-def generateContinueStatement(node):
+def generateContinueStatement(node, traced, lineno):
+    if not traced:
+        return ast.Continue(lineno=lineno)
+
     return [
         endLoop(),
-        ast.Continue()
+        ast.Continue(lineno=lineno)
     ]
 
-def generateAstStatement(sploot_node):
+def generateAstStatement(sploot_node, traced):
     if sploot_node["type"] == "PYTHON_STATEMENT":
         if len(sploot_node['childSets']['statement']) != 0:
-            return generateAstStatement(sploot_node['childSets']['statement'][0])
+            lineno = 1
+            if 'meta' in sploot_node and 'lineno' in sploot_node['meta']:
+                lineno = sploot_node['meta']['lineno']
+            return generateAstStatementContents(sploot_node['childSets']['statement'][0], traced, lineno)
+        return None
+
+def generateAstStatementContents(sploot_node, traced, lineno):
+    if sploot_node["type"] == "PYTHON_STATEMENT":
+        if len(sploot_node['childSets']['statement']) != 0:
+            return generateAstStatement(sploot_node['childSets']['statement'][0], traced)
         return None
     elif sploot_node["type"] == "PYTHON_EXPRESSION":
-        exp = generateAstExpressionStatement(sploot_node)
+        exp = generateAstExpressionStatement(sploot_node, traced, lineno)
         return [exp]
     elif sploot_node["type"] == "PYTHON_IMPORT":
-        return generateImportStatement(sploot_node)
+        return generateImportStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_FROM_IMPORT":
-        return generateFromImportStatement(sploot_node)
+        return generateFromImportStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_ASSIGNMENT":
-        return [generateAssignmentStatement(sploot_node)]
+        return [generateAssignmentStatement(sploot_node, traced, lineno),]
     elif sploot_node["type"] == "PYTHON_IF_STATEMENT":
-        return generateIfStatement(sploot_node)
+        return generateIfStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_WHILE_LOOP":
-        return generateWhileStatement(sploot_node)
+        return generateWhileStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_FOR_LOOP":
-        return generateForStatement(sploot_node)
+        return generateForStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_FUNCTION_DECLARATION":
-        return generateFunctionStatement(sploot_node)
+        return generateFunctionStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PYTHON_RETURN":
-        return generateReturnStatement(sploot_node)
+        return generateReturnStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PY_BREAK":
-        return generateBreakStatement(sploot_node)
+        return generateBreakStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PY_CONTINUE":
-        return generateContinueStatement(sploot_node)
+        return generateContinueStatement(sploot_node, traced, lineno)
     elif sploot_node["type"] == "PY_COMMENT":
         return None
     else:
@@ -674,14 +731,15 @@ class CaptureContext:
             res["sideEffects"] = sideEffects
         self.blocks[self.childset].append(res)
 
-    def addExceptionResult(self, exceptionType, message):
-        self.blocks[self.childset].append(
-            {
+    def addExceptionResult(self, exceptionType, message, inFunction=None):
+        exception_details = {
                 "type": "EXCEPTION",
                 "exceptionType": exceptionType,
                 "exceptionMessage": message,
             }
-        )
+        if inFunction:
+            exception_details["exceptionInFunction"] = inFunction
+        self.blocks[self.childset].append(exception_details)
 
     def checkFrameLimit(self):
         if iterationLimit and len(self.blocks[self.childset]) > iterationLimit:
@@ -694,12 +752,47 @@ class CaptureContext:
         }
 
 
+class FunctionFrame:
+    def __init__(self, capture, frame_no, func_id):
+        self.capture = capture
+        self.func_id = func_id
+        self.frame_no = frame_no
+        if frame_no > 100:
+            self.cap = False
+        else:
+            self.cap = True
+
+    def __enter__(self):
+        if self.cap:
+            self.capture.startDetachedFrame("PYTHON_FUNCTION_CALL", "body", self.func_id)
+
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        if exc_type:
+            if self.cap:
+                self.capture.logTracedException(exc_value)
+            self.capture.addExceptionFrame(self.func_id, self.frame_no, exc_tb.tb_lineno, exc_value)
+
+        if self.cap:
+            self.capture.endFrameType("PYTHON_FUNCTION_CALL")
+
+
 class SplootCapture:
     def __init__(self):
         self.root = CaptureContext("PYTHON_FILE", "body")
         self.stack = [self.root]
         self.detachedFrames = {}
+        self.detachedFramesCount = {}
+        self.detachedFramesException = {}
         self.sideEffects = []
+        self.lastException = None
+
+    def func(self, func_id):
+        self.detachedFrames.setdefault(func_id, [])
+        self.detachedFramesCount.setdefault(func_id, 0)
+        frames = self.detachedFrames[func_id]
+        frameno =  self.detachedFramesCount[func_id]
+        self.detachedFramesCount[func_id] = frameno + 1
+        return FunctionFrame(self, frameno, func_id)
 
     def logExpressionResultAndStartFrame(self, nodetype, childset, result):
         self.startFrame(nodetype, childset)
@@ -715,9 +808,13 @@ class SplootCapture:
 
     def startDetachedFrame(self, type, childset, id):
         frame = CaptureContext(type, childset)
-        self.detachedFrames.setdefault(id, [])
         self.detachedFrames[id].append(frame)
         self.stack.append(frame)
+
+    def endFrameType(self, type):
+        while type != self.stack[-1].type:
+            self.endFrame()
+        self.endFrame()
 
     def startFrame(self, type, childset):
         frame = CaptureContext(type, childset)
@@ -748,13 +845,45 @@ class SplootCapture:
         self.sideEffects = []
         return result
 
-    def logException(self, exceptionType, message):
-        self.stack[-1].addExceptionResult(exceptionType, message)
+    def addExceptionFrame(self, func_id, frameno, lineno, exception):
+        key = exception
+        if key not in self.detachedFramesException:
+            self.detachedFramesException[key] = (func_id, frameno, lineno)
+
+    def logTracedException(self, exception):
+        exceptionType = str(type(exception).__name__)
+        message = str(exception)
+        traceback = exception.__traceback__.tb_next
+        functionName = None
+        if traceback and traceback.tb_frame.f_code.co_filename == 'main.py':
+            functionName = traceback.tb_frame.f_code.co_name
+        self.stack[-1].addExceptionResult(exceptionType, message, functionName)
+
+    def logException(self, exception):
+        exceptionType = str(type(exception).__name__)
+        message = str(exception)
+        traceback = exception.__traceback__.tb_next
+        functionName = None
+        if traceback.tb_next and traceback.tb_next.tb_frame.f_code.co_filename == 'main.py':
+            functionName = traceback.tb_next.tb_frame.f_code.co_name
+        self.stack[-1].addExceptionResult(exceptionType, message, functionName)
+
+        self.lastException = {"type": exceptionType, "message": message}
+        if exception in self.detachedFramesException:
+            func_id, frameno, lineno = self.detachedFramesException[exception]
+            self.lastException["func_id"] = func_id
+            self.lastException["frameno"] = frameno
+            self.lastException["lineno"] = lineno
 
     def toDict(self):
         cap = {"root": self.root.toDict(), "detached": {}}
+        if self.lastException:
+            cap["lastException"] = self.lastException
         for id in self.detachedFrames:
-            cap['detached'][id] = [context.toDict() for context in self.detachedFrames[id]]
+            cap['detached'][id] = {
+                'count': self.detachedFramesCount[id],
+                'frames': [context.toDict() for context in self.detachedFrames[id]]
+            }
         return cap
 
 
@@ -767,10 +896,9 @@ def executePythonFile(tree, runType="COMMAND_LINE", eventData=None) -> Tuple[dic
     global response
 
     if tree["type"] == "PYTHON_FILE":
-        statements = getStatementsFromBlock(tree["childSets"]["body"])
+        statements = getStatementsFromBlock(tree["childSets"]["body"], True)
 
         if runType == "COMMAND_LINE" or runType == "SCHEDULE":
-            # to run these, we just run the entire file!
             pass
         elif runType == "HTTP_REQUEST":
             # we need to parse our http scenario event into serverless_wsgi so
@@ -796,7 +924,7 @@ if flask_app:
             raise NotImplementedError("This run type is not implemented: " + runType)
 
         mods = ast.Module(body=statements, type_ignores=[])
-        code = compile(ast.fix_missing_locations(mods), "<string>", mode="exec")
+        code = compile(ast.fix_missing_locations(mods), "main.py", mode="exec")
         # Uncomment to print generated Python code
         # print(ast.unparse(ast.fix_missing_locations(mods)))
         # print(ast.dump(mods))
@@ -812,9 +940,9 @@ if flask_app:
             exec(code, {SPLOOT_KEY: capture, '__name__': '__main__', SPLOOT_HANDLER_ARG: eventData, SPLOOT_SET_RESPONSE_FUNC: set_response})
         except EOFError as e:
             # This is because we don't have inputs in a rerun.
-            capture.logException(type(e).__name__, str(e))
+            capture.logException(e)
         except BaseException as e:
-            capture.logException(type(e).__name__, str(e))
+            capture.logException(e)
             traceback.print_exc()
 
         return (capture.toDict(), response)

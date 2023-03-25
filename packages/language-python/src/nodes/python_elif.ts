@@ -14,6 +14,7 @@ import {
   SerializedNode,
   SingleStatementData,
   SplootFragment,
+  SplootNode,
   StatementCapture,
   SuggestedNode,
   SuggestionGenerator,
@@ -90,9 +91,32 @@ export class PythonElifBlock extends PythonNode {
     ;(this.getCondition().getChild(0) as PythonExpression).requireNonEmpty('If condition is required')
   }
 
+  recursivelySetLineNumbers(lineNumber: number): number {
+    this.metadata.set('lineno', lineNumber)
+    lineNumber += 1
+    for (const child of this.getBlock().getChildren()) {
+      lineNumber = child.recursivelySetLineNumbers(lineNumber)
+    }
+    return lineNumber
+  }
+
+  getChildNodeByLineNumber(lineNumber: number): SplootNode {
+    if (this.metadata.get('lineno') === lineNumber) {
+      return this
+    }
+    for (const child of this.getBlock().getChildren()) {
+      const res = child.getChildNodeByLineNumber(lineNumber)
+      if (res) {
+        return res
+      }
+    }
+    return null
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
+      this.getBlock().recursivelyClearRuntimeCapture()
       return true
     }
     if (capture.type != this.type) {
@@ -125,10 +149,7 @@ export class PythonElifBlock extends PythonNode {
     mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
     mutation.annotations = []
     this.fireMutation(mutation)
-    const blockChildren = this.getBlock().children
-    for (let i = 0; i < blockChildren.length; i++) {
-      blockChildren[i].recursivelyClearRuntimeCapture()
-    }
+    this.getBlock().recursivelyClearRuntimeCapture()
   }
 
   static deserializer(serializedNode: SerializedNode): PythonElifBlock {

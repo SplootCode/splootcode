@@ -76,6 +76,14 @@ export class PythonFile extends PythonNode {
     return moduleNode
   }
 
+  recursivelySetLineNumbers(startNumber: number): number {
+    let lineNumber = startNumber
+    for (const node of this.getBody().children) {
+      lineNumber = node.recursivelySetLineNumbers(lineNumber)
+    }
+    return lineNumber
+  }
+
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)

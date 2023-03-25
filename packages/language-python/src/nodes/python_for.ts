@@ -196,6 +196,14 @@ export class PythonForLoop extends PythonNode {
     const frame = frames[index]
 
     if (frame.type === 'EXCEPTION') {
+      if (frame.exceptionInFunction) {
+        annotation.push({
+          type: NodeAnnotationType.SideEffect,
+          value: {
+            message: `Exception in ${frame.exceptionInFunction}`,
+          },
+        })
+      }
       annotation.push({
         type: NodeAnnotationType.RuntimeError,
         value: {
@@ -230,6 +238,15 @@ export class PythonForLoop extends PythonNode {
     mutation.annotations = annotation
     mutation.loopAnnotation = { label: 'Repeated', iterations: frames.length, currentFrame: this.runtimeCaptureFrame }
     this.fireMutation(mutation)
+  }
+
+  recursivelyClearRuntimeCapture(): void {
+    const mutation = new NodeMutation()
+    mutation.node = this
+    mutation.type = NodeMutationType.SET_RUNTIME_ANNOTATIONS
+    mutation.annotations = []
+    this.fireMutation(mutation)
+    this.getBlock().recursivelyClearRuntimeCapture()
   }
 
   static deserializer(serializedNode: SerializedNode): PythonForLoop {

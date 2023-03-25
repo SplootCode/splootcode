@@ -140,28 +140,31 @@ add(123, 45)
             }
         },
         'detached': {
-            'TEST_FUNC_ID': [
-                {
-                    'type': 'PYTHON_FUNCTION_CALL',
-                    'data': {
-                        'body': [{
-                            'type': 'PYTHON_EXPRESSION',
-                            'data': {'result': 'None','resultType': 'NoneType'},
-                            'sideEffects': [{'type': 'stdout', 'value': '7'}, {'type': 'stdout', 'value': '\n'}],
-                        }]
+            'TEST_FUNC_ID': {
+                'count': 2,
+                'frames': [
+                    {
+                        'type': 'PYTHON_FUNCTION_CALL',
+                        'data': {
+                            'body': [{
+                                'type': 'PYTHON_EXPRESSION',
+                                'data': {'result': 'None','resultType': 'NoneType'},
+                                'sideEffects': [{'type': 'stdout', 'value': '7'}, {'type': 'stdout', 'value': '\n'}],
+                            }]
+                        },
                     },
-                },
-                {
-                    'type': 'PYTHON_FUNCTION_CALL',
-                    'data': {
-                        'body': [{
-                            'type': 'PYTHON_EXPRESSION',
-                            'data': {'result': 'None','resultType': 'NoneType'},
-                            'sideEffects': [{'type': 'stdout', 'value': '168'}, {'type': 'stdout', 'value': '\n'}],
-                        }]
-                    },
-                }
-            ]
+                    {
+                        'type': 'PYTHON_FUNCTION_CALL',
+                        'data': {
+                            'body': [{
+                                'type': 'PYTHON_EXPRESSION',
+                                'data': {'result': 'None','resultType': 'NoneType'},
+                                'sideEffects': [{'type': 'stdout', 'value': '168'}, {'type': 'stdout', 'value': '\n'}],
+                            }]
+                        },
+                    }
+                ]
+            }
         }})
 
     def testList(self):

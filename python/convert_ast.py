@@ -6,6 +6,8 @@ import ast_comments
 AST_OPERATORS = {type(value["ast"]): key for key, value in OPERATORS.items()}
 UNARY_AST_OPERATORS = {type(value["ast"]): key for key, value in UNARY_OPERATORS.items()}
 
+lineno = None
+
 # These need to match packages/core/language/node_cateogry_registry.ts
 class NodeCateogry:
   PythonFile = 25
@@ -29,12 +31,15 @@ def convertOperator(astOp):
   if type(astOp) in UNARY_AST_OPERATORS:
     return UNARY_AST_OPERATORS[type(astOp)]
 
-def SplootNode(type, childSets={}, properties={}):
-  return {
+def SplootNode(type, childSets={}, properties={}, metadata=None):
+  node =  {
     "type": type,
     "childSets": childSets,
     "properties": properties
   }
+  if metadata is not None:
+    node["meta"] = metadata
+  return node
 
 def generateAssignmentTargets(targets):
   if len(targets) != 1:
@@ -273,34 +278,37 @@ def generateFunction(func):
   }, {'id': None})
 
 def generateSplootStatement(statement):
+  global lineno
+  statement_lineno = lineno
+  lineno += 1
   if type(statement) == ast.Expr:
     expr = generateExpression(statement.value)
-    return SplootNode("PYTHON_STATEMENT", {"statement": [expr]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [expr]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.Assign:
     assign = generateAssignment(statement)
-    return SplootNode("PYTHON_STATEMENT", {"statement": [assign]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [assign]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.For:
     forNode = generateFor(statement)
-    return SplootNode("PYTHON_STATEMENT", {"statement": [forNode]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [forNode]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.While:
     whileNode = generateWhile(statement)
-    return SplootNode("PYTHON_STATEMENT", {"statement": [whileNode]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [whileNode]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.If:
-    return SplootNode("PYTHON_STATEMENT", {"statement": [generateIf(statement)]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [generateIf(statement)]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.FunctionDef:
     func = generateFunction(statement)
-    return SplootNode("PYTHON_STATEMENT", {"statement": [func]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [func]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.Break:
-    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_BREAK')]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_BREAK')]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.Continue:
-    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_CONTINUE')]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode('PY_CONTINUE')]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.Return:
     value = SplootNode("PYTHON_EXPRESSION", {"tokens": []})
 
     if statement.value:
       value = generateExpression(statement.value)
 
-    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode("PYTHON_RETURN", {"value": [value]})]})
+    return SplootNode("PYTHON_STATEMENT", {"statement": [SplootNode("PYTHON_RETURN", {"value": [value]})]}, metadata={'lineno': statement_lineno})
   elif type(statement) == ast.Import:
     return SplootNode("PYTHON_STATEMENT", {"statement": [generateImport(statement)]})
   elif type(statement) == ast.ImportFrom:
@@ -316,6 +324,8 @@ def generateSplootStatement(statement):
   
 
 def splootFromPython(codeString):
+  global lineno
+  lineno = 1
   tree = ast_comments.parse(codeString)
   fileNode = {"type":"PYTHON_FILE","properties":{},"childSets":{"body": []}}
   fileNode["childSets"]["body"] = getBlockBodyFromStatements(tree.body)
@@ -323,6 +333,8 @@ def splootFromPython(codeString):
   return fileNode
 
 def splootNodeFromPython(codeString):
+  global lineno
+  lineno = 1
   tree = ast_comments.parse(codeString)
   
   if len(tree.body) > 1:
@@ -341,6 +353,8 @@ def splootNodeFromPython(codeString):
   return statementNode['childSets']['statement'][0]
 
 def splootNodesFromPython(codeString):
+  global lineno
+  lineno = 1
   tree = ast.parse(codeString)
 
   if len(tree.body) > 1:

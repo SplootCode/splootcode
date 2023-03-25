@@ -45,7 +45,14 @@ export interface PythonFileData {
 }
 
 export interface FunctionDeclarationData {
+  count: number
   calls: StatementCapture[]
+  exception: {
+    frameno: number
+    lineno: number
+    message: string
+    type: string
+  }
 }
 
 export interface FunctionCallData {
@@ -72,9 +79,17 @@ export interface StatementCapture {
   sideEffects?: SideEffect[]
   exceptionType?: string
   exceptionMessage?: string
+  exceptionInFunction?: string
 }
 
 export interface CapturePayload {
   root: StatementCapture
-  detached: { [key: string]: StatementCapture[] }
+  detached: { [key: string]: { count: number; frames: StatementCapture[] } }
+  lastException?: {
+    func_id: string
+    frameno: number
+    lineno: number
+    message: string
+    type: string
+  }
 }
