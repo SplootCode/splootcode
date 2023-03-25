@@ -16,15 +16,15 @@ import { PythonNode } from './python_node'
 export function formatPythonData(value: string, type: string): string {
   switch (type) {
     case 'str':
-      if (value.length > 20) {
-        return `"${value.substring(0, 17)}..." (str)`
+      if (value.length > 30) {
+        return `"${value.substring(0, 27)}..." (str)`
       }
       return `"${value}" (str)`
     case 'bool':
     case 'NoneType':
       return value
     default:
-      if (value.length > 30) {
+      if (value.length > 50) {
         return `(${type})`
       }
       return `${value} (${type})`
