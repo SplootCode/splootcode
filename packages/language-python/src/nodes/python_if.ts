@@ -127,6 +127,8 @@ export class PythonIfStatement extends PythonNode {
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.getTrueBlock().recursivelyApplyRuntimeCapture([])
+      this.getElseBlocks().recursivelyApplyRuntimeCapture([])
       return false
     }
     const data = capture.data as IfStatementData

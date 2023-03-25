@@ -88,6 +88,8 @@ export class PythonReturn extends PythonNode {
     }
     if (capture.type != 'PYTHON_RETURN') {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
 
     const annotations: NodeAnnotation[] = getSideEffectAnnotations(capture)

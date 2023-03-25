@@ -121,6 +121,8 @@ export class PythonElifBlock extends PythonNode {
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
     const data = capture.data as ElseIfStatementData
     const condition = data.condition[0]
