@@ -105,6 +105,8 @@ export class PythonExpression extends PythonNode {
     }
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
     const annotations: NodeAnnotation[] = getSideEffectAnnotations(capture)
     const data = capture.data as SingleStatementData

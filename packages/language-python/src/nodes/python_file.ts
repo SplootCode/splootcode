@@ -87,6 +87,8 @@ export class PythonFile extends PythonNode {
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
     const data = capture.data as PythonFileData
     this.getBody().recursivelyApplyRuntimeCapture(data.body)

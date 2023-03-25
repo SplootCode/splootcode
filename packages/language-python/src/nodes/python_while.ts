@@ -180,6 +180,9 @@ export class PythonWhileLoop extends PythonNode {
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
     if (capture.type != this.type) {
       console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.runtimeCapture = null
+      this.selectRuntimeCaptureFrame(0)
+      return false
     }
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)

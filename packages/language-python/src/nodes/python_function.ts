@@ -244,13 +244,15 @@ export class PythonFunctionDeclaration extends PythonNode {
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
-    if (capture.type != this.type) {
-      return false
-    }
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
       this.runtimeCapture = null
       return true
+    }
+    if (capture.type != this.type) {
+      this.runtimeCapture = null
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
     const data = capture.data as FunctionDeclarationData
     this.runtimeCapture = data

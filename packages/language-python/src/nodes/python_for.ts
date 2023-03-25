@@ -153,13 +153,16 @@ export class PythonForLoop extends PythonNode {
   }
 
   recursivelyApplyRuntimeCapture(capture: StatementCapture): boolean {
-    if (capture.type != this.type) {
-      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
-    }
     if (capture.type === 'EXCEPTION') {
       this.applyRuntimeError(capture)
       this.runtimeCapture = null
       return true
+    }
+
+    if (capture.type != this.type) {
+      console.warn(`Capture type ${capture.type} does not match node type ${this.type}`)
+      this.recursivelyClearRuntimeCapture()
+      return false
     }
     const data = capture.data as ForLoopData
     this.runtimeCapture = data
