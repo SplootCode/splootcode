@@ -249,8 +249,11 @@ def parseExpression(lhs, tokens, currentIndex, minPrecedence):
         if isBoolOp(operator):
             lhs = ast.BoolOp(getAstOperator(operator), [lhs, rhs])
         elif isCompareOp(operator):
-            # TODO: Support mutiple comparators, e.g. a < b < c
-            lhs = ast.Compare(lhs, [getAstOperator(operator)], [rhs])
+            if type(lhs) is ast.Compare:
+                lhs.ops.append(getAstOperator(operator))
+                lhs.comparators.append(rhs)
+            else:
+                lhs = ast.Compare(lhs, [getAstOperator(operator)], [rhs])
         else:
             lhs = ast.BinOp(lhs, getAstOperator(operator), rhs)
     return [lhs, currentIndex]

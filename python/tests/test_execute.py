@@ -424,3 +424,34 @@ say_hello()
 
         f.seek(0)
         self.assertEqual(f.read(), "hello\nhello\n")
+
+
+
+    def testComparisonChain(self):
+        splootFile = splootFromPython('''
+print(5 > 4 > 2)
+print(5 > 4 < 10)
+print(5 > 3 == 3)
+print(3 == 3 == 0)
+print(3 == 3 == True)
+print(1 + 3 == 4 == 2 + 2 == 8 / 2)
+print(3 == 3 == 3 and True)
+print(False or 3 == 3 == True)
+''')
+
+        f = io.StringIO()
+        f.write = wrapStdout(f.write)
+        with contextlib.redirect_stdout(f):
+            executePythonFile(splootFile)
+
+        f.seek(0)
+        res = f.read()
+        self.assertEqual(res, """True
+True
+True
+False
+False
+True
+True
+False
+""")
