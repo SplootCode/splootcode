@@ -667,7 +667,7 @@ def generateReturnStatement(return_node, traced, lineno):
 
 def generateBreakStatement(node, traced, lineno):
     if not traced:
-        return ast.Break(lineno=lineno)
+        return [ast.Break(lineno=lineno)]
 
     return [
         endLoop(),
@@ -676,7 +676,7 @@ def generateBreakStatement(node, traced, lineno):
 
 def generateContinueStatement(node, traced, lineno):
     if not traced:
-        return ast.Continue(lineno=lineno)
+        return [ast.Continue(lineno=lineno)]
 
     return [
         endLoop(),
