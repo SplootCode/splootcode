@@ -1,8 +1,17 @@
 import 'tslib'
-import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
+import {
+  AutocompleteWorkerMessage,
+  FetchData,
+  FetchHandler,
+  FetchSyncErrorType,
+  FileSpec,
+  ResponseData,
+  WorkerManagerAutocompleteMessage,
+} from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
+import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { WorkerManager, WorkerState } from './worker-manager'
 
 const streamlit_config = `
@@ -13,12 +22,64 @@ runOnSave = true
 gatherUsageStats = false
 `
 
+class AutocompleteWorkerManager {
+  private AutocompleteWorker: new () => Worker
+  private worker: Worker
+  private workerReady: boolean
+  private sendToParentWindow: (payload: EditorMessage) => void
+
+  constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
+    this.AutocompleteWorker = AutocompleteWorker
+    this.sendToParentWindow = sendToParentWindow
+
+    this.initialize()
+  }
+
+  initialize() {
+    if (!this.worker) {
+      this.worker = new this.AutocompleteWorker()
+      this.worker.addEventListener('message', this.handleMessageFromWorker)
+    }
+  }
+
+  sendMessage(message: WorkerManagerAutocompleteMessage) {
+    this.worker.postMessage(message)
+  }
+
+  sendParseTrees(parseTrees: ParseTrees) {
+    this.sendMessage({
+      type: 'parse_trees',
+      parseTrees,
+    })
+  }
+
+  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
+    this.sendMessage({
+      type: 'request_expression_type_info',
+      request,
+    })
+  }
+
+  handleMessageFromWorker = (event: MessageEvent<AutocompleteWorkerMessage>) => {
+    const type = event.data.type
+
+    if (type === 'ready') {
+      this.workerReady = true
+    } else if (type === 'expression_type_info') {
+      this.sendToParentWindow(event.data)
+    } else {
+      console.warn(`Unrecognised message from autocomplete worker: ${type}`)
+    }
+  }
+}
+
 class RuntimeStateManager {
   private parentWindowDomain: string | null
   private parentWindowDomainRegex: string
   private RuntimeWorker: new () => Worker
   private AutocompleteWorker: new () => Worker
   private workerManager: WorkerManager
+  private autocompleteWorkerManager: AutocompleteWorkerManager
   private workspace: Map<string, FileSpec>
   private envVars: Map<string, string>
   private initialFilesLoaded: boolean
@@ -99,9 +160,10 @@ class RuntimeStateManager {
       },
       this.sendToParent,
       this.fetchHandler,
-      this.textFileValueCallback,
-      this.AutocompleteWorker
+      this.textFileValueCallback
     )
+
+    this.autocompleteWorkerManager = new AutocompleteWorkerManager(this.AutocompleteWorker, this.sendToParent)
   }
 
   initializeStlite(files: Map<string, string>) {
@@ -231,15 +293,14 @@ class RuntimeStateManager {
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break
-
-      case 'parse_trees':
-        this.workerManager.sendParseTrees(data.parseTrees)
-        break
-      case 'request_expression_type_info':
-        this.workerManager.requestExpressionTypeInfo(data.request)
-        break
       case 'export_text_code':
         this.workerManager.generateTextCode(this.runType, this.workspace, true)
+        break
+      case 'parse_trees':
+        this.autocompleteWorkerManager.sendParseTrees(data.parseTrees)
+        break
+      case 'request_expression_type_info':
+        this.autocompleteWorkerManager.requestExpressionTypeInfo(data.request)
         break
       default:
         console.warn('Unrecognised message recieved:', event.data)

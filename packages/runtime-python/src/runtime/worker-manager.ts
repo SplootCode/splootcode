@@ -1,14 +1,5 @@
-import {
-  AutocompleteWorkerMessage,
-  FetchHandler,
-  FileSpec,
-  ResponseData,
-  WorkerManagerAutocompleteMessage,
-  WorkerManagerMessage,
-  WorkerMessage,
-} from './common'
 import { EditorMessage } from '../message_types'
-import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
+import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 const INPUT_BUF_SIZE = 100
@@ -27,7 +18,6 @@ export enum WorkerState {
 
 export class WorkerManager {
   private RuntimeWorker: new () => Worker
-  private AutocompleteWorker: new () => Worker
   private runtimeWorker: Worker
   private autocompleteWorker: Worker
   private autocompleteWorkerReady: boolean
@@ -56,12 +46,10 @@ export class WorkerManager {
     stateCallback: (state: WorkerState) => void,
     sendToParentWindow: (payload: EditorMessage) => void,
     fetchHandler: FetchHandler,
-    textFileValueCallback: (fileContents: Map<string, string>) => void,
-    AutocompleteWorker: new () => Worker
+    textFileValueCallback: (fileContents: Map<string, string>) => void
   ) {
     this.sendToParentWindow = sendToParentWindow
     this.RuntimeWorker = RuntimeWorker
-    this.AutocompleteWorker = AutocompleteWorker
     this.runtimeWorker = null
     this.standardIO = standardIO
     this.inputPlayback = []
@@ -79,19 +67,10 @@ export class WorkerManager {
       this.runtimeWorker = new this.RuntimeWorker()
       this.runtimeWorker.addEventListener('message', this.handleMessageFromWorker)
     }
-
-    if (!this.autocompleteWorker) {
-      this.autocompleteWorker = new this.AutocompleteWorker()
-      this.autocompleteWorker.addEventListener('message', this.handleMessageFromAutocompleteWorker)
-    }
   }
 
-  sendMessageToRuntime(message: WorkerManagerMessage) {
+  sendMessge(message: WorkerManagerMessage) {
     this.runtimeWorker.postMessage(message)
-  }
-
-  sendMessageToAutocomplete(message: WorkerManagerAutocompleteMessage) {
-    this.autocompleteWorker.postMessage(message)
   }
 
   run(
@@ -109,7 +88,7 @@ export class WorkerManager {
     this.fetchBufferMeta = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * 3))
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
-    this.sendMessageToRuntime({
+    this.sendMessge({
       type: 'run',
       runType: runType,
       eventData: eventData,
@@ -129,7 +108,7 @@ export class WorkerManager {
   ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
-    this.sendMessageToRuntime({
+    this.sendMessge({
       type: 'rerun',
       runType: runType,
       eventData: eventData,
@@ -146,7 +125,7 @@ export class WorkerManager {
       this._workerState = WorkerState.RUNNING
       this.stateCallBack(this._workerState)
     }
-    this.sendMessageToRuntime({
+    this.sendMessge({
       type: 'generate_text_code',
       runType: runType,
       workspace: workspace,
@@ -155,23 +134,9 @@ export class WorkerManager {
   }
 
   loadModule(moduleName: string) {
-    this.sendMessageToRuntime({
+    this.sendMessge({
       type: 'loadModule',
       moduleName: moduleName,
-    })
-  }
-
-  sendParseTrees(parseTrees: ParseTrees) {
-    this.sendMessageToAutocomplete({
-      type: 'parse_trees',
-      parseTrees,
-    })
-  }
-
-  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
-    this.sendMessageToAutocomplete({
-      type: 'request_expression_type_info',
-      request,
     })
   }
 
@@ -278,18 +243,6 @@ export class WorkerManager {
     this.runtimeWorker = null
 
     this.initialiseWorker()
-  }
-
-  handleMessageFromAutocompleteWorker = (event: MessageEvent<AutocompleteWorkerMessage>) => {
-    const type = event.data.type
-
-    if (type === 'ready') {
-      this.autocompleteWorkerReady = true
-    } else if (type === 'expression_type_info') {
-      this.sendToParentWindow(event.data)
-    } else {
-      console.warn(`Unrecognised message from autocomplete worker: ${type}`)
-    }
   }
 
   handleMessageFromWorker = (event: MessageEvent<WorkerMessage>) => {
