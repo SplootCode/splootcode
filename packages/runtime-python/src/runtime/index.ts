@@ -2,6 +2,7 @@ import 'tslib'
 import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
+import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
 import { WorkerManager, WorkerState } from './worker-manager'
 
@@ -17,7 +18,9 @@ class RuntimeStateManager {
   private parentWindowDomain: string | null
   private parentWindowDomainRegex: string
   private RuntimeWorker: new () => Worker
+  private AutocompleteWorker: new () => Worker
   private workerManager: WorkerManager
+  private autocompleteWorkerManager: AutocompleteWorkerManager
   private workspace: Map<string, FileSpec>
   private envVars: Map<string, string>
   private initialFilesLoaded: boolean
@@ -27,10 +30,16 @@ class RuntimeStateManager {
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
 
-  constructor(parentWindowDomainRegex: string, RuntimeWorker: new () => Worker, fetchHandler: FetchHandler) {
+  constructor(
+    parentWindowDomainRegex: string,
+    RuntimeWorker: new () => Worker,
+    AutocompleteWorker: new () => Worker,
+    fetchHandler: FetchHandler
+  ) {
     this.parentWindowDomain = null
     this.parentWindowDomainRegex = parentWindowDomainRegex
     this.RuntimeWorker = RuntimeWorker
+    this.AutocompleteWorker = AutocompleteWorker
     this.initialFilesLoaded = false
     this.workspace = new Map()
     this.envVars = new Map()
@@ -63,7 +72,7 @@ class RuntimeStateManager {
     }
   }
 
-  initialiseWorkerManager = () => {
+  initialiseWorkerManagers = () => {
     this.workerManager = new WorkerManager(
       this.RuntimeWorker,
       {
@@ -94,6 +103,8 @@ class RuntimeStateManager {
       this.fetchHandler,
       this.textFileValueCallback
     )
+
+    this.autocompleteWorkerManager = new AutocompleteWorkerManager(this.AutocompleteWorker, this.sendToParent)
   }
 
   initializeStlite(files: Map<string, string>) {
@@ -223,16 +234,14 @@ class RuntimeStateManager {
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break
-
-      case 'parse_trees':
-        this.workerManager.sendParseTrees(data.parseTrees)
-
-        break
-      case 'request_expression_type_info':
-        this.workerManager.requestExpressionTypeInfo(data.request)
-        break
       case 'export_text_code':
         this.workerManager.generateTextCode(this.runType, this.workspace, true)
+        break
+      case 'parse_trees':
+        this.autocompleteWorkerManager.sendParseTrees(data.parseTrees)
+        break
+      case 'request_expression_type_info':
+        this.autocompleteWorkerManager.requestExpressionTypeInfo(data.request)
         break
       default:
         console.warn('Unrecognised message recieved:', event.data)
@@ -286,9 +295,10 @@ const defaultFetchHandler: FetchHandler = {
 export function initialize(
   editorDomainRegex: string,
   RuntimeWorker: new () => Worker,
+  AutocompleteWorker: new () => Worker,
   requestHandler: FetchHandler = defaultFetchHandler
 ) {
-  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, requestHandler)
+  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, AutocompleteWorker, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
-  runtimeStateManager.initialiseWorkerManager()
+  runtimeStateManager.initialiseWorkerManagers()
 }

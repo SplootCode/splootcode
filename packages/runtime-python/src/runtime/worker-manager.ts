@@ -1,5 +1,4 @@
 import { EditorMessage } from '../message_types'
-import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
@@ -19,7 +18,10 @@ export enum WorkerState {
 
 export class WorkerManager {
   private RuntimeWorker: new () => Worker
-  private worker: Worker
+  private runtimeWorker: Worker
+  private autocompleteWorker: Worker
+  private autocompleteWorkerReady: boolean
+
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
   private fetchHandler: FetchHandler
@@ -48,7 +50,7 @@ export class WorkerManager {
   ) {
     this.sendToParentWindow = sendToParentWindow
     this.RuntimeWorker = RuntimeWorker
-    this.worker = null
+    this.runtimeWorker = null
     this.standardIO = standardIO
     this.inputPlayback = []
     this.requestPlayback = new Map()
@@ -61,14 +63,14 @@ export class WorkerManager {
   }
 
   initialiseWorker() {
-    if (!this.worker) {
-      this.worker = new this.RuntimeWorker()
-      this.worker.addEventListener('message', this.handleMessageFromWorker)
+    if (!this.runtimeWorker) {
+      this.runtimeWorker = new this.RuntimeWorker()
+      this.runtimeWorker.addEventListener('message', this.handleMessageFromWorker)
     }
   }
 
-  sendMessage(message: WorkerManagerMessage) {
-    this.worker.postMessage(message)
+  sendMessge(message: WorkerManagerMessage) {
+    this.runtimeWorker.postMessage(message)
   }
 
   run(
@@ -86,7 +88,7 @@ export class WorkerManager {
     this.fetchBufferMeta = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * 3))
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
-    this.sendMessage({
+    this.sendMessge({
       type: 'run',
       runType: runType,
       eventData: eventData,
@@ -106,7 +108,7 @@ export class WorkerManager {
   ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
-    this.sendMessage({
+    this.sendMessge({
       type: 'rerun',
       runType: runType,
       eventData: eventData,
@@ -123,7 +125,7 @@ export class WorkerManager {
       this._workerState = WorkerState.RUNNING
       this.stateCallBack(this._workerState)
     }
-    this.sendMessage({
+    this.sendMessge({
       type: 'generate_text_code',
       runType: runType,
       workspace: workspace,
@@ -132,23 +134,9 @@ export class WorkerManager {
   }
 
   loadModule(moduleName: string) {
-    this.sendMessage({
+    this.sendMessge({
       type: 'loadModule',
       moduleName: moduleName,
-    })
-  }
-
-  sendParseTrees(parseTrees: ParseTrees) {
-    this.sendMessage({
-      type: 'parse_trees',
-      parseTrees,
-    })
-  }
-
-  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
-    this.sendMessage({
-      type: 'request_expression_type_info',
-      request,
     })
   }
 
@@ -249,9 +237,11 @@ export class WorkerManager {
     this.standardIO.stderr('\r\nProgram Stopped.\r\n')
     this._workerState = WorkerState.DISABLED
     this.stateCallBack(WorkerState.DISABLED)
-    this.worker.removeEventListener('message', this.handleMessageFromWorker)
-    this.worker.terminate()
-    this.worker = null
+
+    this.runtimeWorker.removeEventListener('message', this.handleMessageFromWorker)
+    this.runtimeWorker.terminate()
+    this.runtimeWorker = null
+
     this.initialiseWorker()
   }
 
@@ -273,12 +263,7 @@ export class WorkerManager {
       this.handleFetch(fetchData)
     } else if (type === 'continueFetch') {
       this.continueFetchResponse()
-    } else if (
-      type === 'runtime_capture' ||
-      type === 'module_info' ||
-      type === 'web_response' ||
-      type === 'expression_type_info'
-    ) {
+    } else if (type === 'runtime_capture' || type === 'module_info' || type === 'web_response') {
       this.sendToParentWindow(event.data)
     } else if (type === 'finished') {
       this._workerState = WorkerState.READY
@@ -292,7 +277,7 @@ export class WorkerManager {
         this.textFileValueCallback(event.data.fileContents)
       }
     } else {
-      console.warn(`Unrecognised message from worker: ${type}`)
+      console.warn(`Unrecognised message from runtime worker: ${type}`)
     }
   }
 }

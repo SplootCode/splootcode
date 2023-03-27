@@ -43,6 +43,14 @@ export interface ResponseData {
   }
 }
 
+export interface AutoCompleteWorkerExpressionTypeInfoResponse {
+  type: 'expression_type_info'
+  response: ExpressionTypeResponse
+}
+
+// messages from the autocomplete worker to the worker manager
+export type AutocompleteWorkerMessage = { type: 'ready' } | AutoCompleteWorkerExpressionTypeInfoResponse
+
 export interface WorkerFetchMessage {
   type: 'fetch'
   data: {
@@ -94,6 +102,7 @@ export interface WorkerExpressionTypeResultMessage {
   response: ExpressionTypeResponse
 }
 
+// messages from the runtime to the worker manager
 export type WorkerMessage =
   | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
@@ -104,7 +113,6 @@ export type WorkerMessage =
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
-  | WorkerExpressionTypeResultMessage
 
 export interface WorkerRunMessage {
   type: 'run'
@@ -149,10 +157,8 @@ export interface RequestExpressionTypeInfoMessage {
   request: ExpressionTypeRequest
 }
 
-export type WorkerManagerMessage =
-  | WorkerRunMessage
-  | WorkerRerunMessage
-  | LoadModuleMessage
-  | LoadParseTreesMessage
-  | TextContentRequestMessage
-  | RequestExpressionTypeInfoMessage
+// messages from the worker manager to the runtime worker
+export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage | TextContentRequestMessage
+
+// messages worker manager to the autocomplete worker
+export type WorkerManagerAutocompleteMessage = RequestExpressionTypeInfoMessage | LoadParseTreesMessage

@@ -14,12 +14,20 @@
       "import": "./dist/worker.mjs",
       "require": "./dist/worker.js",
       "types": "./dist/worker.d.ts"
+    },
+    "./autocomplete_worker": {
+      "import": "./dist/autocomplete_worker.mjs",
+      "require": "./dist/autocomplete_worker.js",
+      "types": "./dist/autocomplete_worker.d.ts"
     }
   },
   "typesVersions": {
     "*": {
       "worker": [
         "dist/worker.d.ts"
+      ],
+      "autocomplete_worker": [
+        "dist/autocomplete_worker.d.ts"
       ]
     }
   },
