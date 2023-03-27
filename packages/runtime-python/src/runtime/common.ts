@@ -159,13 +159,7 @@ export interface RequestExpressionTypeInfoMessage {
 }
 
 // messages from the worker manager to the runtime worker
-export type WorkerManagerMessage =
-  | WorkerRunMessage
-  | WorkerRerunMessage
-  | LoadModuleMessage
-  | LoadParseTreesMessage
-  | TextContentRequestMessage
-  | RequestExpressionTypeInfoMessage
+export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage | TextContentRequestMessage
 
 // messages worker manager to the autocomplete worker
 export type WorkerManagerAutocompleteMessage = RequestExpressionTypeInfoMessage | LoadParseTreesMessage

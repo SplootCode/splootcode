@@ -12,6 +12,7 @@ import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { setupPyodide, tryModuleLoad, tryNonModuleLoad } from './pyodide'
 
 tryNonModuleLoad()
+
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
 
@@ -19,12 +20,16 @@ const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)
 }
 
-export const initialize = async (typeshedPath: string) => {
+interface StaticURLs {
+  requestsPackageURL: string
+}
+
+export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) => {
   console.log('hello from autocomplete worker', typeshedPath)
 
-  pyodide = await tryModuleLoad()
+  await tryModuleLoad()
 
-  await setupPyodide(pyodide, [])
+  pyodide = await setupPyodide([staticURLs.requestsPackageURL])
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
@@ -127,11 +132,8 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
 }
 
 onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
-  console.log('autocomplete got message', e)
-
   switch (e.data.type) {
     case 'parse_trees':
-      console.log('received parse trees')
       updateParseTrees(e.data.parseTrees)
 
       break

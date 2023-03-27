@@ -234,7 +234,6 @@ class RuntimeStateManager {
 
       case 'parse_trees':
         this.workerManager.sendParseTrees(data.parseTrees)
-
         break
       case 'request_expression_type_info':
         this.workerManager.requestExpressionTypeInfo(data.request)

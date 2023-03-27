@@ -17,14 +17,12 @@ export async function tryModuleLoad() {
     // But we use module context for local dev because... Vite does that.
     await eval("import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')")
   }
+}
 
+export async function setupPyodide(urls: string[]) {
   // @ts-ignore
   const pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
 
-  return pyodide
-}
-
-export async function setupPyodide(pyodide: any, urls: string[]) {
   await pyodide.loadPackage('micropip')
   const micropip = pyodide.pyimport('micropip')
   const promises = [
@@ -35,5 +33,8 @@ export async function setupPyodide(pyodide: any, urls: string[]) {
     micropip.install('types-requests'),
     micropip.install('ast-comments'),
   ]
+
   await Promise.all(promises)
+
+  return pyodide
 }

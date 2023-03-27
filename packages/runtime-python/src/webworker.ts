@@ -1,25 +1,8 @@
-import {
-  ExpressionNode,
-  SourceFile,
-  StructuredEditorProgram,
-  Type,
-  TypeCategory,
-  createStructuredProgramWorker,
-} from 'structured-pyright'
-import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
-import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
+import { setupPyodide, tryModuleLoad, tryNonModuleLoad } from './pyodide'
 
-// If we're not in a module context (prod build is non-module)
-// Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
-if (importScripts) {
-  try {
-    importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')
-  } catch (e) {
-    console.warn(e)
-  }
-}
+tryNonModuleLoad()
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -29,8 +12,6 @@ let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
-
-let structuredProgram: StructuredEditorProgram = null
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -266,31 +247,14 @@ interface StaticURLs {
 }
 
 export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
-  // @ts-ignore
-  if (typeof loadPyodide == 'undefined') {
-    // import is a syntax error in non-module context (which we need to be in for Firefox...)
-    // But we use module context for local dev because... Vite does that.
-    await eval("import('https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js')")
-  }
+  tryModuleLoad()
 
   executorCode = await (await fetch(urls.executorURL)).text()
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
   textGenerationCode = await (await fetch(urls.textGeneratorURL)).text()
 
-  // @ts-ignore
-  pyodide = await loadPyodide({ fullStdLib: false, indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.21.3/full/' })
+  pyodide = await setupPyodide([urls.requestsPackageURL])
 
-  await pyodide.loadPackage('micropip')
-  const micropip = pyodide.pyimport('micropip')
-  const promises = [
-    micropip.install(urls.requestsPackageURL),
-    micropip.install(urls.flaskPackageURL),
-    micropip.install(urls.serverlessWSGIPackageURL),
-    pyodide.loadPackage('numpy'),
-    micropip.install('types-requests'),
-    micropip.install('ast-comments'),
-  ]
-  await Promise.all(promises)
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
     stderr: stderr,
@@ -339,106 +303,9 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   pyodide.globals.set('__name__', '__main__')
   pyodide.runPython(moduleLoaderCode)
 
-  structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
-
   sendMessage({
     type: 'ready',
   })
-}
-
-const updateParseTree = async (parseTreeInfo: ParseTreeInfo): Promise<SourceFile> => {
-  const { parseTree, path, modules } = parseTreeInfo
-
-  structuredProgram.updateStructuredFile(path, parseTree, modules)
-  await structuredProgram.parseRecursively(path)
-
-  return structuredProgram.getBoundSourceFile(path)
-}
-
-let currentParseID: number = null
-let sourceMap: Map<string, SourceFile> = new Map()
-let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
-
-const updateParseTrees = async (trees: ParseTrees) => {
-  if (!structuredProgram) {
-    console.error('structuredProgram is not defined yet')
-    return
-  }
-
-  const newSourceMap: Map<string, SourceFile> = new Map()
-  for (const tree of trees.parseTrees) {
-    newSourceMap.set(tree.path, await updateParseTree(tree))
-  }
-
-  sourceMap = newSourceMap
-  currentParseID = trees.parseID
-
-  if (expressionTypeRequestsToResolve.length > 0) {
-    const toResolve = expressionTypeRequestsToResolve.filter((request) => request.parseID === currentParseID)
-
-    toResolve.forEach((request) => getExpressionTypeInfo(request))
-
-    expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
-      (request) => request.parseID !== currentParseID
-    )
-
-    if (expressionTypeRequestsToResolve.length > 0) {
-      console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
-    }
-  }
-}
-
-const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
-  if (type.category === TypeCategory.Class) {
-    return {
-      category: type.category,
-      name: type.details.fullName,
-    }
-  } else if (type.category === TypeCategory.Module) {
-    return {
-      category: type.category,
-      name: type.moduleName,
-    }
-  } else if (type.category === TypeCategory.Union) {
-    return {
-      category: type.category,
-      subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
-    }
-  } else if (
-    type.category === TypeCategory.Unknown ||
-    type.category === TypeCategory.Any ||
-    type.category === TypeCategory.None
-  ) {
-    return null
-  }
-
-  throw new Error('unhandled type category ' + type.category)
-}
-
-const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
-  const sourceFile = sourceMap.get(request.path)
-  if (!sourceFile) {
-    console.error('source file not found!')
-    return
-  }
-
-  const walker = new IDFinderWalker(request.expression.id)
-  walker.walk(sourceFile.getParseResults().parseTree)
-
-  if (walker.found) {
-    const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
-
-    sendMessage({
-      type: 'expression_type_info',
-      response: {
-        parseID: currentParseID,
-        type: toExpressionTypeInfo(type.type),
-        requestID: request.requestID,
-      },
-    })
-  } else {
-    console.error('could not find node in tree')
-  }
 }
 
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
@@ -475,24 +342,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       break
     case 'loadModule':
       loadModule(e.data.moduleName)
-      break
-    case 'parse_trees':
-      updateParseTrees(e.data.parseTrees)
-
-      break
-    case 'request_expression_type_info':
-      if (e.data.request.parseID < currentParseID) {
-        console.warn('issued request for expression type for old parse tree', e.data.request.parseID, currentParseID)
-      } else if (e.data.request.parseID > currentParseID) {
-        console.warn('issued request for expression type for future parse tree')
-
-        expressionTypeRequestsToResolve.push(e.data.request)
-      } else {
-        // treeID and currentParseTree match
-
-        getExpressionTypeInfo(e.data.request)
-      }
-
       break
     default:
       // @ts-ignore
