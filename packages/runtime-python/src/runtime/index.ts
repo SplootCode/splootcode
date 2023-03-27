@@ -17,6 +17,7 @@ class RuntimeStateManager {
   private parentWindowDomain: string | null
   private parentWindowDomainRegex: string
   private RuntimeWorker: new () => Worker
+  private AutocompleteWorker: new () => Worker
   private workerManager: WorkerManager
   private workspace: Map<string, FileSpec>
   private envVars: Map<string, string>
@@ -27,10 +28,16 @@ class RuntimeStateManager {
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
 
-  constructor(parentWindowDomainRegex: string, RuntimeWorker: new () => Worker, fetchHandler: FetchHandler) {
+  constructor(
+    parentWindowDomainRegex: string,
+    RuntimeWorker: new () => Worker,
+    AutocompleteWorker: new () => Worker,
+    fetchHandler: FetchHandler
+  ) {
     this.parentWindowDomain = null
     this.parentWindowDomainRegex = parentWindowDomainRegex
     this.RuntimeWorker = RuntimeWorker
+    this.AutocompleteWorker = AutocompleteWorker
     this.initialFilesLoaded = false
     this.workspace = new Map()
     this.envVars = new Map()
@@ -92,7 +99,8 @@ class RuntimeStateManager {
       },
       this.sendToParent,
       this.fetchHandler,
-      this.textFileValueCallback
+      this.textFileValueCallback,
+      this.AutocompleteWorker
     )
   }
 
@@ -286,9 +294,10 @@ const defaultFetchHandler: FetchHandler = {
 export function initialize(
   editorDomainRegex: string,
   RuntimeWorker: new () => Worker,
+  AutocompleteWorker: new () => Worker,
   requestHandler: FetchHandler = defaultFetchHandler
 ) {
-  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, requestHandler)
+  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, AutocompleteWorker, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManager()
 }

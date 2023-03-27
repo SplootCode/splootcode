@@ -14,12 +14,20 @@
       "import": "./dist/worker.mjs",
       "require": "./dist/worker.js",
       "types": "./dist/worker.d.ts"
+    },
+    "./autocomplete_worker": {
+      "import": "./dist/autocomplete_worker.mjs",
+      "require": "./dist/autocomplete_worker.js",
+      "types": "./dist/autocomplete_worker.d.ts"
     }
   },
   "typesVersions": {
     "*": {
       "worker": [
         "dist/worker.d.ts"
+      ],
+      "autocomplete_worker": [
+        "dist/autocomplete_worker.d.ts"
       ]
     }
   },
@@ -35,6 +43,7 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^9.0.2",
+    "comlink": "^4.4.1",
     "rollup": "2.79.1",
     "rollup-plugin-dts": "^5.0.0",
     "typescript": "^4.8.4"

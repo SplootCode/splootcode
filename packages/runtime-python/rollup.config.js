@@ -40,8 +40,29 @@ export default [
     ],
   },
   {
+    plugins: [typescript()],
+    input: 'src/autocomplete_webworker.ts',
+    output: [
+      {
+        file: `dist/autocomplete_worker.mjs`,
+        format: 'es',
+        sourcemap: true,
+      },
+      {
+        file: `dist/autocomplete_worker.js`,
+        format: 'cjs',
+        sourcemap: true,
+      },
+    ],
+  },
+  {
     input: 'src/webworker.ts',
     output: [{ file: `dist/worker.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
+  {
+    input: 'src/autocomplete_webworker.ts',
+    output: [{ file: `dist/autocomplete_worker.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
 ]
