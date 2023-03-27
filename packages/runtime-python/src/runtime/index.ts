@@ -1,17 +1,9 @@
 import 'tslib'
-import {
-  AutocompleteWorkerMessage,
-  FetchData,
-  FetchHandler,
-  FetchSyncErrorType,
-  FileSpec,
-  ResponseData,
-  WorkerManagerAutocompleteMessage,
-} from './common'
+import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
+import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
-import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 import { WorkerManager, WorkerState } from './worker-manager'
 
 const streamlit_config = `
@@ -21,57 +13,6 @@ runOnSave = true
 [browser]
 gatherUsageStats = false
 `
-
-class AutocompleteWorkerManager {
-  private AutocompleteWorker: new () => Worker
-  private worker: Worker
-  private workerReady: boolean
-  private sendToParentWindow: (payload: EditorMessage) => void
-
-  constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
-    this.AutocompleteWorker = AutocompleteWorker
-    this.sendToParentWindow = sendToParentWindow
-
-    this.initialize()
-  }
-
-  initialize() {
-    if (!this.worker) {
-      this.worker = new this.AutocompleteWorker()
-      this.worker.addEventListener('message', this.handleMessageFromWorker)
-    }
-  }
-
-  sendMessage(message: WorkerManagerAutocompleteMessage) {
-    this.worker.postMessage(message)
-  }
-
-  sendParseTrees(parseTrees: ParseTrees) {
-    this.sendMessage({
-      type: 'parse_trees',
-      parseTrees,
-    })
-  }
-
-  requestExpressionTypeInfo(request: ExpressionTypeRequest) {
-    this.sendMessage({
-      type: 'request_expression_type_info',
-      request,
-    })
-  }
-
-  handleMessageFromWorker = (event: MessageEvent<AutocompleteWorkerMessage>) => {
-    const type = event.data.type
-
-    if (type === 'ready') {
-      this.workerReady = true
-    } else if (type === 'expression_type_info') {
-      this.sendToParentWindow(event.data)
-    } else {
-      console.warn(`Unrecognised message from autocomplete worker: ${type}`)
-    }
-  }
-}
 
 class RuntimeStateManager {
   private parentWindowDomain: string | null
@@ -131,7 +72,7 @@ class RuntimeStateManager {
     }
   }
 
-  initialiseWorkerManager = () => {
+  initialiseWorkerManagers = () => {
     this.workerManager = new WorkerManager(
       this.RuntimeWorker,
       {
@@ -359,5 +300,5 @@ export function initialize(
 ) {
   runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, AutocompleteWorker, requestHandler)
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
-  runtimeStateManager.initialiseWorkerManager()
+  runtimeStateManager.initialiseWorkerManagers()
 }

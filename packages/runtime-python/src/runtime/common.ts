@@ -113,7 +113,6 @@ export type WorkerMessage =
   | WorkerModuleInfoMessage
   | WorkerWebResponseMessage
   | WorkerTextConvertResultMessage
-  | WorkerExpressionTypeResultMessage
 
 export interface WorkerRunMessage {
   type: 'run'
