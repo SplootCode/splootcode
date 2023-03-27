@@ -172,11 +172,13 @@ export class PythonAnalyzer {
       return null
     }
 
-    const nodeMap = this.nodeMaps.get(path).nodeMap
-    const exprNode = nodeMap.get(callNode) as CallNode
-    if (exprNode) {
-      const sig = this.program.evaluator.getCallSignatureInfo(exprNode, activeIndex, true)
-      return sig
+    if (this.nodeMaps.has(path)) {
+      const nodeMap = this.nodeMaps.get(path).nodeMap
+      const exprNode = nodeMap.get(callNode) as CallNode
+      if (exprNode) {
+        const sig = this.program.evaluator.getCallSignatureInfo(exprNode, activeIndex, true)
+        return sig
+      }
     }
     return null
   }
