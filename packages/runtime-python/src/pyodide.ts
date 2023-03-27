@@ -1,4 +1,4 @@
-export function tryNonModuleLoad() {
+export function tryNonModuleLoadPyodide() {
   // If we're not in a module context (prod build is non-module)
   // Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
   if (importScripts) {
@@ -10,7 +10,7 @@ export function tryNonModuleLoad() {
   }
 }
 
-export async function tryModuleLoad() {
+export async function tryModuleLoadPyodide() {
   // @ts-ignore
   if (typeof loadPyodide == 'undefined') {
     // import is a syntax error in non-module context (which we need to be in for Firefox...)

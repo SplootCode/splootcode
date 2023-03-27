@@ -9,9 +9,9 @@ import {
 } from 'structured-pyright'
 import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
-import { setupPyodide, tryModuleLoad, tryNonModuleLoad } from './pyodide'
+import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
-tryNonModuleLoad()
+tryNonModuleLoadPyodide()
 
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
@@ -25,9 +25,7 @@ interface StaticURLs {
 }
 
 export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) => {
-  console.log('hello from autocomplete worker', typeshedPath)
-
-  await tryModuleLoad()
+  await tryModuleLoadPyodide()
 
   pyodide = await setupPyodide([staticURLs.requestsPackageURL])
 

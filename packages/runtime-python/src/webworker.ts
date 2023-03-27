@@ -1,8 +1,8 @@
 import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
-import { setupPyodide, tryModuleLoad, tryNonModuleLoad } from './pyodide'
+import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
-tryNonModuleLoad()
+tryNonModuleLoadPyodide()
 
 let pyodide = null
 let stdinbuffer: Int32Array = null
@@ -247,7 +247,7 @@ interface StaticURLs {
 }
 
 export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
-  tryModuleLoad()
+  tryModuleLoadPyodide()
 
   executorCode = await (await fetch(urls.executorURL)).text()
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()

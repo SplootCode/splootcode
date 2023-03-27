@@ -30,7 +30,6 @@ export class WorkerManager {
   private AutocompleteWorker: new () => Worker
   private runtimeWorker: Worker
   private autocompleteWorker: Worker
-  private runtimeWorkerReady: boolean
   private autocompleteWorkerReady: boolean
 
   private standardIO: StandardIO
@@ -163,7 +162,6 @@ export class WorkerManager {
   }
 
   sendParseTrees(parseTrees: ParseTrees) {
-    console.log('sending parse trees')
     this.sendMessageToAutocomplete({
       type: 'parse_trees',
       parseTrees,
@@ -279,20 +277,7 @@ export class WorkerManager {
     this.runtimeWorker.terminate()
     this.runtimeWorker = null
 
-    this.autocompleteWorker.removeEventListener('message', this.handleMessageFromAutocompleteWorker)
-    this.autocompleteWorker.terminate()
-    this.autocompleteWorker = null
-
     this.initialiseWorker()
-  }
-
-  assessWorkerState() {
-    if (this.runtimeWorkerReady && this.autocompleteWorkerReady) {
-      console.log('autocomplete and runtime workers are ready')
-
-      this._workerState = WorkerState.READY
-      this.stateCallBack(WorkerState.READY)
-    }
   }
 
   handleMessageFromAutocompleteWorker = (event: MessageEvent<AutocompleteWorkerMessage>) => {
@@ -300,8 +285,6 @@ export class WorkerManager {
 
     if (type === 'ready') {
       this.autocompleteWorkerReady = true
-
-      this.assessWorkerState()
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)
     } else {
@@ -312,8 +295,8 @@ export class WorkerManager {
   handleMessageFromWorker = (event: MessageEvent<WorkerMessage>) => {
     const type = event.data.type
     if (type === 'ready') {
-      this.runtimeWorkerReady = true
-      this.assessWorkerState()
+      this._workerState = WorkerState.READY
+      this.stateCallBack(WorkerState.READY)
     } else if (type === 'stdout') {
       this.standardIO.stdout(event.data.stdout)
     } else if (type === 'stderr') {
