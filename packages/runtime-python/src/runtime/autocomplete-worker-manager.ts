@@ -3,6 +3,8 @@ import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './c
 import { EditorMessage } from '../message_types'
 import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 
+// TODO(harrison): create a dedicated function for passing through events to the worker?
+// Reassess once autocomplete interface is fleshed out.
 export class AutocompleteWorkerManager {
   private AutocompleteWorker: new () => Worker
   private worker: Worker
