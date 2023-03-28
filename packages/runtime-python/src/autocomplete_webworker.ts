@@ -10,6 +10,7 @@ import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './r
 import {
   ExpressionNode,
   ParameterCategory,
+  Symbol as PyrightSymbol,
   SourceFile,
   StructuredEditorProgram,
   Type,
@@ -112,10 +113,9 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
 }
 
 const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
-  console.log('hello world ')
-  if (type.category === TypeCategory.Module) {
-    const suggestions = Array.from(type.fields.entries())
-      .map(([key, value]): AutocompleteInfo => {
+  const suggestionsForEntries = (fields: Map<string, PyrightSymbol>): AutocompleteInfo[] => {
+    return Array.from(fields.entries())
+      .map(([key, value]): AutocompleteInfo[] => {
         const decs = value.getDeclarations()
         if (decs.length == 0) {
           return null
@@ -126,18 +126,30 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
         }
 
         const dec = decs[0]
-        // console.log(key, value, dec)
         const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(value, dec)
         if (!inferredType) {
           return null
         }
 
         if (inferredType.category == TypeCategory.Class) {
-          return {
+          const suggestions: AutocompleteInfo[] = []
+          const init = inferredType.details.fields.get('__init__')
+          if (init && init.getDeclarations().length > 0) {
+            const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(
+              init,
+              init.getDeclarations()[0]
+            )
+
+            console.log(key, inferredType, value, inferredType.details.fields.get('__init__'), initInferredType)
+          }
+
+          suggestions.push({
             type: TypeCategory.Class,
             name: key,
             docString: inferredType.details.docString,
-          }
+          })
+
+          return suggestions
         } else if (inferredType.category == TypeCategory.Function) {
           const args: AutocompleteEntryFunctionArgument[] = []
           let keywordOnlyOverride = false
@@ -175,18 +187,25 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
             })
           }
 
-          return {
-            type: TypeCategory.Function,
-            name: key,
-            arguments: args,
-          }
+          return [
+            {
+              type: TypeCategory.Function,
+              name: key,
+              arguments: args,
+            },
+          ]
         }
 
         return null
       })
+      .flat()
       .filter((suggestion) => suggestion !== null)
+  }
 
-    return suggestions
+  if (type.category === TypeCategory.Module) {
+    return suggestionsForEntries(type.fields)
+  } else if (type.category === TypeCategory.Class) {
+    return suggestionsForEntries(type.details.fields)
   }
 
   return []
