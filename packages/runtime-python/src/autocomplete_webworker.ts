@@ -9,6 +9,7 @@ import {
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './runtime/common'
 import {
   ExpressionNode,
+  FunctionParameter,
   ParameterCategory,
   Symbol as PyrightSymbol,
   SourceFile,
@@ -113,12 +114,59 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
 }
 
 const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
-  const suggestionsForEntries = (fields: Map<string, PyrightSymbol>): AutocompleteInfo[] => {
+  const pyrightParamsToSplootParams = (params: FunctionParameter[]): AutocompleteEntryFunctionArgument[] => {
+    let keywordOnlyOverride = false
+    const args: AutocompleteEntryFunctionArgument[] = []
+    for (let i = 0; i < params.length; i++) {
+      const param = params[i]
+
+      // detects keyword only arguments (https://peps.python.org/pep-3102/)
+      if (param.category === ParameterCategory.VarArgList && i <= params.length - 1) {
+        keywordOnlyOverride = true
+
+        continue
+      }
+
+      // TODO(harrison): handle kwargs and vargs
+
+      if (!param.name) {
+        continue
+      }
+
+      if (keywordOnlyOverride) {
+        args.push({
+          name: param.name,
+          type: 3,
+          hasDefault: !!param.defaultValueExpression,
+        })
+
+        continue
+      }
+
+      args.push({
+        name: param.name,
+        type: 1,
+        hasDefault: !!param.defaultValueExpression,
+      })
+    }
+
+    return args
+  }
+
+  const suggestionsForEntries = (
+    fields: Map<string, PyrightSymbol>,
+    insideClass: boolean,
+    seen: Set<string>
+  ): AutocompleteInfo[] => {
     return Array.from(fields.entries())
       .map(([key, value]): AutocompleteInfo[] => {
+        if (seen.has(key)) {
+          return []
+        }
+
         const decs = value.getDeclarations()
         if (decs.length == 0) {
-          return null
+          return []
         }
 
         if (decs.length > 1) {
@@ -133,14 +181,23 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
 
         if (inferredType.category == TypeCategory.Class) {
           const suggestions: AutocompleteInfo[] = []
+
           const init = inferredType.details.fields.get('__init__')
-          if (init && init.getDeclarations().length > 0) {
+
+          if (init && init.getDeclarations().length > 0 && (inferredType.flags & 1) == 1) {
             const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(
               init,
               init.getDeclarations()[0]
             )
 
-            console.log(key, inferredType, value, inferredType.details.fields.get('__init__'), initInferredType)
+            if (initInferredType.category === TypeCategory.Function) {
+              // console.log(key, dec, inferredType, init, initInferredType)
+              suggestions.push({
+                type: TypeCategory.Function,
+                name: key,
+                arguments: pyrightParamsToSplootParams(initInferredType.details.parameters.slice(1)),
+              })
+            }
           }
 
           suggestions.push({
@@ -149,43 +206,25 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
             docString: inferredType.details.docString,
           })
 
+          seen.add(key)
+
           return suggestions
         } else if (inferredType.category == TypeCategory.Function) {
-          const args: AutocompleteEntryFunctionArgument[] = []
-          let keywordOnlyOverride = false
+          const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToSplootParams(
+            insideClass ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
+          )
 
-          for (let i = 0; i < inferredType.details.parameters.length; i++) {
-            const param = inferredType.details.parameters[i]
+          const thing = [
+            {
+              type: TypeCategory.Function,
+              name: key,
+              arguments: args,
+            },
+          ]
 
-            // detects keyword only arguments (https://peps.python.org/pep-3102/)
-            if (param.category === ParameterCategory.VarArgList && i <= inferredType.details.parameters.length - 1) {
-              keywordOnlyOverride = true
+          console.log('hello', key, value, dec, inferredType, thing)
 
-              continue
-            }
-
-            // TODO(harrison): handle kwargs and vargs
-
-            if (!param.name) {
-              continue
-            }
-
-            if (keywordOnlyOverride) {
-              args.push({
-                name: param.name,
-                type: 3,
-                hasDefault: !!param.defaultValueExpression,
-              })
-
-              continue
-            }
-
-            args.push({
-              name: param.name,
-              type: 1,
-              hasDefault: !!param.defaultValueExpression,
-            })
-          }
+          seen.add(key)
 
           return [
             {
@@ -196,16 +235,30 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
           ]
         }
 
-        return null
+        return []
       })
       .flat()
       .filter((suggestion) => suggestion !== null)
   }
 
   if (type.category === TypeCategory.Module) {
-    return suggestionsForEntries(type.fields)
+    return suggestionsForEntries(type.fields, false, new Set())
   } else if (type.category === TypeCategory.Class) {
-    return suggestionsForEntries(type.details.fields)
+    const seenSet = new Set<string>()
+    const suggestions: AutocompleteInfo[] = suggestionsForEntries(type.details.fields, true, seenSet)
+
+    // TODO(harrison): should this loop through in reverse? or use type.details.mro?
+    for (const base of type.details.baseClasses) {
+      if (base.category !== TypeCategory.Class) {
+        console.error('something very weird going on', base)
+      }
+
+      const suggs = suggestionsForEntries((base as any).details.fields, true, seenSet)
+
+      suggestions.push(...suggs)
+    }
+
+    return suggestions
   }
 
   return []
