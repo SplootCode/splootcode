@@ -23,8 +23,8 @@ import {
 } from '@splootcode/runtime-python'
 import { ExpressionNode } from 'structured-pyright'
 import {
-  ExpressionTypeInfo,
   ExpressionTypeRequest,
+  ExpressionTypeResponse,
   ParseTreeCommunicator,
   ParseTrees,
   PythonFile,
@@ -55,9 +55,9 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
 
   getParseTreesCallback: (filePaths: Set<string>) => ParseTrees
 
-  typeInfoPromise: Promise<ExpressionTypeInfo> = null
+  typeInfoPromise: Promise<ExpressionTypeResponse> = null
   typeInfoPromiseID: string = null
-  typeInfoPromiseResolver: (type: ExpressionTypeInfo) => void = null
+  typeInfoPromiseResolver: (type: ExpressionTypeResponse) => void = null
   typeInfoPromiseRejecter: (reason: string) => void = null
 
   constructor(project: Project, fileChangeWatcher: FileChangeWatcher) {
@@ -75,11 +75,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     }
   }
 
-  async getPyrightTypeForExpression(
-    path: string,
-    expression: ExpressionNode,
-    latestID: number
-  ): Promise<ExpressionTypeInfo> {
+  async getExpressionType(path: string, expression: ExpressionNode, latestID: number): Promise<ExpressionTypeResponse> {
     if (this.typeInfoPromise) {
       this.typeInfoPromiseRejecter('Promise has become stale')
     }
@@ -87,7 +83,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     const myPromiseID = Math.random().toFixed(10).toString()
 
     this.typeInfoPromiseID = myPromiseID
-    this.typeInfoPromise = new Promise<ExpressionTypeInfo>((resolve, reject) => {
+    this.typeInfoPromise = new Promise<ExpressionTypeResponse>((resolve, reject) => {
       this.frameStateManager.postMessage({
         type: 'request_expression_type_info',
         request: {
@@ -98,7 +94,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
         },
       })
 
-      this.typeInfoPromiseResolver = (type: ExpressionTypeInfo) => {
+      this.typeInfoPromiseResolver = (type: ExpressionTypeResponse) => {
         resolve(type)
 
         this.typeInfoPromise = null
@@ -264,7 +260,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
         }
 
         if (this.typeInfoPromiseResolver) {
-          this.typeInfoPromiseResolver(resp.type)
+          this.typeInfoPromiseResolver(resp)
         }
 
         break

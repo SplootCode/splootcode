@@ -30,6 +30,7 @@ export async function setupPyodide(urls: string[]) {
     micropip.install('flask'),
     micropip.install('serverless_wsgi'),
     pyodide.loadPackage('numpy'),
+    pyodide.loadPackage('pandas'),
     micropip.install('types-requests'),
     micropip.install('ast-comments'),
   ]

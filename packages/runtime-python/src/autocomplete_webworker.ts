@@ -1,13 +1,21 @@
+import {
+  AutocompleteEntryFunctionArgument,
+  AutocompleteInfo,
+  ExpressionTypeInfo,
+  ExpressionTypeRequest,
+  ParseTreeInfo,
+  ParseTrees,
+} from '@splootcode/language-python'
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './runtime/common'
 import {
   ExpressionNode,
+  ParameterCategory,
   SourceFile,
   StructuredEditorProgram,
   Type,
   TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
-import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
@@ -103,6 +111,87 @@ const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
   throw new Error('unhandled type category ' + type.category)
 }
 
+const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
+  console.log('hello world ')
+  if (type.category === TypeCategory.Module) {
+    const suggestions = Array.from(type.fields.entries())
+      .map(([key, value]): AutocompleteInfo => {
+        const decs = value.getDeclarations()
+        if (decs.length == 0) {
+          return null
+        }
+
+        if (decs.length > 1) {
+          console.warn('unhandled multiple declarations', key, decs)
+        }
+
+        const dec = decs[0]
+        // console.log(key, value, dec)
+        const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(value, dec)
+        if (!inferredType) {
+          return null
+        }
+
+        if (inferredType.category == TypeCategory.Class) {
+          return {
+            type: TypeCategory.Class,
+            name: key,
+            docString: inferredType.details.docString,
+          }
+        } else if (inferredType.category == TypeCategory.Function) {
+          const args: AutocompleteEntryFunctionArgument[] = []
+          let keywordOnlyOverride = false
+
+          for (let i = 0; i < inferredType.details.parameters.length; i++) {
+            const param = inferredType.details.parameters[i]
+
+            // detects keyword only arguments (https://peps.python.org/pep-3102/)
+            if (param.category === ParameterCategory.VarArgList && i <= inferredType.details.parameters.length - 1) {
+              keywordOnlyOverride = true
+
+              continue
+            }
+
+            // TODO(harrison): handle kwargs and vargs
+
+            if (!param.name) {
+              continue
+            }
+
+            if (keywordOnlyOverride) {
+              args.push({
+                name: param.name,
+                type: 3,
+                hasDefault: !!param.defaultValueExpression,
+              })
+
+              continue
+            }
+
+            args.push({
+              name: param.name,
+              type: 1,
+              hasDefault: !!param.defaultValueExpression,
+            })
+          }
+
+          return {
+            type: TypeCategory.Function,
+            name: key,
+            arguments: args,
+          }
+        }
+
+        return null
+      })
+      .filter((suggestion) => suggestion !== null)
+
+    return suggestions
+  }
+
+  return []
+}
+
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
   const sourceFile = sourceMap.get(request.path)
   if (!sourceFile) {
@@ -122,6 +211,7 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
         parseID: currentParseID,
         type: toExpressionTypeInfo(type.type),
         requestID: request.requestID,
+        autocompleteSuggestions: getAutocompleteInfo(type.type),
       },
     })
   } else {

@@ -109,12 +109,52 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_BRACKETS:
         case PYTHON_MEMBER:
           try {
-            const typeResult = await analyzer.getPyrightTypeForExpressionWorker(filePath, leftChild)
-            if (typeResult) {
-              attributes = getAttributesFromType(scope, typeResult)
+            const info = await analyzer.getExpressionType(filePath, leftChild)
+            if (info && info.autocompleteSuggestions.length > 0) {
+              const suggestions = info.autocompleteSuggestions
+                .map((info) => {
+                  if (info.type === TC.Class) {
+                    const shortDoc = info.docString ? info.docString.substring(0, 20) : ''
+
+                    const node = new PythonMember(null, {
+                      category: TypeCategory.Value,
+                      typeName: null,
+                      shortDoc,
+                    })
+
+                    node.setMember(info.name)
+
+                    return new SuggestedNode(node, `.${info.name}`, info.name, true, shortDoc, 'object')
+                  } else if (info.type === TC.Function) {
+                    const node = new PythonCallMember(null, {
+                      category: TypeCategory.Function,
+                      arguments: info.arguments.map((arg) => {
+                        return {
+                          name: arg.name,
+                          type: arg.type,
+                          defaultValue: arg.hasDefault ? 'None' : undefined,
+                        }
+                      }),
+                      shortDoc: '',
+                    })
+
+                    node.setMember(info.name)
+
+                    return new SuggestedNode(node, `.${info.name}`, info.name, true, '', 'object')
+                  }
+                })
+                .filter((suggestion) => suggestion !== null)
+
+              return suggestions
             } else {
               attributes = []
             }
+            // const typeResult = await analyzer.getPyrightTypeForExpressionWorker(filePath, leftChild)
+            // if (typeResult) {
+            //   // attributes = getAttributesFromType(scope, typeResult)
+            // } else {
+            //   attributes = []
+            // }
           } catch (e) {
             console.warn('unable to get type', e)
 
