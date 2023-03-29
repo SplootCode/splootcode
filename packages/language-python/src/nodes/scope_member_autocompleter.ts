@@ -7,6 +7,7 @@ import {
   SuggestionGenerator,
   getAutocompleteRegistry,
 } from '@splootcode/core'
+
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'

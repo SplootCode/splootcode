@@ -5,6 +5,7 @@ import {
   FunctionArgType,
 } from '@splootcode/language-python'
 import {
+  Declaration,
   FunctionParameter,
   ParameterCategory,
   Symbol as PyrightSymbol,
@@ -12,6 +13,7 @@ import {
   TypeCategory as TC,
   Type,
   TypeBase,
+  TypeEvaluator,
 } from 'structured-pyright'
 
 function getShortDoc(docString?: string) {
@@ -102,9 +104,86 @@ const typingsBlacklist = [
   '/typeshed/typeshed-fallback/stdlib/typing.pyi',
 ]
 
+function suggestionsForDeclaration(
+  name: string,
+  symbol: PyrightSymbol,
+  evaluator: TypeEvaluator,
+  parentName: string | undefined,
+  dec: Declaration,
+  declarationIndex: number
+): AutocompleteInfo[] {
+  if (typingsBlacklist.includes(dec.path)) {
+    // NOTE(harrison): This is a hack to minimise the amount of suggestions we get from raw typeshed types.
+    // They show up in the fields of a module, because they are imported in the .pyi file. We should have a
+    // better system such that this doesn't happen.
+    return []
+  }
+
+  const inferredType = evaluator.getInferredTypeOfDeclaration(symbol, dec)
+  if (!inferredType) {
+    return []
+  }
+
+  // Attributes on methods and classes are considered to be in the Class category.
+  if (inferredType.category == TC.Class) {
+    if (TypeBase.isInstantiable(inferredType)) {
+      // Since this value is instantiable, we want the autocomplete suggestion to reflect that
+      const init = inferredType.details.fields.get('__init__')
+      let args: AutocompleteEntryFunctionArgument[] = []
+
+      if (init && init.getDeclarations().length > 0) {
+        // In cases where there is an __init__ method, we take the arguments from that
+        const initInferredType = evaluator.getInferredTypeOfDeclaration(init, init.getDeclarations()[0])
+
+        if (initInferredType && initInferredType.category === TC.Function) {
+          args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
+        }
+      }
+
+      return [
+        {
+          category: AutocompleteEntryCategory.Function,
+          name: name,
+          arguments: args,
+          typeIfMethod: parentName,
+          declarationNum: declarationIndex,
+          shortDoc: getShortDoc(inferredType.details.docString),
+        },
+      ]
+    }
+
+    return [
+      {
+        name: name,
+        typeIfAttr: parentName,
+        declarationNum: declarationIndex,
+        shortDoc: getShortDoc(inferredType.details.docString),
+        category: AutocompleteEntryCategory.Value,
+      },
+    ]
+  } else if (inferredType.category == TC.Function) {
+    const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToAutocompleteFunctionArguments(
+      parentName ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
+    )
+
+    return [
+      {
+        name: name,
+        arguments: args,
+        typeIfMethod: parentName,
+        declarationNum: declarationIndex,
+        category: AutocompleteEntryCategory.Function,
+        shortDoc: getShortDoc(inferredType.details.docString),
+      },
+    ]
+  }
+
+  return []
+}
+
 const suggestionsForEntries = (
   program: StructuredEditorProgram,
-  fields: Map<string, PyrightSymbol>,
+  fieldMap: Map<string, PyrightSymbol>,
   seen: Set<string>,
   parentName?: string
 ): AutocompleteInfo[] => {
@@ -113,87 +192,18 @@ const suggestionsForEntries = (
     return []
   }
 
-  return Array.from(fields.entries())
-    .map(([key, value]): AutocompleteInfo[] => {
-      if (seen.has(key)) {
+  const fields = Array.from(fieldMap.entries())
+
+  return fields
+    .map(([name, symbol]): AutocompleteInfo[] => {
+      if (seen.has(name)) {
         return []
       }
 
-      seen.add(key)
+      seen.add(name)
 
-      const decs = value.getDeclarations()
-
-      return decs
-        .map((dec, i): AutocompleteInfo[] => {
-          if (typingsBlacklist.includes(dec.path)) {
-            // NOTE(harrison): This is a hack to minimise the amount of suggestions we get from raw typeshed types.
-            // They show up in the fields of a module, because they are imported in the .pyi file. We should have a
-            // better system such that this doesn't happen.
-            return []
-          }
-
-          const inferredType = evaluator.getInferredTypeOfDeclaration(value, dec)
-          if (!inferredType) {
-            return []
-          }
-
-          // Attributes on methods and classes are considered to be in the Class category.
-          if (inferredType.category == TC.Class) {
-            if (TypeBase.isInstantiable(inferredType)) {
-              // Since this value is instantiable, we want the autocomplete suggestion to reflect that
-              const init = inferredType.details.fields.get('__init__')
-              let args: AutocompleteEntryFunctionArgument[] = []
-
-              if (init && init.getDeclarations().length > 0) {
-                // In cases where there is an __init__ method, we take the arguments from that
-                const initInferredType = evaluator.getInferredTypeOfDeclaration(init, init.getDeclarations()[0])
-
-                if (initInferredType && initInferredType.category === TC.Function) {
-                  args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
-                }
-              }
-
-              return [
-                {
-                  category: AutocompleteEntryCategory.Function,
-                  name: key,
-                  arguments: args,
-                  typeIfMethod: parentName,
-                  declarationNum: i,
-                  shortDoc: getShortDoc(inferredType.details.docString),
-                },
-              ]
-            }
-
-            return [
-              {
-                name: key,
-                typeIfAttr: parentName,
-                declarationNum: i,
-                shortDoc: getShortDoc(inferredType.details.docString),
-                category: AutocompleteEntryCategory.Value,
-              },
-            ]
-          } else if (inferredType.category == TC.Function) {
-            const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToAutocompleteFunctionArguments(
-              parentName ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
-            )
-
-            return [
-              {
-                name: key,
-                arguments: args,
-                typeIfMethod: parentName,
-                declarationNum: i,
-                category: AutocompleteEntryCategory.Function,
-                shortDoc: getShortDoc(inferredType.details.docString),
-              },
-            ]
-          }
-
-          return []
-        })
-        .flat()
+      const decs = symbol.getDeclarations()
+      return decs.map((dec, i) => suggestionsForDeclaration(name, symbol, evaluator, parentName, dec, i)).flat()
     })
     .flat()
     .filter((suggestion) => suggestion !== null)
