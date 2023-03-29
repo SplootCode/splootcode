@@ -191,6 +191,9 @@ export class PythonAnalyzer {
 
   async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
     const resp = await this.getExpressionType(path, node)
+    if (!resp) {
+      return null
+    }
 
     return resp.type
   }

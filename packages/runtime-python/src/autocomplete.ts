@@ -21,7 +21,10 @@ function getShortDoc(docString?: string) {
 
   const lines = docString.split('\n')
 
-  let short = lines[0]
+  let short = lines.find((line) => line.trim().length > 0)
+  if (!short) {
+    return ''
+  }
 
   if (short.length > 100) {
     short = short.slice(0, 97) + '...'
@@ -75,7 +78,7 @@ function pyrightParamsToAutocompleteFunctionArguments(
       args.push({
         name: param.name,
         type: FunctionArgType.KeywordOnly,
-        hasDefault: !!param.defaultValueExpression,
+        hasDefault: param.hasDefault,
       })
 
       continue
@@ -84,7 +87,7 @@ function pyrightParamsToAutocompleteFunctionArguments(
     args.push({
       name: param.name,
       type: FunctionArgType.PositionalOrKeyword,
-      hasDefault: !!param.defaultValueExpression,
+      hasDefault: param.hasDefault,
     })
   }
 
