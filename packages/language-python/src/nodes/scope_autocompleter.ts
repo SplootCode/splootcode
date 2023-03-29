@@ -98,8 +98,6 @@ class ModuleAttributeAutocompleter implements SuggestionGenerator {
           }
         }
       }
-
-      console.log('maa', moduleName, suggestions)
       return suggestions
     }
     return []

@@ -1,9 +1,13 @@
-import { AutocompleteInfo, ExpressionTypeInfo, ExpressionTypeResponse } from '../analyzer/python_analyzer'
+import {
+  AutocompleteEntryCategory,
+  AutocompleteInfo,
+  ExpressionTypeInfo,
+  ExpressionTypeResponse,
+} from '../analyzer/python_analyzer'
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
   ParentReference,
-  SplootNode,
   SuggestedNode,
   SuggestionGenerator,
   getAutocompleteRegistry,
@@ -79,6 +83,8 @@ class MemberGenerator implements SuggestionGenerator {
     const filePath = scope.getFilePath()
     const autocompletes: AutocompleteInfo[] = []
 
+    let attributes: [string, VariableTypeInfo][] = []
+
     let allowWrap = false
 
     const analyzer = scope.getAnalyzer()
@@ -87,23 +93,23 @@ class MemberGenerator implements SuggestionGenerator {
       allowWrap = true
       switch (leftChild.type) {
         case PYTHON_STRING:
-        //   autocompletes = getAttributesForType(scope, 'builtins.str')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.str')
+          break
         case PYTHON_LIST:
-        //   attributes = getAttributesForType(scope, 'builtins.list')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.list')
+          break
         case PYTHON_TUPLE:
-        //   attributes = getAttributesForType(scope, 'builtins.tuple')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.tuple')
+          break
         case PYTHON_DICT:
-        //   attributes = getAttributesForType(scope, 'builtins.dict')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.dict')
+          break
         case PYTHON_SET:
-        //   attributes = getAttributesForType(scope, 'builtins.set')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.set')
+          break
         case PYTHON_NUMBER_LITERAL:
-        //   attributes = getAttributesForType(scope, 'builtins.int')
-        //   break
+          attributes = getAttributesForType(scope, 'builtins.int')
+          break
         case PYTHON_IDENTIFIER:
         case PYTHON_CALL_MEMBER:
         case PYTHON_CALL_VARIABLE:
@@ -112,11 +118,7 @@ class MemberGenerator implements SuggestionGenerator {
         case PYTHON_MEMBER:
           let info: ExpressionTypeResponse = null
           try {
-            console.log('getting', leftChild)
-
             info = await analyzer.getExpressionType(filePath, leftChild)
-
-            console.log('receiving', info)
           } catch (e) {
             console.warn('unable to get type', e)
           }
@@ -132,7 +134,7 @@ class MemberGenerator implements SuggestionGenerator {
 
     const inputName = textInput.substring(1) // Cut the '.' off
 
-    if (autocompletes.length === 0) {
+    if (attributes.length == 0 && autocompletes.length === 0) {
       const callMemberNode = new PythonCallMember(null, {
         category: TypeCategory.Function,
         arguments: [{ name: '', type: FunctionArgType.PositionalOrKeyword }],
@@ -165,50 +167,60 @@ class MemberGenerator implements SuggestionGenerator {
       ]
     }
 
-    const nodes = autocompletes.map((info): [SplootNode, AutocompleteInfo] => {
-      if (info.type === TC.Class) {
-        const shortDoc = info.docString ? info.docString.substring(0, 40) : ''
+    attributes.push(
+      ...autocompletes.map((info): [string, VariableTypeInfo] => {
+        let type: VariableTypeInfo = null
+        if (info.category === AutocompleteEntryCategory.Value) {
+          type = {
+            category: TypeCategory.Value,
+            typeName: null,
+            shortDoc: info.shortDoc,
+            typeIfAttr: info.typeIfAttr,
+          }
 
-        const node = new PythonMember(null, {
-          category: TypeCategory.Value,
-          typeName: null,
-          shortDoc,
-          typeIfAttr: info.typeIfAttr,
-        })
+          return [info.name, type]
+        } else if (info.category === AutocompleteEntryCategory.Function) {
+          type = {
+            category: TypeCategory.Function,
+            arguments: info.arguments.map((arg) => {
+              return {
+                name: arg.name,
+                type: arg.type,
+                defaultValue: arg.hasDefault ? 'None' : undefined,
+              }
+            }),
+            shortDoc: info.shortDoc,
+            typeIfMethod: info.typeIfMethod,
+          }
 
-        node.setMember(info.name)
-
-        return [node, info]
-      } else if (info.type === TC.Function) {
-        const node = new PythonCallMember(null, {
-          category: TypeCategory.Function,
-          arguments: info.arguments.map((arg) => {
-            return {
-              name: arg.name,
-              type: arg.type,
-              defaultValue: arg.hasDefault ? 'None' : undefined,
-            }
-          }),
-          shortDoc: '',
-          typeIfMethod: info.typeIfAttr,
-        })
-
-        node.setMember(info.name)
-
-        return [node, info]
-      } else {
-        console.error('invalid type for autocomplete', info)
-      }
-    })
+          return [info.name, type]
+        }
+      })
+    )
 
     const suggestions: SuggestedNode[] = []
     const allowUnderscore = textInput.startsWith('._')
-    for (const [node, info] of nodes) {
-      if (info.name.startsWith('_') && !allowUnderscore) {
+
+    const seen = new Set<string>()
+    for (const [name, attr] of attributes) {
+      if (seen.has(name)) {
         continue
       }
+      seen.add(name)
 
-      suggestions.push(new SuggestedNode(node, `.${info.name}_${info.declarationNum}`, info.name, true, '', 'object'))
+      if (attr.category === TypeCategory.Function) {
+        if (!name.startsWith('_') || allowUnderscore) {
+          const node = new PythonCallMember(null, attr)
+          node.setMember(name)
+          suggestions.push(new SuggestedNode(node, `.${name}`, name, true, attr.shortDoc, 'object'))
+        }
+      } else if (attr.category === TypeCategory.Value) {
+        if (!name.startsWith('_') || allowUnderscore) {
+          const node = new PythonMember(null, attr)
+          node.setMember(name)
+          suggestions.push(new SuggestedNode(node, `.${name}`, name, true, attr.shortDoc, 'object'))
+        }
+      }
     }
 
     return suggestions

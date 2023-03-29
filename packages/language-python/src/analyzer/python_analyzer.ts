@@ -42,11 +42,10 @@ export const enum AutocompleteEntryCategory {
 }
 
 export interface AutocompleteEntryVariable {
-  type: TypeCategory.Class
   category: AutocompleteEntryCategory.Value
   name: string
   typeIfAttr?: string
-  docString?: string
+  shortDoc?: string
   declarationNum: number
 }
 
@@ -57,11 +56,11 @@ export interface AutocompleteEntryFunctionArgument {
 }
 
 export interface AutocompleteEntryFunction {
-  type: TypeCategory.Function
   category: AutocompleteEntryCategory.Function
   name: string
-  typeIfAttr?: string
+  typeIfMethod?: string
   declarationNum: number
+  shortDoc?: string
 
   arguments: AutocompleteEntryFunctionArgument[]
 }
@@ -182,8 +181,6 @@ export class PythonAnalyzer {
     const exprNode = nodes.get(node) as ExpressionNode
 
     if (!exprNode) {
-      console.log(node, this.lookupNodeMaps.get(path))
-
       console.warn('Could not find SplootNode in nodeMap. Parse is probably ongoing.')
 
       return null
