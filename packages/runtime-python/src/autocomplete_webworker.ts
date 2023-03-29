@@ -3,6 +3,7 @@ import {
   AutocompleteInfo,
   ExpressionTypeInfo,
   ExpressionTypeRequest,
+  FunctionArgType,
   ParseTreeInfo,
   ParseTrees,
 } from '@splootcode/language-python'
@@ -14,8 +15,8 @@ import {
   Symbol as PyrightSymbol,
   SourceFile,
   StructuredEditorProgram,
+  TypeCategory as TC,
   Type,
-  TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
@@ -87,56 +88,76 @@ const updateParseTrees = async (trees: ParseTrees) => {
 }
 
 const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
-  if (type.category === TypeCategory.Class) {
+  if (type.category === TC.Class) {
     return {
       category: type.category,
       name: type.details.fullName,
     }
-  } else if (type.category === TypeCategory.Module) {
+  } else if (type.category === TC.Module) {
     return {
       category: type.category,
       name: type.moduleName,
     }
-  } else if (type.category === TypeCategory.Union) {
+  } else if (type.category === TC.Union) {
     return {
       category: type.category,
       subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
     }
-  } else if (
-    type.category === TypeCategory.Unknown ||
-    type.category === TypeCategory.Any ||
-    type.category === TypeCategory.None
-  ) {
+  } else if (type.category === TC.Unknown || type.category === TC.Any || type.category === TC.None) {
     return null
   }
 
   throw new Error('unhandled type category ' + type.category)
 }
 
-const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
+const getAutocompleteInfo = (type: Type, seen?: Set<string>): AutocompleteInfo[] => {
+  if (!seen) {
+    seen = new Set()
+  }
+
   const pyrightParamsToSplootParams = (params: FunctionParameter[]): AutocompleteEntryFunctionArgument[] => {
-    let keywordOnlyOverride = false
+    let seenVargs = false
     const args: AutocompleteEntryFunctionArgument[] = []
     for (let i = 0; i < params.length; i++) {
       const param = params[i]
 
-      // detects keyword only arguments (https://peps.python.org/pep-3102/)
-      if (param.category === ParameterCategory.VarArgList && i <= params.length - 1) {
-        keywordOnlyOverride = true
+      if (param.category === ParameterCategory.VarArgList) {
+        seenVargs = true
 
-        continue
+        if (param.name) {
+          args.push({
+            name: param.name,
+            type: FunctionArgType.Vargs,
+            hasDefault: false,
+          })
+
+          continue
+        }
       }
 
-      // TODO(harrison): handle kwargs and vargs
+      if (param.category === ParameterCategory.VarArgDictionary) {
+        seenVargs = true
+
+        if (param.name) {
+          args.push({
+            name: param.name,
+            type: FunctionArgType.Kwargs,
+            hasDefault: false,
+          })
+        }
+
+        break
+      }
 
       if (!param.name) {
         continue
       }
 
-      if (keywordOnlyOverride) {
+      // detects keyword only arguments (https://peps.python.org/pep-3102/)
+      if (seenVargs) {
         args.push({
           name: param.name,
-          type: 3,
+          type: FunctionArgType.KeywordOnly,
           hasDefault: !!param.defaultValueExpression,
         })
 
@@ -145,7 +166,7 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
 
       args.push({
         name: param.name,
-        type: 1,
+        type: FunctionArgType.PositionalOrKeyword,
         hasDefault: !!param.defaultValueExpression,
       })
     }
@@ -155,8 +176,8 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
 
   const suggestionsForEntries = (
     fields: Map<string, PyrightSymbol>,
-    insideClass: boolean,
-    seen: Set<string>
+    seen: Set<string>,
+    parentName?: string
   ): AutocompleteInfo[] => {
     return Array.from(fields.entries())
       .map(([key, value]): AutocompleteInfo[] => {
@@ -165,100 +186,113 @@ const getAutocompleteInfo = (type: Type): AutocompleteInfo[] => {
         }
 
         const decs = value.getDeclarations()
-        if (decs.length == 0) {
-          return []
-        }
 
-        if (decs.length > 1) {
-          console.warn('unhandled multiple declarations', key, decs)
-        }
-
-        const dec = decs[0]
-        const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(value, dec)
-        if (!inferredType) {
-          return null
-        }
-
-        if (inferredType.category == TypeCategory.Class) {
-          const suggestions: AutocompleteInfo[] = []
-
-          const init = inferredType.details.fields.get('__init__')
-
-          if (init && init.getDeclarations().length > 0 && (inferredType.flags & 1) == 1) {
-            const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(
-              init,
-              init.getDeclarations()[0]
-            )
-
-            if (initInferredType.category === TypeCategory.Function) {
-              // console.log(key, dec, inferredType, init, initInferredType)
-              suggestions.push({
-                type: TypeCategory.Function,
-                name: key,
-                arguments: pyrightParamsToSplootParams(initInferredType.details.parameters.slice(1)),
-              })
+        return decs
+          .map((dec, i): AutocompleteInfo[] => {
+            const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(value, dec)
+            if (!inferredType) {
+              return null
             }
-          }
 
-          suggestions.push({
-            type: TypeCategory.Class,
-            name: key,
-            docString: inferredType.details.docString,
+            if (inferredType.category == TC.Class) {
+              if ((inferredType.flags & 1) == 1) {
+                const init = inferredType.details.fields.get('__init__')
+                let args: AutocompleteEntryFunctionArgument[] = []
+
+                if (init && init.getDeclarations().length > 0) {
+                  const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(
+                    init,
+                    init.getDeclarations()[0]
+                  )
+
+                  if (initInferredType.category === TC.Function) {
+                    args = pyrightParamsToSplootParams(initInferredType.details.parameters.slice(1))
+                  }
+                }
+
+                // TODO(harrison): hoist to top of function?
+                seen.add(key)
+
+                // TODO(harrison): copy doc from class to __init__ method
+                return [
+                  {
+                    type: TC.Function,
+                    name: key,
+                    arguments: args,
+                    typeIfAttr: parentName,
+                    declarationNum: i,
+                  },
+                ]
+              }
+
+              seen.add(key)
+
+              return [
+                {
+                  type: TC.Class,
+                  name: key,
+                  docString: inferredType.details.docString,
+                  typeIfAttr: parentName,
+                  declarationNum: i,
+                },
+              ]
+            } else if (inferredType.category == TC.Function) {
+              const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToSplootParams(
+                parentName ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
+              )
+
+              seen.add(key)
+
+              return [
+                {
+                  type: TC.Function,
+                  name: key,
+                  arguments: args,
+                  typeIfAttr: parentName,
+                  declarationNum: i,
+                },
+              ]
+            }
+
+            return []
           })
-
-          seen.add(key)
-
-          return suggestions
-        } else if (inferredType.category == TypeCategory.Function) {
-          const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToSplootParams(
-            insideClass ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
-          )
-
-          const thing = [
-            {
-              type: TypeCategory.Function,
-              name: key,
-              arguments: args,
-            },
-          ]
-
-          console.log('hello', key, value, dec, inferredType, thing)
-
-          seen.add(key)
-
-          return [
-            {
-              type: TypeCategory.Function,
-              name: key,
-              arguments: args,
-            },
-          ]
-        }
-
-        return []
+          .flat()
       })
       .flat()
       .filter((suggestion) => suggestion !== null)
   }
 
-  if (type.category === TypeCategory.Module) {
-    return suggestionsForEntries(type.fields, false, new Set())
-  } else if (type.category === TypeCategory.Class) {
-    const seenSet = new Set<string>()
-    const suggestions: AutocompleteInfo[] = suggestionsForEntries(type.details.fields, true, seenSet)
+  if (type.category === TC.Module) {
+    return suggestionsForEntries(type.fields, seen)
+  } else if (type.category === TC.Class) {
+    const suggestions: AutocompleteInfo[] = suggestionsForEntries(type.details.fields, seen, type.details.name)
 
     // TODO(harrison): should this loop through in reverse? or use type.details.mro?
     for (const base of type.details.baseClasses) {
-      if (base.category !== TypeCategory.Class) {
+      if (base.category !== TC.Class) {
         console.error('something very weird going on', base)
       }
 
-      const suggs = suggestionsForEntries((base as any).details.fields, true, seenSet)
+      const suggs = suggestionsForEntries((base as any).details.fields, seen, type.details.name)
 
       suggestions.push(...suggs)
     }
 
     return suggestions
+  } else if (type.category === TC.Union) {
+    const suggestions: AutocompleteInfo[] = []
+
+    for (const subtype of type.subtypes) {
+      suggestions.push(...getAutocompleteInfo(subtype, seen))
+    }
+
+    console.log(type.subtypes)
+
+    return suggestions
+  } else if (type.category === TC.Any || type.category === TC.Unknown) {
+    // pass
+  } else {
+    console.error('unhandled type category', type)
   }
 
   return []

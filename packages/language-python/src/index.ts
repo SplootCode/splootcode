@@ -5,8 +5,9 @@ export { formatPythonAssingment, formatPythonReturnValue } from './nodes/utils'
 export { PythonScope } from './scope/python_scope'
 export { loadPythonTypes } from './type_loader'
 export { PythonNode } from './nodes/python_node'
-export type { FunctionSignature, FunctionArgType } from './scope/types'
-export { TypeCategory } from './scope/types'
+
+export { TypeCategory, FunctionSignature, FunctionArgType } from './scope/types'
+
 export { isPythonNode } from './nodes/python_node'
 
 export { PythonIfStatement } from './nodes/python_if'

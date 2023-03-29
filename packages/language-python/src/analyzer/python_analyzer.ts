@@ -10,7 +10,7 @@ import {
   TypeCategory,
   createStructuredProgram,
 } from 'structured-pyright'
-import { FunctionArgType } from 'src/scope/types'
+import { FunctionArgType } from '../scope/types'
 import { PythonFile } from '../nodes/python_file'
 import { SplootNode } from '@splootcode/core'
 
@@ -39,8 +39,9 @@ export interface ExpressionTypeInfo {
 export interface AutocompleteEntryVariable {
   type: TypeCategory.Class
   name: string
-  docString?: string
   typeIfAttr?: string
+  docString?: string
+  declarationNum: number
 }
 
 export interface AutocompleteEntryFunctionArgument {
@@ -52,6 +53,8 @@ export interface AutocompleteEntryFunctionArgument {
 export interface AutocompleteEntryFunction {
   type: TypeCategory.Function
   name: string
+  typeIfAttr?: string
+  declarationNum: number
 
   arguments: AutocompleteEntryFunctionArgument[]
 }
@@ -167,10 +170,13 @@ export class PythonAnalyzer {
       console.warn('Could not find path in nodeMap. Parse is probably ongoing.')
       return null
     }
+
     const nodes = this.lookupNodeMaps.get(path).nodeMap
     const exprNode = nodes.get(node) as ExpressionNode
 
     if (!exprNode) {
+      console.log(node, this.lookupNodeMaps.get(path))
+
       console.warn('Could not find SplootNode in nodeMap. Parse is probably ongoing.')
 
       return null
