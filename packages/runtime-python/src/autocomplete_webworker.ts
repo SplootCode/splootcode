@@ -1,14 +1,8 @@
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './runtime/common'
-import {
-  ExpressionNode,
-  SourceFile,
-  StructuredEditorProgram,
-  Type,
-  TypeCategory,
-  createStructuredProgramWorker,
-} from 'structured-pyright'
-import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
+import { ExpressionNode, SourceFile, StructuredEditorProgram, createStructuredProgramWorker } from 'structured-pyright'
+import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
+import { getAutocompleteInfo } from './autocomplete'
 import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
 tryNonModuleLoadPyodide()
@@ -49,7 +43,8 @@ let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
 
 const updateParseTrees = async (trees: ParseTrees) => {
   if (!structuredProgram) {
-    console.error('structuredProgram is not defined yet')
+    console.warn('structuredProgram is not defined yet')
+
     return
   }
 
@@ -76,33 +71,6 @@ const updateParseTrees = async (trees: ParseTrees) => {
   }
 }
 
-const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
-  if (type.category === TypeCategory.Class) {
-    return {
-      category: type.category,
-      name: type.details.fullName,
-    }
-  } else if (type.category === TypeCategory.Module) {
-    return {
-      category: type.category,
-      name: type.moduleName,
-    }
-  } else if (type.category === TypeCategory.Union) {
-    return {
-      category: type.category,
-      subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
-    }
-  } else if (
-    type.category === TypeCategory.Unknown ||
-    type.category === TypeCategory.Any ||
-    type.category === TypeCategory.None
-  ) {
-    return null
-  }
-
-  throw new Error('unhandled type category ' + type.category)
-}
-
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
   const sourceFile = sourceMap.get(request.path)
   if (!sourceFile) {
@@ -120,8 +88,8 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
       type: 'expression_type_info',
       response: {
         parseID: currentParseID,
-        type: toExpressionTypeInfo(type.type),
         requestID: request.requestID,
+        autocompleteSuggestions: getAutocompleteInfo(structuredProgram, type.type),
       },
     })
   } else {

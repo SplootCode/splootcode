@@ -5,8 +5,9 @@ export { formatPythonAssingment, formatPythonReturnValue } from './nodes/utils'
 export { PythonScope } from './scope/python_scope'
 export { loadPythonTypes } from './type_loader'
 export { PythonNode } from './nodes/python_node'
-export type { FunctionSignature } from './scope/types'
-export { TypeCategory } from './scope/types'
+
+export { TypeCategory, FunctionSignature, FunctionArgType } from './scope/types'
+
 export { isPythonNode } from './nodes/python_node'
 
 export { PythonIfStatement } from './nodes/python_if'
@@ -29,6 +30,10 @@ export type {
   ParseTreeInfo,
   ExpressionTypeRequest,
   ExpressionTypeResponse,
-  ExpressionTypeInfo,
   ParseTrees,
+  AutocompleteInfo,
+  AutocompleteEntryFunction,
+  AutocompleteEntryVariable,
+  AutocompleteEntryFunctionArgument,
+  AutocompleteEntryCategory,
 } from './analyzer/python_analyzer'

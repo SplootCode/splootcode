@@ -7,9 +7,9 @@ import {
   ParseNode,
   StructuredEditorProgram,
   Type,
-  TypeCategory,
   createStructuredProgram,
 } from 'structured-pyright'
+import { FunctionArgType } from '../scope/types'
 import { PythonFile } from '../nodes/python_file'
 import { SplootNode } from '@splootcode/core'
 
@@ -27,19 +27,42 @@ export interface ExpressionTypeRequest {
   expression: ExpressionNode
 }
 
-// TODO(harrison): pyright's Type interface is not serializable, so we have to do this. In the future this interface should be replaced
-// with a generic 'autocomplete response' interface.
-export interface ExpressionTypeInfo {
-  category: TypeCategory
-  name?: string
-  subtypes?: ExpressionTypeInfo[]
+export const enum AutocompleteEntryCategory {
+  Value = 0,
+  Function,
 }
+
+export interface AutocompleteEntryVariable {
+  category: AutocompleteEntryCategory.Value
+  name: string
+  typeIfAttr?: string
+  shortDoc?: string
+  declarationNum: number
+}
+
+export interface AutocompleteEntryFunctionArgument {
+  name: string
+  type: FunctionArgType
+  hasDefault: boolean
+}
+
+export interface AutocompleteEntryFunction {
+  category: AutocompleteEntryCategory.Function
+  name: string
+  typeIfMethod?: string
+  declarationNum: number
+  shortDoc?: string
+
+  arguments: AutocompleteEntryFunctionArgument[]
+}
+
+export type AutocompleteInfo = AutocompleteEntryVariable | AutocompleteEntryFunction
 
 export interface ExpressionTypeResponse {
   parseID: number
   requestID: string
 
-  type: ExpressionTypeInfo
+  autocompleteSuggestions: AutocompleteInfo[]
 }
 
 export interface ParseTrees {
@@ -52,7 +75,7 @@ export interface ParseTreeCommunicator {
   setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void
 
   // messages
-  getPyrightTypeForExpression(path: string, node: ExpressionNode, parseID: number): Promise<ExpressionTypeInfo>
+  getExpressionType(path: string, node: ExpressionNode, parseID: number): Promise<ExpressionTypeResponse>
 }
 
 export class ParseMapper {
@@ -137,11 +160,12 @@ export class PythonAnalyzer {
     this.files.set(path, rootNode)
   }
 
-  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
+  async getExpressionType(path: string, node: SplootNode): Promise<ExpressionTypeResponse> {
     if (!this.lookupNodeMaps.has(path)) {
       console.warn('Could not find path in nodeMap. Parse is probably ongoing.')
       return null
     }
+
     const nodes = this.lookupNodeMaps.get(path).nodeMap
     const exprNode = nodes.get(node) as ExpressionNode
 
@@ -151,7 +175,7 @@ export class PythonAnalyzer {
       return null
     }
 
-    return this.sender.getPyrightTypeForExpression(path, exprNode, this.currentAtomicID)
+    return this.sender.getExpressionType(path, exprNode, this.currentAtomicID)
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {

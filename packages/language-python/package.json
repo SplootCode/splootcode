@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@jest/globals": "^29.2.2",
-    "structured-pyright": "^1.0.7"
+    "structured-pyright": "^1.0.9"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^5.0.1",

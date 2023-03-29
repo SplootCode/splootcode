@@ -14,6 +14,7 @@ export class AutocompleteWorkerManager {
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
     this.sendToParentWindow = sendToParentWindow
+    this.worker = null
     this.workerReady = false
 
     this.initialize()
