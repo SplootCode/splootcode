@@ -5743,10 +5743,10 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-structured-pyright@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.8.tgz#d16f65af022ac26310e5678690e8db7e897c4574"
-  integrity sha512-Cc9M8s+BMadIBT9whf7tlRuHprBG71CjDFS6WeVcf1FS2H6ZGO9/5ZptiUbqENk+cDgyb+H5oj9le2zApD8ykQ==
+structured-pyright@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.9.tgz#f879ca1656a2b4947b73b1bfb83fea963029e3f8"
+  integrity sha512-xbcMmjyBWQ0TE+80I76S2vBNKHXEJPkpFSWeMen7exTSwjBV7hFJpNSf7kX/IEt2Lv5vJ5bJBzmVdywptw/S4A==
 
 style-value-types@4.1.1:
   version "4.1.1"
