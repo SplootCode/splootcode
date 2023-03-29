@@ -105,21 +105,21 @@ const typingsBlacklist = [
 ]
 
 function suggestionsForDeclaration(
-  name: string,
+  fieldName: string,
   symbol: PyrightSymbol,
   evaluator: TypeEvaluator,
   parentName: string | undefined,
-  dec: Declaration,
+  declaration: Declaration,
   declarationIndex: number
 ): AutocompleteInfo[] {
-  if (typingsBlacklist.includes(dec.path)) {
+  if (typingsBlacklist.includes(declaration.path)) {
     // NOTE(harrison): This is a hack to minimise the amount of suggestions we get from raw typeshed types.
     // They show up in the fields of a module, because they are imported in the .pyi file. We should have a
     // better system such that this doesn't happen.
     return []
   }
 
-  const inferredType = evaluator.getInferredTypeOfDeclaration(symbol, dec)
+  const inferredType = evaluator.getInferredTypeOfDeclaration(symbol, declaration)
   if (!inferredType) {
     return []
   }
@@ -143,7 +143,7 @@ function suggestionsForDeclaration(
       return [
         {
           category: AutocompleteEntryCategory.Function,
-          name: name,
+          name: fieldName,
           arguments: args,
           typeIfMethod: parentName,
           declarationNum: declarationIndex,
@@ -154,7 +154,7 @@ function suggestionsForDeclaration(
 
     return [
       {
-        name: name,
+        name: fieldName,
         typeIfAttr: parentName,
         declarationNum: declarationIndex,
         shortDoc: getShortDoc(inferredType.details.docString),
@@ -168,7 +168,7 @@ function suggestionsForDeclaration(
 
     return [
       {
-        name: name,
+        name: fieldName,
         arguments: args,
         typeIfMethod: parentName,
         declarationNum: declarationIndex,
@@ -195,15 +195,17 @@ const suggestionsForEntries = (
   const fields = Array.from(fieldMap.entries())
 
   return fields
-    .map(([name, symbol]): AutocompleteInfo[] => {
-      if (seen.has(name)) {
+    .map(([fieldName, symbol]): AutocompleteInfo[] => {
+      if (seen.has(fieldName)) {
         return []
       }
 
-      seen.add(name)
+      seen.add(fieldName)
 
-      const decs = symbol.getDeclarations()
-      return decs.map((dec, i) => suggestionsForDeclaration(name, symbol, evaluator, parentName, dec, i)).flat()
+      const declarations = symbol.getDeclarations()
+      return declarations
+        .map((dec, i) => suggestionsForDeclaration(fieldName, symbol, evaluator, parentName, dec, i))
+        .flat()
     })
     .flat()
     .filter((suggestion) => suggestion !== null)
