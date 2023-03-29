@@ -1,0 +1,233 @@
+{
+  "category": "types",
+  "entries": [
+    {
+      "key": "types.overload",
+      "abstract": "Abstract for types.overload",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "overload"
+        }
+      }
+    },
+    {
+      "key": "types.final",
+      "abstract": "Abstract for types.final",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "final"
+        }
+      }
+    },
+    {
+      "key": "types.new_class",
+      "abstract": "Abstract for types.new_class",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "new_class"
+        }
+      }
+    },
+    {
+      "key": "types.resolve_bases",
+      "abstract": "Abstract for types.resolve_bases",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "resolve_bases"
+        }
+      }
+    },
+    {
+      "key": "types.prepare_class",
+      "abstract": "Abstract for types.prepare_class",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "prepare_class"
+        }
+      }
+    },
+    {
+      "key": "types.coroutine",
+      "abstract": "Abstract for types.coroutine",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "types"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "coroutine"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "category": "crypt",
+  "entries": [
+    {
+      "key": "crypt.mksalt",
+      "abstract": "Abstract for crypt.mksalt",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "crypt"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "mksalt"
+        }
+      }
+    },
+    {
+      "key": "crypt.crypt",
+      "abstract": "Abstract for crypt.crypt",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "crypt"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "crypt"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "category": "copyreg",
+  "entries": [
+    {
+      "key": "copyreg.pickle",
+      "abstract": "Abstract for copyreg.pickle",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "pickle"
+        }
+      }
+    },
+    {
+      "key": "copyreg.constructor",
+      "abstract": "Abstract for copyreg.constructor",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "constructor"
+        }
+      }
+    },
+    {
+      "key": "copyreg.add_extension",
+      "abstract": "Abstract for copyreg.add_extension",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "add_extension"
+        }
+      }
+    },
+    {
+      "key": "copyreg.remove_extension",
+      "abstract": "Abstract for copyreg.remove_extension",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "remove_extension"
+        }
+      }
+    },
+    {
+      "key": "copyreg.clear_extension_cache",
+      "abstract": "Abstract for copyreg.clear_extension_cache",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "clear_extension_cache"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "category": "sre_compile",
+  "entries": [
+    {
+      "key": "sre_compile.dis",
+      "abstract": "Abstract for sre_compile.dis",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sre_compile"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "dis"
+        }
+      }
+    },
+    {
+      "key": "sre_compile.isstring",
+      "abstract": "Abstract for sre_compile.isstring",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sre_compile"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "isstring"
+        }
+      }
+    },
+    {
+      "key": "sre_compile.compile",
+      "abstract": "Abstract for sre_compile.compile",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sre_compile"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "compile"
+        }
+      }
+    }
+  ]
+}

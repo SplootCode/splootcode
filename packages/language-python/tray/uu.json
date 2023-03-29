@@ -1,0 +1,81 @@
+{
+  "category": "uu",
+  "entries": [
+    {
+      "key": "uu.encode",
+      "abstract": "Abstract for uu.encode",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "uu"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "encode"
+        }
+      }
+    },
+    {
+      "key": "uu.decode",
+      "abstract": "Abstract for uu.decode",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "uu"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "decode"
+        }
+      }
+    }
+  ]
+}

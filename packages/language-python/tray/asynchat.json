@@ -1,0 +1,43 @@
+{
+  "category": "asynchat",
+  "entries": [
+    {
+      "key": "asynchat.abstractmethod",
+      "abstract": "Abstract for asynchat.abstractmethod",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asynchat"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        },
+        "properties": {
+          "member": "abstractmethod"
+        }
+      }
+    }
+  ]
+}

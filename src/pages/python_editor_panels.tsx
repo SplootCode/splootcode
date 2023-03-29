@@ -9,13 +9,21 @@ import {
   EditorSideMenuPane,
   EditorSideMenuView,
   EditorState,
+  ModuleTrayLoader,
   PythonRuntimePanel,
 } from '@splootcode/editor'
 import { SplootPackage } from '@splootcode/core'
+import { getTrayForModule } from 'src/module_loader'
 
 interface PythonEditorProps {
   editorState: EditorState
   onSaveAs: () => void
+}
+
+const moduleTrayLoader: ModuleTrayLoader = {
+  getTrayForModule: (module: string) => {
+    return getTrayForModule(module)
+  },
 }
 
 export const PythonEditorPanels = (props: PythonEditorProps) => {
@@ -36,7 +44,7 @@ export const PythonEditorPanels = (props: PythonEditorProps) => {
       />
       <Allotment defaultSizes={[300, startSize, 360]} minSize={180} proportionalLayout={false}>
         <Allotment.Pane visible={visibleView !== ''} snap>
-          <EditorSideMenuPane visibleView={visibleView} editorState={editorState} />
+          <EditorSideMenuPane visibleView={visibleView} editorState={editorState} moduleTrayLoader={moduleTrayLoader} />
         </Allotment.Pane>
         <Allotment.Pane priority={LayoutPriority.High}>
           <Editor

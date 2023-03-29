@@ -1,5 +1,5 @@
 export { PythonAnalyzer } from './analyzer/python_analyzer'
-export { PythonLanguageTray } from './tray/language'
+export { PythonModuleInfo, ModuleInfoFile, SupportedModuleList, PythonLanguageTray } from './tray/language'
 export { generatePythonScope } from './scope/python_scope'
 export { formatPythonAssingment, formatPythonReturnValue } from './nodes/utils'
 export { PythonScope } from './scope/python_scope'

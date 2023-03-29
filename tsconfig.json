@@ -16,6 +16,12 @@
     "baseUrl": ".",
     "types": ["vite/client", "jest", "@types/wicg-file-system-access"]
   },
+  "ts-node": {
+    "esm": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "module": "ES2020",
+  },
   "include": ["src", "src-runtime"],
   "exclude": [
     "node_modules",
