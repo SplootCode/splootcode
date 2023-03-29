@@ -247,7 +247,7 @@ interface StaticURLs {
 }
 
 export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
-  tryModuleLoadPyodide()
+  await tryModuleLoadPyodide()
 
   executorCode = await (await fetch(urls.executorURL)).text()
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
