@@ -36,8 +36,14 @@ export interface ExpressionTypeInfo {
   subtypes?: ExpressionTypeInfo[]
 }
 
+export const enum AutocompleteEntryCategory {
+  Value = 0,
+  Function,
+}
+
 export interface AutocompleteEntryVariable {
   type: TypeCategory.Class
+  category: AutocompleteEntryCategory.Value
   name: string
   typeIfAttr?: string
   docString?: string
@@ -52,6 +58,7 @@ export interface AutocompleteEntryFunctionArgument {
 
 export interface AutocompleteEntryFunction {
   type: TypeCategory.Function
+  category: AutocompleteEntryCategory.Function
   name: string
   typeIfAttr?: string
   declarationNum: number

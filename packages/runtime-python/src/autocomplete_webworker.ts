@@ -22,6 +22,14 @@ import {
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
+// console.log('HELLO ?????', AutocompleteEntryCategory)
+
+try {
+  // console.log('HELLO ?????', AutocompleteEntryCategory)
+} catch (e) {
+  console.log(e)
+}
+
 tryNonModuleLoadPyodide()
 
 let pyodide: any = null
@@ -42,6 +50,7 @@ export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) =
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
+  console.log('HELLO ?????')
   sendMessage({ type: 'ready' })
 }
 
@@ -221,6 +230,7 @@ const getAutocompleteInfo = (type: Type, seen?: Set<string>): AutocompleteInfo[]
                     arguments: args,
                     typeIfAttr: parentName,
                     declarationNum: i,
+                    category: 1,
                   },
                 ]
               }
@@ -234,6 +244,7 @@ const getAutocompleteInfo = (type: Type, seen?: Set<string>): AutocompleteInfo[]
                   docString: inferredType.details.docString,
                   typeIfAttr: parentName,
                   declarationNum: i,
+                  category: 0,
                 },
               ]
             } else if (inferredType.category == TC.Function) {
@@ -250,6 +261,7 @@ const getAutocompleteInfo = (type: Type, seen?: Set<string>): AutocompleteInfo[]
                   arguments: args,
                   typeIfAttr: parentName,
                   declarationNum: i,
+                  category: 1,
                 },
               ]
             }

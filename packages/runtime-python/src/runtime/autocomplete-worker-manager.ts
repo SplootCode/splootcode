@@ -14,6 +14,7 @@ export class AutocompleteWorkerManager {
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
     this.sendToParentWindow = sendToParentWindow
+    this.worker = null
     this.workerReady = false
 
     this.initialize()
@@ -23,6 +24,8 @@ export class AutocompleteWorkerManager {
     if (!this.worker) {
       this.worker = new this.AutocompleteWorker()
       this.worker.addEventListener('message', this.handleMessageFromWorker)
+
+      console.log('initialsied autocomplete worker')
     }
   }
 
@@ -31,6 +34,7 @@ export class AutocompleteWorkerManager {
   }
 
   sendParseTrees(parseTrees: ParseTrees) {
+    console.log('forwarding parse tree?')
     this.sendMessage({
       type: 'parse_trees',
       parseTrees,
@@ -48,6 +52,7 @@ export class AutocompleteWorkerManager {
     const type = event.data.type
 
     if (type === 'ready') {
+      console.log('worker is ready?')
       this.workerReady = true
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)

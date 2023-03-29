@@ -36,4 +36,5 @@ export type {
   AutocompleteEntryFunction,
   AutocompleteEntryVariable,
   AutocompleteEntryFunctionArgument,
+  AutocompleteEntryCategory,
 } from './analyzer/python_analyzer'
