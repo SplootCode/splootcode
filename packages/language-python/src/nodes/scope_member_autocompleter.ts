@@ -1,9 +1,4 @@
-import {
-  AutocompleteEntryCategory,
-  AutocompleteInfo,
-  ExpressionTypeInfo,
-  ExpressionTypeResponse,
-} from '../analyzer/python_analyzer'
+import { AutocompleteEntryCategory, AutocompleteInfo, ExpressionTypeResponse } from '../analyzer/python_analyzer'
 import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
@@ -26,7 +21,6 @@ import { PYTHON_SUBSCRIPT } from './python_subscript'
 import { PYTHON_TUPLE } from './python_tuple'
 import { PythonNode } from './python_node'
 import { PythonScope } from '../scope/python_scope'
-import { TypeCategory as TC } from 'structured-pyright'
 
 function getAttributesForType(scope: PythonScope, typeName: string): [string, VariableTypeInfo][] {
   const typeMeta = scope.getTypeDefinition(typeName)
@@ -34,44 +28,6 @@ function getAttributesForType(scope: PythonScope, typeName: string): [string, Va
     return Array.from(typeMeta.attributes.entries())
   }
   console.warn('No type found for type name: ', typeName)
-  return []
-}
-
-function getAttributesForModule(scope: PythonScope, moduleName: string): [string, VariableTypeInfo][] {
-  const typeMeta = scope.getModuleDefinition(moduleName)
-  if (typeMeta) {
-    return Array.from(typeMeta.attributes.entries())
-  }
-  console.warn('No definition found for module name: ', moduleName)
-
-  return []
-}
-
-function getAttributesFromType(scope: PythonScope, type: ExpressionTypeInfo): [string, VariableTypeInfo][] {
-  if (!type) {
-    return []
-  }
-
-  switch (type.category) {
-    case TC.Class:
-      if (!type.name) {
-        return []
-      }
-
-      return getAttributesForType(scope, type.name)
-    case TC.Module:
-      if (!type.name) {
-        return []
-      }
-
-      return getAttributesForModule(scope, type.name)
-    case TC.Union:
-      if (!type.subtypes) {
-        return []
-      }
-
-      return type.subtypes.map((subtype) => getAttributesFromType(scope, subtype)).flat()
-  }
   return []
 }
 
