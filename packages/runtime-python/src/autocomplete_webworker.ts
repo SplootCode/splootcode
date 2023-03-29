@@ -1,13 +1,6 @@
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './runtime/common'
-import {
-  ExpressionNode,
-  SourceFile,
-  StructuredEditorProgram,
-  TypeCategory as TC,
-  Type,
-  createStructuredProgramWorker,
-} from 'structured-pyright'
-import { ExpressionTypeInfo, ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
+import { ExpressionNode, SourceFile, StructuredEditorProgram, createStructuredProgramWorker } from 'structured-pyright'
+import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { getAutocompleteInfo } from './autocomplete'
 import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
@@ -78,29 +71,6 @@ const updateParseTrees = async (trees: ParseTrees) => {
   }
 }
 
-const toExpressionTypeInfo = (type: Type): ExpressionTypeInfo => {
-  if (type.category === TC.Class) {
-    return {
-      category: type.category,
-      name: type.details.fullName,
-    }
-  } else if (type.category === TC.Module) {
-    return {
-      category: type.category,
-      name: type.moduleName,
-    }
-  } else if (type.category === TC.Union) {
-    return {
-      category: type.category,
-      subtypes: type.subtypes.map((subtype) => toExpressionTypeInfo(subtype)),
-    }
-  } else if (type.category === TC.Unknown || type.category === TC.Any || type.category === TC.None) {
-    return null
-  }
-
-  throw new Error('unhandled type category ' + type.category)
-}
-
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
   const sourceFile = sourceMap.get(request.path)
   if (!sourceFile) {
@@ -118,7 +88,6 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
       type: 'expression_type_info',
       response: {
         parseID: currentParseID,
-        type: toExpressionTypeInfo(type.type),
         requestID: request.requestID,
         autocompleteSuggestions: getAutocompleteInfo(structuredProgram, type.type),
       },

@@ -7,7 +7,6 @@ import {
   ParseNode,
   StructuredEditorProgram,
   Type,
-  TypeCategory,
   createStructuredProgram,
 } from 'structured-pyright'
 import { FunctionArgType } from '../scope/types'
@@ -26,14 +25,6 @@ export interface ExpressionTypeRequest {
 
   path: string
   expression: ExpressionNode
-}
-
-// TODO(harrison): pyright's Type interface is not serializable, so we have to do this. In the future this interface should be replaced
-// with a generic 'autocomplete response' interface.
-export interface ExpressionTypeInfo {
-  category: TypeCategory
-  name?: string
-  subtypes?: ExpressionTypeInfo[]
 }
 
 export const enum AutocompleteEntryCategory {
@@ -70,8 +61,6 @@ export type AutocompleteInfo = AutocompleteEntryVariable | AutocompleteEntryFunc
 export interface ExpressionTypeResponse {
   parseID: number
   requestID: string
-
-  type: ExpressionTypeInfo
 
   autocompleteSuggestions: AutocompleteInfo[]
 }
@@ -187,15 +176,6 @@ export class PythonAnalyzer {
     }
 
     return this.sender.getExpressionType(path, exprNode, this.currentAtomicID)
-  }
-
-  async getPyrightTypeForExpressionWorker(path: string, node: SplootNode): Promise<ExpressionTypeInfo> {
-    const resp = await this.getExpressionType(path, node)
-    if (!resp) {
-      return null
-    }
-
-    return resp.type
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {

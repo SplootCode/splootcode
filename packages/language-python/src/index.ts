@@ -30,7 +30,6 @@ export type {
   ParseTreeInfo,
   ExpressionTypeRequest,
   ExpressionTypeResponse,
-  ExpressionTypeInfo,
   ParseTrees,
   AutocompleteInfo,
   AutocompleteEntryFunction,
