@@ -11,6 +11,7 @@ import {
   StructuredEditorProgram,
   TypeCategory as TC,
   Type,
+  TypeBase,
 } from 'structured-pyright'
 
 function getShortDoc(docString?: string) {
@@ -29,7 +30,9 @@ function getShortDoc(docString?: string) {
   return short
 }
 
-const pyrightParamsToSplootParams = (params: FunctionParameter[]): AutocompleteEntryFunctionArgument[] => {
+function pyrightParamsToAutocompleteFunctionArguments(
+  params: FunctionParameter[]
+): AutocompleteEntryFunctionArgument[] {
   let seenVargs = false
   const args: AutocompleteEntryFunctionArgument[] = []
   for (let i = 0; i < params.length; i++) {
@@ -115,16 +118,19 @@ const suggestionsForEntries = (
             return []
           }
 
+          // Attributes on methods and classes are considered to be in the Class category.
           if (inferredType.category == TC.Class) {
-            if ((inferredType.flags & 1) == 1) {
+            if (TypeBase.isInstantiable(inferredType)) {
+              // Since this value is instantiable, we want the autocomplete suggestion to reflect that
               const init = inferredType.details.fields.get('__init__')
               let args: AutocompleteEntryFunctionArgument[] = []
 
               if (init && init.getDeclarations().length > 0) {
+                // In cases where there is an __init__ method, we take the arguments from that
                 const initInferredType = evaluator.getInferredTypeOfDeclaration(init, init.getDeclarations()[0])
 
                 if (initInferredType && initInferredType.category === TC.Function) {
-                  args = pyrightParamsToSplootParams(initInferredType.details.parameters.slice(1))
+                  args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
                 }
               }
 
@@ -150,7 +156,7 @@ const suggestionsForEntries = (
               },
             ]
           } else if (inferredType.category == TC.Function) {
-            const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToSplootParams(
+            const args: AutocompleteEntryFunctionArgument[] = pyrightParamsToAutocompleteFunctionArguments(
               parentName ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
             )
 
@@ -188,10 +194,9 @@ export function getAutocompleteInfo(
   } else if (type.category === TC.Class) {
     const suggestions: AutocompleteInfo[] = suggestionsForEntries(program, type.details.fields, seen, type.details.name)
 
-    // TODO(harrison): should this loop through in reverse? or use type.details.mro?
     for (const base of type.details.baseClasses) {
       if (base.category !== TC.Class) {
-        console.error('something very weird going on', base)
+        continue
       }
 
       suggestions.push(...suggestionsForEntries(program, (base as any).details.fields, seen, type.details.name))
