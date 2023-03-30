@@ -363,8 +363,6 @@ async function generateTrayListForModule(
   }
 
   const moduleAutocompleteInfo = getAutocompleteInfo(structuredProgram, typeResult.type, new Set())
-  // console.log(moduleAutocompleteInfo)
-
   const trayEntries: (TrayEntry | null)[] = moduleAutocompleteInfo.map((autocompleteEntry) => {
     if (autocompleteEntry.name.startsWith('_')) {
       return null
