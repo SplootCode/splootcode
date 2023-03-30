@@ -42,10 +42,14 @@
     "@types/react-router-dom": "^5.3.3",
     "allotment": "^1.11.1",
     "content-type": "^1.0.5",
+    "fuse.js": "^6.6.2",
+    "http-status-codes": "^2.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.1",
     "jest-canvas-mock": "^2.4.0",
     "jest-environment-jsdom": "^28.1.1",
+    "mobx": "^5.15.0",
+    "mobx-react": "^6.2.5",
     "pretty": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -56,13 +60,10 @@
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typescript": "^4.8.4",
-    "fuse.js": "^6.6.2",
-    "http-status-codes": "^2.2.0",
-    "mobx": "^5.15.0",
-    "mobx-react": "^6.2.5",
     "xterm": "^5.1.0",
     "xterm-addon-fit": "^0.7.0"
   },
   "dependencies": {
+    "@rollup/plugin-commonjs": "^24.0.1"
   }
 }

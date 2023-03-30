@@ -28,6 +28,6 @@
     "rollup-plugin-dts": "^5.0.0",
     "typescript": "^4.8.4",
     "@jest/globals": "^29.2.2",
-    "structured-pyright": "^1.0.10"
+    "structured-pyright": "^1.0.11"
   }
 }
