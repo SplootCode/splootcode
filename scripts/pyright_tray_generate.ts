@@ -205,6 +205,7 @@ const supportedStandardLibModules = [
 import { ModuleInfoFile, PythonModuleInfo } from '@splootcode/language-python'
 import { loadPyodide } from 'pyodide'
 
+// Must have local server running for this to work.
 const RequestsURL = 'http://localhost:3001/python/packages/requests-2.28.1-py3-none-any.whl'
 const TypeshedPath = 'http://localhost:3001/static/typeshed/'
 

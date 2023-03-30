@@ -22,7 +22,7 @@
     "esModuleInterop": true,
     "module": "ES2020",
   },
-  "include": ["src", "src-runtime"],
+  "include": ["src", "src-runtime", "scripts"],
   "exclude": [
     "node_modules",
     "dist",
