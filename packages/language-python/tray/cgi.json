@@ -2,10 +2,13 @@
   "category": "cgi",
   "entries": [
     {
-      "key": "cgi.parse",
-      "abstract": "Abstract for cgi.parse",
+      "key": "cgi._list",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_list"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,131 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "cgi._type",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_type"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cgi.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cgi.parse",
+      "abstract": "Parse a query in the environment or from a file (default stdin)",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "cgi.parse_multipart",
-      "abstract": "Abstract for cgi.parse_multipart",
+      "abstract": "Parse multipart input.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "parse_multipart"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +188,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "cgi._Environ",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "parse_multipart"
+          "member": "_Environ"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "cgi.parse_header",
-      "abstract": "Abstract for cgi.parse_header",
+      "abstract": "Parse a Content-type like header.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "parse_header"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "parse_header"
         }
       }
     },
     {
       "key": "cgi.test",
-      "abstract": "Abstract for cgi.test",
+      "abstract": "Robust test CGI script, usable as main program.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "test"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "test"
         }
       }
     },
     {
       "key": "cgi.print_environ",
-      "abstract": "Abstract for cgi.print_environ",
+      "abstract": "Dump the shell environment as HTML.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_environ"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_environ"
         }
       }
     },
     {
       "key": "cgi.print_form",
-      "abstract": "Abstract for cgi.print_form",
+      "abstract": "Dump the contents of a form as HTML.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_form"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_form"
         }
       }
     },
     {
       "key": "cgi.print_directory",
-      "abstract": "Abstract for cgi.print_directory",
+      "abstract": "Dump the current directory as HTML.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_directory"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_directory"
         }
       }
     },
     {
       "key": "cgi.print_environ_usage",
-      "abstract": "Abstract for cgi.print_environ_usage",
+      "abstract": "Dump a list of environment variables used by CGI as HTML.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_environ_usage"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +454,93 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "cgi.MiniFieldStorage",
+      "abstract": "Like FieldStorage, for use when no file uploads are possible.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "print_environ_usage"
+          "member": "MiniFieldStorage"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cgi.FieldStorage",
+      "abstract": "Store a sequence of fields, reading multipart/form-data.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FieldStorage"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "cgi.print_exception",
-      "abstract": "Abstract for cgi.print_exception",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_exception"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_exception"
         }
       }
     },
     {
       "key": "cgi.print_arguments",
-      "abstract": "Abstract for cgi.print_arguments",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_arguments"
+        },
         "childSets": {
           "object": [
             {
@@ -375,9 +606,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_arguments"
         }
       }
     }

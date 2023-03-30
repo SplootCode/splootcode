@@ -2,10 +2,118 @@
   "category": "gc",
   "entries": [
     {
+      "key": "gc.DEBUG_COLLECTABLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG_COLLECTABLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "gc.DEBUG_LEAK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG_LEAK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "gc.DEBUG_SAVEALL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG_SAVEALL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "gc.DEBUG_STATS",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG_STATS"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "gc.DEBUG_UNCOLLECTABLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG_UNCOLLECTABLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "gc._CallbackType",
-      "abstract": "Abstract for gc._CallbackType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_CallbackType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +141,59 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "gc.callbacks",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": ""
+          "member": "callbacks"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "gc.garbage",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "garbage"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "gc"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "gc.collect",
-      "abstract": "Abstract for gc.collect",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "collect"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +221,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "collect"
         }
       }
     },
     {
       "key": "gc.disable",
-      "abstract": "Abstract for gc.disable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "disable"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +259,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "disable"
         }
       }
     },
     {
       "key": "gc.enable",
-      "abstract": "Abstract for gc.enable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "enable"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +297,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "enable"
         }
       }
     },
     {
       "key": "gc.get_count",
-      "abstract": "Abstract for gc.get_count",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_count"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +335,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_count"
         }
       }
     },
     {
       "key": "gc.get_debug",
-      "abstract": "Abstract for gc.get_debug",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_debug"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +373,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_debug"
         }
       }
     },
     {
       "key": "gc.get_objects",
-      "abstract": "Abstract for gc.get_objects",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_objects"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +411,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_objects"
         }
       }
     },
     {
       "key": "gc.freeze",
-      "abstract": "Abstract for gc.freeze",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "freeze"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +449,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "freeze"
         }
       }
     },
     {
       "key": "gc.unfreeze",
-      "abstract": "Abstract for gc.unfreeze",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unfreeze"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +487,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unfreeze"
         }
       }
     },
     {
       "key": "gc.get_freeze_count",
-      "abstract": "Abstract for gc.get_freeze_count",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_freeze_count"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +525,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_freeze_count"
         }
       }
     },
     {
       "key": "gc.get_referents",
-      "abstract": "Abstract for gc.get_referents",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_referents"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +563,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_referents"
         }
       }
     },
     {
       "key": "gc.get_referrers",
-      "abstract": "Abstract for gc.get_referrers",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_referrers"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +601,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_referrers"
         }
       }
     },
     {
       "key": "gc.get_stats",
-      "abstract": "Abstract for gc.get_stats",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_stats"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +639,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_stats"
         }
       }
     },
     {
       "key": "gc.get_threshold",
-      "abstract": "Abstract for gc.get_threshold",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_threshold"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +677,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_threshold"
         }
       }
     },
     {
       "key": "gc.is_tracked",
-      "abstract": "Abstract for gc.is_tracked",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_tracked"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +715,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "is_tracked"
         }
       }
     },
     {
       "key": "gc.is_finalized",
-      "abstract": "Abstract for gc.is_finalized",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_finalized"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +753,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "is_finalized"
         }
       }
     },
     {
       "key": "gc.isenabled",
-      "abstract": "Abstract for gc.isenabled",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isenabled"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +791,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isenabled"
         }
       }
     },
     {
       "key": "gc.set_debug",
-      "abstract": "Abstract for gc.set_debug",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_debug"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +829,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_debug"
         }
       }
     },
     {
       "key": "gc.set_threshold",
-      "abstract": "Abstract for gc.set_threshold",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_threshold"
+        },
         "childSets": {
           "object": [
             {
@@ -717,9 +867,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_threshold"
         }
       }
     }

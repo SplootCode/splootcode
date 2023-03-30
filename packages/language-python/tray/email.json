@@ -2,10 +2,13 @@
   "category": "email",
   "entries": [
     {
-      "key": "email.message_from_string",
-      "abstract": "Abstract for email.message_from_string",
+      "key": "email.Message",
+      "abstract": "Basic message object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Message"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "email.Policy",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Policy"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "email"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "email.message_from_string",
+      "abstract": "Parse a string into a Message object model.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "message_from_string"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "email"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "email.message_from_bytes",
-      "abstract": "Abstract for email.message_from_bytes",
+      "abstract": "Parse a bytes string into a Message object model.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "message_from_bytes"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "message_from_bytes"
         }
       }
     },
     {
       "key": "email.message_from_file",
-      "abstract": "Abstract for email.message_from_file",
+      "abstract": "Read a file and parse its contents into a Message object model.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "message_from_file"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "message_from_file"
         }
       }
     },
     {
       "key": "email.message_from_binary_file",
-      "abstract": "Abstract for email.message_from_binary_file",
+      "abstract": "Read a binary file and parse its contents into a Message object model.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "message_from_binary_file"
+        },
         "childSets": {
           "object": [
             {
@@ -147,9 +226,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "message_from_binary_file"
         }
       }
     }

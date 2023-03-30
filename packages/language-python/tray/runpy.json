@@ -2,10 +2,13 @@
   "category": "runpy",
   "entries": [
     {
-      "key": "runpy.run_module",
-      "abstract": "Abstract for runpy.run_module",
+      "key": "runpy.ModuleType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,131 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "runpy._TempModule",
+      "abstract": "Temporarily replace a module in sys.modules with an empty namespace",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_TempModule"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "runpy"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "runpy._ModifiedArgv0",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ModifiedArgv0"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "runpy"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "runpy.run_module",
+      "abstract": "Execute a module's code without importing it",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "run_module"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "runpy"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "runpy.run_path",
-      "abstract": "Abstract for runpy.run_path",
+      "abstract": "Execute code located at the specified filesystem location",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "run_path"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +188,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "run_path"
         }
       }
     }

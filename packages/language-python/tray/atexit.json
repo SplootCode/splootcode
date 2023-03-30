@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "atexit._clear",
-      "abstract": "Abstract for atexit._clear",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_clear"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_clear"
         }
       }
     },
     {
       "key": "atexit._ncallbacks",
-      "abstract": "Abstract for atexit._ncallbacks",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ncallbacks"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_ncallbacks"
         }
       }
     },
     {
       "key": "atexit._run_exitfuncs",
-      "abstract": "Abstract for atexit._run_exitfuncs",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_run_exitfuncs"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_run_exitfuncs"
         }
       }
     },
     {
       "key": "atexit.register",
-      "abstract": "Abstract for atexit.register",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register"
         }
       }
     },
     {
       "key": "atexit.unregister",
-      "abstract": "Abstract for atexit.unregister",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unregister"
+        },
         "childSets": {
           "object": [
             {
@@ -185,9 +188,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unregister"
         }
       }
     }

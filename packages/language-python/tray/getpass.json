@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "getpass.getpass",
-      "abstract": "Abstract for getpass.getpass",
+      "abstract": "Prompt for a password, with echo turned off.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpass"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpass"
         }
       }
     },
     {
       "key": "getpass.getuser",
-      "abstract": "Abstract for getpass.getuser",
+      "abstract": "Get the username from the environment or password database.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getuser"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +74,44 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "getpass.GetPassWarning",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "getuser"
+          "member": "GetPassWarning"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "getpass"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

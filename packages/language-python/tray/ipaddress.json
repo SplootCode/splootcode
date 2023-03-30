@@ -2,10 +2,13 @@
   "category": "ipaddress",
   "entries": [
     {
-      "key": "ipaddress.overload",
-      "abstract": "Abstract for ipaddress.overload",
+      "key": "ipaddress.IPV4LENGTH",
+      "abstract": "",
       "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "IPV4LENGTH"
+        },
         "childSets": {
           "object": [
             {
@@ -15,35 +18,39 @@
               },
               "childSets": {}
             }
-          ],
-          "arguments": [
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPV6LENGTH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "IPV6LENGTH"
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
               },
-              "properties": {}
+              "childSets": {}
             }
           ]
-        },
-        "properties": {
-          "member": "overload"
         }
       }
     },
     {
       "key": "ipaddress.ip_address",
-      "abstract": "Abstract for ipaddress.ip_address",
+      "abstract": "Take an IP string/int and return an object of the correct type.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ip_address"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +78,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ip_address"
         }
       }
     },
     {
       "key": "ipaddress.ip_network",
-      "abstract": "Abstract for ipaddress.ip_network",
+      "abstract": "Take an IP string/int and return an object of the correct type.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ip_network"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +116,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ip_network"
         }
       }
     },
     {
       "key": "ipaddress.ip_interface",
-      "abstract": "Abstract for ipaddress.ip_interface",
+      "abstract": "Take an IP string/int and return an object of the correct type.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ip_interface"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +154,473 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "ipaddress._IPAddressBase",
+      "abstract": "The mother class.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "ip_interface"
+          "member": "_IPAddressBase"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress._BaseAddress",
+      "abstract": "A generic IP object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BaseAddress"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress._BaseNetwork",
+      "abstract": "A generic IP network object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BaseNetwork"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress._BaseInterface",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BaseInterface"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress._BaseV4",
+      "abstract": "Base IPv4 object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BaseV4"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv4Address",
+      "abstract": "Represent and manipulate single IPv4 Addresses.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv4Address"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv4Network",
+      "abstract": "This class represents and manipulates 32-bit IPv4 network + addresses..",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv4Network"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv4Interface",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv4Interface"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress._BaseV6",
+      "abstract": "Base IPv6 object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BaseV6"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv6Address",
+      "abstract": "Represent and manipulate single IPv6 Addresses.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv6Address"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv6Network",
+      "abstract": "This class represents and manipulates 128-bit IPv6 networks.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv6Network"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv6Interface",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv6Interface"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "ipaddress.v4_int_to_packed",
-      "abstract": "Abstract for ipaddress.v4_int_to_packed",
+      "abstract": "Represent an address as 4 packed bytes in network (big-endian) order.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "v4_int_to_packed"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +648,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "v4_int_to_packed"
         }
       }
     },
     {
       "key": "ipaddress.v6_int_to_packed",
-      "abstract": "Abstract for ipaddress.v6_int_to_packed",
+      "abstract": "Represent an address as 16 packed bytes in network (big-endian) order.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "v6_int_to_packed"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +686,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "v6_int_to_packed"
         }
       }
     },
     {
       "key": "ipaddress.summarize_address_range",
-      "abstract": "Abstract for ipaddress.summarize_address_range",
+      "abstract": "Summarize a network range given the first and last IP addresses.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "summarize_address_range"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +724,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "summarize_address_range"
         }
       }
     },
     {
       "key": "ipaddress.collapse_addresses",
-      "abstract": "Abstract for ipaddress.collapse_addresses",
+      "abstract": "Collapse a list of IP objects.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "collapse_addresses"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +762,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "collapse_addresses"
         }
       }
     },
     {
       "key": "ipaddress.get_mixed_type_key",
-      "abstract": "Abstract for ipaddress.get_mixed_type_key",
+      "abstract": "Return a key suitable for sorting between networks and addresses.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_mixed_type_key"
+        },
         "childSets": {
           "object": [
             {
@@ -337,9 +800,82 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "ipaddress.AddressValueError",
+      "abstract": "A Value Error related to the address.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "get_mixed_type_key"
+          "member": "AddressValueError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ipaddress.NetmaskValueError",
+      "abstract": "A Value Error related to the netmask.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "NetmaskValueError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

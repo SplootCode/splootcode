@@ -2,10 +2,13 @@
   "category": "os",
   "entries": [
     {
-      "key": "os.abstractmethod",
-      "abstract": "Abstract for os.abstractmethod",
+      "key": "os.OSError",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "OSError"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abstractmethod"
         }
       }
     },
     {
-      "key": "os.overload",
-      "abstract": "Abstract for os.overload",
+      "key": "os.AbstractContextManager",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "AbstractContextManager"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "overload"
         }
       }
     },
     {
-      "key": "os.runtime_checkable",
-      "abstract": "Abstract for os.runtime_checkable",
+      "key": "os.BufferedRandom",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedRandom"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "runtime_checkable"
         }
       }
     },
     {
-      "key": "os.final",
-      "abstract": "Abstract for os.final",
+      "key": "os.BufferedReader",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedReader"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,2681 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.BufferedWriter",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "final"
+          "member": "BufferedWriter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.FileIO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FileIO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os._TextIOWrapper",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_TextIOWrapper"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.Popen",
+      "abstract": " Execute a child program in a new process.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Popen"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.GenericAlias",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "GenericAlias"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.error",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.supports_bytes_environ",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_bytes_environ"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.supports_dir_fd",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_dir_fd"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.supports_fd",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_fd"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.supports_effective_ids",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_effective_ids"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.supports_follow_symlinks",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_follow_symlinks"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.PRIO_PROCESS",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_PROCESS"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.PRIO_PGRP",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_PGRP"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.PRIO_USER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_USER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.F_LOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_LOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.F_TLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_TLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.F_ULOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_ULOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.F_TEST",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_TEST"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_NORMAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_NORMAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_SEQUENTIAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_SEQUENTIAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_RANDOM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_RANDOM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_NOREUSE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_NOREUSE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_WILLNEED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_WILLNEED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_FADV_DONTNEED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_DONTNEED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SF_NODISKIO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SF_NODISKIO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SF_MNOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SF_MNOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SF_SYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SF_SYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.XATTR_SIZE_MAX",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_SIZE_MAX"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.XATTR_CREATE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_CREATE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.XATTR_REPLACE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_REPLACE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_PID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_PID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_PGID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_PGID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_ALL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_ALL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_PIDFD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_PIDFD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WEXITED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WEXITED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WSTOPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WSTOPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WNOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WNOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_EXITED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_EXITED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_DUMPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_DUMPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_TRAPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_TRAPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_CONTINUED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_CONTINUED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_KILLED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_KILLED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.CLD_STOPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_STOPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_OTHER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_OTHER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_BATCH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_BATCH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_IDLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_IDLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_SPORADIC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_SPORADIC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_FIFO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_FIFO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_RR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_RR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SCHED_RESET_ON_FORK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_RESET_ON_FORK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_LAZY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_LAZY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_NOW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NOW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_GLOBAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_GLOBAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_LOCAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_LOCAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_NODELETE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NODELETE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_NOLOAD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NOLOAD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RTLD_DEEPBIND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_DEEPBIND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.GRND_NONBLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "GRND_NONBLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.GRND_RANDOM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "GRND_RANDOM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SEEK_SET",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_SET"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SEEK_CUR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_CUR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SEEK_END",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_END"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SEEK_DATA",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_DATA"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.SEEK_HOLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_HOLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_RDONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RDONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_WRONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_WRONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_RDWR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RDWR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_APPEND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_APPEND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_CREAT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_CREAT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_EXCL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_EXCL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_TRUNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_TRUNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_DSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_RSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_SYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_SYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NDELAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NDELAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NONBLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NONBLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NOCTTY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOCTTY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_CLOEXEC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_CLOEXEC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_SHLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_SHLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_EXLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_EXLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_BINARY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_BINARY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NOINHERIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOINHERIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_SHORT_LIVED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_SHORT_LIVED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_TEMPORARY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_TEMPORARY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_RANDOM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RANDOM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_SEQUENTIAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_SEQUENTIAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_TEXT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_TEXT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_ASYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_ASYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_DIRECT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DIRECT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_DIRECTORY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DIRECTORY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NOFOLLOW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOFOLLOW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_NOATIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOATIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_PATH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_PATH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_TMPFILE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_TMPFILE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_LARGEFILE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_LARGEFILE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.O_ACCMODE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_ACCMODE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_APPEND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_APPEND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_MANDLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_MANDLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_NOATIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NOATIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_NODEV",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NODEV"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_NODIRATIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NODIRATIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_NOEXEC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NOEXEC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_RELATIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_RELATIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_SYNCHRONOUS",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_SYNCHRONOUS"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_WRITE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_WRITE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.NGROUPS_MAX",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "NGROUPS_MAX"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_NOSUID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NOSUID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.ST_RDONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_RDONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.curdir",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "curdir"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.pardir",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pardir"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.sep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "sep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.altsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "altsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.extsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "extsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.pathsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pathsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.defpath",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "defpath"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.linesep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "linesep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.devnull",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "devnull"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.name",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "name"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.F_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.R_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "R_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.W_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "W_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.X_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "X_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os._EnvironCodeFunc",
-      "abstract": "Abstract for os._EnvironCodeFunc",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_EnvironCodeFunc"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +2852,782 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os._Environ",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": ""
+          "member": "_Environ"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.environ",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "environ"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.environb",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "environb"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.confstr_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "confstr_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.pathconf_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pathconf_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.sysconf_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "sysconf_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_USAGE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_USAGE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_DATAERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_DATAERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_NOINPUT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOINPUT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_NOUSER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOUSER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_NOHOST",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOHOST"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_UNAVAILABLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_UNAVAILABLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_SOFTWARE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_SOFTWARE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_OSERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OSERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_OSFILE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OSFILE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_CANTCREAT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_CANTCREAT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_IOERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_IOERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_TEMPFAIL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_TEMPFAIL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_PROTOCOL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_PROTOCOL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_NOPERM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOPERM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_CONFIG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_CONFIG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.EX_NOTFOUND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOTFOUND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_NOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_NOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_NOWAITO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_NOWAITO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_WAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_WAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_DETACH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_DETACH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.P_OVERLAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_OVERLAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WNOHANG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WNOHANG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WCONTINUED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WCONTINUED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.WUNTRACED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WUNTRACED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.TMP_MAX",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "TMP_MAX"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.stat_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stat_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.PathLike",
+      "abstract": "Abstract base class for implementing the file system path protocol.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PathLike"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.listdir",
-      "abstract": "Abstract for os.listdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "listdir"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +3655,131 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.DirEntry",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "listdir"
+          "member": "DirEntry"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os._StatVfsTuple",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_StatVfsTuple"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.statvfs_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "statvfs_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.fsencode",
-      "abstract": "Abstract for os.fsencode",
+      "abstract": "Encode filename (an os.PathLike, bytes, or str) to the filesystem",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fsencode"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +3807,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fsencode"
         }
       }
     },
     {
       "key": "os.fsdecode",
-      "abstract": "Abstract for os.fsdecode",
+      "abstract": "Decode filename (an os.PathLike, bytes, or str) from the filesystem",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fsdecode"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +3845,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fsdecode"
         }
       }
     },
     {
       "key": "os.fspath",
-      "abstract": "Abstract for os.fspath",
+      "abstract": "Return the path representation of a path-like object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fspath"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +3883,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fspath"
         }
       }
     },
     {
       "key": "os.get_exec_path",
-      "abstract": "Abstract for os.get_exec_path",
+      "abstract": "Returns the sequence of directories that will be searched for the",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_exec_path"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +3921,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_exec_path"
         }
       }
     },
     {
       "key": "os.getlogin",
-      "abstract": "Abstract for os.getlogin",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getlogin"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +3959,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getlogin"
         }
       }
     },
     {
       "key": "os.getpid",
-      "abstract": "Abstract for os.getpid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpid"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +3997,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpid"
         }
       }
     },
     {
       "key": "os.getppid",
-      "abstract": "Abstract for os.getppid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getppid"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +4035,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getppid"
         }
       }
     },
     {
       "key": "os.strerror",
-      "abstract": "Abstract for os.strerror",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strerror"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +4073,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strerror"
         }
       }
     },
     {
       "key": "os.umask",
-      "abstract": "Abstract for os.umask",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "umask"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +4111,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.uname_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "umask"
+          "member": "uname_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.ctermid",
-      "abstract": "Abstract for os.ctermid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ctermid"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +4187,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ctermid"
         }
       }
     },
     {
       "key": "os.getegid",
-      "abstract": "Abstract for os.getegid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getegid"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +4225,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getegid"
         }
       }
     },
     {
       "key": "os.geteuid",
-      "abstract": "Abstract for os.geteuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "geteuid"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +4263,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "geteuid"
         }
       }
     },
     {
       "key": "os.getgid",
-      "abstract": "Abstract for os.getgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgid"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +4301,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgid"
         }
       }
     },
     {
       "key": "os.getgrouplist",
-      "abstract": "Abstract for os.getgrouplist",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgrouplist"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +4339,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgrouplist"
         }
       }
     },
     {
       "key": "os.getgroups",
-      "abstract": "Abstract for os.getgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +4377,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgroups"
         }
       }
     },
     {
       "key": "os.initgroups",
-      "abstract": "Abstract for os.initgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "initgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +4415,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "initgroups"
         }
       }
     },
     {
       "key": "os.getpgid",
-      "abstract": "Abstract for os.getpgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpgid"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +4453,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpgid"
         }
       }
     },
     {
       "key": "os.getpgrp",
-      "abstract": "Abstract for os.getpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +4491,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpgrp"
         }
       }
     },
     {
       "key": "os.getpriority",
-      "abstract": "Abstract for os.getpriority",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpriority"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +4529,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpriority"
         }
       }
     },
     {
       "key": "os.setpriority",
-      "abstract": "Abstract for os.setpriority",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpriority"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +4567,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpriority"
         }
       }
     },
     {
       "key": "os.getresuid",
-      "abstract": "Abstract for os.getresuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getresuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,17 +4605,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getresuid"
         }
       }
     },
     {
       "key": "os.getresgid",
-      "abstract": "Abstract for os.getresgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getresgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1059,17 +4643,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getresgid"
         }
       }
     },
     {
       "key": "os.getuid",
-      "abstract": "Abstract for os.getuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1097,17 +4681,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getuid"
         }
       }
     },
     {
       "key": "os.setegid",
-      "abstract": "Abstract for os.setegid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setegid"
+        },
         "childSets": {
           "object": [
             {
@@ -1135,17 +4719,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setegid"
         }
       }
     },
     {
       "key": "os.seteuid",
-      "abstract": "Abstract for os.seteuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "seteuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1173,17 +4757,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "seteuid"
         }
       }
     },
     {
       "key": "os.setgid",
-      "abstract": "Abstract for os.setgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1211,17 +4795,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setgid"
         }
       }
     },
     {
       "key": "os.setgroups",
-      "abstract": "Abstract for os.setgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -1249,17 +4833,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setgroups"
         }
       }
     },
     {
       "key": "os.setpgrp",
-      "abstract": "Abstract for os.setpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -1287,17 +4871,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpgrp"
         }
       }
     },
     {
       "key": "os.setpgid",
-      "abstract": "Abstract for os.setpgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1325,17 +4909,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpgid"
         }
       }
     },
     {
       "key": "os.setregid",
-      "abstract": "Abstract for os.setregid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setregid"
+        },
         "childSets": {
           "object": [
             {
@@ -1363,17 +4947,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setregid"
         }
       }
     },
     {
       "key": "os.setresgid",
-      "abstract": "Abstract for os.setresgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setresgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1401,17 +4985,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setresgid"
         }
       }
     },
     {
       "key": "os.setresuid",
-      "abstract": "Abstract for os.setresuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setresuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1439,17 +5023,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setresuid"
         }
       }
     },
     {
       "key": "os.setreuid",
-      "abstract": "Abstract for os.setreuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setreuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1477,17 +5061,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setreuid"
         }
       }
     },
     {
       "key": "os.getsid",
-      "abstract": "Abstract for os.getsid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsid"
+        },
         "childSets": {
           "object": [
             {
@@ -1515,17 +5099,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsid"
         }
       }
     },
     {
       "key": "os.setsid",
-      "abstract": "Abstract for os.setsid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setsid"
+        },
         "childSets": {
           "object": [
             {
@@ -1553,17 +5137,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setsid"
         }
       }
     },
     {
       "key": "os.setuid",
-      "abstract": "Abstract for os.setuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1591,17 +5175,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setuid"
         }
       }
     },
     {
       "key": "os.uname",
-      "abstract": "Abstract for os.uname",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "uname"
+        },
         "childSets": {
           "object": [
             {
@@ -1629,17 +5213,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "uname"
         }
       }
     },
     {
       "key": "os.getenv",
-      "abstract": "Abstract for os.getenv",
+      "abstract": "Get an environment variable, return None if it doesn't exist.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getenv"
+        },
         "childSets": {
           "object": [
             {
@@ -1667,17 +5251,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getenv"
         }
       }
     },
     {
       "key": "os.getenvb",
-      "abstract": "Abstract for os.getenvb",
+      "abstract": "Get an environment variable, return None if it doesn't exist.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getenvb"
+        },
         "childSets": {
           "object": [
             {
@@ -1705,17 +5289,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getenvb"
         }
       }
     },
     {
       "key": "os.putenv",
-      "abstract": "Abstract for os.putenv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "putenv"
+        },
         "childSets": {
           "object": [
             {
@@ -1743,17 +5327,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "putenv"
         }
       }
     },
     {
       "key": "os.unsetenv",
-      "abstract": "Abstract for os.unsetenv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unsetenv"
+        },
         "childSets": {
           "object": [
             {
@@ -1781,17 +5365,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unsetenv"
         }
       }
     },
     {
       "key": "os._Opener",
-      "abstract": "Abstract for os._Opener",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_Opener"
+        },
         "childSets": {
           "object": [
             {
@@ -1819,17 +5403,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": ""
         }
       }
     },
     {
       "key": "os.fdopen",
-      "abstract": "Abstract for os.fdopen",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fdopen"
+        },
         "childSets": {
           "object": [
             {
@@ -1857,17 +5441,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fdopen"
         }
       }
     },
     {
       "key": "os.close",
-      "abstract": "Abstract for os.close",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "close"
+        },
         "childSets": {
           "object": [
             {
@@ -1895,17 +5479,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "close"
         }
       }
     },
     {
       "key": "os.closerange",
-      "abstract": "Abstract for os.closerange",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "closerange"
+        },
         "childSets": {
           "object": [
             {
@@ -1933,17 +5517,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "closerange"
         }
       }
     },
     {
       "key": "os.device_encoding",
-      "abstract": "Abstract for os.device_encoding",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "device_encoding"
+        },
         "childSets": {
           "object": [
             {
@@ -1971,17 +5555,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "device_encoding"
         }
       }
     },
     {
       "key": "os.dup",
-      "abstract": "Abstract for os.dup",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dup"
+        },
         "childSets": {
           "object": [
             {
@@ -2009,17 +5593,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dup"
         }
       }
     },
     {
       "key": "os.dup2",
-      "abstract": "Abstract for os.dup2",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dup2"
+        },
         "childSets": {
           "object": [
             {
@@ -2047,17 +5631,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dup2"
         }
       }
     },
     {
       "key": "os.fstat",
-      "abstract": "Abstract for os.fstat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fstat"
+        },
         "childSets": {
           "object": [
             {
@@ -2085,17 +5669,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fstat"
         }
       }
     },
     {
       "key": "os.ftruncate",
-      "abstract": "Abstract for os.ftruncate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ftruncate"
+        },
         "childSets": {
           "object": [
             {
@@ -2123,17 +5707,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ftruncate"
         }
       }
     },
     {
       "key": "os.fsync",
-      "abstract": "Abstract for os.fsync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fsync"
+        },
         "childSets": {
           "object": [
             {
@@ -2161,17 +5745,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fsync"
         }
       }
     },
     {
       "key": "os.isatty",
-      "abstract": "Abstract for os.isatty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isatty"
+        },
         "childSets": {
           "object": [
             {
@@ -2199,17 +5783,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isatty"
         }
       }
     },
     {
       "key": "os.lseek",
-      "abstract": "Abstract for os.lseek",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lseek"
+        },
         "childSets": {
           "object": [
             {
@@ -2237,17 +5821,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lseek"
         }
       }
     },
     {
       "key": "os.open",
-      "abstract": "Abstract for os.open",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "open"
+        },
         "childSets": {
           "object": [
             {
@@ -2275,17 +5859,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "open"
         }
       }
     },
     {
       "key": "os.pipe",
-      "abstract": "Abstract for os.pipe",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pipe"
+        },
         "childSets": {
           "object": [
             {
@@ -2313,17 +5897,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pipe"
         }
       }
     },
     {
       "key": "os.read",
-      "abstract": "Abstract for os.read",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "read"
+        },
         "childSets": {
           "object": [
             {
@@ -2351,17 +5935,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "read"
         }
       }
     },
     {
       "key": "os.fchmod",
-      "abstract": "Abstract for os.fchmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchmod"
+        },
         "childSets": {
           "object": [
             {
@@ -2389,17 +5973,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchmod"
         }
       }
     },
     {
       "key": "os.fchown",
-      "abstract": "Abstract for os.fchown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchown"
+        },
         "childSets": {
           "object": [
             {
@@ -2427,17 +6011,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchown"
         }
       }
     },
     {
       "key": "os.fpathconf",
-      "abstract": "Abstract for os.fpathconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fpathconf"
+        },
         "childSets": {
           "object": [
             {
@@ -2465,17 +6049,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fpathconf"
         }
       }
     },
     {
       "key": "os.fstatvfs",
-      "abstract": "Abstract for os.fstatvfs",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fstatvfs"
+        },
         "childSets": {
           "object": [
             {
@@ -2503,17 +6087,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fstatvfs"
         }
       }
     },
     {
       "key": "os.get_blocking",
-      "abstract": "Abstract for os.get_blocking",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_blocking"
+        },
         "childSets": {
           "object": [
             {
@@ -2541,17 +6125,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_blocking"
         }
       }
     },
     {
       "key": "os.set_blocking",
-      "abstract": "Abstract for os.set_blocking",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_blocking"
+        },
         "childSets": {
           "object": [
             {
@@ -2579,17 +6163,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_blocking"
         }
       }
     },
     {
       "key": "os.lockf",
-      "abstract": "Abstract for os.lockf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lockf"
+        },
         "childSets": {
           "object": [
             {
@@ -2617,17 +6201,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lockf"
         }
       }
     },
     {
       "key": "os.openpty",
-      "abstract": "Abstract for os.openpty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "openpty"
+        },
         "childSets": {
           "object": [
             {
@@ -2655,17 +6239,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "openpty"
         }
       }
     },
     {
       "key": "os.fdatasync",
-      "abstract": "Abstract for os.fdatasync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fdatasync"
+        },
         "childSets": {
           "object": [
             {
@@ -2693,17 +6277,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fdatasync"
         }
       }
     },
     {
       "key": "os.pipe2",
-      "abstract": "Abstract for os.pipe2",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pipe2"
+        },
         "childSets": {
           "object": [
             {
@@ -2731,17 +6315,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pipe2"
         }
       }
     },
     {
       "key": "os.posix_fallocate",
-      "abstract": "Abstract for os.posix_fallocate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_fallocate"
+        },
         "childSets": {
           "object": [
             {
@@ -2769,17 +6353,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_fallocate"
         }
       }
     },
     {
       "key": "os.posix_fadvise",
-      "abstract": "Abstract for os.posix_fadvise",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_fadvise"
+        },
         "childSets": {
           "object": [
             {
@@ -2807,17 +6391,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_fadvise"
         }
       }
     },
     {
       "key": "os.pread",
-      "abstract": "Abstract for os.pread",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pread"
+        },
         "childSets": {
           "object": [
             {
@@ -2845,17 +6429,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pread"
         }
       }
     },
     {
       "key": "os.pwrite",
-      "abstract": "Abstract for os.pwrite",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pwrite"
+        },
         "childSets": {
           "object": [
             {
@@ -2883,17 +6467,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.RWF_APPEND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "pwrite"
+          "member": "RWF_APPEND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.preadv",
-      "abstract": "Abstract for os.preadv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "preadv"
+        },
         "childSets": {
           "object": [
             {
@@ -2921,17 +6526,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "preadv"
         }
       }
     },
     {
       "key": "os.pwritev",
-      "abstract": "Abstract for os.pwritev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pwritev"
+        },
         "childSets": {
           "object": [
             {
@@ -2959,17 +6564,101 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.RWF_DSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "pwritev"
+          "member": "RWF_DSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RWF_SYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_SYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RWF_HIPRI",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_HIPRI"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.RWF_NOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_NOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.sendfile",
-      "abstract": "Abstract for os.sendfile",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sendfile"
+        },
         "childSets": {
           "object": [
             {
@@ -2997,17 +6686,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sendfile"
         }
       }
     },
     {
       "key": "os.readv",
-      "abstract": "Abstract for os.readv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "readv"
+        },
         "childSets": {
           "object": [
             {
@@ -3035,17 +6724,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "readv"
         }
       }
     },
     {
       "key": "os.writev",
-      "abstract": "Abstract for os.writev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "writev"
+        },
         "childSets": {
           "object": [
             {
@@ -3073,17 +6762,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.terminal_size",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "writev"
+          "member": "terminal_size"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.get_terminal_size",
-      "abstract": "Abstract for os.get_terminal_size",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_terminal_size"
+        },
         "childSets": {
           "object": [
             {
@@ -3111,17 +6838,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_terminal_size"
         }
       }
     },
     {
       "key": "os.get_inheritable",
-      "abstract": "Abstract for os.get_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -3149,17 +6876,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_inheritable"
         }
       }
     },
     {
       "key": "os.set_inheritable",
-      "abstract": "Abstract for os.set_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -3187,17 +6914,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_inheritable"
         }
       }
     },
     {
       "key": "os.get_handle_inheritable",
-      "abstract": "Abstract for os.get_handle_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_handle_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -3225,17 +6952,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_handle_inheritable"
         }
       }
     },
     {
       "key": "os.set_handle_inheritable",
-      "abstract": "Abstract for os.set_handle_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_handle_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -3263,17 +6990,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_handle_inheritable"
         }
       }
     },
     {
       "key": "os.tcgetpgrp",
-      "abstract": "Abstract for os.tcgetpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tcgetpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -3301,17 +7028,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tcgetpgrp"
         }
       }
     },
     {
       "key": "os.tcsetpgrp",
-      "abstract": "Abstract for os.tcsetpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tcsetpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -3339,17 +7066,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tcsetpgrp"
         }
       }
     },
     {
       "key": "os.ttyname",
-      "abstract": "Abstract for os.ttyname",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ttyname"
+        },
         "childSets": {
           "object": [
             {
@@ -3377,17 +7104,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ttyname"
         }
       }
     },
     {
       "key": "os.write",
-      "abstract": "Abstract for os.write",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "write"
+        },
         "childSets": {
           "object": [
             {
@@ -3415,17 +7142,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "write"
         }
       }
     },
     {
       "key": "os.access",
-      "abstract": "Abstract for os.access",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "access"
+        },
         "childSets": {
           "object": [
             {
@@ -3453,17 +7180,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "access"
         }
       }
     },
     {
       "key": "os.chdir",
-      "abstract": "Abstract for os.chdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chdir"
+        },
         "childSets": {
           "object": [
             {
@@ -3491,17 +7218,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chdir"
         }
       }
     },
     {
       "key": "os.fchdir",
-      "abstract": "Abstract for os.fchdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchdir"
+        },
         "childSets": {
           "object": [
             {
@@ -3529,17 +7256,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchdir"
         }
       }
     },
     {
       "key": "os.getcwd",
-      "abstract": "Abstract for os.getcwd",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getcwd"
+        },
         "childSets": {
           "object": [
             {
@@ -3567,17 +7294,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getcwd"
         }
       }
     },
     {
       "key": "os.getcwdb",
-      "abstract": "Abstract for os.getcwdb",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getcwdb"
+        },
         "childSets": {
           "object": [
             {
@@ -3605,17 +7332,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getcwdb"
         }
       }
     },
     {
       "key": "os.chmod",
-      "abstract": "Abstract for os.chmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chmod"
+        },
         "childSets": {
           "object": [
             {
@@ -3643,17 +7370,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chmod"
         }
       }
     },
     {
       "key": "os.chflags",
-      "abstract": "Abstract for os.chflags",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chflags"
+        },
         "childSets": {
           "object": [
             {
@@ -3681,17 +7408,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chflags"
         }
       }
     },
     {
       "key": "os.lchflags",
-      "abstract": "Abstract for os.lchflags",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchflags"
+        },
         "childSets": {
           "object": [
             {
@@ -3719,17 +7446,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lchflags"
         }
       }
     },
     {
       "key": "os.lchmod",
-      "abstract": "Abstract for os.lchmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchmod"
+        },
         "childSets": {
           "object": [
             {
@@ -3757,17 +7484,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lchmod"
         }
       }
     },
     {
       "key": "os.chroot",
-      "abstract": "Abstract for os.chroot",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chroot"
+        },
         "childSets": {
           "object": [
             {
@@ -3795,17 +7522,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chroot"
         }
       }
     },
     {
       "key": "os.chown",
-      "abstract": "Abstract for os.chown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chown"
+        },
         "childSets": {
           "object": [
             {
@@ -3833,17 +7560,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chown"
         }
       }
     },
     {
       "key": "os.lchown",
-      "abstract": "Abstract for os.lchown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchown"
+        },
         "childSets": {
           "object": [
             {
@@ -3871,17 +7598,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lchown"
         }
       }
     },
     {
       "key": "os.link",
-      "abstract": "Abstract for os.link",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "link"
+        },
         "childSets": {
           "object": [
             {
@@ -3909,17 +7636,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "link"
         }
       }
     },
     {
       "key": "os.lstat",
-      "abstract": "Abstract for os.lstat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lstat"
+        },
         "childSets": {
           "object": [
             {
@@ -3947,17 +7674,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lstat"
         }
       }
     },
     {
       "key": "os.mkdir",
-      "abstract": "Abstract for os.mkdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mkdir"
+        },
         "childSets": {
           "object": [
             {
@@ -3985,17 +7712,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mkdir"
         }
       }
     },
     {
       "key": "os.mkfifo",
-      "abstract": "Abstract for os.mkfifo",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mkfifo"
+        },
         "childSets": {
           "object": [
             {
@@ -4023,17 +7750,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mkfifo"
         }
       }
     },
     {
       "key": "os.makedirs",
-      "abstract": "Abstract for os.makedirs",
+      "abstract": "makedirs(name [, mode=0o777][, exist_ok=False])",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "makedirs"
+        },
         "childSets": {
           "object": [
             {
@@ -4061,17 +7788,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "makedirs"
         }
       }
     },
     {
       "key": "os.mknod",
-      "abstract": "Abstract for os.mknod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mknod"
+        },
         "childSets": {
           "object": [
             {
@@ -4099,17 +7826,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mknod"
         }
       }
     },
     {
       "key": "os.major",
-      "abstract": "Abstract for os.major",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "major"
+        },
         "childSets": {
           "object": [
             {
@@ -4137,17 +7864,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "major"
         }
       }
     },
     {
       "key": "os.minor",
-      "abstract": "Abstract for os.minor",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "minor"
+        },
         "childSets": {
           "object": [
             {
@@ -4175,17 +7902,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "minor"
         }
       }
     },
     {
       "key": "os.makedev",
-      "abstract": "Abstract for os.makedev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "makedev"
+        },
         "childSets": {
           "object": [
             {
@@ -4213,17 +7940,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "makedev"
         }
       }
     },
     {
       "key": "os.pathconf",
-      "abstract": "Abstract for os.pathconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pathconf"
+        },
         "childSets": {
           "object": [
             {
@@ -4251,17 +7978,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pathconf"
         }
       }
     },
     {
       "key": "os.readlink",
-      "abstract": "Abstract for os.readlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "readlink"
+        },
         "childSets": {
           "object": [
             {
@@ -4289,17 +8016,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "readlink"
         }
       }
     },
     {
       "key": "os.remove",
-      "abstract": "Abstract for os.remove",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "remove"
+        },
         "childSets": {
           "object": [
             {
@@ -4327,17 +8054,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "remove"
         }
       }
     },
     {
       "key": "os.removedirs",
-      "abstract": "Abstract for os.removedirs",
+      "abstract": "removedirs(name)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "removedirs"
+        },
         "childSets": {
           "object": [
             {
@@ -4365,17 +8092,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "removedirs"
         }
       }
     },
     {
       "key": "os.rename",
-      "abstract": "Abstract for os.rename",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rename"
+        },
         "childSets": {
           "object": [
             {
@@ -4403,17 +8130,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rename"
         }
       }
     },
     {
       "key": "os.renames",
-      "abstract": "Abstract for os.renames",
+      "abstract": "renames(old, new)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "renames"
+        },
         "childSets": {
           "object": [
             {
@@ -4441,17 +8168,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "renames"
         }
       }
     },
     {
       "key": "os.replace",
-      "abstract": "Abstract for os.replace",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "replace"
+        },
         "childSets": {
           "object": [
             {
@@ -4479,17 +8206,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "replace"
         }
       }
     },
     {
       "key": "os.rmdir",
-      "abstract": "Abstract for os.rmdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rmdir"
+        },
         "childSets": {
           "object": [
             {
@@ -4517,17 +8244,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os._ScandirIterator",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "rmdir"
+          "member": "_ScandirIterator"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.scandir",
-      "abstract": "Abstract for os.scandir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "scandir"
+        },
         "childSets": {
           "object": [
             {
@@ -4555,17 +8320,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "scandir"
         }
       }
     },
     {
       "key": "os.stat",
-      "abstract": "Abstract for os.stat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stat"
+        },
         "childSets": {
           "object": [
             {
@@ -4593,17 +8358,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "stat"
         }
       }
     },
     {
       "key": "os.statvfs",
-      "abstract": "Abstract for os.statvfs",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "statvfs"
+        },
         "childSets": {
           "object": [
             {
@@ -4631,17 +8396,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "statvfs"
         }
       }
     },
     {
       "key": "os.symlink",
-      "abstract": "Abstract for os.symlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "symlink"
+        },
         "childSets": {
           "object": [
             {
@@ -4669,17 +8434,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "symlink"
         }
       }
     },
     {
       "key": "os.sync",
-      "abstract": "Abstract for os.sync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sync"
+        },
         "childSets": {
           "object": [
             {
@@ -4707,17 +8472,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sync"
         }
       }
     },
     {
       "key": "os.truncate",
-      "abstract": "Abstract for os.truncate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "truncate"
+        },
         "childSets": {
           "object": [
             {
@@ -4745,17 +8510,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "truncate"
         }
       }
     },
     {
       "key": "os.unlink",
-      "abstract": "Abstract for os.unlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unlink"
+        },
         "childSets": {
           "object": [
             {
@@ -4783,17 +8548,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unlink"
         }
       }
     },
     {
       "key": "os.utime",
-      "abstract": "Abstract for os.utime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "utime"
+        },
         "childSets": {
           "object": [
             {
@@ -4821,17 +8586,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "utime"
         }
       }
     },
     {
       "key": "os._OnError",
-      "abstract": "Abstract for os._OnError",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_OnError"
+        },
         "childSets": {
           "object": [
             {
@@ -4859,17 +8624,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": ""
         }
       }
     },
     {
       "key": "os.walk",
-      "abstract": "Abstract for os.walk",
+      "abstract": "Directory tree generator.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "walk"
+        },
         "childSets": {
           "object": [
             {
@@ -4897,17 +8662,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "walk"
         }
       }
     },
     {
       "key": "os.fwalk",
-      "abstract": "Abstract for os.fwalk",
+      "abstract": "Directory tree generator.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fwalk"
+        },
         "childSets": {
           "object": [
             {
@@ -4935,17 +8700,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fwalk"
         }
       }
     },
     {
       "key": "os.getxattr",
-      "abstract": "Abstract for os.getxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -4973,17 +8738,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getxattr"
         }
       }
     },
     {
       "key": "os.listxattr",
-      "abstract": "Abstract for os.listxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "listxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -5011,17 +8776,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "listxattr"
         }
       }
     },
     {
       "key": "os.removexattr",
-      "abstract": "Abstract for os.removexattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "removexattr"
+        },
         "childSets": {
           "object": [
             {
@@ -5049,17 +8814,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "removexattr"
         }
       }
     },
     {
       "key": "os.setxattr",
-      "abstract": "Abstract for os.setxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -5087,17 +8852,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setxattr"
         }
       }
     },
     {
       "key": "os.abort",
-      "abstract": "Abstract for os.abort",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "abort"
+        },
         "childSets": {
           "object": [
             {
@@ -5125,17 +8890,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abort"
         }
       }
     },
     {
       "key": "os.execl",
-      "abstract": "Abstract for os.execl",
+      "abstract": "execl(file, *args)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execl"
+        },
         "childSets": {
           "object": [
             {
@@ -5163,17 +8928,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execl"
         }
       }
     },
     {
       "key": "os.execlp",
-      "abstract": "Abstract for os.execlp",
+      "abstract": "execlp(file, *args)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execlp"
+        },
         "childSets": {
           "object": [
             {
@@ -5201,17 +8966,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execlp"
         }
       }
     },
     {
       "key": "os.execle",
-      "abstract": "Abstract for os.execle",
+      "abstract": "execle(file, *args, env)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execle"
+        },
         "childSets": {
           "object": [
             {
@@ -5239,17 +9004,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execle"
         }
       }
     },
     {
       "key": "os.execlpe",
-      "abstract": "Abstract for os.execlpe",
+      "abstract": "execlpe(file, *args, env)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execlpe"
+        },
         "childSets": {
           "object": [
             {
@@ -5277,17 +9042,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execlpe"
         }
       }
     },
     {
       "key": "os.execv",
-      "abstract": "Abstract for os.execv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execv"
+        },
         "childSets": {
           "object": [
             {
@@ -5315,17 +9080,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execv"
         }
       }
     },
     {
       "key": "os.execve",
-      "abstract": "Abstract for os.execve",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execve"
+        },
         "childSets": {
           "object": [
             {
@@ -5353,17 +9118,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execve"
         }
       }
     },
     {
       "key": "os.execvp",
-      "abstract": "Abstract for os.execvp",
+      "abstract": "execvp(file, args)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execvp"
+        },
         "childSets": {
           "object": [
             {
@@ -5391,17 +9156,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execvp"
         }
       }
     },
     {
       "key": "os.execvpe",
-      "abstract": "Abstract for os.execvpe",
+      "abstract": "execvpe(file, args, env)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execvpe"
+        },
         "childSets": {
           "object": [
             {
@@ -5429,17 +9194,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execvpe"
         }
       }
     },
     {
       "key": "os._exit",
-      "abstract": "Abstract for os._exit",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_exit"
+        },
         "childSets": {
           "object": [
             {
@@ -5467,17 +9232,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_exit"
         }
       }
     },
     {
       "key": "os.kill",
-      "abstract": "Abstract for os.kill",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "kill"
+        },
         "childSets": {
           "object": [
             {
@@ -5505,17 +9270,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "kill"
         }
       }
     },
     {
       "key": "os.fork",
-      "abstract": "Abstract for os.fork",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fork"
+        },
         "childSets": {
           "object": [
             {
@@ -5543,17 +9308,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fork"
         }
       }
     },
     {
       "key": "os.forkpty",
-      "abstract": "Abstract for os.forkpty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "forkpty"
+        },
         "childSets": {
           "object": [
             {
@@ -5581,17 +9346,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "forkpty"
         }
       }
     },
     {
       "key": "os.killpg",
-      "abstract": "Abstract for os.killpg",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "killpg"
+        },
         "childSets": {
           "object": [
             {
@@ -5619,17 +9384,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "killpg"
         }
       }
     },
     {
       "key": "os.nice",
-      "abstract": "Abstract for os.nice",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "nice"
+        },
         "childSets": {
           "object": [
             {
@@ -5657,17 +9422,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "nice"
         }
       }
     },
     {
       "key": "os.plock",
-      "abstract": "Abstract for os.plock",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "plock"
+        },
         "childSets": {
           "object": [
             {
@@ -5695,17 +9460,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os._wrap_close",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "plock"
+          "member": "_wrap_close"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.popen",
-      "abstract": "Abstract for os.popen",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "popen"
+        },
         "childSets": {
           "object": [
             {
@@ -5733,17 +9536,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "popen"
         }
       }
     },
     {
       "key": "os.spawnl",
-      "abstract": "Abstract for os.spawnl",
+      "abstract": "spawnl(mode, file, *args) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnl"
+        },
         "childSets": {
           "object": [
             {
@@ -5771,17 +9574,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnl"
         }
       }
     },
     {
       "key": "os.spawnle",
-      "abstract": "Abstract for os.spawnle",
+      "abstract": "spawnle(mode, file, *args, env) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnle"
+        },
         "childSets": {
           "object": [
             {
@@ -5809,17 +9612,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnle"
         }
       }
     },
     {
       "key": "os.spawnv",
-      "abstract": "Abstract for os.spawnv",
+      "abstract": "spawnv(mode, file, args) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnv"
+        },
         "childSets": {
           "object": [
             {
@@ -5847,17 +9650,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.spawnv",
+      "abstract": "spawnv(mode, file, args) -> integer",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "spawnv"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.spawnve",
-      "abstract": "Abstract for os.spawnve",
+      "abstract": "spawnve(mode, file, args, env) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnve"
+        },
         "childSets": {
           "object": [
             {
@@ -5885,17 +9726,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.spawnve",
+      "abstract": "spawnve(mode, file, args, env) -> integer",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "spawnve"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.system",
-      "abstract": "Abstract for os.system",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "system"
+        },
         "childSets": {
           "object": [
             {
@@ -5923,17 +9802,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.times_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "system"
+          "member": "times_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.times",
-      "abstract": "Abstract for os.times",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "times"
+        },
         "childSets": {
           "object": [
             {
@@ -5961,17 +9878,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "times"
         }
       }
     },
     {
       "key": "os.waitpid",
-      "abstract": "Abstract for os.waitpid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitpid"
+        },
         "childSets": {
           "object": [
             {
@@ -5999,17 +9916,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "waitpid"
         }
       }
     },
     {
       "key": "os.startfile",
-      "abstract": "Abstract for os.startfile",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "startfile"
+        },
         "childSets": {
           "object": [
             {
@@ -6037,17 +9954,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "startfile"
         }
       }
     },
     {
       "key": "os.spawnlp",
-      "abstract": "Abstract for os.spawnlp",
+      "abstract": "spawnlp(mode, file, *args) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnlp"
+        },
         "childSets": {
           "object": [
             {
@@ -6075,17 +9992,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnlp"
         }
       }
     },
     {
       "key": "os.spawnlpe",
-      "abstract": "Abstract for os.spawnlpe",
+      "abstract": "spawnlpe(mode, file, *args, env) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnlpe"
+        },
         "childSets": {
           "object": [
             {
@@ -6113,17 +10030,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnlpe"
         }
       }
     },
     {
       "key": "os.spawnvp",
-      "abstract": "Abstract for os.spawnvp",
+      "abstract": "spawnvp(mode, file, args) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnvp"
+        },
         "childSets": {
           "object": [
             {
@@ -6151,17 +10068,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnvp"
         }
       }
     },
     {
       "key": "os.spawnvpe",
-      "abstract": "Abstract for os.spawnvpe",
+      "abstract": "spawnvpe(mode, file, args, env) -> integer",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spawnvpe"
+        },
         "childSets": {
           "object": [
             {
@@ -6189,17 +10106,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "spawnvpe"
         }
       }
     },
     {
       "key": "os.wait",
-      "abstract": "Abstract for os.wait",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait"
+        },
         "childSets": {
           "object": [
             {
@@ -6227,17 +10144,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.waitid_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "wait"
+          "member": "waitid_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.waitid",
-      "abstract": "Abstract for os.waitid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitid"
+        },
         "childSets": {
           "object": [
             {
@@ -6265,17 +10220,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "waitid"
         }
       }
     },
     {
       "key": "os.wait3",
-      "abstract": "Abstract for os.wait3",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait3"
+        },
         "childSets": {
           "object": [
             {
@@ -6303,17 +10258,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "wait3"
         }
       }
     },
     {
       "key": "os.wait4",
-      "abstract": "Abstract for os.wait4",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait4"
+        },
         "childSets": {
           "object": [
             {
@@ -6341,17 +10296,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "wait4"
         }
       }
     },
     {
       "key": "os.WCOREDUMP",
-      "abstract": "Abstract for os.WCOREDUMP",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WCOREDUMP"
+        },
         "childSets": {
           "object": [
             {
@@ -6379,17 +10334,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WCOREDUMP"
         }
       }
     },
     {
       "key": "os.WIFCONTINUED",
-      "abstract": "Abstract for os.WIFCONTINUED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFCONTINUED"
+        },
         "childSets": {
           "object": [
             {
@@ -6417,17 +10372,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFCONTINUED"
         }
       }
     },
     {
       "key": "os.WIFSTOPPED",
-      "abstract": "Abstract for os.WIFSTOPPED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFSTOPPED"
+        },
         "childSets": {
           "object": [
             {
@@ -6455,17 +10410,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFSTOPPED"
         }
       }
     },
     {
       "key": "os.WIFSIGNALED",
-      "abstract": "Abstract for os.WIFSIGNALED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFSIGNALED"
+        },
         "childSets": {
           "object": [
             {
@@ -6493,17 +10448,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFSIGNALED"
         }
       }
     },
     {
       "key": "os.WIFEXITED",
-      "abstract": "Abstract for os.WIFEXITED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFEXITED"
+        },
         "childSets": {
           "object": [
             {
@@ -6531,17 +10486,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFEXITED"
         }
       }
     },
     {
       "key": "os.WEXITSTATUS",
-      "abstract": "Abstract for os.WEXITSTATUS",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WEXITSTATUS"
+        },
         "childSets": {
           "object": [
             {
@@ -6569,17 +10524,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WEXITSTATUS"
         }
       }
     },
     {
       "key": "os.WSTOPSIG",
-      "abstract": "Abstract for os.WSTOPSIG",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WSTOPSIG"
+        },
         "childSets": {
           "object": [
             {
@@ -6607,17 +10562,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WSTOPSIG"
         }
       }
     },
     {
       "key": "os.WTERMSIG",
-      "abstract": "Abstract for os.WTERMSIG",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WTERMSIG"
+        },
         "childSets": {
           "object": [
             {
@@ -6645,17 +10600,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WTERMSIG"
         }
       }
     },
     {
       "key": "os.posix_spawn",
-      "abstract": "Abstract for os.posix_spawn",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_spawn"
+        },
         "childSets": {
           "object": [
             {
@@ -6683,17 +10638,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_spawn"
         }
       }
     },
     {
       "key": "os.posix_spawnp",
-      "abstract": "Abstract for os.posix_spawnp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_spawnp"
+        },
         "childSets": {
           "object": [
             {
@@ -6721,17 +10676,118 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_SPAWN_OPEN",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "posix_spawnp"
+          "member": "POSIX_SPAWN_OPEN"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_SPAWN_CLOSE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_SPAWN_CLOSE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.POSIX_SPAWN_DUP2",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_SPAWN_DUP2"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.sched_param",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_param"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.sched_get_priority_min",
-      "abstract": "Abstract for os.sched_get_priority_min",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_get_priority_min"
+        },
         "childSets": {
           "object": [
             {
@@ -6759,17 +10815,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_get_priority_min"
         }
       }
     },
     {
       "key": "os.sched_get_priority_max",
-      "abstract": "Abstract for os.sched_get_priority_max",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_get_priority_max"
+        },
         "childSets": {
           "object": [
             {
@@ -6797,17 +10853,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_get_priority_max"
         }
       }
     },
     {
       "key": "os.sched_yield",
-      "abstract": "Abstract for os.sched_yield",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_yield"
+        },
         "childSets": {
           "object": [
             {
@@ -6835,17 +10891,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_yield"
         }
       }
     },
     {
       "key": "os.sched_setscheduler",
-      "abstract": "Abstract for os.sched_setscheduler",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setscheduler"
+        },
         "childSets": {
           "object": [
             {
@@ -6873,17 +10929,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setscheduler"
         }
       }
     },
     {
       "key": "os.sched_getscheduler",
-      "abstract": "Abstract for os.sched_getscheduler",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getscheduler"
+        },
         "childSets": {
           "object": [
             {
@@ -6911,17 +10967,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getscheduler"
         }
       }
     },
     {
       "key": "os.sched_rr_get_interval",
-      "abstract": "Abstract for os.sched_rr_get_interval",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_rr_get_interval"
+        },
         "childSets": {
           "object": [
             {
@@ -6949,17 +11005,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_rr_get_interval"
         }
       }
     },
     {
       "key": "os.sched_setparam",
-      "abstract": "Abstract for os.sched_setparam",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setparam"
+        },
         "childSets": {
           "object": [
             {
@@ -6987,17 +11043,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setparam"
         }
       }
     },
     {
       "key": "os.sched_getparam",
-      "abstract": "Abstract for os.sched_getparam",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getparam"
+        },
         "childSets": {
           "object": [
             {
@@ -7025,17 +11081,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getparam"
         }
       }
     },
     {
       "key": "os.sched_setaffinity",
-      "abstract": "Abstract for os.sched_setaffinity",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setaffinity"
+        },
         "childSets": {
           "object": [
             {
@@ -7063,17 +11119,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setaffinity"
         }
       }
     },
     {
       "key": "os.sched_getaffinity",
-      "abstract": "Abstract for os.sched_getaffinity",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getaffinity"
+        },
         "childSets": {
           "object": [
             {
@@ -7101,17 +11157,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getaffinity"
         }
       }
     },
     {
       "key": "os.cpu_count",
-      "abstract": "Abstract for os.cpu_count",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cpu_count"
+        },
         "childSets": {
           "object": [
             {
@@ -7139,17 +11195,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cpu_count"
         }
       }
     },
     {
       "key": "os.confstr",
-      "abstract": "Abstract for os.confstr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "confstr"
+        },
         "childSets": {
           "object": [
             {
@@ -7177,17 +11233,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "confstr"
         }
       }
     },
     {
       "key": "os.getloadavg",
-      "abstract": "Abstract for os.getloadavg",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getloadavg"
+        },
         "childSets": {
           "object": [
             {
@@ -7215,17 +11271,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getloadavg"
         }
       }
     },
     {
       "key": "os.sysconf",
-      "abstract": "Abstract for os.sysconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sysconf"
+        },
         "childSets": {
           "object": [
             {
@@ -7253,17 +11309,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sysconf"
         }
       }
     },
     {
       "key": "os.getrandom",
-      "abstract": "Abstract for os.getrandom",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getrandom"
+        },
         "childSets": {
           "object": [
             {
@@ -7291,17 +11347,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getrandom"
         }
       }
     },
     {
       "key": "os.urandom",
-      "abstract": "Abstract for os.urandom",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "urandom"
+        },
         "childSets": {
           "object": [
             {
@@ -7329,17 +11385,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "urandom"
         }
       }
     },
     {
       "key": "os.register_at_fork",
-      "abstract": "Abstract for os.register_at_fork",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register_at_fork"
+        },
         "childSets": {
           "object": [
             {
@@ -7367,17 +11423,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os._AddedDllDirectory",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "register_at_fork"
+          "member": "_AddedDllDirectory"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.add_dll_directory",
-      "abstract": "Abstract for os.add_dll_directory",
+      "abstract": "Add a path to the DLL search path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "add_dll_directory"
+        },
         "childSets": {
           "object": [
             {
@@ -7405,17 +11499,374 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "os.MFD_CLOEXEC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "add_dll_directory"
+          "member": "MFD_CLOEXEC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_ALLOW_SEALING",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_ALLOW_SEALING"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGETLB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGETLB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_SHIFT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_SHIFT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_MASK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_MASK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_64KB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_64KB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_512KB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_512KB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_1MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_1MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_2MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_2MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_8MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_8MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_16MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_16MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_32MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_32MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_256MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_256MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_512MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_512MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_1GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_1GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_2GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_2GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "os.MFD_HUGE_16GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_16GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "os"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "os.memfd_create",
-      "abstract": "Abstract for os.memfd_create",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "memfd_create"
+        },
         "childSets": {
           "object": [
             {
@@ -7443,17 +11894,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "memfd_create"
         }
       }
     },
     {
       "key": "os.copy_file_range",
-      "abstract": "Abstract for os.copy_file_range",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copy_file_range"
+        },
         "childSets": {
           "object": [
             {
@@ -7481,17 +11932,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copy_file_range"
         }
       }
     },
     {
       "key": "os.waitstatus_to_exitcode",
-      "abstract": "Abstract for os.waitstatus_to_exitcode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitstatus_to_exitcode"
+        },
         "childSets": {
           "object": [
             {
@@ -7519,17 +11970,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "waitstatus_to_exitcode"
         }
       }
     },
     {
       "key": "os.pidfd_open",
-      "abstract": "Abstract for os.pidfd_open",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pidfd_open"
+        },
         "childSets": {
           "object": [
             {
@@ -7557,9 +12008,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pidfd_open"
         }
       }
     }

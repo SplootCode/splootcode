@@ -2,10 +2,13 @@
   "category": "typing",
   "entries": [
     {
-      "key": "typing.abstractmethod",
-      "abstract": "Abstract for typing.abstractmethod",
+      "key": "typing.BuiltinFunctionType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BuiltinFunctionType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abstractmethod"
         }
       }
     },
     {
-      "key": "typing._final",
-      "abstract": "Abstract for typing._final",
+      "key": "typing.CodeType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "CodeType"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "final"
         }
       }
     },
     {
-      "key": "typing.overload",
-      "abstract": "Abstract for typing.overload",
+      "key": "typing.FrameType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameType"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "overload"
         }
       }
     },
     {
-      "key": "typing.final",
-      "abstract": "Abstract for typing.final",
+      "key": "typing.FunctionType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FunctionType"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "final"
         }
       }
     },
     {
-      "key": "typing.no_type_check",
-      "abstract": "Abstract for typing.no_type_check",
+      "key": "typing.MethodType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MethodType"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "no_type_check"
         }
       }
     },
     {
-      "key": "typing.no_type_check_decorator",
-      "abstract": "Abstract for typing.no_type_check_decorator",
+      "key": "typing.ModuleType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleType"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "no_type_check_decorator"
         }
       }
     },
     {
-      "key": "typing.runtime_checkable",
-      "abstract": "Abstract for typing.runtime_checkable",
+      "key": "typing.TracebackType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "runtime_checkable"
         }
       }
     },
     {
-      "key": "typing.get_type_hints",
-      "abstract": "Abstract for typing.get_type_hints",
+      "key": "typing.MethodDescriptorType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MethodDescriptorType"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_type_hints"
         }
       }
     },
     {
-      "key": "typing.get_origin",
-      "abstract": "Abstract for typing.get_origin",
+      "key": "typing.MethodWrapperType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MethodWrapperType"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_origin"
         }
       }
     },
     {
-      "key": "typing.get_args",
-      "abstract": "Abstract for typing.get_args",
+      "key": "typing.WrapperDescriptorType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WrapperDescriptorType"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_args"
         }
       }
     },
     {
-      "key": "typing.cast",
-      "abstract": "Abstract for typing.cast",
+      "key": "typing.GenericAlias",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "GenericAlias"
+        },
         "childSets": {
           "object": [
             {
@@ -413,85 +416,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cast"
-        }
-      }
-    },
-    {
-      "key": "typing.type_check_only",
-      "abstract": "Abstract for typing.type_check_only",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "typing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
-        "properties": {
-          "member": "type_check_only"
-        }
-      }
-    },
-    {
-      "key": "typing.is_typeddict",
-      "abstract": "Abstract for typing.is_typeddict",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "typing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
-        "properties": {
-          "member": "is_typeddict"
         }
       }
     }

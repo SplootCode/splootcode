@@ -2,10 +2,13 @@
   "category": "logging",
   "entries": [
     {
-      "key": "logging.overload",
-      "abstract": "Abstract for logging.overload",
+      "key": "logging.TextIOWrapper",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TextIOWrapper"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,253 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "logging.Template",
+      "abstract": "A string class for supporting $-substitutions.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "Template"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.struct_time",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "struct_time"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.FrameType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.raiseExceptions",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "raiseExceptions"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.logThreads",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "logThreads"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.logMultiprocessing",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "logMultiprocessing"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.logProcesses",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "logProcesses"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "logging.currentframe",
-      "abstract": "Abstract for logging.currentframe",
+      "abstract": "Return the frame object for the caller's stack frame.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "currentframe"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +310,569 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "logging._levelToName",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "currentframe"
+          "member": "_levelToName"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging._nameToLevel",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "_nameToLevel"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Filterer",
+      "abstract": "    A base class for loggers and handlers which allows them to share",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Filterer"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Manager",
+      "abstract": "    There is [under normal circumstances] just one Manager instance, which",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Manager"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Logger",
+      "abstract": "    Instances of the Logger class represent a single logging channel. A",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Logger"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.CRITICAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CRITICAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.FATAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "FATAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.ERROR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ERROR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.WARNING",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WARNING"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.WARN",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WARN"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.INFO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "INFO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.DEBUG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.NOTSET",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "NOTSET"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Handler",
+      "abstract": "    Handler instances dispatch logging events to specific destinations.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Handler"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Formatter",
+      "abstract": "    Formatter instances are used to convert a LogRecord to text.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Formatter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.BufferingFormatter",
+      "abstract": "    A formatter suitable for formatting a number of records.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferingFormatter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.Filter",
+      "abstract": "    Filter instances are used to perform arbitrary filtering of LogRecords.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Filter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.LogRecord",
+      "abstract": "    A LogRecord instance represents an event being logged.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "LogRecord"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.LoggerAdapter",
+      "abstract": "    An adapter for loggers which makes it easier to specify contextual",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "LoggerAdapter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "logging.getLogger",
-      "abstract": "Abstract for logging.getLogger",
+      "abstract": "    Return a logger with the specified name, creating it if necessary.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getLogger"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +900,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getLogger"
         }
       }
     },
     {
       "key": "logging.getLoggerClass",
-      "abstract": "Abstract for logging.getLoggerClass",
+      "abstract": "    Return the class to be used when instantiating a logger.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getLoggerClass"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +938,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getLoggerClass"
         }
       }
     },
     {
       "key": "logging.getLogRecordFactory",
-      "abstract": "Abstract for logging.getLogRecordFactory",
+      "abstract": "    Return the factory to be used when instantiating a log record.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getLogRecordFactory"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +976,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getLogRecordFactory"
         }
       }
     },
     {
       "key": "logging.debug",
-      "abstract": "Abstract for logging.debug",
+      "abstract": "    Log a message with severity 'DEBUG' on the root logger. If the logger has",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "debug"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +1014,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "debug"
         }
       }
     },
     {
       "key": "logging.info",
-      "abstract": "Abstract for logging.info",
+      "abstract": "    Log a message with severity 'INFO' on the root logger. If the logger has",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "info"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +1052,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "info"
         }
       }
     },
     {
       "key": "logging.warning",
-      "abstract": "Abstract for logging.warning",
+      "abstract": "    Log a message with severity 'WARNING' on the root logger. If the logger has",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "warning"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +1090,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "warning"
         }
       }
     },
     {
       "key": "logging.warn",
-      "abstract": "Abstract for logging.warn",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "warn"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +1128,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "warn"
         }
       }
     },
     {
       "key": "logging.error",
-      "abstract": "Abstract for logging.error",
+      "abstract": "    Log a message with severity 'ERROR' on the root logger. If the logger has",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +1166,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "error"
         }
       }
     },
     {
       "key": "logging.critical",
-      "abstract": "Abstract for logging.critical",
+      "abstract": "    Log a message with severity 'CRITICAL' on the root logger. If the logger",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "critical"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +1204,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "critical"
         }
       }
     },
     {
       "key": "logging.exception",
-      "abstract": "Abstract for logging.exception",
+      "abstract": "    Log a message with severity 'ERROR' on the root logger, with exception",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exception"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +1242,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "exception"
         }
       }
     },
     {
       "key": "logging.log",
-      "abstract": "Abstract for logging.log",
+      "abstract": "    Log 'msg % args' with the integer severity 'level' on the root logger. If",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "log"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +1280,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "log"
         }
       }
     },
     {
       "key": "logging.fatal",
-      "abstract": "Abstract for logging.fatal",
+      "abstract": "    Log a message with severity 'CRITICAL' on the root logger. If the logger",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fatal"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +1318,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "critical"
         }
       }
     },
     {
       "key": "logging.disable",
-      "abstract": "Abstract for logging.disable",
+      "abstract": "    Disable all logging calls of severity 'level' and below.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "disable"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +1356,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "disable"
         }
       }
     },
     {
       "key": "logging.addLevelName",
-      "abstract": "Abstract for logging.addLevelName",
+      "abstract": "    Associate 'levelName' with 'level'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "addLevelName"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +1394,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "addLevelName"
         }
       }
     },
     {
       "key": "logging.getLevelName",
-      "abstract": "Abstract for logging.getLevelName",
+      "abstract": "    Return the textual or numeric representation of logging level 'level'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getLevelName"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +1432,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getLevelName"
         }
       }
     },
     {
       "key": "logging.makeLogRecord",
-      "abstract": "Abstract for logging.makeLogRecord",
+      "abstract": "    Make a LogRecord whose attributes are defined by the specified dictionary,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "makeLogRecord"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +1470,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "makeLogRecord"
         }
       }
     },
     {
       "key": "logging.basicConfig",
-      "abstract": "Abstract for logging.basicConfig",
+      "abstract": "    Do basic configuration for the logging system.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "basicConfig"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +1508,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "basicConfig"
         }
       }
     },
     {
       "key": "logging.shutdown",
-      "abstract": "Abstract for logging.shutdown",
+      "abstract": "    Perform any cleanup actions in the logging system (e.g. flushing",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "shutdown"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +1546,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "shutdown"
         }
       }
     },
     {
       "key": "logging.setLoggerClass",
-      "abstract": "Abstract for logging.setLoggerClass",
+      "abstract": "    Set the class to be used when instantiating a logger. The class should",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setLoggerClass"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1584,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setLoggerClass"
         }
       }
     },
     {
       "key": "logging.captureWarnings",
-      "abstract": "Abstract for logging.captureWarnings",
+      "abstract": "    If capture is true, redirect all warnings to the logging package.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "captureWarnings"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1622,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "captureWarnings"
         }
       }
     },
     {
       "key": "logging.setLogRecordFactory",
-      "abstract": "Abstract for logging.setLogRecordFactory",
+      "abstract": "    Set the factory to be used when instantiating a log record.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setLogRecordFactory"
+        },
         "childSets": {
           "object": [
             {
@@ -869,9 +1660,373 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "logging.StreamHandler",
+      "abstract": "    A handler class which writes logging records, appropriately formatted,",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "setLogRecordFactory"
+          "member": "StreamHandler"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.FileHandler",
+      "abstract": "    A handler class which writes formatted logging records to disk files.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FileHandler"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.NullHandler",
+      "abstract": "    This handler does nothing. It's intended to be used to avoid the",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "NullHandler"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.PlaceHolder",
+      "abstract": "    PlaceHolder instances are used in the Manager logger hierarchy to take",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PlaceHolder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.RootLogger",
+      "abstract": "    A root logger is not that different to any other logger, except that",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "RootLogger"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.root",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "root"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.PercentStyle",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PercentStyle"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.StrFormatStyle",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StrFormatStyle"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.StringTemplateStyle",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StringTemplateStyle"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging._STYLES",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "_STYLES"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "logging.BASIC_FORMAT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BASIC_FORMAT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

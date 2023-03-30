@@ -2,10 +2,13 @@
   "category": "time",
   "entries": [
     {
-      "key": "time.final",
-      "abstract": "Abstract for time.final",
+      "key": "time._TimeTuple",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_TimeTuple"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,370 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "time.altzone",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "final"
+          "member": "altzone"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.daylight",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "daylight"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.timezone",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "timezone"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.tzname",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "tzname"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_BOOTTIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_BOOTTIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_PROF",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_PROF"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_UPTIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_UPTIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_MONOTONIC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_MONOTONIC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_MONOTONIC_RAW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_MONOTONIC_RAW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_PROCESS_CPUTIME_ID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_PROCESS_CPUTIME_ID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_REALTIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_REALTIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_THREAD_CPUTIME_ID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_THREAD_CPUTIME_ID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_HIGHRES",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_HIGHRES"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_UPTIME_RAW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_UPTIME_RAW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.CLOCK_TAI",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLOCK_TAI"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "time.struct_time",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "struct_time"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "time.asctime",
-      "abstract": "Abstract for time.asctime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "asctime"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +427,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "asctime"
         }
       }
     },
     {
       "key": "time.ctime",
-      "abstract": "Abstract for time.ctime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ctime"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +465,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ctime"
         }
       }
     },
     {
       "key": "time.gmtime",
-      "abstract": "Abstract for time.gmtime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "gmtime"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +503,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "gmtime"
         }
       }
     },
     {
       "key": "time.localtime",
-      "abstract": "Abstract for time.localtime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "localtime"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +541,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "localtime"
         }
       }
     },
     {
       "key": "time.mktime",
-      "abstract": "Abstract for time.mktime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mktime"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +579,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mktime"
         }
       }
     },
     {
       "key": "time.sleep",
-      "abstract": "Abstract for time.sleep",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sleep"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +617,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sleep"
         }
       }
     },
     {
       "key": "time.strftime",
-      "abstract": "Abstract for time.strftime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strftime"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +655,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strftime"
         }
       }
     },
     {
       "key": "time.strptime",
-      "abstract": "Abstract for time.strptime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strptime"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +693,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strptime"
         }
       }
     },
     {
       "key": "time.time",
-      "abstract": "Abstract for time.time",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "time"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +731,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "time"
         }
       }
     },
     {
       "key": "time.tzset",
-      "abstract": "Abstract for time.tzset",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tzset"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +769,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "time._ClockInfo",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "tzset"
+          "member": "_ClockInfo"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "time.get_clock_info",
-      "abstract": "Abstract for time.get_clock_info",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_clock_info"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +845,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_clock_info"
         }
       }
     },
     {
       "key": "time.monotonic",
-      "abstract": "Abstract for time.monotonic",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "monotonic"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +883,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "monotonic"
         }
       }
     },
     {
       "key": "time.perf_counter",
-      "abstract": "Abstract for time.perf_counter",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "perf_counter"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +921,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "perf_counter"
         }
       }
     },
     {
       "key": "time.process_time",
-      "abstract": "Abstract for time.process_time",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "process_time"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +959,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "process_time"
         }
       }
     },
     {
       "key": "time.clock_getres",
-      "abstract": "Abstract for time.clock_getres",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clock_getres"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +997,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clock_getres"
         }
       }
     },
     {
       "key": "time.clock_gettime",
-      "abstract": "Abstract for time.clock_gettime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clock_gettime"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +1035,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clock_gettime"
         }
       }
     },
     {
       "key": "time.clock_settime",
-      "abstract": "Abstract for time.clock_settime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clock_settime"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +1073,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clock_settime"
         }
       }
     },
     {
       "key": "time.clock_gettime_ns",
-      "abstract": "Abstract for time.clock_gettime_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clock_gettime_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +1111,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clock_gettime_ns"
         }
       }
     },
     {
       "key": "time.clock_settime_ns",
-      "abstract": "Abstract for time.clock_settime_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clock_settime_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +1149,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clock_settime_ns"
         }
       }
     },
     {
       "key": "time.pthread_getcpuclockid",
-      "abstract": "Abstract for time.pthread_getcpuclockid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pthread_getcpuclockid"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1187,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pthread_getcpuclockid"
         }
       }
     },
     {
       "key": "time.monotonic_ns",
-      "abstract": "Abstract for time.monotonic_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "monotonic_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1225,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "monotonic_ns"
         }
       }
     },
     {
       "key": "time.perf_counter_ns",
-      "abstract": "Abstract for time.perf_counter_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "perf_counter_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +1263,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "perf_counter_ns"
         }
       }
     },
     {
       "key": "time.process_time_ns",
-      "abstract": "Abstract for time.process_time_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "process_time_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +1301,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "process_time_ns"
         }
       }
     },
     {
       "key": "time.time_ns",
-      "abstract": "Abstract for time.time_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "time_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +1339,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "time_ns"
         }
       }
     },
     {
       "key": "time.thread_time",
-      "abstract": "Abstract for time.thread_time",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "thread_time"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +1377,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "thread_time"
         }
       }
     },
     {
       "key": "time.thread_time_ns",
-      "abstract": "Abstract for time.thread_time_ns",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "thread_time_ns"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,9 +1415,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "thread_time_ns"
         }
       }
     }

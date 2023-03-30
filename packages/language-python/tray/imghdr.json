@@ -2,10 +2,13 @@
   "category": "imghdr",
   "entries": [
     {
-      "key": "imghdr.overload",
-      "abstract": "Abstract for imghdr.overload",
+      "key": "imghdr._ReadableBinary",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ReadableBinary"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "overload"
         }
       }
     },
     {
       "key": "imghdr.what",
-      "abstract": "Abstract for imghdr.what",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "what"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +74,27 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "imghdr.tests",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "what"
+          "member": "tests"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "imghdr"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

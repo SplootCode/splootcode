@@ -2,10 +2,13 @@
   "category": "warnings",
   "entries": [
     {
-      "key": "warnings.overload",
-      "abstract": "Abstract for warnings.overload",
+      "key": "warnings.ModuleType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,76 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "warnings.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "warnings.filters",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "filters"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "warnings.showwarning",
-      "abstract": "Abstract for warnings.showwarning",
+      "abstract": "Hook to write a warning to a file; replace if you like.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "showwarning"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +133,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "showwarning"
         }
       }
     },
     {
       "key": "warnings.formatwarning",
-      "abstract": "Abstract for warnings.formatwarning",
+      "abstract": "Function to format a warning the standard way.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "formatwarning"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +171,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "formatwarning"
         }
       }
     },
     {
       "key": "warnings.filterwarnings",
-      "abstract": "Abstract for warnings.filterwarnings",
+      "abstract": "Insert an entry into the list of warnings filters (at the front).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "filterwarnings"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +209,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "filterwarnings"
         }
       }
     },
     {
       "key": "warnings.simplefilter",
-      "abstract": "Abstract for warnings.simplefilter",
+      "abstract": "Insert a simple entry into the list of warnings filters (at the front).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "simplefilter"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +247,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "simplefilter"
         }
       }
     },
     {
       "key": "warnings.resetwarnings",
-      "abstract": "Abstract for warnings.resetwarnings",
+      "abstract": "Clear the list of warning filters, so that no filters are active.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "resetwarnings"
+        },
         "childSets": {
           "object": [
             {
@@ -223,9 +285,196 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "warnings._OptionError",
+      "abstract": "Exception used by option processing helpers.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "resetwarnings"
+          "member": "_OptionError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "warnings.WarningMessage",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WarningMessage"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "warnings.catch_warnings",
+      "abstract": "A context manager that copies and restores the warnings filter upon",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "catch_warnings"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "warnings._catch_warnings_without_records",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_catch_warnings_without_records"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "warnings._catch_warnings_with_records",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_catch_warnings_with_records"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "warnings"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

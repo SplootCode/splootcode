@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "keyword.iskeyword",
-      "abstract": "Abstract for keyword.iskeyword",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "iskeyword"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "keyword.kwlist",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "iskeyword"
+          "member": "kwlist"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "keyword"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "keyword.issoftkeyword",
-      "abstract": "Abstract for keyword.issoftkeyword",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "issoftkeyword"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +95,27 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "keyword.softkwlist",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "issoftkeyword"
+          "member": "softkwlist"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "keyword"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

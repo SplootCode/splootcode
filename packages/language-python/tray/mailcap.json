@@ -2,10 +2,13 @@
   "category": "mailcap",
   "entries": [
     {
-      "key": "mailcap.findmatch",
-      "abstract": "Abstract for mailcap.findmatch",
+      "key": "mailcap._Cap",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_Cap"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "mailcap.findmatch",
+      "abstract": "Find a match for a mailcap entry.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "findmatch"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "mailcap"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "mailcap.getcaps",
-      "abstract": "Abstract for mailcap.getcaps",
+      "abstract": "Return a dictionary containing the mailcap database.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getcaps"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +112,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getcaps"
         }
       }
     }

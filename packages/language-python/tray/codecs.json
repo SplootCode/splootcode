@@ -2,10 +2,13 @@
   "category": "codecs",
   "entries": [
     {
-      "key": "codecs.abstractmethod",
-      "abstract": "Abstract for codecs.abstractmethod",
+      "key": "codecs.BOM32_BE",
+      "abstract": "",
       "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM32_BE"
+        },
         "childSets": {
           "object": [
             {
@@ -15,35 +18,81 @@
               },
               "childSets": {}
             }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
           ]
-        },
-        "properties": {
-          "member": "abstractmethod"
         }
       }
     },
     {
-      "key": "codecs.overload",
-      "abstract": "Abstract for codecs.overload",
+      "key": "codecs.BOM32_LE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM32_LE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM64_BE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM64_BE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM64_LE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM64_LE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs._Encoder",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_Encoder"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +120,207 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "codecs._Decoder",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "_Decoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs._StreamReader",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_StreamReader"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs._StreamWriter",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_StreamWriter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs._IncrementalEncoder",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_IncrementalEncoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs._IncrementalDecoder",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_IncrementalDecoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "codecs.encode",
-      "abstract": "Abstract for codecs.encode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "encode"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +348,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "encode"
         }
       }
     },
     {
       "key": "codecs.decode",
-      "abstract": "Abstract for codecs.decode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "decode"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +386,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "decode"
         }
       }
     },
     {
       "key": "codecs.lookup",
-      "abstract": "Abstract for codecs.lookup",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lookup"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +424,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lookup"
         }
       }
     },
     {
       "key": "codecs.utf_16_be_decode",
-      "abstract": "Abstract for codecs.utf_16_be_decode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "utf_16_be_decode"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +462,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "utf_16_be_decode"
         }
       }
     },
     {
       "key": "codecs.utf_16_be_encode",
-      "abstract": "Abstract for codecs.utf_16_be_encode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "utf_16_be_encode"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +500,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "codecs.CodecInfo",
+      "abstract": "Codec details when looking up the codec registry",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "utf_16_be_encode"
+          "member": "CodecInfo"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "codecs.getencoder",
-      "abstract": "Abstract for codecs.getencoder",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getencoder"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +576,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getencoder"
         }
       }
     },
     {
       "key": "codecs.getdecoder",
-      "abstract": "Abstract for codecs.getdecoder",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getdecoder"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +614,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getdecoder"
         }
       }
     },
     {
       "key": "codecs.getincrementalencoder",
-      "abstract": "Abstract for codecs.getincrementalencoder",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getincrementalencoder"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +652,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getincrementalencoder"
         }
       }
     },
     {
       "key": "codecs.getincrementaldecoder",
-      "abstract": "Abstract for codecs.getincrementaldecoder",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getincrementaldecoder"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +690,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getincrementaldecoder"
         }
       }
     },
     {
       "key": "codecs.getreader",
-      "abstract": "Abstract for codecs.getreader",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getreader"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +728,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getreader"
         }
       }
     },
     {
       "key": "codecs.getwriter",
-      "abstract": "Abstract for codecs.getwriter",
+      "abstract": " Lookup up the codec for the given encoding and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getwriter"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +766,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getwriter"
         }
       }
     },
     {
       "key": "codecs.register",
-      "abstract": "Abstract for codecs.register",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +804,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register"
         }
       }
     },
     {
       "key": "codecs.open",
-      "abstract": "Abstract for codecs.open",
+      "abstract": " Open an encoded file using the given mode and return",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "open"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +842,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "open"
         }
       }
     },
     {
       "key": "codecs.EncodedFile",
-      "abstract": "Abstract for codecs.EncodedFile",
+      "abstract": " Return a wrapped version of file which provides transparent",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "EncodedFile"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +880,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "EncodedFile"
         }
       }
     },
     {
       "key": "codecs.iterencode",
-      "abstract": "Abstract for codecs.iterencode",
+      "abstract": "    Encoding iterator.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "iterencode"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +918,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "iterencode"
         }
       }
     },
     {
       "key": "codecs.iterdecode",
-      "abstract": "Abstract for codecs.iterdecode",
+      "abstract": "    Decoding iterator.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "iterdecode"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +956,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "iterdecode"
         }
       }
     },
     {
       "key": "codecs.unregister",
-      "abstract": "Abstract for codecs.unregister",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unregister"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +994,164 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_BE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "unregister"
+          "member": "BOM_BE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_LE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_LE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_UTF8",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_UTF8"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_UTF16_BE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_UTF16_BE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_UTF16_LE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_UTF16_LE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_UTF32_BE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_UTF32_BE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BOM_UTF32_LE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "BOM_UTF32_LE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "codecs.register_error",
-      "abstract": "Abstract for codecs.register_error",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register_error"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +1179,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register_error"
         }
       }
     },
     {
       "key": "codecs.lookup_error",
-      "abstract": "Abstract for codecs.lookup_error",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lookup_error"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1217,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lookup_error"
         }
       }
     },
     {
       "key": "codecs.strict_errors",
-      "abstract": "Abstract for codecs.strict_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strict_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1255,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strict_errors"
         }
       }
     },
     {
       "key": "codecs.replace_errors",
-      "abstract": "Abstract for codecs.replace_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "replace_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +1293,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "replace_errors"
         }
       }
     },
     {
       "key": "codecs.ignore_errors",
-      "abstract": "Abstract for codecs.ignore_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ignore_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +1331,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ignore_errors"
         }
       }
     },
     {
       "key": "codecs.xmlcharrefreplace_errors",
-      "abstract": "Abstract for codecs.xmlcharrefreplace_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "xmlcharrefreplace_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +1369,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "xmlcharrefreplace_errors"
         }
       }
     },
     {
       "key": "codecs.backslashreplace_errors",
-      "abstract": "Abstract for codecs.backslashreplace_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "backslashreplace_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +1407,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "backslashreplace_errors"
         }
       }
     },
     {
       "key": "codecs.namereplace_errors",
-      "abstract": "Abstract for codecs.namereplace_errors",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "namereplace_errors"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,9 +1445,348 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "codecs.Codec",
+      "abstract": " Defines the interface for stateless encoders/decoders.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "namereplace_errors"
+          "member": "Codec"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.IncrementalEncoder",
+      "abstract": "    An IncrementalEncoder encodes an input in multiple steps. The input can",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IncrementalEncoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.IncrementalDecoder",
+      "abstract": "    An IncrementalDecoder decodes an input in multiple steps. The input can",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IncrementalDecoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BufferedIncrementalEncoder",
+      "abstract": "    This subclass of IncrementalEncoder can be used as the baseclass for an",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedIncrementalEncoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.BufferedIncrementalDecoder",
+      "abstract": "    This subclass of IncrementalDecoder can be used as the baseclass for an",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedIncrementalDecoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.StreamWriter",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StreamWriter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.StreamReader",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StreamReader"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.StreamReaderWriter",
+      "abstract": " StreamReaderWriter instances allow wrapping streams which",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StreamReaderWriter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "codecs.StreamRecoder",
+      "abstract": " StreamRecoder instances translate data from one encoding to another.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StreamRecoder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "codecs"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

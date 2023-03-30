@@ -2,10 +2,13 @@
   "category": "multiprocessing",
   "entries": [
     {
-      "key": "multiprocessing.active_children",
-      "abstract": "Abstract for multiprocessing.active_children",
+      "key": "multiprocessing.Logger",
+      "abstract": "    Instances of the Logger class represent a single logging channel. A",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Logger"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,397 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.AuthenticationError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "AuthenticationError"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.BaseContext",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BaseContext"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.BufferTooShort",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferTooShort"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.DefaultContext",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "DefaultContext"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.Process",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Process"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.ProcessError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ProcessError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.SpawnContext",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SpawnContext"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.TimeoutError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TimeoutError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.SyncManager",
+      "abstract": "    Subclass of `BaseManager` which supports a number of shared object types.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SyncManager"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.active_children",
+      "abstract": "    Return list of process objects corresponding to live child processes",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "active_children"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "multiprocessing.current_process",
-      "abstract": "Abstract for multiprocessing.current_process",
+      "abstract": "    Return process object representing the current process",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "current_process"
+        },
         "childSets": {
           "object": [
             {
@@ -71,55 +454,131 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.JoinableQueue",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "current_process"
+          "member": "JoinableQueue"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.Queue",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Queue"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.SimpleQueue",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SimpleQueue"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "multiprocessing.freeze_support",
-      "abstract": "Abstract for multiprocessing.freeze_support",
+      "abstract": "    Run code for process object if this in not the main process",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
         "properties": {
           "member": "freeze_support"
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.overload",
-      "abstract": "Abstract for multiprocessing.overload",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "overload"
         }
       }
     },
     {
       "key": "multiprocessing.parent_process",
-      "abstract": "Abstract for multiprocessing.parent_process",
+      "abstract": "    Return process object representing the parent process",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "parent_process"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +644,473 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.ForkContext",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "parent_process"
+          "member": "ForkContext"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing.ForkServerContext",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ForkServerContext"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._QueueType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_QueueType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._SimpleQueueType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_SimpleQueueType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._JoinableQueueType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_JoinableQueueType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._BarrierType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BarrierType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._BoundedSemaphoreType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_BoundedSemaphoreType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._ConditionType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ConditionType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._EventType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_EventType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._LockType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_LockType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._RLockType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_RLockType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "multiprocessing._SemaphoreType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_SemaphoreType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "multiprocessing"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "multiprocessing.Barrier",
-      "abstract": "Abstract for multiprocessing.Barrier",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Barrier"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +1138,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Barrier"
         }
       }
     },
     {
       "key": "multiprocessing.BoundedSemaphore",
-      "abstract": "Abstract for multiprocessing.BoundedSemaphore",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BoundedSemaphore"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +1176,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "BoundedSemaphore"
         }
       }
     },
     {
       "key": "multiprocessing.Condition",
-      "abstract": "Abstract for multiprocessing.Condition",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Condition"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +1214,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Condition"
         }
       }
     },
     {
       "key": "multiprocessing.Event",
-      "abstract": "Abstract for multiprocessing.Event",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Event"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +1252,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Event"
         }
       }
     },
     {
       "key": "multiprocessing.Lock",
-      "abstract": "Abstract for multiprocessing.Lock",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Lock"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +1290,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Lock"
         }
       }
     },
     {
       "key": "multiprocessing.RLock",
-      "abstract": "Abstract for multiprocessing.RLock",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "RLock"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +1328,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "RLock"
         }
       }
     },
     {
       "key": "multiprocessing.Semaphore",
-      "abstract": "Abstract for multiprocessing.Semaphore",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Semaphore"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +1366,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Semaphore"
         }
       }
     },
     {
       "key": "multiprocessing.Pipe",
-      "abstract": "Abstract for multiprocessing.Pipe",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Pipe"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +1404,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Pipe"
         }
       }
     },
     {
       "key": "multiprocessing.Pool",
-      "abstract": "Abstract for multiprocessing.Pool",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Pool"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +1442,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Pool"
         }
       }
     },
     {
       "key": "multiprocessing.allow_connection_pickling",
-      "abstract": "Abstract for multiprocessing.allow_connection_pickling",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "allow_connection_pickling"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +1480,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "allow_connection_pickling"
         }
       }
     },
     {
       "key": "multiprocessing.cpu_count",
-      "abstract": "Abstract for multiprocessing.cpu_count",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cpu_count"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +1518,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cpu_count"
         }
       }
     },
     {
       "key": "multiprocessing.get_logger",
-      "abstract": "Abstract for multiprocessing.get_logger",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_logger"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +1556,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_logger"
         }
       }
     },
     {
       "key": "multiprocessing.log_to_stderr",
-      "abstract": "Abstract for multiprocessing.log_to_stderr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "log_to_stderr"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +1594,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "log_to_stderr"
         }
       }
     },
     {
       "key": "multiprocessing.Manager",
-      "abstract": "Abstract for multiprocessing.Manager",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Manager"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +1632,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "Manager"
         }
       }
     },
     {
       "key": "multiprocessing.set_executable",
-      "abstract": "Abstract for multiprocessing.set_executable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_executable"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +1670,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_executable"
         }
       }
     },
     {
       "key": "multiprocessing.set_forkserver_preload",
-      "abstract": "Abstract for multiprocessing.set_forkserver_preload",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_forkserver_preload"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1708,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_forkserver_preload"
         }
       }
     },
     {
       "key": "multiprocessing.get_all_start_methods",
-      "abstract": "Abstract for multiprocessing.get_all_start_methods",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_all_start_methods"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1746,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_all_start_methods"
         }
       }
     },
     {
       "key": "multiprocessing.get_start_method",
-      "abstract": "Abstract for multiprocessing.get_start_method",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_start_method"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +1784,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_start_method"
         }
       }
     },
     {
       "key": "multiprocessing.set_start_method",
-      "abstract": "Abstract for multiprocessing.set_start_method",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_start_method"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +1822,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_start_method"
         }
       }
     },
     {
       "key": "multiprocessing.get_context",
-      "abstract": "Abstract for multiprocessing.get_context",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_context"
+        },
         "childSets": {
           "object": [
             {
@@ -945,9 +1860,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_context"
         }
       }
     }

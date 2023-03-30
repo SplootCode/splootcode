@@ -2,10 +2,13 @@
   "category": "pdb",
   "entries": [
     {
-      "key": "pdb.run",
-      "abstract": "Abstract for pdb.run",
+      "key": "pdb.Bdb",
+      "abstract": "Generic Python debugger base class.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Bdb"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,266 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "pdb.Cmd",
+      "abstract": "A simple framework for writing line-oriented command interpreters.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Cmd"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.CodeType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "CodeType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.FrameType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.line_prefix",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "line_prefix"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.Restart",
+      "abstract": "Causes a debugger to be restarted for the debugged python program.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Restart"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pdb.run",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "run"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pdb.runeval",
-      "abstract": "Abstract for pdb.runeval",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "runeval"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +323,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "runeval"
         }
       }
     },
     {
       "key": "pdb.runctx",
-      "abstract": "Abstract for pdb.runctx",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "runctx"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +361,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "runctx"
         }
       }
     },
     {
       "key": "pdb.runcall",
-      "abstract": "Abstract for pdb.runcall",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "runcall"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +399,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "runcall"
         }
       }
     },
     {
       "key": "pdb.set_trace",
-      "abstract": "Abstract for pdb.set_trace",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_trace"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +437,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_trace"
         }
       }
     },
     {
       "key": "pdb.post_mortem",
-      "abstract": "Abstract for pdb.post_mortem",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "post_mortem"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +475,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "post_mortem"
         }
       }
     },
     {
       "key": "pdb.pm",
-      "abstract": "Abstract for pdb.pm",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pm"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +513,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pdb.Pdb",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "pm"
+          "member": "Pdb"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pdb.find_function",
-      "abstract": "Abstract for pdb.find_function",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "find_function"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +589,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "find_function"
         }
       }
     },
     {
       "key": "pdb.main",
-      "abstract": "Abstract for pdb.main",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "main"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +627,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "main"
         }
       }
     },
     {
       "key": "pdb.help",
-      "abstract": "Abstract for pdb.help",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "help"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +665,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "help"
         }
       }
     },
     {
       "key": "pdb.getsourcelines",
-      "abstract": "Abstract for pdb.getsourcelines",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsourcelines"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +703,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsourcelines"
         }
       }
     },
     {
       "key": "pdb.lasti2lineno",
-      "abstract": "Abstract for pdb.lasti2lineno",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lasti2lineno"
+        },
         "childSets": {
           "object": [
             {
@@ -451,9 +741,44 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pdb._rstr",
+      "abstract": "String that doesn't quote its repr.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "lasti2lineno"
+          "member": "_rstr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pdb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

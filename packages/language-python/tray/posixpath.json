@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "posixpath.exists",
-      "abstract": "Abstract for posixpath.exists",
+      "abstract": "Test whether a path exists.  Returns False for broken symbolic links",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exists"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "exists"
         }
       }
     },
     {
       "key": "posixpath.getatime",
-      "abstract": "Abstract for posixpath.getatime",
+      "abstract": "Return the last access time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getatime"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getatime"
         }
       }
     },
     {
       "key": "posixpath.getctime",
-      "abstract": "Abstract for posixpath.getctime",
+      "abstract": "Return the metadata change time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getctime"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getctime"
         }
       }
     },
     {
       "key": "posixpath.getmtime",
-      "abstract": "Abstract for posixpath.getmtime",
+      "abstract": "Return the last modification time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getmtime"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getmtime"
         }
       }
     },
     {
       "key": "posixpath.getsize",
-      "abstract": "Abstract for posixpath.getsize",
+      "abstract": "Return the size of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsize"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsize"
         }
       }
     },
     {
       "key": "posixpath.isdir",
-      "abstract": "Abstract for posixpath.isdir",
+      "abstract": "Return true if the pathname refers to an existing directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isdir"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isdir"
         }
       }
     },
     {
       "key": "posixpath.isfile",
-      "abstract": "Abstract for posixpath.isfile",
+      "abstract": "Test whether a path is a regular file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isfile"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isfile"
         }
       }
     },
     {
       "key": "posixpath.samefile",
-      "abstract": "Abstract for posixpath.samefile",
+      "abstract": "Test whether two pathnames reference the same actual file or directory",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samefile"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "samefile"
         }
       }
     },
     {
       "key": "posixpath.sameopenfile",
-      "abstract": "Abstract for posixpath.sameopenfile",
+      "abstract": "Test whether two open file objects reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sameopenfile"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sameopenfile"
         }
       }
     },
     {
       "key": "posixpath.samestat",
-      "abstract": "Abstract for posixpath.samestat",
+      "abstract": "Test whether two stat buffers reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samestat"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "samestat"
         }
       }
     },
     {
-      "key": "posixpath.overload",
-      "abstract": "Abstract for posixpath.overload",
+      "key": "posixpath.PathLike",
+      "abstract": "Abstract base class for implementing the file system path protocol.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PathLike"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +416,185 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posixpath.supports_unicode_filenames",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "supports_unicode_filenames"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.curdir",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "curdir"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.pardir",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pardir"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.sep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "sep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.extsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "extsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.pathsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pathsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.defpath",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "defpath"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posixpath.devnull",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "devnull"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posixpath"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posixpath.abspath",
-      "abstract": "Abstract for posixpath.abspath",
+      "abstract": "Return an absolute path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "abspath"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +622,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abspath"
         }
       }
     },
     {
       "key": "posixpath.basename",
-      "abstract": "Abstract for posixpath.basename",
+      "abstract": "Returns the final component of a pathname",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "basename"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +660,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "basename"
         }
       }
     },
     {
       "key": "posixpath.dirname",
-      "abstract": "Abstract for posixpath.dirname",
+      "abstract": "Returns the directory component of a pathname",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dirname"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +698,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dirname"
         }
       }
     },
     {
       "key": "posixpath.expanduser",
-      "abstract": "Abstract for posixpath.expanduser",
+      "abstract": "Expand ~ and ~user constructions.  If user or $HOME is unknown,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "expanduser"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +736,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "expanduser"
         }
       }
     },
     {
       "key": "posixpath.expandvars",
-      "abstract": "Abstract for posixpath.expandvars",
+      "abstract": "Expand shell variables of form $var and ${var}.  Unknown variables",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "expandvars"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +774,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "expandvars"
         }
       }
     },
     {
       "key": "posixpath.normcase",
-      "abstract": "Abstract for posixpath.normcase",
+      "abstract": "Normalize case of pathname.  Has no effect under Posix",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "normcase"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +812,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "normcase"
         }
       }
     },
     {
       "key": "posixpath.normpath",
-      "abstract": "Abstract for posixpath.normpath",
+      "abstract": "Normalize path, eliminating double slashes, etc.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "normpath"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +850,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "normpath"
         }
       }
     },
     {
       "key": "posixpath.commonpath",
-      "abstract": "Abstract for posixpath.commonpath",
+      "abstract": "Given a sequence of path names, returns the longest common sub-path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "commonpath"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +888,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "commonpath"
         }
       }
     },
     {
       "key": "posixpath.join",
-      "abstract": "Abstract for posixpath.join",
+      "abstract": "Join two or more pathname components, inserting '/' as needed.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "join"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +926,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "join"
         }
       }
     },
     {
       "key": "posixpath.realpath",
-      "abstract": "Abstract for posixpath.realpath",
+      "abstract": "Return the canonical path of the specified filename, eliminating any",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "realpath"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +964,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "realpath"
         }
       }
     },
     {
       "key": "posixpath.relpath",
-      "abstract": "Abstract for posixpath.relpath",
+      "abstract": "Return a relative version of a path",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "relpath"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1002,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "relpath"
         }
       }
     },
     {
       "key": "posixpath.split",
-      "abstract": "Abstract for posixpath.split",
+      "abstract": "Split a pathname.  Returns tuple \"(head, tail)\" where \"tail\" is",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "split"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +1040,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "split"
         }
       }
     },
     {
       "key": "posixpath.splitdrive",
-      "abstract": "Abstract for posixpath.splitdrive",
+      "abstract": "Split a pathname into drive and path. On Posix, drive is always",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "splitdrive"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +1078,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "splitdrive"
         }
       }
     },
     {
       "key": "posixpath.splitext",
-      "abstract": "Abstract for posixpath.splitext",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "splitext"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +1116,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "splitext"
         }
       }
     },
     {
       "key": "posixpath.isabs",
-      "abstract": "Abstract for posixpath.isabs",
+      "abstract": "Test whether a path is absolute",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isabs"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +1154,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isabs"
         }
       }
     },
     {
       "key": "posixpath.islink",
-      "abstract": "Abstract for posixpath.islink",
+      "abstract": "Test whether a path is a symbolic link",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "islink"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,17 +1192,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "islink"
         }
       }
     },
     {
       "key": "posixpath.ismount",
-      "abstract": "Abstract for posixpath.ismount",
+      "abstract": "Test whether a path is a mount point",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ismount"
+        },
         "childSets": {
           "object": [
             {
@@ -1059,17 +1230,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ismount"
         }
       }
     },
     {
       "key": "posixpath.lexists",
-      "abstract": "Abstract for posixpath.lexists",
+      "abstract": "Test whether a path exists.  Returns True for broken symbolic links",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lexists"
+        },
         "childSets": {
           "object": [
             {
@@ -1097,9 +1268,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lexists"
         }
       }
     }

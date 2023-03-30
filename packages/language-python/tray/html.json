@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "html.escape",
-      "abstract": "Abstract for html.escape",
+      "abstract": "    Replace special characters \"&\", \"<\" and \">\" to HTML-safe sequences.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "escape"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "escape"
         }
       }
     },
     {
       "key": "html.unescape",
-      "abstract": "Abstract for html.unescape",
+      "abstract": "    Convert all named and numeric character references (e.g. &gt;, &#62;,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unescape"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +74,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unescape"
         }
       }
     }

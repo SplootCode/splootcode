@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "fnmatch.fnmatch",
-      "abstract": "Abstract for fnmatch.fnmatch",
+      "abstract": "Test whether FILENAME matches PATTERN.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fnmatch"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fnmatch"
         }
       }
     },
     {
       "key": "fnmatch.fnmatchcase",
-      "abstract": "Abstract for fnmatch.fnmatchcase",
+      "abstract": "Test whether FILENAME matches PATTERN, including case.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fnmatchcase"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fnmatchcase"
         }
       }
     },
     {
       "key": "fnmatch.filter",
-      "abstract": "Abstract for fnmatch.filter",
+      "abstract": "Construct a list from those elements of the iterable NAMES that match PAT.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "filter"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "filter"
         }
       }
     },
     {
       "key": "fnmatch.translate",
-      "abstract": "Abstract for fnmatch.translate",
+      "abstract": "Translate a shell PATTERN to a regular expression.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "translate"
+        },
         "childSets": {
           "object": [
             {
@@ -147,9 +150,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "translate"
         }
       }
     }

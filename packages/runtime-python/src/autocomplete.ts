@@ -13,7 +13,6 @@ import {
   TypeCategory as TC,
   Type,
   TypeBase,
-  TypeEvaluator,
 } from 'structured-pyright'
 
 function getShortDoc(docString?: string) {
@@ -107,7 +106,7 @@ const typingsBlacklist = [
 function suggestionsForDeclaration(
   fieldName: string,
   symbol: PyrightSymbol,
-  evaluator: TypeEvaluator,
+  structuredProgram: StructuredEditorProgram,
   parentName: string | undefined,
   declaration: Declaration,
   declarationIndex: number
@@ -119,7 +118,7 @@ function suggestionsForDeclaration(
     return []
   }
 
-  const inferredType = evaluator.getInferredTypeOfDeclaration(symbol, declaration)
+  const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(symbol, declaration)
   if (!inferredType) {
     return []
   }
@@ -132,12 +131,19 @@ function suggestionsForDeclaration(
       let args: AutocompleteEntryFunctionArgument[] = []
 
       if (init && init.getDeclarations().length > 0) {
+        const decl = init.getDeclarations()[0]
         // In cases where there is an __init__ method, we take the arguments from that
-        const initInferredType = evaluator.getInferredTypeOfDeclaration(init, init.getDeclarations()[0])
+        const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(init, decl)
 
         if (initInferredType && initInferredType.category === TC.Function) {
           args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
         }
+      }
+
+      let shortDoc = getShortDoc(inferredType.details.docString)
+      const doc = structuredProgram.getDocumentationPartsforTypeAndDecl(inferredType, declaration)
+      if (doc && doc.length !== 0) {
+        shortDoc = getShortDoc(doc[0])
       }
 
       return [
@@ -147,7 +153,7 @@ function suggestionsForDeclaration(
           arguments: args,
           typeIfMethod: parentName,
           declarationNum: declarationIndex,
-          shortDoc: getShortDoc(inferredType.details.docString),
+          shortDoc: shortDoc,
         },
       ]
     }
@@ -166,6 +172,12 @@ function suggestionsForDeclaration(
       parentName ? inferredType.details.parameters.slice(1) : inferredType.details.parameters
     )
 
+    let shortDoc = getShortDoc(inferredType.details.docString)
+    const doc = structuredProgram.getDocumentationPartsforTypeAndDecl(inferredType, declaration)
+    if (doc && doc.length !== 0) {
+      shortDoc = getShortDoc(doc[0])
+    }
+
     return [
       {
         name: fieldName,
@@ -173,7 +185,7 @@ function suggestionsForDeclaration(
         typeIfMethod: parentName,
         declarationNum: declarationIndex,
         category: AutocompleteEntryCategory.Function,
-        shortDoc: getShortDoc(inferredType.details.docString),
+        shortDoc: shortDoc,
       },
     ]
   }
@@ -204,7 +216,7 @@ const suggestionsForEntries = (
 
       const declarations = symbol.getDeclarations()
       return declarations
-        .map((dec, i) => suggestionsForDeclaration(fieldName, symbol, evaluator, parentName, dec, i))
+        .map((dec, i) => suggestionsForDeclaration(fieldName, symbol, program, parentName, dec, i))
         .flat()
     })
     .flat()

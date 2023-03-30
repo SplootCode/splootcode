@@ -2,10 +2,13 @@
   "category": "textwrap",
   "entries": [
     {
-      "key": "textwrap.wrap",
-      "abstract": "Abstract for textwrap.wrap",
+      "key": "textwrap.TextWrapper",
+      "abstract": "    Object for wrapping/filling text.  The public interface consists of",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TextWrapper"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "textwrap.wrap",
+      "abstract": "Wrap a single paragraph of text, returning a list of wrapped lines.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "wrap"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "textwrap"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "textwrap.fill",
-      "abstract": "Abstract for textwrap.fill",
+      "abstract": "Fill a single paragraph of text, returning a new string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fill"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fill"
         }
       }
     },
     {
       "key": "textwrap.shorten",
-      "abstract": "Abstract for textwrap.shorten",
+      "abstract": "Collapse and truncate the given text to fit in the given width.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "shorten"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "shorten"
         }
       }
     },
     {
       "key": "textwrap.dedent",
-      "abstract": "Abstract for textwrap.dedent",
+      "abstract": "Remove any common leading whitespace from every line in `text`.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dedent"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dedent"
         }
       }
     },
     {
       "key": "textwrap.indent",
-      "abstract": "Abstract for textwrap.indent",
+      "abstract": "Adds 'prefix' to the beginning of selected lines in 'text'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "indent"
+        },
         "childSets": {
           "object": [
             {
@@ -185,9 +226,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "indent"
         }
       }
     }

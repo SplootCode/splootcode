@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "timeit._Timer",
-      "abstract": "Abstract for timeit._Timer",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_Timer"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": ""
         }
       }
     },
     {
       "key": "timeit.default_timer",
-      "abstract": "Abstract for timeit.default_timer",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "default_timer"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "timeit.Timer",
+      "abstract": "Class for timing execution speed of small code snippets.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": ""
+          "member": "Timer"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "timeit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "timeit.timeit",
-      "abstract": "Abstract for timeit.timeit",
+      "abstract": "Convenience function to create Timer object and call timeit method.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "timeit"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "timeit"
         }
       }
     },
     {
       "key": "timeit.repeat",
-      "abstract": "Abstract for timeit.repeat",
+      "abstract": "Convenience function to create Timer object and call repeat method.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "repeat"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "repeat"
         }
       }
     },
     {
       "key": "timeit.main",
-      "abstract": "Abstract for timeit.main",
+      "abstract": "Main program, used when run as a script.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "main"
+        },
         "childSets": {
           "object": [
             {
@@ -185,9 +226,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "main"
         }
       }
     }

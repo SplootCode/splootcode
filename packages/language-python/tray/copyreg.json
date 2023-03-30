@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "copyreg.pickle",
-      "abstract": "Abstract for copyreg.pickle",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pickle"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pickle"
         }
       }
     },
     {
       "key": "copyreg.constructor",
-      "abstract": "Abstract for copyreg.constructor",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "constructor"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "constructor"
         }
       }
     },
     {
       "key": "copyreg.add_extension",
-      "abstract": "Abstract for copyreg.add_extension",
+      "abstract": "Register an extension code.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "add_extension"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "add_extension"
         }
       }
     },
     {
       "key": "copyreg.remove_extension",
-      "abstract": "Abstract for copyreg.remove_extension",
+      "abstract": "Unregister an extension code.  For testing only.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "remove_extension"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "remove_extension"
         }
       }
     },
     {
       "key": "copyreg.clear_extension_cache",
-      "abstract": "Abstract for copyreg.clear_extension_cache",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clear_extension_cache"
+        },
         "childSets": {
           "object": [
             {
@@ -185,9 +188,65 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "copyreg._DispatchTableType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "clear_extension_cache"
+          "member": "_DispatchTableType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "copyreg.dispatch_table",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "dispatch_table"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copyreg"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

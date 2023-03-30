@@ -6,11 +6,6 @@
       "description": "No documentation"
     },
     {
-      "name": "abc",
-      "isStandardLib": true,
-      "description": "Abstract Base Classes (ABCs) according to PEP 3119."
-    },
-    {
       "name": "aifc",
       "isStandardLib": true,
       "description": "Stuff to parse AIFF-C and AIFF files.\n\nUnless explicitly stated otherwise, the description below is "

@@ -2,10 +2,13 @@
   "category": "cgitb",
   "entries": [
     {
-      "key": "cgitb.reset",
-      "abstract": "Abstract for cgitb.reset",
+      "key": "cgitb.FrameType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "cgitb.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgitb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cgitb.reset",
+      "abstract": "Return a string that resets the CGI and browser to a known state.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "reset"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgitb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "cgitb.small",
-      "abstract": "Abstract for cgitb.small",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "small"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "small"
         }
       }
     },
     {
       "key": "cgitb.strong",
-      "abstract": "Abstract for cgitb.strong",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strong"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strong"
         }
       }
     },
     {
       "key": "cgitb.grey",
-      "abstract": "Abstract for cgitb.grey",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "grey"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "grey"
         }
       }
     },
     {
       "key": "cgitb.lookup",
-      "abstract": "Abstract for cgitb.lookup",
+      "abstract": "Find the value for a given name in the given environment.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lookup"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lookup"
         }
       }
     },
     {
       "key": "cgitb.scanvars",
-      "abstract": "Abstract for cgitb.scanvars",
+      "abstract": "Scan one logical line of Python and look up values of variables used.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "scanvars"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "scanvars"
         }
       }
     },
     {
       "key": "cgitb.html",
-      "abstract": "Abstract for cgitb.html",
+      "abstract": "Return a nice HTML document describing a given traceback.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "html"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "html"
         }
       }
     },
     {
       "key": "cgitb.text",
-      "abstract": "Abstract for cgitb.text",
+      "abstract": "Return a plain text document describing a given traceback.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "text"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +378,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "cgitb.Hook",
+      "abstract": "A hook to replace sys.excepthook that shows tracebacks in HTML.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "text"
+          "member": "Hook"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgitb"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "cgitb.handler",
-      "abstract": "Abstract for cgitb.handler",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "handler"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "handler"
         }
       }
     },
     {
       "key": "cgitb.enable",
-      "abstract": "Abstract for cgitb.enable",
+      "abstract": "Install an exception handler that formats tracebacks as HTML.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "enable"
+        },
         "childSets": {
           "object": [
             {
@@ -375,9 +492,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "enable"
         }
       }
     }

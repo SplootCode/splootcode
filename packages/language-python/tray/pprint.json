@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "pprint.pformat",
-      "abstract": "Abstract for pprint.pformat",
+      "abstract": "Format a Python object into a pretty-printed representation.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pformat"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pformat"
         }
       }
     },
     {
       "key": "pprint.pp",
-      "abstract": "Abstract for pprint.pp",
+      "abstract": "Pretty-print a Python object",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pp"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pp"
         }
       }
     },
     {
       "key": "pprint.pprint",
-      "abstract": "Abstract for pprint.pprint",
+      "abstract": "Pretty-print a Python object to a stream [default is sys.stdout].",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pprint"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pprint"
         }
       }
     },
     {
       "key": "pprint.isreadable",
-      "abstract": "Abstract for pprint.isreadable",
+      "abstract": "Determine if saferepr(object) is readable by eval().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isreadable"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isreadable"
         }
       }
     },
     {
       "key": "pprint.isrecursive",
-      "abstract": "Abstract for pprint.isrecursive",
+      "abstract": "Determine if object requires a recursive representation.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isrecursive"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isrecursive"
         }
       }
     },
     {
       "key": "pprint.saferepr",
-      "abstract": "Abstract for pprint.saferepr",
+      "abstract": "Version of repr() which can handle recursive data structures.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "saferepr"
+        },
         "childSets": {
           "object": [
             {
@@ -223,9 +226,44 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pprint.PrettyPrinter",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "saferepr"
+          "member": "PrettyPrinter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pprint"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

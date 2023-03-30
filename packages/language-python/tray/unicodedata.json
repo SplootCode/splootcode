@@ -2,10 +2,13 @@
   "category": "unicodedata",
   "entries": [
     {
-      "key": "unicodedata.final",
-      "abstract": "Abstract for unicodedata.final",
+      "key": "unicodedata.ucd_3_2_0",
+      "abstract": "",
       "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ucd_3_2_0"
+        },
         "childSets": {
           "object": [
             {
@@ -15,35 +18,39 @@
               },
               "childSets": {}
             }
-          ],
-          "arguments": [
+          ]
+        }
+      }
+    },
+    {
+      "key": "unicodedata.unidata_version",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "unidata_version"
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "unicodedata"
               },
-              "properties": {}
+              "childSets": {}
             }
           ]
-        },
-        "properties": {
-          "member": "final"
         }
       }
     },
     {
       "key": "unicodedata.bidirectional",
-      "abstract": "Abstract for unicodedata.bidirectional",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "bidirectional"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +78,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "bidirectional"
         }
       }
     },
     {
       "key": "unicodedata.category",
-      "abstract": "Abstract for unicodedata.category",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "category"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +116,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "category"
         }
       }
     },
     {
       "key": "unicodedata.combining",
-      "abstract": "Abstract for unicodedata.combining",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "combining"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +154,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "combining"
         }
       }
     },
     {
       "key": "unicodedata.decimal",
-      "abstract": "Abstract for unicodedata.decimal",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "decimal"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +192,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "decimal"
         }
       }
     },
     {
       "key": "unicodedata.decomposition",
-      "abstract": "Abstract for unicodedata.decomposition",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "decomposition"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +230,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "decomposition"
         }
       }
     },
     {
       "key": "unicodedata.digit",
-      "abstract": "Abstract for unicodedata.digit",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "digit"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +268,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "digit"
         }
       }
     },
     {
       "key": "unicodedata.east_asian_width",
-      "abstract": "Abstract for unicodedata.east_asian_width",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "east_asian_width"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +306,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "east_asian_width"
         }
       }
     },
     {
       "key": "unicodedata.is_normalized",
-      "abstract": "Abstract for unicodedata.is_normalized",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_normalized"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +344,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "is_normalized"
         }
       }
     },
     {
       "key": "unicodedata.lookup",
-      "abstract": "Abstract for unicodedata.lookup",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lookup"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +382,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lookup"
         }
       }
     },
     {
       "key": "unicodedata.mirrored",
-      "abstract": "Abstract for unicodedata.mirrored",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mirrored"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +420,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mirrored"
         }
       }
     },
     {
       "key": "unicodedata.name",
-      "abstract": "Abstract for unicodedata.name",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "name"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +458,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "name"
         }
       }
     },
     {
       "key": "unicodedata.normalize",
-      "abstract": "Abstract for unicodedata.normalize",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "normalize"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +496,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "normalize"
         }
       }
     },
     {
       "key": "unicodedata.numeric",
-      "abstract": "Abstract for unicodedata.numeric",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "numeric"
+        },
         "childSets": {
           "object": [
             {
@@ -527,9 +534,44 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "unicodedata.UCD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "numeric"
+          "member": "UCD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "unicodedata"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

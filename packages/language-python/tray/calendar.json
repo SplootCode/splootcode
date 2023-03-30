@@ -2,10 +2,13 @@
   "category": "calendar",
   "entries": [
     {
-      "key": "calendar.isleap",
-      "abstract": "Abstract for calendar.isleap",
+      "key": "calendar.struct_time",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "struct_time"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,169 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "calendar._LocaleType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_LocaleType"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.IllegalMonthError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IllegalMonthError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.IllegalWeekdayError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IllegalWeekdayError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.isleap",
+      "abstract": "Return True for leap years, False for non-leap years.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isleap"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "calendar.leapdays",
-      "abstract": "Abstract for calendar.leapdays",
+      "abstract": "Return number of leap years in range [y1, y2).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "leapdays"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "leapdays"
         }
       }
     },
     {
       "key": "calendar.weekday",
-      "abstract": "Abstract for calendar.weekday",
+      "abstract": "Return weekday (0-6 ~ Mon-Sun) for year, month (1-12), day (1-31).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "weekday"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "weekday"
         }
       }
     },
     {
       "key": "calendar.monthrange",
-      "abstract": "Abstract for calendar.monthrange",
+      "abstract": "Return weekday (0-6 ~ Mon-Sun) and number of days (28-31) for",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "monthrange"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +302,93 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "calendar.Calendar",
+      "abstract": "    Base calendar class. This class doesn't do any formatting. It simply",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "monthrange"
+          "member": "Calendar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.TextCalendar",
+      "abstract": "    Subclass of Calendar that outputs a calendar as a simple plain text",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TextCalendar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "calendar.firstweekday",
-      "abstract": "Abstract for calendar.firstweekday",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "firstweekday"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "firstweekday"
         }
       }
     },
     {
       "key": "calendar.monthcalendar",
-      "abstract": "Abstract for calendar.monthcalendar",
+      "abstract": "        Return a matrix representing a month's calendar.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "monthcalendar"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "monthcalendar"
         }
       }
     },
     {
       "key": "calendar.prweek",
-      "abstract": "Abstract for calendar.prweek",
+      "abstract": "        Print a single week (no newline).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "prweek"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "prweek"
         }
       }
     },
     {
       "key": "calendar.week",
-      "abstract": "Abstract for calendar.week",
+      "abstract": "        Returns a single week in a string (no newline).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "week"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "week"
         }
       }
     },
     {
       "key": "calendar.weekheader",
-      "abstract": "Abstract for calendar.weekheader",
+      "abstract": "        Return a header for a week.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "weekheader"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "weekheader"
         }
       }
     },
     {
       "key": "calendar.prmonth",
-      "abstract": "Abstract for calendar.prmonth",
+      "abstract": "        Print a month's calendar.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "prmonth"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "prmonth"
         }
       }
     },
     {
       "key": "calendar.month",
-      "abstract": "Abstract for calendar.month",
+      "abstract": "        Return a month's calendar string (multi-line).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "month"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "month"
         }
       }
     },
     {
       "key": "calendar.calendar",
-      "abstract": "Abstract for calendar.calendar",
+      "abstract": "        Returns a year's calendar as a multi-line string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "calendar"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "calendar"
         }
       }
     },
     {
       "key": "calendar.prcal",
-      "abstract": "Abstract for calendar.prcal",
+      "abstract": "Print a year's calendar.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "prcal"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +720,190 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "calendar.HTMLCalendar",
+      "abstract": "    This calendar returns complete HTML pages.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "prcal"
+          "member": "HTMLCalendar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.different_locale",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "different_locale"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.LocaleTextCalendar",
+      "abstract": "    This class can be passed a locale name in the constructor and will return",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "LocaleTextCalendar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.LocaleHTMLCalendar",
+      "abstract": "    This class can be passed a locale name in the constructor and will return",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "LocaleHTMLCalendar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.c",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "c"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "calendar.setfirstweekday",
-      "abstract": "Abstract for calendar.setfirstweekday",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setfirstweekday"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +931,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setfirstweekday"
         }
       }
     },
     {
       "key": "calendar.format",
-      "abstract": "Abstract for calendar.format",
+      "abstract": "Prints multi-column formatting for year calendars",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +969,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format"
         }
       }
     },
     {
       "key": "calendar.formatstring",
-      "abstract": "Abstract for calendar.formatstring",
+      "abstract": "Returns a string formatted from n strings, centered within n columns.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "formatstring"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +1007,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "formatstring"
         }
       }
     },
     {
       "key": "calendar.timegm",
-      "abstract": "Abstract for calendar.timegm",
+      "abstract": "Unrelated but handy function to calculate Unix timestamp from GMT.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "timegm"
+        },
         "childSets": {
           "object": [
             {
@@ -641,9 +1045,258 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "calendar.day_name",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "timegm"
+          "member": "day_name"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.day_abbr",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "day_abbr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.month_name",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "month_name"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.month_abbr",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "month_abbr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.MONDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MONDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.TUESDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "TUESDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.WEDNESDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WEDNESDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.THURSDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "THURSDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.FRIDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "FRIDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.SATURDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SATURDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.SUNDAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SUNDAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "calendar.EPOCH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EPOCH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "calendar"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

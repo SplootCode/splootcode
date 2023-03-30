@@ -2,10 +2,13 @@
   "category": "pkgutil",
   "entries": [
     {
-      "key": "pkgutil.extend_path",
-      "abstract": "Abstract for pkgutil.extend_path",
+      "key": "pkgutil.Loader",
+      "abstract": "Abstract base class for import loaders.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Loader"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,245 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.MetaPathFinder",
+      "abstract": "Abstract base class for import finders on sys.meta_path.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MetaPathFinder"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.PathEntryFinder",
+      "abstract": "Abstract base class for path entry finders used by PathFinder.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PathEntryFinder"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.ModuleInfo",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleInfo"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.extend_path",
+      "abstract": "Extend a package's path.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "extend_path"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.ImpImporter",
+      "abstract": "PEP 302 Finder that wraps Python's \"classic\" import algorithm",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ImpImporter"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pkgutil.ImpLoader",
+      "abstract": "PEP 302 Loader that wraps Python's \"classic\" import algorithm",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ImpLoader"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pkgutil.find_loader",
-      "abstract": "Abstract for pkgutil.find_loader",
+      "abstract": "Find a \"loader\" object for fullname",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "find_loader"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "find_loader"
         }
       }
     },
     {
       "key": "pkgutil.get_importer",
-      "abstract": "Abstract for pkgutil.get_importer",
+      "abstract": "Retrieve a finder for the given path item",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_importer"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_importer"
         }
       }
     },
     {
       "key": "pkgutil.get_loader",
-      "abstract": "Abstract for pkgutil.get_loader",
+      "abstract": "Get a \"loader\" object for module_or_name",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_loader"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_loader"
         }
       }
     },
     {
       "key": "pkgutil.iter_importers",
-      "abstract": "Abstract for pkgutil.iter_importers",
+      "abstract": "Yield finders for the given module name",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "iter_importers"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "iter_importers"
         }
       }
     },
     {
       "key": "pkgutil.iter_modules",
-      "abstract": "Abstract for pkgutil.iter_modules",
+      "abstract": "Yields ModuleInfo for all submodules on path,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "iter_modules"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "iter_modules"
         }
       }
     },
     {
       "key": "pkgutil.read_code",
-      "abstract": "Abstract for pkgutil.read_code",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "read_code"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "read_code"
         }
       }
     },
     {
       "key": "pkgutil.walk_packages",
-      "abstract": "Abstract for pkgutil.walk_packages",
+      "abstract": "Yields ModuleInfo for all modules recursively",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "walk_packages"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "walk_packages"
         }
       }
     },
     {
       "key": "pkgutil.get_data",
-      "abstract": "Abstract for pkgutil.get_data",
+      "abstract": "Get a resource from a package.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_data"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_data"
         }
       }
     },
     {
       "key": "pkgutil.resolve_name",
-      "abstract": "Abstract for pkgutil.resolve_name",
+      "abstract": "    Resolve a name to an object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "resolve_name"
+        },
         "childSets": {
           "object": [
             {
@@ -375,9 +606,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "resolve_name"
         }
       }
     }

@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "nturl2path.url2pathname",
-      "abstract": "Abstract for nturl2path.url2pathname",
+      "abstract": "OS-specific conversion from a relative URL of the 'file' scheme",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "url2pathname"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "url2pathname"
         }
       }
     },
     {
       "key": "nturl2path.pathname2url",
-      "abstract": "Abstract for nturl2path.pathname2url",
+      "abstract": "OS-specific conversion from a file system path to a relative URL",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pathname2url"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +74,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pathname2url"
         }
       }
     }

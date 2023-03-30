@@ -2,10 +2,34 @@
   "category": "site",
   "entries": [
     {
+      "key": "site.PREFIXES",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PREFIXES"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "site"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "site.main",
-      "abstract": "Abstract for site.main",
+      "abstract": "Add standard site-specific directories to the module search path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "main"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +57,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "main"
         }
       }
     },
     {
       "key": "site.abs_paths",
-      "abstract": "Abstract for site.abs_paths",
+      "abstract": "Set all module __file__ and __cached__ attributes to an absolute path",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "abs_paths"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +95,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abs_paths"
         }
       }
     },
     {
       "key": "site.addpackage",
-      "abstract": "Abstract for site.addpackage",
+      "abstract": "Process a .pth file within the site-packages directory:",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "addpackage"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +133,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "addpackage"
         }
       }
     },
     {
       "key": "site.addsitedir",
-      "abstract": "Abstract for site.addsitedir",
+      "abstract": "Add 'sitedir' argument to sys.path if missing and handle .pth files in",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "addsitedir"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +171,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "addsitedir"
         }
       }
     },
     {
       "key": "site.addsitepackages",
-      "abstract": "Abstract for site.addsitepackages",
+      "abstract": "Add site-packages to sys.path",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "addsitepackages"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +209,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "addsitepackages"
         }
       }
     },
     {
       "key": "site.addusersitepackages",
-      "abstract": "Abstract for site.addusersitepackages",
+      "abstract": "Add a per user site-package to sys.path",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "addusersitepackages"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +247,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "addusersitepackages"
         }
       }
     },
     {
       "key": "site.check_enableusersite",
-      "abstract": "Abstract for site.check_enableusersite",
+      "abstract": "Check if user site directory is safe for inclusion",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "check_enableusersite"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +285,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "check_enableusersite"
         }
       }
     },
     {
       "key": "site.enablerlcompleter",
-      "abstract": "Abstract for site.enablerlcompleter",
+      "abstract": "Enable default readline configuration on interactive prompts, by",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "enablerlcompleter"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +323,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "enablerlcompleter"
         }
       }
     },
     {
       "key": "site.execsitecustomize",
-      "abstract": "Abstract for site.execsitecustomize",
+      "abstract": "Run custom site specific code, if available.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execsitecustomize"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +361,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execsitecustomize"
         }
       }
     },
     {
       "key": "site.execusercustomize",
-      "abstract": "Abstract for site.execusercustomize",
+      "abstract": "Run custom user specific code, if available.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execusercustomize"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +399,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execusercustomize"
         }
       }
     },
     {
       "key": "site.getsitepackages",
-      "abstract": "Abstract for site.getsitepackages",
+      "abstract": "Returns a list containing all global site-packages directories.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsitepackages"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +437,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsitepackages"
         }
       }
     },
     {
       "key": "site.getuserbase",
-      "abstract": "Abstract for site.getuserbase",
+      "abstract": "Returns the `user base` directory path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getuserbase"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +475,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getuserbase"
         }
       }
     },
     {
       "key": "site.getusersitepackages",
-      "abstract": "Abstract for site.getusersitepackages",
+      "abstract": "Returns the user-specific site-packages directory path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getusersitepackages"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +513,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getusersitepackages"
         }
       }
     },
     {
       "key": "site.makepath",
-      "abstract": "Abstract for site.makepath",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "makepath"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +551,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "makepath"
         }
       }
     },
     {
       "key": "site.removeduppaths",
-      "abstract": "Abstract for site.removeduppaths",
+      "abstract": " Remove duplicate entries from sys.path along with making them",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "removeduppaths"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +589,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "removeduppaths"
         }
       }
     },
     {
       "key": "site.setcopyright",
-      "abstract": "Abstract for site.setcopyright",
+      "abstract": "Set 'copyright' and 'credits' in builtins",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setcopyright"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +627,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setcopyright"
         }
       }
     },
     {
       "key": "site.sethelper",
-      "abstract": "Abstract for site.sethelper",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sethelper"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +665,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sethelper"
         }
       }
     },
     {
       "key": "site.setquit",
-      "abstract": "Abstract for site.setquit",
+      "abstract": "Define new builtins 'quit' and 'exit'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setquit"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +703,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setquit"
         }
       }
     },
     {
       "key": "site.venv",
-      "abstract": "Abstract for site.venv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "venv"
+        },
         "childSets": {
           "object": [
             {
@@ -717,9 +741,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "venv"
         }
       }
     }

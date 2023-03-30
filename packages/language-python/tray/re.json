@@ -2,10 +2,13 @@
   "category": "re",
   "entries": [
     {
-      "key": "re.overload",
-      "abstract": "Abstract for re.overload",
+      "key": "re.error",
+      "abstract": "Exception raised for invalid regular expressions.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,412 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "re.RegexFlag",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "RegexFlag"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.A",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "A"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.ASCII",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ASCII"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.DEBUG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DEBUG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.I",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "I"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.IGNORECASE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "IGNORECASE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.L",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "L"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.LOCALE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "LOCALE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.M",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "M"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.MULTILINE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MULTILINE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.S",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "S"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.DOTALL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "DOTALL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.X",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "X"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.VERBOSE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "VERBOSE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.U",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "U"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.UNICODE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "UNICODE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.T",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "T"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "re.TEMPLATE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "TEMPLATE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "re"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "re.compile",
-      "abstract": "Abstract for re.compile",
+      "abstract": "Compile a regular expression pattern, returning a Pattern object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "compile"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +469,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "compile"
         }
       }
     },
     {
       "key": "re.search",
-      "abstract": "Abstract for re.search",
+      "abstract": "Scan through string looking for a match to the pattern, returning",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "search"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +507,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "search"
         }
       }
     },
     {
       "key": "re.match",
-      "abstract": "Abstract for re.match",
+      "abstract": "Try to apply the pattern at the start of the string, returning",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "match"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +545,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "match"
         }
       }
     },
     {
       "key": "re.fullmatch",
-      "abstract": "Abstract for re.fullmatch",
+      "abstract": "Try to apply the pattern to all of the string, returning",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fullmatch"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +583,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fullmatch"
         }
       }
     },
     {
       "key": "re.split",
-      "abstract": "Abstract for re.split",
+      "abstract": "Split the source string by the occurrences of the pattern,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "split"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +621,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "split"
         }
       }
     },
     {
       "key": "re.findall",
-      "abstract": "Abstract for re.findall",
+      "abstract": "Return a list of all non-overlapping matches in the string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "findall"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +659,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "findall"
         }
       }
     },
     {
       "key": "re.finditer",
-      "abstract": "Abstract for re.finditer",
+      "abstract": "Return an iterator over all non-overlapping matches in the",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "finditer"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +697,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "finditer"
         }
       }
     },
     {
       "key": "re.sub",
-      "abstract": "Abstract for re.sub",
+      "abstract": "Return the string obtained by replacing the leftmost",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sub"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +735,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sub"
         }
       }
     },
     {
       "key": "re.subn",
-      "abstract": "Abstract for re.subn",
+      "abstract": "Return a 2-tuple containing (new_string, number).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "subn"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +773,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "subn"
         }
       }
     },
     {
       "key": "re.escape",
-      "abstract": "Abstract for re.escape",
+      "abstract": "    Escape special characters in a string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "escape"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +811,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "escape"
         }
       }
     },
     {
       "key": "re.purge",
-      "abstract": "Abstract for re.purge",
+      "abstract": "Clear the regular expression caches",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "purge"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +849,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "purge"
         }
       }
     },
     {
       "key": "re.template",
-      "abstract": "Abstract for re.template",
+      "abstract": "Compile a template pattern, returning a Pattern object",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "template"
+        },
         "childSets": {
           "object": [
             {
@@ -489,9 +887,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "template"
         }
       }
     }

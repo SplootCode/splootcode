@@ -2,10 +2,34 @@
   "category": "marshal",
   "entries": [
     {
+      "key": "marshal.version",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "version"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "marshal"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "marshal.dump",
-      "abstract": "Abstract for marshal.dump",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dump"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +57,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dump"
         }
       }
     },
     {
       "key": "marshal.load",
-      "abstract": "Abstract for marshal.load",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "load"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +95,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "load"
         }
       }
     },
     {
       "key": "marshal.dumps",
-      "abstract": "Abstract for marshal.dumps",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dumps"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +133,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dumps"
         }
       }
     },
     {
       "key": "marshal.loads",
-      "abstract": "Abstract for marshal.loads",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "loads"
+        },
         "childSets": {
           "object": [
             {
@@ -147,9 +171,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "loads"
         }
       }
     }

@@ -2,10 +2,13 @@
   "category": "dataclasses",
   "entries": [
     {
-      "key": "dataclasses.overload",
-      "abstract": "Abstract for dataclasses.overload",
+      "key": "dataclasses.Type",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Type"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,152 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "dataclasses.GenericAlias",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "GenericAlias"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "dataclasses._MISSING_TYPE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_MISSING_TYPE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "dataclasses.MISSING",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MISSING"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "dataclasses.KW_ONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "KW_ONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "dataclasses.asdict",
-      "abstract": "Abstract for dataclasses.asdict",
+      "abstract": "Return the fields of a dataclass instance as a new dictionary mapping",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "asdict"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +209,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "asdict"
         }
       }
     },
     {
       "key": "dataclasses.astuple",
-      "abstract": "Abstract for dataclasses.astuple",
+      "abstract": "Return the fields of a dataclass instance as a new tuple of field values.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "astuple"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +247,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "astuple"
         }
       }
     },
     {
       "key": "dataclasses.dataclass",
-      "abstract": "Abstract for dataclasses.dataclass",
+      "abstract": "Returns the same class as was passed in, with dunder methods",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dataclass"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +285,93 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "dataclasses._DefaultFactory",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "dataclass"
+          "member": "_DefaultFactory"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "dataclasses.Field",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Field"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "dataclasses.field",
-      "abstract": "Abstract for dataclasses.field",
+      "abstract": "Return an object to identify dataclass fields.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "field"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +399,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "field"
         }
       }
     },
     {
       "key": "dataclasses.fields",
-      "abstract": "Abstract for dataclasses.fields",
+      "abstract": "Return a tuple describing the fields of this dataclass.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fields"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +437,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fields"
         }
       }
     },
     {
       "key": "dataclasses.is_dataclass",
-      "abstract": "Abstract for dataclasses.is_dataclass",
+      "abstract": "Returns True if obj is a dataclass or an instance of a",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_dataclass"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +475,93 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "dataclasses.FrozenInstanceError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "is_dataclass"
+          "member": "FrozenInstanceError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "dataclasses.InitVar",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "InitVar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "dataclasses"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "dataclasses.make_dataclass",
-      "abstract": "Abstract for dataclasses.make_dataclass",
+      "abstract": "Return a new dynamically created dataclass.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "make_dataclass"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +589,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "make_dataclass"
         }
       }
     },
     {
       "key": "dataclasses.replace",
-      "abstract": "Abstract for dataclasses.replace",
+      "abstract": "Return a new object replacing specified fields with new values.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "replace"
+        },
         "childSets": {
           "object": [
             {
@@ -337,9 +627,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "replace"
         }
       }
     }

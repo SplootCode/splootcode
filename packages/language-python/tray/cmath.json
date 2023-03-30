@@ -2,10 +2,160 @@
   "category": "cmath",
   "entries": [
     {
+      "key": "cmath.e",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "e"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.pi",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pi"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.inf",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "inf"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.infj",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "infj"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.nan",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "nan"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.nanj",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "nanj"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "cmath.tau",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "tau"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cmath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "cmath.acos",
-      "abstract": "Abstract for cmath.acos",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "acos"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +183,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "acos"
         }
       }
     },
     {
       "key": "cmath.acosh",
-      "abstract": "Abstract for cmath.acosh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "acosh"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +221,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "acosh"
         }
       }
     },
     {
       "key": "cmath.asin",
-      "abstract": "Abstract for cmath.asin",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "asin"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +259,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "asin"
         }
       }
     },
     {
       "key": "cmath.asinh",
-      "abstract": "Abstract for cmath.asinh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "asinh"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +297,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "asinh"
         }
       }
     },
     {
       "key": "cmath.atan",
-      "abstract": "Abstract for cmath.atan",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "atan"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +335,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "atan"
         }
       }
     },
     {
       "key": "cmath.atanh",
-      "abstract": "Abstract for cmath.atanh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "atanh"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +373,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "atanh"
         }
       }
     },
     {
       "key": "cmath.cos",
-      "abstract": "Abstract for cmath.cos",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cos"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +411,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cos"
         }
       }
     },
     {
       "key": "cmath.cosh",
-      "abstract": "Abstract for cmath.cosh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cosh"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +449,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cosh"
         }
       }
     },
     {
       "key": "cmath.exp",
-      "abstract": "Abstract for cmath.exp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exp"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +487,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "exp"
         }
       }
     },
     {
       "key": "cmath.isclose",
-      "abstract": "Abstract for cmath.isclose",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isclose"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +525,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isclose"
         }
       }
     },
     {
       "key": "cmath.isinf",
-      "abstract": "Abstract for cmath.isinf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isinf"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +563,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isinf"
         }
       }
     },
     {
       "key": "cmath.isnan",
-      "abstract": "Abstract for cmath.isnan",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isnan"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +601,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isnan"
         }
       }
     },
     {
       "key": "cmath.log",
-      "abstract": "Abstract for cmath.log",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "log"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +639,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "log"
         }
       }
     },
     {
       "key": "cmath.log10",
-      "abstract": "Abstract for cmath.log10",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "log10"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +677,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "log10"
         }
       }
     },
     {
       "key": "cmath.phase",
-      "abstract": "Abstract for cmath.phase",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "phase"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +715,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "phase"
         }
       }
     },
     {
       "key": "cmath.polar",
-      "abstract": "Abstract for cmath.polar",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "polar"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +753,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "polar"
         }
       }
     },
     {
       "key": "cmath.rect",
-      "abstract": "Abstract for cmath.rect",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rect"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +791,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rect"
         }
       }
     },
     {
       "key": "cmath.sin",
-      "abstract": "Abstract for cmath.sin",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sin"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +829,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sin"
         }
       }
     },
     {
       "key": "cmath.sinh",
-      "abstract": "Abstract for cmath.sinh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sinh"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +867,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sinh"
         }
       }
     },
     {
       "key": "cmath.sqrt",
-      "abstract": "Abstract for cmath.sqrt",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sqrt"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +905,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sqrt"
         }
       }
     },
     {
       "key": "cmath.tan",
-      "abstract": "Abstract for cmath.tan",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tan"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +943,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tan"
         }
       }
     },
     {
       "key": "cmath.tanh",
-      "abstract": "Abstract for cmath.tanh",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tanh"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +981,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tanh"
         }
       }
     },
     {
       "key": "cmath.isfinite",
-      "abstract": "Abstract for cmath.isfinite",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isfinite"
+        },
         "childSets": {
           "object": [
             {
@@ -869,9 +1019,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isfinite"
         }
       }
     }

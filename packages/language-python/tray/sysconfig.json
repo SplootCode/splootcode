@@ -2,86 +2,51 @@
   "category": "sysconfig",
   "entries": [
     {
-      "key": "sysconfig.overload",
-      "abstract": "Abstract for sysconfig.overload",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sysconfig"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
-        "properties": {
-          "member": "overload"
-        }
-      }
-    },
-    {
       "key": "sysconfig.get_config_var",
-      "abstract": "Abstract for sysconfig.get_config_var",
+      "abstract": "Return the value of a single variable using the dictionary returned by",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sysconfig"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
         "properties": {
           "member": "get_config_var"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sysconfig"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "sysconfig.get_config_vars",
-      "abstract": "Abstract for sysconfig.get_config_vars",
+      "abstract": "With no arguments, return a dictionary of all configuration",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_config_vars"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_config_vars"
         }
       }
     },
     {
       "key": "sysconfig.get_scheme_names",
-      "abstract": "Abstract for sysconfig.get_scheme_names",
+      "abstract": "Return a tuple containing the schemes names.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_scheme_names"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_scheme_names"
         }
       }
     },
     {
       "key": "sysconfig.get_path_names",
-      "abstract": "Abstract for sysconfig.get_path_names",
+      "abstract": "Return a tuple containing the paths names.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_path_names"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_path_names"
         }
       }
     },
     {
       "key": "sysconfig.get_path",
-      "abstract": "Abstract for sysconfig.get_path",
+      "abstract": "Return a path corresponding to the scheme.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_path"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_path"
         }
       }
     },
     {
       "key": "sysconfig.get_paths",
-      "abstract": "Abstract for sysconfig.get_paths",
+      "abstract": "Return a mapping containing an install scheme.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_paths"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_paths"
         }
       }
     },
     {
       "key": "sysconfig.get_python_version",
-      "abstract": "Abstract for sysconfig.get_python_version",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_python_version"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_python_version"
         }
       }
     },
     {
       "key": "sysconfig.get_platform",
-      "abstract": "Abstract for sysconfig.get_platform",
+      "abstract": "Return a string that identifies the current platform.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_platform"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_platform"
         }
       }
     },
     {
       "key": "sysconfig.is_python_build",
-      "abstract": "Abstract for sysconfig.is_python_build",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_python_build"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "is_python_build"
         }
       }
     },
     {
       "key": "sysconfig.parse_config_h",
-      "abstract": "Abstract for sysconfig.parse_config_h",
+      "abstract": "Parse a config.h-style file.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "parse_config_h"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "parse_config_h"
         }
       }
     },
     {
       "key": "sysconfig.get_config_h_filename",
-      "abstract": "Abstract for sysconfig.get_config_h_filename",
+      "abstract": "Return the path of pyconfig.h.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_config_h_filename"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_config_h_filename"
         }
       }
     },
     {
       "key": "sysconfig.get_makefile_filename",
-      "abstract": "Abstract for sysconfig.get_makefile_filename",
+      "abstract": "Return the path of the Makefile.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_makefile_filename"
+        },
         "childSets": {
           "object": [
             {
@@ -489,9 +454,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_makefile_filename"
         }
       }
     }

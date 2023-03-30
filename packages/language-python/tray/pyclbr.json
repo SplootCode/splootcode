@@ -2,10 +2,13 @@
   "category": "pyclbr",
   "entries": [
     {
-      "key": "pyclbr.readmodule",
-      "abstract": "Abstract for pyclbr.readmodule",
+      "key": "pyclbr.Class",
+      "abstract": "Information about a Python class.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Class"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "pyclbr.Function",
+      "abstract": "Information about a Python function, including methods.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Function"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pyclbr"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pyclbr.readmodule",
+      "abstract": "Return Class objects for the top-level classes in module.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "readmodule"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pyclbr"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pyclbr.readmodule_ex",
-      "abstract": "Abstract for pyclbr.readmodule_ex",
+      "abstract": "Return a dictionary with all functions and classes in module.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "readmodule_ex"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +150,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "readmodule_ex"
         }
       }
     }

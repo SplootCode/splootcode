@@ -5845,11 +5845,6 @@ structured-pyright@^1.0.10:
   resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.10.tgz#cdc399716b563a7b538d0c2dcb5f3bed247b5006"
   integrity sha512-PQrzjivVjk000w3HOsE/kHT4/XgB6jvqDHUwZ72nVjN4OYsnyZQk0SMsDmkWvVZF8V3X1g1czH7QmfKGfsYjog==
 
-structured-pyright@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/structured-pyright/-/structured-pyright-1.0.9.tgz#f879ca1656a2b4947b73b1bfb83fea963029e3f8"
-  integrity sha512-xbcMmjyBWQ0TE+80I76S2vBNKHXEJPkpFSWeMen7exTSwjBV7hFJpNSf7kX/IEt2Lv5vJ5bJBzmVdywptw/S4A==
-
 style-value-types@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-4.1.1.tgz#15d08bd9bb17ac3f5d4a863bf9d5e4eb8e4f0686"

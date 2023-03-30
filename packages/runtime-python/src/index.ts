@@ -6,3 +6,5 @@ export * from './message_types'
 
 export * from './pyodide'
 export * from './pyright'
+
+export { getAutocompleteInfo } from './autocomplete'

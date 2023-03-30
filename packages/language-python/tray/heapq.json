@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "heapq.heapify",
-      "abstract": "Abstract for heapq.heapify",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "heapify"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "heapify"
         }
       }
     },
     {
       "key": "heapq.heappop",
-      "abstract": "Abstract for heapq.heappop",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "heappop"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "heappop"
         }
       }
     },
     {
       "key": "heapq.heappush",
-      "abstract": "Abstract for heapq.heappush",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "heappush"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "heappush"
         }
       }
     },
     {
       "key": "heapq.heappushpop",
-      "abstract": "Abstract for heapq.heappushpop",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "heappushpop"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "heappushpop"
         }
       }
     },
     {
       "key": "heapq.heapreplace",
-      "abstract": "Abstract for heapq.heapreplace",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "heapreplace"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "heapreplace"
         }
       }
     },
     {
       "key": "heapq.merge",
-      "abstract": "Abstract for heapq.merge",
+      "abstract": "Merge multiple sorted inputs into a single sorted output.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "merge"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "merge"
         }
       }
     },
     {
       "key": "heapq.nlargest",
-      "abstract": "Abstract for heapq.nlargest",
+      "abstract": "Find the n largest elements in a dataset.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "nlargest"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "nlargest"
         }
       }
     },
     {
       "key": "heapq.nsmallest",
-      "abstract": "Abstract for heapq.nsmallest",
+      "abstract": "Find the n smallest elements in a dataset.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "nsmallest"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "nsmallest"
         }
       }
     },
     {
       "key": "heapq._heapify_max",
-      "abstract": "Abstract for heapq._heapify_max",
+      "abstract": "Transform list into a maxheap, in-place, in O(len(x)) time.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_heapify_max"
+        },
         "childSets": {
           "object": [
             {
@@ -337,9 +340,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_heapify_max"
         }
       }
     }

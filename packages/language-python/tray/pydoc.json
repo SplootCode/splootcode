@@ -2,10 +2,13 @@
   "category": "pydoc",
   "entries": [
     {
-      "key": "pydoc.abstractmethod",
-      "abstract": "Abstract for pydoc.abstractmethod",
+      "key": "pydoc._list",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_list"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,169 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pydoc.Repr",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "abstractmethod"
+          "member": "Repr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.MethodType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MethodType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.ModuleType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pydoc.pathdirs",
-      "abstract": "Abstract for pydoc.pathdirs",
+      "abstract": "Convert sys.path into a list of absolute, existing, unique paths.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pathdirs"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pathdirs"
         }
       }
     },
     {
       "key": "pydoc.getdoc",
-      "abstract": "Abstract for pydoc.getdoc",
+      "abstract": "Get the doc string or comments for an object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getdoc"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getdoc"
         }
       }
     },
     {
       "key": "pydoc.splitdoc",
-      "abstract": "Abstract for pydoc.splitdoc",
+      "abstract": "Split a doc string into a synopsis line (if any) and the rest.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "splitdoc"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "splitdoc"
         }
       }
     },
     {
       "key": "pydoc.classname",
-      "abstract": "Abstract for pydoc.classname",
+      "abstract": "Get a class name and qualify it with a module name if necessary.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "classname"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "classname"
         }
       }
     },
     {
       "key": "pydoc.isdata",
-      "abstract": "Abstract for pydoc.isdata",
+      "abstract": "Check if an object is of a type that probably means it's data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isdata"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isdata"
         }
       }
     },
     {
       "key": "pydoc.replace",
-      "abstract": "Abstract for pydoc.replace",
+      "abstract": "Do a series of global replacements on a string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "replace"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "replace"
         }
       }
     },
     {
       "key": "pydoc.cram",
-      "abstract": "Abstract for pydoc.cram",
+      "abstract": "Omit part of a string if needed to make it fit in a maximum length.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cram"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cram"
         }
       }
     },
     {
       "key": "pydoc.stripid",
-      "abstract": "Abstract for pydoc.stripid",
+      "abstract": "Remove the hexadecimal id from a Python object representation.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stripid"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "stripid"
         }
       }
     },
     {
       "key": "pydoc.allmethods",
-      "abstract": "Abstract for pydoc.allmethods",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "allmethods"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "allmethods"
         }
       }
     },
     {
       "key": "pydoc.visiblename",
-      "abstract": "Abstract for pydoc.visiblename",
+      "abstract": "Decide whether to show documentation on a variable.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "visiblename"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "visiblename"
         }
       }
     },
     {
       "key": "pydoc.classify_class_attrs",
-      "abstract": "Abstract for pydoc.classify_class_attrs",
+      "abstract": "Wrap inspect.classify_class_attrs, with fixup for data descriptors.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "classify_class_attrs"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "classify_class_attrs"
         }
       }
     },
     {
       "key": "pydoc.ispackage",
-      "abstract": "Abstract for pydoc.ispackage",
+      "abstract": "Guess whether a path refers to a package directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ispackage"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ispackage"
         }
       }
     },
     {
       "key": "pydoc.source_synopsis",
-      "abstract": "Abstract for pydoc.source_synopsis",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "source_synopsis"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "source_synopsis"
         }
       }
     },
     {
       "key": "pydoc.synopsis",
-      "abstract": "Abstract for pydoc.synopsis",
+      "abstract": "Get the one-line summary out of a module file.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "synopsis"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +720,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pydoc.ErrorDuringImport",
+      "abstract": "Errors that occurred while trying to import something to document it.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "synopsis"
+          "member": "ErrorDuringImport"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pydoc.importfile",
-      "abstract": "Abstract for pydoc.importfile",
+      "abstract": "Import a Python source file or compiled file given its path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "importfile"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +796,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "importfile"
         }
       }
     },
     {
       "key": "pydoc.safeimport",
-      "abstract": "Abstract for pydoc.safeimport",
+      "abstract": "Import a module; handle errors; return None if the module isn't found.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "safeimport"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +834,207 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pydoc.Doc",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "safeimport"
+          "member": "Doc"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.HTMLRepr",
+      "abstract": "Class for safely making an HTML representation of a Python object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "HTMLRepr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.HTMLDoc",
+      "abstract": "Formatter class for HTML documentation.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "HTMLDoc"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.TextRepr",
+      "abstract": "Class for safely making a text representation of a Python object.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TextRepr"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.TextDoc",
+      "abstract": "Formatter class for text documentation.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TextDoc"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pydoc.pager",
-      "abstract": "Abstract for pydoc.pager",
+      "abstract": "The first time this is called, determine what kind of pager to use.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pager"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +1062,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pager"
         }
       }
     },
     {
       "key": "pydoc.getpager",
-      "abstract": "Abstract for pydoc.getpager",
+      "abstract": "Decide what method to use for paging through text.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpager"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +1100,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpager"
         }
       }
     },
     {
       "key": "pydoc.plain",
-      "abstract": "Abstract for pydoc.plain",
+      "abstract": "Remove boldface formatting from text.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "plain"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +1138,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "plain"
         }
       }
     },
     {
       "key": "pydoc.pipepager",
-      "abstract": "Abstract for pydoc.pipepager",
+      "abstract": "Page through text by feeding it to another program.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pipepager"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1176,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pipepager"
         }
       }
     },
     {
       "key": "pydoc.tempfilepager",
-      "abstract": "Abstract for pydoc.tempfilepager",
+      "abstract": "Page through text by invoking a program on a temporary file.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tempfilepager"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1214,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tempfilepager"
         }
       }
     },
     {
       "key": "pydoc.ttypager",
-      "abstract": "Abstract for pydoc.ttypager",
+      "abstract": "Page through text on a text terminal.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ttypager"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +1252,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ttypager"
         }
       }
     },
     {
       "key": "pydoc.plainpager",
-      "abstract": "Abstract for pydoc.plainpager",
+      "abstract": "Simply print unformatted text.  This is the ultimate fallback.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "plainpager"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +1290,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "plainpager"
         }
       }
     },
     {
       "key": "pydoc.describe",
-      "abstract": "Abstract for pydoc.describe",
+      "abstract": "Produce a short description of the given thing.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "describe"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +1328,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "describe"
         }
       }
     },
     {
       "key": "pydoc.locate",
-      "abstract": "Abstract for pydoc.locate",
+      "abstract": "Locate an object by name or dotted path, importing as necessary.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "locate"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +1366,97 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pydoc.text",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "locate"
+          "member": "text"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.html",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "html"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc._OldStyleClass",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_OldStyleClass"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pydoc.resolve",
-      "abstract": "Abstract for pydoc.resolve",
+      "abstract": "Given an object or a path to an object, get the object and its name.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "resolve"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,17 +1484,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "resolve"
         }
       }
     },
     {
       "key": "pydoc.render_doc",
-      "abstract": "Abstract for pydoc.render_doc",
+      "abstract": "Render text documentation, given an object or a path to an object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "render_doc"
+        },
         "childSets": {
           "object": [
             {
@@ -1059,17 +1522,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "render_doc"
         }
       }
     },
     {
       "key": "pydoc.doc",
-      "abstract": "Abstract for pydoc.doc",
+      "abstract": "Display text documentation, given an object or a path to an object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "doc"
+        },
         "childSets": {
           "object": [
             {
@@ -1097,17 +1560,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "doc"
         }
       }
     },
     {
       "key": "pydoc.writedoc",
-      "abstract": "Abstract for pydoc.writedoc",
+      "abstract": "Write HTML documentation to a file in the current directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "writedoc"
+        },
         "childSets": {
           "object": [
             {
@@ -1135,17 +1598,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "writedoc"
         }
       }
     },
     {
       "key": "pydoc.writedocs",
-      "abstract": "Abstract for pydoc.writedocs",
+      "abstract": "Write out HTML documentation for all modules in a directory tree.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "writedocs"
+        },
         "childSets": {
           "object": [
             {
@@ -1173,17 +1636,114 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "pydoc.Helper",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "writedocs"
+          "member": "Helper"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.help",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "help"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "pydoc.ModuleScanner",
+      "abstract": "An interruptible scanner that searches module synopses.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleScanner"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pydoc"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "pydoc.apropos",
-      "abstract": "Abstract for pydoc.apropos",
+      "abstract": "Print all the one-line module summaries that contain a substring.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "apropos"
+        },
         "childSets": {
           "object": [
             {
@@ -1211,17 +1771,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "apropos"
         }
       }
     },
     {
       "key": "pydoc.ispath",
-      "abstract": "Abstract for pydoc.ispath",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ispath"
+        },
         "childSets": {
           "object": [
             {
@@ -1249,17 +1809,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ispath"
         }
       }
     },
     {
       "key": "pydoc.cli",
-      "abstract": "Abstract for pydoc.cli",
+      "abstract": "Command-line interface (looks at sys.argv to decide what to do).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cli"
+        },
         "childSets": {
           "object": [
             {
@@ -1287,9 +1847,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cli"
         }
       }
     }

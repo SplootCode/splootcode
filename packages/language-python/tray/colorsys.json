@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "colorsys.rgb_to_yiq",
-      "abstract": "Abstract for colorsys.rgb_to_yiq",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rgb_to_yiq"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rgb_to_yiq"
         }
       }
     },
     {
       "key": "colorsys.yiq_to_rgb",
-      "abstract": "Abstract for colorsys.yiq_to_rgb",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "yiq_to_rgb"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "yiq_to_rgb"
         }
       }
     },
     {
       "key": "colorsys.rgb_to_hls",
-      "abstract": "Abstract for colorsys.rgb_to_hls",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rgb_to_hls"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rgb_to_hls"
         }
       }
     },
     {
       "key": "colorsys.hls_to_rgb",
-      "abstract": "Abstract for colorsys.hls_to_rgb",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "hls_to_rgb"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "hls_to_rgb"
         }
       }
     },
     {
       "key": "colorsys.rgb_to_hsv",
-      "abstract": "Abstract for colorsys.rgb_to_hsv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rgb_to_hsv"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rgb_to_hsv"
         }
       }
     },
     {
       "key": "colorsys.hsv_to_rgb",
-      "abstract": "Abstract for colorsys.hsv_to_rgb",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "hsv_to_rgb"
+        },
         "childSets": {
           "object": [
             {
@@ -223,9 +226,69 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "colorsys.ONE_SIXTH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "hsv_to_rgb"
+          "member": "ONE_SIXTH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "colorsys"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "colorsys.ONE_THIRD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ONE_THIRD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "colorsys"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "colorsys.TWO_THIRD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "TWO_THIRD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "colorsys"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

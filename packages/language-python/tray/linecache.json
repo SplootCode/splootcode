@@ -2,10 +2,13 @@
   "category": "linecache",
   "entries": [
     {
-      "key": "linecache.getline",
-      "abstract": "Abstract for linecache.getline",
+      "key": "linecache._ModuleGlobals",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ModuleGlobals"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,152 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "linecache._ModuleMetadata",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_ModuleMetadata"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "linecache"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "linecache._SourceLoader",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_SourceLoader"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "linecache"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "linecache.cache",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "cache"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "linecache"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "linecache.getline",
+      "abstract": "Get a line for a Python source file from the cache.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getline"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "linecache"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "linecache.clearcache",
-      "abstract": "Abstract for linecache.clearcache",
+      "abstract": "Clear the cache entirely.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clearcache"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +209,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clearcache"
         }
       }
     },
     {
       "key": "linecache.getlines",
-      "abstract": "Abstract for linecache.getlines",
+      "abstract": "Get the lines for a Python source file from the cache.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getlines"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +247,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getlines"
         }
       }
     },
     {
       "key": "linecache.checkcache",
-      "abstract": "Abstract for linecache.checkcache",
+      "abstract": "Discard cache entries that are out of date.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "checkcache"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +285,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "checkcache"
         }
       }
     },
     {
       "key": "linecache.updatecache",
-      "abstract": "Abstract for linecache.updatecache",
+      "abstract": "Update a cache entry and return its list of lines.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "updatecache"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +323,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "updatecache"
         }
       }
     },
     {
       "key": "linecache.lazycache",
-      "abstract": "Abstract for linecache.lazycache",
+      "abstract": "Seed the cache for filename with module_globals.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lazycache"
+        },
         "childSets": {
           "object": [
             {
@@ -223,9 +361,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lazycache"
         }
       }
     }

@@ -2,10 +2,13 @@
   "category": "statistics",
   "entries": [
     {
-      "key": "statistics.fmean",
-      "abstract": "Abstract for statistics.fmean",
+      "key": "statistics.Decimal",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Decimal"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,131 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "statistics.Fraction",
+      "abstract": "This class implements rational numbers.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Fraction"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "statistics.StatisticsError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StatisticsError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "statistics.fmean",
+      "abstract": "Convert data to floats and compute the arithmetic mean.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "fmean"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "statistics.geometric_mean",
-      "abstract": "Abstract for statistics.geometric_mean",
+      "abstract": "Convert data to floats and compute the geometric mean.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "geometric_mean"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "geometric_mean"
         }
       }
     },
     {
       "key": "statistics.mean",
-      "abstract": "Abstract for statistics.mean",
+      "abstract": "Return the sample arithmetic mean of data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mean"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mean"
         }
       }
     },
     {
       "key": "statistics.harmonic_mean",
-      "abstract": "Abstract for statistics.harmonic_mean",
+      "abstract": "Return the harmonic mean of data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "harmonic_mean"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "harmonic_mean"
         }
       }
     },
     {
       "key": "statistics.median",
-      "abstract": "Abstract for statistics.median",
+      "abstract": "Return the median (middle value) of numeric data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "median"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "median"
         }
       }
     },
     {
       "key": "statistics.median_low",
-      "abstract": "Abstract for statistics.median_low",
+      "abstract": "Return the low median of numeric data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "median_low"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "median_low"
         }
       }
     },
     {
       "key": "statistics.median_high",
-      "abstract": "Abstract for statistics.median_high",
+      "abstract": "Return the high median of data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "median_high"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "median_high"
         }
       }
     },
     {
       "key": "statistics.median_grouped",
-      "abstract": "Abstract for statistics.median_grouped",
+      "abstract": "Return the 50th percentile (median) of grouped continuous data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "median_grouped"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "median_grouped"
         }
       }
     },
     {
       "key": "statistics.mode",
-      "abstract": "Abstract for statistics.mode",
+      "abstract": "Return the most common data point from discrete or nominal data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mode"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mode"
         }
       }
     },
     {
       "key": "statistics.multimode",
-      "abstract": "Abstract for statistics.multimode",
+      "abstract": "Return a list of the most frequently occurring values.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "multimode"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "multimode"
         }
       }
     },
     {
       "key": "statistics.pstdev",
-      "abstract": "Abstract for statistics.pstdev",
+      "abstract": "Return the square root of the population variance.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pstdev"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pstdev"
         }
       }
     },
     {
       "key": "statistics.pvariance",
-      "abstract": "Abstract for statistics.pvariance",
+      "abstract": "Return the population variance of ``data``.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pvariance"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pvariance"
         }
       }
     },
     {
       "key": "statistics.quantiles",
-      "abstract": "Abstract for statistics.quantiles",
+      "abstract": "Divide *data* into *n* continuous intervals with equal probability.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "quantiles"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "quantiles"
         }
       }
     },
     {
       "key": "statistics.stdev",
-      "abstract": "Abstract for statistics.stdev",
+      "abstract": "Return the square root of the sample variance.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stdev"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "stdev"
         }
       }
     },
     {
       "key": "statistics.variance",
-      "abstract": "Abstract for statistics.variance",
+      "abstract": "Return the sample variance of data.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "variance"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +682,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "statistics.NormalDist",
+      "abstract": "Normal distribution of a random variable",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "variance"
+          "member": "NormalDist"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "statistics.correlation",
-      "abstract": "Abstract for statistics.correlation",
+      "abstract": "Pearson's correlation coefficient",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "correlation"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +758,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "correlation"
         }
       }
     },
     {
       "key": "statistics.covariance",
-      "abstract": "Abstract for statistics.covariance",
+      "abstract": "Covariance",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "covariance"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +796,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "statistics.LinearRegression",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "covariance"
+          "member": "LinearRegression"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "statistics.linear_regression",
-      "abstract": "Abstract for statistics.linear_regression",
+      "abstract": "Slope and intercept for simple linear regression.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "linear_regression"
+        },
         "childSets": {
           "object": [
             {
@@ -679,9 +872,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "linear_regression"
         }
       }
     }

@@ -2,86 +2,51 @@
   "category": "genericpath",
   "entries": [
     {
-      "key": "genericpath.overload",
-      "abstract": "Abstract for genericpath.overload",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "genericpath"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
-        "properties": {
-          "member": "overload"
-        }
-      }
-    },
-    {
       "key": "genericpath.commonprefix",
-      "abstract": "Abstract for genericpath.commonprefix",
+      "abstract": "Given a list of pathnames, returns the longest common leading component",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "genericpath"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        },
         "properties": {
           "member": "commonprefix"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "genericpath"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "genericpath.exists",
-      "abstract": "Abstract for genericpath.exists",
+      "abstract": "Test whether a path exists.  Returns False for broken symbolic links",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exists"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "exists"
         }
       }
     },
     {
       "key": "genericpath.getsize",
-      "abstract": "Abstract for genericpath.getsize",
+      "abstract": "Return the size of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsize"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsize"
         }
       }
     },
     {
       "key": "genericpath.isfile",
-      "abstract": "Abstract for genericpath.isfile",
+      "abstract": "Test whether a path is a regular file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isfile"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isfile"
         }
       }
     },
     {
       "key": "genericpath.isdir",
-      "abstract": "Abstract for genericpath.isdir",
+      "abstract": "Return true if the pathname refers to an existing directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isdir"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isdir"
         }
       }
     },
     {
       "key": "genericpath.getatime",
-      "abstract": "Abstract for genericpath.getatime",
+      "abstract": "Return the last access time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getatime"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getatime"
         }
       }
     },
     {
       "key": "genericpath.getmtime",
-      "abstract": "Abstract for genericpath.getmtime",
+      "abstract": "Return the last modification time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getmtime"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getmtime"
         }
       }
     },
     {
       "key": "genericpath.getctime",
-      "abstract": "Abstract for genericpath.getctime",
+      "abstract": "Return the metadata change time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getctime"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getctime"
         }
       }
     },
     {
       "key": "genericpath.samefile",
-      "abstract": "Abstract for genericpath.samefile",
+      "abstract": "Test whether two pathnames reference the same actual file or directory",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samefile"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "samefile"
         }
       }
     },
     {
       "key": "genericpath.sameopenfile",
-      "abstract": "Abstract for genericpath.sameopenfile",
+      "abstract": "Test whether two open file objects reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sameopenfile"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sameopenfile"
         }
       }
     },
     {
       "key": "genericpath.samestat",
-      "abstract": "Abstract for genericpath.samestat",
+      "abstract": "Test whether two stat buffers reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samestat"
+        },
         "childSets": {
           "object": [
             {
@@ -451,9 +416,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "samestat"
         }
       }
     }

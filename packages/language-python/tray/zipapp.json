@@ -2,10 +2,13 @@
   "category": "zipapp",
   "entries": [
     {
-      "key": "zipapp.create_archive",
-      "abstract": "Abstract for zipapp.create_archive",
+      "key": "zipapp.Path",
+      "abstract": "PurePath subclass that can make system calls.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Path"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "zipapp.ZipAppError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ZipAppError"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "zipapp"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "zipapp.create_archive",
+      "abstract": "Create an application archive from SOURCE.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "create_archive"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "zipapp"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "zipapp.get_interpreter",
-      "abstract": "Abstract for zipapp.get_interpreter",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_interpreter"
+        },
         "childSets": {
           "object": [
             {
@@ -71,9 +150,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_interpreter"
         }
       }
     }

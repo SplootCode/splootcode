@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "platform.libc_ver",
-      "abstract": "Abstract for platform.libc_ver",
+      "abstract": " Tries to determine the libc version that the file executable",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "libc_ver"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "libc_ver"
         }
       }
     },
     {
       "key": "platform.win32_ver",
-      "abstract": "Abstract for platform.win32_ver",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "win32_ver"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "win32_ver"
         }
       }
     },
     {
       "key": "platform.win32_edition",
-      "abstract": "Abstract for platform.win32_edition",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "win32_edition"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "win32_edition"
         }
       }
     },
     {
       "key": "platform.win32_is_iot",
-      "abstract": "Abstract for platform.win32_is_iot",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "win32_is_iot"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "win32_is_iot"
         }
       }
     },
     {
       "key": "platform.mac_ver",
-      "abstract": "Abstract for platform.mac_ver",
+      "abstract": " Get macOS version information and return it as tuple (release,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mac_ver"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mac_ver"
         }
       }
     },
     {
       "key": "platform.java_ver",
-      "abstract": "Abstract for platform.java_ver",
+      "abstract": " Version interface for Jython.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "java_ver"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "java_ver"
         }
       }
     },
     {
       "key": "platform.system_alias",
-      "abstract": "Abstract for platform.system_alias",
+      "abstract": " Returns (system, release, version) aliased to common",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "system_alias"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "system_alias"
         }
       }
     },
     {
       "key": "platform.architecture",
-      "abstract": "Abstract for platform.architecture",
+      "abstract": " Queries the given executable (defaults to the Python interpreter",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "architecture"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "platform.uname_result",
+      "abstract": "    A uname_result that's largely compatible with a",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "architecture"
+          "member": "uname_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "platform"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "platform.uname",
-      "abstract": "Abstract for platform.uname",
+      "abstract": " Fairly portable uname interface. Returns a tuple",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "uname"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "uname"
         }
       }
     },
     {
       "key": "platform.system",
-      "abstract": "Abstract for platform.system",
+      "abstract": " Returns the system/OS name, e.g. 'Linux', 'Windows' or 'Java'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "system"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "system"
         }
       }
     },
     {
       "key": "platform.node",
-      "abstract": "Abstract for platform.node",
+      "abstract": " Returns the computer's network name (which may not be fully",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "node"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "node"
         }
       }
     },
     {
       "key": "platform.release",
-      "abstract": "Abstract for platform.release",
+      "abstract": " Returns the system's release, e.g. '2.2.0' or 'NT'",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "release"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "release"
         }
       }
     },
     {
       "key": "platform.version",
-      "abstract": "Abstract for platform.version",
+      "abstract": " Returns the system's release version, e.g. '#3 on degas'",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "version"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "version"
         }
       }
     },
     {
       "key": "platform.machine",
-      "abstract": "Abstract for platform.machine",
+      "abstract": " Returns the machine type, e.g. 'i386'",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "machine"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "machine"
         }
       }
     },
     {
       "key": "platform.processor",
-      "abstract": "Abstract for platform.processor",
+      "abstract": " Returns the (true) processor name, e.g. 'amdk6'",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "processor"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "processor"
         }
       }
     },
     {
       "key": "platform.python_implementation",
-      "abstract": "Abstract for platform.python_implementation",
+      "abstract": " Returns a string identifying the Python implementation.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_implementation"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_implementation"
         }
       }
     },
     {
       "key": "platform.python_version",
-      "abstract": "Abstract for platform.python_version",
+      "abstract": " Returns the Python version as string 'major.minor.patchlevel'",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_version"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_version"
         }
       }
     },
     {
       "key": "platform.python_version_tuple",
-      "abstract": "Abstract for platform.python_version_tuple",
+      "abstract": " Returns the Python version as tuple (major, minor, patchlevel)",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_version_tuple"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +720,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_version_tuple"
         }
       }
     },
     {
       "key": "platform.python_branch",
-      "abstract": "Abstract for platform.python_branch",
+      "abstract": " Returns a string identifying the Python implementation",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_branch"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +758,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_branch"
         }
       }
     },
     {
       "key": "platform.python_revision",
-      "abstract": "Abstract for platform.python_revision",
+      "abstract": " Returns a string identifying the Python implementation",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_revision"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +796,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_revision"
         }
       }
     },
     {
       "key": "platform.python_build",
-      "abstract": "Abstract for platform.python_build",
+      "abstract": " Returns a tuple (buildno, builddate) stating the Python",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_build"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +834,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_build"
         }
       }
     },
     {
       "key": "platform.python_compiler",
-      "abstract": "Abstract for platform.python_compiler",
+      "abstract": " Returns a string identifying the compiler used for compiling",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "python_compiler"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +872,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "python_compiler"
         }
       }
     },
     {
       "key": "platform.platform",
-      "abstract": "Abstract for platform.platform",
+      "abstract": " Returns a single string identifying the underlying platform",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "platform"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +910,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "platform"
         }
       }
     },
     {
       "key": "platform.freedesktop_os_release",
-      "abstract": "Abstract for platform.freedesktop_os_release",
+      "abstract": "Return operation system identification from freedesktop.org os-release",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "freedesktop_os_release"
+        },
         "childSets": {
           "object": [
             {
@@ -907,9 +948,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "freedesktop_os_release"
         }
       }
     }

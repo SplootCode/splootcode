@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "base64.b64encode",
-      "abstract": "Abstract for base64.b64encode",
+      "abstract": "Encode the bytes-like object s using Base64 and return a bytes object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b64encode"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b64encode"
         }
       }
     },
     {
       "key": "base64.b64decode",
-      "abstract": "Abstract for base64.b64decode",
+      "abstract": "Decode the Base64 encoded bytes-like object or ASCII string s.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b64decode"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b64decode"
         }
       }
     },
     {
       "key": "base64.standard_b64encode",
-      "abstract": "Abstract for base64.standard_b64encode",
+      "abstract": "Encode bytes-like object s using the standard Base64 alphabet.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "standard_b64encode"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "standard_b64encode"
         }
       }
     },
     {
       "key": "base64.standard_b64decode",
-      "abstract": "Abstract for base64.standard_b64decode",
+      "abstract": "Decode bytes encoded with the standard Base64 alphabet.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "standard_b64decode"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "standard_b64decode"
         }
       }
     },
     {
       "key": "base64.urlsafe_b64encode",
-      "abstract": "Abstract for base64.urlsafe_b64encode",
+      "abstract": "Encode bytes using the URL- and filesystem-safe Base64 alphabet.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "urlsafe_b64encode"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "urlsafe_b64encode"
         }
       }
     },
     {
       "key": "base64.urlsafe_b64decode",
-      "abstract": "Abstract for base64.urlsafe_b64decode",
+      "abstract": "Decode bytes using the URL- and filesystem-safe Base64 alphabet.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "urlsafe_b64decode"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "urlsafe_b64decode"
         }
       }
     },
     {
       "key": "base64.b32encode",
-      "abstract": "Abstract for base64.b32encode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b32encode"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b32encode"
         }
       }
     },
     {
       "key": "base64.b32decode",
-      "abstract": "Abstract for base64.b32decode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b32decode"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b32decode"
         }
       }
     },
     {
       "key": "base64.b16encode",
-      "abstract": "Abstract for base64.b16encode",
+      "abstract": "Encode the bytes-like object s using Base16 and return a bytes object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b16encode"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b16encode"
         }
       }
     },
     {
       "key": "base64.b16decode",
-      "abstract": "Abstract for base64.b16decode",
+      "abstract": "Decode the Base16 encoded bytes-like object or ASCII string s.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b16decode"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b16decode"
         }
       }
     },
     {
       "key": "base64.b32hexencode",
-      "abstract": "Abstract for base64.b32hexencode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b32hexencode"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b32hexencode"
         }
       }
     },
     {
       "key": "base64.b32hexdecode",
-      "abstract": "Abstract for base64.b32hexdecode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b32hexdecode"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b32hexdecode"
         }
       }
     },
     {
       "key": "base64.a85encode",
-      "abstract": "Abstract for base64.a85encode",
+      "abstract": "Encode bytes-like object b using Ascii85 and return a bytes object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "a85encode"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "a85encode"
         }
       }
     },
     {
       "key": "base64.a85decode",
-      "abstract": "Abstract for base64.a85decode",
+      "abstract": "Decode the Ascii85 encoded bytes-like object or ASCII string b.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "a85decode"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "a85decode"
         }
       }
     },
     {
       "key": "base64.b85encode",
-      "abstract": "Abstract for base64.b85encode",
+      "abstract": "Encode bytes-like object b in base85 format and return a bytes object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b85encode"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b85encode"
         }
       }
     },
     {
       "key": "base64.b85decode",
-      "abstract": "Abstract for base64.b85decode",
+      "abstract": "Decode the base85-encoded bytes-like object or ASCII string b",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "b85decode"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "b85decode"
         }
       }
     },
     {
       "key": "base64.decode",
-      "abstract": "Abstract for base64.decode",
+      "abstract": "Decode a file; input and output are binary files.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "decode"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "decode"
         }
       }
     },
     {
       "key": "base64.encode",
-      "abstract": "Abstract for base64.encode",
+      "abstract": "Encode a file; input and output are binary files.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "encode"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "encode"
         }
       }
     },
     {
       "key": "base64.encodebytes",
-      "abstract": "Abstract for base64.encodebytes",
+      "abstract": "Encode a bytestring into a bytes object containing multiple lines",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "encodebytes"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +720,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "encodebytes"
         }
       }
     },
     {
       "key": "base64.decodebytes",
-      "abstract": "Abstract for base64.decodebytes",
+      "abstract": "Decode a bytestring of base-64 data into a bytes object.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "decodebytes"
+        },
         "childSets": {
           "object": [
             {
@@ -755,9 +758,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "decodebytes"
         }
       }
     }

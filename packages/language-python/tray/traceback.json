@@ -2,10 +2,13 @@
   "category": "traceback",
   "entries": [
     {
-      "key": "traceback.overload",
-      "abstract": "Abstract for traceback.overload",
+      "key": "traceback.FrameType",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameType"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "traceback.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "TracebackType"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "traceback"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "traceback._PT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_PT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "traceback"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "traceback.print_tb",
-      "abstract": "Abstract for traceback.print_tb",
+      "abstract": "Print up to 'limit' stack trace entries from the traceback 'tb'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_tb"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_tb"
         }
       }
     },
     {
       "key": "traceback.print_exception",
-      "abstract": "Abstract for traceback.print_exception",
+      "abstract": "Print exception up to 'limit' stack trace entries from 'tb' to 'file'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_exception"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_exception"
         }
       }
     },
     {
       "key": "traceback.format_exception",
-      "abstract": "Abstract for traceback.format_exception",
+      "abstract": "Format a stack trace and the exception information.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_exception"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_exception"
         }
       }
     },
     {
       "key": "traceback.print_exc",
-      "abstract": "Abstract for traceback.print_exc",
+      "abstract": "Shorthand for 'print_exception(*sys.exc_info(), limit, file)'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_exc"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_exc"
         }
       }
     },
     {
       "key": "traceback.print_last",
-      "abstract": "Abstract for traceback.print_last",
+      "abstract": "This is a shorthand for 'print_exception(sys.last_type,",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_last"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_last"
         }
       }
     },
     {
       "key": "traceback.print_stack",
-      "abstract": "Abstract for traceback.print_stack",
+      "abstract": "Print a stack trace from its invocation point.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_stack"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_stack"
         }
       }
     },
     {
       "key": "traceback.extract_tb",
-      "abstract": "Abstract for traceback.extract_tb",
+      "abstract": "    Return a StackSummary object representing a list of",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "extract_tb"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "extract_tb"
         }
       }
     },
     {
       "key": "traceback.extract_stack",
-      "abstract": "Abstract for traceback.extract_stack",
+      "abstract": "Extract the raw traceback from the current stack frame.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "extract_stack"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "extract_stack"
         }
       }
     },
     {
       "key": "traceback.format_list",
-      "abstract": "Abstract for traceback.format_list",
+      "abstract": "Format a list of tuples or FrameSummary objects for printing.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_list"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_list"
         }
       }
     },
     {
       "key": "traceback.print_list",
-      "abstract": "Abstract for traceback.print_list",
+      "abstract": "Print the list of tuples as returned by extract_tb() or",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "print_list"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "print_list"
         }
       }
     },
     {
       "key": "traceback.format_exception_only",
-      "abstract": "Abstract for traceback.format_exception_only",
+      "abstract": "Format the exception part of a traceback.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_exception_only"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_exception_only"
         }
       }
     },
     {
       "key": "traceback.format_exc",
-      "abstract": "Abstract for traceback.format_exc",
+      "abstract": "Like print_exc() but return a string.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_exc"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_exc"
         }
       }
     },
     {
       "key": "traceback.format_tb",
-      "abstract": "Abstract for traceback.format_tb",
+      "abstract": "A shorthand for 'format_list(extract_tb(tb, limit))'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_tb"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +606,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_tb"
         }
       }
     },
     {
       "key": "traceback.format_stack",
-      "abstract": "Abstract for traceback.format_stack",
+      "abstract": "Shorthand for 'format_list(extract_stack(f, limit))'.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "format_stack"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +644,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "format_stack"
         }
       }
     },
     {
       "key": "traceback.clear_frames",
-      "abstract": "Abstract for traceback.clear_frames",
+      "abstract": "Clear all references to local variables in the frames of a traceback.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "clear_frames"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "clear_frames"
         }
       }
     },
     {
       "key": "traceback.walk_stack",
-      "abstract": "Abstract for traceback.walk_stack",
+      "abstract": "Walk a stack yielding the frame and line number for each frame.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "walk_stack"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +720,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "walk_stack"
         }
       }
     },
     {
       "key": "traceback.walk_tb",
-      "abstract": "Abstract for traceback.walk_tb",
+      "abstract": "Walk a traceback yielding the frame and line number for each frame.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "walk_tb"
+        },
         "childSets": {
           "object": [
             {
@@ -679,9 +758,120 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "traceback.TracebackException",
+      "abstract": "An exception ready for rendering.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "walk_tb"
+          "member": "TracebackException"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "traceback"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "traceback.FrameSummary",
+      "abstract": "A single frame from a traceback.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "FrameSummary"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "traceback"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "traceback.StackSummary",
+      "abstract": "A stack of frames.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StackSummary"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "traceback"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     }

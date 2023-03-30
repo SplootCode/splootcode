@@ -7,19 +7,18 @@ import {
   StatementListNode,
   StructuredEditorProgram,
   TokenType,
-  Type,
   TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
-import { PyodideFakeFileSystem } from '@splootcode/runtime-python'
-import { TrayCategory, TrayEntry } from '@splootcode/core'
+import { PyodideFakeFileSystem, getAutocompleteInfo } from '@splootcode/runtime-python'
+import { SerializedNode, TrayCategory, TrayEntry } from '@splootcode/core'
 
 import * as fs from 'fs'
 
 // This list is all Python stdlib modules but with the ones that Pyodide doesn't support removed.
 const supportedStandardLibModules = [
   'posix', // Not sure why posix needs to go first, but otherwise it gets no results?
-  'abc',
+  // 'abc', // Temporarily disable due to atucomplete disallowing abc.
   'aifc',
   'argparse',
   'array',
@@ -202,7 +201,12 @@ const supportedStandardLibModules = [
   'zoneinfo',
 ]
 
-import { ModuleInfoFile, PythonModuleInfo } from '@splootcode/language-python'
+import {
+  AutocompleteEntryCategory,
+  AutocompleteInfo,
+  ModuleInfoFile,
+  PythonModuleInfo,
+} from '@splootcode/language-python'
 import { loadPyodide } from 'pyodide'
 
 // Must have local server running for this to work.
@@ -358,26 +362,22 @@ async function generateTrayListForModule(
     entries: [],
   }
 
-  for (const [name, symbol] of typeResult.type.fields) {
-    if (name.startsWith('__')) {
-      continue
-    }
-    const canonicalName = moduleName + '.' + name
-    const declarations = symbol.getDeclarations()
+  const moduleAutocompleteInfo = getAutocompleteInfo(structuredProgram, typeResult.type, new Set())
+  // console.log(moduleAutocompleteInfo)
 
-    // TODO: Replace this with function from the autocomplete code.
-    const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(symbol, declarations[0])
-
-    if (inferredType && inferredType.category == TypeCategory.Function) {
-      // const docstring = structuredProgram.getDocumentationPartsforTypeAndDecl(inferredType, declarations[0])
-      // console.log(docstring)
+  const trayEntries: (TrayEntry | null)[] = moduleAutocompleteInfo.map((autocompleteEntry) => {
+    if (autocompleteEntry.name.startsWith('__')) {
+      return null
     }
-
-    if (inferredType) {
-      const entries = generateTrayEntriesFromInferredType(structuredProgram, moduleName, canonicalName, inferredType)
-      trayCategory.entries.push(...entries)
+    const canonicalName = moduleName + '.' + autocompleteEntry.name
+    const trayEntry: TrayEntry = {
+      key: canonicalName,
+      abstract: autocompleteEntry.shortDoc,
+      serializedNode: generateSerializedNode(moduleName, autocompleteEntry),
     }
-  }
+    return trayEntry
+  })
+  trayCategory.entries = trayEntries.filter((entry) => entry) as TrayEntry[]
 
   // Write to a file
   fs.writeFileSync('./packages/language-python/tray/' + moduleName + '.json', JSON.stringify(trayCategory, null, 2))
@@ -385,43 +385,48 @@ async function generateTrayListForModule(
   return moduleInfo
 }
 
-function generateTrayEntriesFromInferredType(
-  structuredProgram: StructuredEditorProgram,
-  moduleName: string,
-  canonicalName: string,
-  inferredType: Type
-): TrayEntry[] {
-  if (inferredType.category == TypeCategory.Function) {
-    const trayEntry: TrayEntry = {
-      key: canonicalName,
-      abstract: 'Abstract for ' + canonicalName,
-      serializedNode: {
-        type: 'PYTHON_CALL_MEMBER',
-        childSets: {
-          object: [
-            {
-              type: 'PY_IDENTIFIER',
-              properties: { identifier: moduleName },
-              childSets: {},
-            },
-          ],
-          arguments: [
-            {
-              type: 'PY_ARG',
-              childSets: {
-                argument: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }],
-              },
-              properties: {},
-            },
-          ],
-        },
-        properties: { member: inferredType.details.name },
+function generateSerializedNode(moduleName: string, autocompleteEntry: AutocompleteInfo): SerializedNode {
+  if (autocompleteEntry.category === AutocompleteEntryCategory.Value) {
+    const attrNode = {
+      type: 'PYTHON_MEMBER',
+      properties: { member: autocompleteEntry.name },
+      childSets: {
+        object: [
+          {
+            type: 'PY_IDENTIFIER',
+            properties: { identifier: moduleName },
+            childSets: {},
+          },
+        ],
       },
     }
-    return [trayEntry]
-  } else if (inferredType.category == TypeCategory.Class) {
+    return attrNode
+  } else if (autocompleteEntry.category === AutocompleteEntryCategory.Function) {
+    const callMemberNode = {
+      type: 'PYTHON_CALL_MEMBER',
+      properties: { member: autocompleteEntry.name },
+      childSets: {
+        object: [
+          {
+            type: 'PY_IDENTIFIER',
+            properties: { identifier: moduleName },
+            childSets: {},
+          },
+        ],
+        arguments: [
+          {
+            type: 'PY_ARG',
+            childSets: {
+              argument: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }],
+            },
+            properties: {},
+          },
+        ],
+      },
+    }
+    return callMemberNode
   }
-  return []
+  return null
 }
 
 main()

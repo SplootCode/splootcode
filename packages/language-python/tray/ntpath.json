@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "ntpath.exists",
-      "abstract": "Abstract for ntpath.exists",
+      "abstract": "Test whether a path exists.  Returns False for broken symbolic links",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exists"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "exists"
         }
       }
     },
     {
       "key": "ntpath.getatime",
-      "abstract": "Abstract for ntpath.getatime",
+      "abstract": "Return the last access time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getatime"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getatime"
         }
       }
     },
     {
       "key": "ntpath.getctime",
-      "abstract": "Abstract for ntpath.getctime",
+      "abstract": "Return the metadata change time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getctime"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getctime"
         }
       }
     },
     {
       "key": "ntpath.getmtime",
-      "abstract": "Abstract for ntpath.getmtime",
+      "abstract": "Return the last modification time of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getmtime"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getmtime"
         }
       }
     },
     {
       "key": "ntpath.getsize",
-      "abstract": "Abstract for ntpath.getsize",
+      "abstract": "Return the size of a file, reported by os.stat().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsize"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsize"
         }
       }
     },
     {
       "key": "ntpath.isdir",
-      "abstract": "Abstract for ntpath.isdir",
+      "abstract": "Return true if the pathname refers to an existing directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isdir"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isdir"
         }
       }
     },
     {
       "key": "ntpath.isfile",
-      "abstract": "Abstract for ntpath.isfile",
+      "abstract": "Test whether a path is a regular file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isfile"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isfile"
         }
       }
     },
     {
       "key": "ntpath.samefile",
-      "abstract": "Abstract for ntpath.samefile",
+      "abstract": "Test whether two pathnames reference the same actual file or directory",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samefile"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "samefile"
         }
       }
     },
     {
       "key": "ntpath.sameopenfile",
-      "abstract": "Abstract for ntpath.sameopenfile",
+      "abstract": "Test whether two open file objects reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sameopenfile"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sameopenfile"
         }
       }
     },
     {
       "key": "ntpath.samestat",
-      "abstract": "Abstract for ntpath.samestat",
+      "abstract": "Test whether two stat buffers reference the same file",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "samestat"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +378,139 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "ntpath.PathLike",
+      "abstract": "Abstract base class for implementing the file system path protocol.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "samestat"
+          "member": "PathLike"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.curdir",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "curdir"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.defpath",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "defpath"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.devnull",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "devnull"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.extsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "extsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "ntpath.isabs",
-      "abstract": "Abstract for ntpath.isabs",
+      "abstract": "Test whether a path is absolute",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isabs"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +538,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isabs"
         }
       }
     },
     {
       "key": "ntpath.islink",
-      "abstract": "Abstract for ntpath.islink",
+      "abstract": "Test whether a path is a symbolic link",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "islink"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +576,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "islink"
         }
       }
     },
     {
       "key": "ntpath.ismount",
-      "abstract": "Abstract for ntpath.ismount",
+      "abstract": "Test whether a path is a mount point",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ismount"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +614,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ismount"
         }
       }
     },
     {
       "key": "ntpath.lexists",
-      "abstract": "Abstract for ntpath.lexists",
+      "abstract": "Test whether a path exists.  Returns True for broken symbolic links",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lexists"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +652,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lexists"
         }
       }
     },
     {
-      "key": "ntpath.overload",
-      "abstract": "Abstract for ntpath.overload",
+      "key": "ntpath.pardir",
+      "abstract": "",
       "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pardir"
+        },
         "childSets": {
           "object": [
             {
@@ -547,35 +672,102 @@
               },
               "childSets": {}
             }
-          ],
-          "arguments": [
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.pathsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "pathsep"
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
               },
-              "properties": {}
+              "childSets": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "ntpath.sep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "sep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.supports_unicode_filenames",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "supports_unicode_filenames"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ntpath.altsep",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "altsep"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ntpath"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "ntpath.join",
-      "abstract": "Abstract for ntpath.join",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "join"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +795,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "join"
         }
       }
     },
     {
       "key": "ntpath.realpath",
-      "abstract": "Abstract for ntpath.realpath",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "realpath"
+        },
         "childSets": {
           "object": [
             {
@@ -641,9 +833,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "realpath"
         }
       }
     }

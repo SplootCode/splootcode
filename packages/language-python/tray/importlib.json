@@ -2,10 +2,13 @@
   "category": "importlib",
   "entries": [
     {
-      "key": "importlib.import_module",
-      "abstract": "Abstract for importlib.import_module",
+      "key": "importlib.Loader",
+      "abstract": "Abstract base class for import loaders.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Loader"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,93 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "importlib.ModuleType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ModuleType"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "importlib"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "importlib.import_module",
+      "abstract": "Import a module.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "import_module"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "importlib"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "importlib.find_loader",
-      "abstract": "Abstract for importlib.find_loader",
+      "abstract": "Return the loader for the specified module.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "find_loader"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "find_loader"
         }
       }
     },
     {
       "key": "importlib.invalidate_caches",
-      "abstract": "Abstract for importlib.invalidate_caches",
+      "abstract": "Call the invalidate_caches() method on all meta path finders stored in",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "invalidate_caches"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "invalidate_caches"
         }
       }
     },
     {
       "key": "importlib.reload",
-      "abstract": "Abstract for importlib.reload",
+      "abstract": "Reload the module and return it.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "reload"
+        },
         "childSets": {
           "object": [
             {
@@ -147,9 +226,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "reload"
         }
       }
     }

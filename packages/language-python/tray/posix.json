@@ -2,10 +2,1525 @@
   "category": "posix",
   "entries": [
     {
+      "key": "posix.CLD_CONTINUED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_CONTINUED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.CLD_DUMPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_DUMPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.CLD_EXITED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_EXITED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.CLD_TRAPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_TRAPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_CANTCREAT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_CANTCREAT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_CONFIG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_CONFIG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_DATAERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_DATAERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_IOERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_IOERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_NOHOST",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOHOST"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_NOINPUT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOINPUT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_NOPERM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOPERM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_NOTFOUND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOTFOUND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_NOUSER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_NOUSER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_OSERR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OSERR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_OSFILE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_OSFILE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_PROTOCOL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_PROTOCOL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_SOFTWARE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_SOFTWARE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_TEMPFAIL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_TEMPFAIL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_UNAVAILABLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_UNAVAILABLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.EX_USAGE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "EX_USAGE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.F_LOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_LOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.F_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.F_TEST",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_TEST"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.F_TLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_TLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.F_ULOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "F_ULOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_APPEND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_APPEND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_ASYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_ASYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_CREAT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_CREAT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_DIRECT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DIRECT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_DIRECTORY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DIRECTORY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_DSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_DSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_EXCL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_EXCL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_LARGEFILE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_LARGEFILE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_NDELAY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NDELAY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_NOATIME",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOATIME"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_NOCTTY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOCTTY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_NOFOLLOW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NOFOLLOW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_NONBLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_NONBLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_RDONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RDONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_RDWR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RDWR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_RSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_RSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_SYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_SYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_TRUNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_TRUNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.O_WRONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "O_WRONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.P_ALL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_ALL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.P_PGID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_PGID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.P_PID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "P_PID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.PRIO_PGRP",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_PGRP"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.PRIO_PROCESS",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_PROCESS"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.PRIO_USER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "PRIO_USER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.R_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "R_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_GLOBAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_GLOBAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_LAZY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_LAZY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_LOCAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_LOCAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_NODELETE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NODELETE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_NOLOAD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NOLOAD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_NOW",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_NOW"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_BATCH",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_BATCH"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_FIFO",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_FIFO"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_IDLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_IDLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_OTHER",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_OTHER"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_RESET_ON_FORK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_RESET_ON_FORK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_RR",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_RR"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SCHED_SPORADIC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SCHED_SPORADIC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SEEK_DATA",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_DATA"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.SEEK_HOLE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "SEEK_HOLE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.ST_NOSUID",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_NOSUID"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.ST_RDONLY",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "ST_RDONLY"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.TMP_MAX",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "TMP_MAX"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.W_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "W_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.WCONTINUED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WCONTINUED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "posix.WCOREDUMP",
-      "abstract": "Abstract for posix.WCOREDUMP",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WCOREDUMP"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +1548,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.WEXITED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "WCOREDUMP"
+          "member": "WEXITED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.WEXITSTATUS",
-      "abstract": "Abstract for posix.WEXITSTATUS",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WEXITSTATUS"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +1607,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WEXITSTATUS"
         }
       }
     },
     {
       "key": "posix.WIFCONTINUED",
-      "abstract": "Abstract for posix.WIFCONTINUED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFCONTINUED"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +1645,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFCONTINUED"
         }
       }
     },
     {
       "key": "posix.WIFEXITED",
-      "abstract": "Abstract for posix.WIFEXITED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFEXITED"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +1683,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFEXITED"
         }
       }
     },
     {
       "key": "posix.WIFSIGNALED",
-      "abstract": "Abstract for posix.WIFSIGNALED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFSIGNALED"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +1721,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WIFSIGNALED"
         }
       }
     },
     {
       "key": "posix.WIFSTOPPED",
-      "abstract": "Abstract for posix.WIFSTOPPED",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WIFSTOPPED"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +1759,80 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.WNOHANG",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "WIFSTOPPED"
+          "member": "WNOHANG"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.WNOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WNOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.WSTOPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "WSTOPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.WSTOPSIG",
-      "abstract": "Abstract for posix.WSTOPSIG",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WSTOPSIG"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +1860,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "WSTOPSIG"
         }
       }
     },
     {
       "key": "posix.WTERMSIG",
-      "abstract": "Abstract for posix.WTERMSIG",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WTERMSIG"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +1898,97 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.WUNTRACED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "WTERMSIG"
+          "member": "WUNTRACED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.X_OK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "X_OK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.DirEntry",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "DirEntry"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix._exit",
-      "abstract": "Abstract for posix._exit",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "_exit"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +2016,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "_exit"
         }
       }
     },
     {
       "key": "posix.abort",
-      "abstract": "Abstract for posix.abort",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "abort"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +2054,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "abort"
         }
       }
     },
     {
       "key": "posix.access",
-      "abstract": "Abstract for posix.access",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "access"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +2092,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "access"
         }
       }
     },
     {
       "key": "posix.chdir",
-      "abstract": "Abstract for posix.chdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chdir"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +2130,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chdir"
         }
       }
     },
     {
       "key": "posix.chmod",
-      "abstract": "Abstract for posix.chmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chmod"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +2168,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chmod"
         }
       }
     },
     {
       "key": "posix.chown",
-      "abstract": "Abstract for posix.chown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chown"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +2206,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chown"
         }
       }
     },
     {
       "key": "posix.chroot",
-      "abstract": "Abstract for posix.chroot",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chroot"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +2244,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chroot"
         }
       }
     },
     {
       "key": "posix.close",
-      "abstract": "Abstract for posix.close",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "close"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +2282,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "close"
         }
       }
     },
     {
       "key": "posix.closerange",
-      "abstract": "Abstract for posix.closerange",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "closerange"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +2320,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "closerange"
         }
       }
     },
     {
       "key": "posix.confstr",
-      "abstract": "Abstract for posix.confstr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "confstr"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +2358,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.confstr_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "confstr"
+          "member": "confstr_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.cpu_count",
-      "abstract": "Abstract for posix.cpu_count",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cpu_count"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +2417,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cpu_count"
         }
       }
     },
     {
       "key": "posix.ctermid",
-      "abstract": "Abstract for posix.ctermid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ctermid"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +2455,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ctermid"
         }
       }
     },
     {
       "key": "posix.device_encoding",
-      "abstract": "Abstract for posix.device_encoding",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "device_encoding"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +2493,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "device_encoding"
         }
       }
     },
     {
       "key": "posix.dup",
-      "abstract": "Abstract for posix.dup",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dup"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +2531,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dup"
         }
       }
     },
     {
       "key": "posix.dup2",
-      "abstract": "Abstract for posix.dup2",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dup2"
+        },
         "childSets": {
           "object": [
             {
@@ -869,17 +2569,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.error",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "dup2"
+          "member": "error"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.execv",
-      "abstract": "Abstract for posix.execv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execv"
+        },
         "childSets": {
           "object": [
             {
@@ -907,17 +2645,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execv"
         }
       }
     },
     {
       "key": "posix.execve",
-      "abstract": "Abstract for posix.execve",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "execve"
+        },
         "childSets": {
           "object": [
             {
@@ -945,17 +2683,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "execve"
         }
       }
     },
     {
       "key": "posix.fchdir",
-      "abstract": "Abstract for posix.fchdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchdir"
+        },
         "childSets": {
           "object": [
             {
@@ -983,17 +2721,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchdir"
         }
       }
     },
     {
       "key": "posix.fchmod",
-      "abstract": "Abstract for posix.fchmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchmod"
+        },
         "childSets": {
           "object": [
             {
@@ -1021,17 +2759,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchmod"
         }
       }
     },
     {
       "key": "posix.fchown",
-      "abstract": "Abstract for posix.fchown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fchown"
+        },
         "childSets": {
           "object": [
             {
@@ -1059,17 +2797,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fchown"
         }
       }
     },
     {
       "key": "posix.fork",
-      "abstract": "Abstract for posix.fork",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fork"
+        },
         "childSets": {
           "object": [
             {
@@ -1097,17 +2835,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fork"
         }
       }
     },
     {
       "key": "posix.forkpty",
-      "abstract": "Abstract for posix.forkpty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "forkpty"
+        },
         "childSets": {
           "object": [
             {
@@ -1135,17 +2873,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "forkpty"
         }
       }
     },
     {
       "key": "posix.fpathconf",
-      "abstract": "Abstract for posix.fpathconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fpathconf"
+        },
         "childSets": {
           "object": [
             {
@@ -1173,17 +2911,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fpathconf"
         }
       }
     },
     {
       "key": "posix.fstat",
-      "abstract": "Abstract for posix.fstat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fstat"
+        },
         "childSets": {
           "object": [
             {
@@ -1211,17 +2949,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fstat"
         }
       }
     },
     {
       "key": "posix.fstatvfs",
-      "abstract": "Abstract for posix.fstatvfs",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fstatvfs"
+        },
         "childSets": {
           "object": [
             {
@@ -1249,17 +2987,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fstatvfs"
         }
       }
     },
     {
       "key": "posix.fsync",
-      "abstract": "Abstract for posix.fsync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fsync"
+        },
         "childSets": {
           "object": [
             {
@@ -1287,17 +3025,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fsync"
         }
       }
     },
     {
       "key": "posix.ftruncate",
-      "abstract": "Abstract for posix.ftruncate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ftruncate"
+        },
         "childSets": {
           "object": [
             {
@@ -1325,17 +3063,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ftruncate"
         }
       }
     },
     {
       "key": "posix.get_blocking",
-      "abstract": "Abstract for posix.get_blocking",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_blocking"
+        },
         "childSets": {
           "object": [
             {
@@ -1363,17 +3101,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_blocking"
         }
       }
     },
     {
       "key": "posix.get_inheritable",
-      "abstract": "Abstract for posix.get_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -1401,17 +3139,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_inheritable"
         }
       }
     },
     {
       "key": "posix.get_terminal_size",
-      "abstract": "Abstract for posix.get_terminal_size",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_terminal_size"
+        },
         "childSets": {
           "object": [
             {
@@ -1439,17 +3177,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_terminal_size"
         }
       }
     },
     {
       "key": "posix.getcwd",
-      "abstract": "Abstract for posix.getcwd",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getcwd"
+        },
         "childSets": {
           "object": [
             {
@@ -1477,17 +3215,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getcwd"
         }
       }
     },
     {
       "key": "posix.getcwdb",
-      "abstract": "Abstract for posix.getcwdb",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getcwdb"
+        },
         "childSets": {
           "object": [
             {
@@ -1515,17 +3253,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getcwdb"
         }
       }
     },
     {
       "key": "posix.getegid",
-      "abstract": "Abstract for posix.getegid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getegid"
+        },
         "childSets": {
           "object": [
             {
@@ -1553,17 +3291,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getegid"
         }
       }
     },
     {
       "key": "posix.geteuid",
-      "abstract": "Abstract for posix.geteuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "geteuid"
+        },
         "childSets": {
           "object": [
             {
@@ -1591,17 +3329,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "geteuid"
         }
       }
     },
     {
       "key": "posix.getgid",
-      "abstract": "Abstract for posix.getgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1629,17 +3367,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgid"
         }
       }
     },
     {
       "key": "posix.getgrouplist",
-      "abstract": "Abstract for posix.getgrouplist",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgrouplist"
+        },
         "childSets": {
           "object": [
             {
@@ -1667,17 +3405,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgrouplist"
         }
       }
     },
     {
       "key": "posix.getgroups",
-      "abstract": "Abstract for posix.getgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -1705,17 +3443,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getgroups"
         }
       }
     },
     {
       "key": "posix.getloadavg",
-      "abstract": "Abstract for posix.getloadavg",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getloadavg"
+        },
         "childSets": {
           "object": [
             {
@@ -1743,17 +3481,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getloadavg"
         }
       }
     },
     {
       "key": "posix.getlogin",
-      "abstract": "Abstract for posix.getlogin",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getlogin"
+        },
         "childSets": {
           "object": [
             {
@@ -1781,17 +3519,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getlogin"
         }
       }
     },
     {
       "key": "posix.getpgid",
-      "abstract": "Abstract for posix.getpgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpgid"
+        },
         "childSets": {
           "object": [
             {
@@ -1819,17 +3557,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpgid"
         }
       }
     },
     {
       "key": "posix.getpgrp",
-      "abstract": "Abstract for posix.getpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -1857,17 +3595,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpgrp"
         }
       }
     },
     {
       "key": "posix.getpid",
-      "abstract": "Abstract for posix.getpid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpid"
+        },
         "childSets": {
           "object": [
             {
@@ -1895,17 +3633,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpid"
         }
       }
     },
     {
       "key": "posix.getppid",
-      "abstract": "Abstract for posix.getppid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getppid"
+        },
         "childSets": {
           "object": [
             {
@@ -1933,17 +3671,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getppid"
         }
       }
     },
     {
       "key": "posix.getpriority",
-      "abstract": "Abstract for posix.getpriority",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getpriority"
+        },
         "childSets": {
           "object": [
             {
@@ -1971,17 +3709,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getpriority"
         }
       }
     },
     {
       "key": "posix.getsid",
-      "abstract": "Abstract for posix.getsid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getsid"
+        },
         "childSets": {
           "object": [
             {
@@ -2009,17 +3747,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getsid"
         }
       }
     },
     {
       "key": "posix.getuid",
-      "abstract": "Abstract for posix.getuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getuid"
+        },
         "childSets": {
           "object": [
             {
@@ -2047,17 +3785,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getuid"
         }
       }
     },
     {
       "key": "posix.initgroups",
-      "abstract": "Abstract for posix.initgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "initgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -2085,17 +3823,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "initgroups"
         }
       }
     },
     {
       "key": "posix.isatty",
-      "abstract": "Abstract for posix.isatty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "isatty"
+        },
         "childSets": {
           "object": [
             {
@@ -2123,17 +3861,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "isatty"
         }
       }
     },
     {
       "key": "posix.kill",
-      "abstract": "Abstract for posix.kill",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "kill"
+        },
         "childSets": {
           "object": [
             {
@@ -2161,17 +3899,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "kill"
         }
       }
     },
     {
       "key": "posix.killpg",
-      "abstract": "Abstract for posix.killpg",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "killpg"
+        },
         "childSets": {
           "object": [
             {
@@ -2199,17 +3937,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "killpg"
         }
       }
     },
     {
       "key": "posix.lchown",
-      "abstract": "Abstract for posix.lchown",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchown"
+        },
         "childSets": {
           "object": [
             {
@@ -2237,17 +3975,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lchown"
         }
       }
     },
     {
       "key": "posix.link",
-      "abstract": "Abstract for posix.link",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "link"
+        },
         "childSets": {
           "object": [
             {
@@ -2275,17 +4013,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "link"
         }
       }
     },
     {
       "key": "posix.lockf",
-      "abstract": "Abstract for posix.lockf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lockf"
+        },
         "childSets": {
           "object": [
             {
@@ -2313,17 +4051,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lockf"
         }
       }
     },
     {
       "key": "posix.lseek",
-      "abstract": "Abstract for posix.lseek",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lseek"
+        },
         "childSets": {
           "object": [
             {
@@ -2351,17 +4089,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lseek"
         }
       }
     },
     {
       "key": "posix.lstat",
-      "abstract": "Abstract for posix.lstat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lstat"
+        },
         "childSets": {
           "object": [
             {
@@ -2389,17 +4127,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lstat"
         }
       }
     },
     {
       "key": "posix.major",
-      "abstract": "Abstract for posix.major",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "major"
+        },
         "childSets": {
           "object": [
             {
@@ -2427,17 +4165,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "major"
         }
       }
     },
     {
       "key": "posix.makedev",
-      "abstract": "Abstract for posix.makedev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "makedev"
+        },
         "childSets": {
           "object": [
             {
@@ -2465,17 +4203,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "makedev"
         }
       }
     },
     {
       "key": "posix.minor",
-      "abstract": "Abstract for posix.minor",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "minor"
+        },
         "childSets": {
           "object": [
             {
@@ -2503,17 +4241,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "minor"
         }
       }
     },
     {
       "key": "posix.mkdir",
-      "abstract": "Abstract for posix.mkdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mkdir"
+        },
         "childSets": {
           "object": [
             {
@@ -2541,17 +4279,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mkdir"
         }
       }
     },
     {
       "key": "posix.mkfifo",
-      "abstract": "Abstract for posix.mkfifo",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mkfifo"
+        },
         "childSets": {
           "object": [
             {
@@ -2579,17 +4317,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mkfifo"
         }
       }
     },
     {
       "key": "posix.mknod",
-      "abstract": "Abstract for posix.mknod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "mknod"
+        },
         "childSets": {
           "object": [
             {
@@ -2617,17 +4355,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "mknod"
         }
       }
     },
     {
       "key": "posix.nice",
-      "abstract": "Abstract for posix.nice",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "nice"
+        },
         "childSets": {
           "object": [
             {
@@ -2655,17 +4393,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "nice"
         }
       }
     },
     {
       "key": "posix.open",
-      "abstract": "Abstract for posix.open",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "open"
+        },
         "childSets": {
           "object": [
             {
@@ -2693,17 +4431,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "open"
         }
       }
     },
     {
       "key": "posix.openpty",
-      "abstract": "Abstract for posix.openpty",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "openpty"
+        },
         "childSets": {
           "object": [
             {
@@ -2731,17 +4469,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "openpty"
         }
       }
     },
     {
       "key": "posix.pathconf",
-      "abstract": "Abstract for posix.pathconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pathconf"
+        },
         "childSets": {
           "object": [
             {
@@ -2769,17 +4507,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.pathconf_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "pathconf"
+          "member": "pathconf_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.pipe",
-      "abstract": "Abstract for posix.pipe",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pipe"
+        },
         "childSets": {
           "object": [
             {
@@ -2807,17 +4566,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pipe"
         }
       }
     },
     {
       "key": "posix.pread",
-      "abstract": "Abstract for posix.pread",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pread"
+        },
         "childSets": {
           "object": [
             {
@@ -2845,17 +4604,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pread"
         }
       }
     },
     {
       "key": "posix.putenv",
-      "abstract": "Abstract for posix.putenv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "putenv"
+        },
         "childSets": {
           "object": [
             {
@@ -2883,17 +4642,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "putenv"
         }
       }
     },
     {
       "key": "posix.pwrite",
-      "abstract": "Abstract for posix.pwrite",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pwrite"
+        },
         "childSets": {
           "object": [
             {
@@ -2921,17 +4680,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pwrite"
         }
       }
     },
     {
       "key": "posix.read",
-      "abstract": "Abstract for posix.read",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "read"
+        },
         "childSets": {
           "object": [
             {
@@ -2959,17 +4718,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "read"
         }
       }
     },
     {
       "key": "posix.readlink",
-      "abstract": "Abstract for posix.readlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "readlink"
+        },
         "childSets": {
           "object": [
             {
@@ -2997,17 +4756,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "readlink"
         }
       }
     },
     {
       "key": "posix.readv",
-      "abstract": "Abstract for posix.readv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "readv"
+        },
         "childSets": {
           "object": [
             {
@@ -3035,17 +4794,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "readv"
         }
       }
     },
     {
       "key": "posix.remove",
-      "abstract": "Abstract for posix.remove",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "remove"
+        },
         "childSets": {
           "object": [
             {
@@ -3073,17 +4832,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "remove"
         }
       }
     },
     {
       "key": "posix.rename",
-      "abstract": "Abstract for posix.rename",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rename"
+        },
         "childSets": {
           "object": [
             {
@@ -3111,17 +4870,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rename"
         }
       }
     },
     {
       "key": "posix.replace",
-      "abstract": "Abstract for posix.replace",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "replace"
+        },
         "childSets": {
           "object": [
             {
@@ -3149,17 +4908,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "replace"
         }
       }
     },
     {
       "key": "posix.rmdir",
-      "abstract": "Abstract for posix.rmdir",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rmdir"
+        },
         "childSets": {
           "object": [
             {
@@ -3187,17 +4946,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rmdir"
         }
       }
     },
     {
       "key": "posix.sched_get_priority_max",
-      "abstract": "Abstract for posix.sched_get_priority_max",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_get_priority_max"
+        },
         "childSets": {
           "object": [
             {
@@ -3225,17 +4984,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_get_priority_max"
         }
       }
     },
     {
       "key": "posix.sched_get_priority_min",
-      "abstract": "Abstract for posix.sched_get_priority_min",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_get_priority_min"
+        },
         "childSets": {
           "object": [
             {
@@ -3263,17 +5022,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.sched_param",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "sched_get_priority_min"
+          "member": "sched_param"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.sched_yield",
-      "abstract": "Abstract for posix.sched_yield",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_yield"
+        },
         "childSets": {
           "object": [
             {
@@ -3301,17 +5098,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_yield"
         }
       }
     },
     {
       "key": "posix.set_blocking",
-      "abstract": "Abstract for posix.set_blocking",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_blocking"
+        },
         "childSets": {
           "object": [
             {
@@ -3339,17 +5136,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_blocking"
         }
       }
     },
     {
       "key": "posix.set_inheritable",
-      "abstract": "Abstract for posix.set_inheritable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_inheritable"
+        },
         "childSets": {
           "object": [
             {
@@ -3377,17 +5174,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "set_inheritable"
         }
       }
     },
     {
       "key": "posix.setegid",
-      "abstract": "Abstract for posix.setegid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setegid"
+        },
         "childSets": {
           "object": [
             {
@@ -3415,17 +5212,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setegid"
         }
       }
     },
     {
       "key": "posix.seteuid",
-      "abstract": "Abstract for posix.seteuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "seteuid"
+        },
         "childSets": {
           "object": [
             {
@@ -3453,17 +5250,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "seteuid"
         }
       }
     },
     {
       "key": "posix.setgid",
-      "abstract": "Abstract for posix.setgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setgid"
+        },
         "childSets": {
           "object": [
             {
@@ -3491,17 +5288,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setgid"
         }
       }
     },
     {
       "key": "posix.setgroups",
-      "abstract": "Abstract for posix.setgroups",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setgroups"
+        },
         "childSets": {
           "object": [
             {
@@ -3529,17 +5326,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setgroups"
         }
       }
     },
     {
       "key": "posix.setpgid",
-      "abstract": "Abstract for posix.setpgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpgid"
+        },
         "childSets": {
           "object": [
             {
@@ -3567,17 +5364,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpgid"
         }
       }
     },
     {
       "key": "posix.setpgrp",
-      "abstract": "Abstract for posix.setpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -3605,17 +5402,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpgrp"
         }
       }
     },
     {
       "key": "posix.setpriority",
-      "abstract": "Abstract for posix.setpriority",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setpriority"
+        },
         "childSets": {
           "object": [
             {
@@ -3643,17 +5440,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setpriority"
         }
       }
     },
     {
       "key": "posix.setregid",
-      "abstract": "Abstract for posix.setregid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setregid"
+        },
         "childSets": {
           "object": [
             {
@@ -3681,17 +5478,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setregid"
         }
       }
     },
     {
       "key": "posix.setreuid",
-      "abstract": "Abstract for posix.setreuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setreuid"
+        },
         "childSets": {
           "object": [
             {
@@ -3719,17 +5516,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setreuid"
         }
       }
     },
     {
       "key": "posix.setsid",
-      "abstract": "Abstract for posix.setsid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setsid"
+        },
         "childSets": {
           "object": [
             {
@@ -3757,17 +5554,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setsid"
         }
       }
     },
     {
       "key": "posix.setuid",
-      "abstract": "Abstract for posix.setuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setuid"
+        },
         "childSets": {
           "object": [
             {
@@ -3795,17 +5592,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setuid"
         }
       }
     },
     {
       "key": "posix.stat",
-      "abstract": "Abstract for posix.stat",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stat"
+        },
         "childSets": {
           "object": [
             {
@@ -3833,17 +5630,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.stat_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "stat"
+          "member": "stat_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.statvfs",
-      "abstract": "Abstract for posix.statvfs",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "statvfs"
+        },
         "childSets": {
           "object": [
             {
@@ -3871,17 +5706,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.statvfs_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "statvfs"
+          "member": "statvfs_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.strerror",
-      "abstract": "Abstract for posix.strerror",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "strerror"
+        },
         "childSets": {
           "object": [
             {
@@ -3909,17 +5782,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "strerror"
         }
       }
     },
     {
       "key": "posix.symlink",
-      "abstract": "Abstract for posix.symlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "symlink"
+        },
         "childSets": {
           "object": [
             {
@@ -3947,17 +5820,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "symlink"
         }
       }
     },
     {
       "key": "posix.sync",
-      "abstract": "Abstract for posix.sync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sync"
+        },
         "childSets": {
           "object": [
             {
@@ -3985,17 +5858,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sync"
         }
       }
     },
     {
       "key": "posix.sysconf",
-      "abstract": "Abstract for posix.sysconf",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sysconf"
+        },
         "childSets": {
           "object": [
             {
@@ -4023,17 +5896,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.sysconf_names",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "sysconf"
+          "member": "sysconf_names"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.system",
-      "abstract": "Abstract for posix.system",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "system"
+        },
         "childSets": {
           "object": [
             {
@@ -4061,17 +5955,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "system"
         }
       }
     },
     {
       "key": "posix.tcgetpgrp",
-      "abstract": "Abstract for posix.tcgetpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tcgetpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -4099,17 +5993,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "tcgetpgrp"
         }
       }
     },
     {
       "key": "posix.tcsetpgrp",
-      "abstract": "Abstract for posix.tcsetpgrp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tcsetpgrp"
+        },
         "childSets": {
           "object": [
             {
@@ -4137,17 +6031,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.terminal_size",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "tcsetpgrp"
+          "member": "terminal_size"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.times",
-      "abstract": "Abstract for posix.times",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "times"
+        },
         "childSets": {
           "object": [
             {
@@ -4175,17 +6107,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.times_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "times"
+          "member": "times_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.truncate",
-      "abstract": "Abstract for posix.truncate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "truncate"
+        },
         "childSets": {
           "object": [
             {
@@ -4213,17 +6183,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "truncate"
         }
       }
     },
     {
       "key": "posix.ttyname",
-      "abstract": "Abstract for posix.ttyname",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ttyname"
+        },
         "childSets": {
           "object": [
             {
@@ -4251,17 +6221,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ttyname"
         }
       }
     },
     {
       "key": "posix.umask",
-      "abstract": "Abstract for posix.umask",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "umask"
+        },
         "childSets": {
           "object": [
             {
@@ -4289,17 +6259,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "umask"
         }
       }
     },
     {
       "key": "posix.uname",
-      "abstract": "Abstract for posix.uname",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "uname"
+        },
         "childSets": {
           "object": [
             {
@@ -4327,17 +6297,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.uname_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "uname"
+          "member": "uname_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.unlink",
-      "abstract": "Abstract for posix.unlink",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unlink"
+        },
         "childSets": {
           "object": [
             {
@@ -4365,17 +6373,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unlink"
         }
       }
     },
     {
       "key": "posix.unsetenv",
-      "abstract": "Abstract for posix.unsetenv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unsetenv"
+        },
         "childSets": {
           "object": [
             {
@@ -4403,17 +6411,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unsetenv"
         }
       }
     },
     {
       "key": "posix.urandom",
-      "abstract": "Abstract for posix.urandom",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "urandom"
+        },
         "childSets": {
           "object": [
             {
@@ -4441,17 +6449,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "urandom"
         }
       }
     },
     {
       "key": "posix.utime",
-      "abstract": "Abstract for posix.utime",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "utime"
+        },
         "childSets": {
           "object": [
             {
@@ -4479,17 +6487,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "utime"
         }
       }
     },
     {
       "key": "posix.wait",
-      "abstract": "Abstract for posix.wait",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait"
+        },
         "childSets": {
           "object": [
             {
@@ -4517,17 +6525,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "wait"
         }
       }
     },
     {
       "key": "posix.wait3",
-      "abstract": "Abstract for posix.wait3",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait3"
+        },
         "childSets": {
           "object": [
             {
@@ -4555,17 +6563,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "wait3"
         }
       }
     },
     {
       "key": "posix.wait4",
-      "abstract": "Abstract for posix.wait4",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "wait4"
+        },
         "childSets": {
           "object": [
             {
@@ -4593,17 +6601,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "wait4"
         }
       }
     },
     {
       "key": "posix.waitpid",
-      "abstract": "Abstract for posix.waitpid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitpid"
+        },
         "childSets": {
           "object": [
             {
@@ -4631,17 +6639,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "waitpid"
         }
       }
     },
     {
       "key": "posix.write",
-      "abstract": "Abstract for posix.write",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "write"
+        },
         "childSets": {
           "object": [
             {
@@ -4669,17 +6677,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "write"
         }
       }
     },
     {
       "key": "posix.writev",
-      "abstract": "Abstract for posix.writev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "writev"
+        },
         "childSets": {
           "object": [
             {
@@ -4707,17 +6715,143 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.GRND_NONBLOCK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "writev"
+          "member": "GRND_NONBLOCK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.GRND_RANDOM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "GRND_RANDOM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RTLD_DEEPBIND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RTLD_DEEPBIND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.XATTR_CREATE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_CREATE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.XATTR_REPLACE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_REPLACE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.XATTR_SIZE_MAX",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "XATTR_SIZE_MAX"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.getrandom",
-      "abstract": "Abstract for posix.getrandom",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getrandom"
+        },
         "childSets": {
           "object": [
             {
@@ -4745,17 +6879,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getrandom"
         }
       }
     },
     {
       "key": "posix.getxattr",
-      "abstract": "Abstract for posix.getxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -4783,17 +6917,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getxattr"
         }
       }
     },
     {
       "key": "posix.listxattr",
-      "abstract": "Abstract for posix.listxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "listxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -4821,17 +6955,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "listxattr"
         }
       }
     },
     {
       "key": "posix.removexattr",
-      "abstract": "Abstract for posix.removexattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "removexattr"
+        },
         "childSets": {
           "object": [
             {
@@ -4859,17 +6993,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "removexattr"
         }
       }
     },
     {
       "key": "posix.setxattr",
-      "abstract": "Abstract for posix.setxattr",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setxattr"
+        },
         "childSets": {
           "object": [
             {
@@ -4897,17 +7031,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setxattr"
         }
       }
     },
     {
       "key": "posix.chflags",
-      "abstract": "Abstract for posix.chflags",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chflags"
+        },
         "childSets": {
           "object": [
             {
@@ -4935,17 +7069,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chflags"
         }
       }
     },
     {
       "key": "posix.lchflags",
-      "abstract": "Abstract for posix.lchflags",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchflags"
+        },
         "childSets": {
           "object": [
             {
@@ -4973,17 +7107,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lchflags"
         }
       }
     },
     {
       "key": "posix.lchmod",
-      "abstract": "Abstract for posix.lchmod",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lchmod"
+        },
         "childSets": {
           "object": [
             {
@@ -5011,17 +7145,143 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_DONTNEED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "lchmod"
+          "member": "POSIX_FADV_DONTNEED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_NOREUSE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_NOREUSE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_NORMAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_NORMAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_RANDOM",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_RANDOM"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_SEQUENTIAL",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_SEQUENTIAL"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_FADV_WILLNEED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_FADV_WILLNEED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.fdatasync",
-      "abstract": "Abstract for posix.fdatasync",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "fdatasync"
+        },
         "childSets": {
           "object": [
             {
@@ -5049,17 +7309,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "fdatasync"
         }
       }
     },
     {
       "key": "posix.getresgid",
-      "abstract": "Abstract for posix.getresgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getresgid"
+        },
         "childSets": {
           "object": [
             {
@@ -5087,17 +7347,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getresgid"
         }
       }
     },
     {
       "key": "posix.getresuid",
-      "abstract": "Abstract for posix.getresuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getresuid"
+        },
         "childSets": {
           "object": [
             {
@@ -5125,17 +7385,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getresuid"
         }
       }
     },
     {
       "key": "posix.pipe2",
-      "abstract": "Abstract for posix.pipe2",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pipe2"
+        },
         "childSets": {
           "object": [
             {
@@ -5163,17 +7423,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "pipe2"
         }
       }
     },
     {
       "key": "posix.posix_fadvise",
-      "abstract": "Abstract for posix.posix_fadvise",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_fadvise"
+        },
         "childSets": {
           "object": [
             {
@@ -5201,17 +7461,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_fadvise"
         }
       }
     },
     {
       "key": "posix.posix_fallocate",
-      "abstract": "Abstract for posix.posix_fallocate",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_fallocate"
+        },
         "childSets": {
           "object": [
             {
@@ -5239,17 +7499,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_fallocate"
         }
       }
     },
     {
       "key": "posix.sched_getaffinity",
-      "abstract": "Abstract for posix.sched_getaffinity",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getaffinity"
+        },
         "childSets": {
           "object": [
             {
@@ -5277,17 +7537,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getaffinity"
         }
       }
     },
     {
       "key": "posix.sched_getparam",
-      "abstract": "Abstract for posix.sched_getparam",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getparam"
+        },
         "childSets": {
           "object": [
             {
@@ -5315,17 +7575,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getparam"
         }
       }
     },
     {
       "key": "posix.sched_getscheduler",
-      "abstract": "Abstract for posix.sched_getscheduler",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_getscheduler"
+        },
         "childSets": {
           "object": [
             {
@@ -5353,17 +7613,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_getscheduler"
         }
       }
     },
     {
       "key": "posix.sched_rr_get_interval",
-      "abstract": "Abstract for posix.sched_rr_get_interval",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_rr_get_interval"
+        },
         "childSets": {
           "object": [
             {
@@ -5391,17 +7651,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_rr_get_interval"
         }
       }
     },
     {
       "key": "posix.sched_setaffinity",
-      "abstract": "Abstract for posix.sched_setaffinity",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setaffinity"
+        },
         "childSets": {
           "object": [
             {
@@ -5429,17 +7689,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setaffinity"
         }
       }
     },
     {
       "key": "posix.sched_setparam",
-      "abstract": "Abstract for posix.sched_setparam",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setparam"
+        },
         "childSets": {
           "object": [
             {
@@ -5467,17 +7727,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setparam"
         }
       }
     },
     {
       "key": "posix.sched_setscheduler",
-      "abstract": "Abstract for posix.sched_setscheduler",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sched_setscheduler"
+        },
         "childSets": {
           "object": [
             {
@@ -5505,17 +7765,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sched_setscheduler"
         }
       }
     },
     {
       "key": "posix.setresgid",
-      "abstract": "Abstract for posix.setresgid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setresgid"
+        },
         "childSets": {
           "object": [
             {
@@ -5543,17 +7803,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setresgid"
         }
       }
     },
     {
       "key": "posix.setresuid",
-      "abstract": "Abstract for posix.setresuid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setresuid"
+        },
         "childSets": {
           "object": [
             {
@@ -5581,17 +7841,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setresuid"
         }
       }
     },
     {
       "key": "posix.waitid",
-      "abstract": "Abstract for posix.waitid",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitid"
+        },
         "childSets": {
           "object": [
             {
@@ -5619,17 +7879,118 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.waitid_result",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "waitid"
+          "member": "waitid_result"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RWF_APPEND",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_APPEND"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.CLD_KILLED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_KILLED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.CLD_STOPPED",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "CLD_STOPPED"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.waitstatus_to_exitcode",
-      "abstract": "Abstract for posix.waitstatus_to_exitcode",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "waitstatus_to_exitcode"
+        },
         "childSets": {
           "object": [
             {
@@ -5657,17 +8018,38 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.P_PIDFD",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "waitstatus_to_exitcode"
+          "member": "P_PIDFD"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.pidfd_open",
-      "abstract": "Abstract for posix.pidfd_open",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pidfd_open"
+        },
         "childSets": {
           "object": [
             {
@@ -5695,17 +8077,80 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_SPAWN_CLOSE",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "pidfd_open"
+          "member": "POSIX_SPAWN_CLOSE"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_SPAWN_DUP2",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_SPAWN_DUP2"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.POSIX_SPAWN_OPEN",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "POSIX_SPAWN_OPEN"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.posix_spawn",
-      "abstract": "Abstract for posix.posix_spawn",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_spawn"
+        },
         "childSets": {
           "object": [
             {
@@ -5733,17 +8178,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "posix_spawn"
         }
       }
     },
     {
       "key": "posix.posix_spawnp",
-      "abstract": "Abstract for posix.posix_spawnp",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "posix_spawnp"
+        },
         "childSets": {
           "object": [
             {
@@ -5771,17 +8216,374 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_ALLOW_SEALING",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "posix_spawnp"
+          "member": "MFD_ALLOW_SEALING"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_CLOEXEC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_CLOEXEC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_1GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_1GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_1MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_1MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_2GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_2GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_2MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_2MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_8MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_8MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_16GB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_16GB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_16MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_16MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_32MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_32MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_64KB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_64KB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_256MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_256MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_512KB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_512KB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_512MB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_512MB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_MASK",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_MASK"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGE_SHIFT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGE_SHIFT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.MFD_HUGETLB",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "MFD_HUGETLB"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.copy_file_range",
-      "abstract": "Abstract for posix.copy_file_range",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copy_file_range"
+        },
         "childSets": {
           "object": [
             {
@@ -5809,17 +8611,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copy_file_range"
         }
       }
     },
     {
       "key": "posix.memfd_create",
-      "abstract": "Abstract for posix.memfd_create",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "memfd_create"
+        },
         "childSets": {
           "object": [
             {
@@ -5847,17 +8649,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "memfd_create"
         }
       }
     },
     {
       "key": "posix.register_at_fork",
-      "abstract": "Abstract for posix.register_at_fork",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register_at_fork"
+        },
         "childSets": {
           "object": [
             {
@@ -5885,17 +8687,101 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.RWF_DSYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "register_at_fork"
+          "member": "RWF_DSYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RWF_HIPRI",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_HIPRI"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RWF_NOWAIT",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_NOWAIT"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "posix.RWF_SYNC",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "RWF_SYNC"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "posix.preadv",
-      "abstract": "Abstract for posix.preadv",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "preadv"
+        },
         "childSets": {
           "object": [
             {
@@ -5923,17 +8809,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "preadv"
         }
       }
     },
     {
       "key": "posix.pwritev",
-      "abstract": "Abstract for posix.pwritev",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pwritev"
+        },
         "childSets": {
           "object": [
             {
@@ -5961,9 +8847,27 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "posix.environ",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "pwritev"
+          "member": "environ"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "posix"
+              },
+              "childSets": {}
+            }
+          ]
         }
       }
     }

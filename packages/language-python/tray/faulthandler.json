@@ -3,9 +3,12 @@
   "entries": [
     {
       "key": "faulthandler.cancel_dump_traceback_later",
-      "abstract": "Abstract for faulthandler.cancel_dump_traceback_later",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "cancel_dump_traceback_later"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "cancel_dump_traceback_later"
         }
       }
     },
     {
       "key": "faulthandler.disable",
-      "abstract": "Abstract for faulthandler.disable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "disable"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +74,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "disable"
         }
       }
     },
     {
       "key": "faulthandler.dump_traceback",
-      "abstract": "Abstract for faulthandler.dump_traceback",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dump_traceback"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +112,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dump_traceback"
         }
       }
     },
     {
       "key": "faulthandler.dump_traceback_later",
-      "abstract": "Abstract for faulthandler.dump_traceback_later",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dump_traceback_later"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +150,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "dump_traceback_later"
         }
       }
     },
     {
       "key": "faulthandler.enable",
-      "abstract": "Abstract for faulthandler.enable",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "enable"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +188,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "enable"
         }
       }
     },
     {
       "key": "faulthandler.is_enabled",
-      "abstract": "Abstract for faulthandler.is_enabled",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "is_enabled"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +226,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "is_enabled"
         }
       }
     },
     {
       "key": "faulthandler.register",
-      "abstract": "Abstract for faulthandler.register",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register"
         }
       }
     },
     {
       "key": "faulthandler.unregister",
-      "abstract": "Abstract for faulthandler.unregister",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unregister"
+        },
         "childSets": {
           "object": [
             {
@@ -299,9 +302,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unregister"
         }
       }
     }

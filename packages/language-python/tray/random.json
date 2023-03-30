@@ -2,10 +2,13 @@
   "category": "random",
   "entries": [
     {
-      "key": "random.seed",
-      "abstract": "Abstract for random.seed",
+      "key": "random.Fraction",
+      "abstract": "This class implements rational numbers.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Fraction"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,152 @@
               "properties": {}
             }
           ]
+        }
+      }
+    },
+    {
+      "key": "random.Random",
+      "abstract": "Random number generator base class used by bound module functions.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Random"
         },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "random"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "random.SystemRandom",
+      "abstract": "Alternate random number generator using sources provided",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SystemRandom"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "random"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "random._inst",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "_inst"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "random"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "random.seed",
+      "abstract": "Initialize internal state from a seed.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "seed"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "random"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "random.random",
-      "abstract": "Abstract for random.random",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "random"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +209,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "random"
         }
       }
     },
     {
       "key": "random.uniform",
-      "abstract": "Abstract for random.uniform",
+      "abstract": "Get a random number in the range [a, b) or [a, b] depending on rounding.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "uniform"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +247,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "uniform"
         }
       }
     },
     {
       "key": "random.triangular",
-      "abstract": "Abstract for random.triangular",
+      "abstract": "Triangular distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "triangular"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +285,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "triangular"
         }
       }
     },
     {
       "key": "random.randint",
-      "abstract": "Abstract for random.randint",
+      "abstract": "Return random integer in range [a, b], including both end points.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "randint"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +323,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "randint"
         }
       }
     },
     {
       "key": "random.choice",
-      "abstract": "Abstract for random.choice",
+      "abstract": "Choose a random element from a non-empty sequence.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "choice"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +361,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "choice"
         }
       }
     },
     {
       "key": "random.randrange",
-      "abstract": "Abstract for random.randrange",
+      "abstract": "Choose a random item from range(start, stop[, step]).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "randrange"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +399,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "randrange"
         }
       }
     },
     {
       "key": "random.sample",
-      "abstract": "Abstract for random.sample",
+      "abstract": "Chooses k unique random elements from a population sequence or set.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "sample"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +437,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "sample"
         }
       }
     },
     {
       "key": "random.shuffle",
-      "abstract": "Abstract for random.shuffle",
+      "abstract": "Shuffle list x in place, and return None.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "shuffle"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +475,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "shuffle"
         }
       }
     },
     {
       "key": "random.choices",
-      "abstract": "Abstract for random.choices",
+      "abstract": "Return a k sized list of population elements chosen with replacement.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "choices"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +513,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "choices"
         }
       }
     },
     {
       "key": "random.normalvariate",
-      "abstract": "Abstract for random.normalvariate",
+      "abstract": "Normal distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "normalvariate"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +551,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "normalvariate"
         }
       }
     },
     {
       "key": "random.lognormvariate",
-      "abstract": "Abstract for random.lognormvariate",
+      "abstract": "Log normal distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "lognormvariate"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +589,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "lognormvariate"
         }
       }
     },
     {
       "key": "random.expovariate",
-      "abstract": "Abstract for random.expovariate",
+      "abstract": "Exponential distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "expovariate"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +627,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "expovariate"
         }
       }
     },
     {
       "key": "random.vonmisesvariate",
-      "abstract": "Abstract for random.vonmisesvariate",
+      "abstract": "Circular data distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "vonmisesvariate"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +665,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "vonmisesvariate"
         }
       }
     },
     {
       "key": "random.gammavariate",
-      "abstract": "Abstract for random.gammavariate",
+      "abstract": "Gamma distribution.  Not the gamma function!",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "gammavariate"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +703,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "gammavariate"
         }
       }
     },
     {
       "key": "random.gauss",
-      "abstract": "Abstract for random.gauss",
+      "abstract": "Gaussian distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "gauss"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +741,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "gauss"
         }
       }
     },
     {
       "key": "random.betavariate",
-      "abstract": "Abstract for random.betavariate",
+      "abstract": "Beta distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "betavariate"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +779,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "betavariate"
         }
       }
     },
     {
       "key": "random.paretovariate",
-      "abstract": "Abstract for random.paretovariate",
+      "abstract": "Pareto distribution.  alpha is the shape parameter.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "paretovariate"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +817,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "paretovariate"
         }
       }
     },
     {
       "key": "random.weibullvariate",
-      "abstract": "Abstract for random.weibullvariate",
+      "abstract": "Weibull distribution.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "weibullvariate"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +855,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "weibullvariate"
         }
       }
     },
     {
       "key": "random.getstate",
-      "abstract": "Abstract for random.getstate",
+      "abstract": "Return internal state; can be passed to setstate() later.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getstate"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +893,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getstate"
         }
       }
     },
     {
       "key": "random.setstate",
-      "abstract": "Abstract for random.setstate",
+      "abstract": "Restore internal state from object returned by getstate().",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "setstate"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +931,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "setstate"
         }
       }
     },
     {
       "key": "random.getrandbits",
-      "abstract": "Abstract for random.getrandbits",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getrandbits"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +969,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "getrandbits"
         }
       }
     },
     {
       "key": "random.randbytes",
-      "abstract": "Abstract for random.randbytes",
+      "abstract": "Generate n random bytes.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "randbytes"
+        },
         "childSets": {
           "object": [
             {
@@ -869,9 +1007,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "randbytes"
         }
       }
     }

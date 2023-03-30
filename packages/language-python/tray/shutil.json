@@ -2,10 +2,13 @@
   "category": "shutil",
   "entries": [
     {
-      "key": "shutil.overload",
-      "abstract": "Abstract for shutil.overload",
+      "key": "shutil.Error",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Error"
+        },
         "childSets": {
           "object": [
             {
@@ -33,17 +36,207 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "shutil.SameFileError",
+      "abstract": "Raised when source and destination are the same file.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "overload"
+          "member": "SameFileError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "shutil.SpecialFileError",
+      "abstract": "Raised when trying to do a kind of operation (e.g. copying) which is",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SpecialFileError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "shutil.ExecError",
+      "abstract": "Raised when a command could not be executed",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ExecError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "shutil.ReadError",
+      "abstract": "Raised when an archive cannot be read",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ReadError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "shutil.RegistryError",
+      "abstract": "Raised when a registry operation with the archiving",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "RegistryError"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "shutil.copyfileobj",
-      "abstract": "Abstract for shutil.copyfileobj",
+      "abstract": "copy data from file-like object fsrc to file-like object fdst",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copyfileobj"
+        },
         "childSets": {
           "object": [
             {
@@ -71,17 +264,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copyfileobj"
         }
       }
     },
     {
       "key": "shutil.copyfile",
-      "abstract": "Abstract for shutil.copyfile",
+      "abstract": "Copy data from src to dst in the most efficient way possible.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copyfile"
+        },
         "childSets": {
           "object": [
             {
@@ -109,17 +302,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copyfile"
         }
       }
     },
     {
       "key": "shutil.copymode",
-      "abstract": "Abstract for shutil.copymode",
+      "abstract": "Copy mode bits from src to dst.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copymode"
+        },
         "childSets": {
           "object": [
             {
@@ -147,17 +340,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copymode"
         }
       }
     },
     {
       "key": "shutil.copystat",
-      "abstract": "Abstract for shutil.copystat",
+      "abstract": "Copy file metadata",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copystat"
+        },
         "childSets": {
           "object": [
             {
@@ -185,17 +378,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copystat"
         }
       }
     },
     {
       "key": "shutil.copy",
-      "abstract": "Abstract for shutil.copy",
+      "abstract": "Copy data and mode bits (\"cp src dst\"). Return the file's destination.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copy"
+        },
         "childSets": {
           "object": [
             {
@@ -223,17 +416,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copy"
         }
       }
     },
     {
       "key": "shutil.copy2",
-      "abstract": "Abstract for shutil.copy2",
+      "abstract": "Copy data and metadata. Return the file's destination.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copy2"
+        },
         "childSets": {
           "object": [
             {
@@ -261,17 +454,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copy2"
         }
       }
     },
     {
       "key": "shutil.ignore_patterns",
-      "abstract": "Abstract for shutil.ignore_patterns",
+      "abstract": "Function that can be used as copytree() ignore parameter.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ignore_patterns"
+        },
         "childSets": {
           "object": [
             {
@@ -299,17 +492,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "ignore_patterns"
         }
       }
     },
     {
       "key": "shutil.copytree",
-      "abstract": "Abstract for shutil.copytree",
+      "abstract": "Recursively copy a directory tree and return the destination directory.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "copytree"
+        },
         "childSets": {
           "object": [
             {
@@ -337,17 +530,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "copytree"
         }
       }
     },
     {
       "key": "shutil.rmtree",
-      "abstract": "Abstract for shutil.rmtree",
+      "abstract": "Recursively delete a directory tree.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "rmtree"
+        },
         "childSets": {
           "object": [
             {
@@ -375,17 +568,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "rmtree"
         }
       }
     },
     {
       "key": "shutil.move",
-      "abstract": "Abstract for shutil.move",
+      "abstract": "Recursively move a file or directory to another location. This is",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "move"
+        },
         "childSets": {
           "object": [
             {
@@ -413,17 +606,55 @@
               "properties": {}
             }
           ]
-        },
+        }
+      }
+    },
+    {
+      "key": "shutil._ntuple_diskusage",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "move"
+          "member": "_ntuple_diskusage"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "shutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
       "key": "shutil.disk_usage",
-      "abstract": "Abstract for shutil.disk_usage",
+      "abstract": "Return disk usage statistics about the given path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "disk_usage"
+        },
         "childSets": {
           "object": [
             {
@@ -451,17 +682,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "disk_usage"
         }
       }
     },
     {
       "key": "shutil.chown",
-      "abstract": "Abstract for shutil.chown",
+      "abstract": "Change owner user and group of the given path.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "chown"
+        },
         "childSets": {
           "object": [
             {
@@ -489,17 +720,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "chown"
         }
       }
     },
     {
       "key": "shutil.which",
-      "abstract": "Abstract for shutil.which",
+      "abstract": "Given a command, mode, and a PATH string, return the path which",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "which"
+        },
         "childSets": {
           "object": [
             {
@@ -527,17 +758,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "which"
         }
       }
     },
     {
       "key": "shutil.make_archive",
-      "abstract": "Abstract for shutil.make_archive",
+      "abstract": "Create an archive file (eg. zip or tar).",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "make_archive"
+        },
         "childSets": {
           "object": [
             {
@@ -565,17 +796,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "make_archive"
         }
       }
     },
     {
       "key": "shutil.get_archive_formats",
-      "abstract": "Abstract for shutil.get_archive_formats",
+      "abstract": "Returns a list of supported formats for archiving and unarchiving.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_archive_formats"
+        },
         "childSets": {
           "object": [
             {
@@ -603,17 +834,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_archive_formats"
         }
       }
     },
     {
       "key": "shutil.register_archive_format",
-      "abstract": "Abstract for shutil.register_archive_format",
+      "abstract": "Registers an archive format.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register_archive_format"
+        },
         "childSets": {
           "object": [
             {
@@ -641,17 +872,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register_archive_format"
         }
       }
     },
     {
       "key": "shutil.unregister_archive_format",
-      "abstract": "Abstract for shutil.unregister_archive_format",
+      "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unregister_archive_format"
+        },
         "childSets": {
           "object": [
             {
@@ -679,17 +910,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unregister_archive_format"
         }
       }
     },
     {
       "key": "shutil.unpack_archive",
-      "abstract": "Abstract for shutil.unpack_archive",
+      "abstract": "Unpack an archive.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unpack_archive"
+        },
         "childSets": {
           "object": [
             {
@@ -717,17 +948,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unpack_archive"
         }
       }
     },
     {
       "key": "shutil.register_unpack_format",
-      "abstract": "Abstract for shutil.register_unpack_format",
+      "abstract": "Registers an unpack format.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "register_unpack_format"
+        },
         "childSets": {
           "object": [
             {
@@ -755,17 +986,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "register_unpack_format"
         }
       }
     },
     {
       "key": "shutil.unregister_unpack_format",
-      "abstract": "Abstract for shutil.unregister_unpack_format",
+      "abstract": "Removes the pack format from the registry.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "unregister_unpack_format"
+        },
         "childSets": {
           "object": [
             {
@@ -793,17 +1024,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "unregister_unpack_format"
         }
       }
     },
     {
       "key": "shutil.get_unpack_formats",
-      "abstract": "Abstract for shutil.get_unpack_formats",
+      "abstract": "Returns a list of supported formats for unpacking.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_unpack_formats"
+        },
         "childSets": {
           "object": [
             {
@@ -831,17 +1062,17 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_unpack_formats"
         }
       }
     },
     {
       "key": "shutil.get_terminal_size",
-      "abstract": "Abstract for shutil.get_terminal_size",
+      "abstract": "Get the size of the terminal window.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_terminal_size"
+        },
         "childSets": {
           "object": [
             {
@@ -869,9 +1100,6 @@
               "properties": {}
             }
           ]
-        },
-        "properties": {
-          "member": "get_terminal_size"
         }
       }
     }
