@@ -1,8 +1,5 @@
-import nodePolyfills from 'rollup-plugin-polyfill-node'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
@@ -41,25 +38,9 @@ export default defineConfig({
   ],
   optimizeDeps: {
     include: ['@chakra-ui/react', '@chakra-ui/icons'],
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-        }),
-        NodeModulesPolyfillPlugin(),
-      ],
-    },
   },
   build: {
     rollupOptions: {
-      plugins: [
-        // Enable rollup polyfills plugin
-        // used during production bundling
-        nodePolyfills(),
-      ],
       output: {
         manualChunks: {
           chakra: [
