@@ -314,48 +314,6 @@
       }
     },
     {
-      "key": "logging._levelToName",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_MEMBER",
-        "properties": {
-          "member": "_levelToName"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging._nameToLevel",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_MEMBER",
-        "properties": {
-          "member": "_nameToLevel"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "logging.Filterer",
       "abstract": "    A base class for loggers and handlers which allows them to share",
       "serializedNode": {
@@ -1983,27 +1941,6 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging._STYLES",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_MEMBER",
-        "properties": {
-          "member": "_STYLES"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
             }
           ]
         }

@@ -78,65 +78,6 @@
       }
     },
     {
-      "key": "subprocess._ENV",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "_ENV"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "subprocess"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "subprocess._USE_POSIX_SPAWN",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_MEMBER",
-        "properties": {
-          "member": "_USE_POSIX_SPAWN"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "subprocess"
-              },
-              "childSets": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "subprocess.CompletedProcess",
       "abstract": "A process that has finished running.",
       "serializedNode": {

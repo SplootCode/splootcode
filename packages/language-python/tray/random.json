@@ -116,27 +116,6 @@
       }
     },
     {
-      "key": "random._inst",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_MEMBER",
-        "properties": {
-          "member": "_inst"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "random"
-              },
-              "childSets": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "random.seed",
       "abstract": "Initialize internal state from a seed.",
       "serializedNode": {

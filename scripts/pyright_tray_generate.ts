@@ -366,7 +366,7 @@ async function generateTrayListForModule(
   // console.log(moduleAutocompleteInfo)
 
   const trayEntries: (TrayEntry | null)[] = moduleAutocompleteInfo.map((autocompleteEntry) => {
-    if (autocompleteEntry.name.startsWith('__')) {
+    if (autocompleteEntry.name.startsWith('_')) {
       return null
     }
     const canonicalName = moduleName + '.' + autocompleteEntry.name
