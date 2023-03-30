@@ -4,12 +4,12 @@ import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
 import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
-import { ProjectFileChangeWatcher } from 'src/runtime/project_file_change_watcher'
+import { ProjectFileChangeWatcher } from '../runtime/project_file_change_watcher'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { RuntimeContextManager } from './runtime_context_manager'
 import { UndoWatcher } from './undoWatcher'
 import { action, observable } from 'mobx'
-import { awaitFontsLoaded } from 'src/layout/layout_constants'
+import { awaitFontsLoaded } from '../layout/layout_constants'
 
 export class EditorState {
   project: Project

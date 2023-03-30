@@ -10,7 +10,7 @@ import { EditorMessage } from '@splootcode/runtime-python'
 import { FitAddon } from 'xterm-addon-fit'
 import { HTTPResponse, RunType } from '@splootcode/core'
 import { ResponseViewer } from './response_viewer'
-import { RuntimeContextManager } from 'src/context/runtime_context_manager'
+import { RuntimeContextManager } from '../context/runtime_context_manager'
 import { Terminal } from 'xterm'
 import { observer } from 'mobx-react'
 

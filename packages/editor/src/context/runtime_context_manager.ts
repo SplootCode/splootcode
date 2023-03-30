@@ -31,8 +31,8 @@ import {
   PythonModuleSpec,
   PythonScope,
 } from '@splootcode/language-python'
-import { FileChangeWatcher, FileSpec } from 'src/runtime/file_change_watcher'
-import { FrameStateManager } from 'src/runtime/frame_state_manager'
+import { FileChangeWatcher, FileSpec } from '../runtime/file_change_watcher'
+import { FrameStateManager } from '../runtime/frame_state_manager'
 import { action, observable } from 'mobx'
 
 export class RuntimeContextManager implements ParseTreeCommunicator {

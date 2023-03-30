@@ -43,11 +43,6 @@ export default defineConfig({
         },
         nodePolyfills(),
       ],
-      output: {
-        manualChunks: {
-          xterm: ['xterm'],
-        },
-      },
     },
   },
   plugins: [
