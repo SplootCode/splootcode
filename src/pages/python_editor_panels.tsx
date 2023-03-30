@@ -13,7 +13,7 @@ import {
   PythonRuntimePanel,
 } from '@splootcode/editor'
 import { SplootPackage } from '@splootcode/core'
-import { getTrayForModule } from 'src/module_loader'
+import { getTrayForModule } from '../module_loader'
 
 interface PythonEditorProps {
   editorState: EditorState
