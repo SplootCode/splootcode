@@ -1,7 +1,7 @@
 import { TrayCategory } from '@splootcode/core'
 
 import * as pythonLib from '../generated/python_tray.json'
-import * as standardLibModules from '../generated/standard_lib_modules.json'
+import * as standardLibModules from '../standard_lib_modules.json'
 
 export const PythonLanguageTray: TrayCategory = pythonLib as TrayCategory
 

@@ -18,6 +18,7 @@ import * as fs from 'fs'
 
 // This list is all Python stdlib modules but with the ones that Pyodide doesn't support removed.
 const supportedStandardLibModules = [
+  'posix', // Not sure why posix needs to go first, but otherwise it gets no results?
   'abc',
   'aifc',
   'argparse',
@@ -121,7 +122,6 @@ const supportedStandardLibModules = [
   'platform',
   'plistlib',
   'poplib',
-  'posix',
   'posixpath',
   'pprint',
   'profile',
@@ -214,39 +214,36 @@ async function main() {
 
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(RequestsURL)
-  const promises = [pyodide.loadPackage('numpy'), micropip.install('types-requests')]
-
+  const promises = [micropip.install('types-requests')]
   await Promise.all(promises)
 
   const structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(TypeshedPath, pyodide))
 
-  const modules = supportedStandardLibModules
-  const moduleInfos: PythonModuleInfo[] = []
+  const moduleInfoFile: ModuleInfoFile = {
+    allModules: [],
+  }
+
+  fs.rmSync('./packages/language-python/tray', { recursive: true })
+  fs.mkdirSync('./packages/language-python/tray')
 
   for (const module of supportedStandardLibModules) {
-    const res = pyodide.runPython(`import ${module};${module}.__doc__`)
-    moduleInfos.push({
-      name: module,
-      description: res || `No documentation for ${module}.`,
-      isStandardLib: true,
-    })
+    const moduleInfo = await generateTrayListForModule(structuredProgram, module, true)
+    moduleInfoFile.allModules.push(moduleInfo)
   }
 
-  const moduleInfoFile: ModuleInfoFile = {
-    allModules: moduleInfos,
+  for (const module of ['requests']) {
+    const moduleInfo = await generateTrayListForModule(structuredProgram, module, false)
+    moduleInfoFile.allModules.push(moduleInfo)
   }
 
-  fs.writeFileSync(
-    './packages/language-python/src/generated/standard_lib_modules.json',
-    JSON.stringify(moduleInfoFile, null, 2)
-  )
-
-  for (const module of modules) {
-    await generateTrayListForModule(structuredProgram, module)
-  }
+  fs.writeFileSync('./packages/language-python/src/standard_lib_modules.json', JSON.stringify(moduleInfoFile, null, 2))
 }
 
-async function generateTrayListForModule(structuredProgram: StructuredEditorProgram, moduleName: string) {
+async function generateTrayListForModule(
+  structuredProgram: StructuredEditorProgram,
+  moduleName: string,
+  isStandardLib: boolean
+): Promise<PythonModuleInfo> {
   let id = 1
   const moduleNameNode: ModuleNameNode = {
     nodeType: ParseNodeType.ModuleName,
@@ -341,6 +338,20 @@ async function generateTrayListForModule(structuredProgram: StructuredEditorProg
     throw new Error(`Expected module type but was ${typeResult.type.category} instead`)
   }
 
+  const decls = structuredProgram.evaluator.getDeclarationsForNameNode(nameNode)
+  let docs = 'No documentation'
+  if (decls && decls.length !== 0) {
+    const moduleDoc = structuredProgram.getDocumentationPartsforTypeAndDecl(typeResult.type, decls[0])
+    if (moduleDoc && moduleDoc.length !== 0) {
+      docs = moduleDoc[0].trim().substring(0, 100)
+    }
+  }
+  const moduleInfo: PythonModuleInfo = {
+    name: moduleName,
+    isStandardLib: isStandardLib,
+    description: docs,
+  }
+
   const trayCategory: TrayCategory = {
     category: moduleName,
     entries: [],
@@ -351,22 +362,30 @@ async function generateTrayListForModule(structuredProgram: StructuredEditorProg
       continue
     }
     const canonicalName = moduleName + '.' + name
-
     const declarations = symbol.getDeclarations()
 
     // TODO: Replace this with function from the autocomplete code.
     const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(symbol, declarations[0])
+
+    if (inferredType && inferredType.category == TypeCategory.Function) {
+      // const docstring = structuredProgram.getDocumentationPartsforTypeAndDecl(inferredType, declarations[0])
+      // console.log(docstring)
+    }
+
     if (inferredType) {
-      const entries = generateTrayEntriesFromInferredType(moduleName, canonicalName, inferredType)
+      const entries = generateTrayEntriesFromInferredType(structuredProgram, moduleName, canonicalName, inferredType)
       trayCategory.entries.push(...entries)
     }
   }
 
   // Write to a file
   fs.writeFileSync('./packages/language-python/tray/' + moduleName + '.json', JSON.stringify(trayCategory, null, 2))
+
+  return moduleInfo
 }
 
 function generateTrayEntriesFromInferredType(
+  structuredProgram: StructuredEditorProgram,
   moduleName: string,
   canonicalName: string,
   inferredType: Type

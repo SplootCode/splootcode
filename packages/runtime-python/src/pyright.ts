@@ -38,8 +38,6 @@ function dir(name: string): Dirent {
   }
 }
 
-const BASE = '/lib/python3.10/site-packages'
-
 export class PyodideFakeFileSystem implements FileSystem {
   private _hostedTypeshedBasePath: string
   private _knownStructuredFilePaths: Set<string>
@@ -61,8 +59,7 @@ export class PyodideFakeFileSystem implements FileSystem {
     if (this._knownStructuredFilePaths.has(path)) {
       return true
     }
-
-    return this._pyodide.FS.analyzePath(BASE + path)
+    return this._pyodide.FS.analyzePath(path).exists
   }
   mkdirSync(path: string, options?: MkDirOptions): void {
     throw new Error('Method not implemented.')
@@ -88,11 +85,11 @@ export class PyodideFakeFileSystem implements FileSystem {
     let out: Dirent[] = []
 
     try {
-      // seasrch filesystem
-      const results = (this._pyodide.FS.readdir(BASE + path) as string[])
+      // Search pyodide filesystem
+      const results = (this._pyodide.FS.readdir(path) as string[])
         .filter((entry) => !['.', '..'].includes(entry))
         .map((entry): Dirent => {
-          const out = this._pyodide.FS.analyzePath(BASE + path + '/' + entry)
+          const out = this._pyodide.FS.analyzePath(path + '/' + entry)
 
           const mode = out.object.mode
 
@@ -110,11 +107,10 @@ export class PyodideFakeFileSystem implements FileSystem {
 
       out = out.concat(results)
     } catch (e) {
-      console.warn(e)
+      // Directory doesn't exist. Return empty array.
     }
 
     if (path === '/') {
-      // add typeshed files
       const results = [...this._knownStructuredFilePaths]
         .filter((key) => {
           if (key.startsWith(path)) {
@@ -144,7 +140,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       return ''
     }
 
-    throw new Error(`Unexpected readFileSync of path ${path}.`)
+    return this._pyodide.FS.readFile(path, { encoding: encoding })
   }
   writeFileSync(path: string, data: string | Buffer, encoding: BufferEncoding | null): void {
     this._knownStructuredFilePaths.add(path)
@@ -163,7 +159,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       }
     }
 
-    const out = this._pyodide.FS.stat(BASE + path)
+    const out = this._pyodide.FS.stat(path)
 
     const mode = out.mode
 
@@ -212,7 +208,7 @@ export class PyodideFakeFileSystem implements FileSystem {
       return text
     }
 
-    return this._pyodide.FS.readFile(BASE + path, { encoding: 'utf8' })
+    return this._pyodide.FS.readFile(path, { encoding: 'utf8' })
   }
   tmpdir(): string {
     throw new Error('Method not implemented.')
@@ -221,7 +217,7 @@ export class PyodideFakeFileSystem implements FileSystem {
     throw new Error('Method not implemented.')
   }
   realCasePath(path: string): string {
-    throw new Error('Method not implemented.')
+    return path
   }
   isMappedFilePath(filepath: string): boolean {
     return false
@@ -231,7 +227,7 @@ export class PyodideFakeFileSystem implements FileSystem {
     return mappedFilePath
   }
   getMappedFilePath(originalFilepath: string): string {
-    throw new Error('Method not implemented.')
+    return originalFilepath
   }
   getUri(path: string): string {
     throw new Error('Method not implemented.')
