@@ -1,11 +1,12 @@
 import css from 'rollup-plugin-import-css'
 import dts from 'rollup-plugin-dts'
 import typescript from '@rollup/plugin-typescript'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 export default [
   {
     external: ['react', '@emotion/core', '@emotion/styled', '@chakra-ui/react', '@chakra-ui/icons'],
-    plugins: [typescript(), css()],
+    plugins: [typescript(), css(), nodeResolve({ resolveOnly: ['react-icons'] })],
     input: 'src/index.ts',
     output: [
       {
