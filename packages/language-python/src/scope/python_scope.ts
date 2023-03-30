@@ -220,6 +220,13 @@ export class PythonScope {
     })
   }
 
+  getImportedModules(): string[] {
+    if (!this.isGlobal) {
+      return this.parent.getImportedModules()
+    }
+    return Array.from(this.modules.keys())
+  }
+
   loadAllImportedModules() {
     if (!this.isGlobal) {
       this.parent.loadAllImportedModules()

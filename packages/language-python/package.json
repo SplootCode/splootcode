@@ -1,10 +1,17 @@
 {
   "name": "@splootcode/language-python",
   "version": "1.0.0",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
-  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "private": true,
   "scripts": {
     "test": "jest",
@@ -12,7 +19,8 @@
   },
   "dependencies": {
     "@jest/globals": "^29.2.2",
-    "structured-pyright": "^1.0.9"
+    "rollup-plugin-copy": "^3.4.0",
+    "structured-pyright": "^1.0.10"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^5.0.1",

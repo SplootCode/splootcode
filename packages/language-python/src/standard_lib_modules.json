@@ -1,0 +1,914 @@
+{
+  "allModules": [
+    {
+      "name": "posix",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "aifc",
+      "isStandardLib": true,
+      "description": "Stuff to parse AIFF-C and AIFF files."
+    },
+    {
+      "name": "argparse",
+      "isStandardLib": true,
+      "description": "Command-line parsing library"
+    },
+    {
+      "name": "array",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "ast",
+      "isStandardLib": true,
+      "description": "    ast"
+    },
+    {
+      "name": "asyncio",
+      "isStandardLib": true,
+      "description": "The asyncio package, tracking PEP 3156."
+    },
+    {
+      "name": "atexit",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "base64",
+      "isStandardLib": true,
+      "description": "Base16, Base32, Base64 (RFC 3548), Base85 and Ascii85 data encodings"
+    },
+    {
+      "name": "bdb",
+      "isStandardLib": true,
+      "description": "Debugger basics"
+    },
+    {
+      "name": "binascii",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "bisect",
+      "isStandardLib": true,
+      "description": "Bisection algorithms."
+    },
+    {
+      "name": "builtins",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "bz2",
+      "isStandardLib": true,
+      "description": "Interface to the libbzip2 compression library."
+    },
+    {
+      "name": "cProfile",
+      "isStandardLib": true,
+      "description": "Python interface for the 'lsprof' profiler."
+    },
+    {
+      "name": "calendar",
+      "isStandardLib": true,
+      "description": "Calendar printing functions"
+    },
+    {
+      "name": "cgi",
+      "isStandardLib": true,
+      "description": "Support module for CGI (Common Gateway Interface) scripts."
+    },
+    {
+      "name": "cgitb",
+      "isStandardLib": true,
+      "description": "More comprehensive traceback formatting for Python scripts."
+    },
+    {
+      "name": "chunk",
+      "isStandardLib": true,
+      "description": "Simple class to read IFF chunks."
+    },
+    {
+      "name": "cmath",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "cmd",
+      "isStandardLib": true,
+      "description": "A generic class to build line-oriented command interpreters."
+    },
+    {
+      "name": "code",
+      "isStandardLib": true,
+      "description": "Utilities needed to emulate Python's interactive interpreter."
+    },
+    {
+      "name": "codecs",
+      "isStandardLib": true,
+      "description": " codecs -- Python Codec Registry, API and helpers."
+    },
+    {
+      "name": "codeop",
+      "isStandardLib": true,
+      "description": "Utilities to compile possibly incomplete Python source code."
+    },
+    {
+      "name": "collections",
+      "isStandardLib": true,
+      "description": "This module implements specialized container datatypes providing"
+    },
+    {
+      "name": "colorsys",
+      "isStandardLib": true,
+      "description": "Conversion functions between RGB and other color systems."
+    },
+    {
+      "name": "compileall",
+      "isStandardLib": true,
+      "description": "Module/script to byte-compile all .py files to .pyc files."
+    },
+    {
+      "name": "configparser",
+      "isStandardLib": true,
+      "description": "Configuration file parser."
+    },
+    {
+      "name": "contextlib",
+      "isStandardLib": true,
+      "description": "Utilities for with-statement contexts.  See PEP 343."
+    },
+    {
+      "name": "contextvars",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "copy",
+      "isStandardLib": true,
+      "description": "Generic (shallow and deep) copying operations."
+    },
+    {
+      "name": "copyreg",
+      "isStandardLib": true,
+      "description": "Helper to provide extensibility for pickle."
+    },
+    {
+      "name": "crypt",
+      "isStandardLib": true,
+      "description": "Wrapper to the POSIX crypt library call and associated functionality."
+    },
+    {
+      "name": "csv",
+      "isStandardLib": true,
+      "description": "csv.py - read/write/investigate CSV files"
+    },
+    {
+      "name": "ctypes",
+      "isStandardLib": true,
+      "description": "create and manipulate C data types in Python"
+    },
+    {
+      "name": "dataclasses",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "datetime",
+      "isStandardLib": true,
+      "description": "Concrete date/time and related types."
+    },
+    {
+      "name": "decimal",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "difflib",
+      "isStandardLib": true,
+      "description": "Module difflib -- helpers for computing deltas between objects."
+    },
+    {
+      "name": "dis",
+      "isStandardLib": true,
+      "description": "Disassembler of Python byte code into mnemonics."
+    },
+    {
+      "name": "doctest",
+      "isStandardLib": true,
+      "description": "Module doctest -- a framework for running examples in docstrings."
+    },
+    {
+      "name": "email",
+      "isStandardLib": true,
+      "description": "A package for parsing, handling, and generating email messages."
+    },
+    {
+      "name": "encodings",
+      "isStandardLib": true,
+      "description": " Standard \"encodings\" Package"
+    },
+    {
+      "name": "enum",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "errno",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "faulthandler",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "filecmp",
+      "isStandardLib": true,
+      "description": "Utilities for comparing files and directories."
+    },
+    {
+      "name": "fileinput",
+      "isStandardLib": true,
+      "description": "Helper class to quickly write a loop over all standard input files."
+    },
+    {
+      "name": "fnmatch",
+      "isStandardLib": true,
+      "description": "Filename matching with shell patterns."
+    },
+    {
+      "name": "fractions",
+      "isStandardLib": true,
+      "description": "Fraction, infinite-precision, real numbers."
+    },
+    {
+      "name": "ftplib",
+      "isStandardLib": true,
+      "description": "An FTP client class and some helper functions."
+    },
+    {
+      "name": "functools",
+      "isStandardLib": true,
+      "description": "functools.py - Tools for working with functions and callable objects"
+    },
+    {
+      "name": "gc",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "genericpath",
+      "isStandardLib": true,
+      "description": "Path operations common to more than one OS"
+    },
+    {
+      "name": "getopt",
+      "isStandardLib": true,
+      "description": "Parser for command line options."
+    },
+    {
+      "name": "getpass",
+      "isStandardLib": true,
+      "description": "Utilities to get a password and/or the current user name."
+    },
+    {
+      "name": "gettext",
+      "isStandardLib": true,
+      "description": "Internationalization and localization support."
+    },
+    {
+      "name": "glob",
+      "isStandardLib": true,
+      "description": "Filename globbing utility."
+    },
+    {
+      "name": "graphlib",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "gzip",
+      "isStandardLib": true,
+      "description": "Functions that read and write gzipped files."
+    },
+    {
+      "name": "hashlib",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "heapq",
+      "isStandardLib": true,
+      "description": "Heap queue algorithm (a.k.a. priority queue)."
+    },
+    {
+      "name": "hmac",
+      "isStandardLib": true,
+      "description": "HMAC (Keyed-Hashing for Message Authentication) module."
+    },
+    {
+      "name": "html",
+      "isStandardLib": true,
+      "description": "General functions for HTML manipulation."
+    },
+    {
+      "name": "http",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "imaplib",
+      "isStandardLib": true,
+      "description": "IMAP4 client."
+    },
+    {
+      "name": "imghdr",
+      "isStandardLib": true,
+      "description": "Recognize image file formats based on their first few bytes."
+    },
+    {
+      "name": "importlib",
+      "isStandardLib": true,
+      "description": "A pure Python implementation of import."
+    },
+    {
+      "name": "inspect",
+      "isStandardLib": true,
+      "description": "Get useful information from live Python objects."
+    },
+    {
+      "name": "io",
+      "isStandardLib": true,
+      "description": "The io module provides the Python interfaces to stream handling. The"
+    },
+    {
+      "name": "ipaddress",
+      "isStandardLib": true,
+      "description": "A fast, lightweight IPv4/IPv6 manipulation library in Python."
+    },
+    {
+      "name": "itertools",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "json",
+      "isStandardLib": true,
+      "description": "JSON (JavaScript Object Notation) <http://json.org> is a subset of"
+    },
+    {
+      "name": "keyword",
+      "isStandardLib": true,
+      "description": "Keywords (from \"Grammar/python.gram\")"
+    },
+    {
+      "name": "linecache",
+      "isStandardLib": true,
+      "description": "Cache lines from Python source files."
+    },
+    {
+      "name": "locale",
+      "isStandardLib": true,
+      "description": "Locale support module."
+    },
+    {
+      "name": "logging",
+      "isStandardLib": true,
+      "description": "Logging package for Python. Based on PEP 282 and comments thereto in"
+    },
+    {
+      "name": "lzma",
+      "isStandardLib": true,
+      "description": "Interface to the liblzma compression library."
+    },
+    {
+      "name": "mailbox",
+      "isStandardLib": true,
+      "description": "Read/write support for Maildir, mbox, MH, Babyl, and MMDF mailboxes."
+    },
+    {
+      "name": "mailcap",
+      "isStandardLib": true,
+      "description": "Mailcap file handling.  See RFC 1524."
+    },
+    {
+      "name": "marshal",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "math",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "mimetypes",
+      "isStandardLib": true,
+      "description": "Guess the MIME type of a file."
+    },
+    {
+      "name": "mmap",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "modulefinder",
+      "isStandardLib": true,
+      "description": "Find modules used by a script, using introspection."
+    },
+    {
+      "name": "multiprocessing",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "netrc",
+      "isStandardLib": true,
+      "description": "An object-oriented interface to .netrc files."
+    },
+    {
+      "name": "nntplib",
+      "isStandardLib": true,
+      "description": "An NNTP client class based on:"
+    },
+    {
+      "name": "ntpath",
+      "isStandardLib": true,
+      "description": "Common pathname manipulations, WindowsNT/95 version."
+    },
+    {
+      "name": "nturl2path",
+      "isStandardLib": true,
+      "description": "Convert a NT pathname to a file URL and vice versa."
+    },
+    {
+      "name": "numbers",
+      "isStandardLib": true,
+      "description": "Abstract Base Classes (ABCs) for numbers, according to PEP 3141."
+    },
+    {
+      "name": "opcode",
+      "isStandardLib": true,
+      "description": "opcode module - potentially shared between dis and other modules which"
+    },
+    {
+      "name": "operator",
+      "isStandardLib": true,
+      "description": "Operator Interface"
+    },
+    {
+      "name": "optparse",
+      "isStandardLib": true,
+      "description": "A powerful, extensible, and easy-to-use option parser."
+    },
+    {
+      "name": "os",
+      "isStandardLib": true,
+      "description": "OS routines for NT or Posix depending on what system we're on."
+    },
+    {
+      "name": "pathlib",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "pdb",
+      "isStandardLib": true,
+      "description": "The Python Debugger Pdb"
+    },
+    {
+      "name": "pickle",
+      "isStandardLib": true,
+      "description": "Create portable serialized representations of Python objects."
+    },
+    {
+      "name": "pickletools",
+      "isStandardLib": true,
+      "description": "\"Executable documentation\" for the pickle module."
+    },
+    {
+      "name": "pipes",
+      "isStandardLib": true,
+      "description": "Conversion pipeline templates."
+    },
+    {
+      "name": "pkgutil",
+      "isStandardLib": true,
+      "description": "Utilities to support packages."
+    },
+    {
+      "name": "platform",
+      "isStandardLib": true,
+      "description": " This module tries to retrieve as much platform-identifying data as"
+    },
+    {
+      "name": "plistlib",
+      "isStandardLib": true,
+      "description": "plistlib.py -- a tool to generate and parse MacOSX .plist files."
+    },
+    {
+      "name": "poplib",
+      "isStandardLib": true,
+      "description": "A POP3 client class."
+    },
+    {
+      "name": "posixpath",
+      "isStandardLib": true,
+      "description": "Common operations on Posix pathnames."
+    },
+    {
+      "name": "pprint",
+      "isStandardLib": true,
+      "description": "Support to pretty-print lists, tuples, & dictionaries recursively."
+    },
+    {
+      "name": "profile",
+      "isStandardLib": true,
+      "description": "Class for profiling Python code."
+    },
+    {
+      "name": "pstats",
+      "isStandardLib": true,
+      "description": "Class for printing reports on profiled python code."
+    },
+    {
+      "name": "py_compile",
+      "isStandardLib": true,
+      "description": "Routine to \"compile\" a .py file to a .pyc file."
+    },
+    {
+      "name": "pyclbr",
+      "isStandardLib": true,
+      "description": "Parse a Python module and describe its classes and functions."
+    },
+    {
+      "name": "pydoc",
+      "isStandardLib": true,
+      "description": "Generate Python documentation in HTML or text for interactive use."
+    },
+    {
+      "name": "pydoc_data",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "pyexpat",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "queue",
+      "isStandardLib": true,
+      "description": "A multi-producer, multi-consumer queue."
+    },
+    {
+      "name": "quopri",
+      "isStandardLib": true,
+      "description": "Conversions to/from quoted-printable transport encoding as per RFC 1521."
+    },
+    {
+      "name": "random",
+      "isStandardLib": true,
+      "description": "Random variable generators."
+    },
+    {
+      "name": "re",
+      "isStandardLib": true,
+      "description": "Support for regular expressions (RE)."
+    },
+    {
+      "name": "reprlib",
+      "isStandardLib": true,
+      "description": "Redo the builtin repr() (representation) but with limits on most sizes."
+    },
+    {
+      "name": "rlcompleter",
+      "isStandardLib": true,
+      "description": "Word completion for GNU readline."
+    },
+    {
+      "name": "runpy",
+      "isStandardLib": true,
+      "description": "runpy.py - locating and running Python code using the module namespace"
+    },
+    {
+      "name": "sched",
+      "isStandardLib": true,
+      "description": "A generally useful event scheduler class."
+    },
+    {
+      "name": "secrets",
+      "isStandardLib": true,
+      "description": "Generate cryptographically strong pseudo-random numbers suitable for"
+    },
+    {
+      "name": "select",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "selectors",
+      "isStandardLib": true,
+      "description": "Selectors module."
+    },
+    {
+      "name": "shelve",
+      "isStandardLib": true,
+      "description": "Manage shelves of pickled objects."
+    },
+    {
+      "name": "shlex",
+      "isStandardLib": true,
+      "description": "A lexical analyzer class for simple shell-like syntaxes."
+    },
+    {
+      "name": "shutil",
+      "isStandardLib": true,
+      "description": "Utility functions for copying and archiving files and directory trees."
+    },
+    {
+      "name": "signal",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "site",
+      "isStandardLib": true,
+      "description": "Append module search paths for third-party packages to sys.path."
+    },
+    {
+      "name": "smtplib",
+      "isStandardLib": true,
+      "description": "SMTP/ESMTP client class."
+    },
+    {
+      "name": "sndhdr",
+      "isStandardLib": true,
+      "description": "Routines to help recognizing sound files."
+    },
+    {
+      "name": "socket",
+      "isStandardLib": true,
+      "description": "This module provides socket operations and some related functions."
+    },
+    {
+      "name": "socketserver",
+      "isStandardLib": true,
+      "description": "Generic socket server classes."
+    },
+    {
+      "name": "sqlite3",
+      "isStandardLib": true,
+      "description": "The sqlite3 extension module provides a DB-API 2.0 (PEP 249) compilant"
+    },
+    {
+      "name": "sre_compile",
+      "isStandardLib": true,
+      "description": "Internal support module for sre"
+    },
+    {
+      "name": "sre_constants",
+      "isStandardLib": true,
+      "description": "Internal support module for sre"
+    },
+    {
+      "name": "sre_parse",
+      "isStandardLib": true,
+      "description": "Internal support module for sre"
+    },
+    {
+      "name": "ssl",
+      "isStandardLib": true,
+      "description": "This module provides some more Pythonic support for SSL."
+    },
+    {
+      "name": "stat",
+      "isStandardLib": true,
+      "description": "Constants/functions for interpreting results of os.stat() and os.lstat()."
+    },
+    {
+      "name": "statistics",
+      "isStandardLib": true,
+      "description": "Basic statistics module."
+    },
+    {
+      "name": "string",
+      "isStandardLib": true,
+      "description": "A collection of string constants."
+    },
+    {
+      "name": "stringprep",
+      "isStandardLib": true,
+      "description": "Library that exposes various tables found in the StringPrep RFC 3454."
+    },
+    {
+      "name": "struct",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "subprocess",
+      "isStandardLib": true,
+      "description": "Subprocesses with accessible I/O streams"
+    },
+    {
+      "name": "sunau",
+      "isStandardLib": true,
+      "description": "Stuff to parse Sun and NeXT audio files."
+    },
+    {
+      "name": "symtable",
+      "isStandardLib": true,
+      "description": "Interface to the compiler's internal symbol tables"
+    },
+    {
+      "name": "sys",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "sysconfig",
+      "isStandardLib": true,
+      "description": "Access to Python's configuration information."
+    },
+    {
+      "name": "tabnanny",
+      "isStandardLib": true,
+      "description": "The Tab Nanny despises ambiguous indentation.  She knows no mercy."
+    },
+    {
+      "name": "tarfile",
+      "isStandardLib": true,
+      "description": "Read from and write to tar format archives."
+    },
+    {
+      "name": "telnetlib",
+      "isStandardLib": true,
+      "description": "TELNET client class."
+    },
+    {
+      "name": "tempfile",
+      "isStandardLib": true,
+      "description": "Temporary files."
+    },
+    {
+      "name": "textwrap",
+      "isStandardLib": true,
+      "description": "Text wrapping and filling."
+    },
+    {
+      "name": "this",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "threading",
+      "isStandardLib": true,
+      "description": "Thread module emulating a subset of Java's threading model."
+    },
+    {
+      "name": "time",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "timeit",
+      "isStandardLib": true,
+      "description": "Tool for measuring execution time of small code snippets."
+    },
+    {
+      "name": "token",
+      "isStandardLib": true,
+      "description": "Token constants."
+    },
+    {
+      "name": "tokenize",
+      "isStandardLib": true,
+      "description": "Tokenization help for Python programs."
+    },
+    {
+      "name": "trace",
+      "isStandardLib": true,
+      "description": "program/module to trace Python program or function execution"
+    },
+    {
+      "name": "traceback",
+      "isStandardLib": true,
+      "description": "Extract, format and print information about Python stack traces."
+    },
+    {
+      "name": "tracemalloc",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "types",
+      "isStandardLib": true,
+      "description": "Define names for built-in types that aren't directly accessible as a builtin."
+    },
+    {
+      "name": "typing",
+      "isStandardLib": true,
+      "description": "The typing module: Support for gradual typing as defined by PEP 484."
+    },
+    {
+      "name": "unicodedata",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "unittest",
+      "isStandardLib": true,
+      "description": "Python unit testing framework, based on Erich Gamma's JUnit and Kent Beck's"
+    },
+    {
+      "name": "urllib",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "uu",
+      "isStandardLib": true,
+      "description": "Implementation of the UUencode and UUdecode functions."
+    },
+    {
+      "name": "uuid",
+      "isStandardLib": true,
+      "description": "UUID objects (universally unique identifiers) according to RFC 4122."
+    },
+    {
+      "name": "warnings",
+      "isStandardLib": true,
+      "description": "Python part of the warnings subsystem."
+    },
+    {
+      "name": "wave",
+      "isStandardLib": true,
+      "description": "Stuff to parse WAVE files."
+    },
+    {
+      "name": "weakref",
+      "isStandardLib": true,
+      "description": "Weak reference support for Python."
+    },
+    {
+      "name": "webbrowser",
+      "isStandardLib": true,
+      "description": "An implementation of the standard library webbrowser module to open webpages."
+    },
+    {
+      "name": "wsgiref",
+      "isStandardLib": true,
+      "description": "wsgiref -- a WSGI (PEP 3333) Reference Library"
+    },
+    {
+      "name": "xdrlib",
+      "isStandardLib": true,
+      "description": "Implements (a subset of) Sun XDR -- eXternal Data Representation."
+    },
+    {
+      "name": "xml",
+      "isStandardLib": true,
+      "description": "Core XML support for Python."
+    },
+    {
+      "name": "xmlrpc",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "zipapp",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "zipfile",
+      "isStandardLib": true,
+      "description": "Read and write ZIP files."
+    },
+    {
+      "name": "zipimport",
+      "isStandardLib": true,
+      "description": "zipimport provides support for importing Python modules from Zip archives."
+    },
+    {
+      "name": "zlib",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "zoneinfo",
+      "isStandardLib": true,
+      "description": "No documentation"
+    },
+    {
+      "name": "requests",
+      "isStandardLib": false,
+      "description": "Requests HTTP Library"
+    }
+  ]
+}

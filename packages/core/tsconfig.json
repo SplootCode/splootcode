@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "downlevelIteration": true,
-    "outDir": "out",
+    "noEmit": true,
     "baseUrl": ".",
     "types": ["@types/wicg-file-system-access"]
   },

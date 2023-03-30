@@ -10,6 +10,7 @@
     "build:runtime": "yarn vite build --config vite-runtime.config.ts",
     "build": "yarn build:packages && yarn build:app && yarn build:runtime",
     "generate-types": "pushd . && cd python && ./generate.sh && popd",
+    "generate-tray": "ts-node scripts/pyright_tray_generate.ts",
     "test": "yarn jest"
   },
   "license": "BUSL-1.1",
@@ -32,9 +33,11 @@
     "@emotion/styled": "^11.0.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "3.10.6",
+    "pyodide": "^0.22.1",
     "react": "17.0.2",
     "react-router-dom": "^5.1.2",
-    "structured-pyright": "^1.0.9"
+    "structured-pyright": "^1.0.10",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",

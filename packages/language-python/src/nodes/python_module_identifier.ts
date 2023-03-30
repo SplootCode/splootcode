@@ -42,7 +42,6 @@ function sanitizeIdentifier(textInput: string): string {
 const allowedModules = [
   'abc',
   'aifc',
-  'antigravity',
   'argparse',
   'array',
   'ast',

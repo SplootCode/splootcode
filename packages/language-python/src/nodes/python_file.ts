@@ -18,6 +18,8 @@ import { ModuleNode, ParseNodeType } from 'structured-pyright'
 import { ParseMapper } from '../analyzer/python_analyzer'
 import { PythonFunctionDeclaration } from './python_function'
 import { PythonIdentifier } from './python_identifier'
+import { PythonImport } from './python_import'
+import { PythonModuleIdentifier } from './python_module_identifier'
 import { PythonNode } from './python_node'
 import { PythonStatement } from './python_statement'
 
@@ -93,6 +95,15 @@ export class PythonFile extends PythonNode {
     const data = capture.data as PythonFileData
     this.getBody().recursivelyApplyRuntimeCapture(data.body)
     return true
+  }
+
+  addModuleImport(name: string) {
+    // TODO: Don't import duplicates
+    const stmt = new PythonStatement(null)
+    const importNode = new PythonImport(null)
+    importNode.getModules().addChild(new PythonModuleIdentifier(null, name))
+    stmt.getStatement().addChild(importNode)
+    this.getBody().insertNode(stmt, 0)
   }
 
   makeHandler(name: string, args: string[]): void {
