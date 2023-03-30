@@ -10,7 +10,7 @@ import {
   TypeCategory,
   createStructuredProgramWorker,
 } from 'structured-pyright'
-import { PyodideFakeFileSystem, getAutocompleteInfo } from '@splootcode/runtime-python'
+import { PyodideFakeFileSystem, getAutocompleteInfo, getShortDoc } from '@splootcode/runtime-python'
 import { SerializedNode, TrayCategory, TrayEntry } from '@splootcode/core'
 
 import * as fs from 'fs'
@@ -348,7 +348,7 @@ async function generateTrayListForModule(
   if (decls && decls.length !== 0) {
     const moduleDoc = structuredProgram.getDocumentationPartsforTypeAndDecl(typeResult.type, decls[0])
     if (moduleDoc && moduleDoc.length !== 0) {
-      docs = moduleDoc[0].trim().substring(0, 100)
+      docs = getShortDoc(moduleDoc[0])
     }
   }
   const moduleInfo: PythonModuleInfo = {

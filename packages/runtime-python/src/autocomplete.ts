@@ -15,7 +15,7 @@ import {
   TypeBase,
 } from 'structured-pyright'
 
-function getShortDoc(docString?: string) {
+export function getShortDoc(docString?: string) {
   if (!docString) {
     return ''
   }
