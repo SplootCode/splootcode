@@ -8,3 +8,5 @@ export * from './pyodide'
 export * from './pyright'
 
 export { getAutocompleteInfo, getShortDoc } from './autocomplete'
+
+export { StaticURLs } from './static_urls'

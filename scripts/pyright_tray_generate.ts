@@ -211,6 +211,7 @@ import { loadPyodide } from 'pyodide'
 
 // Must have local server running for this to work.
 const RequestsURL = 'http://localhost:3001/python/packages/requests-2.28.1-py3-none-any.whl'
+const StreamlitURL = 'http://localhost:3001/python/packages/streamlit-1.19.0-py2.py3-none-any.whl'
 const TypeshedPath = 'http://localhost:3001/static/typeshed/'
 
 async function main() {
@@ -219,6 +220,7 @@ async function main() {
 
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(RequestsURL)
+  await micropip.install(StreamlitURL)
   const promises = [micropip.install('types-requests'), micropip.install('streamlit')]
   await Promise.all(promises)
 
