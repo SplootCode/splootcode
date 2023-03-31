@@ -240,7 +240,6 @@ export function getAutocompleteInfo(
   type: Type,
   seen?: Set<string>
 ): AutocompleteInfo[] {
-  console.log('autocompleting', type)
   if (!seen) {
     seen = new Set()
   }

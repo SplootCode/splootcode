@@ -65,7 +65,7 @@ const updateParseTrees = async (trees: ParseTrees) => {
     toResolve.forEach((request) => getExpressionTypeInfo(request))
 
     expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
-      (request) => request.parseID !== currentParseID
+      (request) => request.parseID > currentParseID
     )
 
     if (expressionTypeRequestsToResolve.length > 0) {
