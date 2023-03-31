@@ -9,6 +9,12 @@
         "properties": {
           "member": "ModuleType"
         },
+        "meta": {
+          "params": [
+            "name",
+            "doc"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -89,6 +95,13 @@
         "properties": {
           "member": "new"
         },
+        "meta": {
+          "params": [
+            "key",
+            "msg",
+            "digestmod"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -100,6 +113,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -126,6 +169,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "HMAC"
+        },
+        "meta": {
+          "params": [
+            "key",
+            "msg",
+            "digestmod"
+          ]
         },
         "childSets": {
           "object": [
@@ -165,6 +215,12 @@
         "properties": {
           "member": "compare_digest"
         },
+        "meta": {
+          "params": [
+            "__a",
+            "__b"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -176,6 +232,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -203,6 +274,13 @@
         "properties": {
           "member": "digest"
         },
+        "meta": {
+          "params": [
+            "key",
+            "msg",
+            "digest"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -214,6 +292,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

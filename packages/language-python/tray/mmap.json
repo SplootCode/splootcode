@@ -345,6 +345,15 @@
         "properties": {
           "member": "mmap"
         },
+        "meta": {
+          "params": [
+            "fileno",
+            "length",
+            "tagname",
+            "access",
+            "offset"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -356,6 +365,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

@@ -9,6 +9,11 @@
         "properties": {
           "member": "heapify"
         },
+        "meta": {
+          "params": [
+            "__heap"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "heappop"
+        },
+        "meta": {
+          "params": [
+            "__heap"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +95,12 @@
         "properties": {
           "member": "heappush"
         },
+        "meta": {
+          "params": [
+            "__heap",
+            "__item"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +112,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -123,6 +154,12 @@
         "properties": {
           "member": "heappushpop"
         },
+        "meta": {
+          "params": [
+            "__heap",
+            "__item"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -134,6 +171,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -161,6 +213,12 @@
         "properties": {
           "member": "heapreplace"
         },
+        "meta": {
+          "params": [
+            "__heap",
+            "__item"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -172,6 +230,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -198,6 +271,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "merge"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -237,6 +313,13 @@
         "properties": {
           "member": "nlargest"
         },
+        "meta": {
+          "params": [
+            "n",
+            "iterable",
+            "key"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -248,6 +331,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -275,6 +373,13 @@
         "properties": {
           "member": "nsmallest"
         },
+        "meta": {
+          "params": [
+            "n",
+            "iterable",
+            "key"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -286,6 +391,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

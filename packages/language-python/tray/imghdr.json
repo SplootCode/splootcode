@@ -9,6 +9,12 @@
         "properties": {
           "member": "what"
         },
+        "meta": {
+          "params": [
+            "file",
+            "h"
+          ]
+        },
         "childSets": {
           "object": [
             {

@@ -9,6 +9,9 @@
         "properties": {
           "member": "Error"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -67,6 +54,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Wave_read"
+        },
+        "meta": {
+          "params": [
+            "f"
+          ]
         },
         "childSets": {
           "object": [
@@ -106,6 +98,11 @@
         "properties": {
           "member": "Wave_write"
         },
+        "meta": {
+          "params": [
+            "f"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -144,6 +141,12 @@
         "properties": {
           "member": "open"
         },
+        "meta": {
+          "params": [
+            "f",
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -155,6 +158,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

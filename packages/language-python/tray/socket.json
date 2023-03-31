@@ -9,6 +9,11 @@
         "properties": {
           "member": "IntEnum"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IntFlag"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +95,9 @@
         "properties": {
           "member": "RawIOBase"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +108,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3630,6 +3627,14 @@
         "properties": {
           "member": "SocketType"
         },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto",
+            "fileno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -3667,6 +3672,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dup"
+        },
+        "meta": {
+          "params": [
+            "__fd"
+          ]
         },
         "childSets": {
           "object": [
@@ -3706,6 +3716,9 @@
         "properties": {
           "member": "error"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -3716,23 +3729,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3744,43 +3741,8 @@
         "properties": {
           "member": "gaierror"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "socket"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "socket.getdefaulttimeout",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "getdefaulttimeout"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -3792,23 +3754,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "socket.getdefaulttimeout",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getdefaulttimeout"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "socket"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -3819,6 +3790,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "gethostbyaddr"
+        },
+        "meta": {
+          "params": [
+            "__ip_address"
+          ]
         },
         "childSets": {
           "object": [
@@ -3858,6 +3834,11 @@
         "properties": {
           "member": "gethostbyname"
         },
+        "meta": {
+          "params": [
+            "__hostname"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -3895,6 +3876,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "gethostbyname_ex"
+        },
+        "meta": {
+          "params": [
+            "__hostname"
+          ]
         },
         "childSets": {
           "object": [
@@ -3934,6 +3920,9 @@
         "properties": {
           "member": "gethostname"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -3944,23 +3933,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3971,6 +3944,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getnameinfo"
+        },
+        "meta": {
+          "params": [
+            "__sockaddr",
+            "__flags"
+          ]
         },
         "childSets": {
           "object": [
@@ -3997,6 +3976,21 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -4009,6 +4003,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getprotobyname"
+        },
+        "meta": {
+          "params": [
+            "__protocolname"
+          ]
         },
         "childSets": {
           "object": [
@@ -4048,6 +4047,12 @@
         "properties": {
           "member": "getservbyname"
         },
+        "meta": {
+          "params": [
+            "__servicename",
+            "__protocolname"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4085,6 +4090,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getservbyport"
+        },
+        "meta": {
+          "params": [
+            "__port",
+            "__protocolname"
+          ]
         },
         "childSets": {
           "object": [
@@ -4145,6 +4156,9 @@
         "properties": {
           "member": "herror"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -4155,23 +4169,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -4182,6 +4180,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "htonl"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -4221,6 +4224,11 @@
         "properties": {
           "member": "htons"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4258,6 +4266,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "inet_aton"
+        },
+        "meta": {
+          "params": [
+            "__ip_string"
+          ]
         },
         "childSets": {
           "object": [
@@ -4297,6 +4310,11 @@
         "properties": {
           "member": "inet_ntoa"
         },
+        "meta": {
+          "params": [
+            "__packed_ip"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4335,6 +4353,12 @@
         "properties": {
           "member": "inet_ntop"
         },
+        "meta": {
+          "params": [
+            "__address_family",
+            "__packed_ip"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4346,6 +4370,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -4373,6 +4412,12 @@
         "properties": {
           "member": "inet_pton"
         },
+        "meta": {
+          "params": [
+            "__address_family",
+            "__ip_string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4384,6 +4429,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -4410,6 +4470,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ntohl"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -4449,6 +4514,11 @@
         "properties": {
           "member": "ntohs"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4486,6 +4556,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "setdefaulttimeout"
+        },
+        "meta": {
+          "params": [
+            "__timeout"
+          ]
         },
         "childSets": {
           "object": [
@@ -4525,6 +4600,9 @@
         "properties": {
           "member": "timeout"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -4535,23 +4613,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -4562,6 +4624,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "close"
+        },
+        "meta": {
+          "params": [
+            "__fd"
+          ]
         },
         "childSets": {
           "object": [
@@ -4601,6 +4668,11 @@
         "properties": {
           "member": "CMSG_LEN"
         },
+        "meta": {
+          "params": [
+            "__length"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4638,6 +4710,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "CMSG_SPACE"
+        },
+        "meta": {
+          "params": [
+            "__length"
+          ]
         },
         "childSets": {
           "object": [
@@ -4677,6 +4754,11 @@
         "properties": {
           "member": "sethostname"
         },
+        "meta": {
+          "params": [
+            "__name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -4714,6 +4796,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "if_indextoname"
+        },
+        "meta": {
+          "params": [
+            "__index"
+          ]
         },
         "childSets": {
           "object": [
@@ -4753,6 +4840,9 @@
         "properties": {
           "member": "if_nameindex"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -4763,23 +4853,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -4790,6 +4864,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "if_nametoindex"
+        },
+        "meta": {
+          "params": [
+            "__name"
+          ]
         },
         "childSets": {
           "object": [
@@ -7979,6 +8058,9 @@
         "properties": {
           "member": "AddressFamily"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -7989,23 +8071,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -8794,6 +8860,9 @@
         "properties": {
           "member": "SocketKind"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -8804,23 +8873,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -8979,6 +9032,9 @@
         "properties": {
           "member": "MsgFlag"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -8989,23 +9045,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -9437,6 +9477,9 @@
         "properties": {
           "member": "AddressInfo"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -9447,23 +9490,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -9706,6 +9733,14 @@
         "properties": {
           "member": "socket"
         },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto",
+            "fileno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -9744,6 +9779,14 @@
         "properties": {
           "member": "fromfd"
         },
+        "meta": {
+          "params": [
+            "fd",
+            "family",
+            "type",
+            "proto"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -9755,6 +9798,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -9782,6 +9855,15 @@
         "properties": {
           "member": "send_fds"
         },
+        "meta": {
+          "params": [
+            "sock",
+            "buffers",
+            "fds",
+            "flags",
+            "address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -9793,6 +9875,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -9820,6 +9932,14 @@
         "properties": {
           "member": "recv_fds"
         },
+        "meta": {
+          "params": [
+            "sock",
+            "bufsize",
+            "maxfds",
+            "flags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -9831,6 +9951,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -9858,43 +10008,10 @@
         "properties": {
           "member": "fromshare"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "socket"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
+        "meta": {
+          "params": [
+            "info"
           ]
-        }
-      }
-    },
-    {
-      "key": "socket.socketpair",
-      "abstract": "socketpair([family[, type[, proto]]]) -> (socket object, socket object)",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "socketpair"
         },
         "childSets": {
           "object": [
@@ -9933,6 +10050,58 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "socketpair"
+        },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "socket"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "socket.socketpair",
+      "abstract": "socketpair([family[, type[, proto]]]) -> (socket object, socket object)",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "socketpair"
+        },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto"
+          ]
         },
         "childSets": {
           "object": [
@@ -9972,6 +10141,12 @@
         "properties": {
           "member": "SocketIO"
         },
+        "meta": {
+          "params": [
+            "sock",
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -9983,6 +10158,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -10009,6 +10199,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getfqdn"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -10048,6 +10243,13 @@
         "properties": {
           "member": "create_connection"
         },
+        "meta": {
+          "params": [
+            "address",
+            "timeout",
+            "source_address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -10086,6 +10288,9 @@
         "properties": {
           "member": "has_dualstack_ipv6"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -10096,23 +10301,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -10123,6 +10312,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "create_server"
+        },
+        "meta": {
+          "params": [
+            "address"
+          ]
         },
         "childSets": {
           "object": [
@@ -10162,6 +10356,16 @@
         "properties": {
           "member": "getaddrinfo"
         },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "family",
+            "type",
+            "proto",
+            "flags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -10173,6 +10377,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

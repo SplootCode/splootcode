@@ -9,6 +9,12 @@
         "properties": {
           "member": "Decimal"
         },
+        "meta": {
+          "params": [
+            "value",
+            "context"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Fraction"
+        },
+        "meta": {
+          "params": [
+            "numerator",
+            "denominator"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +97,9 @@
         "properties": {
           "member": "StatisticsError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +110,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -122,6 +121,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "fmean"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +165,11 @@
         "properties": {
           "member": "geometric_mean"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +207,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "mean"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +251,12 @@
         "properties": {
           "member": "harmonic_mean"
         },
+        "meta": {
+          "params": [
+            "data",
+            "weights"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +294,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "median"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +338,11 @@
         "properties": {
           "member": "median_low"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +380,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "median_high"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -389,6 +424,12 @@
         "properties": {
           "member": "median_grouped"
         },
+        "meta": {
+          "params": [
+            "data",
+            "interval"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -426,6 +467,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "mode"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +511,11 @@
         "properties": {
           "member": "multimode"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -502,6 +553,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "pstdev"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "mu"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,6 +598,12 @@
         "properties": {
           "member": "pvariance"
         },
+        "meta": {
+          "params": [
+            "data",
+            "mu"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -578,6 +641,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "quantiles"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -617,6 +685,12 @@
         "properties": {
           "member": "stdev"
         },
+        "meta": {
+          "params": [
+            "data",
+            "xbar"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -654,6 +728,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "variance"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "xbar"
+          ]
         },
         "childSets": {
           "object": [
@@ -693,6 +773,12 @@
         "properties": {
           "member": "NormalDist"
         },
+        "meta": {
+          "params": [
+            "mu",
+            "sigma"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -731,6 +817,12 @@
         "properties": {
           "member": "correlation"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -742,6 +834,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -769,6 +876,12 @@
         "properties": {
           "member": "covariance"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -780,6 +893,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -807,6 +935,37 @@
         "properties": {
           "member": "LinearRegression"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "statistics"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "statistics.linear_regression",
+      "abstract": "Slope and intercept for simple linear regression.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "linear_regression"
+        },
+        "meta": {
+          "params": [
+            "__regressor",
+            "__dependent_variable"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -832,30 +991,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "statistics.linear_regression",
-      "abstract": "Slope and intercept for simple linear regression.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "linear_regression"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "statistics"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {

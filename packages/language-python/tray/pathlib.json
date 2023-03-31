@@ -9,6 +9,12 @@
         "properties": {
           "member": "BufferedRandom"
         },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BufferedReader"
+        },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +97,12 @@
         "properties": {
           "member": "BufferedWriter"
         },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +140,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "FileIO"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "mode",
+            "closefd",
+            "opener"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +187,16 @@
         "properties": {
           "member": "TextIOWrapper"
         },
+        "meta": {
+          "params": [
+            "buffer",
+            "encoding",
+            "errors",
+            "newline",
+            "line_buffering",
+            "write_through"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +235,9 @@
         "properties": {
           "member": "PathLike"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -209,23 +248,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -237,6 +260,39 @@
         "properties": {
           "member": "stat_result"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pathlib"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pathlib.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -262,30 +318,37 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "pathlib.TracebackType",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "TracebackType"
-        },
-        "childSets": {
-          "object": [
+            },
             {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "pathlib"
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
               },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -313,6 +376,12 @@
         "properties": {
           "member": "GenericAlias"
         },
+        "meta": {
+          "params": [
+            "origin",
+            "args"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -324,6 +393,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -350,6 +434,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "PurePath"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -389,43 +476,8 @@
         "properties": {
           "member": "PurePosixPath"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "pathlib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "pathlib.PureWindowsPath",
-      "abstract": "PurePath subclass for Windows systems.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PureWindowsPath"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -437,23 +489,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pathlib.PureWindowsPath",
+      "abstract": "PurePath subclass for Windows systems.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "PureWindowsPath"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pathlib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -464,6 +525,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Path"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -503,43 +567,8 @@
         "properties": {
           "member": "PosixPath"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "pathlib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "pathlib.WindowsPath",
-      "abstract": "Path subclass for Windows systems.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "WindowsPath"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -551,23 +580,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pathlib.WindowsPath",
+      "abstract": "Path subclass for Windows systems.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "WindowsPath"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pathlib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

@@ -9,6 +9,12 @@
         "properties": {
           "member": "array"
         },
+        "meta": {
+          "params": [
+            "__typecode",
+            "__initializer"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -509,6 +515,9 @@
         "properties": {
           "member": "error"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -519,23 +528,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -546,6 +539,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "adler32"
+        },
+        "meta": {
+          "params": [
+            "__data",
+            "__value"
+          ]
         },
         "childSets": {
           "object": [
@@ -585,6 +584,12 @@
         "properties": {
           "member": "compress"
         },
+        "meta": {
+          "params": [
+            "__data",
+            "level"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -622,6 +627,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compressobj"
+        },
+        "meta": {
+          "params": [
+            "level",
+            "method",
+            "wbits",
+            "memLevel",
+            "strategy",
+            "zdict"
+          ]
         },
         "childSets": {
           "object": [
@@ -661,6 +676,12 @@
         "properties": {
           "member": "crc32"
         },
+        "meta": {
+          "params": [
+            "__data",
+            "__value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -699,6 +720,13 @@
         "properties": {
           "member": "decompress"
         },
+        "meta": {
+          "params": [
+            "__data",
+            "wbits",
+            "bufsize"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -736,6 +764,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decompressobj"
+        },
+        "meta": {
+          "params": [
+            "wbits",
+            "zdict"
+          ]
         },
         "childSets": {
           "object": [

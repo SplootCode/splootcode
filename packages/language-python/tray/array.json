@@ -30,6 +30,12 @@
         "properties": {
           "member": "array"
         },
+        "meta": {
+          "params": [
+            "__typecode",
+            "__initializer"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -67,6 +73,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ArrayType"
+        },
+        "meta": {
+          "params": [
+            "__typecode",
+            "__initializer"
+          ]
         },
         "childSets": {
           "object": [

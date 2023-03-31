@@ -114,6 +114,11 @@
         "properties": {
           "member": "acos"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -151,6 +156,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "acosh"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -190,6 +200,11 @@
         "properties": {
           "member": "asin"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -227,6 +242,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "asinh"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -266,6 +286,11 @@
         "properties": {
           "member": "atan"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -304,6 +329,12 @@
         "properties": {
           "member": "atan2"
         },
+        "meta": {
+          "params": [
+            "__y",
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -315,6 +346,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -341,6 +387,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "atanh"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -380,6 +431,11 @@
         "properties": {
           "member": "ceil"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -418,6 +474,12 @@
         "properties": {
           "member": "comb"
         },
+        "meta": {
+          "params": [
+            "__n",
+            "__k"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -429,6 +491,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -456,6 +533,12 @@
         "properties": {
           "member": "copysign"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -467,6 +550,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -493,6 +591,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "cos"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -532,6 +635,11 @@
         "properties": {
           "member": "cosh"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -569,6 +677,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "degrees"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -608,6 +721,12 @@
         "properties": {
           "member": "dist"
         },
+        "meta": {
+          "params": [
+            "__p",
+            "__q"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -619,6 +738,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -645,6 +779,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "erf"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -684,6 +823,11 @@
         "properties": {
           "member": "erfc"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -721,6 +865,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "exp"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -760,6 +909,11 @@
         "properties": {
           "member": "expm1"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -797,6 +951,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "fabs"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -836,6 +995,11 @@
         "properties": {
           "member": "factorial"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -873,6 +1037,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "floor"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -912,6 +1081,12 @@
         "properties": {
           "member": "fmod"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -923,6 +1098,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -949,6 +1139,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "frexp"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -988,6 +1183,11 @@
         "properties": {
           "member": "fsum"
         },
+        "meta": {
+          "params": [
+            "__seq"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1025,6 +1225,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "gamma"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1064,6 +1269,9 @@
         "properties": {
           "member": "gcd"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1101,6 +1309,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "hypot"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1140,6 +1351,12 @@
         "properties": {
           "member": "isclose"
         },
+        "meta": {
+          "params": [
+            "a",
+            "b"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1151,6 +1368,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1177,6 +1409,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isinf"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1216,6 +1453,11 @@
         "properties": {
           "member": "isfinite"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1253,6 +1495,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isnan"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1292,6 +1539,11 @@
         "properties": {
           "member": "isqrt"
         },
+        "meta": {
+          "params": [
+            "__n"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1329,6 +1581,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "lcm"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1368,6 +1623,12 @@
         "properties": {
           "member": "ldexp"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__i"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1379,6 +1640,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1405,6 +1681,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "lgamma"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1444,6 +1725,12 @@
         "properties": {
           "member": "log"
         },
+        "meta": {
+          "params": [
+            "x",
+            "base"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1481,6 +1768,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "log10"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1520,6 +1812,11 @@
         "properties": {
           "member": "log1p"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1557,6 +1854,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "log2"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1596,6 +1898,11 @@
         "properties": {
           "member": "modf"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1634,6 +1941,12 @@
         "properties": {
           "member": "nextafter"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1645,6 +1958,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1671,6 +1999,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "perm"
+        },
+        "meta": {
+          "params": [
+            "__n",
+            "__k"
+          ]
         },
         "childSets": {
           "object": [
@@ -1710,6 +2044,12 @@
         "properties": {
           "member": "pow"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1721,6 +2061,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1747,6 +2102,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "prod"
+        },
+        "meta": {
+          "params": [
+            "__iterable"
+          ]
         },
         "childSets": {
           "object": [
@@ -1786,6 +2146,11 @@
         "properties": {
           "member": "radians"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1824,6 +2189,12 @@
         "properties": {
           "member": "remainder"
         },
+        "meta": {
+          "params": [
+            "__x",
+            "__y"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1835,6 +2206,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1861,6 +2247,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sin"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1900,6 +2291,11 @@
         "properties": {
           "member": "sinh"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1937,6 +2333,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sqrt"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -1976,6 +2377,11 @@
         "properties": {
           "member": "tan"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2013,6 +2419,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "tanh"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [
@@ -2052,6 +2463,11 @@
         "properties": {
           "member": "trunc"
         },
+        "meta": {
+          "params": [
+            "__x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2089,6 +2505,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ulp"
+        },
+        "meta": {
+          "params": [
+            "__x"
+          ]
         },
         "childSets": {
           "object": [

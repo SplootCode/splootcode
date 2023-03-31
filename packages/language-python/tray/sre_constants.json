@@ -51,6 +51,13 @@
         "properties": {
           "member": "error"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "pattern",
+            "pos"
+          ]
+        },
         "childSets": {
           "object": [
             {

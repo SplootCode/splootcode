@@ -9,6 +9,13 @@
         "properties": {
           "member": "NetrcParseError"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "filename",
+            "lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +53,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "netrc"
+        },
+        "meta": {
+          "params": [
+            "file"
+          ]
         },
         "childSets": {
           "object": [

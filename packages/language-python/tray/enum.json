@@ -9,6 +9,13 @@
         "properties": {
           "member": "EnumMeta"
         },
+        "meta": {
+          "params": [
+            "cls",
+            "bases",
+            "classdict"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +27,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +83,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Enum"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +127,11 @@
         "properties": {
           "member": "IntEnum"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +169,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unique"
+        },
+        "meta": {
+          "params": [
+            "enumeration"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,43 +213,8 @@
         "properties": {
           "member": "auto"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "enum"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "enum.Flag",
-      "abstract": "    Support for flags",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Flag"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -209,23 +226,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "enum.Flag",
+      "abstract": "    Support for flags",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Flag"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "enum"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -236,6 +262,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IntFlag"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [

@@ -9,6 +9,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +99,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse"
+        },
+        "meta": {
+          "params": [
+            "fp",
+            "environ",
+            "keep_blank_values",
+            "strict_parsing",
+            "separator"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +147,15 @@
         "properties": {
           "member": "parse_multipart"
         },
+        "meta": {
+          "params": [
+            "fp",
+            "pdict",
+            "encoding",
+            "errors",
+            "separator"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +167,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -122,6 +208,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse_header"
+        },
+        "meta": {
+          "params": [
+            "line"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +252,11 @@
         "properties": {
           "member": "test"
         },
+        "meta": {
+          "params": [
+            "environ"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +294,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "print_environ"
+        },
+        "meta": {
+          "params": [
+            "environ"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +338,11 @@
         "properties": {
           "member": "print_form"
         },
+        "meta": {
+          "params": [
+            "form"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -275,6 +381,9 @@
         "properties": {
           "member": "print_directory"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -285,23 +394,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -313,6 +406,37 @@
         "properties": {
           "member": "print_environ_usage"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "cgi"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "cgi.MiniFieldStorage",
+      "abstract": "Like FieldStorage, for use when no file uploads are possible.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "MiniFieldStorage"
+        },
+        "meta": {
+          "params": [
+            "name",
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -338,30 +462,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "cgi.MiniFieldStorage",
-      "abstract": "Like FieldStorage, for use when no file uploads are possible.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "MiniFieldStorage"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "cgi"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -388,6 +489,21 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "FieldStorage"
+        },
+        "meta": {
+          "params": [
+            "fp",
+            "headers",
+            "outerboundary",
+            "environ",
+            "keep_blank_values",
+            "strict_parsing",
+            "limit",
+            "encoding",
+            "errors",
+            "max_num_fields",
+            "separator"
+          ]
         },
         "childSets": {
           "object": [
@@ -427,6 +543,14 @@
         "properties": {
           "member": "print_exception"
         },
+        "meta": {
+          "params": [
+            "type",
+            "value",
+            "tb",
+            "limit"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -465,6 +589,9 @@
         "properties": {
           "member": "print_arguments"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -475,23 +602,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

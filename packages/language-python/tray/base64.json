@@ -9,6 +9,12 @@
         "properties": {
           "member": "b64encode"
         },
+        "meta": {
+          "params": [
+            "s",
+            "altchars"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b64decode"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "altchars",
+            "validate"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +98,11 @@
         "properties": {
           "member": "standard_b64encode"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +140,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "standard_b64decode"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +184,11 @@
         "properties": {
           "member": "urlsafe_b64encode"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +226,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "urlsafe_b64decode"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +270,11 @@
         "properties": {
           "member": "b32encode"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +312,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b32decode"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "casefold",
+            "map01"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +358,11 @@
         "properties": {
           "member": "b16encode"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +400,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b16decode"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "casefold"
+          ]
         },
         "childSets": {
           "object": [
@@ -389,6 +445,11 @@
         "properties": {
           "member": "b32hexencode"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -426,6 +487,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b32hexdecode"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "casefold"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +532,11 @@
         "properties": {
           "member": "a85encode"
         },
+        "meta": {
+          "params": [
+            "b"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -502,6 +574,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "a85decode"
+        },
+        "meta": {
+          "params": [
+            "b"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,6 +618,12 @@
         "properties": {
           "member": "b85encode"
         },
+        "meta": {
+          "params": [
+            "b",
+            "pad"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -578,6 +661,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b85decode"
+        },
+        "meta": {
+          "params": [
+            "b"
+          ]
         },
         "childSets": {
           "object": [
@@ -617,6 +705,12 @@
         "properties": {
           "member": "decode"
         },
+        "meta": {
+          "params": [
+            "input",
+            "output"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -628,6 +722,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -655,6 +764,12 @@
         "properties": {
           "member": "encode"
         },
+        "meta": {
+          "params": [
+            "input",
+            "output"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -666,6 +781,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -692,6 +822,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "encodebytes"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [
@@ -730,6 +865,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decodebytes"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [

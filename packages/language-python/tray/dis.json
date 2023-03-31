@@ -282,6 +282,12 @@
         "properties": {
           "member": "stack_effect"
         },
+        "meta": {
+          "params": [
+            "__opcode",
+            "__oparg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -320,6 +326,9 @@
         "properties": {
           "member": "Instruction"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -330,23 +339,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -357,6 +350,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Bytecode"
+        },
+        "meta": {
+          "params": [
+            "x"
+          ]
         },
         "childSets": {
           "object": [
@@ -417,6 +415,11 @@
         "properties": {
           "member": "findlabels"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -454,6 +457,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "findlinestarts"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -493,6 +501,11 @@
         "properties": {
           "member": "pretty_flags"
         },
+        "meta": {
+          "params": [
+            "flags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -530,6 +543,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "code_info"
+        },
+        "meta": {
+          "params": [
+            "x"
+          ]
         },
         "childSets": {
           "object": [
@@ -569,6 +587,11 @@
         "properties": {
           "member": "dis"
         },
+        "meta": {
+          "params": [
+            "x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -606,6 +629,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "disassemble"
+        },
+        "meta": {
+          "params": [
+            "co",
+            "lasti"
+          ]
         },
         "childSets": {
           "object": [
@@ -645,6 +674,12 @@
         "properties": {
           "member": "disco"
         },
+        "meta": {
+          "params": [
+            "co",
+            "lasti"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -682,6 +717,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "distb"
+        },
+        "meta": {
+          "params": [
+            "tb"
+          ]
         },
         "childSets": {
           "object": [
@@ -721,6 +761,11 @@
         "properties": {
           "member": "get_instructions"
         },
+        "meta": {
+          "params": [
+            "x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -758,6 +803,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "show_code"
+        },
+        "meta": {
+          "params": [
+            "co"
+          ]
         },
         "childSets": {
           "object": [

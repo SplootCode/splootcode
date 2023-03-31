@@ -9,6 +9,18 @@
         "properties": {
           "member": "datetime"
         },
+        "meta": {
+          "params": [
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "microsecond",
+            "tzinfo"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +32,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +88,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Enum"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +132,9 @@
         "properties": {
           "member": "PlistFormat"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +145,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -165,6 +199,11 @@
         "properties": {
           "member": "load"
         },
+        "meta": {
+          "params": [
+            "fp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -202,6 +241,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "loads"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -241,6 +285,12 @@
         "properties": {
           "member": "dump"
         },
+        "meta": {
+          "params": [
+            "value",
+            "fp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -252,6 +302,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -278,6 +343,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dumps"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -317,6 +387,11 @@
         "properties": {
           "member": "UID"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -354,6 +429,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "InvalidFileException"
+        },
+        "meta": {
+          "params": [
+            "message"
+          ]
         },
         "childSets": {
           "object": [

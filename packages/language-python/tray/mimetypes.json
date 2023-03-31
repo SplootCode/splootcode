@@ -9,6 +9,12 @@
         "properties": {
           "member": "guess_type"
         },
+        "meta": {
+          "params": [
+            "url",
+            "strict"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "guess_all_extensions"
+        },
+        "meta": {
+          "params": [
+            "type",
+            "strict"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +97,12 @@
         "properties": {
           "member": "guess_extension"
         },
+        "meta": {
+          "params": [
+            "type",
+            "strict"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +140,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "init"
+        },
+        "meta": {
+          "params": [
+            "files"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +184,11 @@
         "properties": {
           "member": "read_mime_types"
         },
+        "meta": {
+          "params": [
+            "file"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +227,13 @@
         "properties": {
           "member": "add_type"
         },
+        "meta": {
+          "params": [
+            "type",
+            "ext",
+            "strict"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -210,6 +245,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -362,6 +412,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "MimeTypes"
+        },
+        "meta": {
+          "params": [
+            "filenames",
+            "strict"
+          ]
         },
         "childSets": {
           "object": [

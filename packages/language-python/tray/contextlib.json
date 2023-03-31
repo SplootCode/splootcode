@@ -9,6 +9,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +100,9 @@
         "properties": {
           "member": "AbstractContextManager"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +113,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,43 +125,8 @@
         "properties": {
           "member": "AbstractAsyncContextManager"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "contextlib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "contextlib.ContextDecorator",
-      "abstract": "A base class or mixin that enables context managers to work as decorators.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ContextDecorator"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -133,23 +138,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "contextlib.ContextDecorator",
+      "abstract": "A base class or mixin that enables context managers to work as decorators.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ContextDecorator"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "contextlib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -160,6 +174,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "contextmanager"
+        },
+        "meta": {
+          "params": [
+            "func"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +218,9 @@
         "properties": {
           "member": "AsyncContextDecorator"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -209,23 +231,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -236,6 +242,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "asynccontextmanager"
+        },
+        "meta": {
+          "params": [
+            "func"
+          ]
         },
         "childSets": {
           "object": [
@@ -275,6 +286,11 @@
         "properties": {
           "member": "closing"
         },
+        "meta": {
+          "params": [
+            "thing"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -312,6 +328,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "aclosing"
+        },
+        "meta": {
+          "params": [
+            "thing"
+          ]
         },
         "childSets": {
           "object": [
@@ -351,6 +372,9 @@
         "properties": {
           "member": "suppress"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -389,6 +413,9 @@
         "properties": {
           "member": "redirect_stdout"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -399,23 +426,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -427,6 +438,9 @@
         "properties": {
           "member": "redirect_stderr"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -437,23 +451,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -465,43 +463,8 @@
         "properties": {
           "member": "ExitStack"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "contextlib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "contextlib.AsyncExitStack",
-      "abstract": "Async context manager for dynamic management of a stack of exit",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "AsyncExitStack"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -513,23 +476,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "contextlib.AsyncExitStack",
+      "abstract": "Async context manager for dynamic management of a stack of exit",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "AsyncExitStack"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "contextlib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -540,6 +512,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "nullcontext"
+        },
+        "meta": {
+          "params": [
+            "enter_result"
+          ]
         },
         "childSets": {
           "object": [

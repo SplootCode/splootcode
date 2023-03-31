@@ -9,6 +9,9 @@
         "properties": {
           "member": "SSLError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -47,6 +34,9 @@
         "properties": {
           "member": "SSLZeroReturnError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +47,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,6 +59,9 @@
         "properties": {
           "member": "SSLWantReadError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +72,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -123,6 +84,9 @@
         "properties": {
           "member": "SSLWantWriteError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -133,23 +97,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -161,6 +109,9 @@
         "properties": {
           "member": "SSLSyscallError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -171,23 +122,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -199,6 +134,9 @@
         "properties": {
           "member": "SSLEOFError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -209,23 +147,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -237,43 +159,8 @@
         "properties": {
           "member": "SSLCertVerificationError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ssl"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ssl.CertificateError",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "CertificateError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -285,23 +172,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ssl.CertificateError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "CertificateError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ssl"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -312,6 +208,20 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "wrap_socket"
+        },
+        "meta": {
+          "params": [
+            "sock",
+            "keyfile",
+            "certfile",
+            "server_side",
+            "cert_reqs",
+            "ssl_version",
+            "ca_certs",
+            "do_handshake_on_connect",
+            "suppress_ragged_eofs",
+            "ciphers"
+          ]
         },
         "childSets": {
           "object": [
@@ -351,6 +261,11 @@
         "properties": {
           "member": "create_default_context"
         },
+        "meta": {
+          "params": [
+            "purpose"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -388,6 +303,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "RAND_bytes"
+        },
+        "meta": {
+          "params": [
+            "__num"
+          ]
         },
         "childSets": {
           "object": [
@@ -427,6 +347,11 @@
         "properties": {
           "member": "RAND_pseudo_bytes"
         },
+        "meta": {
+          "params": [
+            "__num"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -465,6 +390,9 @@
         "properties": {
           "member": "RAND_status"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -475,23 +403,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -502,6 +414,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "RAND_egd"
+        },
+        "meta": {
+          "params": [
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,6 +458,12 @@
         "properties": {
           "member": "RAND_add"
         },
+        "meta": {
+          "params": [
+            "__s",
+            "__entropy"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -552,6 +475,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -579,6 +517,12 @@
         "properties": {
           "member": "match_hostname"
         },
+        "meta": {
+          "params": [
+            "cert",
+            "hostname"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -590,6 +534,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -616,6 +575,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "cert_time_to_seconds"
+        },
+        "meta": {
+          "params": [
+            "cert_time"
+          ]
         },
         "childSets": {
           "object": [
@@ -655,6 +619,14 @@
         "properties": {
           "member": "get_server_certificate"
         },
+        "meta": {
+          "params": [
+            "addr",
+            "ssl_version",
+            "ca_certs",
+            "timeout"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -692,6 +664,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "DER_cert_to_PEM_cert"
+        },
+        "meta": {
+          "params": [
+            "der_cert_bytes"
+          ]
         },
         "childSets": {
           "object": [
@@ -731,6 +708,11 @@
         "properties": {
           "member": "PEM_cert_to_DER_cert"
         },
+        "meta": {
+          "params": [
+            "pem_cert_string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -769,43 +751,8 @@
         "properties": {
           "member": "DefaultVerifyPaths"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ssl"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ssl.get_default_verify_paths",
-      "abstract": "Return paths to default cafile and capath.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_default_verify_paths"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -817,23 +764,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ssl.get_default_verify_paths",
+      "abstract": "Return paths to default cafile and capath.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_default_verify_paths"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ssl"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -844,6 +800,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "enum_certificates"
+        },
+        "meta": {
+          "params": [
+            "store_name"
+          ]
         },
         "childSets": {
           "object": [
@@ -883,6 +844,11 @@
         "properties": {
           "member": "enum_crls"
         },
+        "meta": {
+          "params": [
+            "store_name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -921,6 +887,9 @@
         "properties": {
           "member": "VerifyMode"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -931,23 +900,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1022,6 +975,9 @@
         "properties": {
           "member": "VerifyFlags"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1032,23 +988,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1396,6 +1336,9 @@
         "properties": {
           "member": "Options"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1406,23 +1349,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2043,6 +1970,9 @@
         "properties": {
           "member": "AlertDescription"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2053,23 +1983,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2648,6 +2562,9 @@
         "properties": {
           "member": "Purpose"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2658,23 +2575,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2685,6 +2586,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SSLSocket"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -2724,6 +2628,9 @@
         "properties": {
           "member": "TLSVersion"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2734,23 +2641,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2761,6 +2652,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SSLContext"
+        },
+        "meta": {
+          "params": [
+            "protocol"
+          ]
         },
         "childSets": {
           "object": [
@@ -2800,6 +2696,9 @@
         "properties": {
           "member": "SSLObject"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2838,6 +2737,9 @@
         "properties": {
           "member": "MemoryBIO"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2848,23 +2750,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2876,43 +2762,8 @@
         "properties": {
           "member": "SSLSession"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ssl"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ssl.SSLErrorNumber",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SSLErrorNumber"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -2924,23 +2775,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ssl.SSLErrorNumber",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SSLErrorNumber"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ssl"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -3140,6 +3000,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "get_protocol_name"
+        },
+        "meta": {
+          "params": [
+            "protocol_code"
+          ]
         },
         "childSets": {
           "object": [

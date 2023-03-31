@@ -114,6 +114,12 @@
         "properties": {
           "member": "ArgumentError"
         },
+        "meta": {
+          "params": [
+            "argument",
+            "message"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -125,6 +131,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -151,6 +172,23 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ArgumentParser"
+        },
+        "meta": {
+          "params": [
+            "prog",
+            "usage",
+            "description",
+            "epilog",
+            "parents",
+            "formatter_class",
+            "prefix_chars",
+            "fromfile_prefix_chars",
+            "argument_default",
+            "conflict_handler",
+            "add_help",
+            "allow_abbrev",
+            "exit_on_error"
+          ]
         },
         "childSets": {
           "object": [
@@ -190,6 +228,14 @@
         "properties": {
           "member": "HelpFormatter"
         },
+        "meta": {
+          "params": [
+            "prog",
+            "indent_increment",
+            "max_help_position",
+            "width"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -228,6 +274,9 @@
         "properties": {
           "member": "RawDescriptionHelpFormatter"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -238,23 +287,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -266,6 +299,9 @@
         "properties": {
           "member": "RawTextHelpFormatter"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -276,23 +312,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -304,6 +324,9 @@
         "properties": {
           "member": "ArgumentDefaultsHelpFormatter"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -314,23 +337,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -342,6 +349,45 @@
         "properties": {
           "member": "MetavarTypeHelpFormatter"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "argparse"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "argparse.Action",
+      "abstract": "Information about how to convert command line strings to Python objects.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Action"
+        },
+        "meta": {
+          "params": [
+            "option_strings",
+            "dest",
+            "nargs",
+            "const",
+            "default",
+            "type",
+            "choices",
+            "required",
+            "help",
+            "metavar"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -367,30 +413,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "argparse.Action",
-      "abstract": "Information about how to convert command line strings to Python objects.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Action"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "argparse"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -418,6 +441,18 @@
         "properties": {
           "member": "BooleanOptionalAction"
         },
+        "meta": {
+          "params": [
+            "option_strings",
+            "dest",
+            "default",
+            "type",
+            "choices",
+            "required",
+            "help",
+            "metavar"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -429,6 +464,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -455,6 +505,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Namespace"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -494,6 +547,14 @@
         "properties": {
           "member": "FileType"
         },
+        "meta": {
+          "params": [
+            "mode",
+            "bufsize",
+            "encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -532,6 +593,9 @@
         "properties": {
           "member": "ArgumentTypeError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -542,23 +606,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

@@ -9,6 +9,9 @@
         "properties": {
           "member": "BaseEventLoop"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -46,6 +33,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Server"
+        },
+        "meta": {
+          "params": [
+            "loop",
+            "sockets",
+            "protocol_factory",
+            "ssl_context",
+            "backlog",
+            "ssl_handshake_timeout"
+          ]
         },
         "childSets": {
           "object": [
@@ -72,6 +69,81 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -84,6 +156,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "coroutine"
+        },
+        "meta": {
+          "params": [
+            "func"
+          ]
         },
         "childSets": {
           "object": [
@@ -123,6 +200,11 @@
         "properties": {
           "member": "iscoroutinefunction"
         },
+        "meta": {
+          "params": [
+            "func"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -160,6 +242,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "iscoroutine"
+        },
+        "meta": {
+          "params": [
+            "obj"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +286,9 @@
         "properties": {
           "member": "AbstractEventLoopPolicy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -209,23 +299,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -237,6 +311,9 @@
         "properties": {
           "member": "AbstractEventLoop"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -247,23 +324,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -275,6 +336,39 @@
         "properties": {
           "member": "AbstractServer"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.Handle",
+      "abstract": "Object returned by callback registration methods.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Handle"
+        },
+        "meta": {
+          "params": [
+            "callback",
+            "args",
+            "loop",
+            "context"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -300,30 +394,22 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Handle",
-      "abstract": "Object returned by callback registration methods.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Handle"
-        },
-        "childSets": {
-          "object": [
+            },
             {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
               },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -351,6 +437,15 @@
         "properties": {
           "member": "TimerHandle"
         },
+        "meta": {
+          "params": [
+            "when",
+            "callback",
+            "args",
+            "loop",
+            "context"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -362,6 +457,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -389,6 +529,9 @@
         "properties": {
           "member": "get_event_loop_policy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -399,23 +542,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -426,6 +553,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "set_event_loop_policy"
+        },
+        "meta": {
+          "params": [
+            "policy"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +597,9 @@
         "properties": {
           "member": "get_event_loop"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -475,23 +610,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -502,6 +621,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "set_event_loop"
+        },
+        "meta": {
+          "params": [
+            "loop"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,43 +665,8 @@
         "properties": {
           "member": "new_event_loop"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.get_child_watcher",
-      "abstract": "Equivalent to calling get_event_loop_policy().get_child_watcher().",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_child_watcher"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -589,23 +678,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.get_child_watcher",
+      "abstract": "Equivalent to calling get_event_loop_policy().get_child_watcher().",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_child_watcher"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -616,6 +714,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "set_child_watcher"
+        },
+        "meta": {
+          "params": [
+            "watcher"
+          ]
         },
         "childSets": {
           "object": [
@@ -655,6 +758,9 @@
         "properties": {
           "member": "get_running_loop"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -665,23 +771,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -692,6 +782,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Future"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -731,6 +824,11 @@
         "properties": {
           "member": "wrap_future"
         },
+        "meta": {
+          "params": [
+            "future"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -768,6 +866,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isfuture"
+        },
+        "meta": {
+          "params": [
+            "obj"
+          ]
         },
         "childSets": {
           "object": [
@@ -807,6 +910,9 @@
         "properties": {
           "member": "Lock"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -844,6 +950,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Event"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -883,6 +992,11 @@
         "properties": {
           "member": "Condition"
         },
+        "meta": {
+          "params": [
+            "lock"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -920,6 +1034,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Semaphore"
+        },
+        "meta": {
+          "params": [
+            "value"
+          ]
         },
         "childSets": {
           "object": [
@@ -959,6 +1078,11 @@
         "properties": {
           "member": "BoundedSemaphore"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -997,6 +1121,9 @@
         "properties": {
           "member": "BaseProtocol"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1007,23 +1134,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1035,6 +1146,9 @@
         "properties": {
           "member": "Protocol"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1045,23 +1159,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1073,6 +1171,9 @@
         "properties": {
           "member": "DatagramProtocol"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1083,23 +1184,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1111,43 +1196,8 @@
         "properties": {
           "member": "SubprocessProtocol"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.BufferedProtocol",
-      "abstract": "Interface for stream protocol with manual buffer control.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BufferedProtocol"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1159,23 +1209,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.BufferedProtocol",
+      "abstract": "Interface for stream protocol with manual buffer control.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedProtocol"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -1186,6 +1245,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Queue"
+        },
+        "meta": {
+          "params": [
+            "maxsize"
+          ]
         },
         "childSets": {
           "object": [
@@ -1225,6 +1289,9 @@
         "properties": {
           "member": "PriorityQueue"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1235,23 +1302,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1263,6 +1314,9 @@
         "properties": {
           "member": "LifoQueue"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1273,23 +1327,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1301,43 +1339,8 @@
         "properties": {
           "member": "QueueFull"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.QueueEmpty",
-      "abstract": "Raised when Queue.get_nowait() is called on an empty Queue.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "QueueEmpty"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1349,23 +1352,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.QueueEmpty",
+      "abstract": "Raised when Queue.get_nowait() is called on an empty Queue.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "QueueEmpty"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -1376,6 +1388,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "StreamReader"
+        },
+        "meta": {
+          "params": [
+            "limit",
+            "loop"
+          ]
         },
         "childSets": {
           "object": [
@@ -1415,6 +1433,14 @@
         "properties": {
           "member": "StreamWriter"
         },
+        "meta": {
+          "params": [
+            "transport",
+            "protocol",
+            "reader",
+            "loop"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1426,6 +1452,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1452,6 +1523,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "StreamReaderProtocol"
+        },
+        "meta": {
+          "params": [
+            "stream_reader",
+            "client_connected_cb",
+            "loop"
+          ]
         },
         "childSets": {
           "object": [
@@ -1491,6 +1569,12 @@
         "properties": {
           "member": "open_connection"
         },
+        "meta": {
+          "params": [
+            "host",
+            "port"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1528,6 +1612,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "start_server"
+        },
+        "meta": {
+          "params": [
+            "client_connected_cb",
+            "host",
+            "port"
+          ]
         },
         "childSets": {
           "object": [
@@ -1567,6 +1658,11 @@
         "properties": {
           "member": "open_unix_connection"
         },
+        "meta": {
+          "params": [
+            "path"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1604,6 +1700,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "start_unix_server"
+        },
+        "meta": {
+          "params": [
+            "client_connected_cb",
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -1643,6 +1745,11 @@
         "properties": {
           "member": "create_subprocess_exec"
         },
+        "meta": {
+          "params": [
+            "program"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1680,6 +1787,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "create_subprocess_shell"
+        },
+        "meta": {
+          "params": [
+            "cmd",
+            "stdin",
+            "stdout",
+            "stderr",
+            "limit"
+          ]
         },
         "childSets": {
           "object": [
@@ -1719,6 +1835,11 @@
         "properties": {
           "member": "Task"
         },
+        "meta": {
+          "params": [
+            "coro"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1756,6 +1877,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "create_task"
+        },
+        "meta": {
+          "params": [
+            "coro"
+          ]
         },
         "childSets": {
           "object": [
@@ -1858,6 +1984,12 @@
         "properties": {
           "member": "wait_for"
         },
+        "meta": {
+          "params": [
+            "fut",
+            "timeout"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1869,6 +2001,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1895,6 +2042,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "as_completed"
+        },
+        "meta": {
+          "params": [
+            "fs"
+          ]
         },
         "childSets": {
           "object": [
@@ -1934,6 +2086,12 @@
         "properties": {
           "member": "sleep"
         },
+        "meta": {
+          "params": [
+            "delay",
+            "result"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1971,6 +2129,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "shield"
+        },
+        "meta": {
+          "params": [
+            "arg"
+          ]
         },
         "childSets": {
           "object": [
@@ -2010,6 +2173,12 @@
         "properties": {
           "member": "run_coroutine_threadsafe"
         },
+        "meta": {
+          "params": [
+            "coro",
+            "loop"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2021,6 +2190,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2047,6 +2231,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "current_task"
+        },
+        "meta": {
+          "params": [
+            "loop"
+          ]
         },
         "childSets": {
           "object": [
@@ -2086,6 +2275,11 @@
         "properties": {
           "member": "all_tasks"
         },
+        "meta": {
+          "params": [
+            "loop"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2123,6 +2317,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BaseTransport"
+        },
+        "meta": {
+          "params": [
+            "extra"
+          ]
         },
         "childSets": {
           "object": [
@@ -2162,6 +2361,9 @@
         "properties": {
           "member": "ReadTransport"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2172,23 +2374,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2200,6 +2386,9 @@
         "properties": {
           "member": "WriteTransport"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2210,23 +2399,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2238,6 +2411,9 @@
         "properties": {
           "member": "Transport"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2248,23 +2424,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2276,43 +2436,8 @@
         "properties": {
           "member": "DatagramTransport"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.SubprocessTransport",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SubprocessTransport"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -2324,23 +2449,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.SubprocessTransport",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SubprocessTransport"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -2351,6 +2485,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "run"
+        },
+        "meta": {
+          "params": [
+            "main"
+          ]
         },
         "childSets": {
           "object": [
@@ -2390,6 +2529,9 @@
         "properties": {
           "member": "CancelledError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2400,23 +2542,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2428,6 +2554,9 @@
         "properties": {
           "member": "InvalidStateError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2438,23 +2567,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2466,6 +2579,37 @@
         "properties": {
           "member": "TimeoutError"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.IncompleteReadError",
+      "abstract": "    Incomplete read error. Attributes:",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IncompleteReadError"
+        },
+        "meta": {
+          "params": [
+            "partial",
+            "expected"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2491,30 +2635,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.IncompleteReadError",
-      "abstract": "    Incomplete read error. Attributes:",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "IncompleteReadError"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2542,6 +2663,12 @@
         "properties": {
           "member": "LimitOverrunError"
         },
+        "meta": {
+          "params": [
+            "message",
+            "consumed"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2553,6 +2680,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2580,6 +2722,9 @@
         "properties": {
           "member": "SendfileNotAvailableError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2590,23 +2735,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2617,6 +2746,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "to_thread"
+        },
+        "meta": {
+          "params": [
+            "__func"
+          ]
         },
         "childSets": {
           "object": [
@@ -2656,43 +2790,8 @@
         "properties": {
           "member": "SelectorEventLoop"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.SelectorEventLoop",
-      "abstract": "Unix event loop.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SelectorEventLoop"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -2704,23 +2803,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.SelectorEventLoop",
+      "abstract": "Unix event loop.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SelectorEventLoop"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -2731,6 +2839,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ProactorEventLoop"
+        },
+        "meta": {
+          "params": [
+            "proactor"
+          ]
         },
         "childSets": {
           "object": [
@@ -2770,6 +2883,11 @@
         "properties": {
           "member": "IocpProactor"
         },
+        "meta": {
+          "params": [
+            "concurrency"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2808,6 +2926,9 @@
         "properties": {
           "member": "DefaultEventLoopPolicy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2818,23 +2939,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2846,6 +2951,9 @@
         "properties": {
           "member": "DefaultEventLoopPolicy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2856,23 +2964,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2884,6 +2976,9 @@
         "properties": {
           "member": "WindowsSelectorEventLoopPolicy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2894,23 +2989,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2922,6 +3001,9 @@
         "properties": {
           "member": "WindowsProactorEventLoopPolicy"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2932,23 +3014,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2960,6 +3026,9 @@
         "properties": {
           "member": "AbstractChildWatcher"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2970,23 +3039,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -2998,6 +3051,9 @@
         "properties": {
           "member": "SafeChildWatcher"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -3008,23 +3064,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3036,6 +3076,9 @@
         "properties": {
           "member": "FastChildWatcher"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -3046,23 +3089,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3074,6 +3101,9 @@
         "properties": {
           "member": "PidfdChildWatcher"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -3084,23 +3114,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -3112,43 +3126,8 @@
         "properties": {
           "member": "MultiLoopChildWatcher"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.ThreadedChildWatcher",
-      "abstract": "Threaded child watcher implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ThreadedChildWatcher"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -3160,23 +3139,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "asyncio.ThreadedChildWatcher",
+      "abstract": "Threaded child watcher implementation.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ThreadedChildWatcher"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "asyncio"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

@@ -9,6 +9,11 @@
         "properties": {
           "member": "commonprefix"
         },
+        "meta": {
+          "params": [
+            "m"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "exists"
+        },
+        "meta": {
+          "params": [
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +95,11 @@
         "properties": {
           "member": "getsize"
         },
+        "meta": {
+          "params": [
+            "filename"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +137,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isfile"
+        },
+        "meta": {
+          "params": [
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +181,11 @@
         "properties": {
           "member": "isdir"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +223,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getatime"
+        },
+        "meta": {
+          "params": [
+            "filename"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +267,11 @@
         "properties": {
           "member": "getmtime"
         },
+        "meta": {
+          "params": [
+            "filename"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +309,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getctime"
+        },
+        "meta": {
+          "params": [
+            "filename"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +353,12 @@
         "properties": {
           "member": "samefile"
         },
+        "meta": {
+          "params": [
+            "f1",
+            "f2"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -324,6 +370,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -351,6 +412,12 @@
         "properties": {
           "member": "sameopenfile"
         },
+        "meta": {
+          "params": [
+            "fp1",
+            "fp2"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -362,6 +429,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -389,6 +471,12 @@
         "properties": {
           "member": "samestat"
         },
+        "meta": {
+          "params": [
+            "s1",
+            "s2"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -400,6 +488,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

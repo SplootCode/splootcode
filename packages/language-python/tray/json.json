@@ -9,6 +9,13 @@
         "properties": {
           "member": "JSONDecodeError"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "doc",
+            "pos"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +27,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +83,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "JSONDecoder"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -85,6 +125,9 @@
         "properties": {
           "member": "JSONEncoder"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +165,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dumps"
+        },
+        "meta": {
+          "params": [
+            "obj"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +209,12 @@
         "properties": {
           "member": "dump"
         },
+        "meta": {
+          "params": [
+            "obj",
+            "fp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -172,6 +226,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -198,6 +267,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "loads"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +311,11 @@
         "properties": {
           "member": "load"
         },
+        "meta": {
+          "params": [
+            "fp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +353,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "detect_encoding"
+        },
+        "meta": {
+          "params": [
+            "b"
+          ]
         },
         "childSets": {
           "object": [

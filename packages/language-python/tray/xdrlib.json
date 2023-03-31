@@ -9,6 +9,11 @@
         "properties": {
           "member": "Error"
         },
+        "meta": {
+          "params": [
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,43 +52,8 @@
         "properties": {
           "member": "ConversionError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "xdrlib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "xdrlib.Packer",
-      "abstract": "Pack various data representations into a buffer.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Packer"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -95,23 +65,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "xdrlib.Packer",
+      "abstract": "Pack various data representations into a buffer.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Packer"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "xdrlib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -122,6 +101,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Unpacker"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [

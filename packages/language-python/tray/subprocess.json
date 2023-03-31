@@ -9,6 +9,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +100,12 @@
         "properties": {
           "member": "GenericAlias"
         },
+        "meta": {
+          "params": [
+            "origin",
+            "args"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -58,6 +117,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -85,6 +159,14 @@
         "properties": {
           "member": "CompletedProcess"
         },
+        "meta": {
+          "params": [
+            "args",
+            "returncode",
+            "stdout",
+            "stderr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +178,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -122,6 +219,27 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "run"
+        },
+        "meta": {
+          "params": [
+            "args",
+            "bufsize",
+            "executable",
+            "stdin",
+            "stdout",
+            "stderr",
+            "preexec_fn",
+            "close_fds",
+            "shell",
+            "cwd",
+            "env",
+            "universal_newlines",
+            "startupinfo",
+            "creationflags",
+            "restore_signals",
+            "start_new_session",
+            "pass_fds"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +279,27 @@
         "properties": {
           "member": "call"
         },
+        "meta": {
+          "params": [
+            "args",
+            "bufsize",
+            "executable",
+            "stdin",
+            "stdout",
+            "stderr",
+            "preexec_fn",
+            "close_fds",
+            "shell",
+            "cwd",
+            "env",
+            "universal_newlines",
+            "startupinfo",
+            "creationflags",
+            "restore_signals",
+            "start_new_session",
+            "pass_fds"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +338,28 @@
         "properties": {
           "member": "check_call"
         },
+        "meta": {
+          "params": [
+            "args",
+            "bufsize",
+            "executable",
+            "stdin",
+            "stdout",
+            "stderr",
+            "preexec_fn",
+            "close_fds",
+            "shell",
+            "cwd",
+            "env",
+            "universal_newlines",
+            "startupinfo",
+            "creationflags",
+            "restore_signals",
+            "start_new_session",
+            "pass_fds",
+            "timeout"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -236,6 +397,26 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "check_output"
+        },
+        "meta": {
+          "params": [
+            "args",
+            "bufsize",
+            "executable",
+            "stdin",
+            "stderr",
+            "preexec_fn",
+            "close_fds",
+            "shell",
+            "cwd",
+            "env",
+            "universal_newlines",
+            "startupinfo",
+            "creationflags",
+            "restore_signals",
+            "start_new_session",
+            "pass_fds"
+          ]
         },
         "childSets": {
           "object": [
@@ -338,6 +519,39 @@
         "properties": {
           "member": "SubprocessError"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "subprocess"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "subprocess.TimeoutExpired",
+      "abstract": "This exception is raised when the timeout expires while waiting for a",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TimeoutExpired"
+        },
+        "meta": {
+          "params": [
+            "cmd",
+            "timeout",
+            "output",
+            "stderr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -363,30 +577,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "subprocess.TimeoutExpired",
-      "abstract": "This exception is raised when the timeout expires while waiting for a",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "TimeoutExpired"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "subprocess"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -414,6 +605,14 @@
         "properties": {
           "member": "CalledProcessError"
         },
+        "meta": {
+          "params": [
+            "returncode",
+            "cmd",
+            "output",
+            "stderr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -425,6 +624,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -451,6 +665,27 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Popen"
+        },
+        "meta": {
+          "params": [
+            "args",
+            "bufsize",
+            "executable",
+            "stdin",
+            "stdout",
+            "stderr",
+            "preexec_fn",
+            "close_fds",
+            "shell",
+            "cwd",
+            "env",
+            "universal_newlines",
+            "startupinfo",
+            "creationflags",
+            "restore_signals",
+            "start_new_session",
+            "pass_fds"
+          ]
         },
         "childSets": {
           "object": [
@@ -490,6 +725,11 @@
         "properties": {
           "member": "getstatusoutput"
         },
+        "meta": {
+          "params": [
+            "cmd"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -527,6 +767,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getoutput"
+        },
+        "meta": {
+          "params": [
+            "cmd"
+          ]
         },
         "childSets": {
           "object": [
@@ -566,6 +811,11 @@
         "properties": {
           "member": "list2cmdline"
         },
+        "meta": {
+          "params": [
+            "seq"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -603,6 +853,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "STARTUPINFO"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [

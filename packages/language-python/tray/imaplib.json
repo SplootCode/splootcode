@@ -9,6 +9,11 @@
         "properties": {
           "member": "SSLContext"
         },
+        "meta": {
+          "params": [
+            "protocol"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SSLSocket"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -85,6 +93,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +112,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -122,6 +183,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IMAP4"
+        },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "timeout"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +229,16 @@
         "properties": {
           "member": "IMAP4_SSL"
         },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "keyfile",
+            "certfile",
+            "ssl_context",
+            "timeout"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +276,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IMAP4_stream"
+        },
+        "meta": {
+          "params": [
+            "command"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +320,11 @@
         "properties": {
           "member": "Internaldate2tuple"
         },
+        "meta": {
+          "params": [
+            "resp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +362,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Int2AP"
+        },
+        "meta": {
+          "params": [
+            "num"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +406,11 @@
         "properties": {
           "member": "ParseFlags"
         },
+        "meta": {
+          "params": [
+            "resp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +448,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Time2Internaldate"
+        },
+        "meta": {
+          "params": [
+            "date_time"
+          ]
         },
         "childSets": {
           "object": [

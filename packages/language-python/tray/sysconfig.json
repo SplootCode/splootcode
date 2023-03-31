@@ -9,6 +9,11 @@
         "properties": {
           "member": "get_config_var"
         },
+        "meta": {
+          "params": [
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,9 @@
         "properties": {
           "member": "get_config_vars"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +65,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,43 +77,8 @@
         "properties": {
           "member": "get_scheme_names"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sysconfig"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sysconfig.get_path_names",
-      "abstract": "Return a tuple containing the paths names.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_path_names"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -133,23 +90,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sysconfig.get_path_names",
+      "abstract": "Return a tuple containing the paths names.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_path_names"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sysconfig"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -160,6 +126,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "get_path"
+        },
+        "meta": {
+          "params": [
+            "name",
+            "scheme",
+            "vars",
+            "expand"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +173,13 @@
         "properties": {
           "member": "get_paths"
         },
+        "meta": {
+          "params": [
+            "scheme",
+            "vars",
+            "expand"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -237,43 +218,8 @@
         "properties": {
           "member": "get_python_version"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sysconfig"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sysconfig.get_platform",
-      "abstract": "Return a string that identifies the current platform.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_platform"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -285,23 +231,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sysconfig.get_platform",
+      "abstract": "Return a string that identifies the current platform.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_platform"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sysconfig"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -312,6 +267,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "is_python_build"
+        },
+        "meta": {
+          "params": [
+            "check_home"
+          ]
         },
         "childSets": {
           "object": [
@@ -351,6 +311,12 @@
         "properties": {
           "member": "parse_config_h"
         },
+        "meta": {
+          "params": [
+            "fp",
+            "vars"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -389,43 +355,8 @@
         "properties": {
           "member": "get_config_h_filename"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sysconfig"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sysconfig.get_makefile_filename",
-      "abstract": "Return the path of the Makefile.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_makefile_filename"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -437,23 +368,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sysconfig.get_makefile_filename",
+      "abstract": "Return the path of the Makefile.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "get_makefile_filename"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sysconfig"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

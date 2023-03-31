@@ -9,6 +9,14 @@
         "properties": {
           "member": "FileIO"
         },
+        "meta": {
+          "params": [
+            "file",
+            "mode",
+            "closefd",
+            "opener"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -89,6 +97,16 @@
         "properties": {
           "member": "open"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "mode",
+            "compresslevel",
+            "encoding",
+            "errors",
+            "newline"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -127,6 +145,9 @@
         "properties": {
           "member": "BadGzipFile"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -137,23 +158,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -164,6 +169,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "GzipFile"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "mode",
+            "compresslevel",
+            "fileobj",
+            "mtime"
+          ]
         },
         "childSets": {
           "object": [
@@ -190,6 +204,21 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -202,6 +231,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compress"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "compresslevel"
+          ]
         },
         "childSets": {
           "object": [
@@ -240,6 +275,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decompress"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [

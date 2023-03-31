@@ -9,6 +9,11 @@
         "properties": {
           "member": "iskeyword"
         },
+        "meta": {
+          "params": [
+            "s"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -67,6 +72,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "issoftkeyword"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [

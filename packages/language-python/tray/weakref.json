@@ -9,6 +9,11 @@
         "properties": {
           "member": "WeakSet"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,43 +52,8 @@
         "properties": {
           "member": "CallableProxyType"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "weakref"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "weakref.ProxyType",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ProxyType"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -95,23 +65,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "weakref.ProxyType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "ProxyType"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "weakref"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -122,6 +101,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ReferenceType"
+        },
+        "meta": {
+          "params": [
+            "o",
+            "callback"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +146,11 @@
         "properties": {
           "member": "getweakrefcount"
         },
+        "meta": {
+          "params": [
+            "__object"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +189,11 @@
         "properties": {
           "member": "getweakrefs"
         },
+        "meta": {
+          "params": [
+            "__object"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -236,6 +231,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ref"
+        },
+        "meta": {
+          "params": [
+            "o",
+            "callback"
+          ]
         },
         "childSets": {
           "object": [
@@ -296,6 +297,12 @@
         "properties": {
           "member": "WeakMethod"
         },
+        "meta": {
+          "params": [
+            "meth",
+            "callback"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -334,6 +341,9 @@
         "properties": {
           "member": "WeakValueDictionary"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -344,23 +354,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -371,6 +365,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "KeyedRef"
+        },
+        "meta": {
+          "params": [
+            "ob",
+            "callback",
+            "key"
+          ]
         },
         "childSets": {
           "object": [
@@ -397,6 +398,36 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -409,6 +440,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "WeakKeyDictionary"
+        },
+        "meta": {
+          "params": [
+            "dict"
+          ]
         },
         "childSets": {
           "object": [
@@ -448,6 +484,12 @@
         "properties": {
           "member": "finalize"
         },
+        "meta": {
+          "params": [
+            "__obj",
+            "__func"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -459,6 +501,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

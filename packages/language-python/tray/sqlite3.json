@@ -72,6 +72,13 @@
         "properties": {
           "member": "Date"
         },
+        "meta": {
+          "params": [
+            "year",
+            "month",
+            "day"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -83,6 +90,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -109,6 +146,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Time"
+        },
+        "meta": {
+          "params": [
+            "hour",
+            "minute",
+            "second",
+            "microsecond",
+            "tzinfo"
+          ]
         },
         "childSets": {
           "object": [
@@ -148,6 +194,18 @@
         "properties": {
           "member": "Timestamp"
         },
+        "meta": {
+          "params": [
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "microsecond",
+            "tzinfo"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -159,6 +217,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -185,6 +273,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "DateFromTicks"
+        },
+        "meta": {
+          "params": [
+            "ticks"
+          ]
         },
         "childSets": {
           "object": [
@@ -224,6 +317,11 @@
         "properties": {
           "member": "TimeFromTicks"
         },
+        "meta": {
+          "params": [
+            "ticks"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -261,6 +359,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TimestampFromTicks"
+        },
+        "meta": {
+          "params": [
+            "ticks"
+          ]
         },
         "childSets": {
           "object": [
@@ -341,6 +444,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Binary"
+        },
+        "meta": {
+          "params": [
+            "obj"
+          ]
         },
         "childSets": {
           "object": [
@@ -1283,6 +1391,11 @@
         "properties": {
           "member": "complete_statement"
         },
+        "meta": {
+          "params": [
+            "statement"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1320,6 +1433,18 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "connect"
+        },
+        "meta": {
+          "params": [
+            "database",
+            "timeout",
+            "detect_types",
+            "isolation_level",
+            "check_same_thread",
+            "factory",
+            "cached_statements",
+            "uri"
+          ]
         },
         "childSets": {
           "object": [
@@ -1359,6 +1484,11 @@
         "properties": {
           "member": "enable_callback_tracebacks"
         },
+        "meta": {
+          "params": [
+            "__enable"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1396,6 +1526,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "enable_shared_cache"
+        },
+        "meta": {
+          "params": [
+            "enable"
+          ]
         },
         "childSets": {
           "object": [
@@ -1435,6 +1570,12 @@
         "properties": {
           "member": "register_adapter"
         },
+        "meta": {
+          "params": [
+            "__type",
+            "__caster"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1446,6 +1587,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1473,6 +1629,12 @@
         "properties": {
           "member": "register_converter"
         },
+        "meta": {
+          "params": [
+            "__name",
+            "__converter"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1484,6 +1646,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1510,6 +1687,18 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Connection"
+        },
+        "meta": {
+          "params": [
+            "database",
+            "timeout",
+            "detect_types",
+            "isolation_level",
+            "check_same_thread",
+            "factory",
+            "cached_statements",
+            "uri"
+          ]
         },
         "childSets": {
           "object": [
@@ -1549,6 +1738,11 @@
         "properties": {
           "member": "Cursor"
         },
+        "meta": {
+          "params": [
+            "__cursor"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1587,6 +1781,9 @@
         "properties": {
           "member": "DataError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1597,23 +1794,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1625,6 +1806,9 @@
         "properties": {
           "member": "DatabaseError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1635,23 +1819,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1663,6 +1831,9 @@
         "properties": {
           "member": "Error"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1673,23 +1844,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1701,6 +1856,9 @@
         "properties": {
           "member": "IntegrityError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1711,23 +1869,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1739,6 +1881,9 @@
         "properties": {
           "member": "InterfaceError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1749,23 +1894,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1777,6 +1906,9 @@
         "properties": {
           "member": "InternalError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1787,23 +1919,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1815,43 +1931,8 @@
         "properties": {
           "member": "NotSupportedError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sqlite3"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sqlite3.OperationalError",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "OperationalError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1863,23 +1944,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sqlite3.OperationalError",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "OperationalError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sqlite3"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -1890,6 +1980,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "PrepareProtocol"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1929,6 +2022,37 @@
         "properties": {
           "member": "ProgrammingError"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sqlite3"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sqlite3.Row",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Row"
+        },
+        "meta": {
+          "params": [
+            "__cursor",
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1954,30 +2078,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sqlite3.Row",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Row"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sqlite3"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2005,6 +2106,9 @@
         "properties": {
           "member": "Warning"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -2015,23 +2119,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

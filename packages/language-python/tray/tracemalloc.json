@@ -9,6 +9,9 @@
         "properties": {
           "member": "clear_traces"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -47,6 +34,9 @@
         "properties": {
           "member": "get_traceback_limit"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +47,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,6 +59,9 @@
         "properties": {
           "member": "get_traced_memory"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +72,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -123,6 +84,9 @@
         "properties": {
           "member": "get_tracemalloc_memory"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -133,23 +97,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -161,43 +109,8 @@
         "properties": {
           "member": "is_tracing"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "tracemalloc"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "tracemalloc.reset_peak",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "reset_peak"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -209,23 +122,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "tracemalloc.reset_peak",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "reset_peak"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "tracemalloc"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -236,6 +158,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "start"
+        },
+        "meta": {
+          "params": [
+            "__nframe"
+          ]
         },
         "childSets": {
           "object": [
@@ -275,6 +202,9 @@
         "properties": {
           "member": "stop"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -285,23 +215,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -312,6 +226,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "get_object_traceback"
+        },
+        "meta": {
+          "params": [
+            "obj"
+          ]
         },
         "childSets": {
           "object": [
@@ -351,6 +270,9 @@
         "properties": {
           "member": "take_snapshot"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -361,23 +283,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -388,6 +294,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BaseFilter"
+        },
+        "meta": {
+          "params": [
+            "inclusive"
+          ]
         },
         "childSets": {
           "object": [
@@ -427,6 +338,12 @@
         "properties": {
           "member": "DomainFilter"
         },
+        "meta": {
+          "params": [
+            "inclusive",
+            "domain"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -438,6 +355,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -465,6 +397,15 @@
         "properties": {
           "member": "Filter"
         },
+        "meta": {
+          "params": [
+            "inclusive",
+            "filename_pattern",
+            "lineno",
+            "all_frames",
+            "domain"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -476,6 +417,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -503,6 +459,13 @@
         "properties": {
           "member": "Statistic"
         },
+        "meta": {
+          "params": [
+            "traceback",
+            "size",
+            "count"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -514,6 +477,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -541,6 +534,15 @@
         "properties": {
           "member": "StatisticDiff"
         },
+        "meta": {
+          "params": [
+            "traceback",
+            "size",
+            "size_diff",
+            "count",
+            "count_diff"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -552,6 +554,66 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -578,6 +640,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Frame"
+        },
+        "meta": {
+          "params": [
+            "frame"
+          ]
         },
         "childSets": {
           "object": [
@@ -617,6 +684,11 @@
         "properties": {
           "member": "Trace"
         },
+        "meta": {
+          "params": [
+            "trace"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -654,6 +726,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Traceback"
+        },
+        "meta": {
+          "params": [
+            "frames",
+            "total_nframe"
+          ]
         },
         "childSets": {
           "object": [
@@ -693,6 +771,12 @@
         "properties": {
           "member": "Snapshot"
         },
+        "meta": {
+          "params": [
+            "traces",
+            "traceback_limit"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -704,6 +788,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

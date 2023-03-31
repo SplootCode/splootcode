@@ -9,6 +9,11 @@
         "properties": {
           "member": "Message"
         },
+        "meta": {
+          "params": [
+            "policy"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Policy"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -85,6 +93,12 @@
         "properties": {
           "member": "message_from_string"
         },
+        "meta": {
+          "params": [
+            "s",
+            "_class"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +136,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "message_from_bytes"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "_class"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +181,12 @@
         "properties": {
           "member": "message_from_file"
         },
+        "meta": {
+          "params": [
+            "fp",
+            "_class"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +224,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "message_from_binary_file"
+        },
+        "meta": {
+          "params": [
+            "fp",
+            "_class"
+          ]
         },
         "childSets": {
           "object": [

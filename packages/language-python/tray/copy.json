@@ -9,6 +9,13 @@
         "properties": {
           "member": "deepcopy"
         },
+        "meta": {
+          "params": [
+            "x",
+            "memo",
+            "_nil"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +53,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "copy"
+        },
+        "meta": {
+          "params": [
+            "x"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,43 +97,8 @@
         "properties": {
           "member": "Error"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "copy"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "copy.error",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "error"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -133,23 +110,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "copy.error",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "copy"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

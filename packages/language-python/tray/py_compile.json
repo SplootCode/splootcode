@@ -9,6 +9,14 @@
         "properties": {
           "member": "PyCompileError"
         },
+        "meta": {
+          "params": [
+            "exc_type",
+            "exc_value",
+            "file",
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +85,9 @@
         "properties": {
           "member": "PycInvalidationMode"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +98,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -84,6 +109,17 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compile"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "cfile",
+            "dfile",
+            "doraise",
+            "optimize",
+            "invalidation_mode",
+            "quiet"
+          ]
         },
         "childSets": {
           "object": [
@@ -123,6 +159,9 @@
         "properties": {
           "member": "main"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -133,23 +172,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

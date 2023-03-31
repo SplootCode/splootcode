@@ -9,6 +9,12 @@
         "properties": {
           "member": "new"
         },
+        "meta": {
+          "params": [
+            "name",
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "md5"
+        },
+        "meta": {
+          "params": [
+            "string"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +96,11 @@
         "properties": {
           "member": "sha1"
         },
+        "meta": {
+          "params": [
+            "string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +138,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sha224"
+        },
+        "meta": {
+          "params": [
+            "string"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +182,11 @@
         "properties": {
           "member": "sha256"
         },
+        "meta": {
+          "params": [
+            "string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +225,11 @@
         "properties": {
           "member": "sha384"
         },
+        "meta": {
+          "params": [
+            "string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -236,6 +267,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sha512"
+        },
+        "meta": {
+          "params": [
+            "string"
+          ]
         },
         "childSets": {
           "object": [
@@ -317,6 +353,15 @@
         "properties": {
           "member": "pbkdf2_hmac"
         },
+        "meta": {
+          "params": [
+            "hash_name",
+            "password",
+            "salt",
+            "iterations",
+            "dklen"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -328,6 +373,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -354,6 +444,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sha3_224"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -393,6 +488,11 @@
         "properties": {
           "member": "sha3_256"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -430,6 +530,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sha3_384"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -469,6 +574,11 @@
         "properties": {
           "member": "sha3_512"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -506,6 +616,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "shake_128"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -545,6 +660,11 @@
         "properties": {
           "member": "shake_256"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -582,6 +702,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "scrypt"
+        },
+        "meta": {
+          "params": [
+            "password"
+          ]
         },
         "childSets": {
           "object": [
@@ -621,6 +746,11 @@
         "properties": {
           "member": "blake2b"
         },
+        "meta": {
+          "params": [
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -658,6 +788,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "blake2s"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [

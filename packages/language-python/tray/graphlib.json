@@ -9,6 +9,11 @@
         "properties": {
           "member": "TopologicalSorter"
         },
+        "meta": {
+          "params": [
+            "graph"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,9 @@
         "properties": {
           "member": "CycleError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +65,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

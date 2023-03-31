@@ -9,6 +9,11 @@
         "properties": {
           "member": "Type"
         },
+        "meta": {
+          "params": [
+            "__o"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -58,6 +71,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -799,6 +857,14 @@
         "properties": {
           "member": "open"
         },
+        "meta": {
+          "params": [
+            "name",
+            "mode",
+            "fileobj",
+            "bufsize"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -837,6 +903,12 @@
         "properties": {
           "member": "ExFileObject"
         },
+        "meta": {
+          "params": [
+            "tarfile",
+            "tarinfo"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -848,6 +920,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -874,6 +961,23 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TarFile"
+        },
+        "meta": {
+          "params": [
+            "name",
+            "mode",
+            "fileobj",
+            "format",
+            "tarinfo",
+            "dereference",
+            "ignore_zeros",
+            "encoding",
+            "errors",
+            "pax_headers",
+            "debug",
+            "errorlevel",
+            "copybufsize"
+          ]
         },
         "childSets": {
           "object": [
@@ -913,6 +1017,11 @@
         "properties": {
           "member": "is_tarfile"
         },
+        "meta": {
+          "params": [
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -951,6 +1060,9 @@
         "properties": {
           "member": "TarError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -961,23 +1073,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -989,6 +1085,9 @@
         "properties": {
           "member": "ReadError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -999,23 +1098,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1027,6 +1110,9 @@
         "properties": {
           "member": "CompressionError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1037,23 +1123,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1065,6 +1135,9 @@
         "properties": {
           "member": "StreamError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1075,23 +1148,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1103,43 +1160,8 @@
         "properties": {
           "member": "ExtractError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "tarfile"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "tarfile.HeaderError",
-      "abstract": "Base exception for header errors.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "HeaderError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1151,23 +1173,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "tarfile.HeaderError",
+      "abstract": "Base exception for header errors.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "HeaderError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "tarfile"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -1178,6 +1209,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TarInfo"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
