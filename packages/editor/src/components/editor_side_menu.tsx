@@ -31,6 +31,7 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
   render() {
     const { currentView, editorState } = this.props
     const enableTestRequests = editorState.project.runSettings.runType === RunType.HTTP_REQUEST
+    const enableConfigPanel = editorState.project.runSettings.runType !== RunType.STREAMLIT
 
     const handleClick = (viewName: EditorSideMenuView) => {
       if (viewName === currentView) {
@@ -56,20 +57,24 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
             icon={TRAY_ICON}
           ></IconButton>
         </div>
-        <div className={'editor-side-menu-container ' + (currentView === 'config' ? 'editor-side-menu-selected' : '')}>
-          <IconButton
-            aria-label="Configuration"
-            size="sm"
-            padding={1}
-            width="100%"
-            height={10}
-            borderRadius={0}
-            variant={'ghost'}
-            onClick={() => handleClick('config')}
-            color={currentView === 'config' ? 'gray.300' : 'gray.500'}
-            icon={<Icon as={BiCog} boxSize={7} />}
-          ></IconButton>
-        </div>
+        {enableConfigPanel ? (
+          <div
+            className={'editor-side-menu-container ' + (currentView === 'config' ? 'editor-side-menu-selected' : '')}
+          >
+            <IconButton
+              aria-label="Configuration"
+              size="sm"
+              padding={1}
+              width="100%"
+              height={10}
+              borderRadius={0}
+              variant={'ghost'}
+              onClick={() => handleClick('config')}
+              color={currentView === 'config' ? 'gray.300' : 'gray.500'}
+              icon={<Icon as={BiCog} boxSize={7} />}
+            ></IconButton>
+          </div>
+        ) : null}
         {enableTestRequests ? (
           <div
             className={'editor-side-menu-container ' + (currentView === 'config' ? 'editor-side-menu-selected' : '')}
