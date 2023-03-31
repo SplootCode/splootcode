@@ -189,29 +189,13 @@ class RuntimeStateManager {
       case 'updatedfiles':
         if (!this.dependencies) {
           console.error('dependencies not set on updatedfiles. something weird is going on')
-          // this.dependencies = data.data.dependencies
-          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          // this.autocompleteWorkerManager.sendDependencies()
           break
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
           this.workerManager.restart()
 
           this.autocompleteWorkerManager.dependencies = data.data.dependencies
           this.autocompleteWorkerManager.restart()
-          // if (this.autocompleteWorkerManager.waitingForDependencies) {
-          // this.autocompleteWorkerManager.waitingForDependencies = false
-          // this.autocompleteWorkerManager.sendMessage({
-          //   type: 'load_dependencies',
-          //   dependencies: data.data.dependencies,
-          // })
-          // }
-          // if (!this.autocompleteWorkerManager.dependencies) {
-          //   this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          //   this.autocompleteWorkerManager.sendDependencies()
-          // }
 
-          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          // this.autocompleteWorkerManager.restart()
           this.dependencies = data.data.dependencies
 
           break
@@ -252,18 +236,6 @@ class RuntimeStateManager {
           this.autocompleteWorkerManager.dependencies = data.data.dependencies
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
           console.error('initialfiles dependencies differernt. not sure how i ended up in this state')
-          // this.workerManager.restart()
-
-          // if (!this.autocompleteWorkerManager.dependencies) {
-          //   console.log('setting autocompletemgr deps first time')
-          //   this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          //   this.autocompleteWorkerManager.sendDependencies()
-          // }
-
-          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          // this.autocompleteWorkerManager.restart()
-          // this.dependencies = data.data.dependencies
-
           break
         }
 
