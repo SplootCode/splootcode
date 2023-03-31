@@ -14,6 +14,7 @@ export interface SerializedProject {
   version: string
   packages: SerializedSplootPackageRef[]
   environmentVars?: { [key: string]: [string, boolean] }
+  dependencies?: { [key: string]: string }
 }
 
 export enum ProjectLayoutType {
@@ -35,6 +36,7 @@ export class Project {
   fileLoader: FileLoader
   environmentVars: Map<string, [string, boolean]>
   environmentVarsChanged: boolean
+  dependencies: Map<string, string>
 
   constructor(
     owner: string,
@@ -57,6 +59,7 @@ export class Project {
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
     this.environmentVarsChanged = false
+    this.dependencies = new Map(Object.entries(proj.dependencies || {}))
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -137,6 +140,15 @@ export class Project {
     })
   }
 
+  addDependency(name: string, version?: string) {
+    this.dependencies.set(name, version)
+
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_DEPENDENCIES,
+      newDependencies: this.dependencies,
+    })
+  }
+
   clearChangedState() {
     this.environmentVarsChanged = false
   }
@@ -162,6 +174,7 @@ export class Project {
       splootversion: this.splootversion,
       version: this.version,
       environmentVars: Object.fromEntries(environmentVars),
+      dependencies: Object.fromEntries(this.dependencies.entries()),
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,

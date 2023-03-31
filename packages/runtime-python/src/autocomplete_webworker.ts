@@ -4,12 +4,13 @@ import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/la
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { StaticURLs } from './static_urls'
 import { getAutocompleteInfo } from './autocomplete'
-import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
+import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
 tryNonModuleLoadPyodide()
 
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
+let dependencies: Map<string, string> = null
 
 const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)
@@ -41,6 +42,8 @@ let currentParseID: number = null
 let sourceMap: Map<string, SourceFile> = new Map()
 let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
 
+let unfinishedParseTrees: ParseTrees = null
+
 const updateParseTrees = async (trees: ParseTrees) => {
   if (!structuredProgram) {
     console.warn('structuredProgram is not defined yet')
@@ -61,14 +64,17 @@ const updateParseTrees = async (trees: ParseTrees) => {
 
     toResolve.forEach((request) => getExpressionTypeInfo(request))
 
+    // We keep around any type requests we could potentially resolve in the future.
     expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
-      (request) => request.parseID !== currentParseID
+      (request) => request.parseID > currentParseID
     )
 
     if (expressionTypeRequestsToResolve.length > 0) {
       console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
     }
   }
+
+  unfinishedParseTrees = null
 }
 
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
@@ -100,14 +106,26 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
 onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
   switch (e.data.type) {
     case 'parse_trees':
+      if (!dependencies) {
+        unfinishedParseTrees = e.data.parseTrees
+
+        return
+      }
+
+      unfinishedParseTrees = null
+
       updateParseTrees(e.data.parseTrees)
 
       break
     case 'request_expression_type_info':
       if (e.data.request.parseID < currentParseID) {
-        console.warn('issued request for expression type for old parse tree', e.data.request.parseID, currentParseID)
+        console.warn(
+          'Issued request for expression type for old parse tree. Discarding',
+          e.data.request.parseID,
+          currentParseID
+        )
       } else if (e.data.request.parseID > currentParseID) {
-        console.warn('issued request for expression type for future parse tree')
+        console.warn('Issued request for expression type for future parse tree. Saving to resolve later.')
 
         expressionTypeRequestsToResolve.push(e.data.request)
       } else {
@@ -117,8 +135,22 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
       }
 
       break
+    case 'load_dependencies':
+      if (!dependencies) {
+        dependencies = e.data.dependencies
+
+        loadDependencies(pyodide, dependencies).then(() => {
+          if (unfinishedParseTrees) {
+            updateParseTrees(unfinishedParseTrees)
+          }
+        })
+      } else {
+        console.error('Should only load AutocompleteWorker pyodide dependencies once')
+      }
+
+      break
     default:
-      console.warn('Autocomplete worker received unhandled message', e.data)
+      console.warn('AutocompleteWorker received unhandled message', e.data)
 
       break
   }

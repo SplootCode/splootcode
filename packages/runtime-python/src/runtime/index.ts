@@ -1,5 +1,5 @@
 import 'tslib'
-import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
+import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, compareMap } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
@@ -29,6 +29,8 @@ class RuntimeStateManager {
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
+
+  private dependencies: Map<string, string>
 
   constructor(
     parentWindowDomainRegex: string,
@@ -175,13 +177,32 @@ class RuntimeStateManager {
 
     switch (data.type) {
       case 'heartbeat':
-        if (this.initialFilesLoaded) {
-          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
-        } else {
+        if (!this.initialFilesLoaded) {
           this.sendToParent({ type: 'heartbeat', data: { state: FrameState.REQUESTING_INITIAL_FILES } })
+
+          return
         }
+
+        this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         break
       case 'updatedfiles':
+        if (!this.dependencies) {
+          console.log('reloading dependencies')
+          // NOTE(harrison): this means that the iframe has reloaded
+          this.dependencies = data.data.dependencies
+          this.workerManager.reloadDependencies()
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
+
+          break
+        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
+          console.log('maps are different?', this.dependencies, data.data.dependencies)
+          this.dependencies = data.data.dependencies
+          this.workerManager.reloadDependencies()
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
+
+          break
+        }
+
         this.runType = data.runType
         this.eventData = data.eventData
 
@@ -191,13 +212,16 @@ class RuntimeStateManager {
           if (this.runType === RunType.STREAMLIT) {
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
-            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars, data.data.dependencies)
           }
         }
         break
       case 'initialfiles':
         this.runType = data.runType
         this.eventData = data.eventData
+
+        this.dependencies = data.data.dependencies
+        this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
         this.setEnvironmentVars(data.data.envVars)
@@ -207,7 +231,7 @@ class RuntimeStateManager {
           if (this.runType === RunType.STREAMLIT) {
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
-            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars, data.data.dependencies)
           }
         }
         break

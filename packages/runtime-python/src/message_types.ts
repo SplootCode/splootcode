@@ -15,6 +15,7 @@ import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 export enum FrameState {
   DEAD = 0,
   REQUESTING_INITIAL_FILES,
+  REQUESTING_DEPENDENCIES,
   LIVE,
   UNMOUNTED,
 }
@@ -32,6 +33,7 @@ export interface WorkspaceFilesMessage {
   data: {
     files: Map<string, FileSpec>
     envVars: Map<string, string>
+    dependencies: Map<string, string>
   }
 }
 
@@ -55,6 +57,11 @@ export interface RequestExpressionTypeInfoMessage {
   request: ExpressionTypeRequest
 }
 
+export interface LoadDependenciesMessage {
+  type: 'load_dependencies'
+  dependencies: Map<string, string>
+}
+
 export type RuntimeMessage =
   | { type: 'heartbeat' | 'stop' | 'run' | 'export_text_code' }
   | SendParseTreesMessage
@@ -64,12 +71,12 @@ export type RuntimeMessage =
   | ProxyTokenMessage
   | GetModuleInfoMessage
 
-/** Messages to send to the Editor window */
 export interface HeartbeatMessage {
   type: 'heartbeat'
   data: { state: FrameState }
 }
 
+/** Messages to send to the Editor window */
 export type EditorMessage =
   | { type: 'ready' | 'disabled' | 'running' | 'stdin' | 'refresh_token' }
   | HeartbeatMessage

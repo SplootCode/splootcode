@@ -10,21 +10,58 @@ export class AutocompleteWorkerManager {
   private worker: Worker
   private workerReady: boolean
   private sendToParentWindow: (payload: EditorMessage) => void
+  private dependencies: Map<string, string>
+  private waitingForDependencies = false
+  private dependenciesLoadedAtLeastOnce = false
 
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
     this.sendToParentWindow = sendToParentWindow
     this.worker = null
     this.workerReady = false
+    this.dependencies = null
+    this.waitingForDependencies = false
 
-    this.initialize()
+    this.initializeWorker()
   }
 
-  initialize() {
+  initializeWorker() {
     if (!this.worker) {
       this.worker = new this.AutocompleteWorker()
       this.worker.addEventListener('message', this.handleMessageFromWorker)
+      this.waitingForDependencies = false
     }
+  }
+
+  loadDependencies(dependencies: Map<string, string>) {
+    if (!this.dependenciesLoadedAtLeastOnce) {
+      if (this.waitingForDependencies) {
+        this.waitingForDependencies = false
+
+        this.sendMessage({
+          type: 'load_dependencies',
+          dependencies,
+        })
+
+        this.dependenciesLoadedAtLeastOnce = true
+        console.log('AUTOCOMPLETE deps loaded at least once!')
+      }
+
+      this.dependencies = dependencies
+    } else {
+      this.restartWithDependencies(dependencies)
+    }
+  }
+
+  restartWithDependencies(dependencies: Map<string, string>) {
+    this.dependencies = dependencies
+
+    this.worker.removeEventListener('message', this.handleMessageFromWorker)
+    this.worker.terminate()
+    this.worker = null
+    this.waitingForDependencies = false
+
+    this.initializeWorker()
   }
 
   sendMessage(message: WorkerManagerAutocompleteMessage) {
@@ -50,6 +87,17 @@ export class AutocompleteWorkerManager {
 
     if (type === 'ready') {
       this.workerReady = true
+
+      if (!this.dependencies) {
+        this.waitingForDependencies = true
+      } else {
+        this.sendMessage({
+          type: 'load_dependencies',
+          dependencies: this.dependencies,
+        })
+
+        this.dependenciesLoadedAtLeastOnce = true
+      }
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)
     } else {

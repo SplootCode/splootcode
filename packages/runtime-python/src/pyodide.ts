@@ -37,3 +37,22 @@ export async function setupPyodide(urls: string[]) {
 
   return pyodide
 }
+
+export const loadDependencies = async (pyodide: any, newDependencies: Map<string, string>) => {
+  const micropip = pyodide.pyimport('micropip')
+
+  const imports = Array.from(newDependencies.entries())
+    .map(([dependencyName, version]): any => {
+      let types = []
+
+      if (dependencyName === 'pandas') {
+        types = ['pandas-stubs']
+      }
+
+      return [dependencyName, ...types]
+    })
+    .flat()
+    .map((dependency) => micropip.install(dependency))
+
+  await Promise.all(imports)
+}
