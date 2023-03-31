@@ -188,8 +188,8 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         if (!this.dependencies) {
-          this.dependencies = data.data.dependencies
           // NOTE(harrison): this means that the iframe has reloaded
+          this.dependencies = data.data.dependencies
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
           break
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
