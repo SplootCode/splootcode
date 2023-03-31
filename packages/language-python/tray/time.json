@@ -324,6 +324,9 @@
         "properties": {
           "member": "struct_time"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -334,23 +337,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -361,6 +348,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "asctime"
+        },
+        "meta": {
+          "params": [
+            "t"
+          ]
         },
         "childSets": {
           "object": [
@@ -400,6 +392,11 @@
         "properties": {
           "member": "ctime"
         },
+        "meta": {
+          "params": [
+            "secs"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -437,6 +434,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "gmtime"
+        },
+        "meta": {
+          "params": [
+            "secs"
+          ]
         },
         "childSets": {
           "object": [
@@ -476,6 +478,11 @@
         "properties": {
           "member": "localtime"
         },
+        "meta": {
+          "params": [
+            "secs"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -513,6 +520,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "mktime"
+        },
+        "meta": {
+          "params": [
+            "t"
+          ]
         },
         "childSets": {
           "object": [
@@ -552,6 +564,11 @@
         "properties": {
           "member": "sleep"
         },
+        "meta": {
+          "params": [
+            "secs"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -589,6 +606,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "strftime"
+        },
+        "meta": {
+          "params": [
+            "format",
+            "t"
+          ]
         },
         "childSets": {
           "object": [
@@ -628,6 +651,12 @@
         "properties": {
           "member": "strptime"
         },
+        "meta": {
+          "params": [
+            "string",
+            "format"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -666,43 +695,8 @@
         "properties": {
           "member": "time"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "time"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "time.tzset",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "tzset"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -714,23 +708,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "time.tzset",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tzset"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -741,6 +744,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "get_clock_info"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -780,6 +788,9 @@
         "properties": {
           "member": "monotonic"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -790,23 +801,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -818,43 +813,8 @@
         "properties": {
           "member": "perf_counter"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "time"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "time.process_time",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "process_time"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -866,23 +826,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "time.process_time",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "process_time"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -893,6 +862,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "clock_getres"
+        },
+        "meta": {
+          "params": [
+            "clk_id"
+          ]
         },
         "childSets": {
           "object": [
@@ -932,6 +906,11 @@
         "properties": {
           "member": "clock_gettime"
         },
+        "meta": {
+          "params": [
+            "clk_id"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -970,6 +949,12 @@
         "properties": {
           "member": "clock_settime"
         },
+        "meta": {
+          "params": [
+            "clk_id",
+            "time"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -981,6 +966,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1007,6 +1007,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "clock_gettime_ns"
+        },
+        "meta": {
+          "params": [
+            "clock_id"
+          ]
         },
         "childSets": {
           "object": [
@@ -1046,6 +1051,12 @@
         "properties": {
           "member": "clock_settime_ns"
         },
+        "meta": {
+          "params": [
+            "clock_id",
+            "time"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1057,6 +1068,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1083,6 +1109,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "pthread_getcpuclockid"
+        },
+        "meta": {
+          "params": [
+            "thread_id"
+          ]
         },
         "childSets": {
           "object": [
@@ -1122,6 +1153,9 @@
         "properties": {
           "member": "monotonic_ns"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1132,23 +1166,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1160,6 +1178,9 @@
         "properties": {
           "member": "perf_counter_ns"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1170,23 +1191,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1198,6 +1203,9 @@
         "properties": {
           "member": "process_time_ns"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1208,23 +1216,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1236,6 +1228,9 @@
         "properties": {
           "member": "time_ns"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1246,23 +1241,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1274,43 +1253,8 @@
         "properties": {
           "member": "thread_time"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "time"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "time.thread_time_ns",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "thread_time_ns"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1322,23 +1266,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "time.thread_time_ns",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "thread_time_ns"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "time"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

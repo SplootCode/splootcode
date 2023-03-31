@@ -93,6 +93,13 @@
         "properties": {
           "member": "encode"
         },
+        "meta": {
+          "params": [
+            "obj",
+            "encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -104,6 +111,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -131,6 +153,13 @@
         "properties": {
           "member": "decode"
         },
+        "meta": {
+          "params": [
+            "obj",
+            "encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -142,6 +171,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -168,6 +212,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "lookup"
+        },
+        "meta": {
+          "params": [
+            "__encoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -207,6 +256,13 @@
         "properties": {
           "member": "utf_16_be_decode"
         },
+        "meta": {
+          "params": [
+            "__data",
+            "__errors",
+            "__final"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -244,6 +300,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "utf_16_be_encode"
+        },
+        "meta": {
+          "params": [
+            "__str",
+            "__errors"
+          ]
         },
         "childSets": {
           "object": [
@@ -283,6 +345,17 @@
         "properties": {
           "member": "CodecInfo"
         },
+        "meta": {
+          "params": [
+            "encode",
+            "decode",
+            "streamreader",
+            "streamwriter",
+            "incrementalencoder",
+            "incrementaldecoder",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -294,6 +367,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -320,6 +408,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getencoder"
+        },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -359,6 +452,11 @@
         "properties": {
           "member": "getdecoder"
         },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -396,6 +494,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getincrementalencoder"
+        },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -435,6 +538,11 @@
         "properties": {
           "member": "getincrementaldecoder"
         },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -472,6 +580,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getreader"
+        },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -511,6 +624,11 @@
         "properties": {
           "member": "getwriter"
         },
+        "meta": {
+          "params": [
+            "encoding"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -548,6 +666,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "register"
+        },
+        "meta": {
+          "params": [
+            "__search_function"
+          ]
         },
         "childSets": {
           "object": [
@@ -587,6 +710,15 @@
         "properties": {
           "member": "open"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "mode",
+            "encoding",
+            "errors",
+            "buffering"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -625,6 +757,14 @@
         "properties": {
           "member": "EncodedFile"
         },
+        "meta": {
+          "params": [
+            "file",
+            "data_encoding",
+            "file_encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -636,6 +776,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -663,6 +818,13 @@
         "properties": {
           "member": "iterencode"
         },
+        "meta": {
+          "params": [
+            "iterator",
+            "encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -674,6 +836,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -701,6 +878,13 @@
         "properties": {
           "member": "iterdecode"
         },
+        "meta": {
+          "params": [
+            "iterator",
+            "encoding",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -712,6 +896,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -738,6 +937,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unregister"
+        },
+        "meta": {
+          "params": [
+            "__search_function"
+          ]
         },
         "childSets": {
           "object": [
@@ -924,6 +1128,12 @@
         "properties": {
           "member": "register_error"
         },
+        "meta": {
+          "params": [
+            "__errors",
+            "__handler"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -935,6 +1145,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -961,6 +1186,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "lookup_error"
+        },
+        "meta": {
+          "params": [
+            "__name"
+          ]
         },
         "childSets": {
           "object": [
@@ -1000,6 +1230,11 @@
         "properties": {
           "member": "strict_errors"
         },
+        "meta": {
+          "params": [
+            "exception"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1037,6 +1272,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "replace_errors"
+        },
+        "meta": {
+          "params": [
+            "exception"
+          ]
         },
         "childSets": {
           "object": [
@@ -1076,6 +1316,11 @@
         "properties": {
           "member": "ignore_errors"
         },
+        "meta": {
+          "params": [
+            "exception"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1113,6 +1358,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "xmlcharrefreplace_errors"
+        },
+        "meta": {
+          "params": [
+            "exception"
+          ]
         },
         "childSets": {
           "object": [
@@ -1152,6 +1402,11 @@
         "properties": {
           "member": "backslashreplace_errors"
         },
+        "meta": {
+          "params": [
+            "exception"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1189,6 +1444,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "namereplace_errors"
+        },
+        "meta": {
+          "params": [
+            "exception"
+          ]
         },
         "childSets": {
           "object": [
@@ -1228,6 +1488,9 @@
         "properties": {
           "member": "Codec"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1238,23 +1501,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1265,6 +1512,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IncrementalEncoder"
+        },
+        "meta": {
+          "params": [
+            "errors"
+          ]
         },
         "childSets": {
           "object": [
@@ -1304,6 +1556,11 @@
         "properties": {
           "member": "IncrementalDecoder"
         },
+        "meta": {
+          "params": [
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1341,6 +1598,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BufferedIncrementalEncoder"
+        },
+        "meta": {
+          "params": [
+            "errors"
+          ]
         },
         "childSets": {
           "object": [
@@ -1380,6 +1642,11 @@
         "properties": {
           "member": "BufferedIncrementalDecoder"
         },
+        "meta": {
+          "params": [
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1417,6 +1684,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "StreamWriter"
+        },
+        "meta": {
+          "params": [
+            "stream",
+            "errors"
+          ]
         },
         "childSets": {
           "object": [
@@ -1456,6 +1729,12 @@
         "properties": {
           "member": "StreamReader"
         },
+        "meta": {
+          "params": [
+            "stream",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1494,6 +1773,14 @@
         "properties": {
           "member": "StreamReaderWriter"
         },
+        "meta": {
+          "params": [
+            "stream",
+            "Reader",
+            "Writer",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1505,6 +1792,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1532,6 +1849,16 @@
         "properties": {
           "member": "StreamRecoder"
         },
+        "meta": {
+          "params": [
+            "stream",
+            "encode",
+            "decode",
+            "Reader",
+            "Writer",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1543,6 +1870,66 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

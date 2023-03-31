@@ -9,43 +9,8 @@
         "properties": {
           "member": "cancel_dump_traceback_later"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "faulthandler"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "faulthandler.disable",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "disable"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -57,23 +22,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "faulthandler.disable",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "disable"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "faulthandler"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -84,6 +58,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dump_traceback"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "all_threads"
+          ]
         },
         "childSets": {
           "object": [
@@ -123,6 +103,14 @@
         "properties": {
           "member": "dump_traceback_later"
         },
+        "meta": {
+          "params": [
+            "timeout",
+            "repeat",
+            "file",
+            "exit"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -160,6 +148,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "enable"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "all_threads"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +193,9 @@
         "properties": {
           "member": "is_enabled"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -209,23 +206,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -236,6 +217,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "register"
+        },
+        "meta": {
+          "params": [
+            "signum",
+            "file",
+            "all_threads",
+            "chain"
+          ]
         },
         "childSets": {
           "object": [
@@ -274,6 +263,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unregister"
+        },
+        "meta": {
+          "params": [
+            "signum"
+          ]
         },
         "childSets": {
           "object": [

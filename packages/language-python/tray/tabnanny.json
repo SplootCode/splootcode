@@ -51,6 +51,13 @@
         "properties": {
           "member": "NannyNag"
         },
+        "meta": {
+          "params": [
+            "lineno",
+            "msg",
+            "line"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -62,6 +69,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -88,6 +125,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "check"
+        },
+        "meta": {
+          "params": [
+            "file"
+          ]
         },
         "childSets": {
           "object": [
@@ -126,6 +168,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "process_tokens"
+        },
+        "meta": {
+          "params": [
+            "tokens"
+          ]
         },
         "childSets": {
           "object": [

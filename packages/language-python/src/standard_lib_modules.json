@@ -909,6 +909,11 @@
       "name": "requests",
       "isStandardLib": false,
       "description": "Requests HTTP Library"
+    },
+    {
+      "name": "streamlit",
+      "isStandardLib": false,
+      "description": "Streamlit."
     }
   ]
 }

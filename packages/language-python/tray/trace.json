@@ -9,6 +9,15 @@
         "properties": {
           "member": "CoverageResults"
         },
+        "meta": {
+          "params": [
+            "counts",
+            "calledfuncs",
+            "infile",
+            "callers",
+            "outfile"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +55,19 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Trace"
+        },
+        "meta": {
+          "params": [
+            "count",
+            "trace",
+            "countfuncs",
+            "countcallers",
+            "ignoremods",
+            "ignoredirs",
+            "infile",
+            "outfile",
+            "timing"
+          ]
         },
         "childSets": {
           "object": [

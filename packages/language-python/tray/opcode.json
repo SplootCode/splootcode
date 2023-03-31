@@ -261,6 +261,12 @@
         "properties": {
           "member": "stack_effect"
         },
+        "meta": {
+          "params": [
+            "__opcode",
+            "__oparg"
+          ]
+        },
         "childSets": {
           "object": [
             {

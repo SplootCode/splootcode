@@ -9,6 +9,9 @@
         "properties": {
           "member": "BaseStream"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -46,6 +33,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compress"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "compresslevel"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +78,11 @@
         "properties": {
           "member": "decompress"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +120,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "open"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "mode",
+            "compresslevel",
+            "encoding",
+            "errors",
+            "newline"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +169,12 @@
         "properties": {
           "member": "BZ2File"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -172,6 +186,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -198,6 +227,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BZ2Compressor"
+        },
+        "meta": {
+          "params": [
+            "compresslevel"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +271,9 @@
         "properties": {
           "member": "BZ2Decompressor"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -247,23 +284,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

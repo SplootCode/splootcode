@@ -9,6 +9,13 @@
         "properties": {
           "member": "pickle"
         },
+        "meta": {
+          "params": [
+            "ob_type",
+            "pickle_function",
+            "constructor_ob"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +27,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +68,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "constructor"
+        },
+        "meta": {
+          "params": [
+            "object"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +112,13 @@
         "properties": {
           "member": "add_extension"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name",
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +130,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -123,6 +187,13 @@
         "properties": {
           "member": "remove_extension"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name",
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -134,6 +205,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -161,6 +262,9 @@
         "properties": {
           "member": "clear_extension_cache"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -171,23 +275,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },

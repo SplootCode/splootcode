@@ -1080,6 +1080,11 @@
         "properties": {
           "member": "S_IMODE"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1117,6 +1122,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "S_IFMT"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -1156,6 +1166,11 @@
         "properties": {
           "member": "S_ISBLK"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1193,6 +1208,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "S_ISCHR"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -1232,6 +1252,11 @@
         "properties": {
           "member": "S_ISDIR"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1269,6 +1294,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "S_ISDOOR"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -1308,6 +1338,11 @@
         "properties": {
           "member": "S_ISFIFO"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1345,6 +1380,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "S_ISLNK"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -1384,6 +1424,11 @@
         "properties": {
           "member": "S_ISPORT"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1421,6 +1466,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "S_ISREG"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -1460,6 +1510,11 @@
         "properties": {
           "member": "S_ISSOCK"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1498,6 +1553,11 @@
         "properties": {
           "member": "S_ISWHT"
         },
+        "meta": {
+          "params": [
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1535,6 +1595,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "filemode"
+        },
+        "meta": {
+          "params": [
+            "mode"
+          ]
         },
         "childSets": {
           "object": [

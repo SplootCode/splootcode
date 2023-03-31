@@ -9,6 +9,12 @@
         "properties": {
           "member": "escape"
         },
+        "meta": {
+          "params": [
+            "s",
+            "quote"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unescape"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [

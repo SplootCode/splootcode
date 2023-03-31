@@ -9,6 +9,11 @@
         "properties": {
           "member": "Completer"
         },
+        "meta": {
+          "params": [
+            "namespace"
+          ]
+        },
         "childSets": {
           "object": [
             {

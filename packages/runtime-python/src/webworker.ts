@@ -7,6 +7,7 @@ import {
   compareMap,
 } from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
+import { StaticURLs } from './static_urls'
 import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
 tryNonModuleLoadPyodide()
@@ -243,15 +244,6 @@ const loadModule = async (moduleName) => {
 
 const getWorkspace = () => {
   return workspace
-}
-
-interface StaticURLs {
-  executorURL: string
-  moduleLoaderURL: string
-  requestsPackageURL: string
-  flaskPackageURL: string
-  serverlessWSGIPackageURL: string
-  textGeneratorURL: string
 }
 
 export const initialize = async (urls: StaticURLs, typeshedPath: string) => {

@@ -2,6 +2,7 @@ import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './r
 import { ExpressionNode, SourceFile, StructuredEditorProgram, createStructuredProgramWorker } from 'structured-pyright'
 import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
+import { StaticURLs } from './static_urls'
 import { getAutocompleteInfo } from './autocomplete'
 import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
@@ -15,13 +16,12 @@ const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)
 }
 
-interface StaticURLs {
-  requestsPackageURL: string
-}
-
 export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) => {
   await tryModuleLoadPyodide()
 
+  // It's a significant startup-time performance hit to install streamlit, we need to
+  // make it so that only some packages are installed depending on the project.
+  // pyodide = await setupPyodide([staticURLs.requestsPackageURL, staticURLs.streamlitPackageURL])
   pyodide = await setupPyodide([staticURLs.requestsPackageURL])
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))

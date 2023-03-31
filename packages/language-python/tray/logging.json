@@ -9,6 +9,16 @@
         "properties": {
           "member": "TextIOWrapper"
         },
+        "meta": {
+          "params": [
+            "buffer",
+            "encoding",
+            "errors",
+            "newline",
+            "line_buffering",
+            "write_through"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +56,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Template"
+        },
+        "meta": {
+          "params": [
+            "template"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +100,9 @@
         "properties": {
           "member": "struct_time"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +113,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -123,6 +125,39 @@
         "properties": {
           "member": "FrameType"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "logging.TracebackType",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "TracebackType"
+        },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -148,30 +183,37 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging.TracebackType",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "TracebackType"
-        },
-        "childSets": {
-          "object": [
+            },
             {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
               },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -283,43 +325,8 @@
         "properties": {
           "member": "currentframe"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging.Filterer",
-      "abstract": "    A base class for loggers and handlers which allows them to share",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Filterer"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -331,23 +338,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "logging.Filterer",
+      "abstract": "    A base class for loggers and handlers which allows them to share",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Filterer"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -358,6 +374,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Manager"
+        },
+        "meta": {
+          "params": [
+            "rootnode"
+          ]
         },
         "childSets": {
           "object": [
@@ -396,6 +417,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Logger"
+        },
+        "meta": {
+          "params": [
+            "name",
+            "level"
+          ]
         },
         "childSets": {
           "object": [
@@ -603,6 +630,11 @@
         "properties": {
           "member": "Handler"
         },
+        "meta": {
+          "params": [
+            "level"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -640,6 +672,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Formatter"
+        },
+        "meta": {
+          "params": [
+            "fmt",
+            "datefmt",
+            "style",
+            "validate"
+          ]
         },
         "childSets": {
           "object": [
@@ -679,6 +719,11 @@
         "properties": {
           "member": "BufferingFormatter"
         },
+        "meta": {
+          "params": [
+            "linefmt"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -716,6 +761,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Filter"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -755,6 +805,19 @@
         "properties": {
           "member": "LogRecord"
         },
+        "meta": {
+          "params": [
+            "name",
+            "level",
+            "pathname",
+            "lineno",
+            "msg",
+            "args",
+            "exc_info",
+            "func",
+            "sinfo"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -766,6 +829,96 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -792,6 +945,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "LoggerAdapter"
+        },
+        "meta": {
+          "params": [
+            "logger",
+            "extra"
+          ]
         },
         "childSets": {
           "object": [
@@ -831,6 +990,11 @@
         "properties": {
           "member": "getLogger"
         },
+        "meta": {
+          "params": [
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -869,43 +1033,8 @@
         "properties": {
           "member": "getLoggerClass"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging.getLogRecordFactory",
-      "abstract": "    Return the factory to be used when instantiating a log record.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "getLogRecordFactory"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -917,23 +1046,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "logging.getLogRecordFactory",
+      "abstract": "    Return the factory to be used when instantiating a log record.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "getLogRecordFactory"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -944,6 +1082,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "debug"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -983,6 +1126,11 @@
         "properties": {
           "member": "info"
         },
+        "meta": {
+          "params": [
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1020,6 +1168,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "warning"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -1059,6 +1212,11 @@
         "properties": {
           "member": "warn"
         },
+        "meta": {
+          "params": [
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1096,6 +1254,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "error"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -1135,6 +1298,11 @@
         "properties": {
           "member": "critical"
         },
+        "meta": {
+          "params": [
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1172,6 +1340,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "exception"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -1211,6 +1384,12 @@
         "properties": {
           "member": "log"
         },
+        "meta": {
+          "params": [
+            "level",
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1222,6 +1401,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1248,6 +1442,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "fatal"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -1287,6 +1486,11 @@
         "properties": {
           "member": "disable"
         },
+        "meta": {
+          "params": [
+            "level"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1325,6 +1529,12 @@
         "properties": {
           "member": "addLevelName"
         },
+        "meta": {
+          "params": [
+            "level",
+            "levelName"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1336,6 +1546,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1362,6 +1587,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getLevelName"
+        },
+        "meta": {
+          "params": [
+            "level"
+          ]
         },
         "childSets": {
           "object": [
@@ -1401,6 +1631,11 @@
         "properties": {
           "member": "makeLogRecord"
         },
+        "meta": {
+          "params": [
+            "dict"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1438,6 +1673,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "basicConfig"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1477,6 +1715,11 @@
         "properties": {
           "member": "shutdown"
         },
+        "meta": {
+          "params": [
+            "handlerList"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1514,6 +1757,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "setLoggerClass"
+        },
+        "meta": {
+          "params": [
+            "klass"
+          ]
         },
         "childSets": {
           "object": [
@@ -1553,6 +1801,11 @@
         "properties": {
           "member": "captureWarnings"
         },
+        "meta": {
+          "params": [
+            "capture"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1590,6 +1843,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "setLogRecordFactory"
+        },
+        "meta": {
+          "params": [
+            "factory"
+          ]
         },
         "childSets": {
           "object": [
@@ -1629,6 +1887,11 @@
         "properties": {
           "member": "StreamHandler"
         },
+        "meta": {
+          "params": [
+            "stream"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1666,6 +1929,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "FileHandler"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "mode",
+            "encoding",
+            "delay",
+            "errors"
+          ]
         },
         "childSets": {
           "object": [
@@ -1705,6 +1977,9 @@
         "properties": {
           "member": "NullHandler"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1715,23 +1990,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1742,6 +2001,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "PlaceHolder"
+        },
+        "meta": {
+          "params": [
+            "alogger"
+          ]
         },
         "childSets": {
           "object": [
@@ -1780,6 +2044,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "RootLogger"
+        },
+        "meta": {
+          "params": [
+            "level"
+          ]
         },
         "childSets": {
           "object": [
@@ -1840,6 +2109,11 @@
         "properties": {
           "member": "PercentStyle"
         },
+        "meta": {
+          "params": [
+            "fmt"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1878,43 +2152,8 @@
         "properties": {
           "member": "StrFormatStyle"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "logging"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "logging.StringTemplateStyle",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "StringTemplateStyle"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -1926,23 +2165,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "logging.StringTemplateStyle",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "StringTemplateStyle"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "logging"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },

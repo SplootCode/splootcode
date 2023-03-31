@@ -9,6 +9,11 @@
         "properties": {
           "member": "IntEnum"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,9 @@
         "properties": {
           "member": "HTTPStatus"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +65,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

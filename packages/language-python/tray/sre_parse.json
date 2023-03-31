@@ -51,6 +51,13 @@
         "properties": {
           "member": "error"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "pattern",
+            "pos"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2378,43 +2385,8 @@
         "properties": {
           "member": "Verbose"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "sre_parse"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "sre_parse.State",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "State"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -2426,23 +2398,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "sre_parse.State",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "State"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "sre_parse"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -2453,6 +2434,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SubPattern"
+        },
+        "meta": {
+          "params": [
+            "state",
+            "data"
+          ]
         },
         "childSets": {
           "object": [
@@ -2492,6 +2479,11 @@
         "properties": {
           "member": "Tokenizer"
         },
+        "meta": {
+          "params": [
+            "string"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2530,6 +2522,12 @@
         "properties": {
           "member": "fix_flags"
         },
+        "meta": {
+          "params": [
+            "src",
+            "flags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2541,6 +2539,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2567,6 +2580,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse"
+        },
+        "meta": {
+          "params": [
+            "str",
+            "flags",
+            "state"
+          ]
         },
         "childSets": {
           "object": [
@@ -2606,6 +2626,12 @@
         "properties": {
           "member": "parse_template"
         },
+        "meta": {
+          "params": [
+            "source",
+            "state"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2617,6 +2643,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -2644,6 +2685,12 @@
         "properties": {
           "member": "expand_template"
         },
+        "meta": {
+          "params": [
+            "template",
+            "match"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2655,6 +2702,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

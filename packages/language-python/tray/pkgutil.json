@@ -9,6 +9,9 @@
         "properties": {
           "member": "Loader"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -47,6 +34,9 @@
         "properties": {
           "member": "MetaPathFinder"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +47,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,6 +59,9 @@
         "properties": {
           "member": "PathEntryFinder"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +72,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -123,6 +84,37 @@
         "properties": {
           "member": "ModuleInfo"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pkgutil"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pkgutil.extend_path",
+      "abstract": "Extend a package's path.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "extend_path"
+        },
+        "meta": {
+          "params": [
+            "path",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -148,30 +140,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "pkgutil.extend_path",
-      "abstract": "Extend a package's path.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "extend_path"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "pkgutil"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -198,6 +167,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ImpImporter"
+        },
+        "meta": {
+          "params": [
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +211,14 @@
         "properties": {
           "member": "ImpLoader"
         },
+        "meta": {
+          "params": [
+            "fullname",
+            "file",
+            "filename",
+            "etc"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -248,6 +230,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -274,6 +301,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "find_loader"
+        },
+        "meta": {
+          "params": [
+            "fullname"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +345,11 @@
         "properties": {
           "member": "get_importer"
         },
+        "meta": {
+          "params": [
+            "path_item"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +387,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "get_loader"
+        },
+        "meta": {
+          "params": [
+            "module_or_name"
+          ]
         },
         "childSets": {
           "object": [
@@ -389,6 +431,11 @@
         "properties": {
           "member": "iter_importers"
         },
+        "meta": {
+          "params": [
+            "fullname"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -426,6 +473,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "iter_modules"
+        },
+        "meta": {
+          "params": [
+            "path",
+            "prefix"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +518,11 @@
         "properties": {
           "member": "read_code"
         },
+        "meta": {
+          "params": [
+            "stream"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -502,6 +560,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "walk_packages"
+        },
+        "meta": {
+          "params": [
+            "path",
+            "prefix",
+            "onerror"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,6 +606,12 @@
         "properties": {
           "member": "get_data"
         },
+        "meta": {
+          "params": [
+            "package",
+            "resource"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -552,6 +623,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -578,6 +664,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "resolve_name"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [

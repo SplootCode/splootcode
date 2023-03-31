@@ -9,6 +9,11 @@
         "properties": {
           "member": "register"
         },
+        "meta": {
+          "params": [
+            "func"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unregister"
+        },
+        "meta": {
+          "params": [
+            "func"
+          ]
         },
         "childSets": {
           "object": [

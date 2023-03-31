@@ -51,6 +51,13 @@
         "properties": {
           "member": "error"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "pattern",
+            "pos"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2126,6 +2133,12 @@
         "properties": {
           "member": "SubPattern"
         },
+        "meta": {
+          "params": [
+            "state",
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2185,6 +2198,11 @@
         "properties": {
           "member": "dis"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2223,6 +2241,11 @@
         "properties": {
           "member": "isstring"
         },
+        "meta": {
+          "params": [
+            "obj"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -2260,6 +2283,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compile"
+        },
+        "meta": {
+          "params": [
+            "p",
+            "flags"
+          ]
         },
         "childSets": {
           "object": [

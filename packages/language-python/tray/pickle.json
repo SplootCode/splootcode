@@ -72,6 +72,11 @@
         "properties": {
           "member": "PickleBuffer"
         },
+        "meta": {
+          "params": [
+            "buffer"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -110,6 +115,13 @@
         "properties": {
           "member": "dump"
         },
+        "meta": {
+          "params": [
+            "obj",
+            "file",
+            "protocol"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -121,6 +133,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -147,6 +174,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dumps"
+        },
+        "meta": {
+          "params": [
+            "obj",
+            "protocol"
+          ]
         },
         "childSets": {
           "object": [
@@ -186,6 +219,11 @@
         "properties": {
           "member": "load"
         },
+        "meta": {
+          "params": [
+            "file"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -223,6 +261,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "loads"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [
@@ -262,6 +305,9 @@
         "properties": {
           "member": "PickleError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -272,23 +318,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -300,43 +330,8 @@
         "properties": {
           "member": "PicklingError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "pickle"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "pickle.UnpicklingError",
-      "abstract": "This exception is raised when there is a problem unpickling an object,",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "UnpicklingError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -348,23 +343,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pickle.UnpicklingError",
+      "abstract": "This exception is raised when there is a problem unpickling an object,",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "UnpicklingError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pickle"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -375,6 +379,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Pickler"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "protocol"
+          ]
         },
         "childSets": {
           "object": [
@@ -413,6 +423,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Unpickler"
+        },
+        "meta": {
+          "params": [
+            "file"
+          ]
         },
         "childSets": {
           "object": [
@@ -1922,6 +1937,11 @@
         "properties": {
           "member": "encode_long"
         },
+        "meta": {
+          "params": [
+            "x"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1959,6 +1979,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decode_long"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
         },
         "childSets": {
           "object": [

@@ -72,6 +72,13 @@
         "properties": {
           "member": "check_builtin"
         },
+        "meta": {
+          "params": [
+            "option",
+            "opt",
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -83,6 +90,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -110,6 +147,13 @@
         "properties": {
           "member": "check_choice"
         },
+        "meta": {
+          "params": [
+            "option",
+            "opt",
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -121,6 +165,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -147,6 +221,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "OptParseError"
+        },
+        "meta": {
+          "params": [
+            "msg"
+          ]
         },
         "childSets": {
           "object": [
@@ -186,6 +265,11 @@
         "properties": {
           "member": "BadOptionError"
         },
+        "meta": {
+          "params": [
+            "opt_str"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -224,6 +308,12 @@
         "properties": {
           "member": "AmbiguousOptionError"
         },
+        "meta": {
+          "params": [
+            "opt_str",
+            "possibilities"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -235,6 +325,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -262,6 +367,12 @@
         "properties": {
           "member": "OptionError"
         },
+        "meta": {
+          "params": [
+            "msg",
+            "option"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -273,6 +384,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -300,6 +426,9 @@
         "properties": {
           "member": "OptionConflictError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -310,23 +439,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -338,6 +451,39 @@
         "properties": {
           "member": "OptionValueError"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "optparse"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "optparse.HelpFormatter",
+      "abstract": "    Abstract base class for formatting option help.  OptionParser",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "HelpFormatter"
+        },
+        "meta": {
+          "params": [
+            "indent_increment",
+            "max_help_position",
+            "width",
+            "short_first"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -363,30 +509,37 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "optparse.HelpFormatter",
-      "abstract": "    Abstract base class for formatting option help.  OptionParser",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "HelpFormatter"
-        },
-        "childSets": {
-          "object": [
+            },
             {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "optparse"
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
               },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -413,6 +566,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IndentedHelpFormatter"
+        },
+        "meta": {
+          "params": [
+            "indent_increment",
+            "max_help_position",
+            "width",
+            "short_first"
+          ]
         },
         "childSets": {
           "object": [
@@ -452,6 +613,14 @@
         "properties": {
           "member": "TitledHelpFormatter"
         },
+        "meta": {
+          "params": [
+            "indent_increment",
+            "max_help_position",
+            "width",
+            "short_first"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -489,6 +658,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Option"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -528,6 +700,9 @@
         "properties": {
           "member": "make_option"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -566,6 +741,13 @@
         "properties": {
           "member": "OptionContainer"
         },
+        "meta": {
+          "params": [
+            "option_class",
+            "conflict_handler",
+            "description"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -577,6 +759,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -604,6 +816,13 @@
         "properties": {
           "member": "OptionGroup"
         },
+        "meta": {
+          "params": [
+            "parser",
+            "title",
+            "description"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -615,6 +834,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -641,6 +875,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Values"
+        },
+        "meta": {
+          "params": [
+            "defaults"
+          ]
         },
         "childSets": {
           "object": [
@@ -679,6 +918,20 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "OptionParser"
+        },
+        "meta": {
+          "params": [
+            "usage",
+            "option_list",
+            "option_class",
+            "version",
+            "conflict_handler",
+            "description",
+            "formatter",
+            "add_help_option",
+            "prog",
+            "epilog"
+          ]
         },
         "childSets": {
           "object": [

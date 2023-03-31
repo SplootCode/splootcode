@@ -126,17 +126,29 @@ function suggestionsForDeclaration(
   // Attributes on methods and classes are considered to be in the Class category.
   if (inferredType.category == TC.Class) {
     if (TypeBase.isInstantiable(inferredType)) {
-      // Since this value is instantiable, we want the autocomplete suggestion to reflect that
-      const init = inferredType.details.fields.get('__init__')
       let args: AutocompleteEntryFunctionArgument[] = []
 
-      if (init && init.getDeclarations().length > 0) {
-        const decl = init.getDeclarations()[0]
-        // In cases where there is an __init__ method, we take the arguments from that
-        const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(init, decl)
+      // Since this value is instantiable, we want the autocomplete suggestion to reflect that
+      const newMethod = inferredType.details.fields.get('__new__')
+      if (newMethod && newMethod.getDeclarations().length !== 0) {
+        const decl = newMethod.getDeclarations()[0]
+        // In cases where there is a __new__ method, we take the arguments from that
+        const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(newMethod, decl)
 
         if (initInferredType && initInferredType.category === TC.Function) {
           args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
+        }
+      } else {
+        const init = inferredType.details.fields.get('__init__')
+
+        if (init && init.getDeclarations().length > 0) {
+          const decl = init.getDeclarations()[0]
+          // In cases where there is an __init__ method, we take the arguments from that
+          const initInferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(init, decl)
+
+          if (initInferredType && initInferredType.category === TC.Function) {
+            args = pyrightParamsToAutocompleteFunctionArguments(initInferredType.details.parameters.slice(1))
+          }
         }
       }
 

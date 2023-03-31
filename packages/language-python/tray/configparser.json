@@ -51,6 +51,9 @@
         "properties": {
           "member": "Interpolation"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -61,23 +64,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -89,6 +76,9 @@
         "properties": {
           "member": "BasicInterpolation"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -99,23 +89,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -127,43 +101,8 @@
         "properties": {
           "member": "ExtendedInterpolation"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "configparser"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "configparser.LegacyInterpolation",
-      "abstract": "Deprecated interpolation used in old versions of ConfigParser.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "LegacyInterpolation"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -175,23 +114,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "configparser.LegacyInterpolation",
+      "abstract": "Deprecated interpolation used in old versions of ConfigParser.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "LegacyInterpolation"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "configparser"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -202,6 +150,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "RawConfigParser"
+        },
+        "meta": {
+          "params": [
+            "defaults",
+            "dict_type",
+            "allow_no_value"
+          ]
         },
         "childSets": {
           "object": [
@@ -241,6 +196,9 @@
         "properties": {
           "member": "ConfigParser"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -251,23 +209,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -279,6 +221,37 @@
         "properties": {
           "member": "SafeConfigParser"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "configparser"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "configparser.SectionProxy",
+      "abstract": "A proxy for a single section from a parser.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SectionProxy"
+        },
+        "meta": {
+          "params": [
+            "parser",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -304,30 +277,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "configparser.SectionProxy",
-      "abstract": "A proxy for a single section from a parser.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SectionProxy"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "configparser"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -354,6 +304,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ConverterMapping"
+        },
+        "meta": {
+          "params": [
+            "parser"
+          ]
         },
         "childSets": {
           "object": [
@@ -393,6 +348,11 @@
         "properties": {
           "member": "Error"
         },
+        "meta": {
+          "params": [
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -430,6 +390,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "NoSectionError"
+        },
+        "meta": {
+          "params": [
+            "section"
+          ]
         },
         "childSets": {
           "object": [
@@ -469,6 +434,13 @@
         "properties": {
           "member": "DuplicateSectionError"
         },
+        "meta": {
+          "params": [
+            "section",
+            "source",
+            "lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -507,6 +479,14 @@
         "properties": {
           "member": "DuplicateOptionError"
         },
+        "meta": {
+          "params": [
+            "section",
+            "option",
+            "source",
+            "lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -518,6 +498,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -545,6 +540,12 @@
         "properties": {
           "member": "NoOptionError"
         },
+        "meta": {
+          "params": [
+            "option",
+            "section"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -556,6 +557,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -583,6 +599,13 @@
         "properties": {
           "member": "InterpolationError"
         },
+        "meta": {
+          "params": [
+            "option",
+            "section",
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -594,6 +617,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -621,6 +674,13 @@
         "properties": {
           "member": "InterpolationDepthError"
         },
+        "meta": {
+          "params": [
+            "option",
+            "section",
+            "rawval"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -632,6 +692,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -659,6 +749,14 @@
         "properties": {
           "member": "InterpolationMissingOptionError"
         },
+        "meta": {
+          "params": [
+            "option",
+            "section",
+            "rawval",
+            "reference"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -670,6 +768,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -697,6 +840,9 @@
         "properties": {
           "member": "InterpolationSyntaxError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -707,23 +853,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -734,6 +864,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ParsingError"
+        },
+        "meta": {
+          "params": [
+            "source",
+            "filename"
+          ]
         },
         "childSets": {
           "object": [
@@ -773,6 +909,13 @@
         "properties": {
           "member": "MissingSectionHeaderError"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "lineno",
+            "line"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -784,6 +927,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

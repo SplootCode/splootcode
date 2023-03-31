@@ -9,6 +9,14 @@
         "properties": {
           "member": "pformat"
         },
+        "meta": {
+          "params": [
+            "object",
+            "indent",
+            "width",
+            "depth"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +54,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "pp"
+        },
+        "meta": {
+          "params": [
+            "object",
+            "stream",
+            "indent",
+            "width",
+            "depth"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +102,15 @@
         "properties": {
           "member": "pprint"
         },
+        "meta": {
+          "params": [
+            "object",
+            "stream",
+            "indent",
+            "width",
+            "depth"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +148,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "isreadable"
+        },
+        "meta": {
+          "params": [
+            "object"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +192,11 @@
         "properties": {
           "member": "isrecursive"
         },
+        "meta": {
+          "params": [
+            "object"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +235,11 @@
         "properties": {
           "member": "saferepr"
         },
+        "meta": {
+          "params": [
+            "object"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -236,6 +277,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "PrettyPrinter"
+        },
+        "meta": {
+          "params": [
+            "indent",
+            "width",
+            "depth",
+            "stream"
+          ]
         },
         "childSets": {
           "object": [

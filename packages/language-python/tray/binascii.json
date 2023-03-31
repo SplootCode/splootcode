@@ -9,6 +9,11 @@
         "properties": {
           "member": "a2b_uu"
         },
+        "meta": {
+          "params": [
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b2a_uu"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +95,11 @@
         "properties": {
           "member": "a2b_base64"
         },
+        "meta": {
+          "params": [
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +137,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b2a_base64"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +181,12 @@
         "properties": {
           "member": "a2b_qp"
         },
+        "meta": {
+          "params": [
+            "data",
+            "header"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -198,6 +224,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b2a_qp"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "quotetabs",
+            "istext",
+            "header"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +271,11 @@
         "properties": {
           "member": "a2b_hqx"
         },
+        "meta": {
+          "params": [
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +313,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "rledecode_hqx"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +357,11 @@
         "properties": {
           "member": "rlecode_hqx"
         },
+        "meta": {
+          "params": [
+            "__data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +399,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "b2a_hqx"
+        },
+        "meta": {
+          "params": [
+            "__data"
+          ]
         },
         "childSets": {
           "object": [
@@ -389,6 +443,12 @@
         "properties": {
           "member": "crc_hqx"
         },
+        "meta": {
+          "params": [
+            "__data",
+            "__crc"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -400,6 +460,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -426,6 +501,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "crc32"
+        },
+        "meta": {
+          "params": [
+            "__data",
+            "__crc"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +546,13 @@
         "properties": {
           "member": "b2a_hex"
         },
+        "meta": {
+          "params": [
+            "data",
+            "sep",
+            "bytes_per_sep"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -502,6 +590,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "hexlify"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "sep",
+            "bytes_per_sep"
+          ]
         },
         "childSets": {
           "object": [
@@ -541,6 +636,11 @@
         "properties": {
           "member": "a2b_hex"
         },
+        "meta": {
+          "params": [
+            "__hexstr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -578,6 +678,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unhexlify"
+        },
+        "meta": {
+          "params": [
+            "__hexstr"
+          ]
         },
         "childSets": {
           "object": [
@@ -617,43 +722,8 @@
         "properties": {
           "member": "Error"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "binascii"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "binascii.Incomplete",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Incomplete"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -665,23 +735,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "binascii.Incomplete",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Incomplete"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "binascii"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

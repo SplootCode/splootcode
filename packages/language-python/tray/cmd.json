@@ -51,6 +51,13 @@
         "properties": {
           "member": "Cmd"
         },
+        "meta": {
+          "params": [
+            "completekey",
+            "stdin",
+            "stdout"
+          ]
+        },
         "childSets": {
           "object": [
             {

@@ -9,6 +9,14 @@
         "properties": {
           "member": "FunctionTestCase"
         },
+        "meta": {
+          "params": [
+            "testFunc",
+            "setUp",
+            "tearDown",
+            "description"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +54,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SkipTest"
+        },
+        "meta": {
+          "params": [
+            "reason"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +98,11 @@
         "properties": {
           "member": "TestCase"
         },
+        "meta": {
+          "params": [
+            "methodName"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -122,6 +140,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "expectedFailure"
+        },
+        "meta": {
+          "params": [
+            "test_item"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +184,11 @@
         "properties": {
           "member": "skip"
         },
+        "meta": {
+          "params": [
+            "reason"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -199,6 +227,12 @@
         "properties": {
           "member": "skipIf"
         },
+        "meta": {
+          "params": [
+            "condition",
+            "reason"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -210,6 +244,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -237,6 +286,12 @@
         "properties": {
           "member": "skipUnless"
         },
+        "meta": {
+          "params": [
+            "condition",
+            "reason"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -248,6 +303,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -275,6 +345,9 @@
         "properties": {
           "member": "TestLoader"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -285,23 +358,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -333,6 +390,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "findTestCases"
+        },
+        "meta": {
+          "params": [
+            "module",
+            "prefix",
+            "sortUsing",
+            "suiteClass"
+          ]
         },
         "childSets": {
           "object": [
@@ -372,6 +437,14 @@
         "properties": {
           "member": "getTestCaseNames"
         },
+        "meta": {
+          "params": [
+            "testCaseClass",
+            "prefix",
+            "sortUsing",
+            "testNamePatterns"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -383,6 +456,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -409,6 +497,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "makeSuite"
+        },
+        "meta": {
+          "params": [
+            "testCaseClass",
+            "prefix",
+            "sortUsing",
+            "suiteClass"
+          ]
         },
         "childSets": {
           "object": [
@@ -448,6 +544,21 @@
         "properties": {
           "member": "main"
         },
+        "meta": {
+          "params": [
+            "module",
+            "defaultTest",
+            "argv",
+            "testRunner",
+            "testLoader",
+            "exit",
+            "verbosity",
+            "failfast",
+            "catchbreak",
+            "buffer",
+            "warnings"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -485,6 +596,21 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TestProgram"
+        },
+        "meta": {
+          "params": [
+            "module",
+            "defaultTest",
+            "argv",
+            "testRunner",
+            "testLoader",
+            "exit",
+            "verbosity",
+            "failfast",
+            "catchbreak",
+            "buffer",
+            "warnings"
+          ]
         },
         "childSets": {
           "object": [
@@ -524,6 +650,13 @@
         "properties": {
           "member": "TestResult"
         },
+        "meta": {
+          "params": [
+            "stream",
+            "descriptions",
+            "verbosity"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -562,6 +695,13 @@
         "properties": {
           "member": "TextTestResult"
         },
+        "meta": {
+          "params": [
+            "stream",
+            "descriptions",
+            "verbosity"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -573,6 +713,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -599,6 +769,17 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TextTestRunner"
+        },
+        "meta": {
+          "params": [
+            "stream",
+            "descriptions",
+            "verbosity",
+            "failfast",
+            "buffer",
+            "resultclass",
+            "warnings"
+          ]
         },
         "childSets": {
           "object": [
@@ -638,6 +819,9 @@
         "properties": {
           "member": "installHandler"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -648,23 +832,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -675,6 +843,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "registerResult"
+        },
+        "meta": {
+          "params": [
+            "result"
+          ]
         },
         "childSets": {
           "object": [
@@ -714,6 +887,11 @@
         "properties": {
           "member": "removeResult"
         },
+        "meta": {
+          "params": [
+            "result"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -751,6 +929,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BaseTestSuite"
+        },
+        "meta": {
+          "params": [
+            "tests"
+          ]
         },
         "childSets": {
           "object": [
@@ -790,43 +973,8 @@
         "properties": {
           "member": "TestSuite"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "unittest"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "unittest.IsolatedAsyncioTestCase",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "IsolatedAsyncioTestCase"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -838,23 +986,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "unittest.IsolatedAsyncioTestCase",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IsolatedAsyncioTestCase"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "unittest"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -865,6 +1022,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "addModuleCleanup"
+        },
+        "meta": {
+          "params": [
+            "__function"
+          ]
         },
         "childSets": {
           "object": [
@@ -904,6 +1066,13 @@
         "properties": {
           "member": "load_tests"
         },
+        "meta": {
+          "params": [
+            "loader",
+            "tests",
+            "pattern"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -915,6 +1084,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

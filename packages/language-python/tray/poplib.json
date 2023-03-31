@@ -9,6 +9,9 @@
         "properties": {
           "member": "error_proto"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -173,6 +160,13 @@
         "properties": {
           "member": "POP3"
         },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "timeout"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -210,6 +204,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "POP3_SSL"
+        },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "keyfile",
+            "certfile",
+            "timeout",
+            "context"
+          ]
         },
         "childSets": {
           "object": [

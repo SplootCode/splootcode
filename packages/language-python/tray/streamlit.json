@@ -1,13 +1,146 @@
 {
-  "category": "asyncio",
+  "category": "streamlit",
   "entries": [
     {
-      "key": "asyncio.BaseEventLoop",
-      "abstract": "",
+      "key": "streamlit.echo",
+      "abstract": "Use in a `with` block to draw some code on the app, then execute it.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "BaseEventLoop"
+          "member": "echo"
+        },
+        "meta": {
+          "params": [
+            "code_location"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.spinner",
+      "abstract": "Temporarily displays a message while executing a block of code.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "spinner"
+        },
+        "meta": {
+          "params": [
+            "text"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.set_page_config",
+      "abstract": "    Configures the default settings of the page.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "set_page_config"
+        },
+        "meta": {
+          "params": [
+            "page_title",
+            "page_icon",
+            "layout",
+            "initial_sidebar_state",
+            "menu_items"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.stop",
+      "abstract": "Stops execution immediately.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "stop"
         },
         "meta": {
           "params": []
@@ -17,7 +150,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -27,21 +160,60 @@
       }
     },
     {
-      "key": "asyncio.Server",
-      "abstract": "",
+      "key": "streamlit.sidebar",
+      "abstract": "Creator of Delta protobuf messages.",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "sidebar"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.secrets",
+      "abstract": "A dict-like class that stores secrets.",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "secrets"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.altair_chart",
+      "abstract": "Display a chart using the Altair library.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "Server"
+          "member": "altair_chart"
         },
         "meta": {
           "params": [
-            "loop",
-            "sockets",
-            "protocol_factory",
-            "ssl_context",
-            "backlog",
-            "ssl_handshake_timeout"
+            "altair_chart",
+            "use_container_width",
+            "theme"
           ]
         },
         "childSets": {
@@ -49,7 +221,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -69,7 +241,35 @@
                 ]
               },
               "properties": {}
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.area_chart",
+      "abstract": "Display an area chart.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "area_chart"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
             {
               "type": "PY_ARG",
               "childSets": {
@@ -84,7 +284,37 @@
                 ]
               },
               "properties": {}
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.audio",
+      "abstract": "Display an audio player.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "audio"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "format",
+            "start_time"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
             {
               "type": "PY_ARG",
               "childSets": {
@@ -99,7 +329,60 @@
                 ]
               },
               "properties": {}
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.balloons",
+      "abstract": "Draw celebratory balloons.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "balloons"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "streamlit.bar_chart",
+      "abstract": "Display a bar chart.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "bar_chart"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
             {
               "type": "PY_ARG",
               "childSets": {
@@ -114,7 +397,527 @@
                 ]
               },
               "properties": {}
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.bokeh_chart",
+      "abstract": "Display an interactive Bokeh chart.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "bokeh_chart"
+        },
+        "meta": {
+          "params": [
+            "figure",
+            "use_container_width"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.button",
+      "abstract": "Display a button widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "button"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "key",
+            "help",
+            "on_click",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.caption",
+      "abstract": "Display text in small font.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "caption"
+        },
+        "meta": {
+          "params": [
+            "body",
+            "unsafe_allow_html"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.camera_input",
+      "abstract": "Display a widget that returns pictures from the user's webcam.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "camera_input"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.checkbox",
+      "abstract": "Display a checkbox widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "checkbox"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.code",
+      "abstract": "Display a code block with optional syntax highlighting.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "code"
+        },
+        "meta": {
+          "params": [
+            "body",
+            "language"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.columns",
+      "abstract": "Insert containers laid out as side-by-side columns.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "columns"
+        },
+        "meta": {
+          "params": [
+            "spec"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.tabs",
+      "abstract": "Insert containers separated into tabs.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "tabs"
+        },
+        "meta": {
+          "params": [
+            "tabs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.container",
+      "abstract": "Insert a multi-element container.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "container"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "streamlit.dataframe",
+      "abstract": "Display a dataframe as an interactive table.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "dataframe"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "width",
+            "height"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.date_input",
+      "abstract": "Display a date input widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "date_input"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "min_value",
+            "max_value",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.download_button",
+      "abstract": "Display a download button widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "download_button"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "data",
+            "file_name",
+            "mime",
+            "key",
+            "help",
+            "on_click",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
             {
               "type": "PY_ARG",
               "childSets": {
@@ -150,16 +953,17 @@
       }
     },
     {
-      "key": "asyncio.coroutine",
-      "abstract": "Decorator to mark coroutines.",
+      "key": "streamlit.expander",
+      "abstract": "Insert a multi-element container that can be expanded/collapsed.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "coroutine"
+          "member": "expander"
         },
         "meta": {
           "params": [
-            "func"
+            "label",
+            "expanded"
           ]
         },
         "childSets": {
@@ -167,7 +971,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -193,16 +997,17 @@
       }
     },
     {
-      "key": "asyncio.iscoroutinefunction",
-      "abstract": "Return True if func is a decorated coroutine function.",
+      "key": "streamlit.pydeck_chart",
+      "abstract": "Draw a chart using the PyDeck library.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "iscoroutinefunction"
+          "member": "pydeck_chart"
         },
         "meta": {
           "params": [
-            "func"
+            "pydeck_obj",
+            "use_container_width"
           ]
         },
         "childSets": {
@@ -210,7 +1015,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -236,12 +1041,302 @@
       }
     },
     {
-      "key": "asyncio.iscoroutine",
-      "abstract": "Return True if obj is a coroutine object.",
+      "key": "streamlit.empty",
+      "abstract": "Insert a single-element container.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "iscoroutine"
+          "member": "empty"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "streamlit.error",
+      "abstract": "Display error message.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.exception",
+      "abstract": "Display an exception.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "exception"
+        },
+        "meta": {
+          "params": [
+            "exception"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.form",
+      "abstract": "Create a form that batches elements together with a \"Submit\" button.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "form"
+        },
+        "meta": {
+          "params": [
+            "key",
+            "clear_on_submit"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.form_submit_button",
+      "abstract": "Display a form submit button.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "form_submit_button"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "help",
+            "on_click",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.graphviz_chart",
+      "abstract": "Display a graph using the dagre-d3 library.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "graphviz_chart"
+        },
+        "meta": {
+          "params": [
+            "figure_or_dot",
+            "use_container_width"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.header",
+      "abstract": "Display text in header formatting.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "header"
+        },
+        "meta": {
+          "params": [
+            "body",
+            "anchor"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.help",
+      "abstract": "Display object's doc string, nicely formatted.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "help"
         },
         "meta": {
           "params": [
@@ -253,7 +1348,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -279,94 +1374,397 @@
       }
     },
     {
-      "key": "asyncio.AbstractEventLoopPolicy",
-      "abstract": "Abstract policy for accessing the event loop.",
+      "key": "streamlit.image",
+      "abstract": "Display an image or list of images.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "AbstractEventLoopPolicy"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.AbstractEventLoop",
-      "abstract": "Abstract event loop.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "AbstractEventLoop"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.AbstractServer",
-      "abstract": "Abstract server returned by create_server().",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "AbstractServer"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.Handle",
-      "abstract": "Object returned by callback registration methods.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Handle"
+          "member": "image"
         },
         "meta": {
           "params": [
-            "callback",
+            "image",
+            "caption",
+            "width",
+            "use_column_width",
+            "clamp",
+            "channels",
+            "output_format"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.info",
+      "abstract": "Display an informational message.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "info"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.json",
+      "abstract": "Display object or string as a pretty-printed JSON string.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "json"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.latex",
+      "abstract": "Display mathematical expressions formatted as LaTeX.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "latex"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.line_chart",
+      "abstract": "Display a line chart.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "line_chart"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.map",
+      "abstract": "Display a map with points on it.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "map"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "zoom",
+            "use_container_width"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.markdown",
+      "abstract": "Display string formatted as Markdown.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "markdown"
+        },
+        "meta": {
+          "params": [
+            "body",
+            "unsafe_allow_html"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.metric",
+      "abstract": "Display a metric in big bold font, with an optional indicator of how the metric changed.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "metric"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "delta",
+            "delta_color",
+            "help",
+            "label_visibility"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.multiselect",
+      "abstract": "Display a multiselect widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "multiselect"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "options",
+            "default",
+            "format_func",
+            "key",
+            "help",
+            "on_change",
             "args",
-            "loop",
-            "context"
+            "kwargs"
           ]
         },
         "childSets": {
@@ -374,27 +1772,12 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
           ],
           "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -430,20 +1813,26 @@
       }
     },
     {
-      "key": "asyncio.TimerHandle",
-      "abstract": "Object returned by timed callback registration methods.",
+      "key": "streamlit.number_input",
+      "abstract": "Display a numeric input widget.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "TimerHandle"
+          "member": "number_input"
         },
         "meta": {
           "params": [
-            "when",
-            "callback",
+            "label",
+            "min_value",
+            "max_value",
+            "value",
+            "step",
+            "format",
+            "key",
+            "help",
+            "on_change",
             "args",
-            "loop",
-            "context"
+            "kwargs"
           ]
         },
         "childSets": {
@@ -451,7 +1840,192 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.plotly_chart",
+      "abstract": "Display an interactive Plotly chart.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "plotly_chart"
+        },
+        "meta": {
+          "params": [
+            "figure_or_data",
+            "use_container_width",
+            "sharing",
+            "theme"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.progress",
+      "abstract": "Display a progress bar.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "progress"
+        },
+        "meta": {
+          "params": [
+            "value",
+            "text"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.pyplot",
+      "abstract": "Display a matplotlib.pyplot figure.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pyplot"
+        },
+        "meta": {
+          "params": [
+            "fig",
+            "clear_figure"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.radio",
+      "abstract": "Display a radio button widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "radio"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "options",
+            "index",
+            "format_func",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -486,6 +2060,57 @@
                 ]
               },
               "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.selectbox",
+      "abstract": "Display a select widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "selectbox"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "options",
+            "index",
+            "format_func",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             },
             {
               "type": "PY_ARG",
@@ -501,7 +2126,43 @@
                 ]
               },
               "properties": {}
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.select_slider",
+      "abstract": "        Display a slider widget to select items from a list.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "select_slider"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "options",
+            "value",
+            "format_func",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
             {
               "type": "PY_ARG",
               "childSets": {
@@ -522,12 +2183,65 @@
       }
     },
     {
-      "key": "asyncio.get_event_loop_policy",
-      "abstract": "Get the current event loop policy.",
+      "key": "streamlit.slider",
+      "abstract": "Display a slider widget.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "get_event_loop_policy"
+          "member": "slider"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "min_value",
+            "max_value",
+            "value",
+            "step",
+            "format",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.snow",
+      "abstract": "Draw celebratory snowfall.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "snow"
         },
         "meta": {
           "params": []
@@ -537,7 +2251,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -547,16 +2261,17 @@
       }
     },
     {
-      "key": "asyncio.set_event_loop_policy",
-      "abstract": "Set the current event loop policy.",
+      "key": "streamlit.subheader",
+      "abstract": "Display text in subheader formatting.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "set_event_loop_policy"
+          "member": "subheader"
         },
         "meta": {
           "params": [
-            "policy"
+            "body",
+            "anchor"
           ]
         },
         "childSets": {
@@ -564,7 +2279,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -590,12 +2305,471 @@
       }
     },
     {
-      "key": "asyncio.get_event_loop",
-      "abstract": "Return an asyncio event loop.",
+      "key": "streamlit.success",
+      "abstract": "Display a success message.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "get_event_loop"
+          "member": "success"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.table",
+      "abstract": "Display a static table.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "table"
+        },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.text",
+      "abstract": "Write fixed-width and preformatted text.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "text"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.text_area",
+      "abstract": "Display a multi-line text input widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "text_area"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "height",
+            "max_chars",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.text_input",
+      "abstract": "Display a single-line text input widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "text_input"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "max_chars",
+            "key",
+            "type",
+            "help",
+            "autocomplete",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.time_input",
+      "abstract": "Display a time input widget.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "time_input"
+        },
+        "meta": {
+          "params": [
+            "label",
+            "value",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.title",
+      "abstract": "Display text in title formatting.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "title"
+        },
+        "meta": {
+          "params": [
+            "body",
+            "anchor"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.vega_lite_chart",
+      "abstract": "Display a chart using the Vega-Lite library.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "vega_lite_chart"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "spec",
+            "use_container_width",
+            "theme"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.video",
+      "abstract": "Display a video player.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "video"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "format",
+            "start_time"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.warning",
+      "abstract": "Display warning message.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "warning"
+        },
+        "meta": {
+          "params": [
+            "body"
+          ]
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.write",
+      "abstract": "Write arguments to the app.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "write"
         },
         "meta": {
           "params": []
@@ -605,26 +2779,48 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
           ],
-          "arguments": []
+          "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            }
+          ]
         }
       }
     },
     {
-      "key": "asyncio.set_event_loop",
-      "abstract": "Equivalent to calling get_event_loop_policy().set_event_loop(loop).",
+      "key": "streamlit.color_picker",
+      "abstract": "Display a color picker widget.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "set_event_loop"
+          "member": "color_picker"
         },
         "meta": {
           "params": [
-            "loop"
+            "label",
+            "value",
+            "key",
+            "help",
+            "on_change",
+            "args",
+            "kwargs"
           ]
         },
         "childSets": {
@@ -632,7 +2828,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -658,66 +2854,16 @@
       }
     },
     {
-      "key": "asyncio.new_event_loop",
-      "abstract": "Equivalent to calling get_event_loop_policy().new_event_loop().",
+      "key": "streamlit.get_option",
+      "abstract": "Return the current value of a given Streamlit config option.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "new_event_loop"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.get_child_watcher",
-      "abstract": "Equivalent to calling get_event_loop_policy().get_child_watcher().",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "get_child_watcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.set_child_watcher",
-      "abstract": "Equivalent to calling",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "set_child_watcher"
+          "member": "get_option"
         },
         "meta": {
           "params": [
-            "watcher"
+            "key"
           ]
         },
         "childSets": {
@@ -725,7 +2871,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -751,292 +2897,16 @@
       }
     },
     {
-      "key": "asyncio.get_running_loop",
-      "abstract": "Return the running event loop.  Raise a RuntimeError if there is none.",
+      "key": "streamlit.set_option",
+      "abstract": "Set config option.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "get_running_loop"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.Future",
-      "abstract": "This class is *almost* compatible with concurrent.futures.Future.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Future"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.wrap_future",
-      "abstract": "Wrap concurrent.futures.Future object.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "wrap_future"
+          "member": "set_option"
         },
         "meta": {
           "params": [
-            "future"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.isfuture",
-      "abstract": "Check for a Future.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "isfuture"
-        },
-        "meta": {
-          "params": [
-            "obj"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Lock",
-      "abstract": "Primitive lock objects.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Lock"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Event",
-      "abstract": "Asynchronous equivalent to threading.Event.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Event"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Condition",
-      "abstract": "Asynchronous equivalent to threading.Condition.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Condition"
-        },
-        "meta": {
-          "params": [
-            "lock"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Semaphore",
-      "abstract": "A Semaphore implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Semaphore"
-        },
-        "meta": {
-          "params": [
+            "key",
             "value"
           ]
         },
@@ -1045,408 +2915,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.BoundedSemaphore",
-      "abstract": "A bounded semaphore implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BoundedSemaphore"
-        },
-        "meta": {
-          "params": [
-            "value"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.BaseProtocol",
-      "abstract": "Common base class for protocol interfaces.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BaseProtocol"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.Protocol",
-      "abstract": "Interface for stream protocol.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Protocol"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.DatagramProtocol",
-      "abstract": "Interface for datagram protocol.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DatagramProtocol"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.SubprocessProtocol",
-      "abstract": "Interface for protocol for subprocess calls.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SubprocessProtocol"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.BufferedProtocol",
-      "abstract": "Interface for stream protocol with manual buffer control.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BufferedProtocol"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.Queue",
-      "abstract": "A queue, useful for coordinating producer and consumer coroutines.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Queue"
-        },
-        "meta": {
-          "params": [
-            "maxsize"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.PriorityQueue",
-      "abstract": "A subclass of Queue; retrieves entries in priority order (lowest first).",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PriorityQueue"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.LifoQueue",
-      "abstract": "A subclass of Queue that retrieves most recently added entries first.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "LifoQueue"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.QueueFull",
-      "abstract": "Raised when the Queue.put_nowait() method is called on a full Queue.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "QueueFull"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.QueueEmpty",
-      "abstract": "Raised when Queue.get_nowait() is called on an empty Queue.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "QueueEmpty"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.StreamReader",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "StreamReader"
-        },
-        "meta": {
-          "params": [
-            "limit",
-            "loop"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.StreamWriter",
-      "abstract": "Wraps a Transport.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "StreamWriter"
-        },
-        "meta": {
-          "params": [
-            "transport",
-            "protocol",
-            "reader",
-            "loop"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -1481,452 +2950,25 @@
                 ]
               },
               "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
             }
           ]
         }
       }
     },
     {
-      "key": "asyncio.StreamReaderProtocol",
-      "abstract": "Helper class to adapt between Protocol and StreamReader.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "StreamReaderProtocol"
-        },
-        "meta": {
-          "params": [
-            "stream_reader",
-            "client_connected_cb",
-            "loop"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.open_connection",
-      "abstract": "A wrapper for create_connection() returning a (reader, writer) pair.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "open_connection"
-        },
-        "meta": {
-          "params": [
-            "host",
-            "port"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.start_server",
-      "abstract": "Start a socket server, call back for each client connected.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "start_server"
-        },
-        "meta": {
-          "params": [
-            "client_connected_cb",
-            "host",
-            "port"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.open_unix_connection",
-      "abstract": "Similar to `open_connection` but works with UNIX Domain Sockets.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "open_unix_connection"
-        },
-        "meta": {
-          "params": [
-            "path"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.start_unix_server",
-      "abstract": "Similar to `start_server` but works with UNIX Domain Sockets.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "start_unix_server"
-        },
-        "meta": {
-          "params": [
-            "client_connected_cb",
-            "path"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.create_subprocess_exec",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "create_subprocess_exec"
-        },
-        "meta": {
-          "params": [
-            "program"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.create_subprocess_shell",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "create_subprocess_shell"
-        },
-        "meta": {
-          "params": [
-            "cmd",
-            "stdin",
-            "stdout",
-            "stderr",
-            "limit"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.Task",
-      "abstract": "A coroutine wrapped in a Future.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Task"
-        },
-        "meta": {
-          "params": [
-            "coro"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.create_task",
-      "abstract": "Schedule the execution of a coroutine object in a spawn task.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "create_task"
-        },
-        "meta": {
-          "params": [
-            "coro"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.FIRST_COMPLETED",
-      "abstract": "",
+      "key": "streamlit.session_state",
+      "abstract": "A stateless singleton that proxies `st.session_state` interactions",
       "serializedNode": {
         "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "FIRST_COMPLETED"
+          "member": "session_state"
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -1935,19 +2977,19 @@
       }
     },
     {
-      "key": "asyncio.FIRST_EXCEPTION",
-      "abstract": "",
+      "key": "streamlit.cache_data",
+      "abstract": "Implements the public st.cache_data API: the @st.cache_data decorator, and",
       "serializedNode": {
         "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "FIRST_EXCEPTION"
+          "member": "cache_data"
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -1956,19 +2998,19 @@
       }
     },
     {
-      "key": "asyncio.ALL_COMPLETED",
-      "abstract": "",
+      "key": "streamlit.cache_resource",
+      "abstract": "Implements the public st.cache_resource API: the @st.cache_resource decorator,",
       "serializedNode": {
         "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "ALL_COMPLETED"
+          "member": "cache_resource"
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -1977,75 +3019,42 @@
       }
     },
     {
-      "key": "asyncio.wait_for",
-      "abstract": "Wait for the single Future or coroutine to complete, with timeout.",
+      "key": "streamlit.beta_container",
+      "abstract": "Insert a multi-element container.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "wait_for"
+          "member": "beta_container"
         },
         "meta": {
-          "params": [
-            "fut",
-            "timeout"
-          ]
+          "params": []
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
     {
-      "key": "asyncio.as_completed",
-      "abstract": "Return an iterator whose values are coroutines.",
+      "key": "streamlit.beta_expander",
+      "abstract": "Insert a multi-element container that can be expanded/collapsed.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "as_completed"
+          "member": "beta_expander"
         },
         "meta": {
           "params": [
-            "fs"
+            "label",
+            "expanded"
           ]
         },
         "childSets": {
@@ -2053,7 +3062,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -2079,17 +3088,16 @@
       }
     },
     {
-      "key": "asyncio.sleep",
-      "abstract": "Coroutine that completes after a given time (in seconds).",
+      "key": "streamlit.beta_columns",
+      "abstract": "Insert containers laid out as side-by-side columns.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "sleep"
+          "member": "beta_columns"
         },
         "meta": {
           "params": [
-            "delay",
-            "result"
+            "spec"
           ]
         },
         "childSets": {
@@ -2097,7 +3105,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -2123,24 +3131,110 @@
       }
     },
     {
-      "key": "asyncio.shield",
-      "abstract": "Wait for a future, shielding it from cancellation.",
+      "key": "streamlit.experimental_user",
+      "abstract": "A dict like proxy object for accessing information about current user.",
       "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
+        "type": "PYTHON_MEMBER",
         "properties": {
-          "member": "shield"
-        },
-        "meta": {
-          "params": [
-            "arg"
-          ]
+          "member": "experimental_user"
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.experimental_singleton",
+      "abstract": "Implements the public st.cache_resource API: the @st.cache_resource decorator,",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "experimental_singleton"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.experimental_memo",
+      "abstract": "Implements the public st.cache_data API: the @st.cache_data decorator, and",
+      "serializedNode": {
+        "type": "PYTHON_MEMBER",
+        "properties": {
+          "member": "experimental_memo"
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "streamlit.experimental_get_query_params",
+      "abstract": "Return the query parameters that is currently showing in the browser's URL bar.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "experimental_get_query_params"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "streamlit.experimental_set_query_params",
+      "abstract": "Set the query parameters that are shown in the browser's URL bar.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "experimental_set_query_params"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -2166,83 +3260,22 @@
       }
     },
     {
-      "key": "asyncio.run_coroutine_threadsafe",
-      "abstract": "Submit a coroutine object to a given event loop.",
+      "key": "streamlit.experimental_show",
+      "abstract": "Write arguments and *argument names* to your app for debugging purposes.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "run_coroutine_threadsafe"
+          "member": "experimental_show"
         },
         "meta": {
-          "params": [
-            "coro",
-            "loop"
-          ]
+          "params": []
         },
         "childSets": {
           "object": [
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.current_task",
-      "abstract": "Return a currently executed task.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "current_task"
-        },
-        "meta": {
-          "params": [
-            "loop"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }
@@ -2268,98 +3301,12 @@
       }
     },
     {
-      "key": "asyncio.all_tasks",
-      "abstract": "Return a set of all tasks for the loop.",
+      "key": "streamlit.experimental_rerun",
+      "abstract": "Rerun the script immediately.",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
-          "member": "all_tasks"
-        },
-        "meta": {
-          "params": [
-            "loop"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.BaseTransport",
-      "abstract": "Base class for transports.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BaseTransport"
-        },
-        "meta": {
-          "params": [
-            "extra"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.ReadTransport",
-      "abstract": "Interface for read-only transports.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ReadTransport"
+          "member": "experimental_rerun"
         },
         "meta": {
           "params": []
@@ -2369,797 +3316,7 @@
             {
               "type": "PY_IDENTIFIER",
               "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.WriteTransport",
-      "abstract": "Interface for write-only transports.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "WriteTransport"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.Transport",
-      "abstract": "Interface representing a bidirectional transport.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Transport"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.DatagramTransport",
-      "abstract": "Interface for datagram (UDP) transports.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DatagramTransport"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.SubprocessTransport",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SubprocessTransport"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.run",
-      "abstract": "Execute the coroutine and return the result.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "run"
-        },
-        "meta": {
-          "params": [
-            "main"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.CancelledError",
-      "abstract": "The Future or Task was cancelled.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "CancelledError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.InvalidStateError",
-      "abstract": "The operation is not allowed in this state.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "InvalidStateError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.TimeoutError",
-      "abstract": "The operation exceeded the given deadline.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "TimeoutError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.IncompleteReadError",
-      "abstract": "    Incomplete read error. Attributes:",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "IncompleteReadError"
-        },
-        "meta": {
-          "params": [
-            "partial",
-            "expected"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.LimitOverrunError",
-      "abstract": "Reached the buffer limit while looking for a separator.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "LimitOverrunError"
-        },
-        "meta": {
-          "params": [
-            "message",
-            "consumed"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            },
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.SendfileNotAvailableError",
-      "abstract": "Sendfile syscall is not available.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SendfileNotAvailableError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.to_thread",
-      "abstract": "Asynchronously run function *func* in a separate thread.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "to_thread"
-        },
-        "meta": {
-          "params": [
-            "__func"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.SelectorEventLoop",
-      "abstract": "Windows version of selector event loop.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SelectorEventLoop"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.SelectorEventLoop",
-      "abstract": "Unix event loop.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SelectorEventLoop"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.ProactorEventLoop",
-      "abstract": "Windows version of proactor event loop using IOCP.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ProactorEventLoop"
-        },
-        "meta": {
-          "params": [
-            "proactor"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.IocpProactor",
-      "abstract": "Proactor implementation using IOCP.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "IocpProactor"
-        },
-        "meta": {
-          "params": [
-            "concurrency"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "asyncio.DefaultEventLoopPolicy",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DefaultEventLoopPolicy"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.DefaultEventLoopPolicy",
-      "abstract": "UNIX event loop policy with a watcher for child processes.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DefaultEventLoopPolicy"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.WindowsSelectorEventLoopPolicy",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "WindowsSelectorEventLoopPolicy"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.WindowsProactorEventLoopPolicy",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "WindowsProactorEventLoopPolicy"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.AbstractChildWatcher",
-      "abstract": "Abstract base class for monitoring child processes.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "AbstractChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.SafeChildWatcher",
-      "abstract": "'Safe' child watcher implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SafeChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.FastChildWatcher",
-      "abstract": "'Fast' child watcher implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "FastChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.PidfdChildWatcher",
-      "abstract": "Child watcher implementation using Linux's pid file descriptors.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PidfdChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.MultiLoopChildWatcher",
-      "abstract": "A watcher that doesn't require running loop in the main thread.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "MultiLoopChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "asyncio.ThreadedChildWatcher",
-      "abstract": "Threaded child watcher implementation.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ThreadedChildWatcher"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "asyncio"
+                "identifier": "streamlit"
               },
               "childSets": {}
             }

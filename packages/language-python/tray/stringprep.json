@@ -156,6 +156,11 @@
         "properties": {
           "member": "in_table_a1"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -193,6 +198,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_b1"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -232,6 +242,11 @@
         "properties": {
           "member": "map_table_b3"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -269,6 +284,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "map_table_b2"
+        },
+        "meta": {
+          "params": [
+            "a"
+          ]
         },
         "childSets": {
           "object": [
@@ -308,6 +328,11 @@
         "properties": {
           "member": "in_table_c11"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -345,6 +370,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c12"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -384,6 +414,11 @@
         "properties": {
           "member": "in_table_c11_c12"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -421,6 +456,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c21"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -460,6 +500,11 @@
         "properties": {
           "member": "in_table_c22"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -497,6 +542,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c21_c22"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -536,6 +586,11 @@
         "properties": {
           "member": "in_table_c3"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -573,6 +628,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c4"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -612,6 +672,11 @@
         "properties": {
           "member": "in_table_c5"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -649,6 +714,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c6"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -688,6 +758,11 @@
         "properties": {
           "member": "in_table_c7"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -725,6 +800,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_c8"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [
@@ -764,6 +844,11 @@
         "properties": {
           "member": "in_table_c9"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -802,6 +887,11 @@
         "properties": {
           "member": "in_table_d1"
         },
+        "meta": {
+          "params": [
+            "code"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -839,6 +929,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "in_table_d2"
+        },
+        "meta": {
+          "params": [
+            "code"
+          ]
         },
         "childSets": {
           "object": [

@@ -9,6 +9,9 @@
         "properties": {
           "member": "dict_items"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -47,6 +34,9 @@
         "properties": {
           "member": "dict_keys"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +47,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -85,6 +59,37 @@
         "properties": {
           "member": "dict_values"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "collections"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "collections.GenericAlias",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "GenericAlias"
+        },
+        "meta": {
+          "params": [
+            "origin",
+            "args"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -110,30 +115,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "collections.GenericAlias",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "GenericAlias"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "collections"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -161,6 +143,12 @@
         "properties": {
           "member": "namedtuple"
         },
+        "meta": {
+          "params": [
+            "typename",
+            "field_names"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -172,6 +160,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -198,6 +201,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "UserDict"
+        },
+        "meta": {
+          "params": [
+            "__dict"
+          ]
         },
         "childSets": {
           "object": [
@@ -237,6 +245,11 @@
         "properties": {
           "member": "UserList"
         },
+        "meta": {
+          "params": [
+            "initlist"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -274,6 +287,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "UserString"
+        },
+        "meta": {
+          "params": [
+            "seq"
+          ]
         },
         "childSets": {
           "object": [
@@ -313,6 +331,12 @@
         "properties": {
           "member": "deque"
         },
+        "meta": {
+          "params": [
+            "iterable",
+            "maxlen"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -350,6 +374,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Counter"
+        },
+        "meta": {
+          "params": [
+            "__iterable"
+          ]
         },
         "childSets": {
           "object": [
@@ -389,43 +418,8 @@
         "properties": {
           "member": "OrderedDict"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "collections"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "collections.defaultdict",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "defaultdict"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -437,23 +431,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "collections.defaultdict",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "defaultdict"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "collections"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -464,6 +467,9 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ChainMap"
+        },
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
