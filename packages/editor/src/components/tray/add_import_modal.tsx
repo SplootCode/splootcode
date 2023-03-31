@@ -16,12 +16,7 @@ function PackageListing(props: { importModule: (moduleName: string) => void; mod
   return (
     <HStack alignContent={'space-between'} pb={2}>
       <Box>
-        <Text fontWeight={'bold'}>
-          {moduleInfo.name}{' '}
-          <Text as={'span'} fontWeight={'normal'}>
-            {moduleInfo.isStandardLib}
-          </Text>
-        </Text>
+        <Text fontWeight={'bold'}>{moduleInfo.name}</Text>
         <Text fontStyle={'italic'} color="gray.400">
           {moduleInfo.description.substring(0, 50)}
         </Text>
