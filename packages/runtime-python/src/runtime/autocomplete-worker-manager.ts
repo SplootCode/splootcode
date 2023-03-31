@@ -10,8 +10,9 @@ export class AutocompleteWorkerManager {
   private worker: Worker
   private workerReady: boolean
   private sendToParentWindow: (payload: EditorMessage) => void
-  dependencies: Map<string, string>
-  waitingForDependencies = false
+  private dependencies: Map<string, string>
+  private waitingForDependencies = false
+  private dependenciesLoadedAtLeastOnce = false
 
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
@@ -33,14 +34,26 @@ export class AutocompleteWorkerManager {
   }
 
   loadDependencies(dependencies: Map<string, string>) {
-    if (!this.dependencies) {
-      this.sendDependenciesOrDelay(dependencies)
+    if (!this.dependenciesLoadedAtLeastOnce) {
+      if (this.waitingForDependencies) {
+        this.waitingForDependencies = false
+
+        this.sendMessage({
+          type: 'load_dependencies',
+          dependencies,
+        })
+
+        this.dependenciesLoadedAtLeastOnce = true
+        console.log('AUTOCOMPLETE deps loaded at least once!')
+      }
+
+      this.dependencies = dependencies
     } else {
-      this.reloadDependencies(dependencies)
+      this.restartWithDependencies(dependencies)
     }
   }
 
-  reloadDependencies(dependencies: Map<string, string>) {
+  restartWithDependencies(dependencies: Map<string, string>) {
     this.dependencies = dependencies
 
     this.worker.removeEventListener('message', this.handleMessageFromWorker)
@@ -53,19 +66,6 @@ export class AutocompleteWorkerManager {
 
   sendMessage(message: WorkerManagerAutocompleteMessage) {
     this.worker.postMessage(message)
-  }
-
-  sendDependenciesOrDelay(dependencies: Map<string, string>) {
-    if (this.waitingForDependencies) {
-      this.waitingForDependencies = false
-
-      this.sendMessage({
-        type: 'load_dependencies',
-        dependencies,
-      })
-    }
-
-    this.dependencies = dependencies
   }
 
   sendParseTrees(parseTrees: ParseTrees) {
@@ -95,6 +95,8 @@ export class AutocompleteWorkerManager {
           type: 'load_dependencies',
           dependencies: this.dependencies,
         })
+
+        this.dependenciesLoadedAtLeastOnce = true
       }
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)

@@ -30,8 +30,7 @@ class RuntimeStateManager {
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
 
-  dependencies: Map<string, string>
-  dependenciesLoaded = false
+  private dependencies: Map<string, string>
 
   constructor(
     parentWindowDomainRegex: string,
@@ -188,15 +187,18 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         if (!this.dependencies) {
+          console.log('reloading dependencies')
           // NOTE(harrison): this means that the iframe has reloaded
           this.dependencies = data.data.dependencies
-          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
-          break
-        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
-          this.workerManager.restart()
+          this.workerManager.reloadDependencies()
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
+          break
+        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
+          console.log('maps are different?', this.dependencies, data.data.dependencies)
           this.dependencies = data.data.dependencies
+          this.workerManager.reloadDependencies()
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
           break
         }
@@ -218,14 +220,8 @@ class RuntimeStateManager {
         this.runType = data.runType
         this.eventData = data.eventData
 
-        if (!this.dependencies) {
-          this.dependencies = data.data.dependencies
-
-          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
-        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
-          console.error('initialfiles dependencies differernt. not sure how i ended up in this state')
-          break
-        }
+        this.dependencies = data.data.dependencies
+        this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
         this.setEnvironmentVars(data.data.envVars)

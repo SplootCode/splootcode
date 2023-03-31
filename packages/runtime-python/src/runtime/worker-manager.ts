@@ -33,7 +33,7 @@ export class WorkerManager {
   private sendToParentWindow: (payload: EditorMessage) => void
   private _workerState: WorkerState
   private textFileValueCallback: (fileContents: Map<string, string>) => void
-  dependencies: Map<string, string>
+
   public get workerState() {
     return this._workerState
   }
@@ -245,7 +245,7 @@ export class WorkerManager {
     this.initialiseWorker()
   }
 
-  restart() {
+  reloadDependencies() {
     this.standardIO.stderr('\r\nReloading dependencies...\r\n')
     this._workerState = WorkerState.DISABLED
     this.stateCallBack(WorkerState.DISABLED)
