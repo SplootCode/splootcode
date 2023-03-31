@@ -1,34 +1,43 @@
 import React, { useEffect, useState } from 'react'
 
 import Fuse from 'fuse.js'
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from '@chakra-ui/react'
+import { Box, FormControl, HStack, IconButton, Input, Spacer, Text, VStack } from '@chakra-ui/react'
 
+import { AddIcon } from '@chakra-ui/icons'
 import { PythonModuleInfo, SupportedModuleList } from '@splootcode/language-python'
 
 interface AddImportModalProps {
   isOpen: boolean
   importModule: (moduleName: string) => void
-  onClose: () => void
 }
 
-export function AddImportModal(props: AddImportModalProps) {
-  const { isOpen, onClose, importModule } = props
+function PackageListing(props: { importModule: (moduleName: string) => void; moduleInfo: PythonModuleInfo }) {
+  const { importModule, moduleInfo } = props
+  return (
+    <HStack alignContent={'space-between'} pb={2}>
+      <Box>
+        <Text fontWeight={'bold'}>{moduleInfo.name}</Text>
+        <Text fontStyle={'italic'} color="gray.400">
+          {moduleInfo.description.substring(0, 50)}
+        </Text>
+      </Box>
+      <Spacer />
+      <IconButton
+        my={1}
+        size="sm"
+        aria-label="New variable"
+        icon={<AddIcon />}
+        onClick={() => importModule(moduleInfo.name)}
+      ></IconButton>
+    </HStack>
+  )
+}
 
-  const [selected, setSelected] = useState(null as string | null)
+const recommendedModules = ['csv', 'datetime', 'random', 'requests']
+
+export function AddImportModal(props: AddImportModalProps) {
+  const { isOpen, importModule } = props
+
   const [query, setQuery] = useState('')
   const [fuse, setFuse] = useState(null as Fuse<PythonModuleInfo> | null)
   const [searchResultsList, setSearchResultsList] = useState([] as PythonModuleInfo[])
@@ -54,64 +63,45 @@ export function AddImportModal(props: AddImportModalProps) {
   useEffect(() => {
     if (fuse && query.length >= 2) {
       const results = fuse.search(query).map((res) => res.item)
-      setSelected(null)
       setSearchResultsList(results.slice(0, 5))
     } else {
       setSearchResultsList([])
     }
   }, [fuse, query])
 
+  const curatedModules = SupportedModuleList.filter((moduleInfo) => {
+    return recommendedModules.includes(moduleInfo.name)
+  })
+
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add imported package</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl py={2}>
-              <FormLabel htmlFor="title">Search packages</FormLabel>
-              <Input id="title" type="text" autoFocus onChange={(e) => setQuery(e.target.value)} />
-            </FormControl>
-            {searchResultsList.map((moduleInfo) => {
-              return (
-                <Box
-                  key={moduleInfo.name}
-                  p={2}
-                  onClick={() => {
-                    setSelected(moduleInfo.name)
-                  }}
-                  borderRadius={4}
-                  mb={2}
-                  borderWidth={'1px'}
-                  borderColor={'gray.300'}
-                  backgroundColor={selected === moduleInfo.name ? 'blue.700' : 'transparent'}
-                >
-                  <Text fontWeight={'bold'}>
-                    {moduleInfo.name}{' '}
-                    <Text as={'span'} fontWeight={'normal'}>
-                      {moduleInfo.isStandardLib ? '(Python standard library)' : ''}
-                    </Text>
-                  </Text>
-                  <Text>{moduleInfo.description.substring(0, 50)}</Text>
-                </Box>
-              )
+    <Box px={1}>
+      <FormControl pb={1}>
+        <Input
+          id="title"
+          type="text"
+          autoFocus
+          onChange={(e) => setQuery(e.target.value)}
+          variant="flushed"
+          placeholder="Search available modules"
+          _placeholder={{ color: 'gray.500' }}
+        />
+      </FormControl>
+
+      <VStack alignItems={'stretch'} pb={1}>
+        {searchResultsList.map((moduleInfo) => {
+          return <PackageListing key={moduleInfo.name} importModule={importModule} moduleInfo={moduleInfo} />
+        })}
+      </VStack>
+      {query.length === 0 ? (
+        <VStack alignItems={'stretch'} py={2}>
+          <Text>Recommended modules</Text>
+          <Box borderLeft="1px" borderColor={'gray.600'} pl={2}>
+            {curatedModules.map((moduleInfo) => {
+              return <PackageListing key={moduleInfo.name} importModule={importModule} moduleInfo={moduleInfo} />
             })}
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              disabled={!selected}
-              onClick={() => {
-                importModule(selected)
-                onClose()
-              }}
-            >
-              Import module
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </Box>
+        </VStack>
+      ) : null}
+    </Box>
   )
 }
