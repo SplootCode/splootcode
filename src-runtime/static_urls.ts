@@ -4,7 +4,7 @@ import requestsPackageURL from '../python/packages/requests-2.28.1-py3-none-any.
 import streamlitPackageURL from '../python/packages/streamlit-1.19.0-py2.py3-none-any.whl'
 
 import textGeneratorURL from '../python/text_generator.py'
-import { StaticURLs } from 'packages/runtime-python/dist'
+import { StaticURLs } from '@splootcode/runtime-python'
 
 export const staticPythonURLs: StaticURLs = {
   executorURL: executorURL,
