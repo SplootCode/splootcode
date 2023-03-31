@@ -84,6 +84,7 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
   walker.walk(sourceFile.getParseResults().parseTree)
 
   if (walker.found) {
+    console.log('hello! getting expr info')
     const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
 
     sendMessage({
@@ -103,6 +104,7 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
   switch (e.data.type) {
     case 'parse_trees':
       updateParseTrees(e.data.parseTrees)
+      console.log('updated parse tree', dependencies)
 
       break
     case 'request_expression_type_info':
@@ -118,12 +120,15 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
         getExpressionTypeInfo(e.data.request)
       }
 
+      console.log('requested expression type info', dependencies)
+
       break
     case 'load_dependencies':
       if (!dependencies) {
+        console.log('loading autocomplete deps', e.data.dependencies)
         dependencies = e.data.dependencies
 
-        loadDependencies(pyodide, dependencies).then(() => {
+        loadDependencies(pyodide, dependencies, 'autoocmplete').then(() => {
           console.log('dependencies all loaded on autocomplete worker!')
         })
       } else {

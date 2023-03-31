@@ -11,6 +11,7 @@ export class AutocompleteWorkerManager {
   private workerReady: boolean
   private sendToParentWindow: (payload: EditorMessage) => void
   dependencies: Map<string, string>
+  waitingForDependencies = false
 
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
@@ -18,16 +19,18 @@ export class AutocompleteWorkerManager {
     this.worker = null
     this.workerReady = false
     this.dependencies = null
+    this.waitingForDependencies = false
 
     this.initializeWorker()
   }
 
   sendDependencies() {
-    if (!this.workerReady) {
-      console.error('trying to send deps when worker isnt ready')
+    if (this.waitingForDependencies) console.log('attempting to send depenedencies')
+    // if (!this.workerReady) {
+    //   console.error('trying to send deps when worker isnt ready')
 
-      return
-    }
+    //   return
+    // }
     console.log('sending dependencies to worker')
     this.sendMessage({
       type: 'load_dependencies',
@@ -39,6 +42,7 @@ export class AutocompleteWorkerManager {
     if (!this.worker) {
       this.worker = new this.AutocompleteWorker()
       this.worker.addEventListener('message', this.handleMessageFromWorker)
+      this.waitingForDependencies = false
     }
   }
 
@@ -46,6 +50,7 @@ export class AutocompleteWorkerManager {
     this.worker.removeEventListener('message', this.handleMessageFromWorker)
     this.worker.terminate()
     this.worker = null
+    this.waitingForDependencies = false
 
     this.initializeWorker()
   }
@@ -76,10 +81,14 @@ export class AutocompleteWorkerManager {
 
       console.log('loading autocomiplete deps')
 
-      if (this.dependencies) {
-        this.sendDependencies()
+      if (!this.dependencies) {
+        this.waitingForDependencies = true
       } else {
-        console.log('cant send deps')
+        console.log('AUTOCOMPLETE MANAGER sending load_dependencies', this.dependencies)
+        this.sendMessage({
+          type: 'load_dependencies',
+          dependencies: this.dependencies,
+        })
       }
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)
