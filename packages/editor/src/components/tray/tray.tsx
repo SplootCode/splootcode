@@ -54,6 +54,7 @@ export function Tray(props: TrayProps) {
   const addModuleImport = useCallback(
     (moduleName: string) => {
       ;(rootNode as PythonFile).addModuleImport(moduleName)
+      setTabIndex(1)
     },
     [rootNode]
   )
