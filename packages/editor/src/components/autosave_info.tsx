@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { EditorState } from 'src/context/editor_context'
+import { EditorState } from '../context/editor_context'
 import { Text, useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 

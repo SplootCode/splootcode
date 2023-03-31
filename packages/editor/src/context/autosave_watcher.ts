@@ -9,7 +9,7 @@ import {
   ProjectObserver,
   SaveError,
   globalMutationDispatcher,
-} from '@splootcode/core/'
+} from '@splootcode/core'
 import { action, observable, runInAction } from 'mobx'
 
 export interface AutosaveWatcherFailedSaveInfo {

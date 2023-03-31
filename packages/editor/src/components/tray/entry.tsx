@@ -17,7 +17,7 @@ export const Entry = (props: EntryProps) => {
       <Text py={3} pl={0} pr={1} className={'tray-entry-abstract'}>
         {entry.abstract}
       </Text>
-      {entry.examples?.length === 0 ? null : (
+      {!entry.examples || entry.examples?.length === 0 ? null : (
         <Text
           className="tray-entry-example-label"
           pt={3}

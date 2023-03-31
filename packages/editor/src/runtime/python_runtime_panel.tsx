@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PythonFrame, RuntimeToken } from './python_frame'
-import { RuntimeContextManager } from 'src/context/runtime_context_manager'
+import { RuntimeContextManager } from '../context/runtime_context_manager'
 
 export type RuntimePanelProps = {
   frameScheme: 'http' | 'https'

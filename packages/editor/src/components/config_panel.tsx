@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { MicroNode } from './tray/category'
 import { NodeCategory, Project, SerializedNode, SplootFragment, deserializeNode } from '@splootcode/core'
-import { RenderedFragment } from 'src/layout/rendered_fragment'
+import { RenderedFragment } from '../layout/rendered_fragment'
 
 interface ConfigPanelProps {
   project: Project

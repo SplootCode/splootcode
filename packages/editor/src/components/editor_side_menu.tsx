@@ -4,9 +4,9 @@ import { AiOutlineExperiment } from 'react-icons/ai'
 import { BiCog } from 'react-icons/bi'
 import { Box, Icon, IconButton, Text } from '@chakra-ui/react'
 import { ConfigPanel } from './config_panel'
-import { EditorState } from 'src/context/editor_context'
-import { RenderedFragment } from 'src/layout/rendered_fragment'
-import { RunType } from '@splootcode/core'
+import { EditorState } from '../context/editor_context'
+import { RenderedFragment } from '../layout/rendered_fragment'
+import { RunType, TrayCategory } from '@splootcode/core'
 import { TestRequestPanel } from './test_request_panel'
 import { Tray } from './tray/tray'
 
@@ -93,14 +93,19 @@ export class EditorSideMenu extends Component<EditorSideMenuProps> {
   }
 }
 
+export interface ModuleTrayLoader {
+  getTrayForModule(module: string): Promise<TrayCategory>
+}
+
 export interface EditorSideMenuPaneProps {
   editorState: EditorState
   visibleView: 'tray' | 'config' | 'test-requests' | ''
+  moduleTrayLoader: ModuleTrayLoader
 }
 
 export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
   render() {
-    const { editorState, visibleView } = this.props
+    const { editorState, visibleView, moduleTrayLoader } = this.props
     const project = editorState.project
     const fileBlock = editorState.rootNode
     const trayState = visibleView === 'tray' ? {} : { display: 'none' }
@@ -110,12 +115,12 @@ export class EditorSideMenuPane extends Component<EditorSideMenuPaneProps> {
     return (
       <>
         <div style={trayState} className="editor-side-menu">
-          <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
-            <Text as={'h2'} color="gray.200">
-              {title}
-            </Text>
-          </Box>
-          <Tray key={fileBlock.node.type} startDrag={this.startDrag} rootNode={fileBlock.node} />
+          <Tray
+            key={fileBlock.node.type}
+            startDrag={this.startDrag}
+            rootNode={fileBlock.node}
+            moduleTrayLoader={moduleTrayLoader}
+          />
         </div>
         <div style={configState} className="editor-side-menu">
           <Box px={3} py={3} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
