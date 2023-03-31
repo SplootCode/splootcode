@@ -139,7 +139,7 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
       if (!dependencies) {
         dependencies = e.data.dependencies
 
-        loadDependencies(pyodide, dependencies, 'autoocmplete').then(() => {
+        loadDependencies(pyodide, dependencies).then(() => {
           if (unfinishedParseTrees) {
             updateParseTrees(unfinishedParseTrees)
           }
