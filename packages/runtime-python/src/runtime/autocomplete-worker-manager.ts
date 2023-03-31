@@ -32,7 +32,17 @@ export class AutocompleteWorkerManager {
     }
   }
 
-  restart() {
+  loadDependencies(dependencies: Map<string, string>) {
+    if (!this.dependencies) {
+      this.sendDependenciesOrDelay(dependencies)
+    } else {
+      this.reloadDependencies(dependencies)
+    }
+  }
+
+  reloadDependencies(dependencies: Map<string, string>) {
+    this.dependencies = dependencies
+
     this.worker.removeEventListener('message', this.handleMessageFromWorker)
     this.worker.terminate()
     this.worker = null
@@ -43,6 +53,19 @@ export class AutocompleteWorkerManager {
 
   sendMessage(message: WorkerManagerAutocompleteMessage) {
     this.worker.postMessage(message)
+  }
+
+  sendDependenciesOrDelay(dependencies: Map<string, string>) {
+    if (this.waitingForDependencies) {
+      this.waitingForDependencies = false
+
+      this.sendMessage({
+        type: 'load_dependencies',
+        dependencies,
+      })
+    }
+
+    this.dependencies = dependencies
   }
 
   sendParseTrees(parseTrees: ParseTrees) {

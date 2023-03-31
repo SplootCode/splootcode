@@ -188,13 +188,12 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         if (!this.dependencies) {
-          console.error('dependencies not set on updatedfiles. something weird is going on')
+          // NOTE(harrison): this means that the iframe has reloaded
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
           break
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
           this.workerManager.restart()
-
-          this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          this.autocompleteWorkerManager.restart()
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
           this.dependencies = data.data.dependencies
 
@@ -221,16 +220,19 @@ class RuntimeStateManager {
         if (!this.dependencies) {
           this.dependencies = data.data.dependencies
 
-          this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          if (this.autocompleteWorkerManager.waitingForDependencies) {
-            this.autocompleteWorkerManager.sendMessage({
-              type: 'load_dependencies',
-              dependencies: data.data.dependencies,
-            })
+          // this.autocompleteWorkerManager.sendDependenciesOrDelay(data.data.dependencies)
+          this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
-            this.autocompleteWorkerManager.waitingForDependencies = false
-          }
-          this.autocompleteWorkerManager.dependencies = data.data.dependencies
+          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
+          // if (this.autocompleteWorkerManager.waitingForDependencies) {
+          //   this.autocompleteWorkerManager.sendMessage({
+          //     type: 'load_dependencies',
+          //     dependencies: data.data.dependencies,
+          //   })
+
+          //   this.autocompleteWorkerManager.waitingForDependencies = false
+          // }
+          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
           console.error('initialfiles dependencies differernt. not sure how i ended up in this state')
           break
