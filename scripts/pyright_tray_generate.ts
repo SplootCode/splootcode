@@ -18,7 +18,7 @@ import * as fs from 'fs'
 // This list is all Python stdlib modules but with the ones that Pyodide doesn't support removed.
 const supportedStandardLibModules = [
   'posix', // Not sure why posix needs to go first, but otherwise it gets no results?
-  // 'abc', // Temporarily disable due to atucomplete disallowing abc.
+  'abc',
   'aifc',
   'argparse',
   'array',

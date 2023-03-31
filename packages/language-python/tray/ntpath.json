@@ -480,31 +480,6 @@
       }
     },
     {
-      "key": "ntpath.PathLike",
-      "abstract": "Abstract base class for implementing the file system path protocol.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PathLike"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ntpath"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "ntpath.curdir",
       "abstract": "",
       "serializedNode": {

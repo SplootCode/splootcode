@@ -2,31 +2,6 @@
   "category": "compileall",
   "entries": [
     {
-      "key": "compileall.PycInvalidationMode",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PycInvalidationMode"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "compileall"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "compileall.compile_dir",
       "abstract": "Byte-compile all modules in the given directory tree.",
       "serializedNode": {

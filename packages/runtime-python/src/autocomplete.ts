@@ -95,14 +95,6 @@ function pyrightParamsToAutocompleteFunctionArguments(
   return args
 }
 
-const typingsBlacklist = [
-  '/typeshed/typeshed-fallback/stdlib/_typeshed/__init__.pyi',
-  '/typeshed/typeshed-fallback/stdlib/typing_extensions.pyi',
-  '/typeshed/typeshed-fallback/stdlib/abc.pyi',
-  '/typeshed/typeshed-fallback/stdlib/collections/abc.pyi',
-  '/typeshed/typeshed-fallback/stdlib/typing.pyi',
-]
-
 function suggestionsForDeclaration(
   fieldName: string,
   symbol: PyrightSymbol,
@@ -111,13 +103,6 @@ function suggestionsForDeclaration(
   declaration: Declaration,
   declarationIndex: number
 ): AutocompleteInfo[] {
-  if (typingsBlacklist.includes(declaration.path)) {
-    // NOTE(harrison): This is a hack to minimise the amount of suggestions we get from raw typeshed types.
-    // They show up in the fields of a module, because they are imported in the .pyi file. We should have a
-    // better system such that this doesn't happen.
-    return []
-  }
-
   const inferredType = structuredProgram.evaluator.getInferredTypeOfDeclaration(symbol, declaration)
   if (!inferredType) {
     return []
@@ -220,7 +205,7 @@ const suggestionsForEntries = (
 
   return fields
     .map(([fieldName, symbol]): AutocompleteInfo[] => {
-      if (seen.has(fieldName)) {
+      if (seen.has(fieldName) || symbol.isExternallyHidden()) {
         return []
       }
 
