@@ -9,6 +9,14 @@
         "properties": {
           "member": "socket"
         },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto",
+            "fileno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +54,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SSLContext"
+        },
+        "meta": {
+          "params": [
+            "protocol"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +98,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +117,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -228,6 +294,9 @@
         "properties": {
           "member": "Error"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -238,23 +307,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -266,6 +319,9 @@
         "properties": {
           "member": "error_reply"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -276,23 +332,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -304,6 +344,9 @@
         "properties": {
           "member": "error_temp"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -314,23 +357,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -342,43 +369,8 @@
         "properties": {
           "member": "error_perm"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ftplib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ftplib.error_proto",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "error_proto"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -390,23 +382,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ftplib.error_proto",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "error_proto"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ftplib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -438,6 +439,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "FTP"
+        },
+        "meta": {
+          "params": [
+            "host",
+            "user",
+            "passwd",
+            "acct",
+            "timeout",
+            "source_address"
+          ]
         },
         "childSets": {
           "object": [
@@ -477,6 +488,19 @@
         "properties": {
           "member": "FTP_TLS"
         },
+        "meta": {
+          "params": [
+            "host",
+            "user",
+            "passwd",
+            "acct",
+            "keyfile",
+            "certfile",
+            "context",
+            "timeout",
+            "source_address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -514,6 +538,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse150"
+        },
+        "meta": {
+          "params": [
+            "resp"
+          ]
         },
         "childSets": {
           "object": [
@@ -553,6 +582,11 @@
         "properties": {
           "member": "parse227"
         },
+        "meta": {
+          "params": [
+            "resp"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -591,6 +625,12 @@
         "properties": {
           "member": "parse229"
         },
+        "meta": {
+          "params": [
+            "resp",
+            "peer"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -602,6 +642,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -628,6 +683,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parse257"
+        },
+        "meta": {
+          "params": [
+            "resp"
+          ]
         },
         "childSets": {
           "object": [
@@ -667,6 +727,15 @@
         "properties": {
           "member": "ftpcp"
         },
+        "meta": {
+          "params": [
+            "source",
+            "sourcename",
+            "target",
+            "targetname",
+            "type"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -678,6 +747,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

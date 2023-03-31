@@ -9,6 +9,11 @@
         "properties": {
           "member": "url2pathname"
         },
+        "meta": {
+          "params": [
+            "url"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +51,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "pathname2url"
+        },
+        "meta": {
+          "params": [
+            "p"
+          ]
         },
         "childSets": {
           "object": [

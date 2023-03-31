@@ -9,6 +9,13 @@
         "properties": {
           "member": "getopt"
         },
+        "meta": {
+          "params": [
+            "args",
+            "shortopts",
+            "longopts"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +27,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +69,13 @@
         "properties": {
           "member": "gnu_getopt"
         },
+        "meta": {
+          "params": [
+            "args",
+            "shortopts",
+            "longopts"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -58,6 +87,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -84,6 +128,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "GetoptError"
+        },
+        "meta": {
+          "params": [
+            "msg",
+            "opt"
+          ]
         },
         "childSets": {
           "object": [
@@ -122,6 +172,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "error"
+        },
+        "meta": {
+          "params": [
+            "msg",
+            "opt"
+          ]
         },
         "childSets": {
           "object": [

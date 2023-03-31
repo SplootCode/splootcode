@@ -51,6 +51,11 @@
         "properties": {
           "member": "bidirectional"
         },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -88,6 +93,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "category"
+        },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
         },
         "childSets": {
           "object": [
@@ -127,6 +137,11 @@
         "properties": {
           "member": "combining"
         },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -164,6 +179,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decimal"
+        },
+        "meta": {
+          "params": [
+            "__chr",
+            "__default"
+          ]
         },
         "childSets": {
           "object": [
@@ -203,6 +224,11 @@
         "properties": {
           "member": "decomposition"
         },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -240,6 +266,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "digit"
+        },
+        "meta": {
+          "params": [
+            "__chr",
+            "__default"
+          ]
         },
         "childSets": {
           "object": [
@@ -279,6 +311,11 @@
         "properties": {
           "member": "east_asian_width"
         },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -317,6 +354,12 @@
         "properties": {
           "member": "is_normalized"
         },
+        "meta": {
+          "params": [
+            "__form",
+            "__unistr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -328,6 +371,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -354,6 +412,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "lookup"
+        },
+        "meta": {
+          "params": [
+            "__name"
+          ]
         },
         "childSets": {
           "object": [
@@ -393,6 +456,11 @@
         "properties": {
           "member": "mirrored"
         },
+        "meta": {
+          "params": [
+            "__chr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -430,6 +498,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "name"
+        },
+        "meta": {
+          "params": [
+            "__chr",
+            "__default"
+          ]
         },
         "childSets": {
           "object": [
@@ -469,6 +543,12 @@
         "properties": {
           "member": "normalize"
         },
+        "meta": {
+          "params": [
+            "__form",
+            "__unistr"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -480,6 +560,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -506,6 +601,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "numeric"
+        },
+        "meta": {
+          "params": [
+            "__chr",
+            "__default"
+          ]
         },
         "childSets": {
           "object": [
@@ -545,6 +646,9 @@
         "properties": {
           "member": "UCD"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -555,23 +659,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

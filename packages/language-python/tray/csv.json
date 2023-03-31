@@ -93,43 +93,8 @@
         "properties": {
           "member": "Dialect"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "csv"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "csv.Error",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Error"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -141,23 +106,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "csv.Error",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Error"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "csv"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -168,6 +142,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "field_size_limit"
+        },
+        "meta": {
+          "params": [
+            "new_limit"
+          ]
         },
         "childSets": {
           "object": [
@@ -207,6 +186,11 @@
         "properties": {
           "member": "get_dialect"
         },
+        "meta": {
+          "params": [
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -245,6 +229,9 @@
         "properties": {
           "member": "list_dialects"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -255,23 +242,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -282,6 +253,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "reader"
+        },
+        "meta": {
+          "params": [
+            "csvfile",
+            "dialect"
+          ]
         },
         "childSets": {
           "object": [
@@ -321,6 +298,12 @@
         "properties": {
           "member": "register_dialect"
         },
+        "meta": {
+          "params": [
+            "name",
+            "dialect"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -358,6 +341,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "unregister_dialect"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -397,6 +385,12 @@
         "properties": {
           "member": "writer"
         },
+        "meta": {
+          "params": [
+            "csvfile",
+            "dialect"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -435,6 +429,9 @@
         "properties": {
           "member": "excel"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -445,23 +442,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -473,6 +454,9 @@
         "properties": {
           "member": "excel_tab"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -483,23 +467,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -511,6 +479,40 @@
         "properties": {
           "member": "unix_dialect"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "csv"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "csv.DictReader",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "DictReader"
+        },
+        "meta": {
+          "params": [
+            "f",
+            "fieldnames",
+            "restkey",
+            "restval",
+            "dialect"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -536,30 +538,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "csv.DictReader",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DictReader"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "csv"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -587,6 +566,15 @@
         "properties": {
           "member": "DictWriter"
         },
+        "meta": {
+          "params": [
+            "f",
+            "fieldnames",
+            "restval",
+            "extrasaction",
+            "dialect"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -598,6 +586,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -625,6 +628,9 @@
         "properties": {
           "member": "Sniffer"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -635,23 +641,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     }

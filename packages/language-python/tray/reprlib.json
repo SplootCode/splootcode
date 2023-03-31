@@ -9,6 +9,12 @@
         "properties": {
           "member": "array"
         },
+        "meta": {
+          "params": [
+            "__typecode",
+            "__initializer"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "deque"
+        },
+        "meta": {
+          "params": [
+            "iterable",
+            "maxlen"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +97,11 @@
         "properties": {
           "member": "recursive_repr"
         },
+        "meta": {
+          "params": [
+            "fillvalue"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -123,6 +140,9 @@
         "properties": {
           "member": "Repr"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -133,23 +153,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -181,6 +185,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "repr"
+        },
+        "meta": {
+          "params": [
+            "x"
+          ]
         },
         "childSets": {
           "object": [

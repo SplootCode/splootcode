@@ -597,6 +597,13 @@
         "properties": {
           "member": "LZMADecompressor"
         },
+        "meta": {
+          "params": [
+            "format",
+            "memlimit",
+            "filters"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -634,6 +641,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "LZMACompressor"
+        },
+        "meta": {
+          "params": [
+            "format",
+            "check",
+            "preset",
+            "filters"
+          ]
         },
         "childSets": {
           "object": [
@@ -673,6 +688,9 @@
         "properties": {
           "member": "LZMAError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -683,23 +701,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -710,6 +712,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "LZMAFile"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -749,6 +757,12 @@
         "properties": {
           "member": "open"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "mode"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -786,6 +800,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "compress"
+        },
+        "meta": {
+          "params": [
+            "data",
+            "format",
+            "check",
+            "preset",
+            "filters"
+          ]
         },
         "childSets": {
           "object": [
@@ -825,6 +848,14 @@
         "properties": {
           "member": "decompress"
         },
+        "meta": {
+          "params": [
+            "data",
+            "format",
+            "memlimit",
+            "filters"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -862,6 +893,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "is_check_supported"
+        },
+        "meta": {
+          "params": [
+            "__check_id"
+          ]
         },
         "childSets": {
           "object": [

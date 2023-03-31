@@ -51,6 +51,11 @@
         "properties": {
           "member": "ip_address"
         },
+        "meta": {
+          "params": [
+            "address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -88,6 +93,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "ip_network"
+        },
+        "meta": {
+          "params": [
+            "address",
+            "strict"
+          ]
         },
         "childSets": {
           "object": [
@@ -127,6 +138,11 @@
         "properties": {
           "member": "ip_interface"
         },
+        "meta": {
+          "params": [
+            "address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -165,6 +181,9 @@
         "properties": {
           "member": "IPv4Address"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -175,23 +194,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -203,6 +206,9 @@
         "properties": {
           "member": "IPv4Network"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -213,23 +219,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -241,6 +231,9 @@
         "properties": {
           "member": "IPv4Interface"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -251,23 +244,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -279,6 +256,9 @@
         "properties": {
           "member": "IPv6Address"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -289,23 +269,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -317,43 +281,8 @@
         "properties": {
           "member": "IPv6Network"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ipaddress"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ipaddress.IPv6Interface",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "IPv6Interface"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -365,23 +294,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ipaddress.IPv6Interface",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "IPv6Interface"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -392,6 +330,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "v4_int_to_packed"
+        },
+        "meta": {
+          "params": [
+            "address"
+          ]
         },
         "childSets": {
           "object": [
@@ -431,6 +374,11 @@
         "properties": {
           "member": "v6_int_to_packed"
         },
+        "meta": {
+          "params": [
+            "address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -469,6 +417,12 @@
         "properties": {
           "member": "summarize_address_range"
         },
+        "meta": {
+          "params": [
+            "first",
+            "last"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -480,6 +434,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -506,6 +475,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "collapse_addresses"
+        },
+        "meta": {
+          "params": [
+            "addresses"
+          ]
         },
         "childSets": {
           "object": [
@@ -545,6 +519,11 @@
         "properties": {
           "member": "get_mixed_type_key"
         },
+        "meta": {
+          "params": [
+            "obj"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -583,43 +562,8 @@
         "properties": {
           "member": "AddressValueError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "ipaddress"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "ipaddress.NetmaskValueError",
-      "abstract": "A Value Error related to the netmask.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "NetmaskValueError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -631,23 +575,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "ipaddress.NetmaskValueError",
+      "abstract": "A Value Error related to the netmask.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "NetmaskValueError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "ipaddress"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     }

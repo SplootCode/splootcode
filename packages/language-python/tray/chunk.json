@@ -9,6 +9,14 @@
         "properties": {
           "member": "Chunk"
         },
+        "meta": {
+          "params": [
+            "file",
+            "align",
+            "bigendian",
+            "inclheader"
+          ]
+        },
         "childSets": {
           "object": [
             {

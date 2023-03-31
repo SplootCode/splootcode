@@ -9,6 +9,20 @@
         "properties": {
           "member": "TextWrapper"
         },
+        "meta": {
+          "params": [
+            "width",
+            "initial_indent",
+            "subsequent_indent",
+            "expand_tabs",
+            "replace_whitespace",
+            "fix_sentence_endings",
+            "break_long_words",
+            "drop_whitespace",
+            "break_on_hyphens",
+            "tabsize"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +60,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "wrap"
+        },
+        "meta": {
+          "params": [
+            "text",
+            "width"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +105,12 @@
         "properties": {
           "member": "fill"
         },
+        "meta": {
+          "params": [
+            "text",
+            "width"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -123,6 +149,12 @@
         "properties": {
           "member": "shorten"
         },
+        "meta": {
+          "params": [
+            "text",
+            "width"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -134,6 +166,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -160,6 +207,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "dedent"
+        },
+        "meta": {
+          "params": [
+            "text"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +251,13 @@
         "properties": {
           "member": "indent"
         },
+        "meta": {
+          "params": [
+            "text",
+            "prefix",
+            "predicate"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -210,6 +269,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

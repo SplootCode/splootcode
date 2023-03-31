@@ -9,6 +9,16 @@
         "properties": {
           "member": "Class"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name",
+            "super_",
+            "file",
+            "lineno",
+            "parent"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +30,66 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +117,16 @@
         "properties": {
           "member": "Function"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name",
+            "file",
+            "lineno",
+            "parent",
+            "is_async"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -58,6 +138,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -84,6 +209,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "readmodule"
+        },
+        "meta": {
+          "params": [
+            "module",
+            "path"
+          ]
         },
         "childSets": {
           "object": [
@@ -122,6 +253,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "readmodule_ex"
+        },
+        "meta": {
+          "params": [
+            "module",
+            "path"
+          ]
         },
         "childSets": {
           "object": [

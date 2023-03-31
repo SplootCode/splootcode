@@ -9,6 +9,14 @@
         "properties": {
           "member": "encode"
         },
+        "meta": {
+          "params": [
+            "input",
+            "output",
+            "quotetabs",
+            "header"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +84,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "encodestring"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "quotetabs",
+            "header"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +130,13 @@
         "properties": {
           "member": "decode"
         },
+        "meta": {
+          "params": [
+            "input",
+            "output",
+            "header"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +148,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -122,6 +189,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "decodestring"
+        },
+        "meta": {
+          "params": [
+            "s",
+            "header"
+          ]
         },
         "childSets": {
           "object": [

@@ -9,6 +9,14 @@
         "properties": {
           "member": "socket"
         },
+        "meta": {
+          "params": [
+            "family",
+            "type",
+            "proto",
+            "fileno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +54,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SSLContext"
+        },
+        "meta": {
+          "params": [
+            "protocol"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +98,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -96,6 +117,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -228,6 +294,9 @@
         "properties": {
           "member": "SMTPException"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -238,23 +307,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -266,6 +319,9 @@
         "properties": {
           "member": "SMTPNotSupportedError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -276,23 +332,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -304,6 +344,37 @@
         "properties": {
           "member": "SMTPServerDisconnected"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "smtplib"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "smtplib.SMTPResponseException",
+      "abstract": "Base class for all exceptions that include an SMTP error code.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SMTPResponseException"
+        },
+        "meta": {
+          "params": [
+            "code",
+            "msg"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -329,30 +400,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "smtplib.SMTPResponseException",
-      "abstract": "Base class for all exceptions that include an SMTP error code.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SMTPResponseException"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "smtplib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -380,6 +428,13 @@
         "properties": {
           "member": "SMTPSenderRefused"
         },
+        "meta": {
+          "params": [
+            "code",
+            "msg",
+            "sender"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -391,6 +446,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -417,6 +502,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SMTPRecipientsRefused"
+        },
+        "meta": {
+          "params": [
+            "recipients"
+          ]
         },
         "childSets": {
           "object": [
@@ -456,6 +546,9 @@
         "properties": {
           "member": "SMTPDataError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -466,23 +559,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -494,6 +571,9 @@
         "properties": {
           "member": "SMTPConnectError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -504,23 +584,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -532,43 +596,8 @@
         "properties": {
           "member": "SMTPHeloError"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "smtplib"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "smtplib.SMTPAuthenticationError",
-      "abstract": "Authentication error.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SMTPAuthenticationError"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -580,23 +609,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "smtplib.SMTPAuthenticationError",
+      "abstract": "Authentication error.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "SMTPAuthenticationError"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "smtplib"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -607,6 +645,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "quoteaddr"
+        },
+        "meta": {
+          "params": [
+            "addrstring"
+          ]
         },
         "childSets": {
           "object": [
@@ -646,6 +689,11 @@
         "properties": {
           "member": "quotedata"
         },
+        "meta": {
+          "params": [
+            "data"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -684,6 +732,15 @@
         "properties": {
           "member": "SMTP"
         },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "local_hostname",
+            "timeout",
+            "source_address"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -721,6 +778,18 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SMTP_SSL"
+        },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "local_hostname",
+            "keyfile",
+            "certfile",
+            "timeout",
+            "source_address",
+            "context"
+          ]
         },
         "childSets": {
           "object": [
@@ -780,6 +849,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "LMTP"
+        },
+        "meta": {
+          "params": [
+            "host",
+            "port",
+            "local_hostname",
+            "source_address",
+            "timeout"
+          ]
         },
         "childSets": {
           "object": [

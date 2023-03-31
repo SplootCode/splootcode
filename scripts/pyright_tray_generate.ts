@@ -204,6 +204,7 @@ const supportedStandardLibModules = [
 import {
   AutocompleteEntryCategory,
   AutocompleteInfo,
+  FunctionArgType,
   ModuleInfoFile,
   PythonModuleInfo,
 } from '@splootcode/language-python'
@@ -221,7 +222,7 @@ async function main() {
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(RequestsURL)
   await micropip.install(StreamlitURL)
-  const promises = [micropip.install('types-requests'), micropip.install('streamlit')]
+  const promises = [micropip.install('types-requests')]
   await Promise.all(promises)
 
   const structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(TypeshedPath, pyodide))
@@ -402,9 +403,42 @@ function generateSerializedNode(moduleName: string, autocompleteEntry: Autocompl
     }
     return attrNode
   } else if (autocompleteEntry.category === AutocompleteEntryCategory.Function) {
+    const argNames: string[] = autocompleteEntry.arguments
+      .filter((arg) => [FunctionArgType.PositionalOnly, FunctionArgType.PositionalOrKeyword].includes(arg.type))
+      .map((arg) => arg.name)
+
+    const args = autocompleteEntry.arguments
+      .filter(
+        (arg) =>
+          !arg.hasDefault && [FunctionArgType.PositionalOnly, FunctionArgType.PositionalOrKeyword].includes(arg.type)
+      )
+      .map((arg) => {
+        return {
+          type: 'PY_ARG',
+          childSets: {
+            argument: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }],
+          },
+          properties: {},
+        }
+      })
+
+    // Ensure at least one empty argument if this function has any optional arguments.
+    if (autocompleteEntry.arguments.length !== 0 && args.length === 0) {
+      args.push({
+        type: 'PY_ARG',
+        childSets: {
+          argument: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }],
+        },
+        properties: {},
+      })
+    }
+
     const callMemberNode = {
       type: 'PYTHON_CALL_MEMBER',
       properties: { member: autocompleteEntry.name },
+      meta: {
+        params: argNames,
+      },
       childSets: {
         object: [
           {
@@ -413,15 +447,7 @@ function generateSerializedNode(moduleName: string, autocompleteEntry: Autocompl
             childSets: {},
           },
         ],
-        arguments: [
-          {
-            type: 'PY_ARG',
-            childSets: {
-              argument: [{ type: 'PYTHON_EXPRESSION', properties: {}, childSets: { tokens: [] } }],
-            },
-            properties: {},
-          },
-        ],
+        arguments: args,
       },
     }
     return callMemberNode

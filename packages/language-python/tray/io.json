@@ -9,6 +9,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -131,6 +184,11 @@
         "properties": {
           "member": "open_code"
         },
+        "meta": {
+          "params": [
+            "path"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -169,6 +227,9 @@
         "properties": {
           "member": "BlockingIOError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -179,23 +240,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -207,6 +252,9 @@
         "properties": {
           "member": "UnsupportedOperation"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -217,23 +265,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -245,6 +277,9 @@
         "properties": {
           "member": "IOBase"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -255,23 +290,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -283,43 +302,8 @@
         "properties": {
           "member": "RawIOBase"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "io"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "io.BufferedIOBase",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BufferedIOBase"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -331,23 +315,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "io.BufferedIOBase",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "BufferedIOBase"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "io"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -358,6 +351,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "FileIO"
+        },
+        "meta": {
+          "params": [
+            "file",
+            "mode",
+            "closefd",
+            "opener"
+          ]
         },
         "childSets": {
           "object": [
@@ -397,6 +398,11 @@
         "properties": {
           "member": "BytesIO"
         },
+        "meta": {
+          "params": [
+            "initial_bytes"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -434,6 +440,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BufferedReader"
+        },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
         },
         "childSets": {
           "object": [
@@ -473,6 +485,12 @@
         "properties": {
           "member": "BufferedWriter"
         },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -510,6 +528,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "BufferedRandom"
+        },
+        "meta": {
+          "params": [
+            "raw",
+            "buffer_size"
+          ]
         },
         "childSets": {
           "object": [
@@ -549,6 +573,13 @@
         "properties": {
           "member": "BufferedRWPair"
         },
+        "meta": {
+          "params": [
+            "reader",
+            "writer",
+            "buffer_size"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -560,6 +591,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -587,6 +633,9 @@
         "properties": {
           "member": "TextIOBase"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -597,23 +646,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -624,6 +657,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TextIOWrapper"
+        },
+        "meta": {
+          "params": [
+            "buffer",
+            "encoding",
+            "errors",
+            "newline",
+            "line_buffering",
+            "write_through"
+          ]
         },
         "childSets": {
           "object": [
@@ -663,6 +706,12 @@
         "properties": {
           "member": "StringIO"
         },
+        "meta": {
+          "params": [
+            "initial_value",
+            "newline"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -701,6 +750,13 @@
         "properties": {
           "member": "IncrementalNewlineDecoder"
         },
+        "meta": {
+          "params": [
+            "decoder",
+            "translate",
+            "errors"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -712,6 +768,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

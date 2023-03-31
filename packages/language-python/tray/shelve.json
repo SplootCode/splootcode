@@ -9,6 +9,14 @@
         "properties": {
           "member": "TracebackType"
         },
+        "meta": {
+          "params": [
+            "tb_next",
+            "tb_frame",
+            "tb_lasti",
+            "tb_lineno"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +28,51 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -46,6 +99,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Shelf"
+        },
+        "meta": {
+          "params": [
+            "dict",
+            "protocol",
+            "writeback",
+            "keyencoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +146,9 @@
         "properties": {
           "member": "BsdDbShelf"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +159,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -122,6 +170,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "DbfilenameShelf"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "flag",
+            "protocol",
+            "writeback"
+          ]
         },
         "childSets": {
           "object": [
@@ -160,6 +216,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "open"
+        },
+        "meta": {
+          "params": [
+            "filename",
+            "flag",
+            "protocol",
+            "writeback"
+          ]
         },
         "childSets": {
           "object": [

@@ -9,6 +9,11 @@
         "properties": {
           "member": "IntEnum"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,9 @@
         "properties": {
           "member": "FrameType"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +65,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -106,43 +98,8 @@
         "properties": {
           "member": "Signals"
         },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "signal"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "signal.Handlers",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Handlers"
+        "meta": {
+          "params": []
         },
         "childSets": {
           "object": [
@@ -154,23 +111,32 @@
               "childSets": {}
             }
           ],
-          "arguments": [
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "signal.Handlers",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Handlers"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
             {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "signal"
               },
-              "properties": {}
+              "childSets": {}
             }
-          ]
+          ],
+          "arguments": []
         }
       }
     },
@@ -224,6 +190,12 @@
         "properties": {
           "member": "default_int_handler"
         },
+        "meta": {
+          "params": [
+            "__signalnum",
+            "__frame"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -235,6 +207,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -261,6 +248,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getsignal"
+        },
+        "meta": {
+          "params": [
+            "signalnum"
+          ]
         },
         "childSets": {
           "object": [
@@ -300,6 +292,12 @@
         "properties": {
           "member": "signal"
         },
+        "meta": {
+          "params": [
+            "signalnum",
+            "handler"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -311,6 +309,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1073,6 +1086,9 @@
         "properties": {
           "member": "ItimerError"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1083,23 +1099,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1174,6 +1174,9 @@
         "properties": {
           "member": "Sigmasks"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1184,23 +1187,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1275,6 +1262,11 @@
         "properties": {
           "member": "alarm"
         },
+        "meta": {
+          "params": [
+            "__seconds"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1312,6 +1304,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "getitimer"
+        },
+        "meta": {
+          "params": [
+            "__which"
+          ]
         },
         "childSets": {
           "object": [
@@ -1351,6 +1348,37 @@
         "properties": {
           "member": "pause"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "signal"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "signal.pthread_kill",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "pthread_kill"
+        },
+        "meta": {
+          "params": [
+            "__thread_id",
+            "__signalnum"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1376,30 +1404,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "signal.pthread_kill",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "pthread_kill"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "signal"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1427,6 +1432,12 @@
         "properties": {
           "member": "pthread_sigmask"
         },
+        "meta": {
+          "params": [
+            "how",
+            "mask"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1438,6 +1449,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1465,6 +1491,13 @@
         "properties": {
           "member": "setitimer"
         },
+        "meta": {
+          "params": [
+            "__which",
+            "__seconds",
+            "__interval"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1476,6 +1509,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1503,6 +1551,12 @@
         "properties": {
           "member": "siginterrupt"
         },
+        "meta": {
+          "params": [
+            "__signalnum",
+            "__flag"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1514,6 +1568,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1541,6 +1610,9 @@
         "properties": {
           "member": "sigpending"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1551,23 +1623,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1578,6 +1634,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sigwait"
+        },
+        "meta": {
+          "params": [
+            "sigset"
+          ]
         },
         "childSets": {
           "object": [
@@ -1722,6 +1783,9 @@
         "properties": {
           "member": "struct_siginfo"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1732,23 +1796,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1759,6 +1807,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sigtimedwait"
+        },
+        "meta": {
+          "params": [
+            "sigset",
+            "timeout"
+          ]
         },
         "childSets": {
           "object": [
@@ -1785,6 +1839,21 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -1797,6 +1866,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "sigwaitinfo"
+        },
+        "meta": {
+          "params": [
+            "sigset"
+          ]
         },
         "childSets": {
           "object": [
@@ -1836,6 +1910,11 @@
         "properties": {
           "member": "strsignal"
         },
+        "meta": {
+          "params": [
+            "__signalnum"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1874,6 +1953,9 @@
         "properties": {
           "member": "valid_signals"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1884,23 +1966,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1911,6 +1977,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "raise_signal"
+        },
+        "meta": {
+          "params": [
+            "__signalnum"
+          ]
         },
         "childSets": {
           "object": [
@@ -1950,6 +2021,11 @@
         "properties": {
           "member": "set_wakeup_fd"
         },
+        "meta": {
+          "params": [
+            "fd"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1988,6 +2064,14 @@
         "properties": {
           "member": "pidfd_send_signal"
         },
+        "meta": {
+          "params": [
+            "__pidfd",
+            "__sig",
+            "__siginfo",
+            "__flags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1999,6 +2083,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

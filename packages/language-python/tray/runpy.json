@@ -9,6 +9,12 @@
         "properties": {
           "member": "ModuleType"
         },
+        "meta": {
+          "params": [
+            "name",
+            "doc"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +53,14 @@
         "properties": {
           "member": "run_module"
         },
+        "meta": {
+          "params": [
+            "mod_name",
+            "init_globals",
+            "run_name",
+            "alter_sys"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -84,6 +98,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "run_path"
+        },
+        "meta": {
+          "params": [
+            "path_name",
+            "init_globals",
+            "run_name"
+          ]
         },
         "childSets": {
           "object": [

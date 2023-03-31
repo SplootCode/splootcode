@@ -9,6 +9,9 @@
         "properties": {
           "member": "default_timer"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -46,6 +33,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Timer"
+        },
+        "meta": {
+          "params": [
+            "stmt",
+            "setup",
+            "timer",
+            "globals"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +80,15 @@
         "properties": {
           "member": "timeit"
         },
+        "meta": {
+          "params": [
+            "stmt",
+            "setup",
+            "timer",
+            "number",
+            "globals"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -123,6 +127,16 @@
         "properties": {
           "member": "repeat"
         },
+        "meta": {
+          "params": [
+            "stmt",
+            "setup",
+            "timer",
+            "repeat",
+            "number",
+            "globals"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -160,6 +174,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "main"
+        },
+        "meta": {
+          "params": [
+            "args"
+          ]
         },
         "childSets": {
           "object": [

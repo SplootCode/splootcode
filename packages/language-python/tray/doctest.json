@@ -9,6 +9,9 @@
         "properties": {
           "member": "TestResults"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -67,6 +54,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "register_optionflag"
+        },
+        "meta": {
+          "params": [
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -421,6 +413,16 @@
         "properties": {
           "member": "Example"
         },
+        "meta": {
+          "params": [
+            "source",
+            "want",
+            "exc_msg",
+            "lineno",
+            "indent",
+            "options"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -432,6 +434,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -459,6 +476,16 @@
         "properties": {
           "member": "DocTest"
         },
+        "meta": {
+          "params": [
+            "examples",
+            "globs",
+            "name",
+            "filename",
+            "lineno",
+            "docstring"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -470,6 +497,81 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -497,6 +599,9 @@
         "properties": {
           "member": "DocTestParser"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -507,23 +612,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -534,6 +623,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "DocTestFinder"
+        },
+        "meta": {
+          "params": [
+            "verbose",
+            "parser",
+            "recurse",
+            "exclude_empty"
+          ]
         },
         "childSets": {
           "object": [
@@ -573,6 +670,13 @@
         "properties": {
           "member": "DocTestRunner"
         },
+        "meta": {
+          "params": [
+            "checker",
+            "verbose",
+            "optionflags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -611,6 +715,38 @@
         "properties": {
           "member": "OutputChecker"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "doctest"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "doctest.DocTestFailure",
+      "abstract": "A DocTest example has failed in debugging mode.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "DocTestFailure"
+        },
+        "meta": {
+          "params": [
+            "test",
+            "example",
+            "got"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -636,30 +772,22 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "doctest.DocTestFailure",
-      "abstract": "A DocTest example has failed in debugging mode.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DocTestFailure"
-        },
-        "childSets": {
-          "object": [
+            },
             {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "doctest"
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
               },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -687,6 +815,13 @@
         "properties": {
           "member": "UnexpectedException"
         },
+        "meta": {
+          "params": [
+            "test",
+            "example",
+            "exc_info"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -698,6 +833,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -725,6 +890,9 @@
         "properties": {
           "member": "DebugRunner"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -735,23 +903,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -762,6 +914,19 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "testmod"
+        },
+        "meta": {
+          "params": [
+            "m",
+            "name",
+            "globs",
+            "verbose",
+            "report",
+            "optionflags",
+            "extraglobs",
+            "raise_on_error",
+            "exclude_empty"
+          ]
         },
         "childSets": {
           "object": [
@@ -801,6 +966,22 @@
         "properties": {
           "member": "testfile"
         },
+        "meta": {
+          "params": [
+            "filename",
+            "module_relative",
+            "name",
+            "package",
+            "globs",
+            "verbose",
+            "report",
+            "optionflags",
+            "extraglobs",
+            "raise_on_error",
+            "parser",
+            "encoding"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -839,6 +1020,16 @@
         "properties": {
           "member": "run_docstring_examples"
         },
+        "meta": {
+          "params": [
+            "f",
+            "globs",
+            "verbose",
+            "name",
+            "compileflags",
+            "optionflags"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -850,6 +1041,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -876,6 +1082,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "set_unittest_reportflags"
+        },
+        "meta": {
+          "params": [
+            "flags"
+          ]
         },
         "childSets": {
           "object": [
@@ -915,6 +1126,15 @@
         "properties": {
           "member": "DocTestCase"
         },
+        "meta": {
+          "params": [
+            "test",
+            "optionflags",
+            "setUp",
+            "tearDown",
+            "checker"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -952,6 +1172,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SkipDocTestCase"
+        },
+        "meta": {
+          "params": [
+            "module"
+          ]
         },
         "childSets": {
           "object": [
@@ -991,6 +1216,14 @@
         "properties": {
           "member": "DocTestSuite"
         },
+        "meta": {
+          "params": [
+            "module",
+            "globs",
+            "extraglobs",
+            "test_finder"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1029,6 +1262,9 @@
         "properties": {
           "member": "DocFileCase"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1039,23 +1275,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -1066,6 +1286,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "DocFileTest"
+        },
+        "meta": {
+          "params": [
+            "path",
+            "module_relative",
+            "package",
+            "globs",
+            "parser",
+            "encoding"
+          ]
         },
         "childSets": {
           "object": [
@@ -1105,6 +1335,9 @@
         "properties": {
           "member": "DocFileSuite"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -1142,6 +1375,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "script_from_examples"
+        },
+        "meta": {
+          "params": [
+            "s"
+          ]
         },
         "childSets": {
           "object": [
@@ -1181,6 +1419,12 @@
         "properties": {
           "member": "testsource"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1192,6 +1436,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -1218,6 +1477,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "debug_src"
+        },
+        "meta": {
+          "params": [
+            "src",
+            "pm",
+            "globs"
+          ]
         },
         "childSets": {
           "object": [
@@ -1257,6 +1523,13 @@
         "properties": {
           "member": "debug_script"
         },
+        "meta": {
+          "params": [
+            "src",
+            "pm",
+            "globs"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1295,6 +1568,13 @@
         "properties": {
           "member": "debug"
         },
+        "meta": {
+          "params": [
+            "module",
+            "name",
+            "pm"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -1306,6 +1586,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

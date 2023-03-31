@@ -9,6 +9,11 @@
         "properties": {
           "member": "Enum"
         },
+        "meta": {
+          "params": [
+            "value"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +52,9 @@
         "properties": {
           "member": "SafeUUID"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +65,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -84,6 +76,16 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "UUID"
+        },
+        "meta": {
+          "params": [
+            "hex",
+            "bytes",
+            "bytes_le",
+            "fields",
+            "int",
+            "version"
+          ]
         },
         "childSets": {
           "object": [
@@ -123,6 +125,9 @@
         "properties": {
           "member": "getnode"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -133,23 +138,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -160,6 +149,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "uuid1"
+        },
+        "meta": {
+          "params": [
+            "node",
+            "clock_seq"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +194,12 @@
         "properties": {
           "member": "uuid3"
         },
+        "meta": {
+          "params": [
+            "namespace",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -210,6 +211,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -237,6 +253,37 @@
         "properties": {
           "member": "uuid4"
         },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "uuid"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "uuid.uuid5",
+      "abstract": "Generate a UUID from the SHA-1 hash of a namespace UUID and a name.",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "uuid5"
+        },
+        "meta": {
+          "params": [
+            "namespace",
+            "name"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -262,30 +309,7 @@
                 ]
               },
               "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": "uuid.uuid5",
-      "abstract": "Generate a UUID from the SHA-1 hash of a namespace UUID and a name.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "uuid5"
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "uuid"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
+            },
             {
               "type": "PY_ARG",
               "childSets": {

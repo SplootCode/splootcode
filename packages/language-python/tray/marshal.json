@@ -30,6 +30,13 @@
         "properties": {
           "member": "dump"
         },
+        "meta": {
+          "params": [
+            "__value",
+            "__file",
+            "__version"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -41,6 +48,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -67,6 +89,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "load"
+        },
+        "meta": {
+          "params": [
+            "__file"
+          ]
         },
         "childSets": {
           "object": [
@@ -106,6 +133,12 @@
         "properties": {
           "member": "dumps"
         },
+        "meta": {
+          "params": [
+            "__value",
+            "__version"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -143,6 +176,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "loads"
+        },
+        "meta": {
+          "params": [
+            "__bytes"
+          ]
         },
         "childSets": {
           "object": [

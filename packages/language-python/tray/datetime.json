@@ -9,6 +9,9 @@
         "properties": {
           "member": "struct_time"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -19,23 +22,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -89,6 +76,9 @@
         "properties": {
           "member": "tzinfo"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -99,23 +89,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -126,6 +100,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "timezone"
+        },
+        "meta": {
+          "params": [
+            "offset",
+            "name"
+          ]
         },
         "childSets": {
           "object": [
@@ -165,6 +145,13 @@
         "properties": {
           "member": "date"
         },
+        "meta": {
+          "params": [
+            "year",
+            "month",
+            "day"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -176,6 +163,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -202,6 +219,15 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "time"
+        },
+        "meta": {
+          "params": [
+            "hour",
+            "minute",
+            "second",
+            "microsecond",
+            "tzinfo"
+          ]
         },
         "childSets": {
           "object": [
@@ -241,6 +267,17 @@
         "properties": {
           "member": "timedelta"
         },
+        "meta": {
+          "params": [
+            "days",
+            "seconds",
+            "microseconds",
+            "milliseconds",
+            "minutes",
+            "hours",
+            "weeks"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -279,6 +316,18 @@
         "properties": {
           "member": "datetime"
         },
+        "meta": {
+          "params": [
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "microsecond",
+            "tzinfo"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -290,6 +339,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

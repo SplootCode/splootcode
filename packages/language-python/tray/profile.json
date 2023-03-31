@@ -9,6 +9,13 @@
         "properties": {
           "member": "run"
         },
+        "meta": {
+          "params": [
+            "statement",
+            "filename",
+            "sort"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -47,6 +54,15 @@
         "properties": {
           "member": "runctx"
         },
+        "meta": {
+          "params": [
+            "statement",
+            "globals",
+            "locals",
+            "filename",
+            "sort"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -58,6 +74,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -84,6 +130,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Profile"
+        },
+        "meta": {
+          "params": [
+            "timer",
+            "bias"
+          ]
         },
         "childSets": {
           "object": [

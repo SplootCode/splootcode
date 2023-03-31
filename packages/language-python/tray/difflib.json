@@ -9,6 +9,12 @@
         "properties": {
           "member": "GenericAlias"
         },
+        "meta": {
+          "params": [
+            "origin",
+            "args"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -20,6 +26,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -47,6 +68,9 @@
         "properties": {
           "member": "Match"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -57,23 +81,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -84,6 +92,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "SequenceMatcher"
+        },
+        "meta": {
+          "params": [
+            "isjunk",
+            "a",
+            "b",
+            "autojunk"
+          ]
         },
         "childSets": {
           "object": [
@@ -123,6 +139,14 @@
         "properties": {
           "member": "get_close_matches"
         },
+        "meta": {
+          "params": [
+            "word",
+            "possibilities",
+            "n",
+            "cutoff"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -134,6 +158,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -160,6 +199,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Differ"
+        },
+        "meta": {
+          "params": [
+            "linejunk",
+            "charjunk"
+          ]
         },
         "childSets": {
           "object": [
@@ -199,6 +244,12 @@
         "properties": {
           "member": "IS_LINE_JUNK"
         },
+        "meta": {
+          "params": [
+            "line",
+            "pat"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -236,6 +287,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "IS_CHARACTER_JUNK"
+        },
+        "meta": {
+          "params": [
+            "ch",
+            "ws"
+          ]
         },
         "childSets": {
           "object": [
@@ -275,6 +332,18 @@
         "properties": {
           "member": "unified_diff"
         },
+        "meta": {
+          "params": [
+            "a",
+            "b",
+            "fromfile",
+            "tofile",
+            "fromfiledate",
+            "tofiledate",
+            "n",
+            "lineterm"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -286,6 +355,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -313,6 +397,18 @@
         "properties": {
           "member": "context_diff"
         },
+        "meta": {
+          "params": [
+            "a",
+            "b",
+            "fromfile",
+            "tofile",
+            "fromfiledate",
+            "tofiledate",
+            "n",
+            "lineterm"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -324,6 +420,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -351,6 +462,14 @@
         "properties": {
           "member": "ndiff"
         },
+        "meta": {
+          "params": [
+            "a",
+            "b",
+            "linejunk",
+            "charjunk"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -362,6 +481,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -388,6 +522,14 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "HtmlDiff"
+        },
+        "meta": {
+          "params": [
+            "tabsize",
+            "wrapcolumn",
+            "linejunk",
+            "charjunk"
+          ]
         },
         "childSets": {
           "object": [
@@ -427,6 +569,12 @@
         "properties": {
           "member": "restore"
         },
+        "meta": {
+          "params": [
+            "delta",
+            "which"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -438,6 +586,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -465,6 +628,19 @@
         "properties": {
           "member": "diff_bytes"
         },
+        "meta": {
+          "params": [
+            "dfunc",
+            "a",
+            "b",
+            "fromfile",
+            "tofile",
+            "fromfiledate",
+            "tofiledate",
+            "n",
+            "lineterm"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -476,6 +652,36 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {

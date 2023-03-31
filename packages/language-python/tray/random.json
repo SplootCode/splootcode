@@ -9,6 +9,12 @@
         "properties": {
           "member": "Fraction"
         },
+        "meta": {
+          "params": [
+            "numerator",
+            "denominator"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -46,6 +52,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Random"
+        },
+        "meta": {
+          "params": [
+            "x"
+          ]
         },
         "childSets": {
           "object": [
@@ -85,6 +96,9 @@
         "properties": {
           "member": "SystemRandom"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -95,23 +109,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -122,6 +120,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "seed"
+        },
+        "meta": {
+          "params": [
+            "a",
+            "version"
+          ]
         },
         "childSets": {
           "object": [
@@ -161,6 +165,9 @@
         "properties": {
           "member": "random"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -171,23 +178,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -198,6 +189,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "uniform"
+        },
+        "meta": {
+          "params": [
+            "a",
+            "b"
+          ]
         },
         "childSets": {
           "object": [
@@ -224,6 +221,21 @@
                 ]
               },
               "properties": {}
+            },
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
             }
           ]
         }
@@ -236,6 +248,13 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "triangular"
+        },
+        "meta": {
+          "params": [
+            "low",
+            "high",
+            "mode"
+          ]
         },
         "childSets": {
           "object": [
@@ -275,6 +294,12 @@
         "properties": {
           "member": "randint"
         },
+        "meta": {
+          "params": [
+            "a",
+            "b"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -286,6 +311,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -312,6 +352,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "choice"
+        },
+        "meta": {
+          "params": [
+            "seq"
+          ]
         },
         "childSets": {
           "object": [
@@ -351,6 +396,13 @@
         "properties": {
           "member": "randrange"
         },
+        "meta": {
+          "params": [
+            "start",
+            "stop",
+            "step"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -389,6 +441,12 @@
         "properties": {
           "member": "sample"
         },
+        "meta": {
+          "params": [
+            "population",
+            "k"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -400,6 +458,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -426,6 +499,12 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "shuffle"
+        },
+        "meta": {
+          "params": [
+            "x",
+            "random"
+          ]
         },
         "childSets": {
           "object": [
@@ -465,6 +544,12 @@
         "properties": {
           "member": "choices"
         },
+        "meta": {
+          "params": [
+            "population",
+            "weights"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -503,6 +588,12 @@
         "properties": {
           "member": "normalvariate"
         },
+        "meta": {
+          "params": [
+            "mu",
+            "sigma"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -514,6 +605,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -541,6 +647,12 @@
         "properties": {
           "member": "lognormvariate"
         },
+        "meta": {
+          "params": [
+            "mu",
+            "sigma"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -552,6 +664,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -578,6 +705,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "expovariate"
+        },
+        "meta": {
+          "params": [
+            "lambd"
+          ]
         },
         "childSets": {
           "object": [
@@ -617,6 +749,12 @@
         "properties": {
           "member": "vonmisesvariate"
         },
+        "meta": {
+          "params": [
+            "mu",
+            "kappa"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -628,6 +766,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -655,6 +808,12 @@
         "properties": {
           "member": "gammavariate"
         },
+        "meta": {
+          "params": [
+            "alpha",
+            "beta"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -666,6 +825,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -693,6 +867,12 @@
         "properties": {
           "member": "gauss"
         },
+        "meta": {
+          "params": [
+            "mu",
+            "sigma"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -704,6 +884,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -731,6 +926,12 @@
         "properties": {
           "member": "betavariate"
         },
+        "meta": {
+          "params": [
+            "alpha",
+            "beta"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -742,6 +943,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -768,6 +984,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "paretovariate"
+        },
+        "meta": {
+          "params": [
+            "alpha"
+          ]
         },
         "childSets": {
           "object": [
@@ -807,6 +1028,12 @@
         "properties": {
           "member": "weibullvariate"
         },
+        "meta": {
+          "params": [
+            "alpha",
+            "beta"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -818,6 +1045,21 @@
             }
           ],
           "arguments": [
+            {
+              "type": "PY_ARG",
+              "childSets": {
+                "argument": [
+                  {
+                    "type": "PYTHON_EXPRESSION",
+                    "properties": {},
+                    "childSets": {
+                      "tokens": []
+                    }
+                  }
+                ]
+              },
+              "properties": {}
+            },
             {
               "type": "PY_ARG",
               "childSets": {
@@ -845,6 +1087,9 @@
         "properties": {
           "member": "getstate"
         },
+        "meta": {
+          "params": []
+        },
         "childSets": {
           "object": [
             {
@@ -855,23 +1100,7 @@
               "childSets": {}
             }
           ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
+          "arguments": []
         }
       }
     },
@@ -882,6 +1111,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "setstate"
+        },
+        "meta": {
+          "params": [
+            "state"
+          ]
         },
         "childSets": {
           "object": [
@@ -921,6 +1155,11 @@
         "properties": {
           "member": "getrandbits"
         },
+        "meta": {
+          "params": [
+            "__k"
+          ]
+        },
         "childSets": {
           "object": [
             {
@@ -958,6 +1197,11 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "randbytes"
+        },
+        "meta": {
+          "params": [
+            "n"
+          ]
         },
         "childSets": {
           "object": [
