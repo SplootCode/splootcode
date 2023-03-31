@@ -304,6 +304,11 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.postMessage({ type: 'stop' })
   }
 
+  @action
+  reloadDependencies() {
+    this.frameStateManager.postMessage({ type: 'load_dependencies', dependencies: this.project.dependencies })
+  }
+
   setDirty = () => {
     this.frameStateManager.setNeedsNewNodeTree(true)
   }
@@ -367,7 +372,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload: WorkspaceFilesMessage = {
       type: messageType,
-      data: { files: fileState, envVars: envVars },
+      data: { files: fileState, envVars: envVars, dependencies: this.project.dependencies },
       runType: this.project.runSettings.runType,
       eventData: event,
     }
@@ -392,6 +397,10 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
   handleProjectMutation(mutation: ProjectMutation) {
     if (mutation.type === ProjectMutationType.UPDATE_RUN_SETTINGS) {
       this.runSettings = mutation.newSettings
+      this.setDirty()
+    } else if (mutation.type === ProjectMutationType.UPDATE_DEPENDENCIES) {
+      console.log('got new deps', mutation.newDependencies)
+      // this.reloadDependencies()
       this.setDirty()
     }
   }

@@ -37,3 +37,14 @@ export async function setupPyodide(urls: string[]) {
 
   return pyodide
 }
+
+export const loadDependencies = async (pyodide: any, newDependencies: Map<string, string>) => {
+  console.log('loading', newDependencies.keys())
+  const imports = Array.from(newDependencies.keys())
+  await pyodide.loadPackage('micropip')
+  const micropip = pyodide.pyimport('micropip')
+
+  await micropip.install(imports)
+
+  console.log('loaded dependencies')
+}

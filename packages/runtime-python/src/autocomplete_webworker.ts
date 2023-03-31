@@ -3,12 +3,13 @@ import { ExpressionNode, SourceFile, StructuredEditorProgram, createStructuredPr
 import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
 import { getAutocompleteInfo } from './autocomplete'
-import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
+import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
 tryNonModuleLoadPyodide()
 
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
+let dependencies: Map<string, string> = null
 
 const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)
@@ -25,6 +26,7 @@ export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) =
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
+  console.log('AC WORKER READY')
   sendMessage({ type: 'ready' })
 }
 
@@ -114,6 +116,18 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
         // treeID and currentParseTree match
 
         getExpressionTypeInfo(e.data.request)
+      }
+
+      break
+    case 'load_dependencies':
+      if (!dependencies) {
+        dependencies = e.data.dependencies
+
+        loadDependencies(pyodide, dependencies).then(() => {
+          console.log('dependencies all loaded on autocomplete worker!')
+        })
+      } else {
+        console.warn('trying to load deps when already loaded them')
       }
 
       break

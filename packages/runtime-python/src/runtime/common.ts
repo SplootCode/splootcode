@@ -1,4 +1,4 @@
-import { EditorMessage } from '../message_types'
+import { EditorMessage, LoadDependenciesMessage } from '../message_types'
 import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTrees } from '@splootcode/language-python'
 import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
@@ -104,7 +104,7 @@ export interface WorkerExpressionTypeResultMessage {
 
 // messages from the runtime to the worker manager
 export type WorkerMessage =
-  | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
+  | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' | 'dependencies_loaded' }
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerInputValueMessage
@@ -133,6 +133,7 @@ export interface WorkerRerunMessage {
   envVars: Map<string, string>
   readlines: string[]
   requestPlayback: Map<string, ResponseData[]>
+  dependencies: Map<string, string>
 }
 
 export interface LoadModuleMessage {
@@ -158,7 +159,27 @@ export interface RequestExpressionTypeInfoMessage {
 }
 
 // messages from the worker manager to the runtime worker
-export type WorkerManagerMessage = WorkerRunMessage | WorkerRerunMessage | LoadModuleMessage | TextContentRequestMessage
+export type WorkerManagerMessage =
+  | WorkerRunMessage
+  | WorkerRerunMessage
+  | LoadModuleMessage
+  | TextContentRequestMessage
+  | LoadDependenciesMessage
 
 // messages worker manager to the autocomplete worker
-export type WorkerManagerAutocompleteMessage = RequestExpressionTypeInfoMessage | LoadParseTreesMessage
+export type WorkerManagerAutocompleteMessage =
+  | RequestExpressionTypeInfoMessage
+  | LoadParseTreesMessage
+  | LoadDependenciesMessage
+
+export function compareMap(a: Map<string, string>, b: Map<string, string>) {
+  if (a.size !== b.size) {
+    return false
+  }
+  for (const [key, value] of a) {
+    if (value !== b.get(key)) {
+      return false
+    }
+  }
+  return true
+}

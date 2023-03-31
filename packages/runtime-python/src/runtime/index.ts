@@ -1,5 +1,5 @@
 import 'tslib'
-import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData } from './common'
+import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, compareMap } from './common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
@@ -29,6 +29,9 @@ class RuntimeStateManager {
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
+
+  dependencies: Map<string, string>
+  dependenciesLoaded = false
 
   constructor(
     parentWindowDomainRegex: string,
@@ -175,13 +178,33 @@ class RuntimeStateManager {
 
     switch (data.type) {
       case 'heartbeat':
-        if (this.initialFilesLoaded) {
-          this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
-        } else {
+        if (!this.initialFilesLoaded) {
           this.sendToParent({ type: 'heartbeat', data: { state: FrameState.REQUESTING_INITIAL_FILES } })
+
+          return
         }
+
+        this.sendToParent({ type: 'heartbeat', data: { state: FrameState.LIVE } })
         break
       case 'updatedfiles':
+        if (!this.dependencies) {
+          this.dependencies = data.data.dependencies
+          this.autocompleteWorkerManager.dependencies = data.data.dependencies
+          this.autocompleteWorkerManager.sendDependencies()
+        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
+          this.workerManager.restart()
+          if (!this.autocompleteWorkerManager.dependencies) {
+            this.autocompleteWorkerManager.dependencies = data.data.dependencies
+            this.autocompleteWorkerManager.sendDependencies()
+          }
+
+          this.autocompleteWorkerManager.dependencies = data.data.dependencies
+          this.autocompleteWorkerManager.restart()
+          this.dependencies = data.data.dependencies
+
+          break
+        }
+
         this.runType = data.runType
         this.eventData = data.eventData
 
@@ -191,13 +214,35 @@ class RuntimeStateManager {
           if (this.runType === RunType.STREAMLIT) {
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
-            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars, data.data.dependencies)
           }
         }
         break
       case 'initialfiles':
+        console.log('sending initial files')
+
         this.runType = data.runType
         this.eventData = data.eventData
+
+        if (!this.dependencies) {
+          console.log('initally sending deps')
+          this.dependencies = data.data.dependencies
+          this.autocompleteWorkerManager.dependencies = data.data.dependencies
+        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
+          this.workerManager.restart()
+
+          if (!this.autocompleteWorkerManager.dependencies) {
+            console.log('setting autocompletemgr deps first time')
+            this.autocompleteWorkerManager.dependencies = data.data.dependencies
+            this.autocompleteWorkerManager.sendDependencies()
+          }
+
+          this.autocompleteWorkerManager.dependencies = data.data.dependencies
+          this.autocompleteWorkerManager.restart()
+          this.dependencies = data.data.dependencies
+
+          break
+        }
 
         this.addFilesToWorkspace(data.data.files as Map<string, FileSpec>, true)
         this.setEnvironmentVars(data.data.envVars)
@@ -207,7 +252,7 @@ class RuntimeStateManager {
           if (this.runType === RunType.STREAMLIT) {
             this.workerManager.generateTextCode(this.runType, this.workspace, false)
           } else {
-            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars)
+            this.workerManager.rerun(this.runType, this.eventData, this.workspace, this.envVars, data.data.dependencies)
           }
         }
         break
@@ -230,6 +275,8 @@ class RuntimeStateManager {
           this.stdinPromiseResolve = null
         }
         this.workerManager.stop()
+        break
+      case 'load_dependencies':
         break
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)

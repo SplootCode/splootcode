@@ -1,10 +1,17 @@
-import { FetchSyncErrorType, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './runtime/common'
+import {
+  FetchSyncErrorType,
+  FileSpec,
+  ResponseData,
+  WorkerManagerMessage,
+  WorkerMessage,
+  compareMap,
+} from './runtime/common'
 import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
-import { setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
+import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
 tryNonModuleLoadPyodide()
 
-let pyodide = null
+let pyodide: any = null
 let stdinbuffer: Int32Array = null
 let fetchBuffer: Uint8Array = null
 let fetchBufferMeta: Int32Array = null
@@ -12,6 +19,7 @@ let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
+let dependencies: Map<string, string> = null
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -311,6 +319,7 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
+      console.log('running')
       eventData = e.data.eventData
       runType = e.data.runType
       workspace = e.data.workspace
@@ -323,6 +332,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
+      console.log('re-running hello', e.data)
       runType = e.data.runType
 
       eventData = e.data.eventData
@@ -334,7 +344,17 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       requestPlayback = e.data.requestPlayback
       rerun = true
       envVars = e.data.envVars || new Map<string, string>()
-      run()
+
+      if (!dependencies) {
+        // this is first load
+        loadDependencies(pyodide, e.data.dependencies).then(() => run())
+        dependencies = e.data.dependencies
+      } else if (!compareMap(dependencies, e.data.dependencies)) {
+        console.warn('dependencies not the same! danger! worker should have been restarted')
+      } else {
+        run()
+      }
+
       break
     case 'generate_text_code':
       workspace = e.data.workspace

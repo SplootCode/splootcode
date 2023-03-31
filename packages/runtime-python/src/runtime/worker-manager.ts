@@ -19,8 +19,6 @@ export enum WorkerState {
 export class WorkerManager {
   private RuntimeWorker: new () => Worker
   private runtimeWorker: Worker
-  private autocompleteWorker: Worker
-  private autocompleteWorkerReady: boolean
 
   private standardIO: StandardIO
   private stdinbuffer: Int32Array
@@ -35,7 +33,7 @@ export class WorkerManager {
   private sendToParentWindow: (payload: EditorMessage) => void
   private _workerState: WorkerState
   private textFileValueCallback: (fileContents: Map<string, string>) => void
-
+  dependencies: Map<string, string>
   public get workerState() {
     return this._workerState
   }
@@ -104,7 +102,8 @@ export class WorkerManager {
     runType: RunType,
     eventData: HTTPRequestAWSEvent,
     workspace: Map<string, FileSpec>,
-    envVars: Map<string, string>
+    envVars: Map<string, string>,
+    dependencies: Map<string, string>
   ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)
@@ -116,6 +115,7 @@ export class WorkerManager {
       envVars: envVars,
       readlines: this.inputPlayback,
       requestPlayback: this.requestPlayback,
+      dependencies: dependencies,
     })
   }
 
@@ -235,6 +235,18 @@ export class WorkerManager {
 
   stop() {
     this.standardIO.stderr('\r\nProgram Stopped.\r\n')
+    this._workerState = WorkerState.DISABLED
+    this.stateCallBack(WorkerState.DISABLED)
+
+    this.runtimeWorker.removeEventListener('message', this.handleMessageFromWorker)
+    this.runtimeWorker.terminate()
+    this.runtimeWorker = null
+
+    this.initialiseWorker()
+  }
+
+  restart() {
+    this.standardIO.stderr('\r\nReloading dependencies...\r\n')
     this._workerState = WorkerState.DISABLED
     this.stateCallBack(WorkerState.DISABLED)
 

@@ -10,21 +10,44 @@ export class AutocompleteWorkerManager {
   private worker: Worker
   private workerReady: boolean
   private sendToParentWindow: (payload: EditorMessage) => void
+  dependencies: Map<string, string>
 
   constructor(AutocompleteWorker: new () => Worker, sendToParentWindow: (payload: EditorMessage) => void) {
     this.AutocompleteWorker = AutocompleteWorker
     this.sendToParentWindow = sendToParentWindow
     this.worker = null
     this.workerReady = false
+    this.dependencies = null
 
-    this.initialize()
+    this.initializeWorker()
   }
 
-  initialize() {
+  sendDependencies() {
+    if (!this.workerReady) {
+      console.error('trying to send deps when worker isnt ready')
+
+      return
+    }
+    console.log('sending dependencies to worker')
+    this.sendMessage({
+      type: 'load_dependencies',
+      dependencies: this.dependencies,
+    })
+  }
+
+  initializeWorker() {
     if (!this.worker) {
       this.worker = new this.AutocompleteWorker()
       this.worker.addEventListener('message', this.handleMessageFromWorker)
     }
+  }
+
+  restart() {
+    this.worker.removeEventListener('message', this.handleMessageFromWorker)
+    this.worker.terminate()
+    this.worker = null
+
+    this.initializeWorker()
   }
 
   sendMessage(message: WorkerManagerAutocompleteMessage) {
@@ -50,6 +73,14 @@ export class AutocompleteWorkerManager {
 
     if (type === 'ready') {
       this.workerReady = true
+
+      console.log('loading autocomiplete deps')
+
+      if (this.dependencies) {
+        this.sendDependencies()
+      } else {
+        console.log('cant send deps')
+      }
     } else if (type === 'expression_type_info') {
       this.sendToParentWindow(event.data)
     } else {

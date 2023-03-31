@@ -113,6 +113,22 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
               ) : null}
 
               <Button
+                onClick={() => {
+                  const dep = prompt('Enter dependency name')
+
+                  if (!dep) {
+                    console.error('need dependency name')
+
+                    return
+                  }
+
+                  this.props.runtimeContextManager.project.addDependency(dep, '')
+                }}
+              >
+                Add dep
+              </Button>
+
+              <Button
                 size={'sm'}
                 isLoading={running}
                 loadingText="Running"
