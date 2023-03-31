@@ -64,6 +64,7 @@ const updateParseTrees = async (trees: ParseTrees) => {
 
     toResolve.forEach((request) => getExpressionTypeInfo(request))
 
+    // We keep around any type requests we could potentially resolve in the future.
     expressionTypeRequestsToResolve = expressionTypeRequestsToResolve.filter(
       (request) => request.parseID > currentParseID
     )
@@ -106,8 +107,6 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
   switch (e.data.type) {
     case 'parse_trees':
       if (!dependencies) {
-        console.warn('received parse trees before dependencies were loaded')
-
         unfinishedParseTrees = e.data.parseTrees
 
         return
@@ -119,13 +118,14 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
 
       break
     case 'request_expression_type_info':
-      if (!dependencies) {
-        console.warn('received request for expression type before dependencies were loaded')
-      }
       if (e.data.request.parseID < currentParseID) {
-        console.warn('issued request for expression type for old parse tree', e.data.request.parseID, currentParseID)
+        console.warn(
+          'Issued request for expression type for old parse tree. Discarding',
+          e.data.request.parseID,
+          currentParseID
+        )
       } else if (e.data.request.parseID > currentParseID) {
-        console.warn('issued request for expression type for future parse tree')
+        console.warn('Issued request for expression type for future parse tree. Saving to resolve later.')
 
         expressionTypeRequestsToResolve.push(e.data.request)
       } else {
@@ -145,12 +145,12 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
           }
         })
       } else {
-        console.warn('trying to load deps when already loaded them')
+        console.error('Should only load AutocompleteWorker pyodide dependencies once')
       }
 
       break
     default:
-      console.warn('Autocomplete worker received unhandled message', e.data)
+      console.warn('AutocompleteWorker received unhandled message', e.data)
 
       break
   }
