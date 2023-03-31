@@ -104,7 +104,7 @@ export interface WorkerExpressionTypeResultMessage {
 
 // messages from the runtime to the worker manager
 export type WorkerMessage =
-  | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' | 'dependencies_loaded' }
+  | { type: 'ready' | 'stdin' | 'finished' | 'continueFetch' }
   | WorkerStdoutMessage
   | WorkerStderrMessage
   | WorkerInputValueMessage
