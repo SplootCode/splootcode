@@ -2,31 +2,6 @@
   "category": "calendar",
   "entries": [
     {
-      "key": "calendar.struct_time",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "struct_time"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "calendar"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "calendar.IllegalMonthError",
       "abstract": "",
       "serializedNode": {

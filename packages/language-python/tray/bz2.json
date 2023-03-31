@@ -2,31 +2,6 @@
   "category": "bz2",
   "entries": [
     {
-      "key": "bz2.BaseStream",
-      "abstract": "Mode-checking helper functions.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BaseStream"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "bz2"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "bz2.compress",
       "abstract": "Compress a block of data.",
       "serializedNode": {

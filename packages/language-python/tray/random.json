@@ -2,50 +2,6 @@
   "category": "random",
   "entries": [
     {
-      "key": "random.Fraction",
-      "abstract": "This class implements rational numbers.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Fraction"
-        },
-        "meta": {
-          "params": [
-            "numerator",
-            "denominator"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "random"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "random.Random",
       "abstract": "Random number generator base class used by bound module functions.",
       "serializedNode": {

@@ -2,31 +2,6 @@
   "category": "zoneinfo",
   "entries": [
     {
-      "key": "zoneinfo.tzinfo",
-      "abstract": "Abstract base class for time zone info classes.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "tzinfo"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "zoneinfo"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "zoneinfo.ZoneInfo",
       "abstract": "",
       "serializedNode": {

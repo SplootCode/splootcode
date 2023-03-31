@@ -480,31 +480,6 @@
       }
     },
     {
-      "key": "posixpath.PathLike",
-      "abstract": "Abstract base class for implementing the file system path protocol.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "PathLike"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "posixpath"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "posixpath.supports_unicode_filenames",
       "abstract": "",
       "serializedNode": {

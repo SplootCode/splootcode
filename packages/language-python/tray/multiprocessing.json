@@ -2,81 +2,12 @@
   "category": "multiprocessing",
   "entries": [
     {
-      "key": "multiprocessing.Logger",
-      "abstract": "    Instances of the Logger class represent a single logging channel. A",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "Logger"
-        },
-        "meta": {
-          "params": [
-            "name",
-            "level"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "multiprocessing.AuthenticationError",
       "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "AuthenticationError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.BaseContext",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "BaseContext"
         },
         "meta": {
           "params": []
@@ -117,49 +48,6 @@
             }
           ],
           "arguments": []
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.DefaultContext",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "DefaultContext"
-        },
-        "meta": {
-          "params": [
-            "context"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
         }
       }
     },
@@ -214,62 +102,12 @@
       }
     },
     {
-      "key": "multiprocessing.SpawnContext",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SpawnContext"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
       "key": "multiprocessing.TimeoutError",
       "abstract": "",
       "serializedNode": {
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "TimeoutError"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.SyncManager",
-      "abstract": "    Subclass of `BaseManager` which supports a number of shared object types.",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "SyncManager"
         },
         "meta": {
           "params": []
@@ -479,56 +317,6 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "parent_process"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.ForkContext",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ForkContext"
-        },
-        "meta": {
-          "params": []
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "multiprocessing"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": []
-        }
-      }
-    },
-    {
-      "key": "multiprocessing.ForkServerContext",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ForkServerContext"
         },
         "meta": {
           "params": []

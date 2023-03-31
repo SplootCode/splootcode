@@ -2,50 +2,6 @@
   "category": "runpy",
   "entries": [
     {
-      "key": "runpy.ModuleType",
-      "abstract": "",
-      "serializedNode": {
-        "type": "PYTHON_CALL_MEMBER",
-        "properties": {
-          "member": "ModuleType"
-        },
-        "meta": {
-          "params": [
-            "name",
-            "doc"
-          ]
-        },
-        "childSets": {
-          "object": [
-            {
-              "type": "PY_IDENTIFIER",
-              "properties": {
-                "identifier": "runpy"
-              },
-              "childSets": {}
-            }
-          ],
-          "arguments": [
-            {
-              "type": "PY_ARG",
-              "childSets": {
-                "argument": [
-                  {
-                    "type": "PYTHON_EXPRESSION",
-                    "properties": {},
-                    "childSets": {
-                      "tokens": []
-                    }
-                  }
-                ]
-              },
-              "properties": {}
-            }
-          ]
-        }
-      }
-    },
-    {
       "key": "runpy.run_module",
       "abstract": "Execute a module's code without importing it",
       "serializedNode": {
