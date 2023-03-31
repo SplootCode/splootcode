@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react'
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Button, Text } from '@chakra-ui/react'
 import { Category } from './category'
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { ModuleTrayLoader } from '../editor_side_menu'
@@ -17,6 +17,7 @@ interface ImportsTrayProps {
   rootNode: PythonNode
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
   moduleTrayLoader: ModuleTrayLoader
+  addImports: () => void
 }
 
 export const ImportedModuleCategory = (props: {
@@ -44,7 +45,7 @@ export const ImportedModuleCategory = (props: {
 }
 
 export const ImportsTray = (props: ImportsTrayProps) => {
-  const { rootNode, startDrag, moduleTrayLoader } = props
+  const { rootNode, startDrag, addImports, moduleTrayLoader } = props
 
   const [importsList, setImportsList] = useState<string[]>([])
 
@@ -71,12 +72,20 @@ export const ImportsTray = (props: ImportsTrayProps) => {
   return (
     <Box>
       <Accordion allowToggle>
+        {importsList.length === 0 ? (
+          <Box textAlign={'center'}>
+            <Text py={2} fontStyle="italic">
+              No imported modules
+            </Text>
+            <Button onClick={addImports}>Add module</Button>
+          </Box>
+        ) : null}
         {importsList.map((importName) => {
           return (
             <AccordionItem key={importName} border={'none'} py={0}>
               {({ isExpanded }) => (
                 <>
-                  <AccordionButton border={'none'} px={0} py={1} mb={1} fontSize={'14px'} _hover={{ bg: 'gray.700' }}>
+                  <AccordionButton border={'none'} px={0} py={1} mb={1} _hover={{ bg: 'gray.700' }}>
                     {isExpanded ? (
                       <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
                     ) : (

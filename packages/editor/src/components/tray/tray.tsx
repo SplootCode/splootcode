@@ -45,7 +45,7 @@ function getTrayListing(rootNode: SplootNode): TrayCategory {
 export function Tray(props: TrayProps) {
   const { rootNode, startDrag, moduleTrayLoader } = props
   const [listing, setListing] = useState(null)
-  const [addImportModalOpen, setAddImportModalOpen] = useState(false)
+  const [tabIndex, setTabIndex] = useState(0)
 
   useEffect(() => {
     setListing(getTrayListing(props.rootNode))
@@ -60,13 +60,7 @@ export function Tray(props: TrayProps) {
 
   return (
     <div className="tray">
-      <AddImportModal
-        isOpen={addImportModalOpen}
-        onClose={() => setAddImportModalOpen(false)}
-        importModule={addModuleImport}
-      />
-
-      <Tabs defaultIndex={0} position="relative">
+      <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)} position="relative">
         <HStack justifyContent={'space-between'} borderBottomColor={'gray.800'} borderBottomWidth={'2px'}>
           <TabList borderBottom={'none'} color={'gray.400'}>
             <Tab py={3} px={3} _selected={{ color: 'gray.200' }}>
@@ -82,7 +76,7 @@ export function Tray(props: TrayProps) {
               aria-label="New variable"
               icon={<AddIcon />}
               onClick={() => {
-                setAddImportModalOpen(true)
+                setTabIndex(2)
               }}
             ></IconButton>
           </ButtonGroup>
@@ -94,7 +88,17 @@ export function Tray(props: TrayProps) {
             {listing ? <Category category={listing} startDrag={startDrag} /> : null}
           </TabPanel>
           <TabPanel px={2} py={2}>
-            <ImportsTray rootNode={rootNode as PythonNode} startDrag={startDrag} moduleTrayLoader={moduleTrayLoader} />
+            <ImportsTray
+              rootNode={rootNode as PythonNode}
+              startDrag={startDrag}
+              moduleTrayLoader={moduleTrayLoader}
+              addImports={() => {
+                setTabIndex(2)
+              }}
+            />
+          </TabPanel>
+          <TabPanel px={2} py={2}>
+            <AddImportModal importModule={addModuleImport} isOpen={tabIndex === 2} />
           </TabPanel>
         </TabPanels>
       </Tabs>
