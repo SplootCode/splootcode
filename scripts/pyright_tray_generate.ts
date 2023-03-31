@@ -239,7 +239,7 @@ async function main() {
     moduleInfoFile.allModules.push(moduleInfo)
   }
 
-  for (const module of ['requests']) {
+  for (const module of ['requests', 'streamlit']) {
     const moduleInfo = await generateTrayListForModule(structuredProgram, module, false)
     moduleInfoFile.allModules.push(moduleInfo)
   }
