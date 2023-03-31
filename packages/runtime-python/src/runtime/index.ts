@@ -188,6 +188,7 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         if (!this.dependencies) {
+          this.dependencies = data.data.dependencies
           // NOTE(harrison): this means that the iframe has reloaded
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
           break
@@ -220,19 +221,7 @@ class RuntimeStateManager {
         if (!this.dependencies) {
           this.dependencies = data.data.dependencies
 
-          // this.autocompleteWorkerManager.sendDependenciesOrDelay(data.data.dependencies)
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
-
-          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
-          // if (this.autocompleteWorkerManager.waitingForDependencies) {
-          //   this.autocompleteWorkerManager.sendMessage({
-          //     type: 'load_dependencies',
-          //     dependencies: data.data.dependencies,
-          //   })
-
-          //   this.autocompleteWorkerManager.waitingForDependencies = false
-          // }
-          // this.autocompleteWorkerManager.dependencies = data.data.dependencies
         } else if (!compareMap(this.dependencies, data.data.dependencies)) {
           console.error('initialfiles dependencies differernt. not sure how i ended up in this state')
           break
