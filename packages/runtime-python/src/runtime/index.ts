@@ -268,8 +268,6 @@ class RuntimeStateManager {
         }
         this.workerManager.stop()
         break
-      case 'load_dependencies':
-        break
       case 'module_info':
         this.workerManager.loadModule(data.moduleName)
         break

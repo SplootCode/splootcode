@@ -70,7 +70,6 @@ export type RuntimeMessage =
   | WorkspaceFilesMessage
   | ProxyTokenMessage
   | GetModuleInfoMessage
-  | LoadDependenciesMessage
 
 export interface HeartbeatMessage {
   type: 'heartbeat'
@@ -79,7 +78,7 @@ export interface HeartbeatMessage {
 
 /** Messages to send to the Editor window */
 export type EditorMessage =
-  | { type: 'ready' | 'disabled' | 'running' | 'stdin' | 'refresh_token' | 'dependencies_loaded' }
+  | { type: 'ready' | 'disabled' | 'running' | 'stdin' | 'refresh_token' }
   | HeartbeatMessage
   | WorkerRuntimeCaptureMessage
   | WorkerModuleInfoMessage
