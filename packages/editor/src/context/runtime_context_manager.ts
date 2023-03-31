@@ -304,11 +304,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     this.frameStateManager.postMessage({ type: 'stop' })
   }
 
-  @action
-  reloadDependencies() {
-    this.frameStateManager.postMessage({ type: 'load_dependencies', dependencies: this.project.dependencies })
-  }
-
   setDirty = () => {
     this.frameStateManager.setNeedsNewNodeTree(true)
   }
@@ -399,8 +394,6 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
       this.runSettings = mutation.newSettings
       this.setDirty()
     } else if (mutation.type === ProjectMutationType.UPDATE_DEPENDENCIES) {
-      console.log('got new deps', mutation.newDependencies)
-      // this.reloadDependencies()
       this.setDirty()
     }
   }

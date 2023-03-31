@@ -24,20 +24,6 @@ export class AutocompleteWorkerManager {
     this.initializeWorker()
   }
 
-  sendDependencies() {
-    if (this.waitingForDependencies) console.log('attempting to send depenedencies')
-    // if (!this.workerReady) {
-    //   console.error('trying to send deps when worker isnt ready')
-
-    //   return
-    // }
-    console.log('sending dependencies to worker')
-    this.sendMessage({
-      type: 'load_dependencies',
-      dependencies: this.dependencies,
-    })
-  }
-
   initializeWorker() {
     if (!this.worker) {
       this.worker = new this.AutocompleteWorker()
@@ -79,12 +65,9 @@ export class AutocompleteWorkerManager {
     if (type === 'ready') {
       this.workerReady = true
 
-      console.log('loading autocomiplete deps')
-
       if (!this.dependencies) {
         this.waitingForDependencies = true
       } else {
-        console.log('AUTOCOMPLETE MANAGER sending load_dependencies', this.dependencies)
         this.sendMessage({
           type: 'load_dependencies',
           dependencies: this.dependencies,

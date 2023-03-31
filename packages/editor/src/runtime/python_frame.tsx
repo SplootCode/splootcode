@@ -6,9 +6,9 @@ import React, { Component } from 'react'
 import WasmTTY from './wasm-tty/wasm-tty'
 import { Allotment } from 'allotment'
 import { Box, Button, ButtonGroup, Select } from '@chakra-ui/react'
+import { ENABLE_INSTALLABLE_PACKAGES_FLAG, HTTPResponse, RunType, loadFeatureFlags } from '@splootcode/core'
 import { EditorMessage } from '@splootcode/runtime-python'
 import { FitAddon } from 'xterm-addon-fit'
-import { HTTPResponse, RunType } from '@splootcode/core'
 import { ResponseViewer } from './response_viewer'
 import { RuntimeContextManager } from '../context/runtime_context_manager'
 import { Terminal } from 'xterm'
@@ -66,6 +66,9 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
     const running = runtimeContextManager.running
     const runSettings = runtimeContextManager.runSettings
 
+    const featureFlags = loadFeatureFlags()
+    const installablePackagesEnabled = featureFlags.get(ENABLE_INSTALLABLE_PACKAGES_FLAG)
+
     const iframeClass = runSettings.runType === RunType.STREAMLIT ? 'streamlit-frame' : 'view-python-frame'
 
     if (runSettings.runType === RunType.STREAMLIT) {
@@ -112,21 +115,25 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 </Select>
               ) : null}
 
-              <Button
-                onClick={() => {
-                  const dep = prompt('Enter dependency name')
+              {installablePackagesEnabled ? (
+                <Button
+                  size="sm"
+                  height={8}
+                  onClick={() => {
+                    const dep = prompt('Enter dependency name')
 
-                  if (!dep) {
-                    console.error('need dependency name')
+                    if (!dep) {
+                      console.error('need dependency name')
 
-                    return
-                  }
+                      return
+                    }
 
-                  this.props.runtimeContextManager.project.addDependency(dep, '')
-                }}
-              >
-                Add dep
-              </Button>
+                    this.props.runtimeContextManager.project.addDependency(dep, '')
+                  }}
+                >
+                  Add deps
+                </Button>
+              ) : null}
 
               <Button
                 size={'sm'}

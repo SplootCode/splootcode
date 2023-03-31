@@ -311,7 +311,6 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
 onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
-      console.log('running')
       eventData = e.data.eventData
       runType = e.data.runType
       workspace = e.data.workspace
@@ -324,7 +323,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
       run()
       break
     case 'rerun':
-      console.log('re-running hello', e.data)
       runType = e.data.runType
 
       eventData = e.data.eventData

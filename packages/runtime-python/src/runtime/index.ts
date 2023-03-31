@@ -215,13 +215,10 @@ class RuntimeStateManager {
         }
         break
       case 'initialfiles':
-        console.log('sending initial files')
-
         this.runType = data.runType
         this.eventData = data.eventData
 
         if (!this.dependencies) {
-          console.log('initally sending deps')
           this.dependencies = data.data.dependencies
 
           this.autocompleteWorkerManager.dependencies = data.data.dependencies

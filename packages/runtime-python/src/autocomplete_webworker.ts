@@ -26,7 +26,6 @@ export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) =
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
-  console.log('AC WORKER READY')
   sendMessage({ type: 'ready' })
 }
 
@@ -42,6 +41,8 @@ const updateParseTree = async (parseTreeInfo: ParseTreeInfo): Promise<SourceFile
 let currentParseID: number = null
 let sourceMap: Map<string, SourceFile> = new Map()
 let expressionTypeRequestsToResolve: ExpressionTypeRequest[] = []
+
+let unfinishedParseTrees: ParseTrees = null
 
 const updateParseTrees = async (trees: ParseTrees) => {
   if (!structuredProgram) {
@@ -71,6 +72,8 @@ const updateParseTrees = async (trees: ParseTrees) => {
       console.warn('could not resolve all expression type requests', expressionTypeRequestsToResolve)
     }
   }
+
+  unfinishedParseTrees = null
 }
 
 const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
@@ -84,7 +87,6 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
   walker.walk(sourceFile.getParseResults().parseTree)
 
   if (walker.found) {
-    console.log('hello! getting expr info')
     const type = structuredProgram.evaluator.getTypeOfExpression(walker.found as ExpressionNode)
 
     sendMessage({
@@ -103,11 +105,23 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
 onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
   switch (e.data.type) {
     case 'parse_trees':
+      if (!dependencies) {
+        console.warn('received parse trees before dependencies were loaded')
+
+        unfinishedParseTrees = e.data.parseTrees
+
+        return
+      }
+
+      unfinishedParseTrees = null
+
       updateParseTrees(e.data.parseTrees)
-      console.log('updated parse tree', dependencies)
 
       break
     case 'request_expression_type_info':
+      if (!dependencies) {
+        console.warn('received request for expression type before dependencies were loaded')
+      }
       if (e.data.request.parseID < currentParseID) {
         console.warn('issued request for expression type for old parse tree', e.data.request.parseID, currentParseID)
       } else if (e.data.request.parseID > currentParseID) {
@@ -120,16 +134,15 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
         getExpressionTypeInfo(e.data.request)
       }
 
-      console.log('requested expression type info', dependencies)
-
       break
     case 'load_dependencies':
       if (!dependencies) {
-        console.log('loading autocomplete deps', e.data.dependencies)
         dependencies = e.data.dependencies
 
         loadDependencies(pyodide, dependencies, 'autoocmplete').then(() => {
-          console.log('dependencies all loaded on autocomplete worker!')
+          if (unfinishedParseTrees) {
+            updateParseTrees(unfinishedParseTrees)
+          }
         })
       } else {
         console.warn('trying to load deps when already loaded them')
