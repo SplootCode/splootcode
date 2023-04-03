@@ -40,6 +40,12 @@ const dynamicallyInstallable = new Map(
   })
 )
 
+interface Import {
+  name: string
+  label?: string
+  isDeletable: boolean
+}
+
 export const ImportedModuleCategory = (props: {
   name: string
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
@@ -68,20 +74,32 @@ export const ImportsTray = (props: ImportsTrayProps) => {
   const { rootNode, startDrag, addImports, moduleTrayLoader } = props
   const editorContext = useContext<EditorState>(EditorStateContext)
 
-  const [importsList, setImportsList] = useState<string[]>([])
-
-  const [projectImports, setProjectImports] = useState<string[]>([])
+  const [importsList, setImportsList] = useState<Import[]>([])
 
   const refreshModuleList = useCallback(() => {
-    const scopeImports = rootNode
-      .getScope()
-      .getImportedModules()
+    const scopeImportNames = rootNode.getScope().getImportedModules()
+
+    const scopeImports = scopeImportNames
       .filter((moduleName) => dynamicallyInstallable.get(moduleName))
+      .map((name): Import => {
+        return {
+          name: name,
+          isDeletable: false,
+          label: 'built-in',
+        }
+      })
 
-    const projectImports = editorContext.project.dependencies.map((dep) => dep.name)
+    const projectImports = editorContext.project.dependencies.map((dep): Import => {
+      // TODO(harrison): ideally you can't delete external modules
+      const isDeletable = true // !scopeImportNames.includes(dep.name)
 
-    setImportsList(scopeImports)
-    setProjectImports(projectImports)
+      return {
+        name: dep.name,
+        isDeletable,
+      }
+    })
+
+    setImportsList([...scopeImports, ...projectImports])
   }, [rootNode])
 
   useEffect(() => {
@@ -113,7 +131,7 @@ export const ImportsTray = (props: ImportsTrayProps) => {
   return (
     <Box>
       <Accordion allowToggle>
-        {importsList.length === 0 && projectImports.length === 0 ? (
+        {importsList.length === 0 ? (
           <Box textAlign={'center'}>
             <Text py={2} fontStyle="italic">
               No imported modules
@@ -121,34 +139,9 @@ export const ImportsTray = (props: ImportsTrayProps) => {
             <Button onClick={addImports}>Add module</Button>
           </Box>
         ) : null}
-        {importsList.map((importName) => {
+        {importsList.map((importInfo) => {
           return (
-            <AccordionItem key={importName} border={'none'} py={0}>
-              {({ isExpanded }) => (
-                <>
-                  <AccordionButton border={'none'} px={0} py={1} mb={1} _hover={{ bg: 'gray.700' }}>
-                    {isExpanded ? (
-                      <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
-                    ) : (
-                      <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
-                    )}
-                    {importName}
-                  </AccordionButton>
-                  <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
-                    <ImportedModuleCategory
-                      name={importName}
-                      startDrag={startDrag}
-                      moduleTrayLoader={moduleTrayLoader}
-                    />
-                  </AccordionPanel>
-                </>
-              )}
-            </AccordionItem>
-          )
-        })}
-        {projectImports.map((importName) => {
-          return (
-            <AccordionItem key={importName} border={'none'} py={0}>
+            <AccordionItem key={importInfo.name} border={'none'} py={0}>
               {({ isExpanded }) => (
                 <>
                   <HStack mb={1}>
@@ -158,26 +151,30 @@ export const ImportsTray = (props: ImportsTrayProps) => {
                       ) : (
                         <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
                       )}
-                      {importName}
+                      {importInfo.name}{' '}
+                      <Text textColor={'gray.400'}>{importInfo.label ? ` (${importInfo.label})` : ''}</Text>
                     </AccordionButton>
-                    <Tooltip label="Uninstall dependency">
-                      <IconButton
-                        textColor={'gray.400'}
-                        size="sm"
-                        fontSize="sm"
-                        variant={'ghost'}
-                        icon={<DeleteIcon />}
-                        aria-label="Uninstall dependency"
-                        onClick={() => {
-                          const dep = editorContext.project.dependencies.find((dep) => dep.name === importName)
-                          editorContext.project.deleteDependency(dep.id)
-                        }}
-                      ></IconButton>
-                    </Tooltip>
+
+                    {importInfo.isDeletable ? (
+                      <Tooltip label="Uninstall dependency">
+                        <IconButton
+                          textColor={'gray.400'}
+                          size="sm"
+                          fontSize="sm"
+                          variant={'ghost'}
+                          icon={<DeleteIcon />}
+                          aria-label="Uninstall dependency"
+                          onClick={() => {
+                            const dep = editorContext.project.dependencies.find((dep) => dep.name === importInfo.name)
+                            editorContext.project.deleteDependency(dep.id)
+                          }}
+                        ></IconButton>
+                      </Tooltip>
+                    ) : null}
                   </HStack>
                   <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
                     <ImportedModuleCategory
-                      name={importName}
+                      name={importInfo.name}
                       startDrag={startDrag}
                       moduleTrayLoader={moduleTrayLoader}
                     />
