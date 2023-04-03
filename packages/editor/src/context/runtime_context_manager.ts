@@ -21,7 +21,6 @@ import {
   RuntimeMessage,
   WorkspaceFilesMessage,
 } from '@splootcode/runtime-python'
-import { ExpressionNode } from 'structured-pyright'
 import {
   ExpressionTypeRequest,
   ExpressionTypeResponse,
@@ -75,7 +74,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     }
   }
 
-  async getExpressionType(path: string, expression: ExpressionNode, latestID: number): Promise<ExpressionTypeResponse> {
+  async getExpressionType(path: string, nodeID: number, latestID: number): Promise<ExpressionTypeResponse> {
     if (this.typeInfoPromise) {
       this.typeInfoPromiseRejecter('Promise has become stale')
     }
@@ -90,7 +89,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
           parseID: latestID,
           requestID: this.typeInfoPromiseID,
           path: '/' + path,
-          expression: expression,
+          expressionID: nodeID,
         },
       })
 
