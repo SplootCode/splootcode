@@ -76,7 +76,6 @@ export class AutocompleteWorkerManager {
   }
 
   requestExpressionTypeInfo(request: ExpressionTypeRequest) {
-    console.log('awm requesting', request)
     this.sendMessage({
       type: 'request_expression_type_info',
       request,
