@@ -147,11 +147,7 @@ export class PythonAnalyzer {
     }
 
     // Old style parse
-    for (const path of filePaths) {
-      this.dirtyPaths.add(path)
-    }
-    this.latestParseID = Math.random()
-    this.runParse()
+    this.updateMainThreadParse(parseTrees)
 
     return { parseTrees, parseID: this.currentAtomicID }
   }
@@ -223,6 +219,17 @@ export class PythonAnalyzer {
     }
   }
 
+  async updateMainThreadParse(parseTreeInfos: ParseTreeInfo[]) {
+    this.latestParseID = Math.random()
+
+    for (const parseTreeInfo of parseTreeInfos) {
+      this.program.updateStructuredFile(parseTreeInfo.path, parseTreeInfo.parseTree, parseTreeInfo.modules)
+      this.dirtyPaths.add(parseTreeInfo.path.substring(1))
+    }
+
+    setTimeout(() => this.runParse(), 0)
+  }
+
   // TODO(harrison): remove this function once we have all pyright stuff on the worker
   async runParse() {
     if (!this.program) {
@@ -236,20 +243,19 @@ export class PythonAnalyzer {
 
     const paths = this.dirtyPaths
     this.dirtyPaths = new Set()
-    this.currentParseID = this.latestParseID
 
+    this.currentParseID = this.latestParseID
+    const newNodeMaps = new Map()
+    for (const path of paths) {
+      const parseMapper = this.lookupNodeMaps.get(path)
+      newNodeMaps.set(path, parseMapper)
+    }
     for (const path of paths) {
       const pathForFile = '/' + path
-      const rootNode = this.files.get(path)
-
-      const parseMapper = new ParseMapper()
-      const moduleNode = rootNode.generateParseTree(parseMapper)
-
-      this.program.updateStructuredFile(pathForFile, moduleNode, parseMapper.modules)
       await this.program.parseRecursively(pathForFile)
       this.program.getBoundSourceFile(pathForFile)
-      this.nodeMaps.set(path, parseMapper)
     }
+    this.nodeMaps = newNodeMaps
 
     if (this.latestParseID !== this.currentParseID) {
       this.currentParseID = null
