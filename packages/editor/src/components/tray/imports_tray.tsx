@@ -42,7 +42,6 @@ const dynamicallyInstallable = new Map(
 
 interface Import {
   name: string
-  label?: string
   isDeletable: boolean
 }
 
@@ -90,7 +89,7 @@ export const ImportsTray = (props: ImportsTrayProps) => {
       })
 
     const projectImports = editorContext.project.dependencies.map((dep): Import => {
-      // TODO(harrison): ideally you can't delete external modules
+      // TODO(harrison): ideally you can't delete external modules when they're being used?
       const isDeletable = true // !scopeImportNames.includes(dep.name)
 
       return {
@@ -152,7 +151,6 @@ export const ImportsTray = (props: ImportsTrayProps) => {
                         <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
                       )}
                       {importInfo.name}{' '}
-                      <Text textColor={'gray.400'}>{importInfo.label ? ` (${importInfo.label})` : ''}</Text>
                     </AccordionButton>
 
                     {importInfo.isDeletable ? (
