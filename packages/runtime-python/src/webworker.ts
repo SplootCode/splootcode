@@ -339,7 +339,6 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
         // this is first load
         loadDependencies(pyodide, e.data.dependencies).then(() => run())
         dependencies = e.data.dependencies
-        // } else if (!compareMap(dependencies, e.data.dependencies)) {
       } else if (!sameDepencencies(dependencies, e.data.dependencies)) {
         console.warn('dependencies not the same! danger! worker should have been restarted')
       } else {
