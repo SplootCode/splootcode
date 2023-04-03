@@ -367,7 +367,7 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload: WorkspaceFilesMessage = {
       type: messageType,
-      data: { files: fileState, envVars: envVars, dependencies: this.project.dependencies2 },
+      data: { files: fileState, envVars: envVars, dependencies: this.project.dependencies },
       runType: this.project.runSettings.runType,
       eventData: event,
     }
