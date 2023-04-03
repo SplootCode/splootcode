@@ -84,7 +84,6 @@ export const ImportsTray = (props: ImportsTrayProps) => {
         return {
           name: name,
           isDeletable: false,
-          label: 'built-in',
         }
       })
 
