@@ -1,4 +1,5 @@
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './runtime/common'
+import { Dependency } from '@splootcode/core'
 import { ExpressionNode, SourceFile, StructuredEditorProgram, createStructuredProgramWorker } from 'structured-pyright'
 import { ExpressionTypeRequest, ParseTreeInfo, ParseTrees } from '@splootcode/language-python'
 import { IDFinderWalker, PyodideFakeFileSystem } from './pyright'
@@ -10,7 +11,7 @@ tryNonModuleLoadPyodide()
 
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
-let dependencies: Map<string, string> = null
+let dependencies: Dependency[] = null
 
 const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)

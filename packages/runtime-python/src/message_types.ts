@@ -9,8 +9,8 @@ import {
   WorkerWebResponseMessage,
 } from './runtime/common'
 
+import { Dependency, HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
-import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 export enum FrameState {
   DEAD = 0,
@@ -33,7 +33,7 @@ export interface WorkspaceFilesMessage {
   data: {
     files: Map<string, FileSpec>
     envVars: Map<string, string>
-    dependencies: Map<string, string>
+    dependencies: Dependency[]
   }
 }
 
@@ -59,7 +59,7 @@ export interface RequestExpressionTypeInfoMessage {
 
 export interface LoadDependenciesMessage {
   type: 'load_dependencies'
-  dependencies: Map<string, string>
+  dependencies: Dependency[]
 }
 
 export type RuntimeMessage =

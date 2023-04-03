@@ -1,6 +1,6 @@
+import { Dependency, HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 import { EditorMessage, LoadDependenciesMessage } from '../message_types'
 import { ExpressionTypeRequest, ExpressionTypeResponse, ParseTrees } from '@splootcode/language-python'
-import { HTTPRequestAWSEvent, HTTPResponse, RunType } from '@splootcode/core'
 
 export enum FetchSyncErrorType {
   NO_RECORDED_REQUEST = 'NO_RECORDED_REQUEST',
@@ -133,7 +133,7 @@ export interface WorkerRerunMessage {
   envVars: Map<string, string>
   readlines: string[]
   requestPlayback: Map<string, ResponseData[]>
-  dependencies: Map<string, string>
+  dependencies: Dependency[]
 }
 
 export interface LoadModuleMessage {
@@ -181,5 +181,20 @@ export function compareMap(a: Map<string, string>, b: Map<string, string>) {
       return false
     }
   }
+  return true
+}
+
+export function sameDepencencies(a: Dependency[], b: Dependency[]) {
+  if (a.length !== b.length) {
+    return false
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    const idx = b.findIndex((dep) => dep.name === a[i].name && dep.version === a[i].version) // TODO(check ID here?)
+    if (idx === -1) {
+      return false
+    }
+  }
+
   return true
 }

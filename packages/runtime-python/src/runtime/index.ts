@@ -1,6 +1,6 @@
 import 'tslib'
-import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, compareMap } from './common'
-import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
+import { Dependency, HTTPRequestAWSEvent, RunType } from '@splootcode/core'
+import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, sameDepencencies } from './common'
 
 import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
@@ -30,7 +30,7 @@ class RuntimeStateManager {
   private eventData: HTTPRequestAWSEvent | null
   private stlite_app: any
 
-  private dependencies: Map<string, string>
+  private dependencies: Dependency[] | null
 
   constructor(
     parentWindowDomainRegex: string,
@@ -187,14 +187,13 @@ class RuntimeStateManager {
         break
       case 'updatedfiles':
         if (!this.dependencies) {
-          console.log('reloading dependencies')
           // NOTE(harrison): this means that the iframe has reloaded
           this.dependencies = data.data.dependencies
           this.workerManager.reloadDependencies()
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)
 
           break
-        } else if (!compareMap(this.dependencies, data.data.dependencies)) {
+        } else if (!sameDepencencies(this.dependencies, data.data.dependencies)) {
           console.log('maps are different?', this.dependencies, data.data.dependencies)
           this.dependencies = data.data.dependencies
           this.workerManager.reloadDependencies()
