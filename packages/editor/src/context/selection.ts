@@ -208,7 +208,6 @@ export class NodeSelection {
       })
       // Trigger a clean from the parent upward.
       listBlock.parentRef.node.node.clean()
-      this.updateRenderPositions()
       this.updateCursorXYToCursor()
     } else if (this.state === SelectionState.MultiNode) {
       const deleteWalker = new MultiselectDeleter(this.selectionStart, this.selectionEnd)
@@ -239,7 +238,6 @@ export class NodeSelection {
   @action
   startInsertAtCurrentCursor() {
     this.state = SelectionState.Inserting
-    this.updateRenderPositions()
   }
 
   @action
@@ -251,7 +249,6 @@ export class NodeSelection {
       if (this.editBox !== null) {
         this.selectionStart.listBlock.selectionState = SelectionState.Editing
         this.state = SelectionState.Editing
-        this.updateRenderPositions()
       }
     }
   }
@@ -557,11 +554,9 @@ export class NodeSelection {
   exitEdit() {
     if (this.state === SelectionState.Editing) {
       this.setSelectionSingleNode(new NodeCursor(this.selectionStart.listBlock, this.selectionStart.index))
-      this.updateRenderPositions()
     }
     if (this.state == SelectionState.Inserting) {
       this.placeCursorByXYCoordinate(this.lastXCoordinate, this.lastYCoordinate)
-      this.updateRenderPositions()
     }
   }
 

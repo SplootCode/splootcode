@@ -3,6 +3,7 @@ import { FunctionArgType, TypeCategory, VariableTypeInfo } from '../scope/types'
 import {
   NodeCategory,
   ParentReference,
+  SplootNode,
   SuggestedNode,
   SuggestionGenerator,
   getAutocompleteRegistry,
@@ -33,65 +34,120 @@ function getAttributesForType(scope: PythonScope, typeName: string): [string, Va
 }
 
 class MemberGenerator implements SuggestionGenerator {
+  autocompleteCache: {
+    parentReference: ParentReference
+    index: number
+    leftChild: SplootNode
+    attributes: [string, VariableTypeInfo][]
+  }
+
+  constructor() {
+    this.autocompleteCache = null
+  }
+
   async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
     // need dynamic suggestions for when we can't infer the type.
     const leftChild = parent.getChildSet().getChild(index - 1)
-    const scope = (parent.node as PythonNode).getScope(false)
-    const filePath = scope.getFilePath()
-    const autocompletes: AutocompleteInfo[] = []
 
     let attributes: [string, VariableTypeInfo][] = []
+    if (
+      this.autocompleteCache &&
+      this.autocompleteCache.leftChild === leftChild &&
+      this.autocompleteCache.parentReference === parent &&
+      this.autocompleteCache.index === index
+    ) {
+      attributes = this.autocompleteCache.attributes
+    } else {
+      const scope = (parent.node as PythonNode).getScope(false)
+      const filePath = scope.getFilePath()
+      const autocompletes: AutocompleteInfo[] = []
 
-    let allowWrap = false
+      let attributes: [string, VariableTypeInfo][] = []
 
-    const analyzer = scope.getAnalyzer()
+      const analyzer = scope.getAnalyzer()
 
-    if (leftChild) {
-      allowWrap = true
-      switch (leftChild.type) {
-        case PYTHON_STRING:
-          attributes = getAttributesForType(scope, 'builtins.str')
-          break
-        case PYTHON_LIST:
-          attributes = getAttributesForType(scope, 'builtins.list')
-          break
-        case PYTHON_TUPLE:
-          attributes = getAttributesForType(scope, 'builtins.tuple')
-          break
-        case PYTHON_DICT:
-          attributes = getAttributesForType(scope, 'builtins.dict')
-          break
-        case PYTHON_SET:
-          attributes = getAttributesForType(scope, 'builtins.set')
-          break
-        case PYTHON_NUMBER_LITERAL:
-          attributes = getAttributesForType(scope, 'builtins.int')
-          break
-        case PYTHON_IDENTIFIER:
-        case PYTHON_CALL_MEMBER:
-        case PYTHON_CALL_VARIABLE:
-        case PYTHON_SUBSCRIPT:
-        case PYTHON_BRACKETS:
-        case PYTHON_MEMBER:
-          let info: ExpressionTypeResponse = null
-          try {
-            info = await analyzer.getExpressionType(filePath, leftChild)
-          } catch (e) {
-            console.warn('unable to get type', e)
+      if (leftChild) {
+        switch (leftChild.type) {
+          case PYTHON_STRING:
+            attributes = getAttributesForType(scope, 'builtins.str')
+            break
+          case PYTHON_LIST:
+            attributes = getAttributesForType(scope, 'builtins.list')
+            break
+          case PYTHON_TUPLE:
+            attributes = getAttributesForType(scope, 'builtins.tuple')
+            break
+          case PYTHON_DICT:
+            attributes = getAttributesForType(scope, 'builtins.dict')
+            break
+          case PYTHON_SET:
+            attributes = getAttributesForType(scope, 'builtins.set')
+            break
+          case PYTHON_NUMBER_LITERAL:
+            attributes = getAttributesForType(scope, 'builtins.int')
+            break
+          case PYTHON_IDENTIFIER:
+          case PYTHON_CALL_MEMBER:
+          case PYTHON_CALL_VARIABLE:
+          case PYTHON_SUBSCRIPT:
+          case PYTHON_BRACKETS:
+          case PYTHON_MEMBER:
+            let info: ExpressionTypeResponse = null
+            try {
+              info = await analyzer.getExpressionType(filePath, leftChild)
+            } catch (e) {
+              console.warn('unable to get type', e)
+            }
+
+            if (info) {
+              autocompletes.push(...info.autocompleteSuggestions)
+            }
+            break
+          default:
+            console.error('invalid type for autocomplete', leftChild)
+        }
+      }
+
+      attributes.push(
+        ...autocompletes.map((info): [string, VariableTypeInfo] => {
+          let type: VariableTypeInfo = null
+          if (info.category === AutocompleteEntryCategory.Value) {
+            type = {
+              category: TypeCategory.Value,
+              typeName: null,
+              shortDoc: info.shortDoc,
+              typeIfAttr: info.typeIfAttr,
+            }
+
+            return [info.name, type]
+          } else if (info.category === AutocompleteEntryCategory.Function) {
+            type = {
+              category: TypeCategory.Function,
+              arguments: info.arguments.map((arg) => {
+                return {
+                  name: arg.name,
+                  type: arg.type,
+                  defaultValue: arg.hasDefault ? 'None' : undefined,
+                }
+              }),
+              shortDoc: info.shortDoc,
+              typeIfMethod: info.typeIfMethod,
+            }
+
+            return [info.name, type]
           }
-
-          if (info) {
-            autocompletes.push(...info.autocompleteSuggestions)
-          }
-          break
-        default:
-          console.error('invalid type for autocomplete', leftChild)
+        })
+      )
+      this.autocompleteCache = {
+        parentReference: parent,
+        index: index,
+        leftChild: leftChild,
+        attributes: attributes,
       }
     }
 
     const inputName = textInput.substring(1) // Cut the '.' off
-
-    if (attributes.length == 0 && autocompletes.length === 0) {
+    if (attributes.length == 0) {
       const callMemberNode = new PythonCallMember(null, {
         category: TypeCategory.Function,
         arguments: [{ name: '', type: FunctionArgType.PositionalOrKeyword }],
@@ -111,7 +167,7 @@ class MemberGenerator implements SuggestionGenerator {
           inputName,
           true,
           'Missing type information, cannot autocomplete methods',
-          allowWrap ? 'object' : undefined
+          'object'
         ),
         new SuggestedNode(
           memberNode,
@@ -119,41 +175,10 @@ class MemberGenerator implements SuggestionGenerator {
           inputName,
           true,
           'Missing type information, cannot autocomplete attributes',
-          allowWrap ? 'object' : undefined
+          'object'
         ),
       ]
     }
-
-    attributes.push(
-      ...autocompletes.map((info): [string, VariableTypeInfo] => {
-        let type: VariableTypeInfo = null
-        if (info.category === AutocompleteEntryCategory.Value) {
-          type = {
-            category: TypeCategory.Value,
-            typeName: null,
-            shortDoc: info.shortDoc,
-            typeIfAttr: info.typeIfAttr,
-          }
-
-          return [info.name, type]
-        } else if (info.category === AutocompleteEntryCategory.Function) {
-          type = {
-            category: TypeCategory.Function,
-            arguments: info.arguments.map((arg) => {
-              return {
-                name: arg.name,
-                type: arg.type,
-                defaultValue: arg.hasDefault ? 'None' : undefined,
-              }
-            }),
-            shortDoc: info.shortDoc,
-            typeIfMethod: info.typeIfMethod,
-          }
-
-          return [info.name, type]
-        }
-      })
-    )
 
     const suggestions: SuggestedNode[] = []
     const allowUnderscore = textInput.startsWith('._')

@@ -56,7 +56,7 @@ export class FrameStateManager {
       const millis = now.getTime() - this.lastSentNodeTree.getTime()
 
       // Rate limit: Only send if it's been some time since we last sent.
-      if (millis > 200) {
+      if (millis > 500) {
         this.needsNewNodeTree = false
         this.lastSentNodeTree = new Date()
         this.sendNodeTreeToHiddenFrame(false)

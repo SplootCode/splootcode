@@ -4,6 +4,7 @@ import { FetchData, FetchHandler, FetchSyncErrorType, FileSpec, ResponseData, sa
 
 import { AutocompleteWorkerManager } from './autocomplete-worker-manager'
 import { EditorMessage, FrameState, RuntimeMessage } from '../message_types'
+import { StaticURLs } from 'src/static_urls'
 import { WorkerManager, WorkerState } from './worker-manager'
 
 const streamlit_config = `
@@ -28,7 +29,8 @@ class RuntimeStateManager {
   private fetchHandler: FetchHandler
   private runType: RunType
   private eventData: HTTPRequestAWSEvent | null
-  private stlite_app: any
+  private stliteApp: any
+  private staticURLS: StaticURLs
 
   private dependencies: Dependency[] | null
 
@@ -36,7 +38,8 @@ class RuntimeStateManager {
     parentWindowDomainRegex: string,
     RuntimeWorker: new () => Worker,
     AutocompleteWorker: new () => Worker,
-    fetchHandler: FetchHandler
+    fetchHandler: FetchHandler,
+    staticURLS: StaticURLs
   ) {
     this.parentWindowDomain = null
     this.parentWindowDomainRegex = parentWindowDomainRegex
@@ -47,7 +50,8 @@ class RuntimeStateManager {
     this.envVars = new Map()
     this.fetchHandler = fetchHandler
     this.eventData = null
-    this.stlite_app = null
+    this.stliteApp = null
+    this.staticURLS = staticURLS
   }
 
   sendToParent = (payload: EditorMessage) => {
@@ -119,7 +123,7 @@ class RuntimeStateManager {
     initialFiles['/home/pyodide/.streamlit/config.toml'] = streamlit_config
 
     // @ts-ignore
-    this.stlite_app = stlite.mount(
+    this.stliteApp = stlite.mount(
       {
         requirements: [],
         entrypoint: 'main.py',
@@ -130,7 +134,7 @@ class RuntimeStateManager {
   }
 
   textFileValueCallback = (fileContents: Map<string, string>) => {
-    if (!this.stlite_app) {
+    if (!this.stliteApp) {
       this.initializeStlite(fileContents)
     } else {
       this.updateStliteFiles(fileContents)
@@ -140,7 +144,7 @@ class RuntimeStateManager {
   updateStliteFiles = (fileContents: Map<string, string>) => {
     for (const [fileName, text] of fileContents) {
       if (fileName.endsWith('.py')) {
-        this.stlite_app.writeFile(fileName, text)
+        this.stliteApp.writeFile(fileName, text)
       }
     }
   }
@@ -319,9 +323,16 @@ export function initialize(
   editorDomainRegex: string,
   RuntimeWorker: new () => Worker,
   AutocompleteWorker: new () => Worker,
+  staticURLs: StaticURLs,
   requestHandler: FetchHandler = defaultFetchHandler
 ) {
-  runtimeStateManager = new RuntimeStateManager(editorDomainRegex, RuntimeWorker, AutocompleteWorker, requestHandler)
+  runtimeStateManager = new RuntimeStateManager(
+    editorDomainRegex,
+    RuntimeWorker,
+    AutocompleteWorker,
+    requestHandler,
+    staticURLs
+  )
   window.addEventListener('message', runtimeStateManager.handleMessage, false)
   runtimeStateManager.initialiseWorkerManagers()
 }
