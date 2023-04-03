@@ -45,7 +45,6 @@ export class AutocompleteWorkerManager {
         })
 
         this.dependenciesLoadedAtLeastOnce = true
-        console.log('AUTOCOMPLETE deps loaded at least once!')
       }
 
       this.dependencies = dependencies
