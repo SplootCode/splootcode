@@ -313,21 +313,21 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return true
   }
 
-  saveDependency(project: Project, dependency: Dependency) {
+  async saveDependency(project: Project, dependency: Dependency): Promise<Dependency> {
     if (!dependency.id) {
-      // Get next ID for scenario
-      const maxID = project.runSettings.httpScenarios.map((dep) => dep.id).reduce((a, b) => Math.max(a, b), 0)
-      const newScenario = { ...dependency, id: maxID + 1 }
+      // Get next ID for dependency
+      const maxID = project.dependencies.map((dep) => dep.id).reduce((a, b) => Math.max(a, b), 0)
+      const newDependency = { ...dependency, id: maxID + 1 }
       // Add scenario
       // This logic for updating the project is duplicated with Project
       // But for local storage, we need to save the whole project in order to save run settings.
-      const updatedDependencies = [...project.dependencies, newScenario]
+      const updatedDependencies = [...project.dependencies, newDependency]
       project.dependencies = updatedDependencies
       this.saveProject(project)
-      return newScenario
+      return newDependency
     }
 
-    // Find scenario with that ID and update
+    // Find dependency with that ID and update
     const updatedDependencies = project.dependencies.map((existingDependency) => {
       if (existingDependency.id === dependency.id) {
         return dependency
@@ -341,9 +341,9 @@ export class LocalStorageProjectLoader implements ProjectLoader {
     return dependency
   }
 
-  async deleteDependency(project: Project, dependencyID: number) {
-    const updatedScenarios = project.dependencies.filter((dependency) => dependency.id !== dependencyID)
-    project.dependencies = updatedScenarios
+  async deleteDependency(project: Project, dependencyID: number): Promise<void> {
+    const updatedDependencies = project.dependencies.filter((dependency) => dependency.id !== dependencyID)
+    project.dependencies = updatedDependencies
     await this.saveProject(project)
   }
 }

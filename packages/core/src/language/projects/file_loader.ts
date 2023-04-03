@@ -46,8 +46,8 @@ export interface ProjectLoader {
   deleteHTTPScenario: (project: Project, scenarioID: number) => Promise<void>
   saveHTTPScenario: (project: Project, scenario: HTTPScenario) => Promise<HTTPScenario>
   isCurrentVersion: (project: Project) => Promise<boolean>
-  saveDependency(project: Project, dependency: Dependency)
-  deleteDependency(project: Project, dependencyID: number)
+  saveDependency: (project: Project, dependency: Dependency) => Promise<Dependency>
+  deleteDependency: (project: Project, dependencyID: number) => Promise<void>
 }
 
 export class SaveError extends Error {

@@ -186,20 +186,6 @@ export class Project {
     })
   }
 
-  /*
-  addDependency(name: string, version?: string) {
-    this.dependencies.push({
-      id: Math.floor(Math.random() * 1000000), // TODO: use a better ID
-      name: name,
-      version: version,
-    })
-
-    globalMutationDispatcher.handleProjectMutation({
-      type: ProjectMutationType.UPDATE_DEPENDENCIES,
-      newDependencies: this.dependencies,
-    })
-  }*/
-
   clearChangedState() {
     this.environmentVarsChanged = false
   }
