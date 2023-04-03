@@ -100,8 +100,6 @@ class MemberGenerator implements SuggestionGenerator {
             if (info) {
               autocompletes.push(...info.autocompleteSuggestions)
             }
-
-            console.log('got', info)
             break
           default:
             console.error('invalid type for autocomplete', leftChild)
