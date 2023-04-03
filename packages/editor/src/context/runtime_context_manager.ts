@@ -364,6 +364,8 @@ export class RuntimeContextManager implements ParseTreeCommunicator {
       event = httpScenarioToHTTPRequestEvent(scenario)
     }
 
+    console.log(this.project.dependencies)
+
     const messageType = isInitial ? 'initialfiles' : 'updatedfiles'
     const payload: WorkspaceFilesMessage = {
       type: messageType,

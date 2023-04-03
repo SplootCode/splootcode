@@ -65,10 +65,10 @@ export class Project {
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
     this.environmentVarsChanged = false
-    if (typeof proj.dependencies === 'object') {
+    if (!proj.dependencies || !Array.isArray(proj.dependencies)) {
       this.dependencies = []
     } else {
-      this.dependencies = proj.dependencies || []
+      this.dependencies = proj.dependencies
     }
 
     switch (proj.layouttype) {

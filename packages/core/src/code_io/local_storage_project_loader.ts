@@ -85,6 +85,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         scenario.id = idx + 1 // Don't have 0 for ID, for truthiness reasons
       })
     }
+    console.log(proj.dependencies)
     return new Project(ownerId, proj, await Promise.all(packages), fileLoader, this)
   }
 
