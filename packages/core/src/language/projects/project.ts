@@ -189,7 +189,6 @@ export class Project {
       splootversion: this.splootversion,
       version: this.version,
       environmentVars: Object.fromEntries(environmentVars),
-      // dependencies: Object.fromEntries(this.dependencies.entries()),
       dependencies: [...this.dependencies],
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
