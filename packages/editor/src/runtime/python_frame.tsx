@@ -115,26 +115,6 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 </Select>
               ) : null}
 
-              {installablePackagesEnabled ? (
-                <Button
-                  size="sm"
-                  height={8}
-                  onClick={() => {
-                    const dep = prompt('Enter dependency name')
-
-                    if (!dep) {
-                      console.error('need dependency name')
-
-                      return
-                    }
-
-                    this.props.runtimeContextManager.project.addDependency(dep, '')
-                  }}
-                >
-                  Add deps
-                </Button>
-              ) : null}
-
               <Button
                 size={'sm'}
                 isLoading={running}

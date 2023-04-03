@@ -1,7 +1,7 @@
+import { Dependency, Project, SerializedProject } from '../language/projects/project'
 import { HTTPScenario } from '../http_types'
 import { LocalStorageFileLoader } from './local_storage_file_loader'
 import { PackageBuildType, SerializedSplootPackage, SplootPackage } from '../language/projects/package'
-import { Project, SerializedProject } from '../language/projects/project'
 import { ProjectLoader, ProjectMetadata, SaveError } from '../language/projects/file_loader'
 import { RunType } from '../language/projects/run_settings'
 import { deserializeNode } from '../language/type_registry'
@@ -311,5 +311,39 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       })
     )
     return true
+  }
+
+  saveDependency(project: Project, dependency: Dependency) {
+    if (!dependency.id) {
+      // Get next ID for scenario
+      const maxID = project.runSettings.httpScenarios.map((dep) => dep.id).reduce((a, b) => Math.max(a, b), 0)
+      const newScenario = { ...dependency, id: maxID + 1 }
+      // Add scenario
+      // This logic for updating the project is duplicated with Project
+      // But for local storage, we need to save the whole project in order to save run settings.
+      const updatedDependencies = [...project.dependencies, newScenario]
+      project.dependencies = updatedDependencies
+      this.saveProject(project)
+      return newScenario
+    }
+
+    // Find scenario with that ID and update
+    const updatedDependencies = project.dependencies.map((existingDependency) => {
+      if (existingDependency.id === dependency.id) {
+        return dependency
+      }
+
+      return existingDependency
+    })
+
+    project.dependencies = updatedDependencies
+    this.saveProject(project)
+    return dependency
+  }
+
+  async deleteDependency(project: Project, dependencyID: number) {
+    const updatedScenarios = project.dependencies.filter((dependency) => dependency.id !== dependencyID)
+    project.dependencies = updatedScenarios
+    await this.saveProject(project)
   }
 }

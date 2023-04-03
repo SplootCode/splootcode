@@ -6,6 +6,11 @@
       "description": "No documentation"
     },
     {
+      "name": "abc",
+      "isStandardLib": true,
+      "description": "Abstract Base Classes (ABCs) according to PEP 3119."
+    },
+    {
       "name": "aifc",
       "isStandardLib": true,
       "description": "Stuff to parse AIFF-C and AIFF files."
@@ -914,6 +919,16 @@
       "name": "streamlit",
       "isStandardLib": false,
       "description": "Streamlit."
+    },
+    {
+      "name": "pandas",
+      "isStandardLib": false,
+      "description": "No documentation"
+    },
+    {
+      "name": "numpy",
+      "isStandardLib": false,
+      "description": "NumPy"
     }
   ]
 }

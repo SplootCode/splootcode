@@ -222,7 +222,12 @@ async function main() {
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(RequestsURL)
   await micropip.install(StreamlitURL)
-  const promises = [micropip.install('types-requests')]
+  const promises = [
+    micropip.install('types-requests'),
+    micropip.install('numpy'),
+    micropip.install('pandas'),
+    micropip.install('pandas-stubs'),
+  ]
   await Promise.all(promises)
 
   const structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(TypeshedPath, pyodide))
@@ -239,7 +244,7 @@ async function main() {
     moduleInfoFile.allModules.push(moduleInfo)
   }
 
-  for (const module of ['requests', 'streamlit']) {
+  for (const module of ['requests', 'streamlit', 'pandas', 'numpy']) {
     const moduleInfo = await generateTrayListForModule(structuredProgram, module, false)
     moduleInfoFile.allModules.push(moduleInfo)
   }

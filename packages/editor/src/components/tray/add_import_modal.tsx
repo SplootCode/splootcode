@@ -4,14 +4,15 @@ import Fuse from 'fuse.js'
 import { Box, FormControl, HStack, IconButton, Input, Spacer, Text, VStack } from '@chakra-ui/react'
 
 import { AddIcon } from '@chakra-ui/icons'
+import { ENABLE_INSTALLABLE_PACKAGES_FLAG, loadFeatureFlags } from '@splootcode/core'
 import { PythonModuleInfo, SupportedModuleList } from '@splootcode/language-python'
 
 interface AddImportModalProps {
   isOpen: boolean
-  importModule: (moduleName: string) => void
+  importModule: (moduleInfo: PythonModuleInfo) => void
 }
 
-function PackageListing(props: { importModule: (moduleName: string) => void; moduleInfo: PythonModuleInfo }) {
+function PackageListing(props: { importModule: (moduleInfo: PythonModuleInfo) => void; moduleInfo: PythonModuleInfo }) {
   const { importModule, moduleInfo } = props
   return (
     <HStack alignContent={'space-between'} pb={2}>
@@ -27,7 +28,7 @@ function PackageListing(props: { importModule: (moduleName: string) => void; mod
         size="sm"
         aria-label="New variable"
         icon={<AddIcon />}
-        onClick={() => importModule(moduleInfo.name)}
+        onClick={() => importModule(moduleInfo)}
       ></IconButton>
     </HStack>
   )
@@ -42,8 +43,18 @@ export function AddImportModal(props: AddImportModalProps) {
   const [fuse, setFuse] = useState(null as Fuse<PythonModuleInfo> | null)
   const [searchResultsList, setSearchResultsList] = useState([] as PythonModuleInfo[])
 
+  const featureFlags = loadFeatureFlags()
+
   useEffect(() => {
     if (isOpen) {
+      let supportedModules = SupportedModuleList
+
+      if (!featureFlags.get(ENABLE_INSTALLABLE_PACKAGES_FLAG)) {
+        supportedModules = supportedModules.filter((moduleInfo) => {
+          return moduleInfo.isStandardLib || moduleInfo.name === 'requests'
+        })
+      }
+
       const options: Fuse.IFuseOptions<PythonModuleInfo> = {
         keys: [
           { name: 'name', weight: 0.8 },
@@ -55,7 +66,7 @@ export function AddImportModal(props: AddImportModalProps) {
         findAllMatches: true,
         fieldNormWeight: 2.0,
       }
-      const fuse = new Fuse(SupportedModuleList, options)
+      const fuse = new Fuse(supportedModules, options)
       setFuse(fuse)
     }
   }, [isOpen])
