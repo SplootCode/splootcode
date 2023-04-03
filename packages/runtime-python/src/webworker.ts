@@ -1,12 +1,12 @@
+import { Dependency, HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import {
   FetchSyncErrorType,
   FileSpec,
   ResponseData,
   WorkerManagerMessage,
   WorkerMessage,
-  compareMap,
+  sameDepencencies,
 } from './runtime/common'
-import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { StaticURLs } from './static_urls'
 import { loadDependencies, setupPyodide, tryModuleLoadPyodide, tryNonModuleLoadPyodide } from './pyodide'
 
@@ -20,7 +20,7 @@ let rerun = false
 let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
-let dependencies: Map<string, string> = null
+let dependencies: Dependency[] = null
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -339,7 +339,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
         // this is first load
         loadDependencies(pyodide, e.data.dependencies).then(() => run())
         dependencies = e.data.dependencies
-      } else if (!compareMap(dependencies, e.data.dependencies)) {
+      } else if (!sameDepencencies(dependencies, e.data.dependencies)) {
         console.warn('dependencies not the same! danger! worker should have been restarted')
       } else {
         run()

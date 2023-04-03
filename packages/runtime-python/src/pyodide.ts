@@ -1,3 +1,5 @@
+import { Dependency } from '@splootcode/core'
+
 export function tryNonModuleLoadPyodide() {
   // If we're not in a module context (prod build is non-module)
   // Then we need to imoprt Pyodide this way, but it fails in a module context (local dev).
@@ -38,18 +40,18 @@ export async function setupPyodide(urls: string[]) {
   return pyodide
 }
 
-export const loadDependencies = async (pyodide: any, newDependencies: Map<string, string>) => {
+export const loadDependencies = async (pyodide: any, newDependencies: Dependency[]) => {
   const micropip = pyodide.pyimport('micropip')
 
-  const imports = Array.from(newDependencies.entries())
-    .map(([dependencyName, version]): any => {
+  const imports = newDependencies
+    .map(({ name, version }): any => {
       let types = []
 
-      if (dependencyName === 'pandas') {
+      if (name === 'pandas') {
         types = ['pandas-stubs']
       }
 
-      return [dependencyName, ...types]
+      return [name, ...types]
     })
     .flat()
     .map((dependency) => micropip.install(dependency))

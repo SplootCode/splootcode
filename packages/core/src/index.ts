@@ -84,7 +84,7 @@ export {
 } from './language/capture/runtime_capture'
 
 // Project stuff
-export { Project, SerializedProject } from './language/projects/project'
+export { Project, SerializedProject, Dependency } from './language/projects/project'
 export { RunSettings, RunType } from './language/projects/run_settings'
 export { ProjectLoader, ProjectMetadata, FileLoader, SaveError } from './language/projects/file_loader'
 export { SplootPackage, PackageBuildType } from './language/projects/package'

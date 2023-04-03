@@ -1,6 +1,6 @@
+import { Dependency, HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 import { EditorMessage } from '../message_types'
 import { FetchHandler, FileSpec, ResponseData, WorkerManagerMessage, WorkerMessage } from './common'
-import { HTTPRequestAWSEvent, RunType } from '@splootcode/core'
 
 const INPUT_BUF_SIZE = 100
 
@@ -103,7 +103,7 @@ export class WorkerManager {
     eventData: HTTPRequestAWSEvent,
     workspace: Map<string, FileSpec>,
     envVars: Map<string, string>,
-    dependencies: Map<string, string>
+    dependencies: Dependency[]
   ) {
     this._workerState = WorkerState.RUNNING
     this.stateCallBack(this._workerState)

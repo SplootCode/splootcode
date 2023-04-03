@@ -5,6 +5,12 @@ import { ProjectMutationType } from '../mutations/project_mutations'
 import { RunSettings, RunType } from './run_settings'
 import { globalMutationDispatcher } from '../mutations/mutation_dispatcher'
 
+export interface Dependency {
+  id?: number
+  name: string
+  version: string
+}
+
 export interface SerializedProject {
   name: string
   layouttype: string
@@ -14,7 +20,7 @@ export interface SerializedProject {
   version: string
   packages: SerializedSplootPackageRef[]
   environmentVars?: { [key: string]: [string, boolean] }
-  dependencies?: { [key: string]: string }
+  dependencies?: Dependency[]
 }
 
 export enum ProjectLayoutType {
@@ -36,7 +42,7 @@ export class Project {
   fileLoader: FileLoader
   environmentVars: Map<string, [string, boolean]>
   environmentVarsChanged: boolean
-  dependencies: Map<string, string>
+  dependencies: Dependency[]
 
   constructor(
     owner: string,
@@ -59,7 +65,12 @@ export class Project {
     this.packages = packages
     this.environmentVars = new Map(Object.entries(proj.environmentVars || {}))
     this.environmentVarsChanged = false
-    this.dependencies = new Map(Object.entries(proj.dependencies || {}))
+    if (!proj.dependencies || !Array.isArray(proj.dependencies)) {
+      this.dependencies = []
+    } else {
+      this.dependencies = proj.dependencies
+    }
+
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
         this.layoutType = ProjectLayoutType.PYTHON_CLI
@@ -141,7 +152,11 @@ export class Project {
   }
 
   addDependency(name: string, version?: string) {
-    this.dependencies.set(name, version)
+    this.dependencies.push({
+      id: Math.floor(Math.random() * 1000000), // TODO: use a better ID
+      name: name,
+      version: version,
+    })
 
     globalMutationDispatcher.handleProjectMutation({
       type: ProjectMutationType.UPDATE_DEPENDENCIES,
@@ -174,7 +189,7 @@ export class Project {
       splootversion: this.splootversion,
       version: this.version,
       environmentVars: Object.fromEntries(environmentVars),
-      dependencies: Object.fromEntries(this.dependencies.entries()),
+      dependencies: [...this.dependencies],
       packages: this.packages.map((pack) => {
         const packRef: SerializedSplootPackageRef = {
           name: pack.name,

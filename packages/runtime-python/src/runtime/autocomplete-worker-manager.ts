@@ -1,5 +1,6 @@
 import { AutocompleteWorkerMessage, WorkerManagerAutocompleteMessage } from './common'
 
+import { Dependency } from '@splootcode/core'
 import { EditorMessage } from '../message_types'
 import { ExpressionTypeRequest, ParseTrees } from '@splootcode/language-python'
 
@@ -10,7 +11,7 @@ export class AutocompleteWorkerManager {
   private worker: Worker
   private workerReady: boolean
   private sendToParentWindow: (payload: EditorMessage) => void
-  private dependencies: Map<string, string>
+  private dependencies: Dependency[] | null
   private waitingForDependencies = false
   private dependenciesLoadedAtLeastOnce = false
 
@@ -33,7 +34,7 @@ export class AutocompleteWorkerManager {
     }
   }
 
-  loadDependencies(dependencies: Map<string, string>) {
+  loadDependencies(dependencies: Dependency[]) {
     if (!this.dependenciesLoadedAtLeastOnce) {
       if (this.waitingForDependencies) {
         this.waitingForDependencies = false
@@ -44,7 +45,6 @@ export class AutocompleteWorkerManager {
         })
 
         this.dependenciesLoadedAtLeastOnce = true
-        console.log('AUTOCOMPLETE deps loaded at least once!')
       }
 
       this.dependencies = dependencies
@@ -53,7 +53,7 @@ export class AutocompleteWorkerManager {
     }
   }
 
-  restartWithDependencies(dependencies: Map<string, string>) {
+  restartWithDependencies(dependencies: Dependency[]) {
     this.dependencies = dependencies
 
     this.worker.removeEventListener('message', this.handleMessageFromWorker)

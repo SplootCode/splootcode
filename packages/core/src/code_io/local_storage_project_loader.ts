@@ -85,6 +85,13 @@ export class LocalStorageProjectLoader implements ProjectLoader {
         scenario.id = idx + 1 // Don't have 0 for ID, for truthiness reasons
       })
     }
+
+    if (proj.dependencies) {
+      proj.dependencies.forEach((dep, idx) => {
+        dep.id = idx + 1
+      })
+    }
+
     return new Project(ownerId, proj, await Promise.all(packages), fileLoader, this)
   }
 
@@ -106,6 +113,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       title: title,
       environmentVars: {},
       packages: [],
+      dependencies: [],
     }
 
     const proj = new Project(ownerId, serialisedProj, [], fileLoader, this)

@@ -1,3 +1,4 @@
+import { Dependency } from '../projects/project'
 import { RunSettings } from '../projects/run_settings'
 
 export enum ProjectMutationType {
@@ -32,5 +33,5 @@ export class ProjectUpdateRunSettingsMutation {
 
 export class ProjectUpdateDependenciesMutation {
   type: ProjectMutationType.UPDATE_DEPENDENCIES
-  newDependencies: Map<string, string>
+  newDependencies: Dependency[]
 }
