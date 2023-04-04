@@ -114,6 +114,7 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       environmentVars: {},
       packages: [],
       dependencies: [],
+      tutorial: 'NONE',
     }
 
     const proj = new Project(ownerId, serialisedProj, [], fileLoader, this)

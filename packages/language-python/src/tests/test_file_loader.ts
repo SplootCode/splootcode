@@ -32,6 +32,7 @@ export async function loadTestProject(projectID: string, title: string): Promise
         },
       ],
       splootversion: '1.0',
+      tutorial: 'NONE',
     },
     [await fileLoader.loadPackage('examples', projectID, 'main')],
     fileLoader,

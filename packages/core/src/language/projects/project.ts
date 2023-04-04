@@ -21,6 +21,7 @@ export interface SerializedProject {
   packages: SerializedSplootPackageRef[]
   environmentVars?: { [key: string]: [string, boolean] }
   dependencies?: Dependency[]
+  tutorial: string
 }
 
 export enum ProjectLayoutType {
@@ -43,6 +44,7 @@ export class Project {
   environmentVars: Map<string, [string, boolean]>
   environmentVarsChanged: boolean
   dependencies: Dependency[]
+  tutorial: string
 
   constructor(
     owner: string,
@@ -70,6 +72,7 @@ export class Project {
     } else {
       this.dependencies = proj.dependencies
     }
+    this.tutorial = proj.tutorial || 'NONE'
 
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
@@ -219,6 +222,7 @@ export class Project {
         }
         return packRef
       }),
+      tutorial: this.tutorial,
     }
 
     return JSON.stringify(serProj, null, 2) + '\n'
