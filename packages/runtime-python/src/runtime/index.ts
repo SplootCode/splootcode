@@ -198,7 +198,6 @@ class RuntimeStateManager {
 
           break
         } else if (!sameDepencencies(this.dependencies, data.data.dependencies)) {
-          console.log('maps are different?', this.dependencies, data.data.dependencies)
           this.dependencies = data.data.dependencies
           this.workerManager.reloadDependencies()
           this.autocompleteWorkerManager.loadDependencies(data.data.dependencies)

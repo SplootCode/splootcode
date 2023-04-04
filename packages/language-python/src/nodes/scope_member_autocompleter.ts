@@ -62,8 +62,6 @@ class MemberGenerator implements SuggestionGenerator {
       const filePath = scope.getFilePath()
       const autocompletes: AutocompleteInfo[] = []
 
-      let attributes: [string, VariableTypeInfo][] = []
-
       const analyzer = scope.getAnalyzer()
 
       if (leftChild) {
@@ -108,42 +106,43 @@ class MemberGenerator implements SuggestionGenerator {
         }
       }
 
-      attributes.push(
-        ...autocompletes.map((info): [string, VariableTypeInfo] => {
-          let type: VariableTypeInfo = null
-          if (info.category === AutocompleteEntryCategory.Value) {
-            type = {
-              category: TypeCategory.Value,
-              typeName: null,
-              shortDoc: info.shortDoc,
-              typeIfAttr: info.typeIfAttr,
-            }
-
-            return [info.name, type]
-          } else if (info.category === AutocompleteEntryCategory.Function) {
-            type = {
-              category: TypeCategory.Function,
-              arguments: info.arguments.map((arg) => {
-                return {
-                  name: arg.name,
-                  type: arg.type,
-                  defaultValue: arg.hasDefault ? 'None' : undefined,
-                }
-              }),
-              shortDoc: info.shortDoc,
-              typeIfMethod: info.typeIfMethod,
-            }
-
-            return [info.name, type]
+      const newAttributes = autocompletes.map((info): [string, VariableTypeInfo] => {
+        let type: VariableTypeInfo = null
+        if (info.category === AutocompleteEntryCategory.Value) {
+          type = {
+            category: TypeCategory.Value,
+            typeName: null,
+            shortDoc: info.shortDoc,
+            typeIfAttr: info.typeIfAttr,
           }
-        })
-      )
-      this.autocompleteCache = {
-        parentReference: parent,
-        index: index,
-        leftChild: leftChild,
-        attributes: attributes,
-      }
+
+          return [info.name, type]
+        } else if (info.category === AutocompleteEntryCategory.Function) {
+          type = {
+            category: TypeCategory.Function,
+            arguments: info.arguments.map((arg) => {
+              return {
+                name: arg.name,
+                type: arg.type,
+                defaultValue: arg.hasDefault ? 'None' : undefined,
+              }
+            }),
+            shortDoc: info.shortDoc,
+            typeIfMethod: info.typeIfMethod,
+          }
+
+          return [info.name, type]
+        }
+      })
+
+      attributes = attributes.concat(newAttributes)
+    }
+
+    this.autocompleteCache = {
+      parentReference: parent,
+      index: index,
+      leftChild: leftChild,
+      attributes: attributes,
     }
 
     const inputName = textInput.substring(1) // Cut the '.' off

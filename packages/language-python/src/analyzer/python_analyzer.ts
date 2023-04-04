@@ -24,7 +24,7 @@ export interface ExpressionTypeRequest {
   requestID: string
 
   path: string
-  expression: ExpressionNode
+  expressionID: number
 }
 
 export const enum AutocompleteEntryCategory {
@@ -75,7 +75,7 @@ export interface ParseTreeCommunicator {
   setGetParseTreesCallback(callback: (filePaths: Set<string>) => ParseTrees): void
 
   // messages
-  getExpressionType(path: string, node: ExpressionNode, parseID: number): Promise<ExpressionTypeResponse>
+  getExpressionType(path: string, nodeId: number, parseID: number): Promise<ExpressionTypeResponse>
 }
 
 export class ParseMapper {
@@ -171,7 +171,7 @@ export class PythonAnalyzer {
       return null
     }
 
-    return this.sender.getExpressionType(path, exprNode, this.currentAtomicID)
+    return this.sender.getExpressionType(path, exprNode.id, this.currentAtomicID)
   }
 
   getPyrightTypeForExpression(path: string, node: SplootNode): Type {
@@ -248,6 +248,7 @@ export class PythonAnalyzer {
     const newNodeMaps = new Map()
     for (const path of paths) {
       const parseMapper = this.lookupNodeMaps.get(path)
+
       newNodeMaps.set(path, parseMapper)
     }
     for (const path of paths) {

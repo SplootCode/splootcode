@@ -85,7 +85,7 @@ const getExpressionTypeInfo = (request: ExpressionTypeRequest) => {
     return
   }
 
-  const walker = new IDFinderWalker(request.expression.id)
+  const walker = new IDFinderWalker(request.expressionID)
   walker.walk(sourceFile.getParseResults().parseTree)
 
   if (walker.found) {
