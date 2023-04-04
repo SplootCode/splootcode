@@ -72,9 +72,7 @@ export class Project {
     } else {
       this.dependencies = proj.dependencies
     }
-    if (!proj.tutorial) {
-      this.tutorial = 'NONE'
-    }
+    this.tutorial = proj.tutorial || 'NONE'
 
     switch (proj.layouttype) {
       case ProjectLayoutType.PYTHON_CLI:
