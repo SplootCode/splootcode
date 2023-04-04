@@ -1,6 +1,6 @@
 import './tray.css'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 import { AddIcon } from '@chakra-ui/icons'
 import { AddImportModal } from './add_import_modal'
@@ -17,9 +17,10 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Category } from './category'
+import { EditorState, EditorStateContext } from '../../context/editor_context'
 import { ImportsTray } from './imports_tray'
 import { ModuleTrayLoader } from '../editor_side_menu'
-import { PYTHON_FILE, PythonFile, PythonLanguageTray, PythonNode } from '@splootcode/language-python'
+import { PYTHON_FILE, PythonFile, PythonLanguageTray, PythonModuleInfo, PythonNode } from '@splootcode/language-python'
 import { RenderedFragment } from '../../layout/rendered_fragment'
 import { ScopeTray } from './scope_tray'
 import { SplootNode, TrayCategory } from '@splootcode/core'
@@ -47,13 +48,22 @@ export function Tray(props: TrayProps) {
   const [listing, setListing] = useState(null)
   const [tabIndex, setTabIndex] = useState(0)
 
+  const editorContext = useContext<EditorState>(EditorStateContext)
+
   useEffect(() => {
     setListing(getTrayListing(props.rootNode))
   }, [props.rootNode])
 
   const addModuleImport = useCallback(
-    (moduleName: string) => {
-      ;(rootNode as PythonFile).addModuleImport(moduleName)
+    (module: PythonModuleInfo) => {
+      if (module.isStandardLib) {
+        ;(rootNode as PythonFile).addModuleImport(module.name)
+      } else {
+        editorContext.project.putDependency({
+          name: module.name,
+          version: '',
+        })
+      }
       setTabIndex(1)
     },
     [rootNode]

@@ -1,23 +1,48 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Button, Text } from '@chakra-ui/react'
-import { Category } from './category'
-import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { ModuleTrayLoader } from '../editor_side_menu'
-import { PythonNode } from '@splootcode/language-python'
-import { RenderedFragment } from '../../layout/rendered_fragment'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Button,
+  HStack,
+  IconButton,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react'
+import { Category } from './category'
+import { ChevronDownIcon, ChevronRightIcon, DeleteIcon } from '@chakra-ui/icons'
+import { EditorState, EditorStateContext } from '../../context/editor_context'
+import { ModuleTrayLoader } from '../editor_side_menu'
+import {
+  ProjectMutationType,
+  ProjectObserver,
   ScopeMutation,
   ScopeMutationType,
   ScopeObserver,
   TrayCategory,
   globalMutationDispatcher,
 } from '@splootcode/core'
+import { PythonNode, SupportedModuleList } from '@splootcode/language-python'
+import { RenderedFragment } from '../../layout/rendered_fragment'
 
 interface ImportsTrayProps {
   rootNode: PythonNode
   startDrag: (fragment: RenderedFragment, offsetX: number, offsetY: number) => any
   moduleTrayLoader: ModuleTrayLoader
   addImports: () => void
+}
+
+const dynamicallyInstallable = new Map(
+  SupportedModuleList.map((module) => {
+    return [module.name, module.isStandardLib]
+  })
+)
+
+interface Import {
+  name: string
+  isDeletable: boolean
 }
 
 export const ImportedModuleCategory = (props: {
@@ -46,12 +71,33 @@ export const ImportedModuleCategory = (props: {
 
 export const ImportsTray = (props: ImportsTrayProps) => {
   const { rootNode, startDrag, addImports, moduleTrayLoader } = props
+  const editorContext = useContext<EditorState>(EditorStateContext)
 
-  const [importsList, setImportsList] = useState<string[]>([])
+  const [importsList, setImportsList] = useState<Import[]>([])
 
   const refreshModuleList = useCallback(() => {
-    const scope = rootNode.getScope()
-    setImportsList(scope.getImportedModules())
+    const scopeImportNames = rootNode.getScope().getImportedModules()
+
+    const scopeImports = scopeImportNames
+      .filter((moduleName) => dynamicallyInstallable.get(moduleName))
+      .map((name): Import => {
+        return {
+          name: name,
+          isDeletable: false,
+        }
+      })
+
+    const projectImports = editorContext.project.dependencies.map((dep): Import => {
+      // TODO(harrison): ideally you can't delete external modules when they're being used?
+      const isDeletable = true // !scopeImportNames.includes(dep.name)
+
+      return {
+        name: dep.name,
+        isDeletable,
+      }
+    })
+
+    setImportsList([...scopeImports, ...projectImports])
   }, [rootNode])
 
   useEffect(() => {
@@ -63,9 +109,20 @@ export const ImportsTray = (props: ImportsTrayProps) => {
         }
       },
     }
+
+    const projectObserver: ProjectObserver = {
+      handleProjectMutation(mutation) {
+        if (mutation.type === ProjectMutationType.UPDATE_DEPENDENCIES) {
+          refreshModuleList()
+        }
+      },
+    }
+
+    globalMutationDispatcher.registerProjectObserver(projectObserver)
     globalMutationDispatcher.registerScopeObserver(scopeObserver)
     return () => {
       globalMutationDispatcher.deregisterScopeObserver(scopeObserver)
+      globalMutationDispatcher.deregisterProjectObserver(projectObserver)
     }
   }, [rootNode])
 
@@ -80,22 +137,41 @@ export const ImportsTray = (props: ImportsTrayProps) => {
             <Button onClick={addImports}>Add module</Button>
           </Box>
         ) : null}
-        {importsList.map((importName) => {
+        {importsList.map((importInfo) => {
           return (
-            <AccordionItem key={importName} border={'none'} py={0}>
+            <AccordionItem key={importInfo.name} border={'none'} py={0}>
               {({ isExpanded }) => (
                 <>
-                  <AccordionButton border={'none'} px={0} py={1} mb={1} _hover={{ bg: 'gray.700' }}>
-                    {isExpanded ? (
-                      <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
-                    ) : (
-                      <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
-                    )}
-                    {importName}
-                  </AccordionButton>
+                  <HStack mb={1}>
+                    <AccordionButton border={'none'} px={0} py={1} _hover={{ bg: 'gray.700' }}>
+                      {isExpanded ? (
+                        <ChevronDownIcon textColor={'gray.400'} mr={0.5} />
+                      ) : (
+                        <ChevronRightIcon textColor={'gray.400'} mr={0.5} />
+                      )}
+                      {importInfo.name}{' '}
+                    </AccordionButton>
+
+                    {importInfo.isDeletable ? (
+                      <Tooltip label="Uninstall dependency">
+                        <IconButton
+                          textColor={'gray.400'}
+                          size="sm"
+                          fontSize="sm"
+                          variant={'ghost'}
+                          icon={<DeleteIcon />}
+                          aria-label="Uninstall dependency"
+                          onClick={() => {
+                            const dep = editorContext.project.dependencies.find((dep) => dep.name === importInfo.name)
+                            editorContext.project.deleteDependency(dep.id)
+                          }}
+                        ></IconButton>
+                      </Tooltip>
+                    ) : null}
+                  </HStack>
                   <AccordionPanel pt={0} pr={0} pb={1} pl={2} mb={1} ml={2} className={'tray-expanded-category'}>
                     <ImportedModuleCategory
-                      name={importName}
+                      name={importInfo.name}
                       startDrag={startDrag}
                       moduleTrayLoader={moduleTrayLoader}
                     />

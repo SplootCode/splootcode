@@ -1,5 +1,5 @@
+import { Dependency, Project } from './project'
 import { HTTPScenario } from '../../http_types'
-import { Project } from './project'
 import { RunType } from './run_settings'
 import { SplootFile } from './file'
 import { SplootNode } from '../node'
@@ -46,6 +46,8 @@ export interface ProjectLoader {
   deleteHTTPScenario: (project: Project, scenarioID: number) => Promise<void>
   saveHTTPScenario: (project: Project, scenario: HTTPScenario) => Promise<HTTPScenario>
   isCurrentVersion: (project: Project) => Promise<boolean>
+  saveDependency: (project: Project, dependency: Dependency) => Promise<Dependency>
+  deleteDependency: (project: Project, dependencyID: number) => Promise<void>
 }
 
 export class SaveError extends Error {

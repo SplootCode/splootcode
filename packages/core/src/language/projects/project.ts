@@ -131,6 +131,41 @@ export class Project {
     return pack
   }
 
+  async putDependency(dependency: Dependency): Promise<Dependency> {
+    const savedDependency = await this.projectLoader.saveDependency(this, dependency)
+
+    let found = false
+    const newDependencies = this.dependencies.map((d) => {
+      if (d.id === savedDependency.id) {
+        found = true
+        return savedDependency
+      }
+      return d
+    })
+
+    if (!found) {
+      newDependencies.push(savedDependency)
+    }
+
+    this.dependencies = newDependencies
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_DEPENDENCIES,
+      newDependencies: newDependencies,
+    })
+
+    return savedDependency
+  }
+
+  async deleteDependency(dependencyID: number): Promise<void> {
+    await this.projectLoader.deleteDependency(this, dependencyID)
+    const newDependencies = this.dependencies.filter((s) => s.id !== dependencyID)
+    this.dependencies = newDependencies
+    globalMutationDispatcher.handleProjectMutation({
+      type: ProjectMutationType.UPDATE_DEPENDENCIES,
+      newDependencies: newDependencies,
+    })
+  }
+
   deleteEnvironmentVar(key: string) {
     this.environmentVars.delete(key)
     this.environmentVarsChanged = true
@@ -148,19 +183,6 @@ export class Project {
       newName: key,
       newValue: value,
       secret,
-    })
-  }
-
-  addDependency(name: string, version?: string) {
-    this.dependencies.push({
-      id: Math.floor(Math.random() * 1000000), // TODO: use a better ID
-      name: name,
-      version: version,
-    })
-
-    globalMutationDispatcher.handleProjectMutation({
-      type: ProjectMutationType.UPDATE_DEPENDENCIES,
-      newDependencies: this.dependencies,
     })
   }
 
