@@ -2,7 +2,7 @@
 .editor-side-menu {
   --editor-bg-color: var(--chakra-colors-gray-900);
   width: 100%;
-  height: calc(99vh - 41px);
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   border-right: 1px solid var(--section-separator-color);
