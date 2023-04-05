@@ -41,15 +41,15 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-decorators": "^7.19.6",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^9.0.2",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/react": "^17.0.2",
     "@types/react-router-dom": "^5.3.3",
     "@types/wicg-file-system-access": "^2020.9.1",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
-    "@vitejs/plugin-react": "^2.1.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.26.0",
@@ -58,12 +58,12 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.5.1",
-    "rollup": "2.79.1",
-    "rollup-plugin-dts": "^5.0.0",
-    "rollup-plugin-import-css": "^3.1.0",
+    "rollup": "3.20.2",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-import-css": "^3.2.1",
     "typescript": "^4.8.4",
-    "vite": "^3.2.0",
-    "vite-plugin-static-copy": "^0.11.0",
-    "vite-tsconfig-paths": "^3.5.2"
+    "vite": "^4.2.1",
+    "vite-plugin-static-copy": "^0.13.1",
+    "vite-tsconfig-paths": "^4.0.8"
   }
 }
