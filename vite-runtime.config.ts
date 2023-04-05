@@ -17,6 +17,16 @@ export default defineConfig({
         main: resolve(__dirname, 'splootframepythonclient.html'),
         streamlit: resolve(__dirname, 'splootstreamlitpythonclient.html'),
       },
+      output: {
+        assetFileNames: 'assets/[name].[hash][extname]',
+      },
+    },
+  },
+  worker: {
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name].[hash][extname]',
+      },
     },
   },
   plugins: [
