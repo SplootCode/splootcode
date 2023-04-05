@@ -17,17 +17,16 @@
     "test": "jest",
     "build": "yarn rollup -c"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "rollup-plugin-copy": "^3.4.0",
-    "@rollup/plugin-json": "^5.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^9.0.2",
-    "rollup": "2.79.1",
-    "rollup-plugin-dts": "^5.0.0",
-    "typescript": "^4.8.4",
     "@jest/globals": "^29.2.2",
-    "structured-pyright": "^1.0.11"
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "rollup": "3.20.2",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "structured-pyright": "^1.0.11",
+    "typescript": "^4.8.4"
   }
 }
