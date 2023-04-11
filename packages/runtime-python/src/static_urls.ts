@@ -4,4 +4,5 @@ export interface StaticURLs {
   requestsPackageURL: string
   textGeneratorURL: string
   streamlitPackageURL: string
+  pyarrowPackageURL: string
 }
