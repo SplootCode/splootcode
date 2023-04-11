@@ -12,18 +12,20 @@ tryNonModuleLoadPyodide()
 let pyodide: any = null
 let structuredProgram: StructuredEditorProgram = null
 let dependencies: Dependency[] = null
+let staticURLs: StaticURLs = null
 
 const sendMessage = (message: AutocompleteWorkerMessage) => {
   postMessage(message)
 }
 
-export const initialize = async (staticURLs: StaticURLs, typeshedPath: string) => {
+export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   await tryModuleLoadPyodide()
+  staticURLs = urls
 
   // It's a significant startup-time performance hit to install streamlit, we need to
   // make it so that only some packages are installed depending on the project.
   // pyodide = await setupPyodide([staticURLs.requestsPackageURL, staticURLs.streamlitPackageURL])
-  pyodide = await setupPyodide([staticURLs.requestsPackageURL])
+  pyodide = await setupPyodide([urls.requestsPackageURL])
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 
@@ -140,7 +142,7 @@ onmessage = function (e: MessageEvent<WorkerManagerAutocompleteMessage>) {
       if (!dependencies) {
         dependencies = e.data.dependencies
 
-        loadDependencies(pyodide, dependencies).then(() => {
+        loadDependencies(pyodide, dependencies, staticURLs).then(() => {
           if (unfinishedParseTrees) {
             updateParseTrees(unfinishedParseTrees)
           }

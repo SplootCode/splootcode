@@ -21,6 +21,7 @@ let readlines: string[] = []
 let requestPlayback: Map<string, ResponseData[]> = new Map()
 let envVars: Map<string, string> = new Map()
 let dependencies: Dependency[] = null
+let staticURLs: StaticURLs = null
 
 const sendMessage = (message: WorkerMessage) => {
   postMessage(message)
@@ -247,6 +248,8 @@ const getWorkspace = () => {
 }
 
 export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
+  staticURLs = urls
+
   await tryModuleLoadPyodide()
 
   executorCode = await (await fetch(urls.executorURL)).text()
@@ -337,7 +340,7 @@ onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
 
       if (!dependencies) {
         // this is first load
-        loadDependencies(pyodide, e.data.dependencies).then(() => run())
+        loadDependencies(pyodide, e.data.dependencies, staticURLs).then(() => run())
         dependencies = e.data.dependencies
       } else if (!sameDepencencies(dependencies, e.data.dependencies)) {
         console.warn('dependencies not the same! danger! worker should have been restarted')

@@ -104,6 +104,15 @@ export class LocalStorageProjectLoader implements ProjectLoader {
   ): Promise<Project> {
     const fileLoader = new LocalStorageFileLoader(this)
 
+    let dependencies = []
+    if (runType === RunType.HTTP_REQUEST) {
+      dependencies = ['flask', 'serverless_wsgi']
+    } else if (runType === RunType.STREAMLIT) {
+      dependencies = ['streamlit']
+    } else {
+      dependencies = ['requests']
+    }
+
     const serialisedProj: SerializedProject = {
       name: projectId,
       layouttype: layoutType,
@@ -113,7 +122,12 @@ export class LocalStorageProjectLoader implements ProjectLoader {
       title: title,
       environmentVars: {},
       packages: [],
-      dependencies: [],
+      dependencies: dependencies.map((dep) => {
+        return {
+          name: dep,
+          version: '',
+        }
+      }),
       tutorial: 'NONE',
     }
 

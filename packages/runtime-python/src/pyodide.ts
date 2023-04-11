@@ -1,4 +1,5 @@
 import { Dependency } from '@splootcode/core'
+import { StaticURLs } from './static_urls'
 
 export function tryNonModuleLoadPyodide() {
   // If we're not in a module context (prod build is non-module)
@@ -29,8 +30,6 @@ export async function setupPyodide(urls: string[]) {
   const micropip = pyodide.pyimport('micropip')
   const promises = [
     ...urls.map((url) => micropip.install(url)),
-    micropip.install('flask'),
-    micropip.install('serverless_wsgi'),
     micropip.install('types-requests'),
     micropip.install('ast-comments'),
   ]
@@ -40,7 +39,7 @@ export async function setupPyodide(urls: string[]) {
   return pyodide
 }
 
-export const loadDependencies = async (pyodide: any, newDependencies: Dependency[]) => {
+export const loadDependencies = async (pyodide: any, newDependencies: Dependency[], static_urls: StaticURLs) => {
   const micropip = pyodide.pyimport('micropip')
 
   const imports = newDependencies
@@ -49,12 +48,13 @@ export const loadDependencies = async (pyodide: any, newDependencies: Dependency
 
       if (name === 'pandas') {
         types = ['pandas-stubs']
+      } else if (name === 'streamlit') {
+        return [static_urls.pyarrowPackageURL, static_urls.streamlitPackageURL]
       }
 
       return [name, ...types]
     })
-    .flat()
-    .map((dependency) => micropip.install(dependency))
+    .map((dependencies) => micropip.install(dependencies))
 
   await Promise.all(imports)
 }
