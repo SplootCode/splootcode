@@ -22,10 +22,7 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   await tryModuleLoadPyodide()
   staticURLs = urls
 
-  // It's a significant startup-time performance hit to install streamlit, we need to
-  // make it so that only some packages are installed depending on the project.
-  // pyodide = await setupPyodide([staticURLs.requestsPackageURL, staticURLs.streamlitPackageURL])
-  pyodide = await setupPyodide([urls.requestsPackageURL])
+  pyodide = await setupPyodide([])
 
   structuredProgram = createStructuredProgramWorker(new PyodideFakeFileSystem(typeshedPath, pyodide))
 

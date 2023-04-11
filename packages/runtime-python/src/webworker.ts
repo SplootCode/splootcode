@@ -256,7 +256,7 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   moduleLoaderCode = await (await fetch(urls.moduleLoaderURL)).text()
   textGenerationCode = await (await fetch(urls.textGeneratorURL)).text()
 
-  pyodide = await setupPyodide([urls.requestsPackageURL])
+  pyodide = await setupPyodide([])
 
   pyodide.registerJsModule('fakeprint', {
     stdout: stdout,
