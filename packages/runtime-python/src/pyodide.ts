@@ -39,7 +39,7 @@ export async function setupPyodide(urls: string[]) {
   return pyodide
 }
 
-export const loadDependencies = async (pyodide: any, newDependencies: Dependency[], static_urls: StaticURLs) => {
+export const loadDependencies = async (pyodide: any, newDependencies: Dependency[], urls: StaticURLs) => {
   const micropip = pyodide.pyimport('micropip')
 
   const imports = newDependencies
@@ -49,7 +49,9 @@ export const loadDependencies = async (pyodide: any, newDependencies: Dependency
       if (name === 'pandas') {
         types = ['pandas-stubs']
       } else if (name === 'streamlit') {
-        return [static_urls.pyarrowPackageURL, static_urls.streamlitPackageURL]
+        return [urls.pyarrowPackageURL, urls.streamlitPackageURL]
+      } else if (name === 'requests') {
+        return [urls.requestsPackageURL]
       }
 
       return [name, ...types]
