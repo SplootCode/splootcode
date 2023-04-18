@@ -127,9 +127,9 @@ export const UserHomePage = (props: UserHomePageProps) => {
           <Box>
             <Flex justifyContent="space-between" marginBottom={2} alignItems="flex-end">
               <Heading as="h2" size="md" fontSize={'20pt'} py={2}>
-                Your projects
+                My projects
               </Heading>
-              <Button size="lg" colorScheme="blue" height={8} my={2} onClick={() => newProject()}>
+              <Button size="lg" colorScheme="purple" height={8} my={2} onClick={() => newProject()}>
                 New Project
               </Button>
             </Flex>

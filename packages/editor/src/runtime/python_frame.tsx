@@ -116,7 +116,7 @@ export class PythonFrame extends Component<PythonFrameProps, ConsoleState> {
                 size={'sm'}
                 isLoading={running}
                 loadingText="Running"
-                colorScheme="blue"
+                colorScheme="purple"
                 onClick={this.run}
                 disabled={!(ready && !running)}
                 height={8}
