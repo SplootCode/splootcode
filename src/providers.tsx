@@ -19,6 +19,9 @@ const colors = {
     800: '#182134', // Sploot neutral 800
     900: '#040810', // Sploot neutral 900
   },
+  purple: {
+    200: '#A98BEE',
+  },
 }
 
 const styles = {
