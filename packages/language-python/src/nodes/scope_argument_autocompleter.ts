@@ -23,7 +23,7 @@ function getInputBasedKwargs(textInput: string): SuggestedNode[] {
   return [suggestedNode]
 }
 
-interface AvailableFunctionArguments {
+export interface AvailableFunctionArguments {
   positionalOnly: FunctionParameter[]
   positionalOrKeyword: FunctionParameter[]
   vargsName: null | string
@@ -94,37 +94,21 @@ function getAvailableFunctionArgs(callNode: PythonCallVariable, argNode: PythonA
 
 class KeywordArgGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
-    const argNode = parent.node as PythonArgument
-    if (!argNode.allowKeyword()) {
-      return []
-    }
-
-    const scope = argNode.getScope(false)
-    const analyzer = scope.getAnalyzer()
-    const filePath = scope.getFilePath()
-    const callNode = argNode.parent.node as PythonCallVariable
-    const argIndex = callNode.getArguments().getIndexOf(argNode)
-    const callInfo = analyzer.getPyrightFunctionSignature(filePath, callNode, argIndex)
-
-    if (!callInfo) {
-      return []
-    }
-
-    const availableArgs = getAvailableFunctionArgs(callNode, argNode)
-    const keywords: Set<string> = new Set()
-    for (const args of availableArgs) {
-      const allAvailable = [...args.positionalOrKeyword, ...args.keywordOnly]
-      for (const param of allAvailable) {
-        keywords.add(param.name)
-      }
-    }
-
-    const suggestions = [...keywords].map((paramName) => {
-      const node = new PythonKeywordArgument(null, paramName)
-      const suggestedNode = new SuggestedNode(node, `${paramName}=`, '=', true, 'Keyword argument')
-      return suggestedNode
-    })
-    return suggestions
+    return []
+    // const argNode = parent.node as PythonArgument
+    // if (!argNode.allowKeyword()) {
+    //   return []
+    // }
+    // const scope = argNode.getScope(false)
+    // const analyzer = scope.getAnalyzer()
+    // const filePath = scope.getFilePath()
+    // const callNode = argNode.parent.node as PythonCallVariable
+    // const argIndex = callNode.getArguments().getIndexOf(argNode)
+    // const callInfo = analyzer.getPyrightFunctionSignature(filePath, callNode, argIndex)
+    // if (!callInfo) {
+    //   return []
+    // }
+    // const availableArgs = getAvailableFunctionArgs(callNode, argNode)
   }
 
   async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
@@ -144,13 +128,29 @@ class KeywordArgGenerator implements SuggestionGenerator {
     }
 
     const availableArgs = getAvailableFunctionArgs(callNode, argNode)
+
+    const keywords: Set<string> = new Set()
     for (const args of availableArgs) {
-      if (args.kwargsName) {
-        return getInputBasedKwargs(textInput)
+      const allAvailable = [...args.positionalOrKeyword, ...args.keywordOnly]
+      for (const param of allAvailable) {
+        keywords.add(param.name)
       }
     }
 
-    return []
+    const suggestions = [...keywords].map((paramName) => {
+      const node = new PythonKeywordArgument(null, paramName)
+      const suggestedNode = new SuggestedNode(node, `${paramName}=`, '=', true, 'Keyword argument')
+      return suggestedNode
+    })
+
+    for (const args of availableArgs) {
+      if (args.kwargsName) {
+        suggestions.push(...getInputBasedKwargs(textInput))
+        break
+      }
+    }
+
+    return suggestions
   }
 }
 
