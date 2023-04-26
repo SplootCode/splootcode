@@ -95,20 +95,6 @@ function getAvailableFunctionArgs(callNode: PythonCallVariable, argNode: PythonA
 class KeywordArgGenerator implements SuggestionGenerator {
   staticSuggestions(parent: ParentReference, index: number) {
     return []
-    // const argNode = parent.node as PythonArgument
-    // if (!argNode.allowKeyword()) {
-    //   return []
-    // }
-    // const scope = argNode.getScope(false)
-    // const analyzer = scope.getAnalyzer()
-    // const filePath = scope.getFilePath()
-    // const callNode = argNode.parent.node as PythonCallVariable
-    // const argIndex = callNode.getArguments().getIndexOf(argNode)
-    // const callInfo = analyzer.getPyrightFunctionSignature(filePath, callNode, argIndex)
-    // if (!callInfo) {
-    //   return []
-    // }
-    // const availableArgs = getAvailableFunctionArgs(callNode, argNode)
   }
 
   async dynamicSuggestions(parent: ParentReference, index: number, textInput: string) {
