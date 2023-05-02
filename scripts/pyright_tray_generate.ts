@@ -227,6 +227,7 @@ async function main() {
     micropip.install('numpy'),
     micropip.install('pandas'),
     micropip.install('pandas-stubs'),
+    micropip.install('flask'),
   ]
   await Promise.all(promises)
 
@@ -244,7 +245,7 @@ async function main() {
     moduleInfoFile.allModules.push(moduleInfo)
   }
 
-  for (const module of ['requests', 'streamlit', 'pandas', 'numpy']) {
+  for (const module of ['requests', 'streamlit', 'pandas', 'numpy', 'flask']) {
     const moduleInfo = await generateTrayListForModule(structuredProgram, module, false)
     moduleInfoFile.allModules.push(moduleInfo)
   }
