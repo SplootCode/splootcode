@@ -1,9 +1,3 @@
-export interface HTTP {
-  method: string
-  path: string
-  protocol: string
-}
-
 export interface HTTPScenario {
   id?: number
   name: string
@@ -37,6 +31,12 @@ export interface HTTPEvent {
   protocol: string
   sourceIp: string
   userAgent: string
+}
+
+export interface HTTP {
+  method: string
+  path: string
+  protocol: string
 }
 
 export interface HTTPResponse {
