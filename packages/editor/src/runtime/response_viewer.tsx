@@ -122,9 +122,7 @@ export function BodyInfo(props: { body: string; rawContentType: string }) {
   let formattedBody = null
 
   if (body) {
-    const contentType = parseContentType(rawContentType)
-
-    if (contentType.type === 'application/json') {
+    if (rawContentType && parseContentType(rawContentType).type === 'application/json') {
       formattedBody = <TextBased content={JSON.stringify(JSON.parse(body), null, 2)}></TextBased>
     } else {
       formattedBody = <TextBased content={body} />
@@ -149,8 +147,19 @@ export function BodyInfo(props: { body: string; rawContentType: string }) {
   )
 }
 
+export function getHeader(headers: Record<string, string>, key: string) {
+  const safeHeaders = Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), value]))
+
+  return safeHeaders[key.toLowerCase()]
+}
+
 export function ResponseViewerInfo(props: ResponseViewerProps) {
   const { response } = props
+
+  let rawContentType = undefined
+  if (response) {
+    rawContentType = getHeader(response.headers, 'content-type')
+  }
 
   return (
     <>
@@ -165,7 +174,7 @@ export function ResponseViewerInfo(props: ResponseViewerProps) {
         <Headers headers={response?.headers || {}} />
       </Box>
 
-      <BodyInfo body={response?.body} rawContentType={response?.headers['Content-Type']} />
+      <BodyInfo body={response?.body} rawContentType={rawContentType} />
     </>
   )
 }
