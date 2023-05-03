@@ -12,7 +12,6 @@ import {
 import { PYTHON_BRACKETS } from './python_brackets'
 import { PYTHON_CALL_MEMBER, PythonCallMember } from './python_call_member'
 import { PYTHON_CALL_VARIABLE } from './python_call_variable'
-import { PYTHON_DECORATOR } from './python_decorator'
 import { PYTHON_DICT } from './python_dictionary'
 import { PYTHON_IDENTIFIER } from './python_identifier'
 import { PYTHON_LIST } from './python_list'
@@ -90,7 +89,6 @@ class MemberGenerator implements SuggestionGenerator {
           case PYTHON_CALL_VARIABLE:
           case PYTHON_SUBSCRIPT:
           case PYTHON_BRACKETS:
-          case PYTHON_DECORATOR:
           case PYTHON_MEMBER:
             let info: ExpressionTypeResponse = null
             try {
