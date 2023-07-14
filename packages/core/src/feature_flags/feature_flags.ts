@@ -6,10 +6,10 @@ export const ENABLE_TUTORIALS_FLAG = 'ENABLE_TUTORIALS_FLAG'
 
 const supportedFlags = new Map<string, boolean>([
   [ENABLE_DEPLOYMENTS_FLAG, true],
-  [ENABLE_HTTP_APPS_FLAG, true],
-  [ENABLE_STREAMLIT_APPS_FLAG, true],
+  [ENABLE_HTTP_APPS_FLAG, false],
+  [ENABLE_STREAMLIT_APPS_FLAG, false],
   [ENABLE_INSTALLABLE_PACKAGES_FLAG, false],
-  [ENABLE_TUTORIALS_FLAG, true],
+  [ENABLE_TUTORIALS_FLAG, false],
 ])
 
 /*
