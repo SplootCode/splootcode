@@ -1,27 +1,25 @@
-# SplootCode Editor
+# SplootCode
 
-A structured editor for writing and running Python.
+## The coding environment for non-engineers
+SplootCode is a coding environment aiming to reduce programming barrier to entry.
 
-For progress updates, please join the mailing list on [splootcode.io](https://splootcode.io/).
+<img src="SplootCode-screenshot-readme.png" alt="Screenshot of the SplootCode editor" width="800">
 
-<img src="screenshot2.png" alt="Screenshot of SplootCode example" width="800">
+&nbsp;
 
-With a regular text-based programming language, the first step to process it is to parse it into an abstract-syntax-tree.
-In the SplootCode editor, the user edits the tree directly and that tree can then include more semantic meaning.
 
-Code no longer has to rely on cryptic punctuation characters and whitespace to represent structure. Instead the layout can be auto-generated, depending on screen size and user preferences.
-
-SplootCode aims to be a tree-editing interface that's fast, compact, intuitive and provides the full flexibility and expressiveness of regular text-based Python code.
 
 ## Goals
  * An unrestricted implementation of Python
  * Fast and easy to edit using a keyboard and autocomplete
  * Continuous runtime feedback without the need for a step-by-step debugger
- * Help developers avoid syntax errors and other common programming errors
+ * Help users avoid syntax errors and other common programming errors
  * Avoid needless busywork like escaping, bracket matching, wrapping and whitespace
  * Let beginners focus on the logic of their code rather than the syntax
  * Make language features and functions easy to discover and use
 
+
+## Technical details
 Being a web app, SplootCode uses [Pyodide](https://pyodide.org/) (CPython compiled to WebAssembly) to run Python in the browser.
 
 ## Development
