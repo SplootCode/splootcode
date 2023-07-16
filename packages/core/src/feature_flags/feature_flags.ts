@@ -11,10 +11,10 @@ const supportedFlags = new Map<string, boolean>([
   [ENABLE_INSTALLABLE_PACKAGES_FLAG, false],
   [ENABLE_TUTORIALS_FLAG, false],
 ])
- 
+
 /*
-To enable:
-localStorage.setItem('SPLOOT_FEATURE_FLAGS', JSON.stringify({'ENABLE_INSTALLABLE_PACKAGES_FLAG': true}))
+To enable for yourself in local storage:
+localStorage.setItem('SPLOOT_FEATURE_FLAGS', JSON.stringify({'ENABLE_INSTALLABLE_PACKAGES_FLAG': true, 'ENABLE_HTTP_APPS_FLAG': false, 'ENABLE_STREAMLIT_APPS_FLAG': false}))
 */
 
 export function loadFeatureFlags(): Map<string, boolean> {
