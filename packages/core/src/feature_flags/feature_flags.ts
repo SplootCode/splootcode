@@ -11,7 +11,7 @@ const supportedFlags = new Map<string, boolean>([
   [ENABLE_INSTALLABLE_PACKAGES_FLAG, false],
   [ENABLE_TUTORIALS_FLAG, false],
 ])
-
+ 
 /*
 To enable:
 localStorage.setItem('SPLOOT_FEATURE_FLAGS', JSON.stringify({'ENABLE_INSTALLABLE_PACKAGES_FLAG': true}))
