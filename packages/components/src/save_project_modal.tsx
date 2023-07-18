@@ -148,7 +148,7 @@ export function SaveProjectModal(props: SaveProjectModalProps) {
             </ModalBody>
             <ModalFooter>
               <Button
-                colorScheme="blue"
+                colorScheme="purple"
                 disabled={projectTitle === '' || projectID === '' || !validID || !validType}
                 type="submit"
               >
