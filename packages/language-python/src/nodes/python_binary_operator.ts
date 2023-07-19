@@ -24,7 +24,7 @@ const OPERATORS = {
   '-': { display: '-', key: '-', searchTerms: ['minus', 'subtract'], description: 'subtract' },
   description: 'minus',
   '/': { display: '/', key: '/', searchTerms: ['divide', 'divided by', 'division', '/'], description: 'divide' },
-  '//': { display: '//', key: '//', searchTerms: ['integer divide', 'floor divide', '/'], description: 'integer divide' },
+  '//': { display: '//', key: '//', searchTerms: ['integer divide', 'floor divide', '/'], description: 'floor divide' },
   '%': {
     display: '%',
     key: '%',
