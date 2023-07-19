@@ -19,17 +19,17 @@ import { PYTHON_EXPRESSION, PythonExpression } from './python_expression'
 export const PYTHON_BINARY_OPERATOR = 'PYTHON_BINARY_OPERATOR'
 
 const OPERATORS = {
-  '*': { display: '×', key: '*', searchTerms: ['times', 'multiply', 'x'], description: 'multiply' },
+  '*': { display: '*', key: '*', searchTerms: ['times', 'multiply', 'x', '*'], description: 'multiply' },
   '+': { display: '+', key: '+', searchTerms: ['add', 'plus'], description: 'add' },
-  '-': { display: '-', key: '-', searchTerms: ['minus', 'subtract'] },
+  '-': { display: '-', key: '-', searchTerms: ['minus', 'subtract'], description: 'subtract' },
   description: 'minus',
-  '/': { display: '÷', key: '/', searchTerms: ['divide', 'divided by', 'division'], description: 'divide' },
-  '//': { display: '//', key: '//', searchTerms: ['integer divide', 'floor divide'], description: 'integer divide' },
+  '/': { display: '/', key: '/', searchTerms: ['divide', 'divided by', 'division', '/'], description: 'divide' },
+  '//': { display: '//', key: '//', searchTerms: ['integer divide', 'floor divide', '/'], description: 'floor divide' },
   '%': {
-    display: 'mod',
+    display: '%',
     key: '%',
-    searchTerms: ['modulus', 'remainder'],
-    description: 'modulus (remainder when divided by)',
+    searchTerms: ['modulo', 'remainder'],
+    description: 'modulo (remainder when divided by)',
   },
   '==': { display: '==', key: '==', searchTerms: ['equals', 'equal', '=='], description: 'is equal to' },
   '!=': { display: '≠', key: '!=', searchTerms: ['not equals', 'equal', '!='], description: 'is not equal to' },

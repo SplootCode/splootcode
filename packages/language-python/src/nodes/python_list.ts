@@ -23,6 +23,7 @@ import { PythonNode } from './python_node'
 
 export const PYTHON_LIST = 'PYTHON_LIST'
 
+//Block generation example
 class ListLiteralGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const node = new PythonList(null)
