@@ -89,13 +89,7 @@ export class AssignmentWrapGenerator implements SuggestionGenerator {
       if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
         const grandParent = parent.node.parent.node as PythonStatement
         const node = new PythonAssignment(null)
-        const suggestedNode = new SuggestedNode(
-          node,
-          '',
-          '= assign set',
-          true,
-          'assign this expression to a variable'
-        )
+        const suggestedNode = new SuggestedNode(node, '', '= assign set', true, 'assign this expression to a variable')
         suggestedNode.setOverrideLocation(grandParent.getStatement(), 0, 'right')
         return [suggestedNode]
       }
