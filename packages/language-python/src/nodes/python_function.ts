@@ -45,7 +45,7 @@ export const PYTHON_FUNCTION_DECLARATION = 'PYTHON_FUNCTION_DECLARATION'
 class Generator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonFunctionDeclaration(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'function', 'function def', true, 'Define a new function')
+    const suggestedNode = new SuggestedNode(sampleNode, 'def', 'function def', true, 'Define a new function')
     return [suggestedNode]
   }
 }
@@ -351,8 +351,8 @@ export class PythonFunctionDeclaration extends PythonNode {
     typeRegistration.childSets = { params: NodeCategory.DeclaredIdentifier, body: NodeCategory.Statement }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.FUNCTION_DEFINITION, [
       new LayoutComponent(LayoutComponentType.CHILD_SET_BEFORE_STACK, 'decorators'),
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'function'),
-      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier', ['name']),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'def'),
+      new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'identifier', ['function name']),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'params', undefined, { brackets: true }),
       new LayoutComponent(LayoutComponentType.CHILD_SET_BLOCK, 'body'),
     ])
