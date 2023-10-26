@@ -90,6 +90,9 @@ export { ProjectLoader, ProjectMetadata, FileLoader, SaveError } from './languag
 export { SplootPackage, PackageBuildType } from './language/projects/package'
 export { SplootFile } from './language/projects/file'
 
+// Tongue stuff
+export { Tongue } from './language/tongues/tongues'
+
 // Tray stuff
 export { TrayCategory, TrayEntry, TrayExample, TrayListing } from './language/tray/tray'
 

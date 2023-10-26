@@ -50,9 +50,14 @@ def get_func_params(thing):
     return params
 
 
+# TODO: pass tongue through here
 def get_value_data(name, thing):
     results = {
         'name': name,
+        'nameTranslations': {
+            'en': name,
+            'it': name + 'io',
+        },
         'typeName': type(thing).__name__,
         'typeModule': type(thing).__module__,
         'isClass': isclass(thing),
@@ -126,6 +131,7 @@ def get_type_data(typething, overrides):
     return data
 
 
+# TODO: pass in tongue here
 def generate_module_info(moduleName):
 
     module_info = {
@@ -148,5 +154,7 @@ def generate_module_info(moduleName):
         if (data['typeName'] == 'type'):
             type_data = get_type_data(thing, {})
             module_info['types'][name] = type_data
+
+    console.log('module_info', module_info);
 
     return module_info

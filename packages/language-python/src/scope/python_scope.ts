@@ -9,6 +9,7 @@ import {
   ScopeObserver,
   SplootNode,
   globalMutationDispatcher,
+  Tongue,
 } from '@splootcode/core'
 
 export interface VariableMetadata {
@@ -243,6 +244,10 @@ export class PythonScope {
   }
 
   addBuiltIn(name: string, meta: VariableMetadata) {
+    // TODO: should we add translation data just before this function called?
+    // I Think we should retain all english and add additional keys for any transated things on the UI. Is there a way that we can convert existing code to use a different language
+    console.error('adding built in for', name, meta)
+    // TODO:  append additional localisation keys (caller function has access to tongue)
     if (!this.variables.has(name)) {
       this.variables.set(name, {
         declarers: new Map(),
@@ -253,6 +258,7 @@ export class PythonScope {
 
   addType(name: string, module: string, meta: VariableMetadata) {
     const canonicalName = `${module}.${name}`
+    // TODO:  append additional localisation keys (caller function has access to tongue)
     if (!this.types.has(canonicalName)) {
       this.types.set(canonicalName, {
         name: name,
@@ -405,11 +411,19 @@ export class PythonScope {
   }
 }
 
-export async function generatePythonScope(filePath: string, rootNode: PythonNode, analyzer: PythonAnalyzer) {
+export async function generatePythonScope(
+  filePath: string,
+  rootNode: PythonNode,
+  analyzer: PythonAnalyzer,
+  tongue: Tongue
+) {
   const scope = new PythonScope(filePath, null, null)
   scope.isGlobal = true
   scope.analyzer = analyzer
   const globalScope = scope
-  loadPythonBuiltins(scope)
+  // TODO, pass language in here ?
+  loadPythonBuiltins(scope, tongue)
+  // TODO: do the translaction here ?
+  // TODO: understand what's going on. This function doesnt return anything...
   rootNode.recursivelyBuildScope(globalScope)
 }

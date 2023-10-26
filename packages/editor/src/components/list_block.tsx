@@ -17,6 +17,8 @@ export class ExpandedListBlockView extends React.Component<ExpandedListBlockView
   render() {
     const block = this.props.block
 
+    console.error('block.nodes[0]', block.nodes[0])
+
     return (
       <React.Fragment>
         {block.nodes.map((nodeBlock: NodeBlock, idx: number) => {

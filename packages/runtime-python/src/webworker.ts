@@ -34,7 +34,7 @@ const stdout = {
       stdout: s,
     })
   },
-  flush: () => {},
+  flush: () => { },
 }
 
 const stderr = {
@@ -44,7 +44,7 @@ const stderr = {
       stderr: s,
     })
   },
-  flush: () => {},
+  flush: () => { },
 }
 
 const stdin = {
@@ -224,6 +224,7 @@ const generateTextContent = async (returnToEditor: boolean) => {
   }
 }
 
+// TODO: we should probably pass tonge in here
 const loadModule = async (moduleName) => {
   try {
     const res = pyodide.runPython(`generate_module_info("${moduleName}")`)
@@ -311,7 +312,7 @@ export const initialize = async (urls: StaticURLs, typeshedPath: string) => {
   })
 }
 
-onmessage = function (e: MessageEvent<WorkerManagerMessage>) {
+onmessage = function(e: MessageEvent<WorkerManagerMessage>) {
   switch (e.data.type) {
     case 'run':
       eventData = e.data.eventData

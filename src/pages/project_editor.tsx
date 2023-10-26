@@ -3,7 +3,7 @@ import './project_editor.css'
 import React, { useEffect, useState } from 'react'
 import { AutosaveInfo, EditorHostingConfig, EditorState, EditorStateContext } from '@splootcode/editor'
 import { ExportTextModal, MainMenuItem, MenuBar, MenuBarItem, SaveProjectModal } from '@splootcode/components'
-import { Project, ProjectLoader, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
+import { Project, ProjectLoader, Tongue, exportProjectToFolder, loadProjectFromFolder } from '@splootcode/core'
 import { PythonEditorPanels } from './python_editor_panels'
 import { loadExampleProject } from '../code_io/static_projects'
 import { useHistory, useParams } from 'react-router-dom'
@@ -16,10 +16,11 @@ const hostingConfig: EditorHostingConfig = {
 
 interface ProjectEditorProps {
   projectLoader: ProjectLoader
+  tongue: Tongue
 }
 
 export const ProjectEditor = (props: ProjectEditorProps) => {
-  const { projectLoader } = props
+  const { projectLoader, tongue } = props
   const { projectID, ownerID } = useParams() as { ownerID: string; projectID: string }
   const [loadedProject, setLoadedProject] = useState<Project>(null)
   const [saveProjectModalState, setSaveProjectModalState] = useState({ open: false, clonedFrom: null })
@@ -30,7 +31,7 @@ export const ProjectEditor = (props: ProjectEditorProps) => {
 
   useEffect(() => {
     if (loadedProject) {
-      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader)
+      const editorState = new EditorState(loadedProject, hostingConfig, projectLoader, tongue)
       editorState.loadDefaultFile().then(() => {
         setEditorState(editorState)
       })

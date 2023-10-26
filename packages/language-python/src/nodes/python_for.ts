@@ -270,7 +270,7 @@ export class PythonForLoop extends PythonNode {
       block: NodeCategory.PythonStatement,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.CONTROL, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, 'for'),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'myfor'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'target', ['each item']),
       new LayoutComponent(LayoutComponentType.KEYWORD, 'in'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'iterable', ['the list to iterate on']),

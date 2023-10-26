@@ -8,9 +8,11 @@ import {
   VariableTypeInfo,
 } from './types'
 import { PythonScope } from './python_scope'
+import { Tongue } from '@splootcode/core'
 
 interface VariableSpec {
   name: string
+  nameTranslations: { [key: string]: string }
   typeName: string
   typeModule: string
   isClass: boolean
@@ -122,11 +124,18 @@ export function loadPythonModule(scope: PythonScope, moduleSpec: PythonModuleSpe
   }
 }
 
-export function loadPythonBuiltins(scope: PythonScope) {
-  const builtinsSpec: PythonModuleSpec = builtins
+// This is an interesting function, it loads data from the generated file
+// and proceeds to format it and structure it in a certain manner.
+// What does it do with the new data then ?
+export function loadPythonBuiltins(scope: PythonScope, tongue: Tongue) {
+  // This pulls the information out of the generated file!
+  const builtinsSpec: PythonModuleSpec = builtins as any as PythonModuleSpec
+  console.log('BuiltinSpec', builtinsSpec.values)
 
   for (const name in builtinsSpec.values) {
     const spec = builtinsSpec.values[name]
+    const translatedName = spec.nameTranslations[tongue]
+    console.error('spec', spec)
     if (spec.isCallable) {
       const typeInfo: VariableTypeInfo = {
         category: TypeCategory.Function,
@@ -146,13 +155,13 @@ export function loadPythonBuiltins(scope: PythonScope) {
         })
         typeInfo.arguments = args
       }
-      scope.addBuiltIn(name, { documentation: spec.shortDoc, typeInfo: typeInfo })
+      scope.addBuiltIn(translatedName, { documentation: spec.shortDoc, typeInfo: typeInfo })
     } else {
       const typeInfo: VariableTypeInfo = {
         category: TypeCategory.Value,
         typeName: spec.typeName,
       }
-      scope.addBuiltIn(name, { documentation: spec.shortDoc, typeInfo: typeInfo })
+      scope.addBuiltIn(translatedName, { documentation: spec.shortDoc, typeInfo: typeInfo })
     }
   }
   for (const name in builtinsSpec.types) {

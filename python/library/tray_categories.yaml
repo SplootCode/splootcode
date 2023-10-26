@@ -1,4 +1,3 @@
-
 category: Python
 entries:
   - category: Console
@@ -13,7 +12,7 @@ entries:
       - sploot-node.string-add
       - builtins.len
       - sploot-node.string-subscript
-        
+
       - category: Capitalization
         entries:
           - builtins.str.lower
@@ -72,7 +71,6 @@ entries:
           - builtins.str.rpartition
           - builtins.str.rsplit
 
-
   - category: Numbers
     entries:
       - sploot-node.int
@@ -93,7 +91,6 @@ entries:
           - builtins.pow
           - builtins.round
           - builtins.sum
-
 
   - category: Ifs & decisions
     entries:
@@ -123,7 +120,6 @@ entries:
           - builtins.all
           - builtins.any
 
-
   - category: Loops
     entries:
       - sploot-node.for
@@ -132,7 +128,6 @@ entries:
       - sploot-node.while
       - sploot-node.break
       - sploot-node.continue
-
 
   - category: Lists
     entries:
@@ -171,7 +166,6 @@ entries:
           - builtins.tuple.count
           - builtins.tuple.index
 
-
   - category: Dictionaries
     entries:
       - sploot-node.dict
@@ -194,7 +188,6 @@ entries:
           - builtins.dict.items
           - builtins.dict.keys
           - builtins.dict.values
-
 
   - category: Sets
     entries:
@@ -228,18 +221,15 @@ entries:
           - builtins.set.symmetric_difference
           - builtins.set.symmetric_difference_update
 
-
   - category: Functions
     entries:
       - sploot-node.function
       - sploot-node.return
 
-
   - category: Libraries
     entries:
       - sploot-node.import
       - sploot-node.import-from
-
 
   - category: Misc
     entries:

@@ -3,7 +3,7 @@ import { AutosaveWatcher } from './autosave_watcher'
 import { EditorHostingConfig } from '../editor_hosting_config'
 import { NodeBlock } from '../layout/rendered_node'
 import { NodeSelection } from './selection'
-import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher } from '@splootcode/core'
+import { Project, ProjectLoader, SplootFile, SplootPackage, ValidationWatcher, Tongue } from '@splootcode/core'
 import { ProjectFileChangeWatcher } from '../runtime/project_file_change_watcher'
 import { PythonAnalyzer, PythonFile, generatePythonScope, isPythonNode } from '@splootcode/language-python'
 import { RuntimeContextManager } from './runtime_context_manager'
@@ -16,6 +16,7 @@ export class EditorState {
 
   @observable
   rootNode: NodeBlock
+  tongue: Tongue
   selection: NodeSelection
   validationWatcher: ValidationWatcher
   analyser: PythonAnalyzer
@@ -29,8 +30,10 @@ export class EditorState {
     project: Project,
     hostingConfig: EditorHostingConfig,
     projectLoader: ProjectLoader,
+    tongue: Tongue,
     featureFlags?: Map<string, boolean>
   ) {
+    this.tongue = tongue
     this.project = project
     this.rootNode = null
     this.selection = new NodeSelection()
@@ -64,7 +67,7 @@ export class EditorState {
 
     // Build scope
     if (isPythonNode(loadedFile.rootNode)) {
-      await generatePythonScope(file.name, loadedFile.rootNode, this.analyser)
+      await generatePythonScope(file.name, loadedFile.rootNode, this.analyser, this.tongue)
     }
 
     // Start up the analyzer

@@ -36,7 +36,13 @@ export const PYTHON_ASSIGNMENT = 'PYTHON_ASSIGNMENT'
 class AssignmentGenerator implements SuggestionGenerator {
   constantSuggestions(): SuggestedNode[] {
     const sampleNode = new PythonAssignment(null)
-    const suggestedNode = new SuggestedNode(sampleNode, 'assign', '= assign set', true, 'Assign a value to a variable')
+    const suggestedNode = new SuggestedNode(
+      sampleNode,
+      'new suggest', // this is the searfh
+      '= assign set',
+      true,
+      'Assign a value to a variable'
+    )
     return [suggestedNode]
   }
 
@@ -89,7 +95,13 @@ export class AssignmentWrapGenerator implements SuggestionGenerator {
       if (parent.node.parent?.node.type === PYTHON_STATEMENT) {
         const grandParent = parent.node.parent.node as PythonStatement
         const node = new PythonAssignment(null)
-        const suggestedNode = new SuggestedNode(node, '', '= assign set', true, 'assign this expression to a variable')
+        const suggestedNode = new SuggestedNode(
+          node,
+          'suggest',
+          '= assign set',
+          true,
+          'assign this expression to a variable'
+        )
         suggestedNode.setOverrideLocation(grandParent.getStatement(), 0, 'right')
         return [suggestedNode]
       }
@@ -258,7 +270,7 @@ export class PythonAssignment extends PythonNode {
       right: NodeCategory.PythonExpression,
     }
     typeRegistration.layout = new NodeLayout(HighlightColorCategory.VARIABLE_DECLARATION, [
-      new LayoutComponent(LayoutComponentType.KEYWORD, ''),
+      new LayoutComponent(LayoutComponentType.KEYWORD, 'something-random'),
       new LayoutComponent(LayoutComponentType.CHILD_SET_TOKEN_LIST, 'left', ['variable name']),
       new LayoutComponent(LayoutComponentType.KEYWORD, '='),
       new LayoutComponent(LayoutComponentType.CHILD_SET_ATTACH_RIGHT, 'right', ['value']),

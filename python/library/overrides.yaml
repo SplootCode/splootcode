@@ -1,4 +1,3 @@
-
 overrides:
   - key: builtins.print
     abstract: 'Outputs information to the console.'
@@ -210,13 +209,13 @@ overrides:
         default: '0'
     examples:
       - ex: |
-            for i, letter in enumerate('Hello'):
-              print(i, letter)
+          for i, letter in enumerate('Hello'):
+            print(i, letter)
         desc: "Prints a number (starting at 0) the letter for each letter in 'hello'."
       - ex: |
-            names = ['Alice', 'Bob', 'Charlie']
-            for index, name in enumerate(names):
-              print(index, name)
+          names = ['Alice', 'Bob', 'Charlie']
+          for index, name in enumerate(names):
+            print(index, name)
         desc: 'Prints each name in the list, along with the index 0, 1, 2 for each name.'
 
   - key: builtins.len
@@ -238,14 +237,13 @@ overrides:
         default: '1'
     examples:
       - ex: |
-            for num in range(10):
-              print(num)
+          for num in range(10):
+            print(num)
         desc: 'Prints numbers 0 to 9, with one on each line.'
       - ex: |
-            for num in range(5, 10):
-              print(num)
+          for num in range(5, 10):
+            print(num)
         desc: 'Prints numbers 5 to 9, with one on each line.'
-
 
   - key: builtins.dict.clear
     parameters: []

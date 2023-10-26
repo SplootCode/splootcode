@@ -19,6 +19,10 @@ export class InlineProperty extends React.Component<PropertyProps> {
     const { block, leftPos, topPos, propertyName } = this.props
     const { node } = this.props.block
 
+    console.log('block', block)
+    console.log('node', node)
+    console.log('propertyName', propertyName)
+
     return (
       <text x={leftPos} y={topPos + NODE_TEXT_OFFSET} style={{ fill: block.textColor }}>
         {node.getProperty(propertyName)}

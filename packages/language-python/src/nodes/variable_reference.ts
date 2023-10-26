@@ -29,7 +29,7 @@ export class PythonVariableReference extends SplootNode {
   }
 
   static deserializer(serializedNode: SerializedNode): PythonVariableReference {
-    return new PythonVariableReference(null, serializedNode.properties.identifier)
+    return new PythonVariableReference(null, serializedNode.properties.identifier + 'hello')
   }
 
   static register() {

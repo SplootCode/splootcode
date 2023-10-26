@@ -161,6 +161,7 @@ export class NodeBlock implements NodeObserver {
         component.type === LayoutComponentType.CHILD_SET_STACK ||
         component.type === LayoutComponentType.CHILD_SET_BEFORE_STACK
       ) {
+        console.log('id', component.identifier)
         const childSet = node.getChildSet(component.identifier)
         this.childSetOrder.push(component.identifier)
         const childSetParentRef = new RenderedParentRef(this, component.identifier)
