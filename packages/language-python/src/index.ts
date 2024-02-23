@@ -37,3 +37,5 @@ export type {
   AutocompleteEntryFunctionArgument,
   AutocompleteEntryCategory,
 } from './analyzer/python_analyzer'
+
+export { AvailableFunctionArguments } from './nodes/scope_argument_autocompleter'
