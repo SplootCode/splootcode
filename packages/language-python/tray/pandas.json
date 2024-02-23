@@ -690,6 +690,31 @@
       }
     },
     {
+      "key": "pandas.Float64Index",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Float64Index"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pandas"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
       "key": "pandas.Grouper",
       "abstract": "    A Grouper allows the user to specify a groupby instruction for an object.",
       "serializedNode": {
@@ -895,6 +920,31 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "Int64Dtype"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pandas"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pandas.Int64Index",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "Int64Index"
         },
         "meta": {
           "params": []
@@ -1674,6 +1724,31 @@
         "type": "PYTHON_CALL_MEMBER",
         "properties": {
           "member": "UInt64Dtype"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "pandas"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
+      "key": "pandas.UInt64Index",
+      "abstract": "",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "UInt64Index"
         },
         "meta": {
           "params": []
@@ -2705,8 +2780,7 @@
             "path",
             "columns",
             "use_threads",
-            "storage_options",
-            "dtype_backend"
+            "storage_options"
           ]
         },
         "childSets": {
@@ -2848,8 +2922,7 @@
         "meta": {
           "params": [
             "path",
-            "columns",
-            "dtype_backend"
+            "columns"
           ]
         },
         "childSets": {
@@ -2986,8 +3059,7 @@
           "params": [
             "path",
             "usecols",
-            "convert_categoricals",
-            "dtype_backend"
+            "convert_categoricals"
           ]
         },
         "childSets": {

@@ -30,7 +30,7 @@ export async function setupPyodide(urls: string[]) {
   const micropip = pyodide.pyimport('micropip')
   const promises = [
     ...urls.map((url) => micropip.install(url)),
-    micropip.install('types-requests'),
+    micropip.install('types-requests==2.28.1'),
     micropip.install('ast-comments'),
   ]
 
@@ -47,7 +47,7 @@ export const loadDependencies = async (pyodide: any, newDependencies: Dependency
       let types = []
 
       if (name === 'pandas') {
-        types = ['pandas-stubs']
+        types = ['pandas-stubs~=1.5.3']
       } else if (name === 'streamlit') {
         return [urls.pyarrowPackageURL, urls.streamlitPackageURL]
       } else if (name === 'requests') {

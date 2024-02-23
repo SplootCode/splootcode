@@ -10,7 +10,7 @@
     "build:runtime": "yarn vite build --config vite-runtime.config.ts",
     "build": "yarn build:packages && yarn build:app && yarn build:runtime",
     "generate-types": "pushd . && cd python && ./generate.sh && popd",
-    "generate-tray": "ts-node scripts/pyright_tray_generate.ts",
+    "generate-tray": "node --loader ts-node/esm scripts/pyright_tray_generate.ts",
     "test": "yarn jest"
   },
   "license": "BUSL-1.1",
