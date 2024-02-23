@@ -259,6 +259,7 @@ async function generateTrayListForModule(
   moduleName: string,
   isStandardLib: boolean
 ): Promise<PythonModuleInfo> {
+  console.log('Generating tray list for ' + moduleName)
   let id = 1
   const moduleNameNode: ModuleNameNode = {
     nodeType: ParseNodeType.ModuleName,
@@ -389,6 +390,8 @@ async function generateTrayListForModule(
 
   // Write to a file
   fs.writeFileSync('./packages/language-python/tray/' + moduleName + '.json', JSON.stringify(trayCategory, null, 2))
+  // Wait a bit for dev server to cope
+  await new Promise((resolve) => setTimeout(resolve, 200))
 
   return moduleInfo
 }
