@@ -785,6 +785,31 @@
       }
     },
     {
+      "key": "requests.NullHandler",
+      "abstract": "    This handler does nothing. It's intended to be used to avoid the",
+      "serializedNode": {
+        "type": "PYTHON_CALL_MEMBER",
+        "properties": {
+          "member": "NullHandler"
+        },
+        "meta": {
+          "params": []
+        },
+        "childSets": {
+          "object": [
+            {
+              "type": "PY_IDENTIFIER",
+              "properties": {
+                "identifier": "requests"
+              },
+              "childSets": {}
+            }
+          ],
+          "arguments": []
+        }
+      }
+    },
+    {
       "key": "requests.check_compatibility",
       "abstract": "",
       "serializedNode": {

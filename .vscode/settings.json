@@ -1,6 +1,6 @@
 {
   "python.formatting.provider": "black",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
 }

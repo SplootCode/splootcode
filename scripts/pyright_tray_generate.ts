@@ -222,12 +222,13 @@ async function main() {
   const micropip = pyodide.pyimport('micropip')
   await micropip.install(RequestsURL)
   await micropip.install(StreamlitURL)
+
   const promises = [
-    micropip.install('types-requests'),
-    micropip.install('numpy'),
-    micropip.install('pandas'),
-    micropip.install('pandas-stubs'),
-    micropip.install('flask'),
+    micropip.install('types-requests==2.28.1'),
+    micropip.install('numpy==1.23.5'),
+    micropip.install('pandas==1.5.2'),
+    micropip.install('pandas-stubs~=1.5.3'),
+    micropip.install('flask==2.3.3'),
   ]
   await Promise.all(promises)
 
@@ -258,6 +259,7 @@ async function generateTrayListForModule(
   moduleName: string,
   isStandardLib: boolean
 ): Promise<PythonModuleInfo> {
+  console.log('Generating tray list for ' + moduleName)
   let id = 1
   const moduleNameNode: ModuleNameNode = {
     nodeType: ParseNodeType.ModuleName,
@@ -388,6 +390,8 @@ async function generateTrayListForModule(
 
   // Write to a file
   fs.writeFileSync('./packages/language-python/tray/' + moduleName + '.json', JSON.stringify(trayCategory, null, 2))
+  // Wait a bit for dev server to cope
+  await new Promise((resolve) => setTimeout(resolve, 200))
 
   return moduleInfo
 }
